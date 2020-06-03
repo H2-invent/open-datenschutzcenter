@@ -1,0 +1,20 @@
+{% extends 'email/base.html.twig' %}
+{% block header %}
+    Open-Datenschutz Center
+{% endblock %}
+{% block content %}
+    <h4 class="text-center">
+        -- Einladung zum Datenschutz Center Team --
+    </h4>
+    <b>
+        Hallo!
+    </b>
+    <p>
+        Sie wurden gerade von einem Administrator zu einem Datenschutz Team auf Ihrem Datenschutz Center hinzugefügt.
+    </p>
+    <a href="{{confirmationUrl}}">{{ confirmationUrl }}</a>
+
+<br><br>
+        Mit freundlichen Grüßen<br>
+        Ihr Datenschutz Center
+{% endblock %}

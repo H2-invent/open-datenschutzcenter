@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ team.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="row wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-md-7 mb-4">
+
+            <!--Card-->
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header text-center">
+                    Elemente bei {{ team.name }}
+                </div>
+                <!--Card content-->
+                <div class="card-body">
+
+                    <canvas id="myChart"></canvas>
+
+                </div>
+
+            </div>
+            <!--/.Card-->
+            <!--Card-->
+            <div class="card mt-4">
+                <!-- Card header -->
+                <div class="card-header text-center">
+                    Kritische Vorgänge
+                </div>
+                <!--Card content-->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5>Krisitsche Auditfragen</h5>
+                            <ul>
+                                {% for a in kAudit %}
+                                    <li><a href="{{ path('audit_tom_edit', {'tom':a.id}) }}">{{ a.createdAt|date('d.m.Y H:i') }} - {{ a.frage }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Krisitsche VVTs</h5>
+                            <ul>
+                                {% for v in kVvt %}
+                                    <li><a href="{{ path('vvt_edit', {'id':v.id}) }}">{{ v.createdAt|date('d.m.Y H:i') }} - {{ v.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Offene DSFA</h5>
+                            <ul>
+                                {% for d in openDsfa %}
+                                    <li><a href="{{ path('vvt_dsfa_edit', {'dsfa':d.id}) }}">{{ d.createdAt|date('d.m.Y H:i') }} - {{ d.vvt.name }} ({% if not d.dsb %}Beurteilung DSB fehlt{% else %}Ergebnis fehlt{% endif %})</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <!--/.Card-->
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-5 mb-4">
+
+            <!--Card-->
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header text-center">
+                    Letzte Änderungen
+                </div>
+                <!--Card content-->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Auditfragen</h5>
+                            <ul>
+                                {% for a in audit|slice(0, 10) %}
+                                    <li><a href="{{ path('audit_tom_edit', {'tom':a.id}) }}">{{ a.createdAt|date('d.m.Y H:i') }} - {{ a.frage }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Verarbeitungsverzeichnisse</h5>
+                            <ul>
+                                {% for v in vvt|slice(0, 10) %}
+                                    <li><a href="{{ path('vvt_edit', {'id':v.id}) }}">{{ v.createdAt|date('d.m.Y H:i') }} - {{ v.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <!--/.Card-->
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        // Animations initialization
+        new WOW().init();
+
+    </script>
+
+    <!-- Charts -->
+    <script>
+        // Line
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Auditfragen", "Verarbeitungsverzeichnisse", "Datenschutzfolgeabschätzungen", "Datenweitergaben", "Kontakte"],
+                datasets: [{
+                    label: 'Anzahl Elemente',
+                    data: [{{ audit|length }}, {{ vvt|length }}, {{ dsfa|length }}, {{ daten|length }}, {{ kontakte|length }}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+{% endblock %}

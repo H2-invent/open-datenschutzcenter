@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2 class="h2-responsive">{{ title }}</h2>
+<div class="card card-body">
+
+    {{ form_start(form) }}
+    {{ form_widget(form)}}
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}

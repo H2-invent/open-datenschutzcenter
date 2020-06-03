@@ -1,0 +1,4 @@
+<a href="{{ path('vvt_dsfa_edit',{'dsfa':p.id}) }}">{{ p.createdAt|date('d.m.Y h:m') }} -- id: {{ p.id }} -- Erstellt von: {{ p.user.email }}{% if not p.dsb %} -- <span class="text-danger">Beurteilung DSB fehlt</span>{% endif %}{% if not p.ergebnis %} -- <span class="text-danger">Erbenis fehlt</span>{% endif %}</a>
+{% if p.previous %}
+    {{ include('vvt/__dsfaHistory.html.twig', {'p':p.previous}) }}
+{% endif %}

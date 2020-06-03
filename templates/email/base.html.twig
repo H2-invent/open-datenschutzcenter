@@ -1,0 +1,68 @@
+{% apply inky_to_html|inline_css(source('@css/foundation-emails.css')) %}
+    <style type="text/css">
+        body,
+        html,
+        .body {
+            background: #f3f3f3 !important;
+        }
+
+        .container.header {
+            background: #f3f3f3;
+        }
+
+        .body-border {
+            border-top: 8px solid #663399;
+        }
+    </style>
+
+    <spacer size="16"></spacer>
+
+    <container class="header">
+        <row>
+            <columns>
+                <h1 class="text-center">
+                    {% block header %}
+
+
+                    {% endblock %}
+                </h1>
+
+            </columns>
+        </row>
+    </container>
+
+    <container class="body-border">
+        <row>
+            <columns>
+
+                <spacer size="32"></spacer>
+
+                <spacer size="16"></spacer>
+                {% block content %}
+
+                {% endblock %}
+                <center>
+                    <menu>
+                        -
+                        <small>Powered by <item href="https://h2-invent.com">H2 invent</item> </small>
+                        -
+                    </menu>
+                    <br><br>
+                    --<br>
+                    H2 invent GmbH<br>
+                    Gewerbestraße 9<br>
+                    79539 Lörrach<br>
+                    Deutschland<br>
+                    Internet: www.h2-invent.com<br>
+                    Email: info@h2-invent.com<br>
+                    Telefon: 07621 7925862<br><br>
+                    H2 invent GmbH · Geschäftsführer: Andreas Holzmann · Registergericht<br>
+                    Freiburg i. Br. · HRB 720434 · Steuernummer: 1108708697<br>
+
+                </center>
+            </columns>
+        </row>
+
+        <spacer size="16"></spacer>
+    </container>
+{% endapply %}

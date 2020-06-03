@@ -1,0 +1,25 @@
+<h2 class="h2-responsive">{{ titel }}</h2>
+<div class="card card-body table-responsive">
+    <table id="data-table" class="table display table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Titel</th>
+            <th scope="col">Erstellt am</th>
+            <th scope="col">Aktiv</th>
+            <th scope="col">Aktionen</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for t in table %}
+            <tr>
+                <th scope="row">{{ t.id }}</th>
+                <td>{{ t.title }}</td>
+                <td>{{ t.createdAt|date('d.m.Y') }}</td>
+                <td>{{ t.activ?'Ja':"Nein" }} </td>
+                <td><a href="{{ path('kurs_anmelden',{'id':t.id}) }}" class="btn btn-sm btn-primary">Anmelden</a> <a href="{{ path('kurs_deaktivieren',{'id':t.id}) }}" class="btn btn-sm btn-danger">Löschen</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

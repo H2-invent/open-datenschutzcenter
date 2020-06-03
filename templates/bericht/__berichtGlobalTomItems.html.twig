@@ -1,0 +1,9 @@
+<p>Getroffene Maßnahmen:</p>
+<ul>
+    {% for data in daten %}
+        {% if data.tomZiel == item %}
+            <li>{{ data.tomAttribut }} <small>({{ data.nummer }})</small></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+<h4 style="text-align: center">---</h4>

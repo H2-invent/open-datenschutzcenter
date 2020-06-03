@@ -1,0 +1,31 @@
+{% block subject %}Passwort zurücksetzen{% endblock %}
+
+{% block body_text %}
+    {% autoescape false %}
+        Passwort neu setzen
+
+        <h3>
+            Hallo {{ user.username }}
+        </h3>
+
+        Sie wurden gerade von einem Administrator zu einem Datenschutz Team auf Ihrem Datenschutz Center hinzugefügt.
+
+        Um ihr Passwort nun festzulegen klicken Sie den nachfolgenden Link.
+
+        {{ confirmationUrl }}
+
+
+        Mit freundlichen Grüßen
+        Ihr Datenschutz Center
+    {% endautoescape %}
+
+{% endblock %}
+
+{% block body_html %}
+    {#
+        You can of course render the html directly here.
+        Including a template as done here allows keeping things DRY by using
+        the template inheritance in it
+    #}
+    {% include 'email/fosUser/resetting_html.html.twig' %}
+{% endblock %}

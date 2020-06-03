@@ -1,0 +1,334 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\AuditTomRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
+
+/**
+ * @ORM\Entity(repositoryClass=AuditTomRepository::class)
+ */
+class AuditTom
+{
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     * @Encrypted()
+     */
+    private $frage;
+
+    /**
+     * @ORM\Column(type="text")
+     * @Encrypted()
+     */
+    private $bemerkung;
+
+    /**
+     * @ORM\Column(type="text")
+     * @Encrypted()
+     */
+    private $empfehlung;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=AuditTomZiele::class)
+     * @Assert\NotBlank()
+     */
+    private $ziele;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="auditToms")
+     * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
+     */
+    private $team;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=AuditTomAbteilung::class)
+     * @Assert\NotBlank()
+     */
+    private $abteilung;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=AuditTomStatus::class, inversedBy="auditToms")
+     * @ORM\JoinColumn(nullable=true)
+     * @Assert\NotBlank()
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activ;
+
+    /**
+     * @ORM\OneToOne(targetEntity=AuditTom::class, cascade={"persist", "remove"})
+     */
+    private $previous;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Assert\NotBlank()
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     * @Encrypted()
+     */
+    private $nummer;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="auditToms")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Encrypted()
+     */
+    private $tomAttribut;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $tomZiel;
+
+    /**
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     * @Encrypted()
+     */
+    private $kategorie;
+
+    public function __construct()
+    {
+        $this->ziele = new ArrayCollection();
+        $this->abteilung = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getFrage(): ?string
+    {
+        return $this->frage;
+    }
+
+    public function setFrage(string $frage): self
+    {
+        $this->frage = $frage;
+
+        return $this;
+    }
+
+    public function getBemerkung(): ?string
+    {
+        return $this->bemerkung;
+    }
+
+    public function setBemerkung(string $bemerkung): self
+    {
+        $this->bemerkung = $bemerkung;
+
+        return $this;
+    }
+
+    public function getEmpfehlung(): ?string
+    {
+        return $this->empfehlung;
+    }
+
+    public function setEmpfehlung(string $empfehlung): self
+    {
+        $this->empfehlung = $empfehlung;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AuditTomZiele[]
+     */
+    public function getZiele(): Collection
+    {
+        return $this->ziele;
+    }
+
+    public function addZiele(AuditTomZiele $ziele): self
+    {
+        if (!$this->ziele->contains($ziele)) {
+            $this->ziele[] = $ziele;
+        }
+
+        return $this;
+    }
+
+    public function removeZiele(AuditTomZiele $ziele): self
+    {
+        if ($this->ziele->contains($ziele)) {
+            $this->ziele->removeElement($ziele);
+        }
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): self
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AuditTomAbteilung[]
+     */
+    public function getAbteilung(): Collection
+    {
+        return $this->abteilung;
+    }
+
+    public function addAbteilung(AuditTomAbteilung $abteilung): self
+    {
+        if (!$this->abteilung->contains($abteilung)) {
+            $this->abteilung[] = $abteilung;
+        }
+
+        return $this;
+    }
+
+    public function removeAbteilung(AuditTomAbteilung $abteilung): self
+    {
+        if ($this->abteilung->contains($abteilung)) {
+            $this->abteilung->removeElement($abteilung);
+        }
+
+        return $this;
+    }
+
+    public function getStatus(): ?AuditTomStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?AuditTomStatus $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getActiv(): ?bool
+    {
+        return $this->activ;
+    }
+
+    public function setActiv(bool $activ): self
+    {
+        $this->activ = $activ;
+
+        return $this;
+    }
+
+    public function getPrevious(): ?self
+    {
+        return $this->previous;
+    }
+
+    public function setPrevious(?self $previous): self
+    {
+        $this->previous = $previous;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getNummer(): ?string
+    {
+        return $this->nummer;
+    }
+
+    public function setNummer(string $nummer): self
+    {
+        $this->nummer = $nummer;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTomAttribut(): ?string
+    {
+        return $this->tomAttribut;
+    }
+
+    public function setTomAttribut(?string $tomAttribut): self
+    {
+        $this->tomAttribut = $tomAttribut;
+
+        return $this;
+    }
+
+    public function getTomZiel(): ?int
+    {
+        return $this->tomZiel;
+    }
+
+    public function setTomZiel(?int $tomZiel): self
+    {
+        $this->tomZiel = $tomZiel;
+
+        return $this;
+    }
+
+    public function getKategorie(): ?string
+    {
+        return $this->kategorie;
+    }
+
+    public function setKategorie(string $kategorie): self
+    {
+        $this->kategorie = $kategorie;
+
+        return $this;
+    }
+}

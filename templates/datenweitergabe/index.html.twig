@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('datenweitergabe_new') }}">
+        <span>Datenweitergabe anlegen</span>
+    </a>
+{% endblock %}
+
+{% block body %}
+    {{ include('datenweitergabe/__indexTabel.html.twig') }}
+{% endblock %}
+

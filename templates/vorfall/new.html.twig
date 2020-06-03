@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2 class="h2-responsive">{{ title }}</h2>
+<div class="card card-body">
+    {{ include('vorfall/__form.html.twig') }}
+</div>
+
+    <p>Erstellt von: {{ vorfall.user.email }}</p>
+    {% if vorfall.previous %}
+        <div class="card card-body mt-2">
+            <h2>Historie</h2>
+            {{ include('vorfall/__form.html.twig/__history.html.twig', {'p':vorfall.previous}) }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

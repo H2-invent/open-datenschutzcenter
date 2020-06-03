@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2 class="h2-responsive">{{ title }} zu {{ dsfa.vvt.name }}</h2>
+
+    {{ form_start(form) }}
+    <div class="card card-body">
+        {{ form_label(form.beschreibung) }}
+        {% if activ %}
+            {{ form_widget(form.beschreibung) }}
+        {% else %}
+            {{ form_widget(form.beschreibung, { 'disabled':'disabled' }) }}
+        {% endif %}
+
+        {{ form_label(form.notwendigkeit) }}
+        {% if activ %}
+            {{ form_widget(form.notwendigkeit) }}
+        {% else %}
+            {{ form_widget(form.notwendigkeit, { 'disabled':'disabled' }) }}
+        {% endif %}
+
+        {{ form_label(form.risiko) }}
+        {% if activ %}
+            {{ form_widget(form.risiko) }}
+        {% else %}
+            {{ form_widget(form.risiko, { 'disabled':'disabled' }) }}
+        {% endif %}
+
+        {{ form_label(form.abhilfe) }}
+        {% if activ %}
+            {{ form_widget(form.abhilfe) }}
+        {% else %}
+            {{ form_widget(form.abhilfe, { 'disabled':'disabled' }) }}
+        {% endif %}
+
+        {{ form_label(form.standpunkt) }}
+        {% if activ %}
+            {{ form_widget(form.standpunkt) }}
+        {% else %}
+            {{ form_widget(form.standpunkt, { 'disabled':'disabled' }) }}
+        {% endif %}
+
+        {{ form_label(form.dsb) }}
+        {% if activ %}
+            {{ form_widget(form.dsb) }}
+        {% else %}
+            {{ form_widget(form.dsb, { 'disabled':'disabled' }) }}
+        {% endif %}
+
+        {{ form_label(form.ergebnis) }}
+        {% if activ %}
+            {{ form_widget(form.ergebnis) }}
+        {% else %}
+            {{ form_widget(form.ergebnis, { 'disabled':'disabled' }) }}
+        {% endif %}
+
+        {% if activ %}
+            {{ form_widget(form.save) }}
+        {% else %}
+            {{ form_widget(form.save, { 'disabled':'disabled' }) }}
+        {% endif %}
+
+    </div>
+    {{ form_end(form) }}
+    <p>Erstellt von: {{ dsfa.user.email }}</p>
+    {% if dsfa.previous %}
+        <div class="card card-body mt-2">
+            <h2>Historie</h2>
+            {{ include('vvt/__dsfaHistory.html.twig', {'p':dsfa.previous}) }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'email/base.html.twig' %}
+{% block header %}
+    {{ buchung.kurs.title }}
+{% endblock %}
+
+{% block content %}
+    <h4 class="text-center">
+        -- Kurs noch nicht abgeschlossen --
+    </h4>
+    <b>
+        Hallo,
+    </b>
+    <p>
+        Sie erhalten diese E-mail, da Sie ein Datenschutzkurs in Ihrer Akademie noch nicht abgeschlossen haben. Bitte
+        Schließen Sie diesen Kurs so bald wie möglich ab.
+    </p>
+    <b>
+        Kurs: {{ buchung.kurs.title }}
+    </b>
+
+    <p>
+        Wenn Sie Fragen zum Datenschutz und den Hintergründen zu dieser Fortbildung haben, melden Sie sich bei Ihrem
+        Datenschutzbeauftragten oder der Geschäftsführung.<br>
+        E-Mail: {{ buchung.user.akademieUser.email }}<br>
+        Telefon: {{ buchung.user.akademieUser.telefon }}
+    </p>
+
+    <p>
+        <a href="{{ absolute_url(path('akademie_kurs', {'kurs':buchung.id})) }}">Klicken Sie hier um direkt zu dem Kurs
+            zu gelangen.</a>
+    </p>
+{% endblock %}

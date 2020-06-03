@@ -1,0 +1,151 @@
+<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %} {{ d.name }}</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<h4>Verarbeitungsverzeichnis {{ d.nummer }} (id:{{ d.id }})</h4>
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Nummer
+        </td>
+        <td>{{ d.nummer }}</td>
+    </tr>
+    <tr>
+        <td>
+            Status
+        </td>
+        <td>{{ d.status.name }}</td>
+    </tr>
+    <tr>
+        <td>
+            Verantworliche Person für die Verarbeitung (intern)
+        </td>
+        <td>{{ d.userContract.username }} ({{ d.userContract.email }})</td>
+    </tr>
+    <tr>
+        <td>
+            Verantworliche Person für die Verarbeitung (weitere)
+        </td>
+        <td>{{ d.verantwortlich|nl2br }}</td>
+    </tr>
+    <tr>
+        <td>
+            Zweck der Verarbeitung
+        </td>
+        <td>{{ d.zweck|nl2br }}</td>
+    </tr>
+    <tr>
+        <td>
+            Handelt es sich bei der Verarbeitung um ein Joint Control Verarbeitung
+        </td>
+        <td>{{ d.jointControl?'Ja':'Nein' }}</td>
+    </tr>
+    <tr>
+        <td>
+            Handelt es sich bei der Verarbeitung um ein Auftragsverarbeitung
+        </td>
+        <td>{{ d.auftragsverarbeitung?'Ja':'Nein' }}</td>
+    </tr>
+    <tr>
+        <td>
+            Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Zweck)
+        </td>
+        <td>{% for p in d.grundlage %}{{ p.name }},<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Die Daten welcher Personen werden verarbeitet?
+        </td>
+        <td>{% for p in d.personengruppen %}{{ p.name }},<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Welche Daten(kategorien) werden verarbeitet?
+        </td>
+        <td>{% for p in d.kategorien %}{{ p.name }},<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Werden die Daten gespeichert?
+        </td>
+        <td>{{ d.speicherung|nl2br }}</td>
+    </tr>
+    <tr>
+        <td>
+            Werden die Daten weitergegeben? An wen?
+        </td>
+        <td>{{ d.weitergabe|nl2br }}</td>
+    </tr>
+    <tr>
+        <td>
+            Zugehörige Datenweitergaben
+        </td>
+        <td>{% for dd in d.datenweitergaben %}{% if dd.activ and dd.art == 1 %}{{ dd.gegenstand }}<br>{% endif %}{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Zugehörige Auftragsdatenverarbeitungen
+        </td>
+        <td>{% for dd in d.datenweitergaben %}{% if dd.activ and dd.art == 2 %}{{ dd.gegenstand }}<br>{% endif %}{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Werden Daten außerhalb der EU verarbeitet?
+        </td>
+        <td>{{ d.eu?'Ja':'Nein' }}</td>
+    </tr>
+    <tr>
+        <td>
+            Welche technischen und organisatorischen Maßnahmen werden umgesetzt?
+        </td>
+        <td>{% if d.tomLink %}{{ d.tomLink.titel }}<br>{{ d.tomLink.beschreibung }}{% else %}Keine Zuordnung zu einer bestehenden digitalen TOM vorgenommen.{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            Weitere Hinweise zur TOM
+        </td>
+        <td>{{ d.tom|nl2br }}</td>
+    </tr>
+    <tr>
+        <td>
+            Mögliche Risko-Quellen
+        </td>
+        <td>{% for p in d.risiko %}{{ p.name }},<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Risikoabschätzung
+        </td>
+        <td>
+            Eintrittswahrscheinlichkeit: {{ d.beurteilungEintritt }}<br>
+            Schadenspotenzial: {{ d.beurteilungSchaden }}<br>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Informationspflicht
+        </td>
+        <td>{{ d.informationspflicht }}</td>
+    </tr>
+    <tr>
+        <td>
+            Beurteilung und Kommentar des Datenschutzbeauftragten
+        </td>
+        <td>{{ d.dsb }}</td>
+    </tr>
+    <tr>
+        <td>
+            Datenschutzfolgeabschätzung notwendig und vorhanden
+        </td>
+        <td>{{ d.activDsfa?'Ja':'Nein' }}</td>
+    </tr>
+
+</table>
+{{ d.createdAt|date('d.m.Y H:i') }} by {{ d.user.email }}
+{% if d.previous and all == 1 %}
+    {{ include('bericht/__vvtBericht.html.twig', {'d':d.previous}) }}
+{% endif %}

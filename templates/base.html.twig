@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+{{ include('base/__head.html.twig') }}
+
+<body>
+
+<div class="wrapper" style="background-color: whitesmoke">
+    {{ include('base/__sidenav.html.twig') }}
+
+    <!-- Page Content  -->
+    <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="btn btn-info btn-sm">
+                    Sidebar
+                </button>
+
+                <button class="btn btn-dark btn-sm d-inline-block d-lg-none ml-auto" type="button"
+                        data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    Profil
+                </button>
+                {% block CTA %}{% endblock %}
+
+                {{ include('base/__topnav.html.twig') }}
+            </div>
+        </nav>
+        {% block body %}{% endblock %}
+
+        {{ include('base/__footer.html.twig') }}
+    </div>
+    <div class="modal fade" id="loadContentModal" tabindex="-1" role="dialog" aria-labelledby="loadContentModal"
+         aria-hidden="true">
+
+    </div>
+</div>
+{{ include('base/__script.html.twig') }}
+{% block javascripts %}{% endblock %}
+</body>
+
+</html>

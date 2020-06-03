@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2 class="h2-responsive">{{ kurs.title }}</h2>
+    <div class="card card-body text-center">
+        {% if not buchung.abgeschlossen %}
+            <button class="btn btn-primary btn-lg sendButton"
+                    disabled>{% trans %}Kurs abschließen{% endtrans %}</button>
+        {% endif %}
+        <video style="width: 100%; text-align: center" {% if buchung.abgeschlossen %}controls{% else %}autoplay{% endif %}  id="akademie_video_kurs">
+            <source src="{{ kurs.video }}" type="video/mp4">
+            Ihr Browser kann dieses Video nicht wiedergeben.
+        </video>
+
+        {% if not buchung.abgeschlossen %}
+        <button class="btn btn-primary btn-lg sendButton"
+                disabled>{% trans %}Kurs abschließen{% endtrans %}</button>
+        {% endif %}
+
+
+        <p class="mt-4 text-left">{{ kurs.beschreibung }}</p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    var vid = document.getElementById("akademie_video_kurs");
+    vid.onended = function() {
+        jQuery('.sendButton').wrap('<a class="btn btn-info" href="{{ path('akademie_kurs_finish',{'id':buchung.finishedID}) }}">');
+        jQuery('.sendButton').prop('disabled', false);
+    };
+</script>
+{% endblock %}

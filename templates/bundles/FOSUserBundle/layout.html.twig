@@ -1,0 +1,57 @@
+
+
+{% extends 'baseRegistration.html.twig' %}
+
+{% block content %}
+    <div class="row mt-md-5">
+        <div class="col-lg-6 offset-lg-3">
+            <div class="card">
+
+
+                <!-- Count item widget-->
+
+                <div class="card-header">
+                    <h1>{% block loginHead %}{% endblock %}</h1>
+                </div>
+                <div class="card-body">
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                        <a href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                    {% else %}
+                        <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                    {% endif %}
+
+                {% if app.request.hasPreviousSession %}
+                    {% for type, messages in app.session.flashbag.all() %}
+                        {% for message in messages %}
+                            <div class="flash-{{ type }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+
+                <div>
+                    {% block fos_user_content %}
+                    {% endblock fos_user_content %}
+                </div>
+
+
+                <div class="text-center">
+
+                    <a class="d-block small" href="{{ path('fos_user_resetting_request') }}">Forgot Password?</a>
+                </div>
+                </div>
+
+        </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+{% endblock %}
+

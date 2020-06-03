@@ -1,0 +1,72 @@
+<style>
+    /** Define the margins of your page **/
+    @page {
+        margin: 90px 60px;
+    }
+
+    header {
+        position: fixed;
+        top: -50px;
+        left: 0px;
+        right: 0px;
+        height: 40px;
+
+        /** Extra personal styles **/
+        text-align: center;
+        line-height: 20px;
+    }
+
+    footer {
+        position: fixed;
+        bottom: -50px;
+        left: 0px;
+        right: 0px;
+        height: 30px;
+
+        /** Extra personal styles **/
+        text-align: center;
+        line-height: 20px;
+    }
+
+    .page-head {
+        background-color: whitesmoke;
+        margin: -60px;
+        padding: 60px;
+    }
+</style>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<body>
+<header>
+    Zertifikat für den Abschluss einen Datenschutzkurses von der Open-Datenschutz Akademie
+</header>
+
+
+<main>
+    <div style="font-family: Helvetica; margin-top: 200px">
+        <div class="page-head" style="margin-bottom: 70px">
+            <h2 style="text-align: center">Zertifikat für den Abschluss einen Datenschutzkurses von der Open-Datenschutz Akademie</h2>
+            <h5 style="text-align: center">{{ team.name }} - {{ team.strasse }} - {{ team.plz }} {{ team.stadt }} -
+                eMail: <a href="mailto:{{ team.email }}">{{ team.email }}</a> - Telefon: <a
+                        href="tel:{{ team.telefon }}">{{ team.telefon }}</a></h5>
+
+            <p style="text-align: center">
+                Hiermit bestätigen wir, dass {{ user.username }} ({{ user.email }}) den Kurs "{{ daten.kurs.title }}" am {{ daten.ende|date('d.m.Y') }} erfolgreich abgeschlossen hat.
+            </p>
+            <p style="text-align: center">
+                Dieses Zertifikat wurde automatisch erstellt.<br>
+                Die Gültigkeit kann über die Buchungs ID: -- {{ daten.buchungsID }} -- überprüft werden.
+            </p>
+        </div>
+
+
+    </div>
+</main>
+
+{{ include('bericht/__berichtFooter.html.twig') }}
+</body>

@@ -1,0 +1,4 @@
+<a href="{{ path('vvt_edit',{'id':p.id}) }}"><span style="color: {{ p.status.color }}">{{ p.createdAt|date('d.m.Y H:i') }} -- {{ p.status.name }} -- {{ p.name }} -- {{ p.user.email }}</span></a>
+{% if p.previous %}
+    {{ include('vvt/__history.html.twig', {'p':p.previous}) }}
+{% endif %}

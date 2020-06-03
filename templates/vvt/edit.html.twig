@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+    {% if vvt.activ %}
+        {% if vvt.activDsfa is null %}
+            <a class="btn btn-indigo btn-sm ml-1" href="{{ path('vvt_dsfa_new', {'vvt':vvt.id}) }}" title="Datenschutzfolgeabschätzung anlegen">
+                <span>DSFA anlegen</span>
+            </a>
+        {% else %}
+            <a class="btn btn-indigo ml-1 btn-sm " href="{{ path('vvt_dsfa_edit', {'dsfa':vvt.activDsfa.id}) }}" title="Datenschutzfolgeabschätzung anzeigen">
+                <span>DSFA anzeigen</span>
+            </a>
+        {% endif %}
+        <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_vvt', {'id':vvt.id}) }}">
+            <span>PDF erstellen</span>
+        </a>
+        <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_vvt', {'id':vvt.id, 'all':1}) }}">
+            <span>PDF mit Historie erstellen</span>
+        </a>
+        <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_vvt', {'id':vvt.id, 'min':1}) }}">
+            <span>Minimiertes Verarbeitungsverzeichnis erstellen</span>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <h2 class="h2-responsive">{{ title }} {% if not activNummer %}<span class="small"> id: {{ vvt.nummer }}{% endif %}</span></h2>
+    {% if vvt.activDsfa is not null %}<h3>Datenschutzfolgeabschätzung vorhanden</h3>{% endif %}
+    {{ include('vvt/__form.html.twig') }}
+    <p>Erstellt von: {{ vvt.user.email }}</p>
+    {% if vvt.previous %}
+        <div class="card card-body mt-2">
+            <h2>Historie</h2>
+            {{ include('vvt/__history.html.twig', {'p':vvt.previous}) }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

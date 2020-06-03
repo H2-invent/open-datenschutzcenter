@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2 class="h2-responsive">{{ title }}</h2>
+<div class="card card-body">
+    {{ include('tom/__form.html.twig') }}
+</div>
+
+    <p>Erstellt von: {{ tom.user.email }}</p>
+    {% if tom.previous %}
+        <div class="card card-body mt-2">
+            <h2>Historie</h2>
+            {{ include('tom/__history.html.twig', {'p':audit.previous}) }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

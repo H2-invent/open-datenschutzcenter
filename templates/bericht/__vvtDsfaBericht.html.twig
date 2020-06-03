@@ -1,0 +1,70 @@
+<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %} {{ d.name }}</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<h4>Datenschutzfolgeabschätzung zu {{ d.nummer }} (id:{{ dsfa.id }})</h4>
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Nummer des Verarbeitungsverzeichnisses
+        </td>
+        <td>{{ d.nummer }}</td>
+    </tr>
+    <tr>
+        <td>
+            Verantworliche Person für die Verarbeitung
+        </td>
+        <td>{{ d.verantwortlich }}</td>
+    </tr>
+    <tr>
+        <td>
+            Beschreibung der Datenschutzfolgeabschätzung
+        </td>
+        <td>{{ dsfa.beschreibung }}</td>
+    </tr>
+    <tr>
+        <td>
+            Notwendigkeit der Datenverarbeitung
+        </td>
+        <td>{{ dsfa.notwendigkeit }}</td>
+    </tr>
+    <tr>
+        <td>
+            Risiko der Datenverarbeitung
+        </td>
+        <td>{{ dsfa.risiko }}</td>
+    </tr>
+    <tr>
+        <td>
+            Abhilfe zur Minimierung der Risiken
+        </td>
+        <td>{{ dsfa.abhilfe }}</td>
+    </tr>
+    <tr>
+        <td>
+            Weitere Standpunkte (z.B. Betriebsrat)
+        </td>
+        <td>{{ dsfa.standpunkt }}</td>
+    </tr>
+    <tr>
+        <td>
+            Stellungnahme des DSB in der Datenschutzfolgeabschätzung
+        </td>
+        <td>{{ dsfa.dsb }}</td>
+    </tr>
+    <tr>
+        <td>
+            Ergebniss der Datenschutzfolgeabschätzung
+        </td>
+        <td>{{ dsfa.ergebnis }}</td>
+    </tr>
+
+</table>
+{{ d.createdAt|date('d.m.Y H:i') }} by {{ d.user.email }}
+{% if dsfa.previous and all == 1 %}
+    {{ include('bericht/__vvtDsfaBericht.html.twig', {'dsfa':dsfa.previous,'d':d}) }}
+{% endif %}

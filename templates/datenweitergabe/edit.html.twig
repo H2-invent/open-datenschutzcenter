@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+    {% if daten.activ %}
+        <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_weitergabe', {'id':daten.id}) }}">
+            <span>PDF erstellen</span>
+        </a>
+        <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_weitergabe', {'id':daten.id, 'all':1}) }}">
+            <span>PDF mit Historie erstellen</span>
+        </a>
+        {% if daten.verfahren %}
+            <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_vvt', {'daten':daten.id, 'min':1}) }}">
+                <span>Minimiertes Verarbeitungsverzeichnis erstellen</span>
+            </a>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    <h2 class="h2-responsive">{{ title }}</h2>
+
+    <div class="card card-body">
+        {{ include('datenweitergabe/__form.html.twig') }}
+    </div>
+    <p>Erstellt von: {{ daten.user.email }}</p>
+    {% if daten.previous %}
+        <div class="card card-body mt-2">
+            <h2>Historie</h2>
+            {{ include('datenweitergabe/__history.html.twig', {'p':daten.previous}) }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

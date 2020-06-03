@@ -1,0 +1,9 @@
+{% extends "@FOSUser/layout.html.twig" %}
+{% block loginHead %}
+    <div class="text-center">
+        <img class="img-fluid" src="{{ asset('logo.png') }}">
+    </div>
+{% endblock %}
+{% block fos_user_content %}
+    {{ include('@FOSUser/Security/login_content.html.twig') }}
+{% endblock fos_user_content %}

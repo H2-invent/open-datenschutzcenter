@@ -1,0 +1,13 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+
+services:
+  mailer.dev.set_recipients:
+    class: Symfony\Component\Mailer\EventListener\EnvelopeListener
+    tags: ['kernel.event_subscriber']
+    arguments:
+      $sender: null
+      $recipients: ['entwicklung@h2-invent.com']

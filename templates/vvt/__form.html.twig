@@ -1,0 +1,293 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<div class="card card-body">
+
+    {% if activNummer %}
+        {{ form_label(form.nummer) }}
+        {{ form_widget(form.nummer) }}
+        {{ form_errors(form.nummer) }}
+    {% endif %}
+
+    <div class="mt-4">
+        {{ form_label(form.name) }}
+        {% if activ %}
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+        {% else %}
+            {{ form_widget(form.name, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.status) }}
+        {% if activ %}
+            {{ form_widget(form.status) }}
+            {{ form_errors(form.status) }}
+        {% else %}
+            {{ form_widget(form.status, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.abteilung) }}
+        {% if activ %}
+            {{ form_widget(form.abteilung) }}
+        {% else %}
+            {{ form_widget(form.abteilung, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.userContract) }}
+        {% if activ %}
+            {{ form_widget(form.userContract) }}
+        {% else %}
+            {{ form_widget(form.userContract, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.verantwortlich) }}
+        {% if activ %}
+            {{ form_widget(form.verantwortlich) }}
+            {{ form_errors(form.verantwortlich) }}
+        {% else %}
+            {{ form_widget(form.verantwortlich, { 'disabled':'disabled' }) }}
+        {% endif %}
+        <p>
+            Den Namen und die Kontaktdaten des Auftragsverarbeiters oder der Auftragsverarbeiter und jedes
+            Verantwortlichen, in dessen Auftrag der Auftragsverarbeiter tätig ist, sowie gegebenenfalls des Vertreters
+            des Verantwortlichen oder des Auftragsverarbeiters und eines etwaigen Datenschutzbeauftragten
+        </p>
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.grundlage) }}
+        {% if activ %}
+            {{ form_widget(form.grundlage) }}
+            {{ form_errors(form.grundlage) }}
+        {% else %}
+            {{ form_widget(form.grundlage, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.zweck) }}
+        {% if activ %}
+            {{ form_widget(form.zweck) }}
+            {{ form_errors(form.zweck) }}
+        {% else %}
+            {{ form_widget(form.zweck, { 'disabled':'disabled' }) }}
+        {% endif %}
+        <p>
+            Aus der Zweckbestimmung muss sich die Rechtsgrundlage für die Datenverwendung ableiten lassen. In der Praxis
+            werden die Aufgaben und Ziele der einzelnen Prozesse genannt, beispielsweise »Personalmanagement«.
+        </p>
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.jointControl) }}
+        {% if activ %}
+            {{ form_widget(form.jointControl) }}
+            {{ form_errors(form.jointControl) }}
+        {% else %}
+            {{ form_widget(form.jointControl, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.auftragsverarbeitung) }}
+        {% if activ %}
+            {{ form_widget(form.auftragsverarbeitung) }}
+            {{ form_errors(form.auftragsverarbeitung) }}
+        {% else %}
+            {{ form_widget(form.auftragsverarbeitung, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.speicherung) }}
+        {% if activ %}
+            {{ form_widget(form.speicherung) }}
+            {{ form_errors(form.speicherung) }}
+        {% else %}
+            {{ form_widget(form.speicherung, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.loeschfrist) }}
+        {% if activ %}
+            {{ form_widget(form.loeschfrist) }}
+            {{ form_errors(form.loeschfrist) }}
+        {% else %}
+            {{ form_widget(form.loeschfrist, { 'disabled':'disabled' }) }}
+        {% endif %}
+        <p>
+            Dokumentation bspw. durch Referenz auf Maßnahmen, Prozesse, wie diese sichergestellt wird
+        </p>
+    </div>
+
+    <div class="mt-4">
+        {{ form_label(form.personengruppen) }}
+        {% if activ %}
+            {{ form_widget(form.personengruppen) }}
+            {{ form_errors(form.personengruppen) }}
+        {% else %}
+            {{ form_widget(form.personengruppen, { 'disabled':'disabled' }) }}
+        {% endif %}
+        <p>
+            Gemeint sind die Personengruppen, deren Daten in dem jeweiligen Verfahren verarbeitet werden, zum Beispiel
+            »Mitarbeiter« oder »Kunden«.
+        </p>
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.kategorien) }}
+        {% if activ %}
+            {{ form_widget(form.kategorien) }}
+            {{ form_errors(form.kategorien) }}
+        {% else %}
+            {{ form_widget(form.kategorien, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <stan class="mt-4">{{ form_label(form.datenweitergaben) }}</stan>
+        <div class="row">
+
+            <div class="col-md-6">
+
+                {% if activ %}
+                    {{ form_widget(form.datenweitergaben) }}
+                    {{ form_errors(form.datenweitergaben) }}
+                {% else %}
+                    {{ form_widget(form.datenweitergaben, { 'disabled':'disabled' }) }}
+                {% endif %}
+
+            </div>
+            <div class="col-md-6">
+                {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
+                <b>Zugehörige Datenweitergaben</b><br>
+                <ul>
+                    {% for d in vvt.datenweitergaben %}{% if d.art == 1 %}
+                        <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
+                        </li>{% endif %}{% endfor %}
+                </ul>
+                <b>Zugehörige Auftragsdatenverarbeitungen</b><br>
+                <ul>
+                    {% for d in vvt.datenweitergaben %}{% if d.art == 2 %}
+                        <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
+                        </li>{% endif %}{% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+
+    <div class="mt-4">
+        {{ form_label(form.weitergabe) }}
+        {% if activ %}
+            {{ form_widget(form.weitergabe) }}
+            {{ form_errors(form.weitergabe) }}
+        {% else %}
+            {{ form_widget(form.weitergabe, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.eu) }}
+        {% if activ %}
+            {{ form_widget(form.eu) }}
+            {{ form_errors(form.eu) }}
+        {% else %}
+            {{ form_widget(form.eu, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.tomLink) }}
+        {% if activ %}
+            {{ form_widget(form.tomLink) }}
+            {{ form_errors(form.tomLink) }}
+        {% else %}
+            {{ form_widget(form.tomLink, { 'disabled':'disabled' }) }}
+        {% endif %}
+        <p>
+            Neben den allgemeinen Beschreibungen der technischen und organisatorischen Maßnahmen (siehe Pflichtangaben)
+            kann für die interne Steuerung eine detaillierte Dokumentation sinnvoll sein.
+        </p>
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.tom) }}
+        {% if activ %}
+            {{ form_widget(form.tom) }}
+            {{ form_errors(form.tom) }}
+        {% else %}
+            {{ form_widget(form.tom, { 'disabled':'disabled' }) }}
+        {% endif %}
+        <p>
+            Hier kann auf das allgemeine Sicherheitskonzept / übergreifende TOMs verwiesen werden, so dass nur
+            Abweichungen davon für das jeweilige Verfahren extra aufgeführt werden müssen. Bei Verweis auf ein
+            Referenzdokument müsste dieses der Aufsichtsbehörde ggf. ebenfalls vorgelegt werden.
+        </p>
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.risiko) }}
+        {% if activ %}
+            {{ form_widget(form.risiko) }}
+            {{ form_errors(form.risiko) }}
+        {% else %}
+            {{ form_widget(form.risiko, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            {{ form_label(form.beurteilungEintritt) }}
+            {% if activ %}
+                {{ form_widget(form.beurteilungEintritt) }}
+                {{ form_errors(form.beurteilungEintritt) }}
+            {% else %}
+                {{ form_widget(form.beurteilungEintritt, { 'disabled':'disabled' }) }}
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.beurteilungSchaden) }}
+            {% if activ %}
+                {{ form_widget(form.beurteilungSchaden) }}
+                {{ form_errors(form.beurteilungSchaden) }}
+            {% else %}
+                {{ form_widget(form.beurteilungSchaden, { 'disabled':'disabled' }) }}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-4 ">
+        {{ form_label(form.informationspflicht) }}
+        {% if activ %}
+            {{ form_widget(form.informationspflicht) }}
+            {{ form_errors(form.informationspflicht) }}
+        {% else %}
+            {{ form_widget(form.informationspflicht, { 'disabled':'disabled' }) }}
+        {% endif %}
+        <p>
+            Es sollte je Verfahren dokumentiert werden, wo und wie den Informationspflichten jeweils nachgekommen wird.
+            Dies kann bspw. durch Verweis auf Datenschutzhinweise, Vertragsbestandteile, Disclaimer in Formularen, bei
+            Mitarbeiterdaten z.B. auch durch Verweise bei Erhebung auf intern bekanntgemachte Betriebsvereinbarung etc.
+            erfolgen.
+        </p>
+    </div>
+    <div class="mt-4 mb-4">
+        {{ form_label(form.dsb) }}
+        {% if activ %}
+            {{ form_widget(form.dsb) }}
+            {{ form_errors(form.dsb) }}
+        {% else %}
+            {{ form_widget(form.dsb, { 'disabled':'disabled' }) }}
+        {% endif %}
+        <p>
+            Neben der verpflichtenden Erfassung des Verarbeitungszwecks sollte zur Erfüllung der Rechenschaftpflichten
+            gem. Art. 5 auch die Rechtsgrundlage mitsamt ggfs. erforderlicher Abwägungen, Einwilligungsklauseln und
+            Prüfvermerken, ob bspw. die Anforderungen an Widerspruchsmöglichkeiten oder die automatisierte
+            Einzelentscheidung berücksichtigt wurden.
+        </p>
+        <p>
+            Datenminimierung: Dies kann bspw. durch einen Prüfvermerk des Datenschutzbeauftragten, ob diese Grundsätze
+            nach seiner Einschätzung ausreichend berücksichtigt wurde, dokumentiert werden.
+        </p>
+    </div>
+
+    {% if activ %}
+        {{ form_widget(form.save) }}
+    {% else %}
+        {{ form_widget(form.save, { 'disabled':'disabled' }) }}
+    {% endif %}
+
+
+</div>
+{{ form_end(form) }}

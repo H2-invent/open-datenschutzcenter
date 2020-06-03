@@ -1,0 +1,51 @@
+<style>
+    /** Define the margins of your page **/
+    @page {
+        margin: 90px 60px;
+    }
+
+    header {
+        position: fixed;
+        top: -50px;
+        left: 0px;
+        right: 0px;
+        height: 40px;
+
+        /** Extra personal styles **/
+        text-align: center;
+        line-height: 20px;
+    }
+
+    footer {
+        position: fixed;
+        bottom: -50px;
+        left: 0px;
+        right: 0px;
+        height: 30px;
+
+        /** Extra personal styles **/
+        text-align: center;
+        line-height: 20px;
+    }
+</style>
+<body>
+<header>
+   {{ daten[0].nummer }} - {{ team.name }}
+</header>
+
+<main>
+    <div style="font-family: Helvetica">
+        <h1>{{ titel }}</h1>
+        <h3>Verantwortliche Stelle: {{ team.name }}</h3>
+        <h3>Letze Version erstellt am: {{ daten[0].createdAt|date('d.m.Y H:i') }}</h3>
+        <h4>Letze Version erstellt von: {{ daten[0].user.email }}</h4>
+
+        {% block body %}{% endblock %}
+    </div>
+</main>
+
+<footer>
+    Erstellt am: {{ "now"|date("d.m.Y H:i") }} mit <strong>Open-Datenschutz Center</strong><br>
+    <small>Open-Datenschutz Center ist die Open Source Lösung um Datenschutzdokumente schnell, einfach und sicher zu erstellen</small>
+</footer>
+</body>

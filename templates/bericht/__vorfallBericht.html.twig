@@ -1,0 +1,77 @@
+<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %}{{ d.nummer }} (id:{{ d.id }})</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Datum des Datenschutzvorfalls
+        </td>
+        <td>{{ d.datum|date('d.m.Y H:i') }}</td>
+    </tr>
+    <tr>
+        <td>
+            Uid des Datenschutzvorfalls
+        </td>
+        <td>{{ d.nummer }}</td>
+    </tr>
+    <tr>
+        <td>
+            Fakten und Beschreibung des Datenschutzvorfalls
+        </td>
+        <td>{{ d.fakten|nl2br }}</td>
+    </tr>
+
+    <tr>
+        <td>
+            Betroffene Personenkategorien
+        </td>
+        <td>{% for person in d.personen %}{{ person.name }}<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Betroffene Datenkategorien
+        </td>
+        <td>{% for data in d.daten %}{{ data.name }}<br>{% endfor %}</td>
+    </tr>
+
+    <tr>
+        <td>
+            Auswirkungen des Datenschutzvorfalls auf die Daten der betroffenen Personen
+        </td>
+        <td>{{ d.auswirkung|nl2br }}</td>
+    </tr>
+    <tr>
+        <td>
+            Getroffene Maßnahmen
+        </td>
+        <td>{{ d.massnahmen|nl2br }}</td>
+    </tr>
+    <tr>
+        <td>
+            Datenschutzvorfall gemeldet and Landesdatenschutzbehörde
+        </td>
+        <td>{{ d.gemeldet?'Ja':'Nein' }}</td>
+    </tr>
+    <tr>
+        <td>
+            Datenschutzvorfall gemeldet an betroffene Person
+        </td>
+        <td>{{ d.betroffeneGemeldet?'Ja':'Nein' }}</td>
+    </tr>
+    <tr>
+        <td>
+            Datenschutzvorfall gemeldet an Auftraggeber
+        </td>
+        <td>{{ d.auftraggeberGemeldet?'Ja':'Nein' }}</td>
+    </tr>
+
+</table>
+{{ d.createdAt|date('d.m.Y H:i') }} by {{ d.user.email }}
+{% if d.previous and all == 1 %}
+    {{ include('bericht/__vorfallBericht.html.twig', {'d':d.previous}) }}
+{% endif %}

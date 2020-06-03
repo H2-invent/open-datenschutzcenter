@@ -1,0 +1,167 @@
+{{ form_start(form) }}
+<div class="mb-4">
+    {% if activTitel %}
+        {{ form_label(form.titel) }}
+        {{ form_widget(form.titel) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.beschreibung) }}
+    {% if activ %}
+        {{ form_widget(form.beschreibung) }}
+    {% else %}
+        {{ form_widget(form.beschreibung, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<h3>A. Pseudonymisierung Verschlüsselung (Art. 32 Abs. 1 lit. a) DSGVO)</h3>
+<div class="mb-4">
+    {{ form_label(form.tomPseudo) }}
+    {% if activ %}
+        {{ form_widget(form.tomPseudo) }}
+    {% else %}
+        {{ form_widget(form.tomPseudo, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<h3>B. Vertraulichkeit (Art. 32 Abs. 1 lit. b) DSGVO) </h3>
+<div class="mb-4">
+    {{ form_label(form.tomZutrittskontrolle) }}
+    {% if activ %}
+        {{ form_widget(form.tomZutrittskontrolle) }}
+    {% else %}
+        {{ form_widget(form.tomZutrittskontrolle, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.tomZugangskontrolle) }}
+    {% if activ %}
+        {{ form_widget(form.tomZugangskontrolle) }}
+    {% else %}
+        {{ form_widget(form.tomZugangskontrolle, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.tomZugriffskontrolle) }}
+    {% if activ %}
+        {{ form_widget(form.tomZugriffskontrolle) }}
+    {% else %}
+        {{ form_widget(form.tomZugriffskontrolle, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.tomBenutzerkontrolle) }}
+    {% if activ %}
+        {{ form_widget(form.tomBenutzerkontrolle) }}
+    {% else %}
+        {{ form_widget(form.tomBenutzerkontrolle, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.tomSpeicherkontrolle) }}
+    {% if activ %}
+        {{ form_widget(form.tomSpeicherkontrolle) }}
+    {% else %}
+        {{ form_widget(form.tomSpeicherkontrolle, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.tomTrennbarkeit) }}
+    {% if activ %}
+        {{ form_widget(form.tomTrennbarkeit) }}
+    {% else %}
+        {{ form_widget(form.tomTrennbarkeit, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<h3>C. Integrität (Art. 32 Abs. 1 lit. c) DSGVO) </h3>
+<div class="mb-4">
+    {{ form_label(form.tomDatenintegritaet) }}
+    {% if activ %}
+        {{ form_widget(form.tomDatenintegritaet) }}
+    {% else %}
+        {{ form_widget(form.tomDatenintegritaet, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.tomTransportkontrolle) }}
+    {% if activ %}
+        {{ form_widget(form.tomTransportkontrolle) }}
+    {% else %}
+        {{ form_widget(form.tomTransportkontrolle, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.tomUebertragungskontrolle) }}
+    {% if activ %}
+        {{ form_widget(form.tomUebertragungskontrolle) }}
+    {% else %}
+        {{ form_widget(form.tomUebertragungskontrolle, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.tomEingabekontrolle) }}
+    {% if activ %}
+        {{ form_widget(form.tomEingabekontrolle) }}
+    {% else %}
+        {{ form_widget(form.tomEingabekontrolle, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.tomZuverlaessigkeit) }}
+    {% if activ %}
+        {{ form_widget(form.tomZuverlaessigkeit) }}
+    {% else %}
+        {{ form_widget(form.tomZuverlaessigkeit, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.tomAuftragskontrolle) }}
+    {% if activ %}
+        {{ form_widget(form.tomAuftragskontrolle) }}
+    {% else %}
+        {{ form_widget(form.tomAuftragskontrolle, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<h3>D. Verfügbarkeit und Belastbarkeit (Art. 32 Abs. 1 lit. c) DSGVO) </h3>
+<div class="mb-4">
+    {{ form_label(form.tomVerfuegbarkeitskontrolle) }}
+    {% if activ %}
+        {{ form_widget(form.tomVerfuegbarkeitskontrolle) }}
+    {% else %}
+        {{ form_widget(form.tomVerfuegbarkeitskontrolle, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="mb-4">
+    {{ form_label(form.tomWiederherstellbarkeit) }}
+    {% if activ %}
+        {{ form_widget(form.tomWiederherstellbarkeit) }}
+    {% else %}
+        {{ form_widget(form.tomWiederherstellbarkeit, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<h3>E. Verfahren zur regelmässigen Überprüfung, Bewertung und Evaluierung (Art. 32 Abs. 1 lit. c) DSGVO)</h3>
+<div class="mb-4">
+    {{ form_label(form.tomAudit) }}
+    {% if activ %}
+        {{ form_widget(form.tomAudit) }}
+    {% else %}
+        {{ form_widget(form.tomAudit, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+{{ form_end(form) }}

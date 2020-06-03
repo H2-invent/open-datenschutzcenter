@@ -1,0 +1,14 @@
+{% extends 'bericht/berichtBase.html.twig' %}
+
+{% block body %}
+    {% for d in daten %}
+        {% if min is null %}
+            {{ include('bericht/__vvtBericht.html.twig', {'d':d}) }}
+        {% else %}
+            {{ include('bericht/__vvtMinBericht.html.twig', {'d':d}) }}
+        {% endif %}
+    {% endfor %}
+    {% if daten[0].activDsfa %}
+        {{ include('bericht/__vvtDsfaBericht.html.twig', {'dsfa':daten[0].activDsfa, 'd':daten[0]}) }}
+    {% endif %}
+{% endblock %}

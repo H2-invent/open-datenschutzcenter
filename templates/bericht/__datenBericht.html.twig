@@ -1,0 +1,81 @@
+<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %}{{ d.gegenstand }} (id:{{ d.id }})</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Nummer der Datenweitergabe
+        </td>
+        <td>{{ d.nummer }}</td>
+    </tr>
+    <tr>
+        <td>
+            Art der Datenweitergabe
+        </td>
+        <td>{% if d.art == 1 %}Datenweitergabe{% elseif d.art == 2 %}Auftragsdatenverarbeitung{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            Zeichnungsdatum
+        </td>
+        <td>{{ d.zeichnungsdatum|date('d.m.Y') }}</td>
+    </tr>
+    <tr>
+        <td>
+            Gegenstand der Datenweitergabe
+        </td>
+        <td>{{ d.gegenstand }}</td>
+    </tr>
+    <tr>
+        <td>
+            Verantwortlich für die Datenweitergabe (Intern)
+        </td>
+        <td>{{ d.verantwortlich }}</td>
+    </tr>
+    <tr>
+        <td>
+            Vertragsform
+        </td>
+        <td>{{ d.vertragsform }}</td>
+    </tr>
+    <tr>
+        <td>
+            Auftragsverarbeitungsvertrag vorhanden und hochgeladen
+        </td>
+        <td>{% if d.image %}Ja{% else %}Nein{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            Kontakt
+        </td>
+        <td>{{ d.kontakt.firma }} - {{ d.kontakt.nachname }}</td>
+    </tr>
+    <tr>
+        <td>
+            Zugehörige Verarbeitungstätigkeit
+        </td>
+        <td>{% for p in d.verfahren %}{{ p.name }},<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Grundlage für die Datenweitergabe
+        </td>
+        <td>{{ d.grundlage.name }}</td>
+    </tr>
+    <tr>
+        <td>
+            Stand
+        </td>
+        <td>{{ d.stand.name }}</td>
+    </tr>
+
+</table>
+{{ d.createdAt|date('d.m.Y H:i') }} by {{ d.user.email }}
+{% if d.previous and all == 1 %}
+    {{ include('bericht/__datenBericht.html.twig', {'d':d.previous}) }}
+{% endif %}

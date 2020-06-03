@@ -1,0 +1,48 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+
+    <title>Datenschutzcenter</title>
+
+    {% if app.debug == 0 %}
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline';
+    frame-src 'self';
+    img-src 'self' data: ;
+    media-src https://*;
+    object-src 'none'">
+
+    <meta http-equiv="X-Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline';
+    frame-src 'self';
+    img-src 'self' data: ;
+    media-src https://* ;
+    object-src 'none';">
+
+    <meta http-equiv="X-WebKit-CSP" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline';
+    frame-src 'self';
+    img-src 'self' data: ;
+    media-src https://*;
+    object-src 'none'">
+    {% endif %}
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/mdb.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/mdb.lite.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('datatable/datatables.min.css') }}">
+
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    {% block stylesheets %}{% endblock %}
+</head>

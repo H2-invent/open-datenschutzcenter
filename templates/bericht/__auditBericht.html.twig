@@ -1,0 +1,75 @@
+<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %}{{ d.frage }} (id:{{ d.id }})</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Status
+        </td>
+        <td style="background-color: {{ d.status.color }}">{{ d.status.name }}</td>
+    </tr>
+    <tr>
+        <td>
+            Nummer
+        </td>
+        <td>{{ d.nummer }}</td>
+    </tr>
+    <tr>
+        <td>
+            Fragestellung
+        </td>
+        <td>{{ d.frage }}</td>
+    </tr>
+    <tr>
+        <td>
+            Kategorie
+        </td>
+        <td>{{ d.kategorie }}</td>
+    </tr>
+    <tr>
+        <td>
+            Bemerkung
+        </td>
+        <td>{{ d.bemerkung }}</td>
+    </tr>
+    <tr>
+        <td>
+            Empfehlung
+        </td>
+        <td>{{ d.empfehlung }}</td>
+    </tr>
+    <tr>
+        <td>
+            Schutzziele
+        </td>
+        <td>{% for p in d.ziele %}{{ p.name }},<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Abteilung
+        </td>
+        <td>{% for p in d.abteilung %}{{ p.name }},<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            TOM Kategorie/Zuordnung
+        </td>
+        <td>{{ d.tomZiel }}</td>
+    </tr>
+    <tr>
+        <td>
+            TOM Attribut
+        </td>
+        <td>{{ d.tomAttribut }}</td>
+    </tr>
+
+</table>
+{{ d.createdAt|date('d.m.Y H:i') }} by {{ d.user.email }}
+{% if d.previous and all == 1 %}
+    {{ include('bericht/__auditBericht.html.twig', {'d':d.previous}) }}
+{% endif %}

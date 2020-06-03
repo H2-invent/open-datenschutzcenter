@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+
+{% endblock %}
+
+{% block body %}
+    <h1>Berichte erstellen</h1>
+    <div class="card card-body">
+        <div class="row">
+            <div class="col-lg-3 mt-2">
+                <h4>Verarbeitungstätigkeiten (VVT)</h4>
+
+                <a class="btn btn-green btn-block mb-1" href="{{ path('bericht_vvt') }}">
+                    <span>PDF von allen VVTs erstellen</span>
+                </a>
+                <a class="btn btn-green btn-block" href="{{ path('bericht_vvt', {'all':1}) }}">
+                    <span>PDF von allen VVTs inkl. Historie erstellen</span>
+                </a>
+            </div>
+
+
+            <div class="col-lg-3 mt-2">
+                <h4>Datenweitergaben (DW)</h4>
+                <a class="btn btn-grey btn-block mb-1" href="{{ path('bericht_weitergabe', {'art':1}) }}">
+                    <span>PDF von allen DWs erstellen</span>
+                </a>
+                <a class="btn btn-grey btn-block" href="{{ path('bericht_weitergabe', {'all':1, 'art':1}) }}">
+                    <span>PDF von allen DWs inkl. Historie erstellen</span>
+                </a>
+            </div>
+
+
+            <div class="col-lg-3 mt-2">
+                <h4>Auftragsdatenverarbeitung (AVV)</h4>
+                <a class="btn btn-indigo btn-block mb-1" href="{{ path('bericht_weitergabe', {'art':2}) }}">
+                    <span>PDF von allen AVVs erstellen</span>
+                </a>
+                <a class="btn btn-indigo btn-block" href="{{ path('bericht_weitergabe', {'all':1, 'art':2}) }}">
+                    <span>PDF von allen AVVs inkl. Historie erstellen</span>
+                </a>
+            </div>
+
+
+            <div class="col-lg-3 mt-2">
+                <h4>Auditfragen</h4>
+                <a class="btn btn-cyan btn-block mb-1" href="{{ path('bericht_audit') }}"
+                   title="Exportieren Sie Ihre aktuelle Auditfragen">
+                    <span>PDF von allen Auditfragen erstellen</span>
+                </a>
+                <a class="btn btn-cyan btn-block mb-1" href="{{ path('bericht_audit', {'all':1}) }}"
+                   title="Exportieren Sie Ihre aktuelle Auditfragen zusammen mit allen Revisionen">
+                    <span>PDF von allen Auditfragen inkl. Historie erstellen</span>
+                </a>
+                <a class="btn btn-cyan btn-block mb-1" href="{{ path('bericht_audit', {'activ':1}) }}"
+                   title="Exportieren Sie Ihre aktuelle und relevanten (nicht unbearbetiet, nicht zutreffend) Auditfragen">
+                    <span>Alle relevanten Auditfragen exportieren</span>
+                </a>
+                <a class="btn btn-cyan btn-block mb-1" href="{{ path('bericht_audit', {'open':1}) }}"
+                   title="Exportieren Sie Ihre aktuelle und unbearbetieten Auditfragen">
+                    <span>Alle unbearbeiteten Auditfragen exportieren</span>
+                </a>
+            </div>
+
+            <div class="col-lg-3 mt-2">
+                <h4>TOM</h4>
+                <a class="btn btn-elegant btn-block" href="{{ path('bericht_global_tom') }}"
+                   title="Exportieren Sie Ihre aktuelle technischen und organisatorischen Maßnahmen">
+                    <span>Allgemeine Globale TOM erstellen</span>
+                </a>
+                <a class="btn btn-elegant btn-block" href="{{ path('bericht_tom') }}"
+                   title="Exportieren Sie Ihre aktuelle technischen und organisatorischen Maßnahmen für alle Verabreitungen">
+                    <span>Alle TOMs erstellen</span>
+                </a>
+            </div>
+
+            <div class="col-lg-3 mt-2">
+                <h4>Datenschutzvorfälle</h4>
+                <a class="btn btn-elegant btn-block btn-blue-grey" href="{{ path('bericht_vorfall') }}">
+                    <span>Alle Datenschutzvorfälle exportieren</span>
+                </a>
+                <a class="btn btn-elegant btn-block btn-blue-grey" href="{{ path('bericht_vorfall', {'all':1}) }}">
+                    <span>Alle Datenschutzvorfälle mit Historie exportieren</span>
+                </a>
+            </div>
+
+            <div class="col-lg-3 mt-2">
+                <h4>Akademie</h4>
+                <a class="btn btn-deep-orange btn-block mb-1" href="{{ path('bericht_akademie') }}">
+                    <span>Alle bis jetzt abgeschlossenen Buchungen</span>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

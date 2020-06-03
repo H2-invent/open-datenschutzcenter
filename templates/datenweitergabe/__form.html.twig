@@ -1,0 +1,98 @@
+{{ form_start(form) }}
+    {% if activNummer %}
+        {{ form_label(form.nummer) }}
+        {{ form_widget(form.nummer) }}
+    {% endif %}
+<div class="mt-2">
+    {{ form_label(form.gegenstand) }}
+    {% if activ %}
+        {{ form_widget(form.gegenstand) }}
+    {% else %}
+        {{ form_widget(form.gegenstand, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-2">
+    {{ form_label(form.verantwortlich) }}
+    {% if activ %}
+        {{ form_widget(form.verantwortlich) }}
+    {% else %}
+        {{ form_widget(form.verantwortlich, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-2">
+    {{ form_label(form.vertragsform) }}
+    {% if activ %}
+        {{ form_widget(form.vertragsform) }}
+    {% else %}
+        {{ form_widget(form.vertragsform, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-2">
+    {{ form_label(form.zeichnungsdatum) }}
+    {% if activ %}
+        {{ form_widget(form.zeichnungsdatum) }}
+    {% else %}
+        {{ form_widget(form.zeichnungsdatum, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-2">
+    {{ form_label(form.kontakt) }}
+    {% if activ %}
+        {{ form_widget(form.kontakt) }}
+    {% else %}
+        {{ form_widget(form.kontakt, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+<div class="row mt-2">
+    <div class="col-md-6">
+        {{ form_label(form.verfahren) }}
+        {% if activ %}
+            {{ form_widget(form.verfahren) }}
+        {% else %}
+            {{ form_widget(form.verfahren, { 'disabled':'disabled' }) }}
+        {% endif %}
+
+        <div class="mt-2">
+            {{ form_label(form.stand) }}
+            {% if activ %}
+                {{ form_widget(form.stand) }}
+            {% else %}
+                {{ form_widget(form.stand, { 'disabled':'disabled' }) }}
+            {% endif %}
+        </div>
+
+        <div class="mt-2">
+            {{ form_label(form.grundlage) }}
+            {% if activ %}
+                {{ form_widget(form.grundlage) }}
+            {% else %}
+                {{ form_widget(form.grundlage, { 'disabled':'disabled' }) }}
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        {{ form_label(form.imageFile) }}
+        {% if activ %}
+            {{ form_widget(form.imageFile) }}
+        {% else %}
+            {{ form_widget(form.imageFile, { 'disabled':'disabled' }) }}
+        {% endif %}
+
+        {% if daten.image %}
+        <a href="{{ path('datenweitergabe_download_file', {'id':daten.id}) }}" download class="btn btn-amber">Anhang
+            herunterladen</a>
+        {% endif %}
+
+    </div>
+</div>
+
+
+{{ form_label(form.save) }}
+    {% if activ %}
+        {{ form_widget(form.save) }}
+    {% else %}
+        {{ form_widget(form.save, { 'disabled':'disabled' }) }}
+    {% endif %}
+
+{{ form_end(form) }}

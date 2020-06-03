@@ -1,0 +1,18 @@
+# Read the documentation: https://github.com/1up-lab/OneupFlysystemBundle/tree/master/Resources/doc/index.md
+oneup_flysystem:
+    adapters:
+        asset_adapter:
+            local:
+                directory: '%kernel.project_dir%/public%app.path.product_images%'
+        intern_adapter:
+            local:
+                directory: '%kernel.project_dir%/data'
+    filesystems:
+        asset_filesystem:
+            adapter: asset_adapter
+            alias: League\Flysystem\Asset
+            mount: asset_filesystem
+        intern_fileSystem:
+            adapter: intern_adapter
+            alias: League\Flysystem\Intern
+            mount: intern_adapter

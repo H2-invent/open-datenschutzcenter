@@ -1,0 +1,81 @@
+<!-- Sidebar  -->
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <a href="{{ path('dashboard') }}"><img src="{{ asset('logo.png') }}" class="img-fluid"></a>
+    </div>
+
+    <ul class="list-unstyled components">
+        {% if app.user.team %}
+            <li class="active">
+                <a href="{{ path('dashboard') }}">Dashboard</a>
+            </li>
+        {% endif %}
+        {% if app.user.akademieUser %}
+            <li>
+                <a href="{{ path('akademie') }}">Akademie</a>
+            </li>
+        {% endif %}
+        {% if app.user.team %}
+            <li>
+                <a href="{{ path('audit_tom') }}">Auditfragen</a>
+            </li>
+            <li>
+                <a href="{{ path('tom') }}">TOM</a>
+            </li>
+            <li>
+                <a href="{{ path('vvt') }}">Verarbeitungsverzeichnis</a>
+            </li>
+            <li>
+                <a href="{{ path('kontakt') }}">Kontakte</a>
+            </li>
+            <li>
+                <a href="{{ path('datenweitergabe') }}">Datenweitergabe</a>
+            </li>
+            <li>
+                <a href="{{ path('auftragsverarbeitung') }}">Auftragsverarbeitung</a>
+            </li>
+            <li>
+                <a href="{{ path('vorfall') }}">Vorfälle</a>
+            </li>
+
+            <li>
+                <a href="{{ path('bericht') }}">Berichte</a>
+            </li>
+        {% endif %}
+        {% if app.user.adminUser %}
+            <li>
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Admin</a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a href="{{ path('team_edit') }}">Übersicht</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('team_mitglieder') }}">Datenschutzmitglieder</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('akademie_mitglieder') }}">Akademiemitglieder</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('team_ziel') }}">Schutzziele</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('team_abteilungen') }}">Abteilungen</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('kurse') }}">Alle Kurse</a>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
+    </ul>
+
+    <ul class="list-unstyled CTAs">
+        {% if app.user.akademieUser %}
+        <li>
+            <a href="{{ path('akademie') }}" class="btn btn-cyan">Zur Akademie</a>
+        </li>
+        {% endif %}
+    </ul>
+
+</nav>
+

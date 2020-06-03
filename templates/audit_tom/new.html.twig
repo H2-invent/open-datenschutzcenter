@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2 class="h2-responsive">{{ title }}</h2>
+<div class="card card-body">
+    {{ include('audit_tom/__form.html.twig') }}
+</div>
+
+    <p>Erstellt von: {{ audit.user.email }}</p>
+    {% if audit.previous %}
+        <div class="card card-body mt-2">
+            <h2>Historie</h2>
+            {{ include('audit_tom/__history.html.twig', {'p':audit.previous}) }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

@@ -1,0 +1,44 @@
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_ADMIN:       [ROLE_ALLOWED_TO_SWITCH]
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username_email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            pattern: ^/
+            form_login:
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+                check_path: fos_user_security_check
+                login_path: fos_user_security_login
+            logout:
+                path: fos_user_security_logout
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
+                always_remember_me: true
+            anonymous:    true
+            switch_user: true
+
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: /backend/, role: ROLE_ADMIN }
+        - { path: /login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /, role: ROLE_USER }
