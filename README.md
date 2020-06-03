@@ -15,3 +15,7 @@ Mindestanforderungen an den Server:
 * MySQL Server
 
 Installationsanleitung und Foliensatz auf https://h2-invent.com/software/odc
+
+# Lizenz
+Die aktuelle Version von Open Datenschutzcenter wird unter der MIT License bereitgestellt.
+Copyright (c) 2020 anholzmann
