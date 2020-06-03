@@ -14,4 +14,4 @@ SSL Zertifikat
 Apache Server
 MySQL Server
 
-Installationsanleitung und Foliensatz auf (https://h2-invent.com/software/odc)[https://h2-invent.com/software/odc]
+Installationsanleitung und Foliensatz auf https://h2-invent.com/software/odc
