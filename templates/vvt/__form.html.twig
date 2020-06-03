@@ -140,35 +140,45 @@
         {% endif %}
     </div>
     <stan class="mt-4">{{ form_label(form.datenweitergaben) }}</stan>
-        <div class="row">
+    <div class="row">
 
-            <div class="col-md-6">
+        <div class="col-md-6">
 
-                {% if activ %}
-                    {{ form_widget(form.datenweitergaben) }}
-                    {{ form_errors(form.datenweitergaben) }}
-                {% else %}
-                    {{ form_widget(form.datenweitergaben, { 'disabled':'disabled' }) }}
-                {% endif %}
+            {% if activ %}
+                {{ form_widget(form.datenweitergaben) }}
+                {{ form_errors(form.datenweitergaben) }}
+            {% else %}
+                {{ form_widget(form.datenweitergaben, { 'disabled':'disabled' }) }}
+            {% endif %}
 
-            </div>
-            <div class="col-md-6">
-                {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
+        </div>
+        <div class="col-md-6">
+            {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
                 <b>Zugehörige Datenweitergaben</b><br>
                 <ul>
-                    {% for d in vvt.datenweitergaben %}{% if d.art == 1 %}
-                        <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
-                        </li>{% endif %}{% endfor %}
+                    {% for d in vvt.datenweitergaben %}
+                        {% if d.activ == 1 %}
+                            {% if d.art == 1 %}
+                                <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </ul>
                 <b>Zugehörige Auftragsdatenverarbeitungen</b><br>
                 <ul>
-                    {% for d in vvt.datenweitergaben %}{% if d.art == 2 %}
-                        <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
-                        </li>{% endif %}{% endfor %}
+                    {% for d in vvt.datenweitergaben %}
+                        {% if d.activ == 1 %}
+                            {% if d.art == 2 %}
+                                <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </ul>
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
+    </div>
 
     <div class="mt-4">
         {{ form_label(form.weitergabe) }}
