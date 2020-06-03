@@ -17,5 +17,5 @@ Mindestanforderungen an den Server:
 Installationsanleitung und Foliensatz auf https://h2-invent.com/software/odc
 
 # Lizenz
-Die aktuelle Version von Open Datenschutzcenter wird unter der MIT License bereitgestellt.
+Die aktuelle Version von Open Datenschutzcenter wird unter der GPL-3.0 License bereitgestellt.
 Copyright (c) 2020 anholzmann
