@@ -250,6 +250,7 @@ class TeamController extends AbstractController
 
         if ($this->getUser() !== $user && $user->getTeam() === $this->getUser()->getTeam()) {
             $user->setTeam(null);
+            $user->setAdminUser(null);
         }
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);

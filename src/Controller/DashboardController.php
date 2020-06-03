@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\AuditTom;
 use App\Entity\Datenweitergabe;
 use App\Entity\Kontakte;
+use App\Entity\Tom;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,10 +33,12 @@ class DashboardController extends AbstractController
         }
 
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findActivByTeam($team);
+        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team'=>$team,'activ'=>true,'art'=>1));
+        $av = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team'=>$team,'activ'=>true,'art'=>2));
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($team);
         $vvtDsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->findActivByTeam($team);
         $kontakte = $this->getDoctrine()->getRepository(Kontakte::class)->findActivByTeam($team);
+        $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($team);
 
         $qb = $this->getDoctrine()->getRepository(AuditTom::class)->createQueryBuilder('audit');
         $qb->andWhere('audit.team = :team')
@@ -75,7 +78,9 @@ class DashboardController extends AbstractController
             'kontakte' => $kontakte,
             'kAudit' => $kristischeAudits,
             'kVvt' => $kristischeVvts,
-            'openDsfa' => $openDsfa
+            'openDsfa' => $openDsfa,
+            'tom' => $tom,
+            'av' => $av
         ]);
     }
 }
