@@ -19,3 +19,5 @@
 *.idea/*
 */public/uploads/*
 */data/*
+*/data/
+*data/*
