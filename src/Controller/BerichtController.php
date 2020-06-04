@@ -44,8 +44,6 @@ class BerichtController extends AbstractController
 
         if ($req) {
             $vvt = $this->getDoctrine()->getRepository(VVT::class)->findBy(array('id' => $req));
-        } elseif ($request->get('daten')) {
-            $vvt = $this->getDoctrine()->getRepository(VVT::class)->findBy(array('datenweitergaben' => $request->get('daten')));
         } else {
             $vvt = $this->getDoctrine()->getRepository(VVT::class)->findBy(array('team' => $team, 'activ' => true));
         }
