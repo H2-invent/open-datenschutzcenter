@@ -6,39 +6,39 @@
 
     <ul class="list-unstyled components">
         {% if app.user.team %}
-            <li class="active">
+            <li class="{{ app.request.attributes.get('_route') == 'dashboard' ? 'active' }}">
                 <a href="{{ path('dashboard') }}">Dashboard</a>
             </li>
         {% endif %}
         {% if app.user.akademieUser %}
-            <li>
+            <li class="{{ app.request.attributes.get('_route') == 'akademie' ? 'active' }}">
                 <a href="{{ path('akademie') }}">Akademie</a>
             </li>
         {% endif %}
         {% if app.user.team %}
-            <li>
+            <li class="{{ app.request.attributes.get('_route') == 'audit_tom' ? 'active' }}">
                 <a href="{{ path('audit_tom') }}">Auditfragen</a>
             </li>
-            <li>
+            <li class="{{ app.request.attributes.get('_route') == 'tom' ? 'active' }}">
                 <a href="{{ path('tom') }}">TOM</a>
             </li>
-            <li>
+            <li class="{{ app.request.attributes.get('_route') == 'vvt' ? 'active' }}">
                 <a href="{{ path('vvt') }}">Verarbeitungsverzeichnis</a>
             </li>
-            <li>
+            <li class="{{ app.request.attributes.get('_route') == 'kontakt' ? 'active' }}">
                 <a href="{{ path('kontakt') }}">Kontakte</a>
             </li>
-            <li>
+            <li class="{{ app.request.attributes.get('_route') == 'datenweitergabe' ? 'active' }}">
                 <a href="{{ path('datenweitergabe') }}">Datenweitergabe</a>
             </li>
-            <li>
+            <li class="{{ app.request.attributes.get('_route') == 'auftragsverarbeitung' ? 'active' }}">
                 <a href="{{ path('auftragsverarbeitung') }}">Auftragsverarbeitung</a>
             </li>
-            <li>
+            <li class="{{ app.request.attributes.get('_route') == 'vorfall' ? 'active' }}">
                 <a href="{{ path('vorfall') }}">Vorfälle</a>
             </li>
 
-            <li>
+            <li class="{{ app.request.attributes.get('_route') == 'bericht' ? 'active' }}">
                 <a href="{{ path('bericht') }}">Berichte</a>
             </li>
         {% endif %}
