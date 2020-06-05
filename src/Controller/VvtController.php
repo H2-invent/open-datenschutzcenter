@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\AuditTomAbteilung;
 use App\Entity\Datenweitergabe;
+use App\Entity\Produkte;
 use App\Entity\Tom;
 use App\Entity\VVT;
 use App\Entity\VVTDatenkategorie;
@@ -70,8 +71,9 @@ class VvtController extends AbstractController
         $datenweitergaben = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findActivByTeam($team);
         $tom = $this->getDoctrine()->getRepository(Tom::class)->findBy(array('team' => $team, 'activ' => true));
         $abteilung = $this->getDoctrine()->getRepository(AuditTomAbteilung::class)->findBy(array('team' => $team, 'activ' => true));
+        $produkte = $this->getDoctrine()->getRepository(Produkte::class)->findActivByTeam($team);
 
-        $form = $this->createForm(VVTType::class, $vvt, ['grundlage' => $team->getAbteilungen(), 'personen' => $personen, 'kategorien' => $kategorien, 'risiken' => $risiken, 'status' => $status, 'grundlage' => $grundlagen, 'user' => $team->getMembers(), 'daten' => $datenweitergaben, 'tom' => $tom, 'abteilung' => $abteilung]);
+        $form = $this->createForm(VVTType::class, $vvt, ['grundlage' => $team->getAbteilungen(), 'personen' => $personen, 'kategorien' => $kategorien, 'risiken' => $risiken, 'status' => $status, 'grundlage' => $grundlagen, 'user' => $team->getMembers(), 'daten' => $datenweitergaben, 'tom' => $tom, 'abteilung' => $abteilung, 'produkte' => $produkte]);
         $form->handleRequest($request);
 
         $errors = array();
@@ -129,8 +131,9 @@ class VvtController extends AbstractController
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true));
         $tom = $this->getDoctrine()->getRepository(Tom::class)->findBy(array('team' => $team, 'activ' => true));
         $abteilung = $this->getDoctrine()->getRepository(AuditTomAbteilung::class)->findBy(array('team' => $team, 'activ' => true));
+        $produkte = $this->getDoctrine()->getRepository(Produkte::class)->findActivByTeam($team);
 
-        $form = $this->createForm(VVTType::class, $newVvt, ['grundlage' => $team->getAbteilungen(), 'personen' => $personen, 'kategorien' => $kategorien, 'risiken' => $risiken, 'status' => $status, 'grundlage' => $grundlagen, 'user' => $team->getMembers(), 'daten' => $daten, 'tom' => $tom, 'abteilung' => $abteilung]);
+        $form = $this->createForm(VVTType::class, $newVvt, ['grundlage' => $team->getAbteilungen(), 'personen' => $personen, 'kategorien' => $kategorien, 'risiken' => $risiken, 'status' => $status, 'grundlage' => $grundlagen, 'user' => $team->getMembers(), 'daten' => $daten, 'tom' => $tom, 'abteilung' => $abteilung, 'produkte' => $produkte]);
         $form->remove('nummer');
         $form->handleRequest($request);
         $errors = array();

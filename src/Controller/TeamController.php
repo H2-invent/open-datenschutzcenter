@@ -72,9 +72,16 @@ class TeamController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $ziel = new AuditTomZiele();
-        $ziel->setTeam($team);
-        $ziel->setActiv(true);
+        $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findActivByTeam($team);
+
+        if ($request->get('id')) {
+            $ziel = $this->getDoctrine()->getRepository(AuditTomZiele::class)->find($request->get('id'));
+
+        } else {
+            $ziel = new AuditTomZiele();
+            $ziel->setActiv(true);
+            $ziel->setTeam($team);
+        }
         $form = $this->createForm(ZielType::class, $ziel);
         $form->handleRequest($request);
 
@@ -95,7 +102,7 @@ class TeamController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Schutzziele',
-            'data' => $this->getUser()->getTeam()->getZiele(),
+            'data' => $ziele,
             'default' => $default,
         ]);
     }
@@ -135,9 +142,17 @@ class TeamController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $abteilung = new AuditTomAbteilung();
-        $abteilung->setActiv(true);
-        $abteilung->setTeam($team);
+        $abteilungen = $this->getDoctrine()->getRepository(AuditTomAbteilung::class)->findAllByTeam($team);
+
+        if ($request->get('id')) {
+            $abteilung = $this->getDoctrine()->getRepository(AuditTomAbteilung::class)->find($request->get('id'));
+
+        } else {
+            $abteilung = new AuditTomAbteilung();
+            $abteilung->setActiv(true);
+            $abteilung->setTeam($team);
+        }
+
         $form = $this->createForm(AbteilungType::class, $abteilung);
         $form->handleRequest($request);
 
@@ -156,7 +171,7 @@ class TeamController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Abteilungen',
-            'data' => $this->getUser()->getTeam()->getAbteilungen(),
+            'data' => $abteilungen,
         ]);
     }
 

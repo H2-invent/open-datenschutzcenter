@@ -34,6 +34,16 @@
         {% endif %}
     </div>
     <div class="mt-4">
+        {{ form_label(form.produkt) }}
+        {% if activ %}
+            {{ form_widget(form.produkt) }}
+            {{ form_errors(form.produkt) }}
+            {{ form_help(form.produkt) }}
+        {% else %}
+            {{ form_widget(form.produkt, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
         {{ form_label(form.userContract) }}
         {% if activ %}
             {{ form_widget(form.userContract) }}

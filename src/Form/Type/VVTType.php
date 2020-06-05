@@ -10,6 +10,7 @@ namespace App\Form\Type;
 
 use App\Entity\AuditTomAbteilung;
 use App\Entity\Datenweitergabe;
+use App\Entity\Produkte;
 use App\Entity\Tom;
 use App\Entity\User;
 use App\Entity\VVT;
@@ -155,6 +156,16 @@ class VVTType extends AbstractType
                 'required' => true,
                 'multiple' => false,
             ])
+            ->add('produkt', EntityType::class, [
+                'choice_label' => 'name',
+                'class' => Produkte::class,
+                'choices' => $options['produkte'],
+                'label' => 'Zugeordnete Produkte',
+                'help' => 'Mit "STRG können mehrere Produkte ausgewählt werden',
+                'translation_domain' => 'form',
+                'multiple' => true,
+                'required' => false
+            ])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 
@@ -171,6 +182,7 @@ class VVTType extends AbstractType
             'daten' => array(),
             'tom' => array(),
             'abteilung' => array(),
+            'produkte' => array()
         ]);
     }
 }

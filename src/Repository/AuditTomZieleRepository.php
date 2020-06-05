@@ -59,4 +59,15 @@ class AuditTomZieleRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function findActivByTeam($value)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team = :val')
+            ->andWhere('a.activ = 1')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
