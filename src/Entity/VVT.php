@@ -197,6 +197,11 @@ class VVT
      */
     private $abteilung;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Produkte::class, inversedBy="Vvts")
+     */
+    private $produkt;
+
 
     public function __construct()
     {
@@ -206,6 +211,7 @@ class VVT
         $this->risiko = new ArrayCollection();
         $this->dsfa = new ArrayCollection();
         $this->datenweitergaben = new ArrayCollection();
+        $this->produkt = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -676,6 +682,32 @@ class VVT
     public function setAbteilung(?AuditTomAbteilung $abteilung): self
     {
         $this->abteilung = $abteilung;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Produkte[]
+     */
+    public function getProdukt(): Collection
+    {
+        return $this->produkt;
+    }
+
+    public function addProdukt(Produkte $produkt): self
+    {
+        if (!$this->produkt->contains($produkt)) {
+            $this->produkt[] = $produkt;
+        }
+
+        return $this;
+    }
+
+    public function removeProdukt(Produkte $produkt): self
+    {
+        if ($this->produkt->contains($produkt)) {
+            $this->produkt->removeElement($produkt);
+        }
 
         return $this;
     }

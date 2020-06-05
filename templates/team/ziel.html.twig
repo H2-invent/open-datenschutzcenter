@@ -15,11 +15,11 @@
                         {% endfor %}
                     {% endif %}
                     {% for d in data %}
-                        {% if d.activ %}
-                            <li class="list-group-item">{{ d.name }}<a
-                                        href="{{ path('team_ziel_deativate', {'id':d.id}) }}"
-                                        class="btn btn-sm btn-danger">Löschen</a></li>
-                        {% endif %}
+                        <li class="list-group-item">{{ d.name }}
+                            <a href="{{ path('team_ziel', {'id':d.id}) }}"
+                               class="btn btn-sm btn-info float-md-right">Bearbeiten</a>
+                            <a href="{{ path('team_ziel_deativate', {'id':d.id}) }}"
+                               class="btn btn-sm btn-danger float-md-right">Löschen</a></li>
                     {% endfor %}
                 </ul>
 

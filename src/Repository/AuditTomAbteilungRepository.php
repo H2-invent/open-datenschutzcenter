@@ -54,7 +54,6 @@ class AuditTomAbteilungRepository extends ServiceEntityRepository
             ->Where('a.team = :val')
             ->andWhere('a.activ = 1')
             ->setParameter('val', $value)
-            ->orderBy('a.name', 'ASC')
             ->getQuery()
             ->getResult()
             ;
