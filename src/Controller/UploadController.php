@@ -25,6 +25,9 @@ class UploadController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $upload->setUpdatedAt(new \DateTime());
             $upload = $form->getData();
+            if(!preg_match('/h.odif/',$upload->getFile())){
+                return $this->redirectToRoute('upload_fail');
+            }
             $em->persist($upload);
             $em->flush();
             $stream = $internFileSystem->read($upload->getFile());

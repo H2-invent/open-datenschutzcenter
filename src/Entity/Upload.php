@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\FileRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -26,6 +27,9 @@ class Upload
     private $file;
 
     /**
+     * @Assert\File(
+     *  maxSize="2M",
+     *  mimeTypes={"text/plain"})
      * @Vich\UploadableField(mapping="profil_picture", fileNameProperty="file")
      * @var File
      */
