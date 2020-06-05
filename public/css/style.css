@@ -162,6 +162,7 @@ a.article:hover {
     padding: 20px;
     min-height: 100vh;
     transition: all 0.3s;
+    padding-bottom: 80px;
 }
 
 /* ---------------------------------------------------
@@ -180,20 +181,40 @@ a.article:hover {
     }
 }
 
+/* ---------------------------------------------------
+    Clickable Rows in DataTable
+----------------------------------------------------- */
+
 .clickable-row {
     cursor: pointer;
 }
-
 .clickable-row:hover {
     background-color: whitesmoke !important;
 }
+
+/* ---------------------------------------------------
+    Add Reuqired Symbole to Forms
+----------------------------------------------------- */
 
 label.required:after {
     content: " *";
 }
 
-.footer-area{
-     position: fixed;
-     bottom: 0px;
-    text-align: center;
- }
+
+/* ---------------------------------------------------
+    Add Sticky Footer
+    id="content" need padding-bottom and the size of the footer
+----------------------------------------------------- */
+
+#mainContent {
+    position: relative;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    background-color: whitesmoke
+}
+
+#footer {
+    position: absolute;
+    bottom: 0px;
+}

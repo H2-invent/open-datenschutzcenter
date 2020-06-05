@@ -8,34 +8,36 @@
 
 {% block body %}
     <h2 class="h2-responsive">Datenschutzvorfälle nach Art. 33</h2>
-    <div class="card card-body table-responsive">
-        <table id="data-table" class="table display table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Datum</th>
-                <th scope="col">UId</th>
-                <th scope="col">Fakten</th>
-                <th scope="col">Auswirkungen</th>
-                <th scope="col">Maßnahmen</th>
-                <th scope="col">LDA</th>
-                <th scope="col">Betroffene</th>
-                <th scope="col">Auftraggeber</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for a in vorfall %}
-                <tr class="clickable-row" data-href='{{ path('vorfall_edit',{'id':a.id}) }}'>
-                    <th scope="row">{{ a.datum|date('d.m.Y H:i') }}</th>
-                    <td>{{ a.nummer }}</td>
-                    <td>{{ a.fakten }}</td>
-                    <td>{{ a.auswirkung }}</td>
-                    <td>{{ a.massnahmen }}</td>
-                    <td>{{ a.gemeldet? 'Ja':'Nein' }}</td>
-                    <td>{{ a.betroffeneGemeldet? 'Ja':'Nein' }}</td>
-                    <td>{{ a.auftraggeberGemeldet? 'Ja':'Nein' }}</td>
+    <div class="card card-body">
+        <div class="table-responsive">
+            <table id="data-table" class="table display table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Datum</th>
+                    <th scope="col">UId</th>
+                    <th scope="col">Fakten</th>
+                    <th scope="col">Auswirkungen</th>
+                    <th scope="col">Maßnahmen</th>
+                    <th scope="col">LDA</th>
+                    <th scope="col">Betroffene</th>
+                    <th scope="col">Auftraggeber</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for a in vorfall %}
+                    <tr class="clickable-row" data-href='{{ path('vorfall_edit',{'id':a.id}) }}'>
+                        <th scope="row">{{ a.datum|date('d.m.Y H:i') }}</th>
+                        <td>{{ a.nummer }}</td>
+                        <td>{{ a.fakten }}</td>
+                        <td>{{ a.auswirkung }}</td>
+                        <td>{{ a.massnahmen }}</td>
+                        <td>{{ a.gemeldet? 'Ja':'Nein' }}</td>
+                        <td>{{ a.betroffeneGemeldet? 'Ja':'Nein' }}</td>
+                        <td>{{ a.auftraggeberGemeldet? 'Ja':'Nein' }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}
