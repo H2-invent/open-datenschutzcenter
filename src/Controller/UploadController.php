@@ -24,7 +24,6 @@ class UploadController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $upload->setUpdatedAt(new \DateTime());
-            $upload->setOriginalName('teste');
             $upload = $form->getData();
             $em->persist($upload);
             $em->flush();

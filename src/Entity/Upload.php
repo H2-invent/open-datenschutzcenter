@@ -31,10 +31,6 @@ class Upload
      */
     private $fileFile;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $originalName;
 
     /**
      * @ORM\Column(type="datetime")
@@ -46,17 +42,7 @@ class Upload
         return $this->id;
     }
 
-    public function getOriginalName(): ?string
-    {
-        return $this->originalName;
-    }
 
-    public function setOriginalName(string $originalName): self
-    {
-        $this->originalName = $originalName;
-
-        return $this;
-    }
 
     public function setFileFile(File $fileFile= null)
     {
