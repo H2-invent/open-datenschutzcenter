@@ -79,13 +79,13 @@ class ProduktController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $abteilung = $this->getDoctrine()->getRepository(AuditTomAbteilung::class)->findOneBy(array('id' => $request->get('id')));
-        if ($abteilung->getTeam() == $this->getUser()->getTeam()) {
-            $abteilung->setActiv(false);
+        $produkt = $this->getDoctrine()->getRepository(Produkte::class)->findOneBy(array('id' => $request->get('id')));
+        if ($produkt->getTeam() == $this->getUser()->getTeam()) {
+            $produkt->setActiv(false);
         }
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($abteilung);
+        $em->persist($produkt);
         $em->flush();
         return $this->redirectToRoute('team_produkt');
     }
