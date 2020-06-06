@@ -15,15 +15,17 @@ use App\Entity\AuditTomZiele;
 use App\Entity\Team;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 
 class ParserService
 {
     private $em;
-
-    public function __construct( EntityManagerInterface $entityManager)
+    private $parameterBag;
+    public function __construct( EntityManagerInterface $entityManager,ParameterBagInterface $parameterBag)
     {
         $this->em = $entityManager;
+        $this->parameterBag = $parameterBag;
     }
 
 
@@ -73,5 +75,15 @@ class ParserService
     function parseVVT($data)
     {
         return true;
+    }
+
+    function verify($data,$signature){
+        try {
+            $res = openssl_verify($data,hex2bin($signature),file_get_contents($this->parameterBag->get('projectRoot').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'public.key'),OPENSSL_ALGO_SHA256);
+            return $res;
+        }catch (\Exception $e){
+            return 0;
+        }
+
     }
 }
