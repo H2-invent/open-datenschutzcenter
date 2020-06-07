@@ -70,13 +70,13 @@
     </tr>
     <tr>
         <td>
-            Werden die Daten gespeichert?
+            Die Daten werden an folgenden Stellen gespeichert.
         </td>
         <td>{{ d.speicherung|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            Werden die Daten weitergegeben? An wen?
+            An folgende Unternehmen werden die Daten weitergegeben.
         </td>
         <td>{{ d.weitergabe|nl2br }}</td>
     </tr>
@@ -121,8 +121,8 @@
             Risikoabschätzung
         </td>
         <td>
-            Eintrittswahrscheinlichkeit: {{ d.beurteilungEintritt }}<br>
-            Schadenspotenzial: {{ d.beurteilungSchaden }}<br>
+            Eintrittswahrscheinlichkeit: {{ d.beurteilungEintrittString }}<br>
+            Schadenspotenzial: {{ d.beurteilungSchadenString }}<br>
         </td>
     </tr>
     <tr>

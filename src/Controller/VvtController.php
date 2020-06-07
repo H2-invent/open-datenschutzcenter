@@ -159,6 +159,7 @@ class VvtController extends AbstractController
                 return $this->redirectToRoute('vvt');
             }
         }
+        dump($vvt);
 
         return $this->render('vvt/edit.html.twig', [
             'form' => $form->createView(),

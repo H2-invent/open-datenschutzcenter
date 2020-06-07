@@ -50,9 +50,9 @@ class VVTType extends AbstractType
             ->add('zweck', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'Zweck der Verarbeitung', 'required' => true, 'translation_domain' => 'form'])
             ->add('jointControl', CheckboxType::class, ['label' => 'Handelt es sich um Joint Control (gem. Verarbeitung)', 'required' => false, 'translation_domain' => 'form'])
             ->add('auftragsverarbeitung', CheckboxType::class, ['label' => 'Handelt es sich um eine Auftragsverarbeitung', 'required' => false, 'translation_domain' => 'form'])
-            ->add('speicherung', TextareaType::class, ['label' => 'Wo werden die Daten gespeichert', 'required' => true, 'translation_domain' => 'form'])
+            ->add('speicherung', TextareaType::class, ['label' => 'Wo werden die Daten gespeichert/abgelegt', 'required' => true, 'translation_domain' => 'form'])
             ->add('loeschfrist', TextType::class, ['label' => 'Löschfristen', 'required' => true, 'translation_domain' => 'form'])
-            ->add('weitergabe', TextareaType::class, ['label' => 'Weitergabe der Daten', 'required' => false, 'translation_domain' => 'form'])
+            ->add('weitergabe', TextareaType::class, ['label' => 'An folgende Unternehmen werden die Daten weitergegeben', 'required' => false, 'translation_domain' => 'form'])
             ->add('grundlage', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTGrundlage::class,
@@ -132,11 +132,11 @@ class VVTType extends AbstractType
             ->add('dsb', TextareaType::class, ['attr' => ['rows' => 6], 'label' => 'Kommentar des Datenschutzbeauftragten', 'required' => false, 'translation_domain' => 'form'])
             ->add('beurteilungEintritt', ChoiceType::class, [
                 'choices' => [
-                    'Bitte auswählen' => '',
-                    'Vernachlässigbar' => 'Vernachlässigbar',
-                    'Eingeschränk möglich' => 'Eingeschränk möglich',
-                    'Signifikant' => 'Signifikant',
-                    'Sehr wahrscheinlich' => 'Sehr wahrscheinlich',
+                    'Bitte auswählen' => null,
+                    'Vernachlässigbar' => 1,
+                    'Eingeschränk möglich' => 2,
+                    'Signifikant' => 3,
+                    'Sehr wahrscheinlich' => 4,
                 ],
                 'label' => 'Risiko: Eintrittswahrscheinlichkeit',
                 'translation_domain' => 'form',
@@ -145,11 +145,11 @@ class VVTType extends AbstractType
             ])
             ->add('beurteilungSchaden', ChoiceType::class, [
                 'choices' => [
-                    'Bitte auswählen' => '',
-                    'Gering(kaum Auswirkung)' => 'Gering(kaum Auswirkung)',
-                    'Eingeschränkt vorhanden' => 'Eingeschränkt vorhanden',
-                    'Signifikant' => 'Signifikant',
-                    'Hoch (schwerwiegend bis existenzbedrohend)' => 'Hoch (schwerwiegend bis existenzbedrohend)',
+                    'Bitte auswählen' => null,
+                    'Gering (kaum Auswirkung)' => 1,
+                    'Eingeschränkt vorhanden' => 2,
+                    'Signifikant' => 3,
+                    'Hoch (schwerwiegend bis existenzbedrohend)' => 4,
                 ],
                 'label' => 'Risiko: Schadenspotenzial',
                 'translation_domain' => 'form',

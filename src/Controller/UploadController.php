@@ -45,7 +45,7 @@ class UploadController extends AbstractController
                     $res = $parserService->parseTom($data, $this->getUser()->getTeam(), $this->getUser());
                     break;
                 case 'VVT':
-                    $res = $parserService->parseVVT($data);
+                    $res = $parserService->parseVVT($data, $this->getUser()->getTeam(), $this->getUser());
                     break;
                 default:
                     break;
