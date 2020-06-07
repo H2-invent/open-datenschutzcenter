@@ -143,6 +143,7 @@ class ParserService
                 $vvt->setTeam($team);
                 $vvt->setUser($user);
                 $vvt->setSpeicherung($e->speicherung);
+                $vvt->setDsb($e->dsbKommentar);
                 $vvt->setUserContract($user);
                 $vvt->setNummer('VVT-'. hexdec( uniqid() ));
                 $this->em->persist($vvt);

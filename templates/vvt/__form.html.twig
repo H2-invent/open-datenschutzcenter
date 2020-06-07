@@ -132,6 +132,15 @@
         {% endif %}
     </div>
     <div class="mt-4">
+        {{ form_label(form.weitergabe) }}
+        {% if activ %}
+            {{ form_widget(form.weitergabe) }}
+            {{ form_errors(form.weitergabe) }}
+        {% else %}
+            {{ form_widget(form.weitergabe, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
         {{ form_label(form.jointControl) }}
         {% if activ %}
             {{ form_widget(form.jointControl) }}
@@ -139,23 +148,12 @@
         {% else %}
             {{ form_widget(form.jointControl, { 'disabled':'disabled' }) }}
         {% endif %}
-    </div>
-    <div class="mt-4">
         {{ form_label(form.auftragsverarbeitung) }}
         {% if activ %}
             {{ form_widget(form.auftragsverarbeitung) }}
             {{ form_errors(form.auftragsverarbeitung) }}
         {% else %}
             {{ form_widget(form.auftragsverarbeitung, { 'disabled':'disabled' }) }}
-        {% endif %}
-    </div>
-    <div class="mt-4">
-        {{ form_label(form.weitergabe) }}
-        {% if activ %}
-            {{ form_widget(form.weitergabe) }}
-            {{ form_errors(form.weitergabe) }}
-        {% else %}
-            {{ form_widget(form.weitergabe, { 'disabled':'disabled' }) }}
         {% endif %}
     </div>
     <stan class="mt-4">{{ form_label(form.datenweitergaben) }}</stan>
