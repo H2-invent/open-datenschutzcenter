@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UploadController extends AbstractController
 {
     /**
-     * @Route("/upload/new", name="upload_new")
+     * @Route("/upload", name="upload_new")
      */
     public function index(Request $request, FilesystemInterface $internFileSystem, ParserService $parserService)
     {
@@ -41,8 +41,8 @@ class UploadController extends AbstractController
             }
             $res = false;
             switch ($data->table) {
-                case 'TOM':
-                    $res = $parserService->parseTom($data, $this->getUser()->getTeam(), $this->getUser());
+                case 'Audit':
+                    $res = $parserService->parseAudit($data, $this->getUser()->getTeam(), $this->getUser());
                     break;
                 case 'VVT':
                     $res = $parserService->parseVVT($data, $this->getUser()->getTeam(), $this->getUser());
