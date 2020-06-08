@@ -17,6 +17,12 @@ class UploadController extends AbstractController
      */
     public function index(Request $request, FilesystemInterface $internFileSystem, ParserService $parserService)
     {
+        $team = $this->getUser()->getAdminUser();
+        // Admin Route only
+        if ($team === null) {
+            return $this->redirectToRoute('dashboard');
+        }
+
         $upload = new Upload();
         $form = $this->createForm(UploadTyp::class, $upload);
 
@@ -42,10 +48,10 @@ class UploadController extends AbstractController
             $res = false;
             switch ($data->table) {
                 case 'Audit':
-                    $res = $parserService->parseAudit($data, $this->getUser()->getTeam(), $this->getUser());
+                    $res = $parserService->parseAudit($data, $team, $this->getUser());
                     break;
                 case 'VVT':
-                    $res = $parserService->parseVVT($data, $this->getUser()->getTeam(), $this->getUser());
+                    $res = $parserService->parseVVT($data, $team, $this->getUser());
                     break;
                 default:
                     break;
