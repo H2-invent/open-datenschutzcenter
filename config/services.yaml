@@ -6,6 +6,7 @@
 parameters:
     app.path.product_images: /uploads/images/products
     secret: '%env(APP_SECRET)%'
+    projectRoot: '%kernel.root_dir%'
 
 services:
     # default configuration for services in *this* file

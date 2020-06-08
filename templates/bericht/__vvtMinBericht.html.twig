@@ -6,13 +6,13 @@
         width: 50%;
     }
 </style>
-<h4>Verarbeitungsverzeichnis {{ d.nummer }}</h4>
+<h4>Verarbeitungsverzeichnis {{ d.name }}</h4>
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Nummer
+            Bezeichnung der Verarbeitung
         </td>
-        <td>{{ d.nummer }}</td>
+        <td>{{ d.name }}</td>
     </tr>
     <tr>
         <td>
@@ -22,7 +22,7 @@
     </tr>
     <tr>
         <td>
-            Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Zweck)
+            Rechtsgrundlage für die Verarbeitung
         </td>
         <td>{% for p in d.grundlage %}{{ p.name }},<br>{% endfor %}</td>
     </tr>
@@ -40,7 +40,7 @@
     </tr>
     <tr>
         <td>
-            Werden die Daten gespeichert?
+            Wo werden die Daten gespeichert?
         </td>
         <td>{{ d.speicherung|nl2br }}</td>
     </tr>
