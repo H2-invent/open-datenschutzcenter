@@ -1,21 +1,23 @@
 <!-- Footer -->
-<footer class="text-muted page-footer font-small py-1" {% if fix is not defined %}style="margin-top: 30px {% endif %}">
-    <div class="footer-copyright text-center py-2">
-        <ul class="nav justify-content-center">
+<div id="footer">
+    <div>
+        <ul class="nav">
 
             <li class="nav-item">
                 <a class="nav-link" target="_blank" referrerpolicy="no-referrer" href="{{ imprint }}">Impressum</a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link" target="_blank" referrerpolicy="no-referrer"
                    href="{{ dataPrivacy }}">Datenschutzhinweis</a>
             </li>
-            <li class="nav-item">
+
+            <li class="nav-item d-none d-sm-block">
                 <a class="nav-link" target="_blank" referrerpolicy="no-referrer"
                    href="https://h2-invent.com/software/odc">Made with ❤ in Lörrach by H2 invent • {{ 'now'|date('Y') }}
                     • v{{ shivas_app_version }}</a></a>
             </li>
         </ul>
     </div>
-</footer>
+</div>
 <!-- Footer -->

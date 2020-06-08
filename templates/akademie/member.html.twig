@@ -10,7 +10,7 @@
             <div class="col-md-7">
                 <ul class="list-group">
                     {% for d in data %}
-                        <li class="list-group-item">{{ d.email }} <a class="btn btn-sm btn-danger"
+                        <li class="list-group-item">{{ d.email }} <a class="btn btn-sm btn-danger float-md-right"
                                                                      href="{{ path('akademie_mitglieder_remove',{'id':d.id}) }}">Entfernen</a>
                         </li>
                     {% endfor %}

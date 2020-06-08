@@ -136,6 +136,11 @@ class Team
      */
     private $vorfalls;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Produkte::class, mappedBy="team")
+     */
+    private $produktes;
+
 
     public function __construct()
     {
@@ -151,6 +156,7 @@ class Team
         $this->admins = new ArrayCollection();
         $this->toms = new ArrayCollection();
         $this->vorfalls = new ArrayCollection();
+        $this->produktes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -641,6 +647,37 @@ class Team
             // set the owning side to null (unless already changed)
             if ($vorfall->getTeam() === $this) {
                 $vorfall->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Produkte[]
+     */
+    public function getProduktes(): Collection
+    {
+        return $this->produktes;
+    }
+
+    public function addProdukte(Produkte $produkte): self
+    {
+        if (!$this->produktes->contains($produkte)) {
+            $this->produktes[] = $produkte;
+            $produkte->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProdukte(Produkte $produkte): self
+    {
+        if ($this->produktes->contains($produkte)) {
+            $this->produktes->removeElement($produkte);
+            // set the owning side to null (unless already changed)
+            if ($produkte->getTeam() === $this) {
+                $produkte->setTeam(null);
             }
         }
 

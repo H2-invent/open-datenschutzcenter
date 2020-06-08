@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Repository\VVTRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 
 /**
  * @ORM\Entity(repositoryClass=VVTRepository::class)
@@ -42,12 +42,12 @@ class VVT
     /**
      * @ORM\Column(type="boolean")
      */
-    private $jointControl;
+    private $jointControl = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $auftragsverarbeitung;
+    private $auftragsverarbeitung = false;
 
     /**
      * @ORM\Column(type="text")
@@ -81,7 +81,7 @@ class VVT
     /**
      * @ORM\Column(type="boolean")
      */
-    private $eu;
+    private $eu = false;
 
     /**
      * @ORM\Column(type="text")
@@ -163,16 +163,14 @@ class VVT
     private $dsb;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
-     * @Encrypted()
      */
     private $beurteilungEintritt;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
-     * @Encrypted()
      */
     private $beurteilungSchaden;
 
@@ -197,6 +195,13 @@ class VVT
      */
     private $abteilung;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Produkte::class, inversedBy="Vvts")
+     */
+    private $produkt;
+
+    private $beurteilungEintrittString;
+    private $beurteilungSchadenString;
 
     public function __construct()
     {
@@ -206,6 +211,7 @@ class VVT
         $this->risiko = new ArrayCollection();
         $this->dsfa = new ArrayCollection();
         $this->datenweitergaben = new ArrayCollection();
+        $this->produkt = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -540,9 +546,10 @@ class VVT
         return $this;
     }
 
-    public function getActivDsfa(){
-        foreach ($this->dsfa as $data){
-            if($data->getActiv()){
+    public function getActivDsfa()
+    {
+        foreach ($this->dsfa as $data) {
+            if ($data->getActiv()) {
                 return $data;
             }
         }
@@ -551,7 +558,8 @@ class VVT
     /**
      * @return Collection|VVTDsfa[]
      */
-    public function getLatestDsfa(){
+    public function getLatestDsfa()
+    {
         return $this->createQueryBuilder('d')
             ->orderBy('d.createdAt', 'DESC')
             ->getQuery()
@@ -594,24 +602,66 @@ class VVT
         return $this;
     }
 
-    public function getBeurteilungEintritt(): ?string
+    public function getBeurteilungEintritt(): ?int
     {
         return $this->beurteilungEintritt;
     }
 
-    public function setBeurteilungEintritt(string $beurteilungEintritt): self
+    public function getBeurteilungEintrittString()
+    {
+        switch ($this->beurteilungEintritt) {
+            case 1:
+                return 'Vernachlässigbar';
+                break;
+            case 2:
+                return 'Eingeschränk möglich';
+                break;
+            case 3:
+                return 'Signifikant';
+                break;
+            case 4:
+                return 'Sehr wahrscheinlich';
+                break;
+            default:
+                return "Nicht ausgewählt";
+                break;
+        }
+    }
+
+    public function setBeurteilungEintritt(int $beurteilungEintritt): self
     {
         $this->beurteilungEintritt = $beurteilungEintritt;
 
         return $this;
     }
 
-    public function getBeurteilungSchaden(): ?string
+    public function getBeurteilungSchaden(): ?int
     {
         return $this->beurteilungSchaden;
     }
 
-    public function setBeurteilungSchaden(string $beurteilungSchaden): self
+    public function getBeurteilungSchadenString()
+    {
+        switch ($this->beurteilungSchaden) {
+            case 1:
+                return 'Gering (kaum Auswirkung)';
+                break;
+            case 2:
+                return 'Eingeschränkt vorhanden';
+                break;
+            case 3:
+                return 'Signifikant';
+                break;
+            case 4:
+                return 'Hoch (schwerwiegend bis existenzbedrohend)';
+                break;
+            default:
+                return "Nicht ausgewählt";
+                break;
+        }
+    }
+
+    public function setBeurteilungSchaden(int $beurteilungSchaden): self
     {
         $this->beurteilungSchaden = $beurteilungSchaden;
 
@@ -676,6 +726,32 @@ class VVT
     public function setAbteilung(?AuditTomAbteilung $abteilung): self
     {
         $this->abteilung = $abteilung;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Produkte[]
+     */
+    public function getProdukt(): Collection
+    {
+        return $this->produkt;
+    }
+
+    public function addProdukt(Produkte $produkt): self
+    {
+        if (!$this->produkt->contains($produkt)) {
+            $this->produkt[] = $produkt;
+        }
+
+        return $this;
+    }
+
+    public function removeProdukt(Produkte $produkt): self
+    {
+        if ($this->produkt->contains($produkt)) {
+            $this->produkt->removeElement($produkt);
+        }
 
         return $this;
     }

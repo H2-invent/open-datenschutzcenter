@@ -34,6 +34,16 @@
         {% endif %}
     </div>
     <div class="mt-4">
+        {{ form_label(form.produkt) }}
+        {% if activ %}
+            {{ form_widget(form.produkt) }}
+            {{ form_errors(form.produkt) }}
+            {{ form_help(form.produkt) }}
+        {% else %}
+            {{ form_widget(form.produkt, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
         {{ form_label(form.userContract) }}
         {% if activ %}
             {{ form_widget(form.userContract) }}
@@ -76,24 +86,6 @@
             Aus der Zweckbestimmung muss sich die Rechtsgrundlage für die Datenverwendung ableiten lassen. In der Praxis
             werden die Aufgaben und Ziele der einzelnen Prozesse genannt, beispielsweise »Personalmanagement«.
         </p>
-    </div>
-    <div class="mt-4">
-        {{ form_label(form.jointControl) }}
-        {% if activ %}
-            {{ form_widget(form.jointControl) }}
-            {{ form_errors(form.jointControl) }}
-        {% else %}
-            {{ form_widget(form.jointControl, { 'disabled':'disabled' }) }}
-        {% endif %}
-    </div>
-    <div class="mt-4">
-        {{ form_label(form.auftragsverarbeitung) }}
-        {% if activ %}
-            {{ form_widget(form.auftragsverarbeitung) }}
-            {{ form_errors(form.auftragsverarbeitung) }}
-        {% else %}
-            {{ form_widget(form.auftragsverarbeitung, { 'disabled':'disabled' }) }}
-        {% endif %}
     </div>
     <div class="mt-4">
         {{ form_label(form.speicherung) }}
@@ -139,6 +131,31 @@
             {{ form_widget(form.kategorien, { 'disabled':'disabled' }) }}
         {% endif %}
     </div>
+    <div class="mt-4">
+        {{ form_label(form.weitergabe) }}
+        {% if activ %}
+            {{ form_widget(form.weitergabe) }}
+            {{ form_errors(form.weitergabe) }}
+        {% else %}
+            {{ form_widget(form.weitergabe, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.jointControl) }}
+        {% if activ %}
+            {{ form_widget(form.jointControl) }}
+            {{ form_errors(form.jointControl) }}
+        {% else %}
+            {{ form_widget(form.jointControl, { 'disabled':'disabled' }) }}
+        {% endif %}
+        {{ form_label(form.auftragsverarbeitung) }}
+        {% if activ %}
+            {{ form_widget(form.auftragsverarbeitung) }}
+            {{ form_errors(form.auftragsverarbeitung) }}
+        {% else %}
+            {{ form_widget(form.auftragsverarbeitung, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
     <stan class="mt-4">{{ form_label(form.datenweitergaben) }}</stan>
     <div class="row">
 
@@ -180,15 +197,6 @@
         </div>
     </div>
 
-    <div class="mt-4">
-        {{ form_label(form.weitergabe) }}
-        {% if activ %}
-            {{ form_widget(form.weitergabe) }}
-            {{ form_errors(form.weitergabe) }}
-        {% else %}
-            {{ form_widget(form.weitergabe, { 'disabled':'disabled' }) }}
-        {% endif %}
-    </div>
     <div class="mt-4">
         {{ form_label(form.eu) }}
         {% if activ %}

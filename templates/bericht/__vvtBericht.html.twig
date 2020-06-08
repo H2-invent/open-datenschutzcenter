@@ -40,19 +40,7 @@
     </tr>
     <tr>
         <td>
-            Handelt es sich bei der Verarbeitung um ein Joint Control Verarbeitung
-        </td>
-        <td>{{ d.jointControl?'Ja':'Nein' }}</td>
-    </tr>
-    <tr>
-        <td>
-            Handelt es sich bei der Verarbeitung um ein Auftragsverarbeitung
-        </td>
-        <td>{{ d.auftragsverarbeitung?'Ja':'Nein' }}</td>
-    </tr>
-    <tr>
-        <td>
-            Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Zweck)
+            Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Rechtsgrundlage)
         </td>
         <td>{% for p in d.grundlage %}{{ p.name }},<br>{% endfor %}</td>
     </tr>
@@ -70,15 +58,27 @@
     </tr>
     <tr>
         <td>
-            Werden die Daten gespeichert?
+            Die Daten werden an folgenden Stellen gespeichert.
         </td>
         <td>{{ d.speicherung|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            Werden die Daten weitergegeben? An wen?
+            An folgende Unternehmen werden die Daten weitergegeben.
         </td>
         <td>{{ d.weitergabe|nl2br }}</td>
+    </tr>
+    <tr>
+        <td>
+            Handelt es sich bei der Verarbeitung um ein Joint Control Verarbeitung?
+        </td>
+        <td>{{ d.jointControl?'Ja':'Nein' }}</td>
+    </tr>
+    <tr>
+        <td>
+            Handelt es sich bei der Verarbeitung um ein Auftragsverarbeitung?
+        </td>
+        <td>{{ d.auftragsverarbeitung?'Ja':'Nein' }}</td>
     </tr>
     <tr>
         <td>
@@ -121,8 +121,8 @@
             Risikoabschätzung
         </td>
         <td>
-            Eintrittswahrscheinlichkeit: {{ d.beurteilungEintritt }}<br>
-            Schadenspotenzial: {{ d.beurteilungSchaden }}<br>
+            Eintrittswahrscheinlichkeit: {{ d.beurteilungEintrittString }}<br>
+            Schadenspotenzial: {{ d.beurteilungSchadenString }}<br>
         </td>
     </tr>
     <tr>
