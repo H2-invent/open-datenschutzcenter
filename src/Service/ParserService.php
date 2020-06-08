@@ -42,6 +42,11 @@ class ParserService
         try {
             foreach ($data->entry as $e) {
                 $audit = new AuditTom();
+                if ($e->nummer == null) {
+                    $audit->setNummer('AUDIT-' . hexdec(uniqid()));
+                }else {
+                    $audit->setNummer($e->nummer);
+                }
                 $audit->setFrage($e->frage);
                 $audit->setBemerkung($e->bemerkung);
                 $audit->setEmpfehlung($e->empfehlung);
@@ -70,7 +75,6 @@ class ParserService
                 $audit->setCreatedAt(new \DateTime());
                 $audit->setTeam($team);
                 $audit->setUser($user);
-                $audit->setNummer('AUDIT-' . hexdec(uniqid()));
                 $this->em->persist($audit);
             }
             $this->em->flush();
@@ -150,7 +154,12 @@ class ParserService
                 $vvt->setWeitergabe($e->weitergabe);
                 $vvt->setTom($e->hinweisTom);
                 $vvt->setUserContract($user);
-                $vvt->setNummer('VVT-' . hexdec(uniqid()));
+                if ($e->nummer == null) {
+                    $vvt->setNummer('VVT-' . hexdec(uniqid()));
+                }else {
+                    $vvt->setNummer($e->nummer);
+                }
+
 
                 $this->em->persist($vvt);
 

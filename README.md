@@ -46,6 +46,7 @@ Es ist wichtig, dass die Import Dateien vor dem Import korrekt signiert wurden. 
   "author": "Andreas Holzmann - H2 invent",
   "entry": [
     {
+      "nummer": null
       "name": "Name der Verarbeitung",
       "grundlage": [
         "§ 99 BetrVG",
@@ -100,6 +101,7 @@ Es ist wichtig, dass die Import Dateien vor dem Import korrekt signiert wurden. 
   "author": "Andreas Holzmann - H2 invent",
   "entry": [
     {
+      "nummer": null
       "frage": "Haben Sie einen DSB benannt?",
       "bemerkung": "Bemerkung zur Antwort und zum Status",
       "empfehlung": "Unsere Empfehlung zur Umsetzung der Aufitgrage",
