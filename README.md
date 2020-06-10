@@ -1,6 +1,8 @@
 # Open-Datenschutzcenter
 __Open Source Datenschutzmanagement System__
 
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
+
 Open Datenschutzcenter (ODC) ist eine FOSS (Free and Open Source) Enterprise Webanwendung, die auf einem eigenen Root oder vServer betrieben werden kann.
 
 Auf Grund der Vendor Abhängigkeiten wird ein Webspace für den Betrieb der Webanwendung nicht empfohlen. Enterprise bedeutet, dass ODC als Manadatenlösung und interne Webanwendung betrieben werden kann. Die Verwaltung, Updates und Wartung muss durch die Zuständige und Verantwortliche Person durchgeführt werden.
