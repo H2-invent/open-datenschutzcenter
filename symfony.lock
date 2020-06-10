@@ -78,6 +78,9 @@
     "doctrine/reflection": {
         "version": "1.2.1"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.0"
+    },
     "dompdf/dompdf": {
         "version": "v0.8.5"
     },
@@ -86,9 +89,6 @@
     },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.2"
-    },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
     },
     "jms/metadata": {
         "version": "2.1.0"
@@ -421,6 +421,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.16.0"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.0"
     },
     "symfony/process": {
         "version": "v4.4.8"

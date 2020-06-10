@@ -7,6 +7,8 @@
         "ext-iconv": "*",
         "core23/dompdf-bundle": "^2.6",
         "doctrine/annotations": "^1.10",
+        "friendsofsymfony/user-bundle": "~2.0",
+        "michaeldegroot/doctrine-encrypt-bundle": "^4.0",
         "myclabs/deep-copy": "^1.9",
         "oneup/flysystem-bundle": "^3.4",
         "sensio/framework-extra-bundle": "^5.1",
@@ -37,8 +39,7 @@
         "twig/cssinliner-extra": "^3.0",
         "twig/inky-extra": "^3.0",
         "twig/twig": "^2.0",
-        "vich/uploader-bundle": "^1.13",
-        "michaeldegroot/doctrine-encrypt-bundle": "^4.0"
+        "vich/uploader-bundle": "^1.13"
     },
     "require-dev": {
         "symfony/debug-pack": "*",
