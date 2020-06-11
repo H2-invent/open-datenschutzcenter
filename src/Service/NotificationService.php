@@ -11,18 +11,21 @@ namespace App\Service;
 
 use App\Entity\AkademieBuchungen;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 
 class NotificationService
 {
     private $em;
     private $mailer;
+    private $parameterBag;
 
 
-    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService)
+    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService, ParameterBagInterface $parameterBag)
     {
         $this->em = $entityManager;
         $this->mailer = $mailerService;
+        $this->parameterBag = $parameterBag;
     }
 
 
@@ -30,7 +33,7 @@ class NotificationService
     {
         $this->mailer->sendEmail(
             'Datenschutzcenter',
-            'info@h2-invent.com',
+            $this->parameterBag->get('akademieEmail'),
             $buchung->getUser()->getEmail(),
             'Ihnen wurde ein neuer Kurs zugewiesen',
             $content

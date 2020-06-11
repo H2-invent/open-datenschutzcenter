@@ -8,12 +8,10 @@
 namespace App\Controller;
 
 use App\Entity\AuditTom;
-use App\Entity\AuditTomAbteilung;
-use App\Entity\AuditTomStatus;
-use App\Entity\AuditTomZiele;
 use App\Entity\Tom;
-use App\Form\Type\AuditTomType;
 use App\Form\Type\TomType;
+use App\Service\SecurityService;
+use App\Service\TomService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,9 +22,13 @@ class TomController extends AbstractController
     /**
      * @Route("/tom", name="tom")
      */
-    public function index()
+    public function index(SecurityService $securityService)
     {
-        $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($this->getUser()->getTeam());
+        $team = $this->getUser()->getTeam();
+        $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($team);
+
+        $securityService->teamCheck($team);
+
         return $this->render('tom/index.html.twig', [
             'tom' => $tom,
         ]);
@@ -35,20 +37,12 @@ class TomController extends AbstractController
     /**
      * @Route("/tom/new", name="tom_new")
      */
-    public function addAuditTom(ValidatorInterface $validator, Request $request)
+    public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('fos_user_security_logout');
-        }
+        $securityService->teamCheck($team);
 
-        $today = new \DateTime();
-        $tom = new Tom();
-        $tom->setTeam($team);
-        $tom->setActiv(true);
-        $tom->setCreatedAt($today);
-        $tom->setUser($this->getUser());
-
+        $tom = $tomService->newTom($team, $this->getUser());
 
         $form = $this->createForm(TomType::class, $tom);
         $form->handleRequest($request);
@@ -77,25 +71,15 @@ class TomController extends AbstractController
     /**
      * @Route("/tom/edit", name="tom_edit")
      */
-    public function EditTom(ValidatorInterface $validator, Request $request)
+    public function EditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
-        }
-        $today = new \DateTime();
         $tom = $this->getDoctrine()->getRepository(Tom::class)->find($request->get('tom'));
 
-        //Sicherheitsfunktion, dass nur eigene und Default TOMs bearbeitet werden können
-        if ($tom->getTeam() !== $team) {
-            return $this->redirectToRoute('tom');
-        }
+        $securityService->teamDataCheck($tom, $team);
 
-        $newTom = clone $tom;
-        $newTom->setPrevious($tom);
-        $newTom->setCreatedAt($today);
-        $newTom->setUser($this->getUser());
-        $newTom->setTeam($team);
+        $newTom = $tomService->cloneTom($tom, $this->getUser());
+
         $form = $this->createForm(TomType::class, $newTom);
         $form->remove('titel');
         $form->handleRequest($request);
@@ -126,7 +110,7 @@ class TomController extends AbstractController
     /**
      * @Route("/tom/clone", name="tom_clone")
      */
-    public function CloneTom(Request $request)
+    public function cloneTom(Request $request)
     {
         $team = $this->getUser()->getTeam();
         if ($team === null) {
