@@ -65,6 +65,7 @@ defaultEmailAdress=test@test.com
 defaultEmailName=test
 
 AKADEMIE_EMAIL=akademie@lokal.lokal
+DEV_EMAIL=dev@lokal.lokal
 ```
 
 #### 4. Vendor Dateien mit dem Composer installieren
