@@ -11,6 +11,7 @@ namespace App\Service;
 
 use App\Entity\AkademieBuchungen;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Templating\EngineInterface;
 
 
@@ -19,12 +20,14 @@ class AkademieService
     private $em;
     private $mailer;
     private $twig;
+    private $parameterbag;
 
-    public function __construct(EngineInterface $engine, EntityManagerInterface $entityManager, MailerService $mailerService)
+    public function __construct(EngineInterface $engine, EntityManagerInterface $entityManager, MailerService $mailerService, ParameterBagInterface $parameterBag)
     {
         $this->em = $entityManager;
         $this->mailer = $mailerService;
         $this->twig = $engine;
+        $this->parameterbag = $parameterBag;
     }
 
 
@@ -32,10 +35,10 @@ class AkademieService
     {
         $this->mailer->sendEmail(
             'Datenschutzcenter',
-            'info@h2-invent.com',
+            $this->parameterbag->get('akademieEmail'),
             $buchung->getUser()->getEmail(),
             'Ihnen wurde ein neuer Kurs zugewiesen',
-            $this->twig->render('email/akademie.html.twig',[
+            $this->twig->render('email/akademie.html.twig', [
                 'user' => $buchung->getUser(),
                 'buchung' => $buchung
             ])

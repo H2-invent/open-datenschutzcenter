@@ -9,9 +9,8 @@
 namespace App\Controller;
 
 use App\Entity\Vorfall;
-use App\Entity\VVTDatenkategorie;
-use App\Entity\VVTPersonen;
-use App\Form\Type\VorfallType;
+use App\Service\SecurityService;
+use App\Service\VorfallService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,27 +32,16 @@ class VorfallController extends AbstractController
     /**
      * @Route("/vorfall/new", name="vorfall_new")
      */
-    public function addAuditTom(ValidatorInterface $validator, Request $request)
+    public function addVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService)
     {
         $team = $this->getUser()->getTeam();
         if ($team === null) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $today = new \DateTime();
-        $vorfall = new Vorfall();
-        $vorfall->setTeam($team);
-        $vorfall->setActiv(true);
-        $vorfall->setNummer(uniqid());
-        $vorfall->setCreatedAt($today);
-        $vorfall->setUser($this->getUser());
-        $vorfall->setDatum($today);
+        $vorfall = $vorfallService->newVorfall($team, $this->getUser());
 
-        $personen = $this->getDoctrine()->getRepository(VVTPersonen::class)->findAll();
-        $kategorien = $this->getDoctrine()->getRepository(VVTDatenkategorie::class)->findAll();
-
-
-        $form = $this->createForm(VorfallType::class, $vorfall, ['personen'=>$personen,'daten'=>$kategorien]);
+        $form = $vorfallService->createForm($vorfall, $team);
         $form->handleRequest($request);
 
         $errors = array();
@@ -79,33 +67,18 @@ class VorfallController extends AbstractController
     /**
      * @Route("/vorfall/edit", name="vorfall_edit")
      */
-    public function EditAuditTom(ValidatorInterface $validator, Request $request)
+    public function EditVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
-        }
-        $today = new \DateTime();
         $vorgang = $this->getDoctrine()->getRepository(Vorfall::class)->find($request->get('id'));
 
-        //Sicherheitsfunktion, dass nur eigene und Default TOMs bearbeitet werden können
-        if ($vorgang->getTeam() !== $team) {
-            return $this->redirectToRoute('vorfall');
-        }
+        $securityService->teamDataCheck($vorgang, $team);
 
+        $newVorgang = $vorfallService->cloneVorfall($vorgang, $this->getUser());
 
-        $newVorgang = clone $vorgang;
-        $newVorgang->setPrevious($vorgang);
-        $newVorgang->setCreatedAt($today);
-        $newVorgang->setUser($this->getUser());
-        $newVorgang->setTeam($team);
-
-        $personen = $this->getDoctrine()->getRepository(VVTPersonen::class)->findAll();
-        $kategorien = $this->getDoctrine()->getRepository(VVTDatenkategorie::class)->findAll();
-
-
-        $form = $this->createForm(VorfallType::class, $newVorgang, ['personen'=>$personen,'daten'=>$kategorien]);
+        $form = $vorfallService->createForm($newVorgang, $team);
         $form->handleRequest($request);
+
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $vorgang->setActiv(false);

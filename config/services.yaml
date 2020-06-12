@@ -7,6 +7,7 @@ parameters:
     app.path.product_images: /uploads/images/products
     secret: '%env(APP_SECRET)%'
     projectRoot: '%kernel.root_dir%'
+    akademieEmail: '%env(AKADEMIE_EMAIL)%'
 
 services:
     # default configuration for services in *this* file

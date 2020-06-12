@@ -9,36 +9,28 @@
 namespace App\Controller;
 
 use App\Entity\Datenweitergabe;
-use App\Entity\DatenweitergabeGrundlagen;
-use App\Entity\DatenweitergabeStand;
-use App\Entity\VVT;
-use App\Form\Type\DatenweitergabeType;
-use App\Service\IdeaService;
+use App\Service\DatenweitergabeService;
+use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class DatenweitergabeController extends AbstractController
 {
     /**
      * @Route("/datenweitergabe", name="datenweitergabe")
      */
-    public function indexDatenweitergabe()
+    public function indexDatenweitergabe(SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
-        }
+        $securityService->teamCheck($team);
 
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team'=>$this->getUser()->getTeam(),'activ'=>true, 'art' => 1));
+        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $this->getUser()->getTeam(), 'activ' => true, 'art' => 1));
         return $this->render('datenweitergabe/index.html.twig', [
             'table' => $daten,
             'titel' => 'Alle Datenweitergaben nach DSGVO Art. 30(1)',
@@ -48,14 +40,12 @@ class DatenweitergabeController extends AbstractController
     /**
      * @Route("/auftragsverarbeitung", name="auftragsverarbeitung")
      */
-    public function indexAuftragsverarbeitung()
+    public function indexAuftragsverarbeitung(SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
-        }
+        $securityService->teamCheck($team);
 
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team'=>$this->getUser()->getTeam(),'activ'=>true, 'art' => 2));
+        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $this->getUser()->getTeam(), 'activ' => true, 'art' => 2));
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
             'table' => $daten,
             'titel' => 'Verarbeitungen nach DSGVO Art. 30(2)',
@@ -65,26 +55,14 @@ class DatenweitergabeController extends AbstractController
     /**
      * @Route("/datenweitergabe/new", name="datenweitergabe_new")
      */
-    public function addDatenweitergabe(ValidatorInterface $validator, Request $request)
+    public function addDatenweitergabe(ValidatorInterface $validator, Request $request, DatenweitergabeService $datenweitergabeService, SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
-        }
+        $securityService->teamCheck($team);
 
-        $today = new \DateTime();
-        $daten = new Datenweitergabe();
-        $daten->setTeam($team);
-        $daten->setNummer('DW-'. hexdec( uniqid() ));
-        $daten->setActiv(true);
-        $daten->setCreatedAt($today);
-        $daten->setArt(1);
-        $daten->setUser($this->getUser());
-        $stand = $this->getDoctrine()->getRepository(DatenweitergabeStand::class)->findAll();
-        $grundlagen = $this->getDoctrine()->getRepository(DatenweitergabeGrundlagen::class)->findAll();
-        $verfahren = $this->getDoctrine()->getRepository(VVT::class)->findBy(array('team'=>$team,'activ'=>true));
+        $daten = $datenweitergabeService->newDatenweitergabe($this->getUser(), 1, 'DW-');
 
-        $form = $this->createForm(DatenweitergabeType::class, $daten, ['stand' => $stand, 'grundlage' => $grundlagen, 'kontakt' => $team->getKontakte(), 'verfahren' => $verfahren]);
+        $form = $datenweitergabeService->createForm($daten, $team);
         $form->handleRequest($request);
 
         $errors = array();
@@ -116,27 +94,14 @@ class DatenweitergabeController extends AbstractController
     /**
      * @Route("/auftragsverarbeitung/new", name="auftragsverarbeitung_new")
      */
-    public function addAuftragsverarbeitung(ValidatorInterface $validator, Request $request)
+    public function addAuftragsverarbeitung(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
-        }
+        $securityService->teamCheck($team);
 
-        $today = new \DateTime();
-        $daten = new Datenweitergabe();
-        $daten->setTeam($team);
-        $daten->setActiv(true);
-        $daten->setNummer('AVV-'. hexdec( uniqid() ));
-        $daten->setCreatedAt($today);
-        $daten->setUpdatedAt($today);
-        $daten->setArt(2);
-        $daten->setUser($this->getUser());
-        $stand = $this->getDoctrine()->getRepository(DatenweitergabeStand::class)->findAll();
-        $grundlagen = $this->getDoctrine()->getRepository(DatenweitergabeGrundlagen::class)->findAll();
-        $verfahren = $this->getDoctrine()->getRepository(VVT::class)->findBy(array('team'=>$team,'activ'=>true));
+        $daten = $datenweitergabeService->newDatenweitergabe($this->getUser(), 2, 'AVV-');
 
-        $form = $this->createForm(DatenweitergabeType::class, $daten, ['stand' => $stand, 'grundlage' => $grundlagen, 'kontakt' => $team->getKontakte(), 'verfahren' => $verfahren]);
+        $form = $datenweitergabeService->createForm($daten, $team);
         $form->handleRequest($request);
 
         $errors = array();
@@ -168,35 +133,18 @@ class DatenweitergabeController extends AbstractController
     /**
      * @Route("/datenweitergabe/edit", name="datenweitergabe_edit")
      */
-    public function EditDatenweitergabe(ValidatorInterface $validator, Request $request)
+    public function EditDatenweitergabe(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('fos_user_security_logout');
-        }
-
-        $today = new \DateTime();
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
 
-        //Sicherheitsfunktion, dass nur eigene Weitergaben bearbeitet werden können
-        if ($daten-> getTeam() !== $team) {
-            return $this->redirectToRoute('datenweitergabe');
-        }
+        $securityService->teamDataCheck($daten, $team);
 
-        $newDaten = clone $daten;
-        $newDaten->setPrevious($daten);
-        $newDaten->setCreatedAt($today);
-        $newDaten->setUpdatedAt($today);
-        $newDaten->setUser($this->getUser());
-
-        $stand = $this->getDoctrine()->getRepository(DatenweitergabeStand::class)->findAll();
-        $grundlagen = $this->getDoctrine()->getRepository(DatenweitergabeGrundlagen::class)->findAll();
-        $verfahren = $this->getDoctrine()->getRepository(VVT::class)->findBy(array('team'=>$team,'activ'=>true));
-
-        $form = $this->createForm(DatenweitergabeType::class, $newDaten, ['stand' => $stand, 'grundlage' => $grundlagen, 'kontakt' => $team->getKontakte(), 'verfahren' => $verfahren]);
+        $newDaten = $datenweitergabeService->cloneDatenweitergabe($daten, $this->getUser());
+        $form = $datenweitergabeService->createForm($newDaten, $team);
         $form->remove('nummer');
-
         $form->handleRequest($request);
+
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -235,16 +183,13 @@ class DatenweitergabeController extends AbstractController
      * @Route("/datenweitergabe/download/{id}", name="datenweitergabe_download_file", methods={"GET"})
      * @ParamConverter("datenweitergabe", options={"mapping"={"id"="id"}})
      */
-    public function downloadArticleReference(FilesystemInterface $internFileSystem, Datenweitergabe $datenweitergabe)
+    public function downloadArticleReference(FilesystemInterface $internFileSystem, Datenweitergabe $datenweitergabe, SecurityService $securityService)
     {
 
         $stream = $internFileSystem->read($datenweitergabe->getImage());
+        $securityService->teamDataCheck($datenweitergabe, $this->getUser()->getTeam());
 
-        if ($this->getUser()->getTeam() !== $datenweitergabe->getTeam()) {
-            return $this->redirectToRoute('datenweitergabe_edit', ['id'=>$datenweitergabe->getId()]);
-        }
-
-        $type=$internFileSystem->getMimetype($datenweitergabe->getImage());
+        $type = $internFileSystem->getMimetype($datenweitergabe->getImage());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(
