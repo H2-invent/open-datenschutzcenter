@@ -4,14 +4,12 @@
     {% if activNummer %}
         {{ form_label(form.nummer) }}
         {{ form_widget(form.nummer) }}
-        {{ form_errors(form.nummer) }}
     {% endif %}
 
     <div class="mt-4">
         {{ form_label(form.name) }}
         {% if activ %}
             {{ form_widget(form.name) }}
-            {{ form_errors(form.name) }}
         {% else %}
             {{ form_widget(form.name, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -20,7 +18,6 @@
         {{ form_label(form.status) }}
         {% if activ %}
             {{ form_widget(form.status) }}
-            {{ form_errors(form.status) }}
         {% else %}
             {{ form_widget(form.status, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -37,7 +34,6 @@
         {{ form_label(form.produkt) }}
         {% if activ %}
             {{ form_widget(form.produkt) }}
-            {{ form_errors(form.produkt) }}
             {{ form_help(form.produkt) }}
         {% else %}
             {{ form_widget(form.produkt, { 'disabled':'disabled' }) }}
@@ -55,7 +51,6 @@
         {{ form_label(form.verantwortlich) }}
         {% if activ %}
             {{ form_widget(form.verantwortlich) }}
-            {{ form_errors(form.verantwortlich) }}
         {% else %}
             {{ form_widget(form.verantwortlich, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -69,7 +64,6 @@
         {{ form_label(form.grundlage) }}
         {% if activ %}
             {{ form_widget(form.grundlage) }}
-            {{ form_errors(form.grundlage) }}
         {% else %}
             {{ form_widget(form.grundlage, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -78,7 +72,6 @@
         {{ form_label(form.zweck) }}
         {% if activ %}
             {{ form_widget(form.zweck) }}
-            {{ form_errors(form.zweck) }}
         {% else %}
             {{ form_widget(form.zweck, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -91,7 +84,6 @@
         {{ form_label(form.speicherung) }}
         {% if activ %}
             {{ form_widget(form.speicherung) }}
-            {{ form_errors(form.speicherung) }}
         {% else %}
             {{ form_widget(form.speicherung, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -100,7 +92,6 @@
         {{ form_label(form.loeschfrist) }}
         {% if activ %}
             {{ form_widget(form.loeschfrist) }}
-            {{ form_errors(form.loeschfrist) }}
         {% else %}
             {{ form_widget(form.loeschfrist, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -113,7 +104,6 @@
         {{ form_label(form.personengruppen) }}
         {% if activ %}
             {{ form_widget(form.personengruppen) }}
-            {{ form_errors(form.personengruppen) }}
         {% else %}
             {{ form_widget(form.personengruppen, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -126,7 +116,6 @@
         {{ form_label(form.kategorien) }}
         {% if activ %}
             {{ form_widget(form.kategorien) }}
-            {{ form_errors(form.kategorien) }}
         {% else %}
             {{ form_widget(form.kategorien, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -135,7 +124,6 @@
         {{ form_label(form.weitergabe) }}
         {% if activ %}
             {{ form_widget(form.weitergabe) }}
-            {{ form_errors(form.weitergabe) }}
         {% else %}
             {{ form_widget(form.weitergabe, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -144,14 +132,12 @@
         {{ form_label(form.jointControl) }}
         {% if activ %}
             {{ form_widget(form.jointControl) }}
-            {{ form_errors(form.jointControl) }}
         {% else %}
             {{ form_widget(form.jointControl, { 'disabled':'disabled' }) }}
         {% endif %}
         {{ form_label(form.auftragsverarbeitung) }}
         {% if activ %}
             {{ form_widget(form.auftragsverarbeitung) }}
-            {{ form_errors(form.auftragsverarbeitung) }}
         {% else %}
             {{ form_widget(form.auftragsverarbeitung, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -163,7 +149,6 @@
 
             {% if activ %}
                 {{ form_widget(form.datenweitergaben) }}
-                {{ form_errors(form.datenweitergaben) }}
             {% else %}
                 {{ form_widget(form.datenweitergaben, { 'disabled':'disabled' }) }}
             {% endif %}
@@ -201,7 +186,6 @@
         {{ form_label(form.eu) }}
         {% if activ %}
             {{ form_widget(form.eu) }}
-            {{ form_errors(form.eu) }}
         {% else %}
             {{ form_widget(form.eu, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -210,7 +194,6 @@
         {{ form_label(form.tomLink) }}
         {% if activ %}
             {{ form_widget(form.tomLink) }}
-            {{ form_errors(form.tomLink) }}
         {% else %}
             {{ form_widget(form.tomLink, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -223,7 +206,6 @@
         {{ form_label(form.tom) }}
         {% if activ %}
             {{ form_widget(form.tom) }}
-            {{ form_errors(form.tom) }}
         {% else %}
             {{ form_widget(form.tom, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -237,7 +219,6 @@
         {{ form_label(form.risiko) }}
         {% if activ %}
             {{ form_widget(form.risiko) }}
-            {{ form_errors(form.risiko) }}
         {% else %}
             {{ form_widget(form.risiko, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -249,7 +230,6 @@
             {{ form_label(form.beurteilungEintritt) }}
             {% if activ %}
                 {{ form_widget(form.beurteilungEintritt) }}
-                {{ form_errors(form.beurteilungEintritt) }}
             {% else %}
                 {{ form_widget(form.beurteilungEintritt, { 'disabled':'disabled' }) }}
             {% endif %}
@@ -258,7 +238,6 @@
             {{ form_label(form.beurteilungSchaden) }}
             {% if activ %}
                 {{ form_widget(form.beurteilungSchaden) }}
-                {{ form_errors(form.beurteilungSchaden) }}
             {% else %}
                 {{ form_widget(form.beurteilungSchaden, { 'disabled':'disabled' }) }}
             {% endif %}
@@ -269,7 +248,6 @@
         {{ form_label(form.informationspflicht) }}
         {% if activ %}
             {{ form_widget(form.informationspflicht) }}
-            {{ form_errors(form.informationspflicht) }}
         {% else %}
             {{ form_widget(form.informationspflicht, { 'disabled':'disabled' }) }}
         {% endif %}
@@ -284,7 +262,6 @@
         {{ form_label(form.dsb) }}
         {% if activ %}
             {{ form_widget(form.dsb) }}
-            {{ form_errors(form.dsb) }}
         {% else %}
             {{ form_widget(form.dsb, { 'disabled':'disabled' }) }}
         {% endif %}
