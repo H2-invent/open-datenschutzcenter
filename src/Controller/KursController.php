@@ -7,6 +7,7 @@ use App\Entity\AkademieKurse;
 use App\Form\Type\KursAnmeldungType;
 use App\Form\Type\KursType;
 use App\Service\NotificationService;
+use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -58,16 +59,46 @@ class KursController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($daten);
                 $em->flush();
-                return $this->redirectToRoute('kurs_anmelden',['id'=>$daten->getId()]);
+                return $this->redirectToRoute('kurs_anmelden', ['id' => $daten->getId()]);
+            }
+        }
+        return $this->render('akademie/new.html.twig', [
+            'form' => $form->createView(),
+            'errors' => $errors,
+            'title' => 'Kurs erstellen',
+        ]);
+    }
+
+    /**
+     * @Route("/kurs/edit", name="akademie_kurs_edit")
+     */
+    public function editKurs(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
+        $securityService->teamDataCheck($kurs, $team);
+
+        $today = new \DateTime();;
+        $kurs->setCreatedAt($today);
+
+        $form = $this->createForm(KursType::class, $kurs);
+        $form->handleRequest($request);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $daten = $form->getData();
+            $errors = $validator->validate($daten);
+            if (count($errors) == 0) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($daten);
+                $em->flush();
+                return $this->redirectToRoute('kurs_anmelden', ['id' => $daten->getId()]);
             }
         }
         return $this->render('akademie/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Verarbeitung erstellen',
-            'daten' => $daten,
-            'activNummer' => true,
-            'activ' => $daten->getActiv()
         ]);
     }
 

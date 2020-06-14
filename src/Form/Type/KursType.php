@@ -9,11 +9,7 @@
 namespace App\Form\Type;
 
 use App\Entity\AkademieKurse;
-use App\Entity\AuditTomZiele;
-use App\Entity\Kontakte;
-use App\Entity\Team;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,8 +23,8 @@ class KursType extends AbstractType
 
         $builder
             ->add('title', TextType::class, ['label' => 'Titel', 'required' => true, 'translation_domain' => 'form'])
-            ->add('video', TextType::class, ['label' => 'Videolink (Vimeo)', 'required' => true, 'translation_domain' => 'form'])
-            ->add('beschreibung', TextareaType::class, ['label' => 'Beschreibung', 'required' => true, 'translation_domain' => 'form'])
+            ->add('video', TextType::class, ['label' => 'Videolink', 'required' => true, 'translation_domain' => 'form'])
+            ->add('beschreibung', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'Beschreibung', 'required' => true, 'translation_domain' => 'form'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 
