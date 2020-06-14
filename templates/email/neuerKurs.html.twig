@@ -17,7 +17,7 @@
     <b>
         Kurs: {{ buchung.kurs.title }}
     </b>
-    <p>{{ buchung.kurs.beschreibung }}</p>
+    <p>{{ buchung.kurs.beschreibung|nl2br }}</p>
     <spacer size="16"></spacer>
     <p>
         <a href="{{ absolute_url(path('akademie_kurs', {'kurs':buchung.id})) }}">Klicken Sie hier um direkt zu dem Kurs
