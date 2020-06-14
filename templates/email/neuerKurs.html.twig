@@ -18,12 +18,17 @@
         Kurs: {{ buchung.kurs.title }}
     </b>
     <p>{{ buchung.kurs.beschreibung }}</p>
+    <spacer size="16"></spacer>
     <p>
-        Wenn Sie Fragen zum Datenschutz und den Hintergründen zu dieser Fortbildung haben, melden Sie sich bei Ihrem Datenschutzbeauftragten oder der Geschäftsführung.<br>
+        <a href="{{ absolute_url(path('akademie_kurs', {'kurs':buchung.id})) }}">Klicken Sie hier um direkt zu dem Kurs
+            zu gelangen.</a>
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Wenn Sie Fragen zum Datenschutz und den Hintergründen zu dieser Schulung haben, melden Sie sich bei Ihrem
+        Datenschutzbeauftragten, den Datenschutzkoordinatoren oder bei der Geschäftsführung.<br>
         E-Mail: {{ buchung.user.akademieUser.email }}<br>
         Telefon: {{ buchung.user.akademieUser.telefon }}
     </p>
-    <p>
-        <a href="{{ absolute_url(path('akademie_kurs', {'kurs':buchung.id})) }}">Klicken Sie hier um direkt zu dem Kurs zu gelangen.</a>
-    </p>
+
 {% endblock %}
