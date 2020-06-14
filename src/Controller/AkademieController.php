@@ -71,6 +71,7 @@ class AkademieController extends AbstractController
         $newBuchung = clone $buchung;
         $buchung->setAbgeschlossen(true);
         $buchung->setEnde($today);
+        $buchung->setFinishedID(null);
         $buchung->setBuchungsID(uniqid());
 
         $em = $this->getDoctrine()->getManager();
