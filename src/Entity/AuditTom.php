@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Repository\AuditTomRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 
 /**
  * @ORM\Entity(repositoryClass=AuditTomRepository::class)
@@ -31,12 +31,14 @@ class AuditTom
     /**
      * @ORM\Column(type="text")
      * @Encrypted()
+     * @Assert\NotBlank()
      */
     private $bemerkung;
 
     /**
      * @ORM\Column(type="text")
      * @Encrypted()
+     * @Assert\NotBlank()
      */
     private $empfehlung;
 

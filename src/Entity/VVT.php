@@ -50,7 +50,7 @@ class VVT
     private $auftragsverarbeitung = false;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text",nullable=true)
      * @Assert\NotBlank()
      */
     private $speicherung;
@@ -284,7 +284,7 @@ class VVT
         return $this->speicherung;
     }
 
-    public function setSpeicherung(string $speicherung): self
+    public function setSpeicherung(?string $speicherung): self
     {
         $this->speicherung = $speicherung;
 
