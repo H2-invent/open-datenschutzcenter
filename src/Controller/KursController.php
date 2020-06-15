@@ -21,7 +21,9 @@ class KursController extends AbstractController
     public function index(SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
-        $securityService->teamCheck($team);
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
 
         $daten = $this->getDoctrine()->getRepository(AkademieKurse::class)->findKurseByTeam($this->getUser()->getTeam());
         return $this->render('kurs/index.html.twig', [
@@ -38,7 +40,7 @@ class KursController extends AbstractController
         $team = $this->getUser()->getAdminUser();
 
         if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('kurse');
         }
 
         $today = new \DateTime();
@@ -77,7 +79,7 @@ class KursController extends AbstractController
         $team = $this->getUser()->getAdminUser();
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($kurs, $team) === false) {
+        if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
             return $this->redirectToRoute('kurse');
         }
 
@@ -113,7 +115,7 @@ class KursController extends AbstractController
         $team = $this->getUser()->getAdminUser();
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($kurs, $team) === false) {
+        if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
             return $this->redirectToRoute('kurse');
         }
 
@@ -141,7 +143,7 @@ class KursController extends AbstractController
         $team = $this->getUser()->getAdminUser();
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($kurs, $team) === false) {
+        if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
             return $this->redirectToRoute('kurse');
         }
 

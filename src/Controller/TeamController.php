@@ -16,6 +16,7 @@ use App\Form\Type\NewMemberType;
 use App\Form\Type\TeamType;
 use App\Form\Type\ZielType;
 use App\Service\InviteService;
+use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,12 +27,11 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_edit", name="team_edit")
      */
-    public function edit(ValidatorInterface $validator, Request $request)
+    public function edit(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
-        // Admin Route only
-        if ($team === null) {
+        if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -63,12 +63,11 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_ziel", name="team_ziel")
      */
-    public function addZiel(ValidatorInterface $validator, Request $request)
+    public function addZiel(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
-        // Admin Route only
-        if ($team === null) {
+        if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -110,13 +109,12 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_ziel/deaktivieren", name="team_ziel_deativate")
      */
-    public function addZielDeactivate(Request $request)
+    public function addZielDeactivate(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
-        // Admin Route only
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('team_ziel');
         }
 
         $ziel = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findOneBy(array('id' => $request->get('id')));
@@ -133,12 +131,11 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_abteilungen", name="team_abteilungen")
      */
-    public function addAbteilungen(ValidatorInterface $validator, Request $request)
+    public function addAbteilungen(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
-        // Admin Route only
-        if ($team === null) {
+        if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -178,13 +175,12 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_abteilungen/deaktivieren", name="team_abteilungen_deativate")
      */
-    public function addAbteilungenDeactivate(Request $request)
+    public function addAbteilungenDeactivate(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
-        // Admin Route only
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('team_abteilungen');
         }
 
         $abteilung = $this->getDoctrine()->getRepository(AuditTomAbteilung::class)->findOneBy(array('id' => $request->get('id')));
@@ -201,12 +197,11 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_mitglieder", name="team_mitglieder")
      */
-    public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService)
+    public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
-        // Admin Route only
-        if ($team === null) {
+        if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -252,13 +247,12 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_mitglieder/remove", name="team_mitglieder_remove")
      */
-    public function removeMitglieder(Request $request)
+    public function removeMitglieder(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
-        // Admin Route only
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('team_mitglieder');
         }
 
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('id' => $request->get('id')));
@@ -276,12 +270,11 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_mitglieder/admin", name="team_mitglieder_admin")
      */
-    public function adminMitglieder(Request $request)
+    public function adminMitglieder(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
-        // Admin Route only
-        if ($team === null) {
+        if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 

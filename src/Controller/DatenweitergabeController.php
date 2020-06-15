@@ -28,7 +28,9 @@ class DatenweitergabeController extends AbstractController
     public function indexDatenweitergabe(SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        $securityService->teamCheck($team);
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
 
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $this->getUser()->getTeam(), 'activ' => true, 'art' => 1));
         return $this->render('datenweitergabe/index.html.twig', [
@@ -43,7 +45,9 @@ class DatenweitergabeController extends AbstractController
     public function indexAuftragsverarbeitung(SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        $securityService->teamCheck($team);
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
 
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $this->getUser()->getTeam(), 'activ' => true, 'art' => 2));
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
@@ -58,7 +62,9 @@ class DatenweitergabeController extends AbstractController
     public function addDatenweitergabe(ValidatorInterface $validator, Request $request, DatenweitergabeService $datenweitergabeService, SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        $securityService->teamCheck($team);
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
 
         $daten = $datenweitergabeService->newDatenweitergabe($this->getUser(), 1, 'DW-');
 
@@ -97,7 +103,9 @@ class DatenweitergabeController extends AbstractController
     public function addAuftragsverarbeitung(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService)
     {
         $team = $this->getUser()->getTeam();
-        $securityService->teamCheck($team);
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
 
         $daten = $datenweitergabeService->newDatenweitergabe($this->getUser(), 2, 'AVV-');
 
@@ -138,7 +146,12 @@ class DatenweitergabeController extends AbstractController
         $team = $this->getUser()->getTeam();
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
 
-        $securityService->teamDataCheck($daten, $team);
+        if ($securityService->teamDataCheck($daten, $team) === false) {
+            if ($daten->getArt() === 1) {
+                return $this->redirectToRoute('datenweitergabe');
+            }
+            return $this->redirectToRoute('auftragsverarbeitung');
+        }
 
         $newDaten = $datenweitergabeService->cloneDatenweitergabe($daten, $this->getUser());
         $form = $datenweitergabeService->createForm($newDaten, $team);
@@ -187,7 +200,11 @@ class DatenweitergabeController extends AbstractController
     {
 
         $stream = $internFileSystem->read($datenweitergabe->getImage());
-        $securityService->teamDataCheck($datenweitergabe, $this->getUser()->getTeam());
+
+        $team = $this->getUser()->getTeam();
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
 
         $type = $internFileSystem->getMimetype($datenweitergabe->getImage());
         $response = new Response($stream);

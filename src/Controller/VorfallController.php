@@ -21,9 +21,16 @@ class VorfallController extends AbstractController
     /**
      * @Route("/vorfall", name="vorfall")
      */
-    public function index()
+    public function index(SecurityService $securityService)
     {
-        $vorfall = $this->getDoctrine()->getRepository(Vorfall::class)->findAllByTeam($this->getUser()->getTeam());
+        $team = $this->getUser()->getTeam();
+
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $vorfall = $this->getDoctrine()->getRepository(Vorfall::class)->findAllByTeam($team);
+
         return $this->render('vorfall/index.html.twig', [
             'vorfall' => $vorfall,
         ]);
@@ -35,7 +42,7 @@ class VorfallController extends AbstractController
     public function addVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
+        if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -72,7 +79,9 @@ class VorfallController extends AbstractController
         $team = $this->getUser()->getTeam();
         $vorgang = $this->getDoctrine()->getRepository(Vorfall::class)->find($request->get('id'));
 
-        $securityService->teamDataCheck($vorgang, $team);
+        if ($securityService->teamDataCheck($vorgang, $team) === false) {
+            return $this->redirectToRoute('vorfall');
+        }
 
         $newVorgang = $vorfallService->cloneVorfall($vorgang, $this->getUser());
 

@@ -9,28 +9,9 @@
 namespace App\Service;
 
 
-use App\Entity\Team;
-use App\Entity\User;
-
-
 class SecurityService
 {
-
-    function userDataCheck($data, Team $team, User $user)
-    {
-        //Sicherheitsfunktion, dass ein Team vorhanden ist
-        if ($team === null) {
-            return false;
-        }
-
-        //Sicherheitsfunktion, dass nur eigene Daten bearbeitet werden können
-        if ($data->getUser() !== $user) {
-            return false;
-        }
-        return true;
-    }
-
-    function teamDataCheck($data, Team $team)
+    function teamArrayDataCheck($data, $team)
     {
         //Sicherheitsfunktion, dass ein Team vorhanden ist
         if ($team === null) {
@@ -45,7 +26,22 @@ class SecurityService
         return true;
     }
 
-    function teamCheck(Team $team)
+    function teamDataCheck($data, $team)
+    {
+        //Sicherheitsfunktion, dass ein Team vorhanden ist
+        if ($team === null) {
+            return false;
+        }
+
+        //Sicherheitsfunktion, dass nur eigene Daten bearbeitet werden können
+        if ($team !== $data->getTeam()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function teamCheck($team)
     {
         //Sicherheitsfunktion, dass ein Team vorhanden ist
         if ($team === null) {

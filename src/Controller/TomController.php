@@ -27,7 +27,9 @@ class TomController extends AbstractController
         $team = $this->getUser()->getTeam();
         $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($team);
 
-        $securityService->teamCheck($team);
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
 
         return $this->render('tom/index.html.twig', [
             'tom' => $tom,
@@ -40,7 +42,9 @@ class TomController extends AbstractController
     public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService)
     {
         $team = $this->getUser()->getTeam();
-        $securityService->teamCheck($team);
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('tom');
+        }
 
         $tom = $tomService->newTom($team, $this->getUser());
 
@@ -76,7 +80,9 @@ class TomController extends AbstractController
         $team = $this->getUser()->getTeam();
         $tom = $this->getDoctrine()->getRepository(Tom::class)->find($request->get('tom'));
 
-        $securityService->teamDataCheck($tom, $team);
+        if ($securityService->teamDataCheck($tom, $team) === false) {
+            return $this->redirectToRoute('tom');
+        }
 
         $newTom = $tomService->cloneTom($tom, $this->getUser());
 

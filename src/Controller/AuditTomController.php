@@ -13,6 +13,7 @@ use App\Entity\AuditTomAbteilung;
 use App\Entity\AuditTomStatus;
 use App\Entity\AuditTomZiele;
 use App\Form\Type\AuditTomType;
+use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,9 +24,15 @@ class AuditTomController extends AbstractController
     /**
      * @Route("/audit-tom", name="audit_tom")
      */
-    public function index()
+    public function index(SecurityService $securityService)
     {
-        $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($this->getUser()->getTeam());
+        $team = $this->getUser()->getTeam();
+        $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
+
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
         return $this->render('audit_tom/index.html.twig', [
             'audit' => $audit,
         ]);
@@ -34,17 +41,18 @@ class AuditTomController extends AbstractController
     /**
      * @Route("/audit-tom/new", name="audit_tom_new")
      */
-    public function addAuditTom(ValidatorInterface $validator, Request $request)
+    public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('fos_user_security_logout');
+
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('audit_tom');
         }
 
         $today = new \DateTime();
         $audit = new AuditTom();
         $audit->setTeam($team);
-        $audit->setNummer('AUDIT-'. hexdec( uniqid() ));
+        $audit->setNummer('AUDIT-' . hexdec(uniqid()));
         $audit->setActiv(true);
         $audit->setCreatedAt($today);
         $audit->setUser($this->getUser());
@@ -79,22 +87,20 @@ class AuditTomController extends AbstractController
     /**
      * @Route("/audit-tom/edit", name="audit_tom_edit")
      */
-    public function EditAuditTom(ValidatorInterface $validator, Request $request)
+    public function EditAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
-        }
-        $today = new \DateTime();
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->find($request->get('tom'));
+
+        if ($securityService->teamDataCheck($audit, $team) === false) {
+            return $this->redirectToRoute('audit_tom');
+        }
+
+        $today = new \DateTime();
         $status = $this->getDoctrine()->getRepository(AuditTomStatus::class)->findAll();
         $abteilungen = $this->getDoctrine()->getRepository(AuditTomAbteilung::class)->findAllByTeam($team);
         $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findAllTagetsByTeam($team);
 
-        //Sicherheitsfunktion, dass nur eigene und Default TOMs bearbeitet werden können
-        if ($audit->getTeam() !== $team) {
-            return $this->redirectToRoute('audit_tom');
-        }
 
         $allAudits = array_reverse($this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($this->getUser()->getTeam()));
 
@@ -148,12 +154,13 @@ class AuditTomController extends AbstractController
     /**
      * @Route("/audit-tom/clone", name="audit_tom_clone")
      */
-    public function CloneAuditTom(Request $request)
+    public function CloneAuditTom(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('audit_tom');
         }
+
         $today = new \DateTime();
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam(1);
 
