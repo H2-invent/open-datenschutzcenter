@@ -16,7 +16,7 @@
                 </thead>
                 <tbody>
                 {% for b in buchungen %}
-                    <tr {% if b.zugewiesen < today and b.user.adminUser in b.kurs.team %}class="clickable-row"
+                    <tr {% if b.zugewiesen < today and b.user.akademieUser in b.kurs.team %}class="clickable-row"
                         data-href='{{ path('akademie_kurs',{'kurs':b.id}) }}'{% endif %}>
                         <th scope="row">{{ b.id }}</th>
                         <th>{% if b.zugewiesen > today %}Automatische Wiedervorlage noch nicht geöffnet{% else %}{{ b.kurs.title }} (id: {{ b.kurs.id }}){% endif %}</th>

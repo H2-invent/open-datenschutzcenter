@@ -10,34 +10,47 @@ namespace App\Service;
 
 
 use App\Entity\Team;
-use Symfony\Component\Routing\RouterInterface;
+use App\Entity\User;
 
 
 class SecurityService
 {
-    private $router;
 
-    public function __construct(RouterInterface $router)
+    function userDataCheck($data, Team $team, User $user)
     {
-        $this->router = $router;
+        //Sicherheitsfunktion, dass ein Team vorhanden ist
+        if ($team === null) {
+            return false;
+        }
 
+        //Sicherheitsfunktion, dass nur eigene Daten bearbeitet werden können
+        if ($data->getUser() !== $user) {
+            return false;
+        }
+        return true;
     }
 
     function teamDataCheck($data, Team $team)
     {
-        $this->teamCheck($team);
+        //Sicherheitsfunktion, dass ein Team vorhanden ist
+        if ($team === null) {
+            return false;
+        }
 
         //Sicherheitsfunktion, dass nur eigene Daten bearbeitet werden können
-        if ($data->getTeam() !== $team) {
-            return $this->router->generate('vvt');
+        if (!in_array($team, $data->getTeam()->toarray())) {
+            return false;
         }
+
+        return true;
     }
 
     function teamCheck(Team $team)
     {
         //Sicherheitsfunktion, dass ein Team vorhanden ist
         if ($team === null) {
-            return $this->router->generate('fos_user_security_logout');
+            return false;
         }
+        return true;
     }
 }

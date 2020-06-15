@@ -36,13 +36,17 @@ class KursController extends AbstractController
     public function addKurs(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
-        $securityService->teamCheck($team);
+
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
 
         $today = new \DateTime();
         $daten = new AkademieKurse();
         $daten->addTeam($team);
         $daten->setCreatedAt($today);
         $daten->setActiv(true);
+        $daten->setUser($this->getUser());
 
         $form = $this->createForm(KursType::class, $daten);
         $form->handleRequest($request);
@@ -72,7 +76,10 @@ class KursController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
-        $securityService->teamDataCheck($kurs, $team);
+
+        if ($securityService->teamDataCheck($kurs, $team) === false) {
+            return $this->redirectToRoute('kurse');
+        }
 
         $today = new \DateTime();;
         $kurs->setCreatedAt($today);
@@ -106,7 +113,9 @@ class KursController extends AbstractController
         $team = $this->getUser()->getAdminUser();
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
-        $securityService->teamDataCheck($kurs, $team);
+        if ($securityService->teamDataCheck($kurs, $team) === false) {
+            return $this->redirectToRoute('kurse');
+        }
 
         $daten = array();
         $daten['zugewiesen'] = new \DateTime();
@@ -132,7 +141,10 @@ class KursController extends AbstractController
         $team = $this->getUser()->getAdminUser();
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
-        $securityService->teamDataCheck($kurs, $team);
+        if ($securityService->teamDataCheck($kurs, $team) === false) {
+            return $this->redirectToRoute('kurse');
+        }
+
         $akademieService->removeKurs($team, $kurs);
 
         return $this->redirectToRoute('kurse');

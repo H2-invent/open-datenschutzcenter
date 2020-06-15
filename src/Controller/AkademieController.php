@@ -108,7 +108,7 @@ class AkademieController extends AbstractController
             // Retrieve the HTML generated in our twig file
             $html = $this->renderView('bericht/zertifikatAkademie.html.twig', [
                 'daten' => $buchung,
-                'team' => $this->getUser()->getTeam(),
+                'team' => $this->getUser()->getAkademieUser(),
                 'user' => $this->getUser(),
             ]);
 

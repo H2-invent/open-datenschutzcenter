@@ -67,5 +67,6 @@ class AkademieService
             }
             $this->em->flush();
         }
+        return true;
     }
 }
