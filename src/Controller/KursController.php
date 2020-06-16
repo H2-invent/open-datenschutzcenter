@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\AkademieBuchungen;
 use App\Entity\AkademieKurse;
 use App\Form\Type\KursAnmeldungType;
 use App\Form\Type\KursType;
+use App\Service\AkademieService;
 use App\Service\NotificationService;
+use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,10 +18,10 @@ class KursController extends AbstractController
     /**
      * @Route("/kurse", name="kurse")
      */
-    public function index()
+    public function index(SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
-        if ($team === null) {
+        if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -34,11 +35,12 @@ class KursController extends AbstractController
     /**
      * @Route("/kurs/new", name="akademie_kurs_new")
      */
-    public function addKurs(ValidatorInterface $validator, Request $request)
+    public function addKurs(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
+
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('kurse');
         }
 
         $today = new \DateTime();
@@ -46,6 +48,7 @@ class KursController extends AbstractController
         $daten->addTeam($team);
         $daten->setCreatedAt($today);
         $daten->setActiv(true);
+        $daten->setUser($this->getUser());
 
         $form = $this->createForm(KursType::class, $daten);
         $form->handleRequest($request);
@@ -58,59 +61,72 @@ class KursController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($daten);
                 $em->flush();
-                return $this->redirectToRoute('kurs_anmelden',['id'=>$daten->getId()]);
+                return $this->redirectToRoute('kurs_anmelden', ['id' => $daten->getId()]);
+            }
+        }
+        return $this->render('akademie/new.html.twig', [
+            'form' => $form->createView(),
+            'errors' => $errors,
+            'title' => 'Kurs erstellen',
+        ]);
+    }
+
+    /**
+     * @Route("/kurs/edit", name="akademie_kurs_edit")
+     */
+    public function editKurs(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
+
+        if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
+            return $this->redirectToRoute('kurse');
+        }
+
+        $today = new \DateTime();;
+        $kurs->setCreatedAt($today);
+
+        $form = $this->createForm(KursType::class, $kurs);
+        $form->handleRequest($request);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $daten = $form->getData();
+            $errors = $validator->validate($daten);
+            if (count($errors) == 0) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($daten);
+                $em->flush();
+                return $this->redirectToRoute('kurs_anmelden', ['id' => $daten->getId()]);
             }
         }
         return $this->render('akademie/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Verarbeitung erstellen',
-            'daten' => $daten,
-            'activNummer' => true,
-            'activ' => $daten->getActiv()
         ]);
     }
 
     /**
      * @Route("/kurs/anmelden", name="kurs_anmelden")
      */
-    public function kursAnmelden(Request $request, NotificationService $notificationService)
+    public function kursAnmelden(Request $request, NotificationService $notificationService, SecurityService $securityService, AkademieService $akademieService)
     {
         $team = $this->getUser()->getAdminUser();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
-        }
-
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
+        if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
+            return $this->redirectToRoute('kurse');
+        }
+
         $daten = array();
-        $today = new \DateTime();
-        $daten['zugewiesen'] = $today;
+        $daten['zugewiesen'] = new \DateTime();
         $form = $this->createForm(KursAnmeldungType::class, $daten, ['user' => $team->getAkademieUsers()]);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $daten = $form->getData();
-
-            $buchung = new AkademieBuchungen();
-            $buchung->setKurs($kurs);
-            $buchung->setAbgeschlossen(false);
-            $buchung->setVorlage($daten['wiedervorlage']);
-            $buchung->setZugewiesen($daten['zugewiesen']);
-            $buchung->setInvitation(false);
-
-            foreach ($daten['user'] as $user) {
-                $buchung->setUser($user);
-                if ($daten['invite'] === true) {
-                    $content = $this->renderView('email/neuerKurs.html.twig',['buchung'=>$buchung]);
-                    $buchung->setInvitation(true);
-                    $notificationService->sendNotificationAkademie($buchung, $content);
-                }
-                $em->persist($buchung);
-            }
-            $em->flush();
+            $akademieService->addUser($kurs, $daten);
             return $this->redirectToRoute('kurse');
         }
         return $this->render('akademie/new.html.twig', [
@@ -122,24 +138,16 @@ class KursController extends AbstractController
     /**
      * @Route("/kurs/deaktivieren", name="kurs_deaktivieren")
      */
-    public function kursDeaktivieren(Request $request)
+    public function kursDeaktivieren(Request $request, SecurityService $securityService, AkademieService $akademieService)
     {
         $team = $this->getUser()->getAdminUser();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
-        }
-
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
-        $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findBuchungenByTeam($team, $kurs);
 
-        $em = $this->getDoctrine()->getManager();
-        if (in_array($team, $kurs->getTeam()->toarray())) {
-            $kurs->removeTeam($team);
-            foreach ($buchungen as $buchung) {
-                $em->remove($buchung);
-            }
-            $em->flush();
+        if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
+            return $this->redirectToRoute('kurse');
         }
+
+        $akademieService->removeKurs($team, $kurs);
 
         return $this->redirectToRoute('kurse');
     }

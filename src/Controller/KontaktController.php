@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Kontakte;
 use App\Form\Type\KontaktType;
+use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,9 +21,14 @@ class KontaktController extends AbstractController
     /**
      * @Route("/kontakt", name="kontakt")
      */
-    public function index()
+    public function index(SecurityService $securityService)
     {
-        $kontakte = $this->getDoctrine()->getRepository(Kontakte::class)->findBy(array('team'=>$this->getUser()->getTeam(),'activ'=>true));
+        $team = $this->getUser()->getTeam();
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $kontakte = $this->getDoctrine()->getRepository(Kontakte::class)->findBy(array('team' => $team, 'activ' => true));
 
         return $this->render('kontakt/index.html.twig', [
             'kontakte' => $kontakte,
@@ -33,10 +39,10 @@ class KontaktController extends AbstractController
     /**
      * @Route("/kontakt/neu", name="kontakt_new")
      */
-    public function addKontakt(ValidatorInterface $validator, Request $request)
+    public function addKontakt(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
+        if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -67,17 +73,12 @@ class KontaktController extends AbstractController
     /**
      * @Route("/kontakt/edit", name="kontakt_edit")
      */
-    public function editKontakt(ValidatorInterface $validator, Request $request)
+    public function editKontakt(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
-        }
         $kontakt = $this->getDoctrine()->getRepository(Kontakte::class)->find($request->get('id'));
-
-        //Sicherheitsfunktion, dass nur eigene Kontakte bearbeitet werden können
-        if ($kontakt->getTeam() !== $team) {
-            return $this->redirectToRoute('kontakt');
+        if ($securityService->teamDataCheck($kontakt, $team) === false) {
+            return $this->redirectToRoute('kurse');
         }
 
         $form = $this->createForm(KontaktType::class, $kontakt);

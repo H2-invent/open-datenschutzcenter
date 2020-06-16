@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\AuditTomAbteilung;
 use App\Entity\Produkte;
-use App\Form\Type\AbteilungType;
 use App\Form\Type\ProduktType;
+use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,12 +25,12 @@ class ProduktController extends AbstractController
     /**
      * @Route("/team_produkte", name="team_produkt")
      */
-    public function addProdukte(ValidatorInterface $validator, Request $request)
+    public function addProdukte(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
         // Admin Route only
-        if ($team === null) {
+        if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
         $produkte = $this->getDoctrine()->getRepository(Produkte::class)->findActivByTeam($team);
@@ -70,19 +69,16 @@ class ProduktController extends AbstractController
     /**
      * @Route("/team_produkt/deaktivieren", name="team_produkt_deativate")
      */
-    public function addProduktDeactivate(Request $request)
+    public function addProduktDeactivate(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
+        $produkt = $this->getDoctrine()->getRepository(Produkte::class)->findOneBy(array('id' => $request->get('id')));
 
-        // Admin Route only
-        if ($team === null) {
+        if ($securityService->teamDataCheck($produkt, $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $produkt = $this->getDoctrine()->getRepository(Produkte::class)->findOneBy(array('id' => $request->get('id')));
-        if ($produkt->getTeam() == $this->getUser()->getTeam()) {
-            $produkt->setActiv(false);
-        }
+        $produkt->setActiv(false);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($produkt);

@@ -71,6 +71,7 @@ class AkademieController extends AbstractController
         $newBuchung = clone $buchung;
         $buchung->setAbgeschlossen(true);
         $buchung->setEnde($today);
+        $buchung->setFinishedID(null);
         $buchung->setBuchungsID(uniqid());
 
         $em = $this->getDoctrine()->getManager();
@@ -107,7 +108,7 @@ class AkademieController extends AbstractController
             // Retrieve the HTML generated in our twig file
             $html = $this->renderView('bericht/zertifikatAkademie.html.twig', [
                 'daten' => $buchung,
-                'team' => $this->getUser()->getTeam(),
+                'team' => $this->getUser()->getAkademieUser(),
                 'user' => $this->getUser(),
             ]);
 

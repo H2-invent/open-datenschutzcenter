@@ -5,8 +5,8 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -80,6 +80,11 @@ class User extends BaseUser
      */
     private $vorfalls;
 
+    /**
+     * @ORM\OneToMany(targetEntity=AkademieKurse::class, mappedBy="user")
+     */
+    private $akademieKurses;
+
 
     public function __construct()
     {
@@ -91,6 +96,7 @@ class User extends BaseUser
         $this->myVvts = new ArrayCollection();
         $this->toms = new ArrayCollection();
         $this->vorfalls = new ArrayCollection();
+        $this->akademieKurses = new ArrayCollection();
     }
 
     public function getTeam(): ?Team
@@ -340,6 +346,37 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($vorfall->getUser() === $this) {
                 $vorfall->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AkademieKurse[]
+     */
+    public function getAkademieKurses(): Collection
+    {
+        return $this->akademieKurses;
+    }
+
+    public function addAkademieKurse(AkademieKurse $akademieKurse): self
+    {
+        if (!$this->akademieKurses->contains($akademieKurse)) {
+            $this->akademieKurses[] = $akademieKurse;
+            $akademieKurse->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAkademieKurse(AkademieKurse $akademieKurse): self
+    {
+        if ($this->akademieKurses->contains($akademieKurse)) {
+            $this->akademieKurses->removeElement($akademieKurse);
+            // set the owning side to null (unless already changed)
+            if ($akademieKurse->getUser() === $this) {
+                $akademieKurse->setUser(null);
             }
         }
 
