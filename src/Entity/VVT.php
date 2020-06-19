@@ -165,12 +165,14 @@ class VVT
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $beurteilungEintritt;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $beurteilungSchaden;
 
