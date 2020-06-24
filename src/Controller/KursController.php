@@ -25,7 +25,7 @@ class KursController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $this->getDoctrine()->getRepository(AkademieKurse::class)->findKurseByTeam($this->getUser()->getTeam());
+        $daten = $this->getDoctrine()->getRepository(AkademieKurse::class)->findKurseByTeam($team);
         return $this->render('kurs/index.html.twig', [
             'table' => $daten,
             'titel' => 'Alle erstellen Kurse',
@@ -80,6 +80,10 @@ class KursController extends AbstractController
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
+            return $this->redirectToRoute('kurse');
+        }
+
+        if ($this->getUser() !== $kurs->getUser()) {
             return $this->redirectToRoute('kurse');
         }
 
