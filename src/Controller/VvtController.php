@@ -26,7 +26,9 @@ class VvtController extends AbstractController
     public function index(SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        $securityService->teamCheck($team);
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($team);
 
         return $this->render('vvt/index.html.twig', [
@@ -42,7 +44,9 @@ class VvtController extends AbstractController
     {
         $team = $this->getUser()->getTeam();
 
-        $securityService->teamCheck($team);
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('vvt');
+        }
 
         $vvt = $VVTService->newVvt($team, $this->getUser());
         $form = $VVTService->createForm($vvt, $team);
@@ -80,7 +84,9 @@ class VvtController extends AbstractController
         $team = $this->getUser()->getTeam();
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
 
-        $securityService->teamDataCheck($vvt, $team);
+        if ($securityService->teamDataCheck($vvt, $team) === false) {
+            return $this->redirectToRoute('vvt');
+        }
 
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
         $form = $VVTService->createForm($newVvt, $team);
@@ -126,9 +132,12 @@ class VvtController extends AbstractController
     public function newVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        $securityService->teamCheck($team);
-
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('vvt'));
+
+        if ($securityService->teamDataCheck($vvt, $team) === false) {
+            return $this->redirectToRoute('vvt');
+        }
+
         $dsfa = $VVTService->newDsfa($team, $this->getUser(), $vvt);
 
         $form = $this->createForm(VvtDsfaType::class, $dsfa);
@@ -162,7 +171,9 @@ class VvtController extends AbstractController
         $team = $this->getUser()->getTeam();
         $dsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->find($request->get('dsfa'));
 
-        $securityService->teamDataCheck($dsfa->getVvt(), $team);
+        if ($securityService->teamDataCheck($dsfa->getVvt(), $team) === false) {
+            return $this->redirectToRoute('vvt');
+        }
 
         $newDsfa = $VVTService->cloneDsfa($dsfa, $this->getUser());
 
