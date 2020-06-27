@@ -14,6 +14,7 @@ use App\Entity\Kontakte;
 use App\Entity\Tom;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -59,7 +60,7 @@ class DashboardController extends AbstractController
         $kristischeVvts = $query->getResult();
 
         $qb = $this->getDoctrine()->getRepository(VVTDsfa::class)->createQueryBuilder('dsfa');
-        $qb->innerJoin('dsfa.vvt','vvt')
+        $qb->innerJoin('dsfa.vvt', 'vvt')
             ->andWhere('vvt.activ = 1')
             ->andWhere('dsfa.activ = 1')
             ->andWhere('dsfa.dsb IS NULL OR dsfa.ergebnis IS NULL')
@@ -67,6 +68,10 @@ class DashboardController extends AbstractController
             ->setParameter('team', $team);
         $query = $qb->getQuery();
         $openDsfa = $query->getResult();
+
+        $assignVvt = $this->getUser()->getAssignedVvts()->toarray();
+        $assignAudit = $this->getUser()->getAssignedAudits()->toarray();
+        $assign = new ArrayCollection(array_merge($assignAudit, $assignVvt));
 
         return $this->render('dashboard/index.html.twig', [
             'controller_name' => 'DashboardController',
@@ -80,7 +85,8 @@ class DashboardController extends AbstractController
             'kVvt' => $kristischeVvts,
             'openDsfa' => $openDsfa,
             'tom' => $tom,
-            'av' => $av
+            'av' => $av,
+            'assign' => $assign
         ]);
     }
 }

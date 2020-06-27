@@ -38,15 +38,16 @@ class AssignService
         return $form;
     }
 
-    function assignVvt($request)
+    function assignVvt($request, VVT $vvt)
     {
         try {
-            $vvt = $this->em->getRepository(VVT::class)->find($request->get('id'));
 
             if ($vvt->getAssignedUser() == null) {
                 $data = $request->get('assign');
                 $user = $this->em->getRepository(User::class)->find($data['user']);
-                $vvt->setAssignedUser($user);
+                if ($vvt->getTeam() === $user->getTeam()) {
+                    $vvt->setAssignedUser($user);
+                }
             } else {
                 $vvt->setAssignedUser(null);
             }
@@ -59,15 +60,16 @@ class AssignService
         }
     }
 
-    function assignAudit($request)
+    function assignAudit($request, AuditTom $audit)
     {
         try {
-            $audit = $this->em->getRepository(AuditTom::class)->find($request->get('id'));
 
             if ($audit->getAssignedUser() == null) {
                 $data = $request->get('assign');
                 $user = $this->em->getRepository(User::class)->find($data['user']);
-                $audit->setAssignedUser($user);
+                if ($audit->getTeam() === $user->getTeam()) {
+                    $audit->setAssignedUser($user);
+                }
             } else {
                 $audit->setAssignedUser(null);
             }

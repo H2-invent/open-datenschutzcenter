@@ -119,6 +119,44 @@
             <div class="card">
                 <!-- Card header -->
                 <div class="card-header text-center">
+                    Offene Aufgaben
+                </div>
+                <!--Card content-->
+                <div class="card-body">
+                    {% for a in assign|slice(0, 9) %}
+                        {% if a.activ == 1 %}
+                            <a href="{% if a.name is defined %}{{ path('vvt_edit',{'id':a.id}) }}{% else %}{{ path('audit_tom_edit',{'tom':a.id}) }}{% endif %}">
+                                <div class="card card-body note-info mb-1">
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            {% if a.name is defined %}<img style="width: 20px"
+                                                                           src="{{ asset('icons/prozess.svg') }}">{% else %}
+                                                <img style="width: 20px"
+                                                     src="{{ asset('icons/pruefung.svg') }}">{% endif %}
+                                        </div>
+                                        <div class="col-md-7">
+                                            {% if a.name is defined %}{{ a.name }}{% elseif a.frage is defined %}{{ a.frage }}{% endif %}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {{ a.status.name }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                    <a class="btn btn-sm btn-primary" href="{{ path('assign') }}">Alle Zuweisungen anzeigen</a>
+
+
+                </div>
+
+            </div>
+            <!--/.Card-->
+
+            <!--Card-->
+            <div class="card mt-3">
+                <!-- Card header -->
+                <div class="card-header text-center">
                     Letzte Änderungen
                 </div>
                 <!--Card content-->
