@@ -12,8 +12,15 @@
 {% endblock %}
 
 {% block body %}
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="h2-responsive">{{ title }} (Nummer: {{ audit.nummer }})</h2>
+        </div>
+        <div class="col-md-4 text-right">
+            {{ include('assign/__assign.html.twig',{'data':audit,'path':'assign_audit'}) }}
+        </div>
+    </div>
 
-    <h2 class="h2-responsive">{{ title }} (Nummer: {{ audit.nummer }})</h2>
     <div class="card card-body">
         {{ include('audit_tom/__form.html.twig') }}
     </div>

@@ -13,6 +13,7 @@ use App\Entity\AuditTomAbteilung;
 use App\Entity\AuditTomStatus;
 use App\Entity\AuditTomZiele;
 use App\Form\Type\AuditTomType;
+use App\Service\AssignService;
 use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,7 +88,7 @@ class AuditTomController extends AbstractController
     /**
      * @Route("/audit-tom/edit", name="audit_tom_edit")
      */
-    public function EditAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function EditAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, AssignService $assignService)
     {
         $team = $this->getUser()->getTeam();
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->find($request->get('tom'));
@@ -126,6 +127,8 @@ class AuditTomController extends AbstractController
         $form = $this->createForm(AuditTomType::class, $newAudit, ['abteilungen' => $abteilungen, 'ziele' => $ziele, 'status' => $status]);
         $form->remove('nummer');
         $form->handleRequest($request);
+        $assign = $assignService->createForm($audit, $team);
+
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $audit->setActiv(false);
@@ -142,6 +145,7 @@ class AuditTomController extends AbstractController
         }
         return $this->render('audit_tom/edit.html.twig', [
             'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
             'errors' => $errors,
             'title' => 'A-Frage bearbeiten',
             'audit' => $audit,

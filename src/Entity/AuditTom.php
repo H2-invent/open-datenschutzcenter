@@ -115,6 +115,11 @@ class AuditTom
      */
     private $kategorie;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedAudits")
+     */
+    private $assignedUser;
+
     public function __construct()
     {
         $this->ziele = new ArrayCollection();
@@ -330,6 +335,18 @@ class AuditTom
     public function setKategorie(string $kategorie): self
     {
         $this->kategorie = $kategorie;
+
+        return $this;
+    }
+
+    public function getAssignedUser(): ?User
+    {
+        return $this->assignedUser;
+    }
+
+    public function setAssignedUser(?User $assignedUser): self
+    {
+        $this->assignedUser = $assignedUser;
 
         return $this;
     }

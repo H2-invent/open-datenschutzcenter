@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Form\Type\VvtDsfaType;
+use App\Service\AssignService;
 use App\Service\SecurityService;
 use App\Service\VVTService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -79,7 +80,7 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/edit", name="vvt_edit")
      */
-    public function editVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService)
+    public function editVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService)
     {
         $team = $this->getUser()->getTeam();
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
@@ -87,12 +88,12 @@ class VvtController extends AbstractController
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
         }
-
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
         $form = $VVTService->createForm($newVvt, $team);
-
         $form->remove('nummer');
         $form->handleRequest($request);
+        $assign = $assignService->createForm($vvt, $team);
+
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -117,6 +118,7 @@ class VvtController extends AbstractController
 
         return $this->render('vvt/edit.html.twig', [
             'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
             'errors' => $errors,
             'title' => 'Verarbeitungstätigkeit bearbeiten',
             'vvt' => $vvt,

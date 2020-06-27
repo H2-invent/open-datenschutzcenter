@@ -1,0 +1,15 @@
+{% if data.assignedUser is null %}
+    {{ form_start(assignForm,{'action': path(path,{'id':data.id})}) }}
+    <div class="row">
+        <div class="col-8">
+            {{ form_widget(assignForm.user) }}
+        </div>
+        <div class="col-4">
+            {{ form_widget(assignForm.submit) }}
+        </div>
+    </div>
+    {{ form_end(assignForm) }}
+{% else %}
+    {{ data.assignedUser.email }} <a class="btn btn-info btn-sm" href="{{ path(path,{'id':data.id}) }}">Zuweisung
+    entfernen</a>
+{% endif %}
