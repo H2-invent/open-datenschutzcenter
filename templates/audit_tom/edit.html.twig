@@ -31,6 +31,7 @@
             {{ include('audit_tom/__history.html.twig', {'p':audit.previous}) }}
         </div>
     {% endif %}
+    {{ include('base/__snack.html.twig') }}
 {% endblock %}
 
 {% block javascript %}

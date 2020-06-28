@@ -92,13 +92,14 @@ class KontaktController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($data);
                 $em->flush();
-                return $this->redirectToRoute('kontakt');
+                return $this->redirectToRoute('kontakt_edit', ['id' => $kontakt->getId(), 'snack' => 'Erfolgreich gepeichert']);
             }
         }
         return $this->render('kontakt/edit.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Kontakt erstellen',
+            'snack' => $request->get('snack')
         ]);
     }
 }

@@ -35,7 +35,6 @@
             {{ include('assign/__assign.html.twig',{'data':vvt,'path':'assign_vvt'}) }}
         </div>
     </div>
-    {{ include('base/__snack.html.twig') }}
 
 
     {{ include('vvt/__form.html.twig') }}
@@ -46,6 +45,9 @@
             {{ include('vvt/__history.html.twig', {'p':vvt.previous}) }}
         </div>
     {% endif %}
+
+    {{ include('base/__snack.html.twig') }}
+
 {% endblock %}
 
 {% block javascript %}

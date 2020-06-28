@@ -99,7 +99,7 @@ class VorfallController extends AbstractController
                 $em->persist($newVorgang);
                 $em->persist($vorgang);
                 $em->flush();
-                return $this->redirectToRoute('vorfall');
+                return $this->redirectToRoute('vorfall_edit', ['id' => $newVorgang->getId(), 'snack' => 'Erfolgreich gespeichert']);
             }
         }
         return $this->render('vorfall/edit.html.twig', [
@@ -108,6 +108,7 @@ class VorfallController extends AbstractController
             'title' => 'Datenschutzvorfall bearbeiten',
             'vorfall' => $vorgang,
             'activ' => $vorgang->getActiv(),
+            'snack' => $request->get('snack')
         ]);
     }
 }

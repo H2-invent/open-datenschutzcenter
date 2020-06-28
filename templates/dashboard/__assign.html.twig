@@ -35,7 +35,7 @@
 
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="audit" role="tabpanel" aria-labelledby="home-tab">
-                {% for a in assignAudit|slice(0, 3)|sort((a, b) => b.createdAt <=> a.createdAt) %}
+                {% for a in assignAudit |slice(0, 6)|sort((a, b) => b.createdAt <=> a.createdAt) %}
                     {% if a.activ %}
                         <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
                             <div class="btn btn-block bg-audit text-md-left mt-1">
@@ -56,7 +56,7 @@
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="vvt" role="tabpanel" aria-labelledby="profile-tab">
-                {% for a in assignVvt|slice(0, 3)|sort((a, b) => b.createdAt <=> a.createdAt) %}
+                {% for a in assignVvt|slice(0, 6)|sort((a, b) => b.createdAt <=> a.createdAt) %}
                     {% if a.activ %}
                         <a href="{{ path('vvt_edit',{'id':a.id}) }}">
                             <div class="btn btn-block bg-vvt text-md-left mt-1">
@@ -80,7 +80,7 @@
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="dsfa" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in assignDsfa|slice(0, 3)|sort((a, b) => b.createdAt <=> a.createdAt) %}
+                {% for a in assignDsfa|slice(0, 6)|sort((a, b) => b.createdAt <=> a.createdAt) %}
                     {% if a.activ %}
                         <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
                             <div class="btn btn-block bg-dsfa text-md-left mt-1">
@@ -101,7 +101,7 @@
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="daten" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in assignDaten|slice(0, 3)|sort((a, b) => b.createdAt <=> a.createdAt) %}
+                {% for a in assignDaten|slice(0, 6)|sort((a, b) => b.createdAt <=> a.createdAt) %}
                     {% if a.activ %}
                         <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">
                             <div class="btn btn-block {% if a.art == 1 %}bg-daten{% else %}bg-av{% endif %} text-md-left mt-1">

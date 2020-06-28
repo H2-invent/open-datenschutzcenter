@@ -20,7 +20,7 @@
             {{ include('assign/__assign.html.twig',{'data':daten,'path':'assign_datenweitergabe'}) }}
         </div>
     </div>
-    {{ include('base/__snack.html.twig') }}
+
     <div class="card card-body">
         {{ include('datenweitergabe/__form.html.twig') }}
     </div>
@@ -31,6 +31,7 @@
             {{ include('datenweitergabe/__history.html.twig', {'p':daten.previous}) }}
         </div>
     {% endif %}
+    {{ include('base/__snack.html.twig') }}
 {% endblock %}
 
     {% block javascript %}

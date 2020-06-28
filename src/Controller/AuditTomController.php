@@ -140,7 +140,7 @@ class AuditTomController extends AbstractController
                 $em->persist($newAudit);
                 $em->persist($audit);
                 $em->flush();
-                return $this->redirectToRoute('audit_tom_edit', array('tom'=>$newAudit->getId()));
+                return $this->redirectToRoute('audit_tom_edit', array('tom' => $newAudit->getId(), 'snack' => 'Erfolgreich gepeichert'));
             }
         }
         return $this->render('audit_tom/edit.html.twig', [
@@ -152,6 +152,7 @@ class AuditTomController extends AbstractController
             'activ' => $audit->getActiv(),
             'activNummer' => false,
             'nextAudit' => $nextAudit,
+            'snack' => $request->get('snack')
         ]);
     }
 

@@ -100,7 +100,7 @@ class TomController extends AbstractController
                 $em->persist($newTom);
                 $em->persist($tom);
                 $em->flush();
-                return $this->redirectToRoute('tom');
+                return $this->redirectToRoute('tom_edit', ['tom' => $newTom->getId(), 'snack' => 'Erfolgreich gepeichert']);
             }
         }
         return $this->render('tom/edit.html.twig', [
@@ -109,7 +109,8 @@ class TomController extends AbstractController
             'title' => 'TOM bearbeiten',
             'tom' => $tom,
             'activ' => $tom->getActiv(),
-            'activTitel' => false
+            'activTitel' => false,
+            'snack' => $request->get('snack')
         ]);
     }
 

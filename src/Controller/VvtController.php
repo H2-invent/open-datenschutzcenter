@@ -194,7 +194,7 @@ class VvtController extends AbstractController
                 $em->persist($newDsfa);
                 $em->persist($dsfa);
                 $em->flush();
-                return $this->redirectToRoute('vvt_dsfa_edit', ['id' => $newDsfa->getId(), 'snack' => 'Erfolgreich gepeichert']);
+                return $this->redirectToRoute('vvt_dsfa_edit', ['dsfa' => $newDsfa->getId(), 'snack' => 'Erfolgreich gepeichert']);
             }
         }
 

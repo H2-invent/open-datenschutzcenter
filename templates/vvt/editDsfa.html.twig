@@ -76,6 +76,8 @@
             {{ include('vvt/__dsfaHistory.html.twig', {'p':dsfa.previous}) }}
         </div>
     {% endif %}
+
+    {{ include('base/__snack.html.twig') }}
 {% endblock %}
 
 {% block javascript %}

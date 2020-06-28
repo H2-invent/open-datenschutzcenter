@@ -41,7 +41,12 @@ class TomService
         $newTom->setPrevious($tom);
         $newTom->setCreatedAt(new \DateTime());
         $newTom->setUser($user);
-
+        foreach ($tom->getVvts() as $vvt) {
+            if ($vvt->getActiv()) {
+                $vvt->setTomLink($newTom);
+                $this->em->persist($vvt);
+            }
+        }
         return $newTom;
     }
 }
