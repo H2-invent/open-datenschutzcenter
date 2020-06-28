@@ -6,7 +6,6 @@ use App\Entity\AuditTom;
 use App\Entity\VVT;
 use App\Service\AssignService;
 use App\Service\SecurityService;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,11 +15,10 @@ class AssignController extends AbstractController
     /**
      * @Route("/assign", name="assign")
      */
-    public function index()
+    public function index(Request $request, AssignService $assignService)
     {
-        $assignVvt = $this->getUser()->getAssignedVvts()->toarray();
-        $assignAudit = $this->getUser()->getAssignedAudits()->toarray();
-        $assign = new ArrayCollection(array_merge($assignAudit, $assignVvt));
+
+        $assign = $assignService->assign($request, $this->getUser());
 
         return $this->render('assign/index.html.twig', [
             'assign' => $assign

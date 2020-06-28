@@ -10,7 +10,7 @@
                 <a href="{{ path('dashboard') }}">Dashboard</a>
             </li>
             <li class="{{ app.request.attributes.get('_route') == 'assign' ? 'active' }}">
-                <a href="{{ path('assign') }}">Meine Zuweisungen</a>
+                <a href="{{ path('assign',{'vvt':true,'audit':true}) }}">Meine Zuweisungen</a>
             </li>
         {% endif %}
         {% if app.user.akademieUser %}

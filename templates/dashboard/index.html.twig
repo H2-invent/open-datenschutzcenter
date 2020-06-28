@@ -74,7 +74,8 @@
                             <ul>
                                 {% for a in kAudit %}
                                     <li>
-                                        <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}">{{ a.createdAt|date('d.m.Y H:i') }}
+                                        <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}"><img style="width: 17px"
+                                                                                                  src="{{ asset('icons/pruefung.svg') }}"> {{ a.createdAt|date('d.m.Y H:i') }}
                                             - {{ a.frage }}</a></li>
                                 {% endfor %}
                             </ul>
@@ -84,7 +85,8 @@
                             <ul>
                                 {% for v in kVvt %}
                                     <li>
-                                        <a href="{{ path('vvt_edit', {'id':v.id}) }}">{{ v.createdAt|date('d.m.Y H:i') }}
+                                        <a href="{{ path('vvt_edit', {'id':v.id}) }}"><img style="width: 17px"
+                                                                                           src="{{ asset('icons/prozess.svg') }}"> {{ v.createdAt|date('d.m.Y H:i') }}
                                             - {{ v.name }}</a></li>
                                 {% endfor %}
                             </ul>
@@ -123,12 +125,18 @@
                 </div>
                 <!--Card content-->
                 <div class="card-body">
-                    {% for a in assign|slice(0, 9) %}
+                    {% for a in assign|slice(0, 9)|sort((a, b) => b.createdAt <=> a.createdAt) %}
                         {% if a.activ == 1 %}
-                            <a {% if a.name is defined %}class="btn btn-green btn-block mt-1"
-                               href="{{ path('vvt_edit',{'id':a.id}) }}" {% else %}class="btn btn-info btn-block mt-1"
-                               href="{{ path('audit_tom_edit',{'tom':a.id}) }}"{% endif %}>
-                                <div class="row">
+                            <a
+                                    {% if a.name is defined %}
+                                        class="btn btn-green btn-block mt-1"
+                                        href="{{ path('vvt_edit',{'id':a.id}) }}"
+                                    {% elseif a.frage is defined %}
+                                        class="btn btn-cyan btn-block mt-1"
+                                        href="{{ path('audit_tom_edit',{'tom':a.id}) }}"
+                                    {% endif %}
+                            >
+                                <div class="row text-left">
                                     <div class="col-md-1">
                                         {% if a.name is defined %}<img style="width: 20px"
                                                                        src="{{ asset('icons/prozess.svg') }}">{% else %}
@@ -145,7 +153,8 @@
                             </a>
                         {% endif %}
                     {% endfor %}
-                    <a class="btn btn-primary btn-block mt-3" href="{{ path('assign') }}">Alle Zuweisungen anzeigen</a>
+                    <a class="btn btn-primary btn-block mt-3" href="{{ path('assign',{'vvt':true,'audit':true}) }}">Alle
+                        Zuweisungen anzeigen</a>
 
 
                 </div>
@@ -164,21 +173,22 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h5>Auditfragen</h5>
+                            <hr>
                             <ul>
                                 {% for a in audit|slice(0, 5) %}
-                                    <li>
-                                        <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}">{{ a.createdAt|date('d.m.Y H:i') }}
-                                            - {{ a.frage }}</a></li>
+                                    <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}"><img style="width: 14px"
+                                                                                              src="{{ asset('icons/pruefung.svg') }}"> {{ a.frage }}
+                                    </a><br>
                                 {% endfor %}
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <h5>Verarbeitungsverzeichnisse</h5>
+                            <hr>
                             <ul>
                                 {% for v in vvt|slice(0, 5) %}
-                                    <li>
-                                        <a href="{{ path('vvt_edit', {'id':v.id}) }}">{{ v.createdAt|date('d.m.Y H:i') }}
-                                            - {{ v.name }}</a></li>
+                                    <img style="width: 14px" src="{{ asset('icons/prozess.svg') }}"> <a
+                                        href="{{ path('vvt_edit', {'id':v.id}) }}">{{ v.name }}</a><br>
                                 {% endfor %}
                             </ul>
                         </div>

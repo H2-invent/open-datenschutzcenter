@@ -14,6 +14,7 @@ use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\VVT;
 use App\Form\Type\AssignType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -30,6 +31,27 @@ class AssignService
         $this->em = $entityManager;
         $this->formBuilder = $formBuilder;
         $this->router = $router;
+    }
+
+    function assign($request, User $user)
+    {
+        $assignVvt = array();
+        $assignAudit = array();
+        $assign = array();
+        try {
+            if ($request->get('vvt')) {
+                $assignVvt = $user->getAssignedVvts()->toarray();
+            }
+            if ($request->get('audit')) {
+                $assignAudit = $user->getAssignedAudits()->toarray();
+            }
+
+            $assign = new ArrayCollection(array_merge($assignAudit, $assignVvt));
+            return $assign;
+
+        } catch (\Exception $exception) {
+            return $assign;
+        }
     }
 
     function createForm($data, Team $team)
