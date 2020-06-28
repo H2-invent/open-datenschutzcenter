@@ -32,7 +32,7 @@
 
 
             <div class="col-lg-3 mt-2">
-                <h4>Auftragsdatenverarbeitung (AVV)</h4>
+                <h4>Auftragsverarbeitung (AV)</h4>
                 <a class="btn bg-av btn-block mb-1" href="{{ path('bericht_weitergabe', {'art':2}) }}">
                     <span>PDF von allen AVVs erstellen</span>
                 </a>
@@ -76,20 +76,24 @@
 
             <div class="col-lg-3 mt-2">
                 <h4>Datenschutzvorfälle</h4>
-                <a class="btn btn-block bg-vorfall" href="{{ path('bericht_vorfall') }}">
+                <a class="btn btn-block bg-vorfall" href="{{ path('bericht_vorfall') }}"
+                   title="Exportieren Sie alle Datenschutzvorfälle">
                     <span>Alle Datenschutzvorfälle exportieren</span>
                 </a>
-                <a class="btn btn-block bg-vorfall" href="{{ path('bericht_vorfall', {'all':1}) }}">
+                <a class="btn btn-block bg-vorfall" href="{{ path('bericht_vorfall', {'all':1}) }}"
+                   title="Exportieren Sie alle Datenschutzvorfälle mit allen Änderungen">
                     <span>Alle Datenschutzvorfälle mit Historie exportieren</span>
                 </a>
             </div>
 
-            <div class="col-lg-3 mt-2">
-                <h4>Akademie</h4>
-                <a class="btn btn-block bg-akademie mb-1" href="{{ path('bericht_akademie') }}">
-                    <span>Alle bis jetzt abgeschlossenen Buchungen</span>
-                </a>
-            </div>
+            {% if app.user.adminUser %}
+                <div class="col-lg-3 mt-2">
+                    <h4>Akademie</h4>
+                    <a class="btn btn-block bg-akademie mb-1" href="{{ path('bericht_akademie') }}">
+                        <span>Alle bis jetzt abgeschlossenen Buchungen</span>
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -14,7 +14,6 @@ use App\Entity\Kontakte;
 use App\Entity\Tom;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -71,7 +70,8 @@ class DashboardController extends AbstractController
 
         $assignVvt = $this->getUser()->getAssignedVvts()->toarray();
         $assignAudit = $this->getUser()->getAssignedAudits()->toarray();
-        $assign = new ArrayCollection(array_merge($assignAudit, $assignVvt));
+        $assignDsfa = $this->getUser()->getAssignedDsfa()->toarray();
+        $assignDatenweitergabe = $this->getUser()->getAssignedDatenweitergaben()->toarray();
 
         return $this->render('dashboard/index.html.twig', [
             'controller_name' => 'DashboardController',
@@ -86,7 +86,10 @@ class DashboardController extends AbstractController
             'openDsfa' => $openDsfa,
             'tom' => $tom,
             'av' => $av,
-            'assign' => $assign
+            'assignDaten' => $assignDatenweitergabe,
+            'assignVvt' => $assignVvt,
+            'assignAudit' => $assignAudit,
+            'assignDsfa' => $assignDsfa
         ]);
     }
 }

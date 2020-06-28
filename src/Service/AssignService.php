@@ -42,18 +42,28 @@ class AssignService
 
     function assign($request, User $user)
     {
-        $assignVvt = array();
-        $assignAudit = array();
+        $assignDatenweitergabe = $user->getAssignedDatenweitergaben()->toarray();
+        $assignVvt = $user->getAssignedVvts()->toarray();
+        $assignAudit = $user->getAssignedAudits()->toarray();
+        $assignDsfa = $user->getAssignedDsfa()->toarray();
+
         $assign = array();
         try {
             if ($request->get('vvt')) {
-                $assignVvt = $user->getAssignedVvts()->toarray();
+                $assignVvt = array();
             }
             if ($request->get('audit')) {
-                $assignAudit = $user->getAssignedAudits()->toarray();
+                $assignAudit = array();
+            }
+            if ($request->get('dsfa')) {
+                $assignDsfa = array();
+            }
+            if ($request->get('daten')) {
+                $assignDatenweitergabe = array();
             }
 
-            $assign = new ArrayCollection(array_merge($assignAudit, $assignVvt));
+            $assign = new ArrayCollection(array_merge($assignAudit, $assignVvt, $assignDsfa, $assignDatenweitergabe));
+
             return $assign;
 
         } catch (\Exception $exception) {

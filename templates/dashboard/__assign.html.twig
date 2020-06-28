@@ -6,40 +6,123 @@
     </div>
     <!--Card content-->
     <div class="card-body">
-        {% for a in assign|slice(0, 9)|sort((a, b) => b.createdAt <=> a.createdAt) %}
-            {% if a.activ == 1 %}
-                <a
-                        {% if a.name is defined %}
-                            class="btn bg-vvt btn-block mt-1"
-                            href="{{ path('vvt_edit',{'id':a.id}) }}"
-                        {% elseif a.frage is defined %}
-                            class="btn bg-audit btn-block mt-1"
-                            href="{{ path('audit_tom_edit',{'tom':a.id}) }}"
-                        {% endif %}
-                >
-                    <div class="row text-left">
-                        <div class="col-md-1">
-                            {% if a.name is defined %}
-                                <img style="width: 20px" src="{{ asset('icons/prozess.svg') }}">
-                            {% elseif a.frage is defined %}
-                                <img style="width: 20px" src="{{ asset('icons/pruefung.svg') }}">
-                            {% endif %}
-                        </div>
-                        <div class="col-md-7">
-                            {% if a.name is defined %}
-                                {{ a.name }}
-                            {% elseif a.frage is defined %}
-                                {{ a.frage }}
-                            {% endif %}
-                        </div>
-                        <div class="col-md-4">
-                            {{ a.status.name }}
-                        </div>
-                    </div>
-                </a>
-            {% endif %}
-        {% endfor %}
-        <a class="btn btn-primary btn-block mt-3" href="{{ path('assign',{'vvt':true,'audit':true}) }}">Alle Zuweisungen
+        <ul class="nav nav-tabs" id="audit-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active text-center" id="home-tab" data-toggle="tab" href="#audit" role="tab"
+                   aria-controls="home"
+                   aria-selected="true"><img style="height: 30px" src="{{ asset('icons/pruefung.svg') }}"> <span
+                            class="d-none d-sm-block">Audit</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-center" id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
+                   aria-controls="profile"
+                   aria-selected="false"><img style="width: 30px" src="{{ asset('icons/prozess.svg') }}"> <span
+                            class="d-none d-sm-block">VVT</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-center" id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
+                   aria-controls="contact"
+                   aria-selected="false"><img style="width: 30px" src="{{ asset('icons/dsfa.svg') }}"> <span
+                            class="d-none d-sm-block">DSFA</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#daten" role="tab"
+                   aria-controls="contact"
+                   aria-selected="false"><img style="width: 30px" src="{{ asset('icons/data.svg') }}"> <span
+                            class="d-none d-sm-block">DW</span></a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="audit" role="tabpanel" aria-labelledby="home-tab">
+                {% for a in assignAudit|slice(0, 3)|sort((a, b) => b.createdAt <=> a.createdAt) %}
+                    {% if a.activ %}
+                        <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
+                            <div class="btn btn-block bg-audit text-md-left mt-1">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img style="width: 30px" src="{{ asset('icons/pruefung.svg') }}">
+                                    </div>
+                                    <div class="col-md-7">
+                                        {{ a.frage }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ a.status.name }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="vvt" role="tabpanel" aria-labelledby="profile-tab">
+                {% for a in assignVvt|slice(0, 3)|sort((a, b) => b.createdAt <=> a.createdAt) %}
+                    {% if a.activ %}
+                        <a href="{{ path('vvt_edit',{'id':a.id}) }}">
+                            <div class="btn btn-block bg-vvt text-md-left mt-1">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img style="width: 30px" src="{{ asset('icons/prozess.svg') }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{ a.name }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        {{ a.status.name }}
+                                    </div>
+                                    <div class="col-md-3">
+                                        {{ a.createdAt|date('d.m.Y') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="dsfa" role="tabpanel" aria-labelledby="contact-tab">
+                {% for a in assignDsfa|slice(0, 3)|sort((a, b) => b.createdAt <=> a.createdAt) %}
+                    {% if a.activ %}
+                        <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
+                            <div class="btn btn-block bg-dsfa text-md-left mt-1">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img style="width: 30px" src="{{ asset('icons/dsfa.svg') }}">
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{ a.beschreibung }}
+                                    </div>
+                                    <div class="col-md-3">
+                                        {{ a.createdAt|date('d.m.Y') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="daten" role="tabpanel" aria-labelledby="contact-tab">
+                {% for a in assignDaten|slice(0, 3)|sort((a, b) => b.createdAt <=> a.createdAt) %}
+                    {% if a.activ %}
+                        <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">
+                            <div class="btn btn-block {% if a.art == 1 %}bg-daten{% else %}bg-av{% endif %} text-md-left mt-1">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img style="width: 30px" src="{{ asset('icons/data.svg') }}">
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{ a.gegenstand }}
+                                    </div>
+                                    <div class="col-md-3">
+                                        {{ a.createdAt|date('d.m.Y') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <a class="btn btn-primary btn-block mt-3" href="{{ path('assign') }}">Alle Zuweisungen
             anzeigen</a>
 
     </div>

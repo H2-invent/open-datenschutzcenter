@@ -278,6 +278,10 @@ label.required:after {
     bottom: 0px;
 }
 
+
+/* ---------------------------------------------------
+    Custom Buttons
+----------------------------------------------------- */
 .btn-primary {
     background-color: var(--main-color) !important;
 }

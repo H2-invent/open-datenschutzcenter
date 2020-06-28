@@ -20,10 +20,16 @@ class AssignController extends AbstractController
     public function index(Request $request, AssignService $assignService)
     {
 
-        $assign = $assignService->assign($request, $this->getUser());
+        $assignDatenweitergabe = $this->getUser()->getAssignedDatenweitergaben()->toarray();
+        $assignVvt = $this->getUser()->getAssignedVvts()->toarray();
+        $assignAudit = $this->getUser()->getAssignedAudits()->toarray();
+        $assignDsfa = $this->getUser()->getAssignedDsfa()->toarray();
 
         return $this->render('assign/index.html.twig', [
-            'assign' => $assign
+            'assignDaten' => $assignDatenweitergabe,
+            'assignVvt' => $assignVvt,
+            'assignAudit' => $assignAudit,
+            'assignDsfa' => $assignDsfa
         ]);
     }
 

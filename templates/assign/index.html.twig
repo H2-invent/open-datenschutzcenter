@@ -5,15 +5,125 @@
 
 {% block body %}
     <h2 class="h2-responsive">Meine Zuweisungen</h2>
-    <a class="btn btn-sm btn-primary" href="{{ path('assign',{'vvt':true,'audit':true}) }}">Alle Zuweisungen</a>
-    <a class="btn btn-sm bg-vvt" href="{{ path('assign',{'vvt':true}) }}">Meine Verarbeitungen</a>
-    <a class="btn btn-sm bg-audit" href="{{ path('assign',{'audit':true}) }}">Meine Auditfragen</a>
     <div class="card card-body">
+        <ul class="nav nav-tabs" id="audit-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active text-center" id="home-tab" data-toggle="tab" href="#audit" role="tab"
+                   aria-controls="home"
+                   aria-selected="true"><img style="height: 30px" src="{{ asset('icons/pruefung.svg') }}"> <span
+                            class="d-none d-sm-block">Auditfragen</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-center" id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
+                   aria-controls="profile"
+                   aria-selected="false"><img style="width: 30px" src="{{ asset('icons/prozess.svg') }}"> <span
+                            class="d-none d-sm-block">Verarbeitungen</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-center" id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
+                   aria-controls="contact"
+                   aria-selected="false"><img style="width: 30px" src="{{ asset('icons/dsfa.svg') }}"> <span
+                            class="d-none d-sm-block">Datenschutzfolgeabschätzungen</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#daten" role="tab"
+                   aria-controls="contact"
+                   aria-selected="false"><img style="width: 30px" src="{{ asset('icons/data.svg') }}"> <span
+                            class="d-none d-sm-block">Datenweitergaben</span></a>
+            </li>
+        </ul>
 
-        {% for a in assign|sort((a, b) => b.createdAt <=> a.createdAt) %}
-            {% if a.activ == 1 %}
-                {{ include('assign/__assignItem.html.twig') }}
-            {% endif %}
-        {% endfor %}
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="audit" role="tabpanel" aria-labelledby="home-tab">
+                {% for a in assignAudit %}
+                    {% if a.activ %}
+                        <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
+                            <div class="btn btn-block bg-audit text-left mt-1">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img style="width: 30px" src="{{ asset('icons/pruefung.svg') }}">
+                                    </div>
+                                    <div class="col-md-7">
+                                        {{ a.frage }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ a.status.name }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="vvt" role="tabpanel" aria-labelledby="profile-tab">
+                {% for a in assignVvt %}
+                    {% if a.activ %}
+                        <a href="{{ path('vvt_edit',{'id':a.id}) }}">
+                            <div class="btn btn-block bg-vvt text-left mt-1">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img style="width: 30px" src="{{ asset('icons/prozess.svg') }}">
+                                    </div>
+                                    <div class="col-md-7">
+                                        {{ a.name }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        {{ a.status.name }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        {{ a.createdAt|date('d.m.Y') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="dsfa" role="tabpanel" aria-labelledby="contact-tab">
+                {% for a in assignDsfa %}
+                    {% if a.activ %}
+                        <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
+                            <div class="btn btn-block bg-dsfa text-left mt-1">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img style="width: 30px" src="{{ asset('icons/dsfa.svg') }}">
+                                    </div>
+                                    <div class="col-md-7">
+                                        {{ a.beschreibung }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        {{ a.vvt.name }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        {{ a.createdAt|date('d.m.Y') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="daten" role="tabpanel" aria-labelledby="contact-tab">
+                {% for a in assignDaten %}
+                    {% if a.activ %}
+                        <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">
+                            <div class="btn btn-block {% if a.art == 1 %}bg-daten{% else %}bg-av{% endif %} text-left mt-1">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img style="width: 30px" src="{{ asset('icons/data.svg') }}">
+                                    </div>
+                                    <div class="col-md-9">
+                                        {{ a.gegenstand }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        {{ a.createdAt|date('d.m.Y') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}
