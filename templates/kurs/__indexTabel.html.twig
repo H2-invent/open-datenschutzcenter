@@ -7,7 +7,6 @@
                 <th scope="col">#</th>
                 <th scope="col">Titel</th>
                 <th scope="col">Erstellt/Update am</th>
-                <th scope="col">Buchungen</th>
                 <th scope="col">Aktionen</th>
             </tr>
             </thead>
@@ -17,7 +16,6 @@
                     <th scope="row">{{ t.id }}</th>
                     <td>{{ t.title }}</td>
                     <td>{{ t.createdAt|date('d.m.Y') }}</td>
-                    <td>{{ t.buchungen|length }} </td>
                     <td>
                         <a href="{{ path('kurs_anmelden',{'id':t.id}) }}" class="btn btn-sm btn-success">Anmelden</a>
                         {% if app.user == t.user %}<a href="{{ path('akademie_kurs_edit',{'id':t.id}) }}"
