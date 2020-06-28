@@ -112,7 +112,7 @@ class VvtController extends AbstractController
                 $em->persist($newVvt);
                 $em->persist($vvt);
                 $em->flush();
-                return $this->redirectToRoute('vvt');
+                return $this->redirectToRoute('vvt_edit', ['id' => $newVvt->getId(), 'snack' => 'Erfolgreich gespeichert']);
             }
         }
 
@@ -124,6 +124,7 @@ class VvtController extends AbstractController
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'activNummer' => false,
+            'snack' => $request->get('snack')
         ]);
     }
 
@@ -153,7 +154,7 @@ class VvtController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($dsfa);
                 $em->flush();
-                return $this->redirectToRoute('vvt');
+                return $this->redirectToRoute('vvt_edit', ['id' => $dsfa->getVvt()->getId(), 'snack' => 'DSFA angelegt']);
             }
         }
         return $this->render('vvt/editDsfa.html.twig', [
@@ -192,7 +193,7 @@ class VvtController extends AbstractController
                 $em->persist($newDsfa);
                 $em->persist($dsfa);
                 $em->flush();
-                return $this->redirectToRoute('vvt');
+                return $this->redirectToRoute('vvt_dsfa_edit', ['id' => $newDsfa->getId(), 'snack' => 'Erfolgreich gepeichert']);
             }
         }
 
@@ -202,6 +203,7 @@ class VvtController extends AbstractController
             'title' => 'Datenschutzfolgeabschätzung bearbeiten',
             'dsfa' => $dsfa,
             'activ' => $dsfa->getActiv(),
+            'snack' => $request->get('snack')
         ]);
     }
 }

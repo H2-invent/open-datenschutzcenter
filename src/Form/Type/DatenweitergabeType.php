@@ -57,17 +57,17 @@ class DatenweitergabeType extends AbstractType
                 'choices' => $options['stand'],
                 'label'=>'Stand der Verhandlung',
                 'translation_domain' => 'form',
-                'multiple' =>false,
+                'multiple' => false,
             ])
             ->add('grundlage', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => DatenweitergabeGrundlagen::class,
                 'choices' => $options['grundlage'],
-                'label'=>'Grundlage für die Verarbeitung',
+                'label' => 'Grundlage für die Verarbeitung',
                 'translation_domain' => 'form',
-                'multiple' =>false,
+                'multiple' => false,
             ])
-            ->add('imageFile', VichImageType::class, [
+            ->add('uploadFile', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => false,
                 'delete_label' => 'Löschen',

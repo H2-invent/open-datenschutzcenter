@@ -3,7 +3,7 @@ oneup_flysystem:
     adapters:
         asset_adapter:
             local:
-                directory: '%kernel.project_dir%/public%app.path.product_images%'
+                directory: '%kernel.project_dir%/public%app.path.images%'
         intern_adapter:
             local:
                 directory: '%kernel.project_dir%/data'

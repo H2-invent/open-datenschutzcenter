@@ -30,10 +30,12 @@
                         class="small"> id: {{ vvt.nummer }}{% endif %}</span></h2>
             {% if vvt.activDsfa is not null %}<h3>Datenschutzfolgeabschätzung vorhanden</h3>{% endif %}
         </div>
+
         <div class="col-md-4 text-right">
             {{ include('assign/__assign.html.twig',{'data':vvt,'path':'assign_vvt'}) }}
         </div>
     </div>
+    {{ include('base/__snack.html.twig') }}
 
 
     {{ include('vvt/__form.html.twig') }}

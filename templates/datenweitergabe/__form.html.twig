@@ -72,16 +72,16 @@
         </div>
     </div>
     <div class="col-md-4">
-        {{ form_label(form.imageFile) }}
+        {{ form_label(form.uploadFile) }}
         {% if activ %}
-            {{ form_widget(form.imageFile) }}
+            {{ form_widget(form.uploadFile) }}
         {% else %}
-            {{ form_widget(form.imageFile, { 'disabled':'disabled' }) }}
+            {{ form_widget(form.uploadFile, { 'disabled':'disabled' }) }}
         {% endif %}
 
-        {% if daten.image %}
-        <a href="{{ path('datenweitergabe_download_file', {'id':daten.id}) }}" download class="btn btn-amber">Anhang
-            herunterladen</a>
+        {% if daten.upload %}
+            <a href="{{ path('datenweitergabe_download_file', {'id':daten.id}) }}" download class="btn btn-amber">AVV
+                herunterladen</a>
         {% endif %}
 
     </div>
