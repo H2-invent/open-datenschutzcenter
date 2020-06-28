@@ -6,20 +6,20 @@
 {% block body %}
     <h2 class="h2-responsive">Meine Zuweisungen</h2>
     <a class="btn btn-sm btn-primary" href="{{ path('assign',{'vvt':true,'audit':true}) }}">Alle Zuweisungen</a>
-    <a class="btn btn-sm btn-green" href="{{ path('assign',{'vvt':true}) }}">Meine Verarbeitungen</a>
-    <a class="btn btn-sm btn-cyan" href="{{ path('assign',{'audit':true}) }}">Meine Auditfragen</a>
+    <a class="btn btn-sm bg-vvt" href="{{ path('assign',{'vvt':true}) }}">Meine Verarbeitungen</a>
+    <a class="btn btn-sm bg-audit" href="{{ path('assign',{'audit':true}) }}">Meine Auditfragen</a>
     <div class="card card-body">
 
         {% for a in assign|sort((a, b) => b.createdAt <=> a.createdAt) %}
             {% if a.activ == 1 %}
                 <a href="{% if a.name is defined %}{{ path('vvt_edit',{'id':a.id}) }}{% elseif a.frage is defined %}{{ path('audit_tom_edit',{'tom':a.id}) }}{% endif %}">
-                    <div class="card card-body {% if a.name is defined %}btn-green{% elseif a.frage is defined %}btn-cyan{% endif %} mb-1">
+                    <div class="card card-body {% if a.name is defined %}bg-vvt{% elseif a.frage is defined %}bg-audit{% endif %} mb-1">
                         <div class="row">
                             <div class="col-md-1">
                                 {% if a.name is defined %}<img style="width: 30px"
                                                                src="{{ asset('icons/prozess.svg') }}">{% elseif a.frage is defined %}
                                     <img
-                                    style="width: 30px" src="{{ asset('icons/pruefung.svg') }}">{% endif %}
+                                            style="width: 30px" src="{{ asset('icons/pruefung.svg') }}">{% endif %}
                             </div>
                             <div class="col-md-4">
                                 {% if a.name is defined %}{{ a.name }}{% elseif a.frage is defined %}{{ a.frage }}{% endif %}

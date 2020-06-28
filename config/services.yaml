@@ -8,6 +8,7 @@ parameters:
     secret: '%env(APP_SECRET)%'
     projectRoot: '%kernel.root_dir%'
     akademieEmail: '%env(AKADEMIE_EMAIL)%'
+    defaultEmail: '%env(DEFAULT_EMAIL)%'
     cronToken: '%env(CRON_TOKEN)%'
     cronIPAdress: '%env(CRON_IPADRESS)%'
 

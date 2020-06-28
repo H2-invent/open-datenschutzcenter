@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 
 
 class AssignService
@@ -25,12 +26,16 @@ class AssignService
     private $em;
     private $formBuilder;
     private $router;
+    private $notificationService;
+    private $twig;
 
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder, RouterInterface $router)
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder, RouterInterface $router, NotificationService $notificationService, Environment $engine)
     {
         $this->em = $entityManager;
         $this->formBuilder = $formBuilder;
         $this->router = $router;
+        $this->notificationService = $notificationService;
+        $this->twig = $engine;
     }
 
     function assign($request, User $user)
@@ -69,12 +74,15 @@ class AssignService
                 $user = $this->em->getRepository(User::class)->find($data['user']);
                 if ($vvt->getTeam() === $user->getTeam()) {
                     $vvt->setAssignedUser($user);
+                    $content = $this->twig->render('email/assignementVvt.html.twig', ['assign' => $vvt->getName(), 'data' => $vvt]);
+                    $this->notificationService->sendNotificationAssign($content, $user);
                 }
             } else {
                 $vvt->setAssignedUser(null);
             }
             $this->em->persist($vvt);
             $this->em->flush();
+
 
             return true;
         } catch (\Exception $exception) {
@@ -91,6 +99,8 @@ class AssignService
                 $user = $this->em->getRepository(User::class)->find($data['user']);
                 if ($audit->getTeam() === $user->getTeam()) {
                     $audit->setAssignedUser($user);
+                    $content = $this->twig->render('email/assignementAudit.html.twig', ['assign' => $audit->getFrage(), 'data' => $audit]);
+                    $this->notificationService->sendNotificationAssign($content, $user);
                 }
             } else {
                 $audit->setAssignedUser(null);

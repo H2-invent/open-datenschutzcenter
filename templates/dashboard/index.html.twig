@@ -13,24 +13,15 @@
             <div class="row">
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('vvt') }}">
-                        <!-- Card -->
-                        <div class="card hoverable btn-green">
-                            <!-- Card content -->
-                            <div class="card-body">
-                                <span class="h3-responsive">{{ vvt|length }}</span>
-                                <span>Verarbeitungen</span>
-                            </div>
-
-                        </div>
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-vvt','title':'Verarbeitungen','metrik':vvt|length}) }}
                         {% if kVvt|length > 0 %}
                             {{ include('dashboard/__card.html.twig',{'farbe':'red','title':'Krisitsche VVTs','metrik':kVvt|length}) }}
                         {% endif %}
-                        <!-- Card -->
                     </a>
                 </div>
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('vvt') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'btn-green','title':'DSFA','metrik':dsfa|length}) }}
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-dsfa','title':'DSFA','metrik':dsfa|length}) }}
                         {% if openDsfa|length > 0 %}
                             {{ include('dashboard/__card.html.twig',{'farbe':'red','title':'Offene DSFA','metrik':openDsfa|length}) }}
                         {% endif %}
@@ -38,22 +29,22 @@
                 </div>
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('tom') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'btn-elegant','title':'TOMs','metrik':tom|length}) }}
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-tom','title':'TOMs','metrik':tom|length}) }}
                     </a>
                 </div>
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('kontakt') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'','title':'Eingetragene Kontakte','metrik':kontakte|length}) }}
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-kontakt','title':'Eingetragene Kontakte','metrik':kontakte|length}) }}
                     </a>
                 </div>
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('datenweitergabe') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'btn-grey','title':'Datenweitergaben','metrik':daten|length}) }}
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-daten','title':'Datenweitergaben','metrik':daten|length}) }}
                     </a>
                 </div>
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('auftragsverarbeitung') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'btn-indigo','title':'Auftragsverarbeitungen','metrik':av|length}) }}
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-av','title':'Auftragsverarbeitungen','metrik':av|length}) }}
                     </a>
                 </div>
 
@@ -129,10 +120,10 @@
                         {% if a.activ == 1 %}
                             <a
                                     {% if a.name is defined %}
-                                        class="btn btn-green btn-block mt-1"
+                                        class="btn bg-vvt btn-block mt-1"
                                         href="{{ path('vvt_edit',{'id':a.id}) }}"
                                     {% elseif a.frage is defined %}
-                                        class="btn btn-cyan btn-block mt-1"
+                                        class="btn bg-audit btn-block mt-1"
                                         href="{{ path('audit_tom_edit',{'tom':a.id}) }}"
                                     {% endif %}
                             >

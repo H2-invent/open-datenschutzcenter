@@ -23,7 +23,7 @@
                         <td>{{ b.zugewiesen|date('d.m.Y') }}</td>
                         <td>{{ b.start|date('d.m.Y') }}</td>
                         <td>{% if b.abgeschlossen %}<a href="{{ path('akademie_kurs_zertifikat', {'buchung':b.id}) }}"
-                                                       class="btn btn-sm btn-amber">
+                                                       class="btn btn-sm bg-akademie">
                                     Zertifikat</a>{% else %}Nein{% endif %} </td>
                     </tr>
                 {% endfor %}

@@ -10,6 +10,7 @@ namespace App\Service;
 
 
 use App\Entity\AkademieBuchungen;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -32,7 +33,7 @@ class NotificationService
     function sendNotificationAkademie(AkademieBuchungen $buchung, $content)
     {
         $this->mailer->sendEmail(
-            'Datenschutzcenter',
+            'Akademie Datenschutzcenter',
             $this->parameterBag->get('akademieEmail'),
             $buchung->getUser()->getEmail(),
             'Ihnen wurde ein neuer Kurs zugewiesen',
@@ -41,4 +42,18 @@ class NotificationService
 
         return true;
     }
+
+    function sendNotificationAssign($content, User $user)
+    {
+        $this->mailer->sendEmail(
+            'Datenschutzcenter',
+            $this->parameterBag->get('defaultEmail'),
+            $user->getEmail(),
+            'Ihnen wurde ein Element zum Bearbeiten zugewiesen',
+            $content
+        );
+
+        return true;
+    }
+
 }
