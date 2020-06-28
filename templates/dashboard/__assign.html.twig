@@ -1,0 +1,48 @@
+<!--Card-->
+<div class="card">
+    <!-- Card header -->
+    <div class="card-header text-center">
+        Meine Zuweisungen
+    </div>
+    <!--Card content-->
+    <div class="card-body">
+        {% for a in assign|slice(0, 9)|sort((a, b) => b.createdAt <=> a.createdAt) %}
+            {% if a.activ == 1 %}
+                <a
+                        {% if a.name is defined %}
+                            class="btn bg-vvt btn-block mt-1"
+                            href="{{ path('vvt_edit',{'id':a.id}) }}"
+                        {% elseif a.frage is defined %}
+                            class="btn bg-audit btn-block mt-1"
+                            href="{{ path('audit_tom_edit',{'tom':a.id}) }}"
+                        {% endif %}
+                >
+                    <div class="row text-left">
+                        <div class="col-md-1">
+                            {% if a.name is defined %}
+                                <img style="width: 20px" src="{{ asset('icons/prozess.svg') }}">
+                            {% elseif a.frage is defined %}
+                                <img style="width: 20px" src="{{ asset('icons/pruefung.svg') }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-7">
+                            {% if a.name is defined %}
+                                {{ a.name }}
+                            {% elseif a.frage is defined %}
+                                {{ a.frage }}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            {{ a.status.name }}
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+        <a class="btn btn-primary btn-block mt-3" href="{{ path('assign',{'vvt':true,'audit':true}) }}">Alle Zuweisungen
+            anzeigen</a>
+
+    </div>
+
+</div>
+<!--/.Card-->
