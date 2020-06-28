@@ -10,9 +10,11 @@ namespace App\Service;
 
 
 use App\Entity\AuditTom;
+use App\Entity\Datenweitergabe;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\VVT;
+use App\Entity\VVTDsfa;
 use App\Form\Type\AssignType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -112,5 +114,52 @@ class AssignService
         } catch (\Exception $exception) {
             return false;
         }
+    }
+
+    function assignDatenweitergabe($request, Datenweitergabe $datenweitergabe)
+    {
+        try {
+            if ($datenweitergabe->getAssignedUser() == null) {
+                $data = $request->get('assign');
+                $user = $this->em->getRepository(User::class)->find($data['user']);
+                if ($datenweitergabe->getTeam() === $user->getTeam()) {
+                    $datenweitergabe->setAssignedUser($user);
+                    $content = $this->twig->render('email/assignementDatenweitergabe.html.twig', ['assign' => $datenweitergabe->getGegenstand(), 'data' => $datenweitergabe]);
+                    $this->notificationService->sendNotificationAssign($content, $user);
+                }
+            } else {
+                $datenweitergabe->setAssignedUser(null);
+            }
+            $this->em->persist($datenweitergabe);
+            $this->em->flush();
+
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    function assignDsfa($request, VVTDsfa $dsfa)
+    {
+        //try {
+
+        if ($dsfa->getAssignedUser() == null) {
+            $data = $request->get('assign');
+            $user = $this->em->getRepository(User::class)->find($data['user']);
+            if ($dsfa->getVvt()->getTeam() === $user->getTeam()) {
+                $dsfa->setAssignedUser($user);
+                $content = $this->twig->render('email/assignementDsfa.html.twig', ['assign' => $dsfa->getVvt()->getName(), 'data' => $dsfa]);
+                $this->notificationService->sendNotificationAssign($content, $user);
+            }
+        } else {
+            $dsfa->setAssignedUser(null);
+        }
+        $this->em->persist($dsfa);
+        $this->em->flush();
+
+        return true;
+        //} catch (\Exception $exception) {
+        //    return false;
+        //}
     }
 }

@@ -169,7 +169,7 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/dsfa/edit", name="vvt_dsfa_edit")
      */
-    public function editVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService)
+    public function editVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService)
     {
         $team = $this->getUser()->getTeam();
         $dsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->find($request->get('dsfa'));
@@ -182,6 +182,7 @@ class VvtController extends AbstractController
 
         $form = $this->createForm(VvtDsfaType::class, $newDsfa);
         $form->handleRequest($request);
+        $assign = $assignService->createForm($dsfa, $team);
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
@@ -199,6 +200,7 @@ class VvtController extends AbstractController
 
         return $this->render('vvt/editDsfa.html.twig', [
             'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
             'errors' => $errors,
             'title' => 'Datenschutzfolgeabschätzung bearbeiten',
             'dsfa' => $dsfa,

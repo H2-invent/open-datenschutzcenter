@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\AuditTom;
+use App\Entity\Datenweitergabe;
 use App\Entity\VVT;
+use App\Entity\VVTDsfa;
 use App\Service\AssignService;
 use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,6 +54,36 @@ class AssignController extends AbstractController
         }
 
         $res = $assignService->assignAudit($request, $audit);
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @Route("/assign/daten", name="assign_datenweitergabe")
+     */
+    public function assignDatenweitergabe(Request $request, AssignService $assignService, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getTeam();
+        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+        if ($securityService->teamDataCheck($daten, $team) === false) {
+            return $this->redirectToRoute('datenweitergabe');
+        }
+
+        $res = $assignService->assignDatenweitergabe($request, $daten);
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @Route("/assign/dsfa", name="assign_dsfa")
+     */
+    public function assignDsfa(Request $request, AssignService $assignService, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getTeam();
+        $dsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->find($request->get('id'));
+        if ($securityService->teamDataCheck($dsfa->getVvt(), $team) === false) {
+            return $this->redirectToRoute('vvt');
+        }
+
+        $res = $assignService->assignDsfa($request, $dsfa);
         return $this->redirect($request->headers->get('referer'));
     }
 }

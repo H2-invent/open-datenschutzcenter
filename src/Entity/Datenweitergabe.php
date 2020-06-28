@@ -136,6 +136,11 @@ class Datenweitergabe
      */
     private $verfahren;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedDatenweitergaben")
+     */
+    private $assignedUser;
+
     public function __construct()
     {
         $this->verfahren = new ArrayCollection();
@@ -380,6 +385,18 @@ class Datenweitergabe
             $this->verfahren->removeElement($verfahren);
             $verfahren->removeDatenweitergaben($this);
         }
+
+        return $this;
+    }
+
+    public function getAssignedUser(): ?User
+    {
+        return $this->assignedUser;
+    }
+
+    public function setAssignedUser(?User $assignedUser): self
+    {
+        $this->assignedUser = $assignedUser;
 
         return $this;
     }

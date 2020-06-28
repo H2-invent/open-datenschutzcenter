@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Entity\Datenweitergabe;
+use App\Service\AssignService;
 use App\Service\DatenweitergabeService;
 use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
@@ -141,7 +142,7 @@ class DatenweitergabeController extends AbstractController
     /**
      * @Route("/datenweitergabe/edit", name="datenweitergabe_edit")
      */
-    public function EditDatenweitergabe(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService)
+    public function EditDatenweitergabe(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService, AssignService $assignService)
     {
         $team = $this->getUser()->getTeam();
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
@@ -157,6 +158,7 @@ class DatenweitergabeController extends AbstractController
         $form = $datenweitergabeService->createForm($newDaten, $team);
         $form->remove('nummer');
         $form->handleRequest($request);
+        $assign = $assignService->createForm($daten, $team);
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
@@ -180,6 +182,7 @@ class DatenweitergabeController extends AbstractController
         }
         return $this->render('datenweitergabe/edit.html.twig', [
             'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
             'errors' => $errors,
             'title' => 'Datenweitergabe bearbeiten',
             'daten' => $daten,

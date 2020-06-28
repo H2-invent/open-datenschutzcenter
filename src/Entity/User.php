@@ -95,6 +95,16 @@ class User extends BaseUser
      */
     private $assignedAudits;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Datenweitergabe::class, mappedBy="assignedUser")
+     */
+    private $assignedDatenweitergaben;
+
+    /**
+     * @ORM\OneToMany(targetEntity=VVTDsfa::class, mappedBy="assignedUser")
+     */
+    private $assignedDsfa;
+
 
     public function __construct()
     {
@@ -109,6 +119,8 @@ class User extends BaseUser
         $this->akademieKurses = new ArrayCollection();
         $this->assignedVvts = new ArrayCollection();
         $this->assignedAudits = new ArrayCollection();
+        $this->assignedDatenweitergaben = new ArrayCollection();
+        $this->assignedDsfa = new ArrayCollection();
     }
 
     public function getTeam(): ?Team
@@ -451,6 +463,68 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($assignedAudit->getAssignedUser() === $this) {
                 $assignedAudit->setAssignedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Datenweitergabe[]
+     */
+    public function getAssignedDatenweitergaben(): Collection
+    {
+        return $this->assignedDatenweitergaben;
+    }
+
+    public function addAssignedDatenweitergaben(Datenweitergabe $assignedDatenweitergaben): self
+    {
+        if (!$this->assignedDatenweitergaben->contains($assignedDatenweitergaben)) {
+            $this->assignedDatenweitergaben[] = $assignedDatenweitergaben;
+            $assignedDatenweitergaben->setAssignedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignedDatenweitergaben(Datenweitergabe $assignedDatenweitergaben): self
+    {
+        if ($this->assignedDatenweitergaben->contains($assignedDatenweitergaben)) {
+            $this->assignedDatenweitergaben->removeElement($assignedDatenweitergaben);
+            // set the owning side to null (unless already changed)
+            if ($assignedDatenweitergaben->getAssignedUser() === $this) {
+                $assignedDatenweitergaben->setAssignedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VVTDsfa[]
+     */
+    public function getAssignedDsfa(): Collection
+    {
+        return $this->assignedDsfa;
+    }
+
+    public function addAssignedDsfa(VVTDsfa $assignedDsfa): self
+    {
+        if (!$this->assignedDsfa->contains($assignedDsfa)) {
+            $this->assignedDsfa[] = $assignedDsfa;
+            $assignedDsfa->setAssignedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignedDsfa(VVTDsfa $assignedDsfa): self
+    {
+        if ($this->assignedDsfa->contains($assignedDsfa)) {
+            $this->assignedDsfa->removeElement($assignedDsfa);
+            // set the owning side to null (unless already changed)
+            if ($assignedDsfa->getAssignedUser() === $this) {
+                $assignedDsfa->setAssignedUser(null);
             }
         }
 

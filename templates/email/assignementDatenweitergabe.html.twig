@@ -1,6 +1,6 @@
 {% extends 'email/base.html.twig' %}
 {% block header %}
-    -- Neue Auditfrage zum Bearbeiten zugewiesen --
+    -- Neue Datenweitergabe zum Bearbeiten zugewiesen --
 {% endblock %}
 
 {% block content %}
@@ -11,14 +11,14 @@
         Hallo!
     </b>
     <p>
-        Ihnen wurde eine Auditfrage zum Bearbeiten zugewiesen.
+        Ihnen wurde eine Datenweitergabe zum Bearbeiten zugewiesen.
     </p>
     <b>
-        Auditfrage: {{ assign }}
+        Datenweitergabe: {{ assign }}
     </b>
     <spacer size="16"></spacer>
     <p>
-        <a href="{{ absolute_url(path('audit_tom_edit', {'tom':data.id})) }}">Klicken Sie hier um direkt zu Element
+        <a href="{{ absolute_url(path('datenweitergabe_edit', {'id':data.id})) }}">Klicken Sie hier um direkt zu Element
             zu gelangen.</a>
     </p>
     <spacer size="16"></spacer>
