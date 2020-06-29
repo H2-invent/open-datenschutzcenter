@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\AkademieBuchungen;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Types\DateType;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -54,6 +54,16 @@ class AkademieBuchungenRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->andWhere('a.user = :user')
             ->setParameter('user', $value)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActivBuchungenByUser(User $user)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.user = :user')
+            ->andWhere('a.abgeschlossen = 0')
+            ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
     }

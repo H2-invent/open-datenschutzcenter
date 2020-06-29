@@ -8,33 +8,59 @@
     <div class="card-body">
         <ul class="nav nav-tabs" id="audit-tab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active text-center" id="home-tab" data-toggle="tab" href="#audit" role="tab"
+                <a class="nav-link active text-center" id="home-tab" data-toggle="tab" href="#akademie" role="tab"
                    aria-controls="home"
-                   aria-selected="true"><img style="height: 30px" src="{{ asset('icons/pruefung.svg') }}"> <span
-                            class="d-none d-sm-block">Audit</span></a>
+                   aria-selected="true"><img style="height: 1.5rem" src="{{ asset('icons/online-learning.svg') }}">
+                    <span
+                            class="d-none d-lg-block">Akademie</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-center" id="home-tab" data-toggle="tab" href="#audit" role="tab"
+                   aria-controls="home"
+                   aria-selected="true"><img style="height: 1.5rem" src="{{ asset('icons/pruefung.svg') }}"> <span
+                            class="d-none d-lg-block">Audit</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
                    aria-controls="profile"
-                   aria-selected="false"><img style="width: 30px" src="{{ asset('icons/prozess.svg') }}"> <span
-                            class="d-none d-sm-block">VVT</span></a>
+                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('icons/prozess.svg') }}"> <span
+                            class="d-none d-lg-block">VVT</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
                    aria-controls="contact"
-                   aria-selected="false"><img style="width: 30px" src="{{ asset('icons/dsfa.svg') }}"> <span
-                            class="d-none d-sm-block">DSFA</span></a>
+                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('icons/dsfa.svg') }}"> <span
+                            class="d-none d-lg-block">DSFA</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#daten" role="tab"
                    aria-controls="contact"
-                   aria-selected="false"><img style="width: 30px" src="{{ asset('icons/data.svg') }}"> <span
-                            class="d-none d-sm-block">DW</span></a>
+                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('icons/data.svg') }}"> <span
+                            class="d-none d-lg-block">DW</span></a>
             </li>
         </ul>
 
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="audit" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active" id="akademie" role="tabpanel" aria-labelledby="home-tab">
+                {% for a in akademie %}
+                    <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
+                        <div class="btn btn-block bg-akademie text-md-left mt-1">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img style="width: 21px" src="{{ asset('icons/online-learning.svg') }}">
+                                </div>
+                                <div class="col-md-7">
+                                    {{ a.kurs.title }}
+                                </div>
+                                <div class="col-md-4">
+                                    {{ a.zugewiesen|date('d.m.Y') }}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade show" id="audit" role="tabpanel" aria-labelledby="home-tab">
                 {% for a in assignAudit |slice(0, 6)|sort((a, b) => b.createdAt <=> a.createdAt) %}
                     {% if a.activ %}
                         <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">

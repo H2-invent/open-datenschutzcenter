@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Entity\AkademieBuchungen;
 use App\Entity\AuditTom;
 use App\Entity\Datenweitergabe;
 use App\Entity\Kontakte;
@@ -73,6 +74,8 @@ class DashboardController extends AbstractController
         $assignDsfa = $this->getUser()->getAssignedDsfa()->toarray();
         $assignDatenweitergabe = $this->getUser()->getAssignedDatenweitergaben()->toarray();
 
+        $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findActivBuchungenByUser($this->getUser());
+
         return $this->render('dashboard/index.html.twig', [
             'controller_name' => 'DashboardController',
             'team' => $team,
@@ -89,7 +92,8 @@ class DashboardController extends AbstractController
             'assignDaten' => $assignDatenweitergabe,
             'assignVvt' => $assignVvt,
             'assignAudit' => $assignAudit,
-            'assignDsfa' => $assignDsfa
+            'assignDsfa' => $assignDsfa,
+            'akademie' => $buchungen
         ]);
     }
 }
