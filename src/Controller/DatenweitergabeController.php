@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Entity\Datenweitergabe;
+use App\Service\AssignService;
 use App\Service\DatenweitergabeService;
 use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
@@ -141,7 +142,7 @@ class DatenweitergabeController extends AbstractController
     /**
      * @Route("/datenweitergabe/edit", name="datenweitergabe_edit")
      */
-    public function EditDatenweitergabe(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService)
+    public function EditDatenweitergabe(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService, AssignService $assignService)
     {
         $team = $this->getUser()->getTeam();
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
@@ -157,6 +158,7 @@ class DatenweitergabeController extends AbstractController
         $form = $datenweitergabeService->createForm($newDaten, $team);
         $form->remove('nummer');
         $form->handleRequest($request);
+        $assign = $assignService->createForm($daten, $team);
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
@@ -175,20 +177,18 @@ class DatenweitergabeController extends AbstractController
                 $em->persist($newDaten);
                 $em->persist($daten);
                 $em->flush();
-                if ($newDaten->getArt() === 1) {
-                    return $this->redirectToRoute('datenweitergabe');
-                } else {
-                    return $this->redirectToRoute('auftragsverarbeitung');
-                }
+                return $this->redirectToRoute('datenweitergabe_edit', array('id' => $newDaten->getId(), 'snack' => 'Erfolgreich gespeichert'));
             }
         }
         return $this->render('datenweitergabe/edit.html.twig', [
             'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
             'errors' => $errors,
             'title' => 'Datenweitergabe bearbeiten',
             'daten' => $daten,
             'activ' => $daten->getActiv(),
-            'activNummer' => false
+            'activNummer' => false,
+            'snack' => $request->get('snack')
         ]);
     }
 
@@ -199,19 +199,19 @@ class DatenweitergabeController extends AbstractController
     public function downloadArticleReference(FilesystemInterface $internFileSystem, Datenweitergabe $datenweitergabe, SecurityService $securityService)
     {
 
-        $stream = $internFileSystem->read($datenweitergabe->getImage());
+        $stream = $internFileSystem->read($datenweitergabe->getUpload());
 
         $team = $this->getUser()->getTeam();
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->teamDataCheck($datenweitergabe, $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $internFileSystem->getMimetype($datenweitergabe->getImage());
+        $type = $internFileSystem->getMimetype($datenweitergabe->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,
-            preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $datenweitergabe->getImage())
+            preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $datenweitergabe->getUpload())
         );
 
         $response->headers->set('Content-Disposition', $disposition);

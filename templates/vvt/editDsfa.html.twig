@@ -1,8 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-    <h2 class="h2-responsive">{{ title }} zu {{ dsfa.vvt.name }}</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="h2-responsive">{{ title }} zu {{ dsfa.vvt.name }}</h2>
+        </div>
+        <div class="col-md-4 text-right">
+            {{ include('assign/__assign.html.twig',{'data':dsfa,'path':'assign_dsfa'}) }}
+        </div>
+    </div>
 
     {{ form_start(form) }}
     <div class="card card-body">
@@ -70,6 +76,8 @@
             {{ include('vvt/__dsfaHistory.html.twig', {'p':dsfa.previous}) }}
         </div>
     {% endif %}
+
+    {{ include('base/__snack.html.twig') }}
 {% endblock %}
 
 {% block javascript %}

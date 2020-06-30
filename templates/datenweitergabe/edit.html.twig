@@ -12,8 +12,14 @@
 {% endblock %}
 
 {% block body %}
-
-    <h2 class="h2-responsive">{{ title }}</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="h2-responsive">{{ title }}</h2>
+        </div>
+        <div class="col-md-4 text-right">
+            {{ include('assign/__assign.html.twig',{'data':daten,'path':'assign_datenweitergabe'}) }}
+        </div>
+    </div>
 
     <div class="card card-body">
         {{ include('datenweitergabe/__form.html.twig') }}
@@ -25,7 +31,8 @@
             {{ include('datenweitergabe/__history.html.twig', {'p':daten.previous}) }}
         </div>
     {% endif %}
+    {{ include('base/__snack.html.twig') }}
 {% endblock %}
 
-{% block javascript %}
-{% endblock %}
+    {% block javascript %}
+    {% endblock %}

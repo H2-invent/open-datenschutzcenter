@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Repository\DatenweitergabeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Symfony\Component\HttpFoundation\File\File;
-use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 
 /**
  * @ORM\Entity(repositoryClass=DatenweitergabeRepository::class)
@@ -123,18 +123,23 @@ class Datenweitergabe
      * @ORM\Column(type="string", length=255,nullable=true)
      * @var string
      */
-    private $image;
+    private $upload;
 
     /**
-     * @Vich\UploadableField(mapping="profil_picture", fileNameProperty="image")
+     * @Vich\UploadableField(mapping="profil_picture", fileNameProperty="upload")
      * @var File
      */
-    private $imageFile;
+    private $uploadFile;
 
     /**
      * @ORM\ManyToMany(targetEntity=VVT::class, mappedBy="datenweitergaben")
      */
     private $verfahren;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedDatenweitergaben")
+     */
+    private $assignedUser;
 
     public function __construct()
     {
@@ -316,32 +321,32 @@ class Datenweitergabe
         return $this;
     }
 
-    public function setImageFile(File $image = null)
+    public function setUploadFile(File $upload = null)
     {
-        $this->imageFile = $image;
+        $this->uploadFile = $upload;
 
         // VERY IMPORTANT:
         // It is required that at least one field changes if you are using Doctrine,
         // otherwise the event listeners won't be called and the file is lost
-        if ($image) {
+        if ($upload) {
             // if 'updatedAt' is not defined in your entity, use another property
             $this->updatedAt = new \DateTime('now');
         }
     }
 
-    public function getImageFile()
+    public function getUploadFile()
     {
-        return $this->imageFile;
+        return $this->uploadFile;
     }
 
-    public function setImage($image)
+    public function setUpload($upload)
     {
-        $this->image = $image;
+        $this->upload = $upload;
     }
 
-    public function getImage()
+    public function getUpload()
     {
-        return $this->image;
+        return $this->upload;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
@@ -380,6 +385,18 @@ class Datenweitergabe
             $this->verfahren->removeElement($verfahren);
             $verfahren->removeDatenweitergaben($this);
         }
+
+        return $this;
+    }
+
+    public function getAssignedUser(): ?User
+    {
+        return $this->assignedUser;
+    }
+
+    public function setAssignedUser(?User $assignedUser): self
+    {
+        $this->assignedUser = $assignedUser;
 
         return $this;
     }

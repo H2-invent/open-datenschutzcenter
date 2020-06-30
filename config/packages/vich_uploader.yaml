@@ -3,7 +3,7 @@ vich_uploader:
     storage:   flysystem
     mappings:
         profil_picture:
-            uri_prefix: '%app.path.product_images%'
+            uri_prefix: '%app.path.images%'
             upload_destination: intern_adapter
             namer: vich_uploader.namer_uniqid
             delete_on_update: true

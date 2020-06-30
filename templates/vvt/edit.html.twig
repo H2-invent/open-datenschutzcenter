@@ -24,8 +24,19 @@
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">{{ title }} {% if not activNummer %}<span class="small"> id: {{ vvt.nummer }}{% endif %}</span></h2>
-    {% if vvt.activDsfa is not null %}<h3>Datenschutzfolgeabschätzung vorhanden</h3>{% endif %}
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="h2-responsive">{{ title }} {% if not activNummer %}<span
+                        class="small"> id: {{ vvt.nummer }}{% endif %}</span></h2>
+            {% if vvt.activDsfa is not null %}<h3>Datenschutzfolgeabschätzung vorhanden</h3>{% endif %}
+        </div>
+
+        <div class="col-md-4 text-right">
+            {{ include('assign/__assign.html.twig',{'data':vvt,'path':'assign_vvt'}) }}
+        </div>
+    </div>
+
+
     {{ include('vvt/__form.html.twig') }}
     <p>Erstellt von: {{ vvt.user.email }}</p>
     {% if vvt.previous %}
@@ -34,6 +45,9 @@
             {{ include('vvt/__history.html.twig', {'p':vvt.previous}) }}
         </div>
     {% endif %}
+
+    {{ include('base/__snack.html.twig') }}
+
 {% endblock %}
 
 {% block javascript %}

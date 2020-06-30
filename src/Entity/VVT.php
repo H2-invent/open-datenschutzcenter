@@ -205,6 +205,11 @@ class VVT
     private $beurteilungEintrittString;
     private $beurteilungSchadenString;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedVvts")
+     */
+    private $assignedUser;
+
     public function __construct()
     {
         $this->grundlage = new ArrayCollection();
@@ -754,6 +759,18 @@ class VVT
         if ($this->produkt->contains($produkt)) {
             $this->produkt->removeElement($produkt);
         }
+
+        return $this;
+    }
+
+    public function getAssignedUser(): ?User
+    {
+        return $this->assignedUser;
+    }
+
+    public function setAssignedUser(?User $assignedUser): self
+    {
+        $this->assignedUser = $assignedUser;
 
         return $this;
     }

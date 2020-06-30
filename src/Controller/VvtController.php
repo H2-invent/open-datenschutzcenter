@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Form\Type\VvtDsfaType;
+use App\Service\AssignService;
 use App\Service\SecurityService;
 use App\Service\VVTService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -79,7 +80,7 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/edit", name="vvt_edit")
      */
-    public function editVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService)
+    public function editVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService)
     {
         $team = $this->getUser()->getTeam();
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
@@ -87,12 +88,12 @@ class VvtController extends AbstractController
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
         }
-
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
         $form = $VVTService->createForm($newVvt, $team);
-
         $form->remove('nummer');
         $form->handleRequest($request);
+        $assign = $assignService->createForm($vvt, $team);
+
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -111,17 +112,19 @@ class VvtController extends AbstractController
                 $em->persist($newVvt);
                 $em->persist($vvt);
                 $em->flush();
-                return $this->redirectToRoute('vvt');
+                return $this->redirectToRoute('vvt_edit', ['id' => $newVvt->getId(), 'snack' => 'Erfolgreich gespeichert']);
             }
         }
 
         return $this->render('vvt/edit.html.twig', [
             'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
             'errors' => $errors,
             'title' => 'Verarbeitungstätigkeit bearbeiten',
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'activNummer' => false,
+            'snack' => $request->get('snack')
         ]);
     }
 
@@ -151,7 +154,7 @@ class VvtController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($dsfa);
                 $em->flush();
-                return $this->redirectToRoute('vvt');
+                return $this->redirectToRoute('vvt_edit', ['id' => $dsfa->getVvt()->getId(), 'snack' => 'DSFA angelegt']);
             }
         }
         return $this->render('vvt/editDsfa.html.twig', [
@@ -166,7 +169,7 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/dsfa/edit", name="vvt_dsfa_edit")
      */
-    public function editVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService)
+    public function editVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService)
     {
         $team = $this->getUser()->getTeam();
         $dsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->find($request->get('dsfa'));
@@ -179,6 +182,7 @@ class VvtController extends AbstractController
 
         $form = $this->createForm(VvtDsfaType::class, $newDsfa);
         $form->handleRequest($request);
+        $assign = $assignService->createForm($dsfa, $team);
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
@@ -190,16 +194,18 @@ class VvtController extends AbstractController
                 $em->persist($newDsfa);
                 $em->persist($dsfa);
                 $em->flush();
-                return $this->redirectToRoute('vvt');
+                return $this->redirectToRoute('vvt_dsfa_edit', ['dsfa' => $newDsfa->getId(), 'snack' => 'Erfolgreich gepeichert']);
             }
         }
 
         return $this->render('vvt/editDsfa.html.twig', [
             'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
             'errors' => $errors,
             'title' => 'Datenschutzfolgeabschätzung bearbeiten',
             'dsfa' => $dsfa,
             'activ' => $dsfa->getActiv(),
+            'snack' => $request->get('snack')
         ]);
     }
 }

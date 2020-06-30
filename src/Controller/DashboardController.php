@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Entity\AkademieBuchungen;
 use App\Entity\AuditTom;
 use App\Entity\Datenweitergabe;
 use App\Entity\Kontakte;
@@ -59,7 +60,7 @@ class DashboardController extends AbstractController
         $kristischeVvts = $query->getResult();
 
         $qb = $this->getDoctrine()->getRepository(VVTDsfa::class)->createQueryBuilder('dsfa');
-        $qb->innerJoin('dsfa.vvt','vvt')
+        $qb->innerJoin('dsfa.vvt', 'vvt')
             ->andWhere('vvt.activ = 1')
             ->andWhere('dsfa.activ = 1')
             ->andWhere('dsfa.dsb IS NULL OR dsfa.ergebnis IS NULL')
@@ -67,6 +68,13 @@ class DashboardController extends AbstractController
             ->setParameter('team', $team);
         $query = $qb->getQuery();
         $openDsfa = $query->getResult();
+
+        $assignVvt = $this->getUser()->getAssignedVvts()->toarray();
+        $assignAudit = $this->getUser()->getAssignedAudits()->toarray();
+        $assignDsfa = $this->getUser()->getAssignedDsfa()->toarray();
+        $assignDatenweitergabe = $this->getUser()->getAssignedDatenweitergaben()->toarray();
+
+        $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findActivBuchungenByUser($this->getUser());
 
         return $this->render('dashboard/index.html.twig', [
             'controller_name' => 'DashboardController',
@@ -80,7 +88,12 @@ class DashboardController extends AbstractController
             'kVvt' => $kristischeVvts,
             'openDsfa' => $openDsfa,
             'tom' => $tom,
-            'av' => $av
+            'av' => $av,
+            'assignDaten' => $assignDatenweitergabe,
+            'assignVvt' => $assignVvt,
+            'assignAudit' => $assignAudit,
+            'assignDsfa' => $assignDsfa,
+            'akademie' => $buchungen
         ]);
     }
 }

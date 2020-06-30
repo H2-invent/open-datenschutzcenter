@@ -1,0 +1,35 @@
+{% extends 'email/base.html.twig' %}
+{% block header %}
+    -- Neue DSFA zum Bearbeiten zugewiesen --
+{% endblock %}
+
+{% block content %}
+    <h4 class="text-center">
+        {{ assign }}
+    </h4>
+    <b>
+        Hallo!
+    </b>
+    <p>
+        Ihnen wurde eine Datenschutzfolgeabschätzung zur Verarbeitung {{ assign }} zum Bearbeiten zugewiesen.
+    </p>
+    <p>
+        DSFA zur Verarbeitung: {{ assign }}
+    </p>
+    <p>
+        Grundlage: {{ data.beschreibung|nl2br }}
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        <a href="{{ absolute_url(path('vvt_dsfa_edit', {'vvt':data.id})) }}">Klicken Sie hier um direkt zu Element
+            zu gelangen.</a>
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei Ihrem
+        Datenschutzbeauftragten, den Datenschutzkoordinatoren oder bei der Geschäftsführung.<br>
+        E-Mail: {{ data.vvt.team.email }}<br>
+        Telefon: {{ data.vvt.team.telefon }}
+    </p>
+
+{% endblock %}

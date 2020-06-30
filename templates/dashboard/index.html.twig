@@ -13,24 +13,15 @@
             <div class="row">
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('vvt') }}">
-                        <!-- Card -->
-                        <div class="card hoverable btn-green">
-                            <!-- Card content -->
-                            <div class="card-body">
-                                <span class="h3-responsive">{{ vvt|length }}</span>
-                                <span>Verarbeitungen</span>
-                            </div>
-
-                        </div>
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-vvt','title':'Verarbeitungen','metrik':vvt|length}) }}
                         {% if kVvt|length > 0 %}
                             {{ include('dashboard/__card.html.twig',{'farbe':'red','title':'Krisitsche VVTs','metrik':kVvt|length}) }}
                         {% endif %}
-                        <!-- Card -->
                     </a>
                 </div>
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('vvt') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'btn-green','title':'DSFA','metrik':dsfa|length}) }}
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-dsfa','title':'DSFA','metrik':dsfa|length}) }}
                         {% if openDsfa|length > 0 %}
                             {{ include('dashboard/__card.html.twig',{'farbe':'red','title':'Offene DSFA','metrik':openDsfa|length}) }}
                         {% endif %}
@@ -38,22 +29,22 @@
                 </div>
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('tom') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'btn-elegant','title':'TOMs','metrik':tom|length}) }}
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-tom','title':'TOMs','metrik':tom|length}) }}
                     </a>
                 </div>
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('kontakt') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'','title':'Eingetragene Kontakte','metrik':kontakte|length}) }}
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-kontakt','title':'Eingetragene Kontakte','metrik':kontakte|length}) }}
                     </a>
                 </div>
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('datenweitergabe') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'btn-grey','title':'Datenweitergaben','metrik':daten|length}) }}
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-daten','title':'Datenweitergaben','metrik':daten|length}) }}
                     </a>
                 </div>
                 <div class="col-md-6 mt-2">
                     <a href="{{ path('auftragsverarbeitung') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'btn-indigo','title':'Auftragsverarbeitungen','metrik':av|length}) }}
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-av','title':'Auftragsverarbeitungen','metrik':av|length}) }}
                     </a>
                 </div>
 
@@ -74,7 +65,8 @@
                             <ul>
                                 {% for a in kAudit %}
                                     <li>
-                                        <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}">{{ a.createdAt|date('d.m.Y H:i') }}
+                                        <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}"><img style="width: 17px"
+                                                                                                  src="{{ asset('icons/pruefung.svg') }}"> {{ a.createdAt|date('d.m.Y H:i') }}
                                             - {{ a.frage }}</a></li>
                                 {% endfor %}
                             </ul>
@@ -84,7 +76,8 @@
                             <ul>
                                 {% for v in kVvt %}
                                     <li>
-                                        <a href="{{ path('vvt_edit', {'id':v.id}) }}">{{ v.createdAt|date('d.m.Y H:i') }}
+                                        <a href="{{ path('vvt_edit', {'id':v.id}) }}"><img style="width: 17px"
+                                                                                           src="{{ asset('icons/prozess.svg') }}"> {{ v.createdAt|date('d.m.Y H:i') }}
                                             - {{ v.name }}</a></li>
                                 {% endfor %}
                             </ul>
@@ -115,8 +108,10 @@
         <!--Grid column-->
         <div class="col-md-6 mb-4">
 
+            {{ include('dashboard/__assign.html.twig') }}
+
             <!--Card-->
-            <div class="card">
+            <div class="card mt-3">
                 <!-- Card header -->
                 <div class="card-header text-center">
                     Letzte Änderungen
@@ -126,21 +121,22 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h5>Auditfragen</h5>
+                            <hr>
                             <ul>
                                 {% for a in audit|slice(0, 5) %}
-                                    <li>
-                                        <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}">{{ a.createdAt|date('d.m.Y H:i') }}
-                                            - {{ a.frage }}</a></li>
+                                    <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}"><img style="width: 14px"
+                                                                                              src="{{ asset('icons/pruefung.svg') }}"> {{ a.frage }}
+                                    </a><br>
                                 {% endfor %}
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <h5>Verarbeitungsverzeichnisse</h5>
+                            <hr>
                             <ul>
                                 {% for v in vvt|slice(0, 5) %}
-                                    <li>
-                                        <a href="{{ path('vvt_edit', {'id':v.id}) }}">{{ v.createdAt|date('d.m.Y H:i') }}
-                                            - {{ v.name }}</a></li>
+                                    <img style="width: 14px" src="{{ asset('icons/prozess.svg') }}"> <a
+                                        href="{{ path('vvt_edit', {'id':v.id}) }}">{{ v.name }}</a><br>
                                 {% endfor %}
                             </ul>
                         </div>

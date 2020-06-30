@@ -1,0 +1,57 @@
+<a href="
+{% if a.name is defined %}
+    {{ path('vvt_edit',{'id':a.id}) }}
+{% elseif a.frage is defined %}
+    {{ path('audit_tom_edit',{'tom':a.id}) }}
+{% endif %}
+">
+    <div
+            {% if a.name is defined %}
+                class="card card-body bg-vvt mb-1"
+            {% elseif a.frage is defined %}
+                class="card card-body bg-audit mb-1"
+            {% elseif a.grundlage is defined %}
+                class="card card-body bg-daten mb-1"
+            {% elseif a.beschreibung is defined %}
+                class="card card-body bg-dsfa mb-1"
+            {% endif %}
+    >
+        <div class="row">
+            <div class="col-md-1">
+                {% if a.name is defined %}
+                    <img style="width: 30px" src="{{ asset('icons/prozess.svg') }}">
+                {% elseif a.frage is defined %}
+                    <img style="width: 30px" src="{{ asset('icons/pruefung.svg') }}">
+                {% elseif a.grundlage is defined %}
+                    <img style="width: 30px" src="{{ asset('icons/prozess.svg') }}">
+                {% elseif a.beschreibung is defined %}
+                    <img style="width: 30px" src="{{ asset('icons/prozess.svg') }}">
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                {% if a.name is defined %}
+                    {{ a.name }}
+                {% elseif a.frage is defined %}
+                    {{ a.frage }}
+                {% elseif a.grundlage is defined %}
+                    {{ a.grundlage }}
+                {% elseif a.beschreibung is defined %}
+                    {{ a.beschreibung }}
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                Erstellt am: {{ a.createdAt|date('d.m.Y') }}
+            </div>
+            <div class="col-md-2">
+                {% if a.nummer is defined %}
+                    {{ a.nummer }}
+                {% endif %}
+            </div>
+            <div class="col-md-2">
+                {% if a.status is defined %}
+                    {{ a.status.name }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</a>

@@ -1,11 +1,11 @@
 {% extends 'email/base.html.twig' %}
 {% block header %}
-    {{ buchung.kurs.title }}
+    -- Neuer Kurs verfügbar --
 {% endblock %}
 
 {% block content %}
     <h4 class="text-center">
-        -- Neuer Kurs verfügbar --
+        {{ buchung.kurs.title }}
     </h4>
     <b>
         Hallo!
