@@ -125,7 +125,7 @@
                             <ul>
                                 {% for a in audit|slice(0, 5) %}
                                     <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}"><img style="width: 14px"
-                                                                                              src="{{ asset('icons/pruefung.svg') }}"> {{ a.frage }}
+                                                                                              src="{{ asset('images/pruefung.png') }}"> {{ a.frage }}
                                     </a><br>
                                 {% endfor %}
                             </ul>
@@ -135,7 +135,7 @@
                             <hr>
                             <ul>
                                 {% for v in vvt|slice(0, 5) %}
-                                    <img style="width: 14px" src="{{ asset('icons/prozess.svg') }}"> <a
+                                    <img style="width: 14px" src="{{ asset('images/prozess.png') }}"> <a
                                         href="{{ path('vvt_edit', {'id':v.id}) }}">{{ v.name }}</a><br>
                                 {% endfor %}
                             </ul>

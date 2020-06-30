@@ -10,32 +10,32 @@
             <li class="nav-item">
                 <a class="nav-link active text-center" id="home-tab" data-toggle="tab" href="#akademie" role="tab"
                    aria-controls="home"
-                   aria-selected="true"><img style="height: 1.5rem" src="{{ asset('icons/online-learning.svg') }}">
+                   aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/online-learning.png') }}">
                     <span
                             class="d-none d-lg-block">Akademie</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="home-tab" data-toggle="tab" href="#audit" role="tab"
                    aria-controls="home"
-                   aria-selected="true"><img style="height: 1.5rem" src="{{ asset('icons/pruefung.svg') }}"> <span
+                   aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/pruefung.png') }}"> <span
                             class="d-none d-lg-block">Audit</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
                    aria-controls="profile"
-                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('icons/prozess.svg') }}"> <span
+                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/prozess.png') }}"> <span
                             class="d-none d-lg-block">VVT</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
                    aria-controls="contact"
-                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('icons/dsfa.svg') }}"> <span
+                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/dsta.png') }}"> <span
                             class="d-none d-lg-block">DSFA</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#daten" role="tab"
                    aria-controls="contact"
-                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('icons/data.svg') }}"> <span
+                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/data.png') }}"> <span
                             class="d-none d-lg-block">DW</span></a>
             </li>
         </ul>
@@ -47,7 +47,7 @@
                         <div class="btn btn-block bg-akademie text-md-left mt-1">
                             <div class="row">
                                 <div class="col-md-1">
-                                    <img style="width: 21px" src="{{ asset('icons/online-learning.svg') }}">
+                                    <img style="width: 21px" src="{{ asset('images/online-learning.png') }}">
                                 </div>
                                 <div class="col-md-7">
                                     {{ a.kurs.title }}
@@ -67,7 +67,7 @@
                             <div class="btn btn-block bg-audit text-md-left mt-1">
                                 <div class="row">
                                     <div class="col-md-1">
-                                        <img style="width: 21px" src="{{ asset('icons/pruefung.svg') }}">
+                                        <img style="width: 21px" src="{{ asset('images/pruefung.png') }}">
                                     </div>
                                     <div class="col-md-7">
                                         {{ a.frage }}
@@ -88,7 +88,7 @@
                             <div class="btn btn-block bg-vvt text-md-left mt-1">
                                 <div class="row">
                                     <div class="col-md-1">
-                                        <img style="width: 21px" src="{{ asset('icons/prozess.svg') }}">
+                                        <img style="width: 21px" src="{{ asset('images/prozess.png') }}">
                                     </div>
                                     <div class="col-md-6">
                                         {{ a.name }}
@@ -112,7 +112,7 @@
                             <div class="btn btn-block bg-dsfa text-md-left mt-1">
                                 <div class="row">
                                     <div class="col-md-1">
-                                        <img style="width: 21px" src="{{ asset('icons/dsfa.svg') }}">
+                                        <img style="width: 21px" src="{{ asset('images/dsta.png') }}">
                                     </div>
                                     <div class="col-md-8">
                                         {{ a.beschreibung }}
@@ -133,7 +133,7 @@
                             <div class="btn btn-block {% if a.art == 1 %}bg-daten{% else %}bg-av{% endif %} text-md-left mt-1">
                                 <div class="row">
                                     <div class="col-md-1">
-                                        <img style="width: 21px" src="{{ asset('icons/data.svg') }}">
+                                        <img style="width: 21px" src="{{ asset('images/data.png') }}">
                                     </div>
                                     <div class="col-md-8">
                                         {{ a.gegenstand }}
