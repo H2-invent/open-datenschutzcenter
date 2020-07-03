@@ -303,7 +303,7 @@ label.required:after {
     visibility: hidden;
     width: 100%;
 
-    background-color: var(--contrast-base);
+    background-color: #34ce57;
     color: #fff;
     text-align: center;
     border-radius: 2px;
@@ -311,7 +311,7 @@ label.required:after {
     position: fixed;
     z-index: 1;
     right: 0;
-    bottom: 30px;
+    bottom: 0;
     font-size: 17px;
 }
 
@@ -327,7 +327,7 @@ label.required:after {
         opacity: 0;
     }
     to {
-        bottom: 30px;
+        bottom: 0;
         opacity: 1;
     }
 }
@@ -338,14 +338,14 @@ label.required:after {
         opacity: 0;
     }
     to {
-        bottom: 30px;
+        bottom: 0;
         opacity: 1;
     }
 }
 
 @-webkit-keyframes fadeout {
     from {
-        bottom: 30px;
+        bottom: 0;
         opacity: 1;
     }
     to {
@@ -356,11 +356,15 @@ label.required:after {
 
 @keyframes fadeout {
     from {
-        bottom: 30px;
+        bottom: 0;
         opacity: 1;
     }
     to {
         bottom: 0;
         opacity: 0;
     }
+}
+
+.dropdown-toggle::after {
+    content: none !important;
 }

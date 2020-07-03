@@ -10,6 +10,7 @@
     </div>
     {{ form_end(assignForm) }}
 {% else %}
-    {{ data.assignedUser.email }} <a class="btn btn-danger btn-sm" title="Zuweisung entfernen"
-                                     href="{{ path(path,{'id':data.id}) }}">X</a>
+    <span class="small">{{ data.assignedUser.email }}</span>  <a class="btn btn-danger btn-sm rounded"
+                                                                 title="Zuweisung entfernen"
+                                                                 href="{{ path(path,{'id':data.id}) }}">X</a>
 {% endif %}
