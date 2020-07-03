@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\AkademieBuchungen;
 use App\Entity\AuditTom;
 use App\Entity\Datenweitergabe;
+use App\Entity\Forms;
 use App\Entity\Kontakte;
 use App\Entity\Tom;
 use App\Entity\VVT;
@@ -40,6 +41,7 @@ class DashboardController extends AbstractController
         $vvtDsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->findActivByTeam($team);
         $kontakte = $this->getDoctrine()->getRepository(Kontakte::class)->findActivByTeam($team);
         $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($team);
+        $forms = $this->getDoctrine()->getRepository(Forms::class)->findActivByTeam($team);
 
         $qb = $this->getDoctrine()->getRepository(AuditTom::class)->createQueryBuilder('audit');
         $qb->andWhere('audit.team = :team')
@@ -93,7 +95,8 @@ class DashboardController extends AbstractController
             'assignVvt' => $assignVvt,
             'assignAudit' => $assignAudit,
             'assignDsfa' => $assignDsfa,
-            'akademie' => $buchungen
+            'akademie' => $buchungen,
+            'forms' => $forms
         ]);
     }
 }

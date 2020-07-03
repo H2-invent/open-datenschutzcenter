@@ -141,6 +141,11 @@ class Team
      */
     private $produktes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Forms::class, mappedBy="team")
+     */
+    private $forms;
+
 
     public function __construct()
     {
@@ -157,6 +162,7 @@ class Team
         $this->toms = new ArrayCollection();
         $this->vorfalls = new ArrayCollection();
         $this->produktes = new ArrayCollection();
+        $this->forms = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -678,6 +684,37 @@ class Team
             // set the owning side to null (unless already changed)
             if ($produkte->getTeam() === $this) {
                 $produkte->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Forms[]
+     */
+    public function getForms(): Collection
+    {
+        return $this->forms;
+    }
+
+    public function addForm(Forms $form): self
+    {
+        if (!$this->forms->contains($form)) {
+            $this->forms[] = $form;
+            $form->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForm(Forms $form): self
+    {
+        if ($this->forms->contains($form)) {
+            $this->forms->removeElement($form);
+            // set the owning side to null (unless already changed)
+            if ($form->getTeam() === $this) {
+                $form->setTeam(null);
             }
         }
 

@@ -105,6 +105,11 @@ class User extends BaseUser
      */
     private $assignedDsfa;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Forms::class, mappedBy="user")
+     */
+    private $forms;
+
 
     public function __construct()
     {
@@ -121,6 +126,7 @@ class User extends BaseUser
         $this->assignedAudits = new ArrayCollection();
         $this->assignedDatenweitergaben = new ArrayCollection();
         $this->assignedDsfa = new ArrayCollection();
+        $this->forms = new ArrayCollection();
     }
 
     public function getTeam(): ?Team
@@ -525,6 +531,37 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($assignedDsfa->getAssignedUser() === $this) {
                 $assignedDsfa->setAssignedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Forms[]
+     */
+    public function getForms(): Collection
+    {
+        return $this->forms;
+    }
+
+    public function addForm(Forms $form): self
+    {
+        if (!$this->forms->contains($form)) {
+            $this->forms[] = $form;
+            $form->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForm(Forms $form): self
+    {
+        if ($this->forms->contains($form)) {
+            $this->forms->removeElement($form);
+            // set the owning side to null (unless already changed)
+            if ($form->getUser() === $this) {
+                $form->setUser(null);
             }
         }
 

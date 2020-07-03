@@ -37,6 +37,9 @@
             <li class="{{ app.request.attributes.get('_route') == 'auftragsverarbeitung' ? 'active' }}">
                 <a href="{{ path('auftragsverarbeitung') }}">Auftragsverarbeitung</a>
             </li>
+            <li class="{{ app.request.attributes.get('_route') == 'forms' ? 'active' }}">
+                <a href="{{ path('forms') }}">Formulare</a>
+            </li>
             <li class="{{ app.request.attributes.get('_route') == 'vorfall' ? 'active' }}">
                 <a href="{{ path('vorfall') }}">Vorfälle</a>
             </li>

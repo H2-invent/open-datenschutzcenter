@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+    <a class="btn btn-primary btn-sm ml-1" href="{{ path('auftragsverarbeitung_new') }}">
+        <span>Auftragsverarbeitung anlegen</span>
+    </a>
+{% endblock %}
+
+{% block body %}
+    {{ include('datenweitergabe/__indexTabel.html.twig') }}
+{% endblock %}
+

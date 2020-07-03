@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('forms_new') }}">
+        <span>Formular anlegen</span>
+    </a>
+{% endblock %}
+
+{% block body %}
+    {{ include('forms/__indexTabel.html.twig') }}
+{% endblock %}
+

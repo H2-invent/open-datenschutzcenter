@@ -47,6 +47,11 @@
                         {{ include('dashboard/__card.html.twig',{'farbe':'bg-av','title':'Auftragsverarbeitungen','metrik':av|length}) }}
                     </a>
                 </div>
+                <div class="col-md-6 mt-2">
+                    <a href="{{ path('forms') }}">
+                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-forms','title':'Formulare','metrik':forms|length}) }}
+                    </a>
+                </div>
 
             </div>
 
