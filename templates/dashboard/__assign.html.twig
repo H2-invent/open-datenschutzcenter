@@ -12,47 +12,47 @@
                    aria-controls="home"
                    aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/online-learning.png') }}">
                     <span
-                            class="d-none d-lg-block">Akademie</span></a>
+                            class="d-none d-xl-block">Akademie</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="home-tab" data-toggle="tab" href="#audit" role="tab"
                    aria-controls="home"
                    aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/pruefung.png') }}"> <span
-                            class="d-none d-lg-block">Audit</span></a>
+                            class="d-none d-xl-block">Audit</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
                    aria-controls="profile"
                    aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/prozess.png') }}"> <span
-                            class="d-none d-lg-block">VVT</span></a>
+                            class="d-none d-xl-block">VVT</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
                    aria-controls="contact"
                    aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/dsta.png') }}"> <span
-                            class="d-none d-lg-block">DSFA</span></a>
+                            class="d-none d-xl-block">DSFA</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#daten" role="tab"
                    aria-controls="contact"
                    aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/data.png') }}"> <span
-                            class="d-none d-lg-block">DW</span></a>
+                            class="d-none d-xl-block">DW</span></a>
             </li>
         </ul>
 
-        <div class="tab-content" id="myTabContent">
+        <div class="tab-content " id="myTabContent">
             <div class="tab-pane fade show active" id="akademie" role="tabpanel" aria-labelledby="home-tab">
                 {% for a in akademie %}
-                    <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
+                    <a href="{{ path('akademie_kurs',{'kurs':a.id}) }}">
                         <div class="btn btn-block bg-akademie text-md-left mt-1">
                             <div class="row">
-                                <div class="col-md-1">
+                                <div class="col-lg-1 d-none d-xl-block">
                                     <img style="width: 21px" src="{{ asset('images/online-learning.png') }}">
                                 </div>
-                                <div class="col-md-7">
+                                <div class="col-lg-7">
                                     {{ a.kurs.title }}
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-lg-4">
                                     {{ a.zugewiesen|date('d.m.Y') }}
                                 </div>
                             </div>
@@ -66,13 +66,13 @@
                         <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
                             <div class="btn btn-block bg-audit text-md-left mt-1">
                                 <div class="row">
-                                    <div class="col-md-1">
+                                    <div class="col-lg-1 d-none d-xl-block">
                                         <img style="width: 21px" src="{{ asset('images/pruefung.png') }}">
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-lg-7">
                                         {{ a.frage }}
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-lg-4">
                                         {{ a.status.name }}
                                     </div>
                                 </div>
@@ -87,16 +87,16 @@
                         <a href="{{ path('vvt_edit',{'id':a.id}) }}">
                             <div class="btn btn-block bg-vvt text-md-left mt-1">
                                 <div class="row">
-                                    <div class="col-md-1">
+                                    <div class="col-md-1 d-none d-xl-block">
                                         <img style="width: 21px" src="{{ asset('images/prozess.png') }}">
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-lg-5">
                                         {{ a.name }}
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-lg-3 d-none d-xl-block">
                                         {{ a.status.name }}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-lg-3">
                                         {{ a.createdAt|date('d.m.Y') }}
                                     </div>
                                 </div>
@@ -111,13 +111,13 @@
                         <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
                             <div class="btn btn-block bg-dsfa text-md-left mt-1">
                                 <div class="row">
-                                    <div class="col-md-1">
+                                    <div class="col-lg-1 d-none d-xl-block">
                                         <img style="width: 21px" src="{{ asset('images/dsta.png') }}">
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-lg-8">
                                         {{ a.beschreibung }}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-lg-3">
                                         {{ a.createdAt|date('d.m.Y') }}
                                     </div>
                                 </div>
@@ -132,13 +132,13 @@
                         <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">
                             <div class="btn btn-block {% if a.art == 1 %}bg-daten{% else %}bg-av{% endif %} text-md-left mt-1">
                                 <div class="row">
-                                    <div class="col-md-1">
+                                    <div class="col-lg-1 d-none d-xl-block">
                                         <img style="width: 21px" src="{{ asset('images/data.png') }}">
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-lg-8">
                                         {{ a.gegenstand }}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-lg-3">
                                         {{ a.createdAt|date('d.m.Y') }}
                                     </div>
                                 </div>
