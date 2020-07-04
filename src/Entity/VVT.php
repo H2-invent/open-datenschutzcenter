@@ -210,6 +210,11 @@ class VVT
      */
     private $assignedUser;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Policies::class, mappedBy="processes")
+     */
+    private $policies;
+
     public function __construct()
     {
         $this->grundlage = new ArrayCollection();
@@ -219,6 +224,7 @@ class VVT
         $this->dsfa = new ArrayCollection();
         $this->datenweitergaben = new ArrayCollection();
         $this->produkt = new ArrayCollection();
+        $this->policies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -771,6 +777,34 @@ class VVT
     public function setAssignedUser(?User $assignedUser): self
     {
         $this->assignedUser = $assignedUser;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Policies[]
+     */
+    public function getPolicies(): Collection
+    {
+        return $this->policies;
+    }
+
+    public function addPolicy(Policies $policy): self
+    {
+        if (!$this->policies->contains($policy)) {
+            $this->policies[] = $policy;
+            $policy->addProcess($this);
+        }
+
+        return $this;
+    }
+
+    public function removePolicy(Policies $policy): self
+    {
+        if ($this->policies->contains($policy)) {
+            $this->policies->removeElement($policy);
+            $policy->removeProcess($this);
+        }
 
         return $this;
     }

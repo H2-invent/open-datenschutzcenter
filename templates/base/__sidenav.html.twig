@@ -28,6 +28,9 @@
             <li class="{{ app.request.attributes.get('_route') == 'vvt' ? 'active' }}">
                 <a href="{{ path('vvt') }}">Verarbeitungen</a>
             </li>
+            <li class="{{ app.request.attributes.get('_route') == 'policies' ? 'active' }}">
+                <a href="{{ path('policies') }}">Richtlinien</a>
+            </li>
             <li class="{{ app.request.attributes.get('_route') == 'kontakt' ? 'active' }}">
                 <a href="{{ path('kontakt') }}">Kontakte</a>
             </li>

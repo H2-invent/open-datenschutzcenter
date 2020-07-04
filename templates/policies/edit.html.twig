@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+    {% if policy.activ %}
+        <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_policy', {'id':policy.id}) }}">
+            <span>PDF erstellen</span>
+        </a>
+        <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_policy', {'id':policy.id, 'all':1}) }}">
+            <span>PDF mit Historie erstellen</span>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="h2-responsive">{{ title }}</h2>
+        </div>
+
+    </div>
+
+
+    {{ include('policies/__form.html.twig') }}
+    <p>Erstellt von: {{ policy.user.email }}</p>
+    {% if policy.previous %}
+        <div class="card card-body mt-2">
+            <h2>Historie</h2>
+            {{ include('policies/__history.html.twig', {'p':policy.previous}) }}
+        </div>
+    {% endif %}
+
+    {{ include('base/__snack.html.twig') }}
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

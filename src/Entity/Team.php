@@ -146,6 +146,11 @@ class Team
      */
     private $forms;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Policies::class, mappedBy="team")
+     */
+    private $policies;
+
 
     public function __construct()
     {
@@ -163,6 +168,7 @@ class Team
         $this->vorfalls = new ArrayCollection();
         $this->produktes = new ArrayCollection();
         $this->forms = new ArrayCollection();
+        $this->policies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -715,6 +721,37 @@ class Team
             // set the owning side to null (unless already changed)
             if ($form->getTeam() === $this) {
                 $form->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Policies[]
+     */
+    public function getPolicies(): Collection
+    {
+        return $this->policies;
+    }
+
+    public function addPolicy(Policies $policy): self
+    {
+        if (!$this->policies->contains($policy)) {
+            $this->policies[] = $policy;
+            $policy->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removePolicy(Policies $policy): self
+    {
+        if ($this->policies->contains($policy)) {
+            $this->policies->removeElement($policy);
+            // set the owning side to null (unless already changed)
+            if ($policy->getTeam() === $this) {
+                $policy->setTeam(null);
             }
         }
 

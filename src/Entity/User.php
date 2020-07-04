@@ -110,6 +110,16 @@ class User extends BaseUser
      */
     private $forms;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Policies::class, mappedBy="user")
+     */
+    private $policies;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Policies::class, mappedBy="person")
+     */
+    private $policiesResponsible;
+
 
     public function __construct()
     {
@@ -127,6 +137,8 @@ class User extends BaseUser
         $this->assignedDatenweitergaben = new ArrayCollection();
         $this->assignedDsfa = new ArrayCollection();
         $this->forms = new ArrayCollection();
+        $this->policies = new ArrayCollection();
+        $this->policiesResponsible = new ArrayCollection();
     }
 
     public function getTeam(): ?Team
@@ -562,6 +574,68 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($form->getUser() === $this) {
                 $form->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Policies[]
+     */
+    public function getPolicies(): Collection
+    {
+        return $this->policies;
+    }
+
+    public function addPolicy(Policies $policy): self
+    {
+        if (!$this->policies->contains($policy)) {
+            $this->policies[] = $policy;
+            $policy->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePolicy(Policies $policy): self
+    {
+        if ($this->policies->contains($policy)) {
+            $this->policies->removeElement($policy);
+            // set the owning side to null (unless already changed)
+            if ($policy->getUser() === $this) {
+                $policy->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Policies[]
+     */
+    public function getPoliciesResponsible(): Collection
+    {
+        return $this->policiesResponsible;
+    }
+
+    public function addPoliciesResponsible(Policies $policiesResponsible): self
+    {
+        if (!$this->policiesResponsible->contains($policiesResponsible)) {
+            $this->policiesResponsible[] = $policiesResponsible;
+            $policiesResponsible->setPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function removePoliciesResponsible(Policies $policiesResponsible): self
+    {
+        if ($this->policiesResponsible->contains($policiesResponsible)) {
+            $this->policiesResponsible->removeElement($policiesResponsible);
+            // set the owning side to null (unless already changed)
+            if ($policiesResponsible->getPerson() === $this) {
+                $policiesResponsible->setPerson(null);
             }
         }
 
