@@ -27,9 +27,9 @@ class PolicyType extends AbstractType
     {
 
         $builder
-            ->add('scope', TextareaType::class, ['label' => 'Festlegung des Geltungsbereiches', 'required' => true, 'translation_domain' => 'form'])
-            ->add('risk', TextareaType::class, ['label' => 'Abzuwehrende IT-Risiken, bestehende Gefahren und mögliche Konsequenzen (wichtig für die Motivation!)', 'required' => true, 'translation_domain' => 'form'])
-            ->add('foundation', TextareaType::class, ['label' => 'Bezug zu Gesetzen, Verordnungen und Standards', 'required' => true, 'translation_domain' => 'form'])
+            ->add('scope', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Festlegung des Geltungsbereiches', 'required' => true, 'translation_domain' => 'form'])
+            ->add('risk', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Abzuwehrende IT-Risiken, bestehende Gefahren und mögliche Konsequenzen (wichtig für die Motivation!)', 'required' => true, 'translation_domain' => 'form'])
+            ->add('foundation', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Bezug zu Gesetzen, Verordnungen und Standards', 'required' => true, 'translation_domain' => 'form'])
             ->add('processes', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVT::class,
@@ -40,9 +40,9 @@ class PolicyType extends AbstractType
                 'required' => true
             ])
             ->add('protection', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'Zu ergreifende Schutzmaßnahmen in kurzer, verständlicher Form', 'required' => false, 'translation_domain' => 'form'])
-            ->add('notes', TextareaType::class, ['label' => 'Hinweis auf Schulungsangebotet', 'required' => false, 'translation_domain' => 'form'])
-            ->add('consequences', TextareaType::class, ['label' => 'Konsequenzen bei Nichtbeachtung der Sicherheitsrichtlinie', 'required' => false, 'translation_domain' => 'form'])
-            ->add('contact', TextareaType::class, ['label' => 'Kontaktdaten von IT-Sicherheitsverantwortlichen und Datenschutzbeauftragten', 'required' => false, 'translation_domain' => 'form'])
+            ->add('notes', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Hinweis auf Schulungsangebotet', 'required' => false, 'translation_domain' => 'form'])
+            ->add('consequences', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Konsequenzen bei Nichtbeachtung der Sicherheitsrichtlinie', 'required' => false, 'translation_domain' => 'form'])
+            ->add('contact', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Kontaktdaten von IT-Sicherheitsverantwortlichen und Datenschutzbeauftragten', 'required' => false, 'translation_domain' => 'form'])
             ->add('people', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTPersonen::class,

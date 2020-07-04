@@ -13,6 +13,7 @@ use App\Entity\AuditTom;
 use App\Entity\Datenweitergabe;
 use App\Entity\Forms;
 use App\Entity\Kontakte;
+use App\Entity\Policies;
 use App\Entity\Tom;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
@@ -35,13 +36,14 @@ class DashboardController extends AbstractController
         }
 
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team'=>$team,'activ'=>true,'art'=>1));
-        $av = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team'=>$team,'activ'=>true,'art'=>2));
+        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => 1));
+        $av = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($team);
         $vvtDsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->findActivByTeam($team);
         $kontakte = $this->getDoctrine()->getRepository(Kontakte::class)->findActivByTeam($team);
         $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($team);
-        $forms = $this->getDoctrine()->getRepository(Forms::class)->findActivByTeam($team);
+        $forms = $this->getDoctrine()->getRepository(Forms::class)->findPublicByTeam($team);
+        $policies = $this->getDoctrine()->getRepository(Policies::class)->findPublicByTeam($team);
 
         $qb = $this->getDoctrine()->getRepository(AuditTom::class)->createQueryBuilder('audit');
         $qb->andWhere('audit.team = :team')
@@ -79,7 +81,6 @@ class DashboardController extends AbstractController
         $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findActivBuchungenByUser($this->getUser());
 
         return $this->render('dashboard/index.html.twig', [
-            'controller_name' => 'DashboardController',
             'team' => $team,
             'audit' => $audit,
             'daten' => $daten,
@@ -96,7 +97,8 @@ class DashboardController extends AbstractController
             'assignAudit' => $assignAudit,
             'assignDsfa' => $assignDsfa,
             'akademie' => $buchungen,
-            'forms' => $forms
+            'forms' => $forms,
+            'policies' => $policies
         ]);
     }
 }

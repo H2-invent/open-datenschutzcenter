@@ -63,6 +63,9 @@
     Verantwortlichkeiten für die Schutzmaßnahmen: <br>
     {{ d.person.username }} ({{ d.createdAt|date('d.m.Y') }})
 </p>
+<p>
+    {{ d.contact|nl2br }}
+</p>
 {% if d.previous and all == 1 %}
     <span style="page-break-after: always;"></span>
     {{ include('bericht/__policyBericht.html.twig', {'d':d.previous}) }}

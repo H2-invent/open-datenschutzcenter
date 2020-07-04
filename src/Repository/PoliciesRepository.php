@@ -57,4 +57,15 @@ class PoliciesRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findPublicByTeam($value)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team = :val')
+            ->andWhere('a.activ = 1')
+            ->andWhere('a.status != 4')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
 }
