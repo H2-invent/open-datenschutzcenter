@@ -83,6 +83,7 @@ class PoliciesController extends AbstractController
         $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());
         $form = $policiesService->createForm($newPolicy, $team);
         $form->handleRequest($request);
+        $assign = $assignService->createForm($policy, $team);
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
@@ -103,6 +104,7 @@ class PoliciesController extends AbstractController
 
         return $this->render('policies/edit.html.twig', [
             'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
             'errors' => $errors,
             'title' => 'Richtlinie bearbeiten',
             'policy' => $policy,

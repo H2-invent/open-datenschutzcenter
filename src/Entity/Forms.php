@@ -104,6 +104,11 @@ class Forms
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedForms")
+     */
+    private $assignedUser;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -338,6 +343,18 @@ class Forms
                 return "Angelegt";
                 break;
         }
+    }
+
+    public function getAssignedUser(): ?User
+    {
+        return $this->assignedUser;
+    }
+
+    public function setAssignedUser(?User $assignedUser): self
+    {
+        $this->assignedUser = $assignedUser;
+
+        return $this;
     }
 
 

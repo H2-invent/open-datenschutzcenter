@@ -16,7 +16,9 @@
         <div class="col-md-8">
             <h2 class="h2-responsive">{{ title }}</h2>
         </div>
-
+        <div class="col-md-4 text-right">
+            {{ include('assign/__assign.html.twig',{'data':policy,'path':'assign_policy'}) }}
+        </div>
     </div>
 
 

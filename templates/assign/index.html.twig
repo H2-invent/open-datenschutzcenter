@@ -31,6 +31,18 @@
                    aria-selected="false"><img style="width: 30px" src="{{ asset('images/data.png') }}"> <span
                             class="d-none d-sm-block">Datenweitergaben</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#forms" role="tab"
+                   aria-controls="contact"
+                   aria-selected="false"><img style="width: 30px" src="{{ asset('images/information.png') }}"> <span
+                            class="d-none d-sm-block">Formulare</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#policies" role="tab"
+                   aria-controls="contact"
+                   aria-selected="false"><img style="width: 30px" src="{{ asset('images/contract.png') }}"> <span
+                            class="d-none d-sm-block">Richtlinien</span></a>
+            </li>
         </ul>
 
         <div class="tab-content" id="myTabContent">
@@ -114,6 +126,48 @@
                                     </div>
                                     <div class="col-md-9">
                                         {{ a.gegenstand }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        {{ a.createdAt|date('d.m.Y') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="forms" role="tabpanel" aria-labelledby="contact-tab">
+                {% for a in assignForms %}
+                    {% if a.activ %}
+                        <a href="{{ path('forms_edit',{'id':a.id}) }}">
+                            <div class="btn btn-block bg-forms text-left mt-1">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img style="width: 30px" src="{{ asset('images/information.png') }}">
+                                    </div>
+                                    <div class="col-md-9">
+                                        {{ a.title }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        {{ a.createdAt|date('d.m.Y') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="policies" role="tabpanel" aria-labelledby="contact-tab">
+                {% for a in assignPolicies %}
+                    {% if a.activ %}
+                        <a href="{{ path('policy_edit',{'id':a.id}) }}">
+                            <div class="btn btn-block bg-policy text-left mt-1">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img style="width: 30px" src="{{ asset('images/contract.png') }}">
+                                    </div>
+                                    <div class="col-md-9">
+                                        {{ a.scope }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.createdAt|date('d.m.Y') }}

@@ -121,6 +121,11 @@ class Policies
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedPolicies")
+     */
+    private $assignedUser;
+
     public function __construct()
     {
         $this->processes = new ArrayCollection();
@@ -401,5 +406,17 @@ class Policies
                 return "Angelegt";
                 break;
         }
+    }
+
+    public function getAssignedUser(): ?User
+    {
+        return $this->assignedUser;
+    }
+
+    public function setAssignedUser(?User $assignedUser): self
+    {
+        $this->assignedUser = $assignedUser;
+
+        return $this;
     }
 }
