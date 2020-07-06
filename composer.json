@@ -35,6 +35,7 @@
         "symfony/twig-pack": "*",
         "symfony/validator": "4.4.*",
         "symfony/web-link": "4.4.*",
+        "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "4.4.*",
         "twig/cssinliner-extra": "^3.0",
         "twig/inky-extra": "^3.0",
