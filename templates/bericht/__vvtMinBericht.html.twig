@@ -34,19 +34,19 @@
     </tr>
     <tr>
         <td>
-            Welche Daten(kategorien) werden verarbeitet?
+            Verarbeitet Daten(kategorien)
         </td>
         <td>{% for p in d.kategorien %}{{ p.name }},<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Die Daten werden an folgenden Stellen gespeichert.
+            Die Daten werden an folgenden Stellen gespeichert/abgelegt.
         </td>
         <td>{{ d.speicherung|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            An folgende Unternehmen werden die Daten weitergegeben.
+            An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben
         </td>
         <td>{{ d.weitergabe|nl2br }}</td>
     </tr>
