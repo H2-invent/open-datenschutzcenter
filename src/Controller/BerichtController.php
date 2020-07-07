@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\AkademieBuchungen;
 use App\Entity\AuditTom;
 use App\Entity\Datenweitergabe;
+use App\Entity\Policies;
 use App\Entity\Tom;
 use App\Entity\Vorfall;
 use App\Entity\VVT;
@@ -288,6 +289,47 @@ class BerichtController extends AbstractController
 
         //Generate PDF File for Download
         $response = $wrapper->getStreamResponse($html, "Datenschutzvorfall.pdf");
+        $response->send();
+
+        // Send some text response
+        return new Response("The PDF file has been succesfully generated !");
+    }
+
+    /**
+     * @Route("/bericht/policy", name="bericht_policy")
+     */
+    public function berichtPolicy(DompdfWrapper $wrapper, Request $request)
+    {
+
+        $req = $request->get('id');
+
+        $team = $this->getUser()->getTeam();
+
+        if ($req) {
+            $policies = $this->getDoctrine()->getRepository(Policies::class)->findBy(array('id' => $req));
+        } else {
+            $policies = $this->getDoctrine()->getRepository(Policies::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+        }
+
+        if (count($policies) < 1) {
+            return $this->redirectToRoute('bericht');
+        }
+
+        // Center Team authentication
+        if ($team === null || $policies[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/policy.html.twig', [
+            'daten' => $policies,
+            'titel' => 'Bericht zu Datenschutzrichtlinien',
+            'team' => $this->getUser()->getTeam(),
+            'all' => $request->get('all'),
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse($html, "Datenschutzrichtlinie.pdf");
         $response->send();
 
         // Send some text response

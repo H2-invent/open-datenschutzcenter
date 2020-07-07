@@ -1,0 +1,35 @@
+{% extends 'email/base.html.twig' %}
+{% block header %}
+    -- Formular zum Bearbeiten zugewiesen --
+{% endblock %}
+
+{% block content %}
+    <h4 class="text-center">
+        {{ assign }}
+    </h4>
+    <b>
+        Hallo!
+    </b>
+    <p>
+        Ihnen wurde ein Formular {{ assign }} zum Bearbeiten zugewiesen.
+    </p>
+    <p>
+        Formulartitel: {{ assign }}
+    </p>
+    <p>
+        Grundlage: {{ data.title|nl2br }}
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        <a href="{{ absolute_url(path('forms_edit', {'id':data.id})) }}">Klicken Sie hier um direkt zu Element
+            zu gelangen.</a>
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei Ihrem
+        Datenschutzbeauftragten, den Datenschutzkoordinatoren oder bei der Geschäftsführung.<br>
+        E-Mail: {{ data.team.email }}<br>
+        Telefon: {{ data.team.telefon }}
+    </p>
+
+{% endblock %}

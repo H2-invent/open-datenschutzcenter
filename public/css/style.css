@@ -62,6 +62,16 @@
     color: whitesmoke !important;
 }
 
+.bg-forms {
+    background-color: #996800;
+    color: whitesmoke !important;
+}
+
+.bg-policy {
+    background-color: #4b515d;
+    color: whitesmoke !important;
+}
+
 /* poppins-regular - latin */
 @font-face {
     font-family: 'Poppins';
@@ -69,9 +79,7 @@
     font-weight: 400;
     src: url('../fonts/poppins-v9-latin-regular.eot'); /* IE9 Compat Modes */
     src: local('Poppins Regular'), local('Poppins-Regular'),
-    url('../fonts/poppins-v9-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../fonts/poppins-v9-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-    url('../fonts/poppins-v9-latin-regular.woff') format('woff'), /* Modern Browsers */
-    url('../fonts/poppins-v9-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('../fonts/poppins-v9-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../fonts/poppins-v9-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */ url('../fonts/poppins-v9-latin-regular.woff') format('woff'), /* Modern Browsers */ url('../fonts/poppins-v9-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
     url('../fonts/poppins-v9-latin-regular.svg#Poppins') format('svg'); /* Legacy iOS */
 }
 body {
@@ -299,7 +307,7 @@ label.required:after {
     visibility: hidden;
     width: 100%;
 
-    background-color: var(--contrast-base);
+    background-color: #34ce57;
     color: #fff;
     text-align: center;
     border-radius: 2px;
@@ -307,7 +315,7 @@ label.required:after {
     position: fixed;
     z-index: 1;
     right: 0;
-    bottom: 30px;
+    bottom: 0;
     font-size: 17px;
 }
 
@@ -323,7 +331,7 @@ label.required:after {
         opacity: 0;
     }
     to {
-        bottom: 30px;
+        bottom: 0;
         opacity: 1;
     }
 }
@@ -334,14 +342,14 @@ label.required:after {
         opacity: 0;
     }
     to {
-        bottom: 30px;
+        bottom: 0;
         opacity: 1;
     }
 }
 
 @-webkit-keyframes fadeout {
     from {
-        bottom: 30px;
+        bottom: 0;
         opacity: 1;
     }
     to {
@@ -352,11 +360,15 @@ label.required:after {
 
 @keyframes fadeout {
     from {
-        bottom: 30px;
+        bottom: 0;
         opacity: 1;
     }
     to {
         bottom: 0;
         opacity: 0;
     }
+}
+
+.dropdown-toggle::after {
+    content: none !important;
 }

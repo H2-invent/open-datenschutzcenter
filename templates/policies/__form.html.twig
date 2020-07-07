@@ -1,0 +1,118 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<div class="card card-body">
+
+    <div class="mt-4">
+        {{ form_label(form.scope) }}
+        {% if activ %}
+            {{ form_widget(form.scope) }}
+        {% else %}
+            {{ form_widget(form.scope, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.status) }}
+        {% if activ %}
+            {{ form_widget(form.status) }}
+        {% else %}
+            {{ form_widget(form.status, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.person) }}
+        {% if activ %}
+            {{ form_widget(form.person) }}
+        {% else %}
+            {{ form_widget(form.person, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.processes) }}
+        {% if activ %}
+            {{ form_widget(form.processes) }}
+        {% else %}
+            {{ form_widget(form.processes, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mt-4">
+                {{ form_label(form.categories) }}
+                {% if activ %}
+                    {{ form_widget(form.categories) }}
+                {% else %}
+                    {{ form_widget(form.categories, { 'disabled':'disabled' }) }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mt-4">
+                {{ form_label(form.people) }}
+                {% if activ %}
+                    {{ form_widget(form.people) }}
+                {% else %}
+                    {{ form_widget(form.people, { 'disabled':'disabled' }) }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mt-4">
+        {{ form_label(form.risk) }}
+        {% if activ %}
+            {{ form_widget(form.risk) }}
+        {% else %}
+            {{ form_widget(form.risk, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.foundation) }}
+        {% if activ %}
+            {{ form_widget(form.foundation) }}
+        {% else %}
+            {{ form_widget(form.foundation, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.protection) }}
+        {% if activ %}
+            {{ form_widget(form.protection) }}
+        {% else %}
+            {{ form_widget(form.protection, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.notes) }}
+        {% if activ %}
+            {{ form_widget(form.notes) }}
+        {% else %}
+            {{ form_widget(form.notes, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.consequences) }}
+        {% if activ %}
+            {{ form_widget(form.consequences) }}
+        {% else %}
+            {{ form_widget(form.consequences, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+
+    <div class="mt-4">
+        {{ form_label(form.contact) }}
+        {% if activ %}
+            {{ form_widget(form.contact) }}
+        {% else %}
+            {{ form_widget(form.contact, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+
+    {% if activ %}
+        {{ form_widget(form.save) }}
+    {% else %}
+        {{ form_widget(form.save, { 'disabled':'disabled' }) }}
+    {% endif %}
+
+
+</div>
+{{ form_end(form) }}

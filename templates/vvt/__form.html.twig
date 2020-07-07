@@ -277,6 +277,17 @@
         </p>
     </div>
 
+    <p>
+        Vorhandene interne Richtlinien zu dieser Verarbeitung
+    <ul>
+        {% for p in vvt.policies if p.activ %}
+            <li>
+                <a href="{{ path('policy_edit',{'id':p.id}) }}">{{ p.scope|nl2br }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    </p>
+
     {% if activ %}
         {{ form_widget(form.save) }}
     {% else %}

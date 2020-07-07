@@ -1,13 +1,20 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="nav navbar-nav ml-auto">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('fos_user_profile_edit') }}">Profil</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('fos_user_change_password') }}">Passwort ändern</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('fos_user_security_logout') }}">Logout</a>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle btn btn-sm btn-elegant text-white" id="navbarDropdownMenuLink"
+               data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                Profil
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+                 aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="{{ path('fos_user_profile_edit') }}">Profil bearbeiten</a>
+                <a class="dropdown-item" href="{{ path('fos_user_change_password') }}">Passwort ändern</a>
+                <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}">Logout</a>
+            </div>
         </li>
     </ul>
+
+
 </div>

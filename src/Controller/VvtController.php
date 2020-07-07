@@ -108,6 +108,10 @@ class VvtController extends AbstractController
                     $dsfa->setVvt($newVvt);
                     $em->persist($dsfa);
                 }
+                foreach ($newVvt->getPolicies() as $item) {
+                    $item->addProcess($newVvt);
+                    $em->persist($item);
+                }
 
                 $em->persist($newVvt);
                 $em->persist($vvt);

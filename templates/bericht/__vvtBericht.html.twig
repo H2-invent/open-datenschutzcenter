@@ -129,7 +129,13 @@
         <td>
             Informationspflicht
         </td>
-        <td>{{ d.informationspflicht }}</td>
+        <td>{{ d.informationspflicht|nl2br }}</td>
+    </tr>
+    <tr>
+        <td>
+            Vorhandene interne Richtlinien
+        </td>
+        <td>{% for p in d.policies if p.activ %}- {{ p.scope }}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>

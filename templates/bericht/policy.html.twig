@@ -1,0 +1,54 @@
+<style>
+    /** Define the margins of your page **/
+    @page {
+        margin: 90px 60px;
+    }
+
+    header {
+        position: fixed;
+        top: -50px;
+        left: 0px;
+        right: 0px;
+        height: 40px;
+
+        /** Extra personal styles **/
+        text-align: center;
+        line-height: 20px;
+    }
+
+    footer {
+        position: fixed;
+        bottom: -50px;
+        left: 0px;
+        right: 0px;
+        height: 30px;
+
+        /** Extra personal styles **/
+        text-align: center;
+        line-height: 20px;
+    }
+
+    .page-head {
+        background-color: whitesmoke;
+        margin: -60px;
+        padding: 60px;
+    }
+</style>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<body>
+<header>
+    Interne Datenschutzrichtlinie
+</header>
+<main>
+    {% for d in daten %}
+        {{ include('bericht/__policyBericht.html.twig', {'d':d}) }}
+    {% endfor %}
+</main>
+{{ include('bericht/__berichtFooter.html.twig') }}
+</body>

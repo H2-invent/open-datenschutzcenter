@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="h2-responsive">{{ title }}</h2>
+        </div>
+        <div class="col-md-4 text-right">
+            {{ include('assign/__assign.html.twig',{'data':daten,'path':'assign_form'}) }}
+        </div>
+    </div>
+
+    <div class="card card-body">
+        {{ include('forms/__form.html.twig') }}
+    </div>
+    <p>Erstellt von: {{ daten.user.email }}</p>
+    {% if daten.previous %}
+        <div class="card card-body mt-2">
+            <h2>Historie</h2>
+            {{ include('forms/__history.html.twig', {'p':daten.previous}) }}
+        </div>
+    {% endif %}
+    {{ include('base/__snack.html.twig') }}
+{% endblock %}
+
+    {% block javascript %}
+    {% endblock %}

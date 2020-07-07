@@ -1,0 +1,72 @@
+<h2>Interne Dateschutzrichtlinie von {{ d.team.name }} {% if not d.activ %}Historie {% endif %}</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+
+
+<p style="margin-bottom: 50px">
+    {{ d.scope }}
+</p>
+
+<p>
+    {{ d.statusString }}
+</p>
+
+<p>
+    <b>Risiken:</b><br>
+    {{ d.risk }}
+</p>
+
+<p>
+    <b>Bezug zu Gesetzen, Verordnungen und Standards:</b> <br>
+    {{ d.foundation|nl2br }}
+</p>
+
+<p>
+    <b>Zu ergreifende Schutzmaßnahmen:</b> <br>
+    {{ d.protection }}
+</p>
+
+<p>
+    {{ d.consequences }}
+</p>
+
+<p style="margin-bottom: 60px">
+    <b>Hinweis:</b><br>
+    {{ d.notes }}
+</p>
+
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Betroffene Arbeitsvorgänge und Fachverfahren
+        </td>
+        <td>{% for p in d.processes %}{{ p.name }}<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Betroffene Personen und Datenkategorien
+        </td>
+        <td>
+            {% for p in d.people %}{{ p.name }},<br>{% endfor %}<br>
+            {% for p in d.categories %}{{ p.name }},<br>{% endfor %}
+
+        </td>
+    </tr>
+</table>
+
+<p>
+    Verantwortlichkeiten für die Schutzmaßnahmen: <br>
+    {{ d.person.username }} ({{ d.createdAt|date('d.m.Y') }})
+</p>
+<p>
+    {{ d.contact|nl2br }}
+</p>
+{% if d.previous and all == 1 %}
+    <span style="page-break-after: always;"></span>
+    {{ include('bericht/__policyBericht.html.twig', {'d':d.previous}) }}
+{% endif %}

@@ -105,6 +105,31 @@ class User extends BaseUser
      */
     private $assignedDsfa;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Forms::class, mappedBy="user")
+     */
+    private $forms;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Policies::class, mappedBy="user")
+     */
+    private $policies;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Policies::class, mappedBy="person")
+     */
+    private $policiesResponsible;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Policies::class, mappedBy="assignedUser")
+     */
+    private $assignedPolicies;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Forms::class, mappedBy="assignedUser")
+     */
+    private $assignedForms;
+
 
     public function __construct()
     {
@@ -121,6 +146,11 @@ class User extends BaseUser
         $this->assignedAudits = new ArrayCollection();
         $this->assignedDatenweitergaben = new ArrayCollection();
         $this->assignedDsfa = new ArrayCollection();
+        $this->forms = new ArrayCollection();
+        $this->policies = new ArrayCollection();
+        $this->policiesResponsible = new ArrayCollection();
+        $this->assignedPolicies = new ArrayCollection();
+        $this->assignedForms = new ArrayCollection();
     }
 
     public function getTeam(): ?Team
@@ -525,6 +555,161 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($assignedDsfa->getAssignedUser() === $this) {
                 $assignedDsfa->setAssignedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Forms[]
+     */
+    public function getForms(): Collection
+    {
+        return $this->forms;
+    }
+
+    public function addForm(Forms $form): self
+    {
+        if (!$this->forms->contains($form)) {
+            $this->forms[] = $form;
+            $form->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForm(Forms $form): self
+    {
+        if ($this->forms->contains($form)) {
+            $this->forms->removeElement($form);
+            // set the owning side to null (unless already changed)
+            if ($form->getUser() === $this) {
+                $form->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Policies[]
+     */
+    public function getPolicies(): Collection
+    {
+        return $this->policies;
+    }
+
+    public function addPolicy(Policies $policy): self
+    {
+        if (!$this->policies->contains($policy)) {
+            $this->policies[] = $policy;
+            $policy->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePolicy(Policies $policy): self
+    {
+        if ($this->policies->contains($policy)) {
+            $this->policies->removeElement($policy);
+            // set the owning side to null (unless already changed)
+            if ($policy->getUser() === $this) {
+                $policy->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Policies[]
+     */
+    public function getPoliciesResponsible(): Collection
+    {
+        return $this->policiesResponsible;
+    }
+
+    public function addPoliciesResponsible(Policies $policiesResponsible): self
+    {
+        if (!$this->policiesResponsible->contains($policiesResponsible)) {
+            $this->policiesResponsible[] = $policiesResponsible;
+            $policiesResponsible->setPerson($this);
+        }
+
+        return $this;
+    }
+
+    public function removePoliciesResponsible(Policies $policiesResponsible): self
+    {
+        if ($this->policiesResponsible->contains($policiesResponsible)) {
+            $this->policiesResponsible->removeElement($policiesResponsible);
+            // set the owning side to null (unless already changed)
+            if ($policiesResponsible->getPerson() === $this) {
+                $policiesResponsible->setPerson(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Policies[]
+     */
+    public function getAssignedPolicies(): Collection
+    {
+        return $this->assignedPolicies;
+    }
+
+    public function addAssignedPolicy(Policies $assignedPolicy): self
+    {
+        if (!$this->assignedPolicies->contains($assignedPolicy)) {
+            $this->assignedPolicies[] = $assignedPolicy;
+            $assignedPolicy->setAssignedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignedPolicy(Policies $assignedPolicy): self
+    {
+        if ($this->assignedPolicies->contains($assignedPolicy)) {
+            $this->assignedPolicies->removeElement($assignedPolicy);
+            // set the owning side to null (unless already changed)
+            if ($assignedPolicy->getAssignedUser() === $this) {
+                $assignedPolicy->setAssignedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Forms[]
+     */
+    public function getAssignedForms(): Collection
+    {
+        return $this->assignedForms;
+    }
+
+    public function addAssignedForm(Forms $assignedForm): self
+    {
+        if (!$this->assignedForms->contains($assignedForm)) {
+            $this->assignedForms[] = $assignedForm;
+            $assignedForm->setAssignedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignedForm(Forms $assignedForm): self
+    {
+        if ($this->assignedForms->contains($assignedForm)) {
+            $this->assignedForms->removeElement($assignedForm);
+            // set the owning side to null (unless already changed)
+            if ($assignedForm->getAssignedUser() === $this) {
+                $assignedForm->setAssignedUser(null);
             }
         }
 

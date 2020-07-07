@@ -26,7 +26,10 @@
                 <a href="{{ path('tom') }}">TOM</a>
             </li>
             <li class="{{ app.request.attributes.get('_route') == 'vvt' ? 'active' }}">
-                <a href="{{ path('vvt') }}">Verarbeitungsverzeichnis</a>
+                <a href="{{ path('vvt') }}">Verarbeitungen</a>
+            </li>
+            <li class="{{ app.request.attributes.get('_route') == 'policies' ? 'active' }}">
+                <a href="{{ path('policies') }}">Richtlinien</a>
             </li>
             <li class="{{ app.request.attributes.get('_route') == 'kontakt' ? 'active' }}">
                 <a href="{{ path('kontakt') }}">Kontakte</a>
@@ -36,6 +39,9 @@
             </li>
             <li class="{{ app.request.attributes.get('_route') == 'auftragsverarbeitung' ? 'active' }}">
                 <a href="{{ path('auftragsverarbeitung') }}">Auftragsverarbeitung</a>
+            </li>
+            <li class="{{ app.request.attributes.get('_route') == 'forms' ? 'active' }}">
+                <a href="{{ path('forms') }}">Formulare</a>
             </li>
             <li class="{{ app.request.attributes.get('_route') == 'vorfall' ? 'active' }}">
                 <a href="{{ path('vorfall') }}">Vorfälle</a>
@@ -50,7 +56,7 @@
                 <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Admin</a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
                     <li>
-                        <a href="{{ path('team_edit') }}">Übersicht</a>
+                        <a href="{{ path('team_edit') }}">Stammdaten</a>
                     </li>
                     <li>
                         <a href="{{ path('team_mitglieder') }}">Datenschutzmitglieder</a>

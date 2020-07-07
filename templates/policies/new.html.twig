@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2 class="h2-responsive">{{ title }}</h2>
+    {{ include('policies/__form.html.twig') }}
+    <p>Erstellt von: {{ vvt.user.email }}</p>
+    {% if vvt.previous %}
+        <div class="card card-body mt-2">
+            <h2>Historie</h2>
+            {{ include('policies/__history.html.twig', {'p':vvt.previous}) }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
