@@ -1,3 +1,2 @@
-body {
-    background-color: lightgray;
-}
+@import '~datatables.net-dt/css/jquery.dataTables.css';
+@import '~bootstrap/scss/bootstrap.scss';
