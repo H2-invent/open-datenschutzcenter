@@ -180,7 +180,8 @@
                 label: 'VVT \n{{ n.name }}',
                 color: '#34ce57',
                 font: {face: "Monospace"},
-                shape: "box"
+                shape: "box",
+                url: "{{ path('vvt_edit', {'id':n.id}) }}"
             },
             {% endfor %}
             {% for n in daten %}
@@ -189,7 +190,8 @@
                 label: 'DW \n{{ n.gegenstand }}',
                 color: '#6f42c1',
                 font: {face: "Monospace", color: 'white'},
-                shape: "box"
+                shape: "box",
+                url: "{{ path('datenweitergabe_edit', {'id':n.id}) }}"
             },
             {% endfor %}
             {% for n in av %}
@@ -198,7 +200,8 @@
                 label: 'AV \n{{ n.gegenstand }}',
                 color: '#7e57c2',
                 font: {face: "Monospace", color: 'white'},
-                shape: "box"
+                shape: "box",
+                url: "{{ path('datenweitergabe_edit', {'id':n.id}) }}"
             },
             {% endfor %}
             {% for n in tom %}
@@ -207,7 +210,8 @@
                 label: 'TOM \n{{ n.titel }}',
                 color: '#0e4377',
                 font: {face: "Monospace", color: 'white'},
-                shape: "box"
+                shape: "box",
+                url: "{{ path('tom_edit', {'tom':n.id}) }}"
             },
             {% endfor %}
             {% for n in policies %}
@@ -216,7 +220,8 @@
                 label: 'POLICY \n{{ n.id }}',
                 color: '#4b515d',
                 font: {face: "Monospace", color: 'white'},
-                shape: "box"
+                shape: "box",
+                url: "{{ path('policy_edit', {'id':n.id}) }}"
             },
             {% endfor %}
             {% for n in kontakte %}
@@ -225,7 +230,8 @@
                 label: 'KONTAKT \n{{ n.firma }}',
                 color: '#6a1b9a',
                 font: {face: "Monospace", color: 'white'},
-                shape: "box"
+                shape: "box",
+                url: "{{ path('kontakt_edit', {'id':n.id}) }}"
             },
             {% endfor %}
         ]);
@@ -259,8 +265,18 @@
         };
         var options = {
             autoResize: true,
-            physics: false
-        }
+            physics: false,
+        };
+
         var network = new vis.Network(container, data, options);
+
+        network.on("doubleClick", function (params) {
+            if (params.nodes.length === 1) {
+                var node = nodes.get(params.nodes[0]);
+                if (node.url != null) {
+                    window.open(node.url, "_self");
+                }
+            }
+        });
     </script>
 {% endblock %}

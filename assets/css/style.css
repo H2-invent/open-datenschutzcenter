@@ -374,6 +374,5 @@ label.required:after {
 
 #mynetwork {
     width: 100%;
-    height: 800px;
-    border: 1px solid lightgray;
+    height: 90vh;
 }
