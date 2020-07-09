@@ -40,6 +40,10 @@ Encore
                 {
                     from: './node_modules/mdbootstrap/js/popper.min.js',
                     to: 'js/popper.min.js'
+                },
+                {
+                    from: './node_modules/vis-network/standalone/umd/vis-network.min.js',
+                    to: 'js/vis-network.min.js'
                 }
 
 

@@ -159,7 +159,15 @@
             <!--/.Card-->
         </div>
     </div>
-    <div id="mynetwork"></div>
+    <div class="card">
+        <div class="card-header text-center">
+            Datenschutzcenter Netzplan
+        </div>
+        <div class="card-body">
+            <div id="mynetwork"></div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}
@@ -167,22 +175,58 @@
         // create an array with nodes
         var nodes = new vis.DataSet([
             {% for n in vvt %}
-            {id: 'vvt{{ n.id }}', label: 'VVT-{{ n.name }}', color: '#34ce57'},
+            {
+                id: 'vvt{{ n.id }}',
+                label: 'VVT \n{{ n.name }}',
+                color: '#34ce57',
+                font: {face: "Monospace"},
+                shape: "box"
+            },
             {% endfor %}
             {% for n in daten %}
-            {id: 'daten{{ n.id }}', label: 'DW-{{ n.gegenstand }}', color: '#6f42c1', font: {color: 'white'}},
+            {
+                id: 'daten{{ n.id }}',
+                label: 'DW \n{{ n.gegenstand }}',
+                color: '#6f42c1',
+                font: {face: "Monospace", color: 'white'},
+                shape: "box"
+            },
             {% endfor %}
             {% for n in av %}
-            {id: 'daten{{ n.id }}', label: 'AV-{{ n.gegenstand }}', color: '#7e57c2', font: {color: 'white'}},
+            {
+                id: 'daten{{ n.id }}',
+                label: 'AV \n{{ n.gegenstand }}',
+                color: '#7e57c2',
+                font: {face: "Monospace", color: 'white'},
+                shape: "box"
+            },
             {% endfor %}
             {% for n in tom %}
-            {id: 'tom{{ n.id }}', label: 'TOM-{{ n.titel }}', color: '#0e4377', font: {color: 'white'}},
+            {
+                id: 'tom{{ n.id }}',
+                label: 'TOM \n{{ n.titel }}',
+                color: '#0e4377',
+                font: {face: "Monospace", color: 'white'},
+                shape: "box"
+            },
             {% endfor %}
             {% for n in policies %}
-            {id: 'pol{{ n.id }}', label: 'POL-{{ n.id }}', color: '#4b515d', font: {color: 'white'}},
+            {
+                id: 'pol{{ n.id }}',
+                label: 'POLICY \n{{ n.id }}',
+                color: '#4b515d',
+                font: {face: "Monospace", color: 'white'},
+                shape: "box"
+            },
             {% endfor %}
             {% for n in kontakte %}
-            {id: 'kon{{ n.id }}', label: 'KONT-{{ n.firma }}', color: '#6a1b9a', font: {color: 'white'}},
+            {
+                id: 'kon{{ n.id }}',
+                label: 'KONTAKT \n{{ n.firma }}',
+                color: '#6a1b9a',
+                font: {face: "Monospace", color: 'white'},
+                shape: "box"
+            },
             {% endfor %}
         ]);
 
@@ -213,7 +257,10 @@
             nodes: nodes,
             edges: edges
         };
-        var options = {}
+        var options = {
+            autoResize: true,
+            physics: false
+        }
         var network = new vis.Network(container, data, options);
     </script>
 {% endblock %}

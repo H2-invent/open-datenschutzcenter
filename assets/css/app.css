@@ -2,3 +2,5 @@
 @import '~mdbootstrap/css/bootstrap.css';
 @import '~mdbootstrap/css/mdb.css';
 @import '~datatables.net-buttons-dt/css/buttons.dataTables.css';
+@import "~vis-network/styles/vis-network.css";
+@import "style.css";
