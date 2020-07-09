@@ -372,3 +372,9 @@ label.required:after {
 .dropdown-toggle::after {
     content: none !important;
 }
+
+#mynetwork {
+    width: 100%;
+    height: 800px;
+    border: 1px solid lightgray;
+}
