@@ -1,4 +1,5 @@
-<h2>Interne Dateschutzrichtlinie von {{ d.team.name }} {% if not d.activ %}Historie {% endif %}</h2>
+<h4 style="text-align: center">Interne Dateschutzrichtlinie
+    von {{ d.team.name }} {% if not d.activ %}Historie {% endif %}</h4>
 <style>
     th, td {
         padding: 5px;
@@ -7,18 +8,20 @@
     }
 </style>
 
-
-<p style="margin-bottom: 50px">
-    {{ d.scope }}
+<h1 style="margin-bottom: 20px; text-align: center">
+    {{ d.title }}
+</h1>
+<p>
+    {{ d.scope|nl2br }}
 </p>
 
 <p>
-    {{ d.statusString }}
+    Status: {{ d.statusString }}
 </p>
 
 <p>
     <b>Risiken:</b><br>
-    {{ d.risk }}
+    {{ d.risk|nl2br }}
 </p>
 
 <p>

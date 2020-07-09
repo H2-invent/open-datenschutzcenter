@@ -126,6 +126,11 @@ class Policies
      */
     private $assignedUser;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $title;
+
     public function __construct()
     {
         $this->processes = new ArrayCollection();
@@ -416,6 +421,18 @@ class Policies
     public function setAssignedUser(?User $assignedUser): self
     {
         $this->assignedUser = $assignedUser;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }

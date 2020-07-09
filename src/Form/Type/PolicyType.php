@@ -18,6 +18,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -27,6 +28,7 @@ class PolicyType extends AbstractType
     {
 
         $builder
+            ->add('title', TextType::class, ['label' => 'Name der Richtlinie', 'required' => true, 'translation_domain' => 'form'])
             ->add('scope', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Festlegung des Geltungsbereiches', 'required' => true, 'translation_domain' => 'form'])
             ->add('risk', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Abzuwehrende IT-Risiken, bestehende Gefahren und mögliche Konsequenzen (wichtig für die Motivation!)', 'required' => true, 'translation_domain' => 'form'])
             ->add('foundation', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Bezug zu Gesetzen, Verordnungen und Standards', 'required' => true, 'translation_domain' => 'form'])
