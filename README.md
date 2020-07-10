@@ -38,4 +38,4 @@ Folgende Parameter stehen in den odif Dateien zum Import zur Verfügung und müs
 
 # Lizenz
 Die aktuelle Version von Open Datenschutzcenter wird unter der GPL-3.0 License bereitgestellt.
-Copyright (c) 2020 anholzmann
+Copyright (c) 2020 H2 invent
