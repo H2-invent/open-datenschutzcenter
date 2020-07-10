@@ -24,6 +24,9 @@ Folgende Funktionen sind bereits im Open Datenschutzcenter integriert:
 * Erfassung von Datenweitergaben und Auftragsverarbeitungen.
 * Verlinkung von Datenweitergaben, Auftragsverarbeitungen mit Verarbeitungen und technischen und organisatorischen Maßnahmen.
 * Erfassung von Datenschutzvorfällen mit Dokumentation von Folgen, Maßnahmen und Auswirkungen.
+* Erstellen von IT Richtlinien mit Verlinkung zu Verarbeitungen
+* Hochladen von Formularen und Verlinkung zu Produkten und Abteilungen
+* Erstellung eines Netzplanes zum Anzeigen von Abhängigkeiten zwischen Verarbeitungen, Datenweitergaben und Auftragsverarbeitungen
 * Erstellung von Berichten als PDF und Excel.
 * Stammdaten mit Abteilungen, Schutzzielen, Produkten und Nutzerverwaltung.
 * Import von Auditfragen und Verarbeitungstätigkeiten als .odif Dateien.
