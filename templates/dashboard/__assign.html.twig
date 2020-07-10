@@ -46,13 +46,13 @@
                     <a href="{{ path('akademie_kurs',{'kurs':a.id}) }}">
                         <div class="btn btn-block bg-akademie text-md-left mt-1">
                             <div class="row">
-                                <div class="col-lg-1 d-none d-xl-block">
+                                <div class="col-xl-1 d-none d-xl-block">
                                     <img style="width: 21px" src="{{ asset('images/online-learning.png') }}">
                                 </div>
-                                <div class="col-lg-7">
+                                <div class="col-xl-6 col-md-7">
                                     {{ a.kurs.title }}
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-xl-3 col-md-5">
                                     {{ a.zugewiesen|date('d.m.Y') }}
                                 </div>
                             </div>
@@ -69,10 +69,10 @@
                                     <div class="col-lg-1 d-none d-xl-block">
                                         <img style="width: 21px" src="{{ asset('images/pruefung.png') }}">
                                     </div>
-                                    <div class="col-lg-7">
+                                    <div class="col-lg-6 col-md-6">
                                         {{ a.frage }}
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-5 col-md-6">
                                         {{ a.status.name }}
                                     </div>
                                 </div>
@@ -87,16 +87,16 @@
                         <a href="{{ path('vvt_edit',{'id':a.id}) }}">
                             <div class="btn btn-block bg-vvt text-md-left mt-1">
                                 <div class="row">
-                                    <div class="col-md-1 d-none d-xl-block">
+                                    <div class="col-1 d-none d-xl-block">
                                         <img style="width: 21px" src="{{ asset('images/prozess.png') }}">
                                     </div>
-                                    <div class="col-lg-5">
+                                    <div class="col-xl-5 col-md-7">
                                         {{ a.name }}
                                     </div>
-                                    <div class="col-lg-3 d-none d-xl-block">
+                                    <div class="col-xl-3 d-none d-xl-block">
                                         {{ a.status.name }}
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-xl-3 col-md-5">
                                         {{ a.createdAt|date('d.m.Y') }}
                                     </div>
                                 </div>
@@ -111,13 +111,13 @@
                         <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
                             <div class="btn btn-block bg-dsfa text-md-left mt-1">
                                 <div class="row">
-                                    <div class="col-lg-1 d-none d-xl-block">
+                                    <div class="col-xl-1 d-none d-xl-block">
                                         <img style="width: 21px" src="{{ asset('images/dsta.png') }}">
                                     </div>
-                                    <div class="col-lg-8">
+                                    <div class="col-xl-6 col-md-6">
                                         {{ a.beschreibung }}
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-xl-3 col-md-6">
                                         {{ a.createdAt|date('d.m.Y') }}
                                     </div>
                                 </div>
@@ -135,10 +135,10 @@
                                     <div class="col-lg-1 d-none d-xl-block">
                                         <img style="width: 21px" src="{{ asset('images/data.png') }}">
                                     </div>
-                                    <div class="col-lg-8">
+                                    <div class="col-xl-6 col-md-6">
                                         {{ a.gegenstand }}
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-xl-3 col-md-6">
                                         {{ a.createdAt|date('d.m.Y') }}
                                     </div>
                                 </div>
