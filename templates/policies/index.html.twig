@@ -15,6 +15,7 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Bezeichnung</th>
                     <th scope="col">Geltungsbereiches</th>
                     <th scope="col">Verarbeitungen</th>
                     <th scope="col">Status</th>
@@ -24,6 +25,7 @@
                 {% for d in data %}
                     <tr class="clickable-row" data-href='{{ path('policy_edit',{'id':d.id}) }}'>
                         <th scope="row">{{ d.id }}</th>
+                        <td>{{ d.title }}</td>
                         <td>{{ d.scope }}</td>
                         <td>{% for p in d.processes if p.activ %}{{ p.name }}<br>{% endfor %}</td>
                         <td>{{ d.statusString }}</td>
