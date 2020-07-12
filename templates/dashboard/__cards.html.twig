@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-xl-6 col-md-12 mt-2">
+    <div class="col-xl-6 col-md-6 col-lg-12 mt-2">
         <a href="{{ path('vvt') }}">
             {{ include('dashboard/__card.html.twig',{'farbe':'bg-vvt','title':'Verarbeitungen','metrik':vvt|length}) }}
             {% if kVvt|length > 0 %}
@@ -7,7 +7,7 @@
             {% endif %}
         </a>
     </div>
-    <div class="col-xl-6 col-md-12 mt-2">
+    <div class="col-xl-6 col-md-6 col-lg-12 mt-2">
         <a href="{{ path('vvt') }}">
             {{ include('dashboard/__card.html.twig',{'farbe':'bg-dsfa','title':'DSFA','metrik':dsfa|length}) }}
             {% if openDsfa|length > 0 %}
@@ -15,32 +15,32 @@
             {% endif %}
         </a>
     </div>
-    <div class="col-xl-6 col-md-12 mt-2">
+    <div class="col-xl-6 col-md-6 col-lg-12 mt-2">
         <a href="{{ path('tom') }}">
             {{ include('dashboard/__card.html.twig',{'farbe':'bg-tom','title':'TOMs','metrik':tom|length}) }}
         </a>
     </div>
-    <div class="col-xl-6 col-md-12 mt-2">
+    <div class="col-xl-6 col-md-6 col-lg-12 mt-2">
         <a href="{{ path('kontakt') }}">
-            {{ include('dashboard/__card.html.twig',{'farbe':'bg-kontakt','title':'Eingetragene Kontakte','metrik':kontakte|length}) }}
+            {{ include('dashboard/__card.html.twig',{'farbe':'bg-kontakt','title':'Kontakte','metrik':kontakte|length}) }}
         </a>
     </div>
-    <div class="col-xl-6 col-md-12 mt-2">
+    <div class="col-xl-6 col-md-6 col-lg-12 mt-2">
         <a href="{{ path('datenweitergabe') }}">
             {{ include('dashboard/__card.html.twig',{'farbe':'bg-daten','title':'Datenweitergaben','metrik':daten|length}) }}
         </a>
     </div>
-    <div class="col-xl-6 col-md-12 mt-2">
+    <div class="col-xl-6 col-md-6 col-lg-12 mt-2">
         <a href="{{ path('auftragsverarbeitung') }}">
             {{ include('dashboard/__card.html.twig',{'farbe':'bg-av','title':'Auftragsverarbeitungen','metrik':av|length}) }}
         </a>
     </div>
-    <div class="col-xl-6 col-md-12 mt-2">
+    <div class="col-xl-6 col-md-6 col-lg-12 mt-2">
         <a href="{{ path('forms') }}">
             {{ include('dashboard/__card.html.twig',{'farbe':'bg-forms','title':'Formulare','metrik':forms|length}) }}
         </a>
     </div>
-    <div class="col-xl-6 col-md-12 mt-2">
+    <div class="col-xl-6 col-md-6 col-lg-12 mt-2">
         <a href="{{ path('policies') }}">
             {{ include('dashboard/__card.html.twig',{'farbe':'bg-policy','title':'Richtlinien','metrik':policies|length}) }}
         </a>

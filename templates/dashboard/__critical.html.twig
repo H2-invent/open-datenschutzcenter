@@ -1,0 +1,48 @@
+<!--Card-->
+<div class="card">
+    <!-- Card header -->
+    <div class="card-header text-center">
+        Kritische Vorgänge
+    </div>
+    <!--Card content-->
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <h5 class="h5-responsive">Krisitsche Auditfragen</h5>
+                <ul>
+                    {% for a in kAudit %}
+                        <li>
+                            <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}"><img style="width: 17px"
+                                                                                      src="{{ asset('icons/pruefung.svg') }}"> {{ a.createdAt|date('d.m.Y H:i') }}
+                                - {{ a.frage }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="h5-responsive">Krisitsche VVTs</h5>
+                <ul>
+                    {% for v in kVvt %}
+                        <li>
+                            <a href="{{ path('vvt_edit', {'id':v.id}) }}"><img style="width: 17px"
+                                                                               src="{{ asset('icons/prozess.svg') }}"> {{ v.createdAt|date('d.m.Y H:i') }}
+                                - {{ v.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="h5-responsive">Offene DSFA</h5>
+                <ul>
+                    {% for d in openDsfa %}
+                        <li>
+                            <a href="{{ path('vvt_dsfa_edit', {'dsfa':d.id}) }}">{{ d.createdAt|date('d.m.Y H:i') }}
+                                - {{ d.vvt.name }}
+                                ({% if not d.dsb %}Beurteilung DSB fehlt{% else %}Ergebnis fehlt{% endif %}
+                                )</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--/.Card-->

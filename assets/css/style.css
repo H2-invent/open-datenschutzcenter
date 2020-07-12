@@ -135,15 +135,15 @@ a:focus {
 }
 
 #sidebar {
-    min-width: 210px;
-    max-width: 210px;
+    min-width: 250px;
+    max-width: 250px;
     background: var(--contrast-light);
     color: #fff;
     transition: all 0.3s;
 }
 
 #sidebar.active {
-    margin-left: -210px;
+    margin-left: -250px;
 }
 
 #sidebar .sidebar-header {

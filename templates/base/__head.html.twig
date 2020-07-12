@@ -35,9 +35,9 @@
     object-src 'none'">
     {% endif %}
 
-    {{ encore_entry_link_tags('app') }}
+
     <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    {{ encore_entry_link_tags('app') }}
 
     {% block stylesheets %}{% endblock %}
 </head>
