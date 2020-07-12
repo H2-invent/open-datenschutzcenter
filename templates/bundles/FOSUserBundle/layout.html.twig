@@ -1,5 +1,3 @@
-
-
 {% extends 'baseRegistration.html.twig' %}
 
 {% block content %}
@@ -23,31 +21,37 @@
                         <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
                     {% endif %}
 
-                {% if app.request.hasPreviousSession %}
-                    {% for type, messages in app.session.flashbag.all() %}
-                        {% for message in messages %}
-                            <div class="flash-{{ type }}">
-                                {{ message }}
-                            </div>
+                    {% if app.request.hasPreviousSession %}
+                        {% for type, messages in app.session.flashbag.all() %}
+                            {% for message in messages %}
+                                <div class="flash-{{ type }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                {% endif %}
+                    {% endif %}
 
-                <div>
-                    {% block fos_user_content %}
-                    {% endblock fos_user_content %}
+                    <div>
+                        {% block fos_user_content %}
+                        {% endblock fos_user_content %}
+                    </div>
+
+
+                    <div class="text-center">
+                        <hr class="mt-4">
+                        {% if user is defined %}
+                            <a class="btn btn-secondary" href="{{ path('dashboard') }}">Zurück zum Dashboard</a>
+                        {% else %}
+                            <a class="btn btn-secondary"
+                               href="{{ path('fos_user_registration_register') }}">Hier Registrieren</a>
+                        {% endif %}
+                        <a class="btn btn-elegant" href="{{ path('fos_user_resetting_request') }}">Forgot Password?</a>
+                    </div>
                 </div>
 
-
-                <div class="text-center">
-
-                    <a class="d-block small" href="{{ path('fos_user_resetting_request') }}">Forgot Password?</a>
-                </div>
-                </div>
-
-        </div>
             </div>
         </div>
+    </div>
 
 
     </div>

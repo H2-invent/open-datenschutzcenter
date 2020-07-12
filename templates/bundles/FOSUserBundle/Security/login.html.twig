@@ -1,4 +1,7 @@
 {% extends "@FOSUser/layout.html.twig" %}
+{% block background %}
+    style="background-image: url('{{ asset('images/login.jpg') }}');"
+{% endblock %}
 {% block loginHead %}
     <div class="text-center">
         <img class="img-fluid" src="{{ asset('logo.png') }}">

@@ -1,5 +1,10 @@
 {% extends "@FOSUser/layout.html.twig" %}
-
+{% block background %}
+    style="background-image: url('{{ asset('images/login.jpg') }}');"
+{% endblock %}
+{% block loginHead %}
+    <h1>Passwort zurücksetzen</h1>
+{% endblock %}
 {% block fos_user_content %}
-{% include "@FOSUser/Resetting/request_content.html.twig" %}
+    {% include "@FOSUser/Resetting/request_content.html.twig" %}
 {% endblock fos_user_content %}
