@@ -1,6 +1,12 @@
 {% extends "@FOSUser/layout.html.twig" %}
 {% block background %}
-    style="background-image: url('{{ asset('images/login.jpg') }}');"
+    style="background-image: url('{{ asset('images/Login.mp4') }}');"
+{% endblock %}
+{% block back %}
+    <!-- The video -->
+    <video autoplay muted loop id="myVideo">
+        <source src="{{ asset('images/Login.mp4') }}" type="video/mp4">
+    </video>
 {% endblock %}
 {% block loginHead %}
     <div class="text-center">
