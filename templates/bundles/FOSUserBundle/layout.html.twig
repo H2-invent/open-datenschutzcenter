@@ -39,7 +39,7 @@
 
                     <div class="text-center">
                         <hr class="mt-4">
-                        {% if user is defined %}
+                        {% if app.user.email is defined and app.user.email is not null %}
                             <a class="btn btn-secondary" href="{{ path('dashboard') }}">Zurück zum Dashboard</a>
                         {% else %}
                             <a class="btn btn-secondary"
