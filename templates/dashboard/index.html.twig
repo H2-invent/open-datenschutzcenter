@@ -3,120 +3,19 @@
 {% block title %}{{ team.name }}{% endblock %}
 
 {% block body %}
-
-
     <div class="row wow fadeIn mt-5">
 
         <!--Grid column-->
-        <div class="col-md-6 mb-4">
-
-            <div class="row">
-                <div class="col-xl-6 col-md-12 mt-2">
-                    <a href="{{ path('vvt') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-vvt','title':'Verarbeitungen','metrik':vvt|length}) }}
-                        {% if kVvt|length > 0 %}
-                            {{ include('dashboard/__card.html.twig',{'farbe':'red','title':'Krisitsche VVTs','metrik':kVvt|length}) }}
-                        {% endif %}
-                    </a>
-                </div>
-                <div class="col-xl-6 col-md-12 mt-2">
-                    <a href="{{ path('vvt') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-dsfa','title':'DSFA','metrik':dsfa|length}) }}
-                        {% if openDsfa|length > 0 %}
-                            {{ include('dashboard/__card.html.twig',{'farbe':'red','title':'Offene DSFA','metrik':openDsfa|length}) }}
-                        {% endif %}
-                    </a>
-                </div>
-                <div class="col-xl-6 col-md-12 mt-2">
-                    <a href="{{ path('tom') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-tom','title':'TOMs','metrik':tom|length}) }}
-                    </a>
-                </div>
-                <div class="col-xl-6 col-md-12 mt-2">
-                    <a href="{{ path('kontakt') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-kontakt','title':'Eingetragene Kontakte','metrik':kontakte|length}) }}
-                    </a>
-                </div>
-                <div class="col-xl-6 col-md-12 mt-2">
-                    <a href="{{ path('datenweitergabe') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-daten','title':'Datenweitergaben','metrik':daten|length}) }}
-                    </a>
-                </div>
-                <div class="col-xl-6 col-md-12 mt-2">
-                    <a href="{{ path('auftragsverarbeitung') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-av','title':'Auftragsverarbeitungen','metrik':av|length}) }}
-                    </a>
-                </div>
-                <div class="col-xl-6 col-md-12 mt-2">
-                    <a href="{{ path('forms') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-forms','title':'Formulare','metrik':forms|length}) }}
-                    </a>
-                </div>
-                <div class="col-xl-6 col-md-12 mt-2">
-                    <a href="{{ path('policies') }}">
-                        {{ include('dashboard/__card.html.twig',{'farbe':'bg-policy','title':'Richtlinien','metrik':policies|length}) }}
-                    </a>
-                </div>
-
+        <div class="col-xl-6 col-lg-4 mb-4">
+            {{ include ('dashboard/__cards.html.twig') }}
+            <div class="d-none d-xl-block mt-5">
+                {{ include('dashboard/__critical.html.twig') }}
             </div>
-
-
-            <!--Card-->
-            <div class="card mt-5">
-                <!-- Card header -->
-                <div class="card-header text-center">
-                    Kritische Vorgänge
-                </div>
-                <!--Card content-->
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h5>Krisitsche Auditfragen</h5>
-                            <ul>
-                                {% for a in kAudit %}
-                                    <li>
-                                        <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}"><img style="width: 17px"
-                                                                                                  src="{{ asset('icons/pruefung.svg') }}"> {{ a.createdAt|date('d.m.Y H:i') }}
-                                            - {{ a.frage }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="col-md-4">
-                            <h5>Krisitsche VVTs</h5>
-                            <ul>
-                                {% for v in kVvt %}
-                                    <li>
-                                        <a href="{{ path('vvt_edit', {'id':v.id}) }}"><img style="width: 17px"
-                                                                                           src="{{ asset('icons/prozess.svg') }}"> {{ v.createdAt|date('d.m.Y H:i') }}
-                                            - {{ v.name }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="col-md-4">
-                            <h5>Offene DSFA</h5>
-                            <ul>
-                                {% for d in openDsfa %}
-                                    <li>
-                                        <a href="{{ path('vvt_dsfa_edit', {'dsfa':d.id}) }}">{{ d.createdAt|date('d.m.Y H:i') }}
-                                            - {{ d.vvt.name }}
-                                            ({% if not d.dsb %}Beurteilung DSB fehlt{% else %}Ergebnis fehlt{% endif %}
-                                            )</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-
-
-                </div>
-
-            </div>
-            <!--/.Card-->
-
         </div>
         <!--Grid column-->
 
         <!--Grid column-->
-        <div class="col-md-6 mb-4">
+        <div class="col-xl-6 col-lg-8 mb-4">
 
             {{ include('dashboard/__assign.html.twig') }}
 
@@ -130,7 +29,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <h5>Auditfragen</h5>
+                            <h5 class="h5-responsive">Auditfragen</h5>
                             <hr>
                             <ul>
                                 {% for a in audit|slice(0, 5) %}
@@ -141,7 +40,7 @@
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <h5>Verarbeitungsverzeichnisse</h5>
+                            <h5 class="h5-responsive">Verarbeitungen</h5>
                             <hr>
                             <ul>
                                 {% for v in vvt|slice(0, 5) %}
@@ -157,9 +56,130 @@
 
             </div>
             <!--/.Card-->
+            <div class="d-block d-xl-none mt-3">
+                {{ include('dashboard/__critical.html.twig') }}
+            </div>
+
         </div>
     </div>
+    <div class="card">
+        <div class="card-header text-center">
+            Datenschutzcenter Netzplan
+        </div>
+        <div class="card-body">
+            <div id="mynetwork"></div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}
+    <script type="text/javascript">
+        // create an array with nodes
+        var nodes = new vis.DataSet([
+            {% for n in vvt %}
+            {
+                id: 'vvt{{ n.id }}',
+                label: 'VVT \n{{ n.name }}',
+                color: '#34ce57',
+                font: {face: "Monospace"},
+                shape: "box",
+                url: "{{ path('vvt_edit', {'id':n.id}) }}"
+            },
+            {% endfor %}
+            {% for n in daten %}
+            {
+                id: 'daten{{ n.id }}',
+                label: 'DW \n{{ n.gegenstand }}',
+                color: '#6f42c1',
+                font: {face: "Monospace", color: 'white'},
+                shape: "box",
+                url: "{{ path('datenweitergabe_edit', {'id':n.id}) }}"
+            },
+            {% endfor %}
+            {% for n in av %}
+            {
+                id: 'daten{{ n.id }}',
+                label: 'AV \n{{ n.gegenstand }}',
+                color: '#7e57c2',
+                font: {face: "Monospace", color: 'white'},
+                shape: "box",
+                url: "{{ path('datenweitergabe_edit', {'id':n.id}) }}"
+            },
+            {% endfor %}
+            {% for n in tom %}
+            {
+                id: 'tom{{ n.id }}',
+                label: 'TOM \n{{ n.titel }}',
+                color: '#0e4377',
+                font: {face: "Monospace", color: 'white'},
+                shape: "box",
+                url: "{{ path('tom_edit', {'tom':n.id}) }}"
+            },
+            {% endfor %}
+            {% for n in policies %}
+            {
+                id: 'pol{{ n.id }}',
+                label: 'POLICY \n{{ n.title }}',
+                color: '#4b515d',
+                font: {face: "Monospace", color: 'white'},
+                shape: "box",
+                url: "{{ path('policy_edit', {'id':n.id}) }}"
+            },
+            {% endfor %}
+            {% for n in kontakte %}
+            {
+                id: 'kon{{ n.id }}',
+                label: 'KONTAKT \n{{ n.firma }}',
+                color: '#6a1b9a',
+                font: {face: "Monospace", color: 'white'},
+                shape: "box",
+                url: "{{ path('kontakt_edit', {'id':n.id}) }}"
+            },
+            {% endfor %}
+        ]);
+
+        // create an array with edges
+        var edges = new vis.DataSet([
+            {% for ee in vvt %}
+            {% for e in ee.datenweitergaben if e.activ %}
+            {from: 'vvt{{ ee.id }}', to: 'daten{{ e.id }}'},
+            {% endfor %}
+            {% if ee.tomLink is not null %}
+            {from: 'vvt{{ ee.id }}', to: 'tom{{ ee.tomLink.id }}'},
+            {% endif %}
+            {% for e in ee.policies if e.activ %}
+            {from: 'vvt{{ ee.id }}', to: 'pol{{ e.id }}'},
+            {% endfor %}
+            {% endfor %}
+
+            {% for ee in kontakte %}
+            {% for e in ee.datenweitergaben if e.activ %}
+            {from: 'kon{{ ee.id }}', to: 'daten{{ e.id }}'},
+            {% endfor %}
+            {% endfor %}
+        ]);
+
+        // create a network
+        var container = document.getElementById('mynetwork');
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            autoResize: true,
+            physics: false,
+        };
+
+        var network = new vis.Network(container, data, options);
+
+        network.on("doubleClick", function (params) {
+            if (params.nodes.length === 1) {
+                var node = nodes.get(params.nodes[0]);
+                if (node.url != null) {
+                    window.open(node.url, "_self");
+                }
+            }
+        });
+    </script>
 {% endblock %}

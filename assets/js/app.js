@@ -1,20 +1,38 @@
-jQuery(document).ready(function () {
+/*
+ * Welcome to your app's main JavaScript file!
+ *
+ */
+import '../css/app.css';
+
+
+import $ from 'jquery';
+import 'datatables.net-dt';
+
+global.$ = global.jQuery = $;
+
+import ('jszip');
+import('datatables.net');
+import ('datatables.net-buttons-dt');
+require('datatables.net-buttons/js/buttons.flash.js')(window, $);
+require('datatables.net-buttons/js/buttons.html5.js')(window, $);
+import('moment');
+
+
+$(document).ready(function () {
     setTimeout(function () {
         var x = document.getElementById("snackbar");
         x.className = "show";
         setTimeout(function () {
             x.className = x.className.replace("show", "");
         }, 3000);
-    }, 2000)
-});
+    }, 500);
 
-jQuery(document).ready(function () {
+
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active');
     });
-});
 
-jQuery(document).ready(function () {
+
     $('#data-table').DataTable({
         dom: 'Bfrtip',
         buttons: [
@@ -24,6 +42,6 @@ jQuery(document).ready(function () {
     });
 });
 
-jQuery(".clickable-row").click(function () {
+$(".clickable-row").click(function () {
     window.location = $(this).data("href");
 });

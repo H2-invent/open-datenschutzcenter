@@ -35,14 +35,9 @@
     object-src 'none'">
     {% endif %}
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/mdb.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/mdb.lite.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('datatable/datatables.min.css') }}">
 
     <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    {{ encore_entry_link_tags('app') }}
 
     {% block stylesheets %}{% endblock %}
 </head>

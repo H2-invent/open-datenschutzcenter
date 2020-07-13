@@ -37,6 +37,11 @@ mkdir public/uploads/images
 chown -R www-data:www-data public/uploads/images
 chmod -R 775 public/uploads/images
 echo --------------------------------------------------------------------------
+echo -----------------------Install NPM and Assets----------------------------
+echo --------------------------------------------------------------------------
+npm install
+npm run build
+echo --------------------------------------------------------------------------
 echo -----------------Security Check----------------------------------------------
 echo --------------------------------------------------------------------------
 php security-checker.phar security:check composer.lock

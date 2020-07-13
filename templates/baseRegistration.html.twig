@@ -4,12 +4,13 @@
 {{ include('base/__head.html.twig') }}
 
 <body>
-<div class="wrapper" style="background-color: #545b62">
+{% block back %}{% endblock %}
+<div class="wrapper" {% block background %}style="background-color: #545b62"{% endblock %}>
     <div id="content">
         {% block content %}{% endblock %}
-</div>
+    </div>
 
-{{ include('base/__script.html.twig') }}
+    {{ include('base/__script.html.twig') }}
 
 
 </body>

@@ -27,7 +27,7 @@ security:
                 path: fos_user_security_logout
             remember_me:
                 secret:   '%kernel.secret%'
-                lifetime: 604800 # 1 week in seconds
+                lifetime: 86400 # 1 day in seconds
                 path:     /
                 always_remember_me: true
             anonymous:    true

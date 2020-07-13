@@ -1,6 +1,18 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 <div class="fos_user_user_show">
-    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
-    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+    <p>
+        {{ 'profile.show.username'|trans }}: {{ user.username }}<br>
+        {{ 'profile.show.email'|trans }}: {{ user.email }}
+    </p>
+
+    <p>
+        Letzer Login: {{ user.lastLogin|date('d.m.Y H:i') }} Uhr
+    </p>
+
+    <p>
+        Team: {{ user.team.name }}<br>
+        Akademie: {{ user.akademieuser.name }}<br>
+        Team: {{ user.adminUser.name }}
+    </p>
 </div>

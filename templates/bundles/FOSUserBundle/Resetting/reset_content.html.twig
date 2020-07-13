@@ -3,7 +3,6 @@
 {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'fos_user_resetting_reset' } }) }}
     {{ form_widget(form) }}
     <div>
-        <a class="btn btn-secondary" href="{{ path('dashboard') }}">Zurück zum Dashboard</a>
         <input type="submit" value="{{ 'resetting.reset.submit'|trans }}" />
     </div>
 {{ form_end(form) }}

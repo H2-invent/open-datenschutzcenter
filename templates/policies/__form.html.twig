@@ -2,6 +2,14 @@
 <div class="card card-body">
 
     <div class="mt-4">
+        {{ form_label(form.title) }}
+        {% if activ %}
+            {{ form_widget(form.title) }}
+        {% else %}
+            {{ form_widget(form.title, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+    <div class="mt-4">
         {{ form_label(form.scope) }}
         {% if activ %}
             {{ form_widget(form.scope) }}
