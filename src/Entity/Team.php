@@ -151,6 +151,11 @@ class Team
      */
     private $policies;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $signature;
+
 
     public function __construct()
     {
@@ -754,6 +759,18 @@ class Team
                 $policy->setTeam(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSignature(): ?string
+    {
+        return $this->signature;
+    }
+
+    public function setSignature(?string $signature): self
+    {
+        $this->signature = $signature;
 
         return $this;
     }

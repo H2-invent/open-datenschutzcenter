@@ -47,7 +47,7 @@ class AkademieService
         foreach ($daten['user'] as $user) {
             $buchung->setUser($user);
             if ($daten['invite'] === true) {
-                $content = $this->twig->render('email/neuerKurs.html.twig', ['buchung' => $buchung]);
+                $content = $this->twig->render('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $user->getTeam()]);
                 $buchung->setInvitation(true);
                 $this->notificationService->sendNotificationAkademie($buchung, $content);
             }

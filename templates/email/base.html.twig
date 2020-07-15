@@ -42,16 +42,16 @@
 
                 {% endblock %}
                 <spacer size="16"></spacer>
-                <p>
-                    <a href="{{ imprint }}">Impressum</a>
+                <p style="text-align: center">
+                    {% if team is defined %}{{ team.signature|nl2br }}{% endif %}
                 </p>
-                <p>
+                <spacer size="16"></spacer>
+                <p style="text-align: center">
                     <a href="{{ dataPrivacy }}">Datenschutzhinweis</a>
                 </p>
+                <spacer size="16"></spacer>
             </columns>
         </row>
-
-        <spacer size="16"></spacer>
         <center>
             <small>
                 <a href="https://open-datenschutzcenter.de">Powered by Open Datenschutzcenter</a>
