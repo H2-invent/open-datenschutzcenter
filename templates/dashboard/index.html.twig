@@ -77,9 +77,11 @@
     <script type="text/javascript">
         // create an array with nodes
         var nodes = new vis.DataSet([
+
             {% for n in vvt %}
             {
                 id: 'vvt{{ n.id }}',
+                group: 'VVT',
                 label: 'VVT \n{{ n.name }}',
                 color: '#34ce57',
                 font: {face: "Monospace"},
@@ -90,6 +92,7 @@
             {% for n in daten %}
             {
                 id: 'daten{{ n.id }}',
+                group: 'DW',
                 label: 'DW \n{{ n.gegenstand }}',
                 color: '#6f42c1',
                 font: {face: "Monospace", color: 'white'},
@@ -100,6 +103,7 @@
             {% for n in av %}
             {
                 id: 'daten{{ n.id }}',
+                group: 'AV',
                 label: 'AV \n{{ n.gegenstand }}',
                 color: '#7e57c2',
                 font: {face: "Monospace", color: 'white'},
@@ -110,6 +114,7 @@
             {% for n in tom %}
             {
                 id: 'tom{{ n.id }}',
+                group: 'TOM',
                 label: 'TOM \n{{ n.titel }}',
                 color: '#0e4377',
                 font: {face: "Monospace", color: 'white'},
@@ -120,6 +125,7 @@
             {% for n in policies %}
             {
                 id: 'pol{{ n.id }}',
+                group: 'Policy',
                 label: 'POLICY \n{{ n.title }}',
                 color: '#4b515d',
                 font: {face: "Monospace", color: 'white'},
@@ -142,12 +148,18 @@
         // create an array with edges
         var edges = new vis.DataSet([
             {% for ee in vvt %}
+            {from: '0', to: 'vvt{{ ee.id }}'},
             {% for e in ee.datenweitergaben if e.activ %}
+            {% if e.art == 2 %}
             {from: 'vvt{{ ee.id }}', to: 'daten{{ e.id }}'},
+            {% else %}
+            {from: 'daten{{ e.id }}', to: 'vvt{{ ee.id }}'},
+            {% endif %}
             {% endfor %}
             {% if ee.tomLink is not null %}
             {from: 'vvt{{ ee.id }}', to: 'tom{{ ee.tomLink.id }}'},
             {% endif %}
+
             {% for e in ee.policies if e.activ %}
             {from: 'vvt{{ ee.id }}', to: 'pol{{ e.id }}'},
             {% endfor %}
@@ -155,7 +167,11 @@
 
             {% for ee in kontakte %}
             {% for e in ee.datenweitergaben if e.activ %}
+            {% if e.art == 2 %}
+            {from: 'daten{{ e.id }}', to: 'kon{{ ee.id }}'},
+            {% else %}
             {from: 'kon{{ ee.id }}', to: 'daten{{ e.id }}'},
+            {% endif %}
             {% endfor %}
             {% endfor %}
         ]);
@@ -167,8 +183,20 @@
             edges: edges
         };
         var options = {
+            layout: {
+                hierarchical: {
+                    direction: "UD",
+                    sortMethod: "directed",
+                    parentCentralization: false,
+                }
+            },
             autoResize: true,
-            physics: false,
+            physics: {
+                physics: false,
+                hierarchicalRepulsion: {
+                    avoidOverlap: 1
+                }
+            },
         };
 
         var network = new vis.Network(container, data, options);

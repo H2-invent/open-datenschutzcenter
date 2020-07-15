@@ -2,9 +2,16 @@
 
 {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
     {{ form_widget(form) }}
-    <div>
-        <button class="btn btn-primary btn-raised btn-block" type="submit" value="{{ 'registration.submit'|trans }}" >{{ 'registration.submit'|trans }}</button>
-    </div>
+<div class="custom-control custom-checkbox mt-3 mb-3">
+    <input type="checkbox" required class="custom-control-input" id="defaultUnchecked">
+    <label class="custom-control-label" for="defaultUnchecked">Ich akzeptiere die mit der Registrierung verbundene
+        Verarbeitung meiner Daten. *<br>Ich habe meine Rechte als betroffene Person gelesen und akzeptiere diese.<br>Mehr
+        Infos in den <u><a href="{{ dataPrivacy }}">Datenschutzhinweisen</a></u>.</label>
+</div>
+<div>
+    <button class="btn btn-primary btn-raised btn-block" type="submit"
+            value="{{ 'registration.submit'|trans }}">{{ 'registration.submit'|trans }}</button>
+</div>
 {{ form_end(form) }}
 <p class="mt-3 note-info text-center p-1">
     Nach der Registrierung erhalten Sie eine Email mit einem Aktivierungslink, den Sie anklicken müssen um das Konto
