@@ -67,6 +67,15 @@
             Datenschutzcenter Netzplan
         </div>
         <div class="card-body">
+            <label>
+                Filter nodes
+                <select id="nodeFilterSelect">
+                    <option value>Alle Abteilungen</option>
+                    {% for a in app.user.team.abteilungen if a.activ %}
+                        <option value="{{ a.name }}">{{ a.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
             <div id="mynetwork"></div>
         </div>
     </div>
@@ -74,140 +83,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript">
-        // create an array with nodes
-        var nodes = new vis.DataSet([
-
-            {% for n in vvt %}
-            {
-                id: 'vvt{{ n.id }}',
-                group: 'VVT',
-                label: 'VVT \n{{ n.name }}',
-                color: '#34ce57',
-                font: {face: "Monospace"},
-                shape: "box",
-                url: "{{ path('vvt_edit', {'id':n.id}) }}"
-            },
-            {% endfor %}
-            {% for n in daten %}
-            {
-                id: 'daten{{ n.id }}',
-                group: 'DW',
-                label: 'DW \n{{ n.gegenstand }}',
-                color: '#6f42c1',
-                font: {face: "Monospace", color: 'white'},
-                shape: "box",
-                url: "{{ path('datenweitergabe_edit', {'id':n.id}) }}"
-            },
-            {% endfor %}
-            {% for n in av %}
-            {
-                id: 'daten{{ n.id }}',
-                group: 'AV',
-                label: 'AV \n{{ n.gegenstand }}',
-                color: '#7e57c2',
-                font: {face: "Monospace", color: 'white'},
-                shape: "box",
-                url: "{{ path('datenweitergabe_edit', {'id':n.id}) }}"
-            },
-            {% endfor %}
-            {% for n in tom %}
-            {
-                id: 'tom{{ n.id }}',
-                group: 'TOM',
-                label: 'TOM \n{{ n.titel }}',
-                color: '#0e4377',
-                font: {face: "Monospace", color: 'white'},
-                shape: "box",
-                url: "{{ path('tom_edit', {'tom':n.id}) }}"
-            },
-            {% endfor %}
-            {% for n in policies %}
-            {
-                id: 'pol{{ n.id }}',
-                group: 'Policy',
-                label: 'POLICY \n{{ n.title }}',
-                color: '#4b515d',
-                font: {face: "Monospace", color: 'white'},
-                shape: "box",
-                url: "{{ path('policy_edit', {'id':n.id}) }}"
-            },
-            {% endfor %}
-            {% for n in kontakte %}
-            {
-                id: 'kon{{ n.id }}',
-                label: 'KONTAKT \n{{ n.firma }}',
-                color: '#6a1b9a',
-                font: {face: "Monospace", color: 'white'},
-                shape: "box",
-                url: "{{ path('kontakt_edit', {'id':n.id}) }}"
-            },
-            {% endfor %}
-        ]);
-
-        // create an array with edges
-        var edges = new vis.DataSet([
-            {% for ee in vvt %}
-            {from: '0', to: 'vvt{{ ee.id }}'},
-            {% for e in ee.datenweitergaben if e.activ %}
-            {% if e.art == 2 %}
-            {from: 'vvt{{ ee.id }}', to: 'daten{{ e.id }}'},
-            {% else %}
-            {from: 'daten{{ e.id }}', to: 'vvt{{ ee.id }}'},
-            {% endif %}
-            {% endfor %}
-            {% if ee.tomLink is not null %}
-            {from: 'vvt{{ ee.id }}', to: 'tom{{ ee.tomLink.id }}'},
-            {% endif %}
-
-            {% for e in ee.policies if e.activ %}
-            {from: 'vvt{{ ee.id }}', to: 'pol{{ e.id }}'},
-            {% endfor %}
-            {% endfor %}
-
-            {% for ee in kontakte %}
-            {% for e in ee.datenweitergaben if e.activ %}
-            {% if e.art == 2 %}
-            {from: 'daten{{ e.id }}', to: 'kon{{ ee.id }}'},
-            {% else %}
-            {from: 'kon{{ ee.id }}', to: 'daten{{ e.id }}'},
-            {% endif %}
-            {% endfor %}
-            {% endfor %}
-        ]);
-
-        // create a network
-        var container = document.getElementById('mynetwork');
-        var data = {
-            nodes: nodes,
-            edges: edges
-        };
-        var options = {
-            layout: {
-                hierarchical: {
-                    direction: "UD",
-                    sortMethod: "directed",
-                    parentCentralization: false,
-                }
-            },
-            autoResize: true,
-            physics: {
-                physics: false,
-                hierarchicalRepulsion: {
-                    avoidOverlap: 1
-                }
-            },
-        };
-
-        var network = new vis.Network(container, data, options);
-
-        network.on("doubleClick", function (params) {
-            if (params.nodes.length === 1) {
-                var node = nodes.get(params.nodes[0]);
-                if (node.url != null) {
-                    window.open(node.url, "_self");
-                }
-            }
-        });
+    <script>
+        {{ include('dashboard/__network.js.twig') }}
     </script>
+
 {% endblock %}
