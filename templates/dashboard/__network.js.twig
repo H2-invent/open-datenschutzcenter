@@ -1,0 +1,270 @@
+const nodeFilterSelector = document.getElementById("nodeFilterSelect");
+const edgeFilters = document.getElementsByName("edgesFilter");
+
+function startNetwork(data) {
+    const container = document.getElementById("mynetwork");
+    const options = {
+        layout: {
+            randomSeed: 5,
+            hierarchical: {
+                direction: "UD",
+                sortMethod: "directed",
+                parentCentralization: false,
+                nodeSpacing: 300,
+                treeSpacing: 300,
+            }
+        },
+        autoResize: true,
+        physics: {
+            physics: false,
+            hierarchicalRepulsion: {
+                avoidOverlap: 1,
+            }
+        },
+    };
+    var network = new vis.Network(container, data, options);
+
+    network.on("doubleClick", function (params) {
+        if (params.nodes.length === 1) {
+            var node = nodes.get(params.nodes[0]);
+            if (node.url != null) {
+                window.open(node.url, "_self");
+            }
+        }
+    });
+}
+
+/**
+ * In this example we do not mutate nodes or edges source data.
+ */
+const nodes = new vis.DataSet([
+    {% for n in vvt %}
+    {
+        id: 'vvt{{ n.id }}',
+        title: '{{ n.name }}',
+        label: '{{ n.name|slice(0,28) }}',
+        color: '#34ce57',
+        font: {face: "Monospace"},
+        shape: "box",
+        url: "{{ path('vvt_edit', {'id':n.id}) }}",
+{% if n.abteilung %}
+{{ n.abteilung.name }}: '{{ n.abteilung.name }}',
+{% endif %}
+},
+{% endfor %}
+{% for n in daten %}
+{
+    id: 'daten{{ n.id }}',
+    {% for v in n.verfahren if v.activ %}
+    {% if v.abteilung %}
+    {{ v.abteilung.name }}:
+    '{{ v.abteilung.name }}',
+            {% endif %}
+            {% endfor %}
+        label
+:
+    'DW \n{{ n.gegenstand }}',
+        color
+:
+    '#6f42c1',
+        font
+:
+    {
+        face: "Monospace", color
+    :
+        'white'
+    }
+,
+    shape: "box",
+        url
+:
+    "{{ path('datenweitergabe_edit', {'id':n.id}) }}"
+},
+{% endfor %}
+{% for n in av %}
+{
+    id: 'daten{{ n.id }}',
+    {% for v in n.verfahren if v.activ %}
+    {% if v.abteilung %}
+    {{ v.abteilung.name }}:
+    '{{ v.abteilung.name }}',
+            {% endif %}
+            {% endfor %}
+        label
+:
+    'AV \n{{ n.gegenstand }}',
+        color
+:
+    '#7e57c2',
+        font
+:
+    {
+        face: "Monospace", color
+    :
+        'white'
+    }
+,
+    shape: "box",
+        url
+:
+    "{{ path('datenweitergabe_edit', {'id':n.id}) }}"
+},
+{% endfor %}
+{% for n in tom %}
+{
+    id: 'tom{{ n.id }}',
+        label
+:
+    'TOM \n{{ n.titel }}',
+        color
+:
+    '#0e4377',
+        font
+:
+    {
+        face: "Monospace", color
+    :
+        'white'
+    }
+,
+    shape: "box",
+        url
+:
+    "{{ path('tom_edit', {'tom':n.id}) }}",
+    {% for v in n.vvts if v.activ %}
+    {% if v.abteilung %}
+    {{ v.abteilung.name }}:
+    '{{ v.abteilung.name }}',
+    {% endif %}
+    {% endfor %}
+},
+{% endfor %}
+{% for n in policies %}
+{
+    id: 'pol{{ n.id }}',
+        label
+:
+    'POLICY \n{{ n.title }}',
+        color
+:
+    '#4b515d',
+        font
+:
+    {
+        face: "Monospace", color
+    :
+        'white'
+    }
+,
+    shape: "box",
+        url
+:
+    "{{ path('policy_edit', {'id':n.id}) }}",
+    {% for v in n.processes if v.activ %}
+    {% if v.abteilung %}
+    {{ v.abteilung.name }}:
+    '{{ v.abteilung.name }}',
+    {% endif %}
+    {% endfor %}
+},
+{% endfor %}
+{% for n in kontakte %}
+{
+    id: 'kon{{ n.id }}',
+        label
+:
+    'KONTAKT \n{{ n.firma }}',
+        color
+:
+    '#6a1b9a',
+        font
+:
+    {
+        face: "Monospace", color
+    :
+        'white'
+    }
+,
+    shape: "box",
+        url
+:
+    "{{ path('kontakt_edit', {'id':n.id}) }}",
+    {% for d in n.datenweitergaben if d.activ %}
+    {% for v in d.verfahren if v.activ %}
+    {% if v.abteilung %}
+    {{ v.abteilung.name }}:
+    '{{ v.abteilung.name }}',
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+},
+{% endfor %}
+]);
+
+const edges = new vis.DataSet([
+    {% for ee in vvt %}
+    {from: '0', to: 'vvt{{ ee.id }}'},
+    {% for e in ee.datenweitergaben if e.activ %}
+    {% if e.art == 2 %}
+    {from: 'vvt{{ ee.id }}', to: 'daten{{ e.id }}'},
+    {% else %}
+    {from: 'daten{{ e.id }}', to: 'vvt{{ ee.id }}'},
+    {% endif %}
+    {% endfor %}
+    {% if ee.tomLink is not null %}
+    {from: 'vvt{{ ee.id }}', to: 'tom{{ ee.tomLink.id }}'},
+    {% endif %}
+
+    {% for e in ee.policies if e.activ %}
+    {from: 'vvt{{ ee.id }}', to: 'pol{{ e.id }}'},
+    {% endfor %}
+    {% endfor %}
+
+    {% for ee in kontakte %}
+    {% for e in ee.datenweitergaben if e.activ %}
+    {% if e.art == 2 %}
+    {from: 'daten{{ e.id }}', to: 'kon{{ ee.id }}'},
+    {% else %}
+    {from: 'kon{{ ee.id }}', to: 'daten{{ e.id }}'},
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+]);
+
+/**
+ * filter values are updated in the outer scope.
+ * in order to apply filters to new values, DataView.refresh() should be called
+ */
+let nodeFilterValue = "";
+
+/*
+filter function should return true or false
+based on whether item in DataView satisfies a given condition.
+*/
+const nodesFilter = node => {
+    if (nodeFilterValue === "") {
+        return true;
+    }
+    switch (nodeFilterValue) {
+            {% for a in app.user.team.abteilungen if a.activ %}
+        case "{{ a.name }}":
+            return node.{{ a.name }} === "{{ a.name }}";
+            {% endfor %}
+        default:
+            return true;
+    }
+};
+
+const nodesView = new vis.DataView(nodes, {filter: nodesFilter});
+
+nodeFilterSelector.addEventListener("change", e = > {
+    // set new value to filter variable
+    nodeFilterValue = e.target.value;
+/*
+      refresh DataView,
+      so that its filter function is re-calculated with the new variable
+    */
+nodesView.refresh();
+});
+
+startNetwork({nodes: nodesView, edges: edges});
