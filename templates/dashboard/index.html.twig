@@ -68,8 +68,7 @@
         </div>
         <div class="card-body">
             <label>
-                Filter nodes
-                <select id="nodeFilterSelect">
+                <select id="nodeFilterSelect" class="custom-select-lg">
                     <option value>Alle Abteilungen</option>
                     {% for a in app.user.team.abteilungen if a.activ %}
                         <option value="{{ a.name }}">{{ a.name }}</option>
