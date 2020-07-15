@@ -43,7 +43,7 @@
                 {% endblock %}
                 <spacer size="16"></spacer>
                 <p style="text-align: center">
-                    {{ team.signature|nl2br }}
+                    {% if team is defined %}{{ team.signature|nl2br }}{% endif %}
                 </p>
                 <spacer size="16"></spacer>
                 <p style="text-align: center">
