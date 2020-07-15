@@ -88,7 +88,7 @@ class AssignService
                 $user = $this->em->getRepository(User::class)->find($data['user']);
                 if ($vvt->getTeam() === $user->getTeam()) {
                     $vvt->setAssignedUser($user);
-                    $content = $this->twig->render('email/assignementVvt.html.twig', ['assign' => $vvt->getName(), 'data' => $vvt]);
+                    $content = $this->twig->render('email/assignementVvt.html.twig', ['assign' => $vvt->getName(), 'data' => $vvt, 'team' => $user->getTeam()]);
                     $this->notificationService->sendNotificationAssign($content, $user);
                 }
             } else {
@@ -113,7 +113,7 @@ class AssignService
                 $user = $this->em->getRepository(User::class)->find($data['user']);
                 if ($audit->getTeam() === $user->getTeam()) {
                     $audit->setAssignedUser($user);
-                    $content = $this->twig->render('email/assignementAudit.html.twig', ['assign' => $audit->getFrage(), 'data' => $audit]);
+                    $content = $this->twig->render('email/assignementAudit.html.twig', ['assign' => $audit->getFrage(), 'data' => $audit, 'team' => $user->getTeam()]);
                     $this->notificationService->sendNotificationAssign($content, $user);
                 }
             } else {
@@ -136,7 +136,7 @@ class AssignService
                 $user = $this->em->getRepository(User::class)->find($data['user']);
                 if ($datenweitergabe->getTeam() === $user->getTeam()) {
                     $datenweitergabe->setAssignedUser($user);
-                    $content = $this->twig->render('email/assignementDatenweitergabe.html.twig', ['assign' => $datenweitergabe->getGegenstand(), 'data' => $datenweitergabe]);
+                    $content = $this->twig->render('email/assignementDatenweitergabe.html.twig', ['assign' => $datenweitergabe->getGegenstand(), 'data' => $datenweitergabe, 'team' => $user->getTeam()]);
                     $this->notificationService->sendNotificationAssign($content, $user);
                 }
             } else {
@@ -160,7 +160,7 @@ class AssignService
                 $user = $this->em->getRepository(User::class)->find($data['user']);
                 if ($dsfa->getVvt()->getTeam() === $user->getTeam()) {
                     $dsfa->setAssignedUser($user);
-                    $content = $this->twig->render('email/assignementDsfa.html.twig', ['assign' => $dsfa->getVvt()->getName(), 'data' => $dsfa]);
+                    $content = $this->twig->render('email/assignementDsfa.html.twig', ['assign' => $dsfa->getVvt()->getName(), 'data' => $dsfa, 'team' => $user->getTeam()]);
                     $this->notificationService->sendNotificationAssign($content, $user);
                 }
             } else {
@@ -184,7 +184,7 @@ class AssignService
                 $user = $this->em->getRepository(User::class)->find($data['user']);
                 if ($forms->getTeam() === $user->getTeam()) {
                     $forms->setAssignedUser($user);
-                    $content = $this->twig->render('email/assignementForm.html.twig', ['assign' => $forms->getTitle(), 'data' => $forms]);
+                    $content = $this->twig->render('email/assignementForm.html.twig', ['assign' => $forms->getTitle(), 'data' => $forms, 'team' => $user->getTeam()]);
                     $this->notificationService->sendNotificationAssign($content, $user);
                 }
             } else {
@@ -208,7 +208,7 @@ class AssignService
                 $user = $this->em->getRepository(User::class)->find($data['user']);
                 if ($policies->getTeam() === $user->getTeam()) {
                     $policies->setAssignedUser($user);
-                    $content = $this->twig->render('email/assignementPolicy.html.twig', ['assign' => $policies->getScope(), 'data' => $policies]);
+                    $content = $this->twig->render('email/assignementPolicy.html.twig', ['assign' => $policies->getScope(), 'data' => $policies, 'team' => $user->getTeam()]);
                     $this->notificationService->sendNotificationAssign($content, $user);
                 }
             } else {

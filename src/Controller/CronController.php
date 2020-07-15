@@ -38,7 +38,7 @@ class CronController extends AbstractController
         $countWdh = 0;
         foreach ($buchungen as $buchung) {
             if (!$buchung->getInvitation()) {
-                $content = $this->renderView('email/neuerKurs.html.twig', ['buchung' => $buchung]);
+                $content = $this->renderView('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeam()]);
                 $buchung->setInvitation(true);
                 $em->persist($buchung);
                 ++$countNeu;
