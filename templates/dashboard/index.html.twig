@@ -71,7 +71,7 @@
                 <select id="nodeFilterSelect" class="custom-select-lg">
                     <option value>Alle Abteilungen</option>
                     {% for a in app.user.team.abteilungen if a.activ %}
-                        <option value="{{ a.name }}">{{ a.name }}</option>
+                        <option value="ab{{ a.id }}">{{ a.name }}</option>
                     {% endfor %}
                 </select>
             </label>
@@ -120,9 +120,9 @@
             {% for n in vvt %}
             {
                 id: 'vvt{{ n.id }}',
-        {% if n.abteilung %}
-        {{ n.abteilung.name }}:
-        '{{ n.abteilung.name }}',
+                {% if n.abteilung %}
+                ab{{ n.abteilung.id }}:
+                    '{{ n.abteilung.id }}',
                 {% endif %}
             title
         :
@@ -149,9 +149,9 @@
         {
             id: 'daten{{ n.id }}',
             {% for v in n.verfahren if v.activ %}
-            {% if v.abteilung %}
-            {{ v.abteilung.name }}:
-            '{{ v.abteilung.name }}',
+                    {% if v.abteilung %}
+                ab{{ v.abteilung.id }}:
+            '{{ v.abteilung.id }}',
                     {% endif %}
                     {% endfor %}
                 label
@@ -179,9 +179,9 @@
         {
             id: 'daten{{ n.id }}',
             {% for v in n.verfahren if v.activ %}
-            {% if v.abteilung %}
-            {{ v.abteilung.name }}:
-            '{{ v.abteilung.name }}',
+                    {% if v.abteilung %}
+                ab{{ v.abteilung.id }}:
+            '{{ v.abteilung.id }}',
                     {% endif %}
                     {% endfor %}
                 label
@@ -209,9 +209,9 @@
         {
             id: 'tom{{ n.id }}',
             {% for v in n.vvts if v.activ %}
-            {% if v.abteilung %}
-            {{ v.abteilung.name }}:
-            '{{ v.abteilung.name }}',
+                    {% if v.abteilung %}
+                ab{{ v.abteilung.id }}:
+            '{{ v.abteilung.id }}',
                     {% endif %}
                     {% endfor %}
                 label
@@ -257,9 +257,9 @@
         :
             "{{ path('policy_edit', {'id':n.id}) }}",
             {% for v in n.processes if v.activ %}
-            {% if v.abteilung %}
-            {{ v.abteilung.name }}:
-            '{{ v.abteilung.name }}',
+                    {% if v.abteilung %}
+                ab{{ v.abteilung.id }}:
+            '{{ v.abteilung.id }}',
             {% endif %}
             {% endfor %}
         }
@@ -288,9 +288,9 @@
             "{{ path('kontakt_edit', {'id':n.id}) }}",
             {% for d in n.datenweitergaben if d.activ %}
             {% for v in d.verfahren if v.activ %}
-            {% if v.abteilung %}
-            {{ v.abteilung.name }}:
-            '{{ v.abteilung.name }}',
+                    {% if v.abteilung %}
+                ab{{ v.abteilung.id }}:
+            '{{ v.abteilung.id }}',
             {% endif %}
             {% endfor %}
             {% endfor %}
@@ -347,8 +347,8 @@
             }
             switch (nodeFilterValue) {
                     {% for a in app.user.team.abteilungen if a.activ %}
-                case "{{ a.name }}":
-                    return node.{{ a.name }} === "{{ a.name }}";
+                case "ab{{ a.id }}":
+                    return node.ab{{ a.id }} === "{{ a.id }}";
                     {% endfor %}
                 default:
                     return true;
