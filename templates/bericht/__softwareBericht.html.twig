@@ -1,0 +1,78 @@
+<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %}{{ d.name }} (id:{{ d.id }})</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Name der Software
+        </td>
+        <td>{{ d.name }}</td>
+    </tr>
+    <tr>
+        <td>
+            Status
+        </td>
+        <td>{{ d.statusString }}</td>
+    </tr>
+    <tr>
+        <td>
+            Anschaffungsdatum
+        </td>
+        <td>{{ d.purchase|date('d.m.Y') }}</td>
+    </tr>
+    <tr>
+        <td>
+            Beschreibung der Software
+        </td>
+        <td>{{ d.description|nl2br }}</td>
+    </tr>
+
+    <tr>
+        <td>
+            Lizenz
+        </td>
+        <td>{{ d.license|nl2br }}</td>
+    </tr>
+    <tr>
+        <td>
+            Lizenz Ablaufdatum
+        </td>
+        <td>{{ d.licenseExpiration|date('d.m.Y') }}</td>
+    </tr>
+
+    <tr>
+        <td>
+            Standort/Lokation der Software
+        </td>
+        <td>{{ d.location }}</td>
+    </tr>
+    <tr>
+        <td>
+            Verbundene Verarbeitungen
+        </td>
+        <td>{% for data in d.vvts %}{{ data.name }}<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Konfiguration
+        </td>
+        <td>
+            {% for c in d.config if c.activ %}
+                <p>
+                    <b>Bezeichnung: {{ c.name }}</b><br>
+                    {{ c.config|nl2br }}
+                </p>
+            {% endfor %}
+        </td>
+    </tr>
+
+</table>
+{{ d.createdAt|date('d.m.Y H:i') }} by {{ d.user.email }}
+{% if d.previous and all == 1 %}
+    {{ include('bericht/__softwareBericht.html.twig', {'d':d.previous}) }}
+{% endif %}

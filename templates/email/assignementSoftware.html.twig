@@ -1,0 +1,39 @@
+{% extends 'email/base.html.twig' %}
+{% block header %}
+    -- Software zum Bearbeiten zugewiesen --
+{% endblock %}
+
+{% block content %}
+    <h4 class="text-center">
+        {{ assign }}
+    </h4>
+    <b>
+        Hallo!
+    </b>
+    <p>
+        Ihnen wurde eine Software {{ assign }} zum Bearbeiten zugewiesen.
+    </p>
+    <p>
+        Name der Software: {{ assign }}
+    </p>
+    <p>
+        Beschreibung: {{ data.description|nl2br }}
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        <a href="{{ absolute_url(path('software_edit', {'id':data.id})) }}">Klicken Sie hier um direkt zu Element
+            zu gelangen.</a>
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Sie erhalten diese E-Mail, weil Sie Mitglied des Datenschutzcenterteams {{ data.team.name }} sind.
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei Ihrem
+        Datenschutzbeauftragten, den Datenschutzkoordinatoren oder bei der Geschäftsführung.<br>
+        E-Mail: {{ data.team.email }}<br>
+        Telefon: {{ data.team.telefon }}
+    </p>
+
+{% endblock %}

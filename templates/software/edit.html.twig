@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+    {% if software.activ %}
+        <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_software', {'id':software.id}) }}">
+            <span>PDF erstellen</span>
+        </a>
+        <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_software', {'id':software.id, 'all':1}) }}">
+            <span>PDF mit Historie erstellen</span>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="h2-responsive">{{ title }}</h2>
+        </div>
+        <div class="col-md-4 text-right">
+            {{ include('assign/__assign.html.twig',{'data':software,'path':'assign_software'}) }}
+        </div>
+    </div>
+
+    <div class="accordion" id="accordionExample">
+        <div class="card z-depth-0 bordered">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseOne"
+                            aria-expanded="false" aria-controls="collapseOne">
+                        <h4 class="h4-responsive">Stammdaten zu der Software</h4>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                 data-parent="#accordionExample">
+                <div class="card-body">
+                    {{ include('software/__form.html.twig') }}
+                    <p>Erstellt von: {{ software.user.email }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="card z-depth-0 bordered">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link " type="button" data-toggle="collapse"
+                            data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        <h4 class="h4-responsive">Angefügte Konfigurationen</h4>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                    <a class="btn btn-primary" href="{{ path('software_config_new',{'id':software.id}) }}">Neue
+                        Konfiguration hinzufügen</a>
+                    {% for c in software.config %}
+                        <a class="card card-body {% if c.activ %}bg-success{% else %}bg-danger{% endif %} mb-1"
+                           href="{{ path('software_config_new',{'id':software.id,'config':c.id}) }}">
+                            {% if not c.activ %}
+                                <del>{{ c.name }}</del>{% else %}<b>{{ c.name }}</b><br>{{ c.config|nl2br }}{% endif %}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if software.previous %}
+        <div class="card card-body mt-2">
+            <h2>Historie</h2>
+            {{ include('software/__history.html.twig', {'p':software.previous}) }}
+        </div>
+    {% endif %}
+
+    {{ include('base/__snack.html.twig') }}
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

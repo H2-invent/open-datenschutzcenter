@@ -1,0 +1,4 @@
+<a href="{{ path('software_edit',{'id':p.id}) }}"><span>{{ p.createdAt|date('d.m.Y') }} -- {{ p.status }} -- {{ p.user.email }}</span></a>
+{% if p.previous %}
+    {{ include('software/__history.html.twig', {'p':p.previous}) }}
+{% endif %}

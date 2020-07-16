@@ -13,6 +13,7 @@ use App\Entity\AuditTom;
 use App\Entity\Datenweitergabe;
 use App\Entity\Forms;
 use App\Entity\Policies;
+use App\Entity\Software;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\VVT;
@@ -215,6 +216,30 @@ class AssignService
                 $policies->setAssignedUser(null);
             }
             $this->em->persist($policies);
+            $this->em->flush();
+
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    function assignSoftware($request, Software $software)
+    {
+        try {
+
+            if ($software->getAssignedUser() == null) {
+                $data = $request->get('assign');
+                $user = $this->em->getRepository(User::class)->find($data['user']);
+                if ($software->getTeam() === $user->getTeam()) {
+                    $software->setAssignedUser($user);
+                    $content = $this->twig->render('email/assignementSoftware.html.twig', ['assign' => $software->getName(), 'data' => $software, 'team' => $user->getTeam()]);
+                    $this->notificationService->sendNotificationAssign($content, $user);
+                }
+            } else {
+                $software->setAssignedUser(null);
+            }
+            $this->em->persist($software);
             $this->em->flush();
 
             return true;

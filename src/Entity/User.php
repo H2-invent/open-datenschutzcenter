@@ -130,6 +130,16 @@ class User extends BaseUser
      */
     private $assignedForms;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Software::class, mappedBy="user")
+     */
+    private $software;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Software::class, mappedBy="assignedUser")
+     */
+    private $assignedSoftware;
+
 
     public function __construct()
     {
@@ -151,6 +161,8 @@ class User extends BaseUser
         $this->policiesResponsible = new ArrayCollection();
         $this->assignedPolicies = new ArrayCollection();
         $this->assignedForms = new ArrayCollection();
+        $this->software = new ArrayCollection();
+        $this->assignedSoftware = new ArrayCollection();
     }
 
     public function getTeam(): ?Team
@@ -710,6 +722,68 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($assignedForm->getAssignedUser() === $this) {
                 $assignedForm->setAssignedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Software[]
+     */
+    public function getSoftware(): Collection
+    {
+        return $this->software;
+    }
+
+    public function addSoftware(Software $software): self
+    {
+        if (!$this->software->contains($software)) {
+            $this->software[] = $software;
+            $software->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoftware(Software $software): self
+    {
+        if ($this->software->contains($software)) {
+            $this->software->removeElement($software);
+            // set the owning side to null (unless already changed)
+            if ($software->getUser() === $this) {
+                $software->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Software[]
+     */
+    public function getAssignedSoftware(): Collection
+    {
+        return $this->assignedSoftware;
+    }
+
+    public function addAssignedSoftware(Software $assignedSoftware): self
+    {
+        if (!$this->assignedSoftware->contains($assignedSoftware)) {
+            $this->assignedSoftware[] = $assignedSoftware;
+            $assignedSoftware->setAssignedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignedSoftware(Software $assignedSoftware): self
+    {
+        if ($this->assignedSoftware->contains($assignedSoftware)) {
+            $this->assignedSoftware->removeElement($assignedSoftware);
+            // set the owning side to null (unless already changed)
+            if ($assignedSoftware->getAssignedUser() === $this) {
+                $assignedSoftware->setAssignedUser(null);
             }
         }
 

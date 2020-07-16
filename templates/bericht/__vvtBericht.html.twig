@@ -84,13 +84,21 @@
         <td>
             Zugehörige Datenweitergaben
         </td>
-        <td>{% for dd in d.datenweitergaben %}{% if dd.activ and dd.art == 1 %}{{ dd.gegenstand }}<br>{% endif %}{% endfor %}</td>
+        <td>{% for dd in d.datenweitergaben %}{% if dd.activ and dd.art == 1 %}{{ dd.gegenstand }}
+                <br>{% endif %}{% endfor %}</td>
     </tr>
     <tr>
         <td>
             Zugehörige Auftragsdatenverarbeitungen
         </td>
-        <td>{% for dd in d.datenweitergaben %}{% if dd.activ and dd.art == 2 %}{{ dd.gegenstand }}<br>{% endif %}{% endfor %}</td>
+        <td>{% for dd in d.datenweitergaben %}{% if dd.activ and dd.art == 2 %}{{ dd.gegenstand }}
+                <br>{% endif %}{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Verwendete Software
+        </td>
+        <td>{% for dd in d.software if dd.activ %}{{ dd.name }}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
@@ -102,7 +110,9 @@
         <td>
             Welche technischen und organisatorischen Maßnahmen werden umgesetzt?
         </td>
-        <td>{% if d.tomLink %}{{ d.tomLink.titel }}<br>{{ d.tomLink.beschreibung }}{% else %}Keine Zuordnung zu einer bestehenden digitalen TOM vorgenommen.{% endif %}</td>
+        <td>{% if d.tomLink %}{{ d.tomLink.titel }}
+                <br>{{ d.tomLink.beschreibung }}{% else %}Keine Zuordnung zu einer bestehenden digitalen TOM vorgenommen.{% endif %}
+        </td>
     </tr>
     <tr>
         <td>

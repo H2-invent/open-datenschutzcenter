@@ -54,11 +54,6 @@
         {% else %}
             {{ form_widget(form.verantwortlich, { 'disabled':'disabled' }) }}
         {% endif %}
-        <p>
-            Den Namen und die Kontaktdaten des Auftragsverarbeiters oder der Auftragsverarbeiter und jedes
-            Verantwortlichen, in dessen Auftrag der Auftragsverarbeiter tätig ist, sowie gegebenenfalls des Vertreters
-            des Verantwortlichen oder des Auftragsverarbeiters und eines etwaigen Datenschutzbeauftragten
-        </p>
     </div>
     <div class="mt-4">
         {{ form_label(form.grundlage) }}
@@ -75,10 +70,6 @@
         {% else %}
             {{ form_widget(form.zweck, { 'disabled':'disabled' }) }}
         {% endif %}
-        <p>
-            Aus der Zweckbestimmung muss sich die Rechtsgrundlage für die Datenverwendung ableiten lassen. In der Praxis
-            werden die Aufgaben und Ziele der einzelnen Prozesse genannt, beispielsweise »Personalmanagement«.
-        </p>
     </div>
     <div class="mt-4">
         {{ form_label(form.speicherung) }}
@@ -95,9 +86,6 @@
         {% else %}
             {{ form_widget(form.loeschfrist, { 'disabled':'disabled' }) }}
         {% endif %}
-        <p>
-            Dokumentation bspw. durch Referenz auf Maßnahmen, Prozesse, wie diese sichergestellt wird
-        </p>
     </div>
 
     <div class="mt-4">
@@ -107,10 +95,6 @@
         {% else %}
             {{ form_widget(form.personengruppen, { 'disabled':'disabled' }) }}
         {% endif %}
-        <p>
-            Gemeint sind die Personengruppen, deren Daten in dem jeweiligen Verfahren verarbeitet werden, zum Beispiel
-            »Mitarbeiter« oder »Kunden«.
-        </p>
     </div>
     <div class="mt-4">
         {{ form_label(form.kategorien) }}
@@ -181,6 +165,14 @@
             {% endif %}
         </div>
     </div>
+    <div class="mt-4">
+        {{ form_label(form.software) }}
+        {% if activ %}
+            {{ form_widget(form.software) }}
+        {% else %}
+            {{ form_widget(form.software, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
 
     <div class="mt-4">
         {{ form_label(form.eu) }}
@@ -197,10 +189,6 @@
         {% else %}
             {{ form_widget(form.tomLink, { 'disabled':'disabled' }) }}
         {% endif %}
-        <p>
-            Neben den allgemeinen Beschreibungen der technischen und organisatorischen Maßnahmen (siehe Pflichtangaben)
-            kann für die interne Steuerung eine detaillierte Dokumentation sinnvoll sein.
-        </p>
     </div>
     <div class="mt-4">
         {{ form_label(form.tom) }}
@@ -209,12 +197,9 @@
         {% else %}
             {{ form_widget(form.tom, { 'disabled':'disabled' }) }}
         {% endif %}
-        <p>
-            Hier kann auf das allgemeine Sicherheitskonzept / übergreifende TOMs verwiesen werden, so dass nur
-            Abweichungen davon für das jeweilige Verfahren extra aufgeführt werden müssen. Bei Verweis auf ein
-            Referenzdokument müsste dieses der Aufsichtsbehörde ggf. ebenfalls vorgelegt werden.
-        </p>
     </div>
+
+    <h4 class="h4-responsive">Risikoabschätzung</h4>
     <div class="mt-4">
         {{ form_label(form.risiko) }}
         {% if activ %}

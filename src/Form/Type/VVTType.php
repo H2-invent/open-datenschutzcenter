@@ -11,6 +11,7 @@ namespace App\Form\Type;
 use App\Entity\AuditTomAbteilung;
 use App\Entity\Datenweitergabe;
 use App\Entity\Produkte;
+use App\Entity\Software;
 use App\Entity\Tom;
 use App\Entity\User;
 use App\Entity\VVT;
@@ -46,6 +47,15 @@ class VVTType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'required' => true
+            ])
+            ->add('software', EntityType::class, [
+                'choice_label' => 'name',
+                'class' => Software::class,
+                'choices' => $options['software'],
+                'label' => 'Verwendete Software in dieser Verarbeitung',
+                'translation_domain' => 'form',
+                'multiple' => true,
+                'required' => false
             ])
             ->add('zweck', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'Zweck der Verarbeitung', 'required' => true, 'translation_domain' => 'form'])
             ->add('jointControl', CheckboxType::class, ['label' => 'Handelt es sich um Joint Control (gem. Verarbeitung)', 'required' => false, 'translation_domain' => 'form'])
@@ -182,7 +192,8 @@ class VVTType extends AbstractType
             'daten' => array(),
             'tom' => array(),
             'abteilung' => array(),
-            'produkte' => array()
+            'produkte' => array(),
+            'software' => array()
         ]);
     }
 }

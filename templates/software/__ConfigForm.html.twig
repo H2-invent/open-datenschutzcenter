@@ -1,0 +1,32 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<div class="mt-4">
+    {{ form_label(form.name) }}
+    {% if activ %}
+        {{ form_widget(form.name) }}
+    {% else %}
+        {{ form_widget(form.name, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-4">
+    {{ form_label(form.config) }}
+    {% if activ %}
+        {{ form_widget(form.config) }}
+    {% else %}
+        {{ form_widget(form.config, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-4">
+    {{ form_label(form.activ) }}
+    {% if activ %}
+        {{ form_widget(form.activ) }}
+    {% else %}
+        {{ form_widget(form.activ, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+{% if activ %}
+    {{ form_widget(form.save) }}
+{% else %}
+    {{ form_widget(form.save, { 'disabled':'disabled' }) }}
+{% endif %}
+{{ form_end(form) }}

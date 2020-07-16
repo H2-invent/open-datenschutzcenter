@@ -72,6 +72,16 @@
     color: whitesmoke !important;
 }
 
+.bg-software {
+    background-color: #2E9AFE;
+    color: whitesmoke !important;
+}
+
+.bg-config {
+    background-color: #2E9AFE;
+    color: whitesmoke !important;
+}
+
 /* poppins-regular - latin */
 @font-face {
     font-family: 'Poppins';

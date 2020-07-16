@@ -12,6 +12,7 @@ use App\Entity\AkademieBuchungen;
 use App\Entity\AuditTom;
 use App\Entity\Datenweitergabe;
 use App\Entity\Policies;
+use App\Entity\Software;
 use App\Entity\Tom;
 use App\Entity\Vorfall;
 use App\Entity\VVT;
@@ -330,6 +331,47 @@ class BerichtController extends AbstractController
 
         //Generate PDF File for Download
         $response = $wrapper->getStreamResponse($html, "Datenschutzrichtlinie.pdf");
+        $response->send();
+
+        // Send some text response
+        return new Response("The PDF file has been succesfully generated !");
+    }
+
+    /**
+     * @Route("/bericht/software", name="bericht_software")
+     */
+    public function berichtSoftware(DompdfWrapper $wrapper, Request $request)
+    {
+
+        $req = $request->get('id');
+
+        $team = $this->getUser()->getTeam();
+
+        if ($req) {
+            $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('id' => $req));
+        } else {
+            $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+        }
+
+        if (count($software) < 1) {
+            return $this->redirectToRoute('bericht');
+        }
+
+        // Center Team authentication
+        if ($team === null || $software[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/software.html.twig', [
+            'daten' => $software,
+            'titel' => 'Bericht zu verwendeten Software und Konfiguration',
+            'team' => $this->getUser()->getTeam(),
+            'all' => $request->get('all'),
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse($html, "Softwarekonfiguration.pdf");
         $response->send();
 
         // Send some text response

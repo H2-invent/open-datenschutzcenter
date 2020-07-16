@@ -12,6 +12,7 @@ namespace App\Service;
 use App\Entity\AuditTomAbteilung;
 use App\Entity\Datenweitergabe;
 use App\Entity\Produkte;
+use App\Entity\Software;
 use App\Entity\Team;
 use App\Entity\Tom;
 use App\Entity\User;
@@ -71,8 +72,9 @@ class VVTService
         $tom = $this->em->getRepository(Tom::class)->findBy(array('team' => $team, 'activ' => true));
         $abteilung = $this->em->getRepository(AuditTomAbteilung::class)->findBy(array('team' => $team, 'activ' => true));
         $produkte = $this->em->getRepository(Produkte::class)->findActivByTeam($team);
+        $software = $this->em->getRepository(Software::class)->findActivByTeam($team);
 
-        $form = $this->formBuilder->create(VVTType::class, $VVT, ['grundlage' => $team->getAbteilungen(), 'personen' => $personen, 'kategorien' => $kategorien, 'risiken' => $risiken, 'status' => $status, 'grundlage' => $grundlagen, 'user' => $team->getMembers(), 'daten' => $daten, 'tom' => $tom, 'abteilung' => $abteilung, 'produkte' => $produkte]);
+        $form = $this->formBuilder->create(VVTType::class, $VVT, ['grundlage' => $team->getAbteilungen(), 'personen' => $personen, 'kategorien' => $kategorien, 'risiken' => $risiken, 'status' => $status, 'grundlage' => $grundlagen, 'user' => $team->getMembers(), 'daten' => $daten, 'tom' => $tom, 'abteilung' => $abteilung, 'produkte' => $produkte, 'software' => $software]);
 
         return $form;
     }

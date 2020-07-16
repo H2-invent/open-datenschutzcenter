@@ -112,6 +112,10 @@ class VvtController extends AbstractController
                     $item->addProcess($newVvt);
                     $em->persist($item);
                 }
+                foreach ($newVvt->getSoftware() as $software) {
+                    $software->addVvt($newVvt);
+                    $em->persist($software);
+                }
 
                 $em->persist($newVvt);
                 $em->persist($vvt);

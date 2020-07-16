@@ -1,0 +1,94 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<div class="mt-4">
+    {{ form_label(form.nummer) }}
+    {% if activ %}
+        {{ form_widget(form.nummer) }}
+    {% else %}
+        {{ form_widget(form.nummer, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-4">
+    {{ form_label(form.name) }}
+    {% if activ %}
+        {{ form_widget(form.name) }}
+    {% else %}
+        {{ form_widget(form.name, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-4">
+    {{ form_label(form.description) }}
+    {% if activ %}
+        {{ form_widget(form.description) }}
+    {% else %}
+        {{ form_widget(form.description, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-4">
+    {{ form_label(form.status) }}
+    {% if activ %}
+        {{ form_widget(form.status) }}
+    {% else %}
+        {{ form_widget(form.status, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-4">
+    {{ form_label(form.build) }}
+    {% if activ %}
+        {{ form_widget(form.build) }}
+    {% else %}
+        {{ form_widget(form.build, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-4">
+    {{ form_label(form.license) }}
+    {% if activ %}
+        {{ form_widget(form.license) }}
+    {% else %}
+        {{ form_widget(form.license, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-4 mb-4">
+    {{ form_label(form.location) }}
+    {% if activ %}
+        {{ form_widget(form.location) }}
+    {% else %}
+        {{ form_widget(form.location, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="mt-4">
+            {{ form_label(form.purchase) }}
+            {% if activ %}
+                {{ form_widget(form.purchase) }}
+            {% else %}
+                {{ form_widget(form.purchase, { 'disabled':'disabled' }) }}
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mt-4">
+            {{ form_label(form.licenseExpiration) }}
+            {% if activ %}
+                {{ form_widget(form.licenseExpiration) }}
+            {% else %}
+                {{ form_widget(form.licenseExpiration, { 'disabled':'disabled' }) }}
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="mt-4 mb-4">
+    {{ form_label(form.vvts) }}
+    {% if activ %}
+        {{ form_widget(form.vvts) }}
+    {% else %}
+        {{ form_widget(form.vvts, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+
+{% if activ %}
+    {{ form_widget(form.save) }}
+{% else %}
+    {{ form_widget(form.save, { 'disabled':'disabled' }) }}
+{% endif %}
+{{ form_end(form) }}

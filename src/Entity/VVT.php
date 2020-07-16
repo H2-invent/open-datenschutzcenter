@@ -215,6 +215,11 @@ class VVT
      */
     private $policies;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Software::class, mappedBy="vvts")
+     */
+    private $software;
+
     public function __construct()
     {
         $this->grundlage = new ArrayCollection();
@@ -225,6 +230,7 @@ class VVT
         $this->datenweitergaben = new ArrayCollection();
         $this->produkt = new ArrayCollection();
         $this->policies = new ArrayCollection();
+        $this->software = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -804,6 +810,34 @@ class VVT
         if ($this->policies->contains($policy)) {
             $this->policies->removeElement($policy);
             $policy->removeProcess($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Software[]
+     */
+    public function getSoftware(): Collection
+    {
+        return $this->software;
+    }
+
+    public function addSoftware(Software $software): self
+    {
+        if (!$this->software->contains($software)) {
+            $this->software[] = $software;
+            $software->addVvt($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoftware(Software $software): self
+    {
+        if ($this->software->contains($software)) {
+            $this->software->removeElement($software);
+            $software->removeVvt($this);
         }
 
         return $this;
