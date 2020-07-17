@@ -11,7 +11,13 @@
         <td>
             Name der Software
         </td>
-        <td>{{ d.name }}</td>
+        <td><a href="{{ absolute_url(path('software_edit', {'id':d.id})) }}">{{ d.name }}</a></td>
+    </tr>
+    <tr>
+        <td>
+            Inventarnummer
+        </td>
+        <td>{{ d.nummer }}</td>
     </tr>
     <tr>
         <td>
@@ -63,21 +69,24 @@
         </td>
         <td>{% for data in d.datenweitergabe if data.activ %}{{ data.gegenstand }}<br>{% endfor %}</td>
     </tr>
-    <tr>
-        <td>
-            Konfiguration
-        </td>
-        <td>
-            {% for c in d.config if c.activ %}
+</table>
+<h4>Konfiguration</h4>
+<table style="width: 100%">
+    {% for key,c in d.config if c.activ %}
+        <tr>
+            <td>
                 <p>
-                    <b>Bezeichnung: {{ c.name }}</b><br>
+                    <b>{{ key+1 }}: {{ c.name }} ({{ c.createdAt|date('d.m.Y') }})</b>
+                </p>
+                <p>
                     {{ c.config|nl2br }}
                 </p>
-            {% endfor %}
-        </td>
-    </tr>
-
+            </td>
+        </tr>
+    {% endfor %}
 </table>
+
+
 {{ d.createdAt|date('d.m.Y H:i') }} by {{ d.user.email }}
 {% if d.previous and all == 1 %}
     {{ include('bericht/__softwareBericht.html.twig', {'d':d.previous}) }}

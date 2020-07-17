@@ -68,7 +68,7 @@ class VvtController extends AbstractController
         return $this->render('vvt/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Verarbeitungstätigkeit erfassen',
+            'title' => 'Verarbeitung erfassen',
             'activNummer' => true,
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
@@ -128,7 +128,7 @@ class VvtController extends AbstractController
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
             'errors' => $errors,
-            'title' => 'Verarbeitungstätigkeit bearbeiten',
+            'title' => 'Verarbeitung bearbeiten',
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'activNummer' => false,

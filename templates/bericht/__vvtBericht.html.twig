@@ -12,7 +12,7 @@
         <td>
             Nummer
         </td>
-        <td>{{ d.nummer }}</td>
+        <td><a href="{{ absolute_url(path('vvt_edit', {'id':d.id})) }}">{{ d.nummer }}</a></td>
     </tr>
     <tr>
         <td>
