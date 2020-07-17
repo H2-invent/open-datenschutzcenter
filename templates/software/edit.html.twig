@@ -51,15 +51,7 @@
             </div>
             <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
                 <div class="card-body">
-                    <a class="btn btn-primary" href="{{ path('software_config_new',{'id':software.id}) }}">Neue
-                        Konfiguration hinzufügen</a>
-                    {% for c in software.config %}
-                        <a class="card card-body {% if c.activ %}bg-success{% else %}bg-danger{% endif %} mb-1"
-                           href="{{ path('software_config_new',{'id':software.id,'config':c.id}) }}">
-                            {% if not c.activ %}
-                                <del>{{ c.name }}</del>{% else %}<b>{{ c.name }}</b><br>{{ c.config|nl2br }}{% endif %}
-                        </a>
-                    {% endfor %}
+                   {{ include('software/__config.html.twig') }}
                 </div>
             </div>
         </div>

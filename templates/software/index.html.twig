@@ -19,6 +19,7 @@
                     <th scope="col">Lizenz</th>
                     <th scope="col">Verarbeitungen</th>
                     <th scope="col">Anschaffung</th>
+                    <th scope="col">Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -29,6 +30,7 @@
                         <td>{{ d.license }}</td>
                         <td>{% for p in d.vvts if p.activ %}{{ p.name }}<br>{% endfor %}</td>
                         <td>{{ d.purchase|date('d.m.Y') }}</td>
+                        <td>{{ d.statusString }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

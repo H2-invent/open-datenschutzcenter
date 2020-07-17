@@ -141,9 +141,15 @@ class Datenweitergabe
      */
     private $assignedUser;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Software::class, mappedBy="datenweitergabe")
+     */
+    private $software;
+
     public function __construct()
     {
         $this->verfahren = new ArrayCollection();
+        $this->software = new ArrayCollection();
     }
 
 
@@ -397,6 +403,34 @@ class Datenweitergabe
     public function setAssignedUser(?User $assignedUser): self
     {
         $this->assignedUser = $assignedUser;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Software[]
+     */
+    public function getSoftware(): Collection
+    {
+        return $this->software;
+    }
+
+    public function addSoftware(Software $software): self
+    {
+        if (!$this->software->contains($software)) {
+            $this->software[] = $software;
+            $software->addDatenweitergabe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoftware(Software $software): self
+    {
+        if ($this->software->contains($software)) {
+            $this->software->removeElement($software);
+            $software->removeDatenweitergabe($this);
+        }
 
         return $this;
     }

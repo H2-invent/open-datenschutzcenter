@@ -118,7 +118,7 @@ class SoftwareController extends AbstractController
     }
 
     /**
-     * @Route("/software/config/new", name="software_config_new")
+     * @Route("/software/config", name="software_config_new")
      */
     public function addConfig(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService)
     {
@@ -159,5 +159,24 @@ class SoftwareController extends AbstractController
             'activ' => true,
             'software' => $software,
         ]);
+    }
+
+    /**
+     * @Route("/software/config/delete", name="software_config_delete")
+     */
+    public function deleteConfig(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $software = $this->getDoctrine()->getRepository(Software::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($software, $team) === false) {
+            return $this->redirectToRoute('software');
+        }
+
+        $config = $this->getDoctrine()->getRepository(SoftwareConfig::class)->find($request->get('config'));
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($config);
+        $em->flush();
+        return $this->redirectToRoute('software_edit', ['id' => $software->getId(), 'snack' => 'Konfiguration gelöscht']);
     }
 }

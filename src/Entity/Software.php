@@ -116,10 +116,16 @@ class Software
      */
     private $nummer;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Datenweitergabe::class, inversedBy="software")
+     */
+    private $datenweitergabe;
+
     public function __construct()
     {
         $this->vvts = new ArrayCollection();
         $this->config = new ArrayCollection();
+        $this->datenweitergabe = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -390,6 +396,32 @@ class Software
     public function setNummer(?string $nummer): self
     {
         $this->nummer = $nummer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Datenweitergabe[]
+     */
+    public function getDatenweitergabe(): Collection
+    {
+        return $this->datenweitergabe;
+    }
+
+    public function addDatenweitergabe(Datenweitergabe $datenweitergabe): self
+    {
+        if (!$this->datenweitergabe->contains($datenweitergabe)) {
+            $this->datenweitergabe[] = $datenweitergabe;
+        }
+
+        return $this;
+    }
+
+    public function removeDatenweitergabe(Datenweitergabe $datenweitergabe): self
+    {
+        if ($this->datenweitergabe->contains($datenweitergabe)) {
+            $this->datenweitergabe->removeElement($datenweitergabe);
+        }
 
         return $this;
     }
