@@ -53,6 +53,16 @@
             {{ form_widget(form.verfahren, { 'disabled':'disabled' }) }}
         {% endif %}
 
+        <div class="mt-2 {% if daten.art != 1 %}disabled{% endif %}">
+            {{ form_label(form.software) }}
+            <p>{% if daten.art != 1 %}Einer Auftragsverarbeitung kann keine Software zugewiesen werden.{% endif %}</p>
+            {% if activ %}
+                {{ form_widget(form.software) }}
+            {% else %}
+                {{ form_widget(form.software, { 'disabled':'disabled' }) }}
+            {% endif %}
+        </div>
+
         <div class="mt-2">
             {{ form_label(form.stand) }}
             {% if activ %}

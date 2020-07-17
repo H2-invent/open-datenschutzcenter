@@ -12,6 +12,7 @@ namespace App\Service;
 use App\Entity\Datenweitergabe;
 use App\Entity\DatenweitergabeGrundlagen;
 use App\Entity\DatenweitergabeStand;
+use App\Entity\Software;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\VVT;
@@ -60,8 +61,9 @@ class DatenweitergabeService
         $stand = $this->em->getRepository(DatenweitergabeStand::class)->findAll();
         $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findAll();
         $verfahren = $this->em->getRepository(VVT::class)->findBy(array('team' => $team, 'activ' => true));
+        $software = $this->em->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true));
 
-        $form = $this->formBuilder->create(DatenweitergabeType::class, $datenweitergabe, ['stand' => $stand, 'grundlage' => $grundlagen, 'kontakt' => $team->getKontakte(), 'verfahren' => $verfahren]);
+        $form = $this->formBuilder->create(DatenweitergabeType::class, $datenweitergabe, ['stand' => $stand, 'grundlage' => $grundlagen, 'kontakt' => $team->getKontakte(), 'verfahren' => $verfahren, 'software' => $software]);
 
         return $form;
     }

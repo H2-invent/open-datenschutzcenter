@@ -63,6 +63,12 @@
     </tr>
     <tr>
         <td>
+            Zugehörige Software
+        </td>
+        <td>{% for p in d.software %}{{ p.name }},<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
             Grundlage für die Datenweitergabe
         </td>
         <td>{{ d.grundlage.name }}</td>

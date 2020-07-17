@@ -8,6 +8,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Datenweitergabe;
 use App\Entity\Software;
 use App\Entity\VVT;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -41,6 +42,16 @@ class SoftwareType extends AbstractType
                 'required' => true,
                 'expanded' => true
             ])
+            ->add('datenweitergabe', EntityType::class, [
+                'choice_label' => 'gegenstand',
+                'class' => Datenweitergabe::class,
+                'choices' => $options['datenweitergabe'],
+                'label' => 'Mit dieser Software verbundene Datenweitergaben',
+                'translation_domain' => 'form',
+                'multiple' => true,
+                'required' => true,
+                'expanded' => true
+            ])
             ->add('purchase', DateType::class, ['label' => 'Kaufdatum/Anschaffungsdatum', 'required' => false, 'translation_domain' => 'form'])
             ->add('build', TextType::class, ['label' => 'Version', 'required' => true, 'translation_domain' => 'form'])
             ->add('status', ChoiceType::class, [
@@ -64,7 +75,8 @@ class SoftwareType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Software::class,
-            'processes' => array()
+            'processes' => array(),
+            'datenweitergabe' => array(),
         ]);
     }
 }

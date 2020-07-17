@@ -27,6 +27,7 @@ class SoftwareController extends AbstractController
 
         return $this->render('software/index.html.twig', [
             'data' => $software,
+            'today' => new \DateTime(),
 
         ]);
     }
@@ -113,7 +114,7 @@ class SoftwareController extends AbstractController
             'title' => 'Richtlinie bearbeiten',
             'software' => $software,
             'activ' => $software->getActiv(),
-            'snack' => $request->get('snack')
+            'snack' => $request->get('snack'),
         ]);
     }
 

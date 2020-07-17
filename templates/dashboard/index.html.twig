@@ -352,6 +352,9 @@
 
             {% for e in ee.software if e.activ %}
             {from: 'software{{ e.id }}', to: 'vvt{{ ee.id }}'},
+            {% for d in e.datenweitergabe if d.activ %}
+            {from: 'daten{{ d.id }}', to: 'software{{ e.id }}'},
+            {% endfor %}
             {% endfor %}
 
             {% for e in ee.policies if e.activ %}

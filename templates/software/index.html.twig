@@ -16,9 +16,11 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Lizenz</th>
                     <th scope="col">Verarbeitungen</th>
+                    <th scope="col">Datenweitergaben</th>
                     <th scope="col">Anschaffung</th>
+                    <th scope="col">Lizenz</th>
+                    <th scope="col">Ablaufdatum</th>
                     <th scope="col">Status</th>
                 </tr>
                 </thead>
@@ -27,10 +29,14 @@
                     <tr class="clickable-row" data-href='{{ path('software_edit',{'id':d.id}) }}'>
                         <th scope="row">{{ d.id }}</th>
                         <td>{{ d.name }}</td>
-                        <td>{{ d.license }}</td>
                         <td>{% for p in d.vvts if p.activ %}{{ p.name }}<br>{% endfor %}</td>
+                        <td>{% for p in d.datenweitergabe if p.activ %}{{ p.gegenstand }}<br>{% endfor %}</td>
                         <td>{{ d.purchase|date('d.m.Y') }}</td>
-                        <td>{{ d.statusString }}</td>
+                        <td>{{ d.license }}</td>
+                        <td>{{ d.licenseExpiration|date('d.m.Y') }}</td>
+                        <td>{% if d.licenseExpiration < today and d.licenseExpiration is not null %}<span
+                                    class="bg-danger p-1">ABGELAUFEN</span>{% else %}{{ d.statusString }}{% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

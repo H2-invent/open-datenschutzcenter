@@ -365,7 +365,7 @@ class BerichtController extends AbstractController
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/software.html.twig', [
             'daten' => $software,
-            'titel' => 'Bericht zu verwendeten Software und Konfiguration',
+            'titel' => 'Bericht zu verwendeter Software und Konfiguration',
             'team' => $this->getUser()->getTeam(),
             'all' => $request->get('all'),
         ]);

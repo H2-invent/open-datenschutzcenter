@@ -170,6 +170,10 @@ class DatenweitergabeController extends AbstractController
                 $item->addDatenweitergaben($newDaten);
                 $em->persist($item);
             }
+            foreach ($newDaten->getSoftware() as $item) {
+                $item->addDatenweitergabe($newDaten);
+                $em->persist($item);
+            }
 
             $errors = $validator->validate($newDaten);
             if (count($errors) == 0) {

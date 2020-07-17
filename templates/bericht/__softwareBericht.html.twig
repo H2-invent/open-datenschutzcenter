@@ -55,7 +55,13 @@
         <td>
             Verbundene Verarbeitungen
         </td>
-        <td>{% for data in d.vvts %}{{ data.name }}<br>{% endfor %}</td>
+        <td>{% for data in d.vvts if data.activ %}{{ data.name }}<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Verbundene Datenweitergaben
+        </td>
+        <td>{% for data in d.datenweitergabe if data.activ %}{{ data.gegenstand }}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>

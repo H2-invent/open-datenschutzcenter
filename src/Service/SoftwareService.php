@@ -9,6 +9,7 @@
 namespace App\Service;
 
 
+use App\Entity\Datenweitergabe;
 use App\Entity\Software;
 use App\Entity\SoftwareConfig;
 use App\Entity\Team;
@@ -36,6 +37,7 @@ class SoftwareService
         $software = new Software();
         $software->setTeam($team);
         $software->setCreatedAt(new \DateTime());
+        $software->setPurchase(new \DateTime());
         $software->setActiv(true);
         $software->setUser($user);
 
@@ -55,7 +57,9 @@ class SoftwareService
     function createForm(Software $software, Team $team)
     {
         $processes = $this->em->getRepository(VVT::class)->findActivByTeam($team);
-        $form = $this->formBuilder->create(SoftwareType::class, $software, ['processes' => $processes]);
+        $data = $this->em->getRepository(Datenweitergabe::class)->findBy(['team' => $team, 'activ' => true, 'art' => 1]);
+
+        $form = $this->formBuilder->create(SoftwareType::class, $software, ['processes' => $processes, 'datenweitergabe' => $data]);
 
         return $form;
     }
