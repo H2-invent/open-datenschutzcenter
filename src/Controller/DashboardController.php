@@ -14,6 +14,7 @@ use App\Entity\Datenweitergabe;
 use App\Entity\Forms;
 use App\Entity\Kontakte;
 use App\Entity\Policies;
+use App\Entity\Software;
 use App\Entity\Tom;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
@@ -44,6 +45,7 @@ class DashboardController extends AbstractController
         $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($team);
         $forms = $this->getDoctrine()->getRepository(Forms::class)->findPublicByTeam($team);
         $policies = $this->getDoctrine()->getRepository(Policies::class)->findPublicByTeam($team);
+        $software = $this->getDoctrine()->getRepository(Software::class)->findActivByTeam($team);
 
         $qb = $this->getDoctrine()->getRepository(AuditTom::class)->createQueryBuilder('audit');
         $qb->andWhere('audit.team = :team')
@@ -98,7 +100,8 @@ class DashboardController extends AbstractController
             'assignDsfa' => $assignDsfa,
             'akademie' => $buchungen,
             'forms' => $forms,
-            'policies' => $policies
+            'policies' => $policies,
+            'software' => $software
         ]);
     }
 }

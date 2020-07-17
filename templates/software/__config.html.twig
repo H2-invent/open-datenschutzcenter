@@ -7,7 +7,7 @@
                href="{{ path('software_config_new',{'id':software.id,'config':c.id}) }}">
                 <div class="col-xl-10">
                     <del>
-                        {{ c.name }}<br>
+                        {{ c.id }}: {{ c.name }}<br>
                         {{ c.createdAt|date('d.m.Y') }}
                     </del>
                 </div>
@@ -25,7 +25,7 @@
             <a class="card card-body bg-success mb-1"
                href="{{ path('software_config_new',{'id':software.id,'config':c.id}) }}">
                 <div class="col-md-8">
-                    <b>{{ c.name }}</b><br>
+                    <b>{{ c.id }}: {{ c.name }}</b><br>
                     {{ c.config|nl2br }}
                 </div>
                 <div class="col-md-4">

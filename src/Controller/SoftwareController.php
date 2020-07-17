@@ -111,7 +111,7 @@ class SoftwareController extends AbstractController
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
             'errors' => $errors,
-            'title' => 'Richtlinie bearbeiten',
+            'title' => 'Software bearbeiten',
             'software' => $software,
             'activ' => $software->getActiv(),
             'snack' => $request->get('snack'),

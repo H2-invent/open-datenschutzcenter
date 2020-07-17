@@ -14,7 +14,7 @@
 {% block body %}
     <div class="row">
         <div class="col-md-8">
-            <h2 class="h2-responsive">{{ title }}</h2>
+            <h2 class="h2-responsive">{{ software.name }}: {{ title }}</h2>
         </div>
         <div class="col-md-4 text-right">
             {{ include('assign/__assign.html.twig',{'data':software,'path':'assign_software'}) }}
@@ -50,8 +50,8 @@
                 </h5>
             </div>
             <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                <div class="card-body">
-                   {{ include('software/__config.html.twig') }}
+                <div class="card-body {% if not software.activ %}disabled{% endif %}">
+                    {{ include('software/__config.html.twig') }}
                 </div>
             </div>
         </div>

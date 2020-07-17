@@ -72,11 +72,11 @@
 </table>
 <h4>Konfiguration</h4>
 <table style="width: 100%">
-    {% for key,c in d.config if c.activ %}
+    {% for c in d.config if c.activ %}
         <tr>
             <td>
                 <p>
-                    <b>{{ key+1 }}: {{ c.name }} ({{ c.createdAt|date('d.m.Y') }})</b>
+                    <b>{{ c.id }}: {{ c.name }} ({{ c.createdAt|date('d.m.Y') }})</b>
                 </p>
                 <p>
                     {{ c.config|nl2br }}
