@@ -118,17 +118,17 @@ class FormsController extends AbstractController
      * @Route("/forms/download/{id}", name="forms_download_file", methods={"GET"})
      * @ParamConverter("forms", options={"mapping"={"id"="id"}})
      */
-    public function downloadArticleReference(FilesystemInterface $internFileSystem, Forms $forms, SecurityService $securityService)
+    public function downloadArticleReference(FilesystemInterface $formsFileSystem, Forms $forms, SecurityService $securityService)
     {
 
-        $stream = $internFileSystem->read($forms->getUpload());
+        $stream = $formsFileSystem->read($forms->getUpload());
 
         $team = $this->getUser()->getTeam();
         if ($securityService->teamDataCheck($forms, $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $internFileSystem->getMimetype($forms->getUpload());
+        $type = $formsFileSystem->getMimetype($forms->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(

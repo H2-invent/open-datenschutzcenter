@@ -10,6 +10,13 @@ oneup_flysystem:
         policy_adapter:
             local:
                 directory: '%kernel.project_dir%/data/policies'
+        forms_adapter:
+            local:
+                directory: '%kernel.project_dir%/data/forms'
+        daten_adapter:
+            local:
+                directory: '%kernel.project_dir%/data/daten'
+
     filesystems:
         asset_filesystem:
             adapter: asset_adapter
@@ -23,3 +30,11 @@ oneup_flysystem:
             adapter: policy_adapter
             alias: League\Flysystem\Intern
             mount: policy_adapter
+        forms_fileSystem:
+            adapter: forms_adapter
+            alias: League\Flysystem\Intern
+            mount: forms_adapter
+        daten_fileSystem:
+            adapter: daten_adapter
+            alias: League\Flysystem\Intern
+            mount: daten_adapter

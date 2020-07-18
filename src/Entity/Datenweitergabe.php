@@ -126,7 +126,7 @@ class Datenweitergabe
     private $upload;
 
     /**
-     * @Vich\UploadableField(mapping="profil_picture", fileNameProperty="upload")
+     * @Vich\UploadableField(mapping="daten", fileNameProperty="upload")
      * @var File
      */
     private $uploadFile;

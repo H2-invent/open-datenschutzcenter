@@ -200,17 +200,17 @@ class DatenweitergabeController extends AbstractController
      * @Route("/datenweitergabe/download/{id}", name="datenweitergabe_download_file", methods={"GET"})
      * @ParamConverter("datenweitergabe", options={"mapping"={"id"="id"}})
      */
-    public function downloadArticleReference(FilesystemInterface $internFileSystem, Datenweitergabe $datenweitergabe, SecurityService $securityService)
+    public function downloadArticleReference(FilesystemInterface $datenFileSystem, Datenweitergabe $datenweitergabe, SecurityService $securityService)
     {
 
-        $stream = $internFileSystem->read($datenweitergabe->getUpload());
+        $stream = $datenFileSystem->read($datenweitergabe->getUpload());
 
         $team = $this->getUser()->getTeam();
         if ($securityService->teamDataCheck($datenweitergabe, $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $internFileSystem->getMimetype($datenweitergabe->getUpload());
+        $type = $datenFileSystem->getMimetype($datenweitergabe->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(

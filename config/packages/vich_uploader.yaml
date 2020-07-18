@@ -12,6 +12,16 @@ vich_uploader:
             upload_destination: policy_adapter
             namer: vich_uploader.namer_uniqid
             delete_on_update: true
+        forms:
+            uri_prefix: '%app.path.images%'
+            upload_destination: forms_adapter
+            namer: vich_uploader.namer_uniqid
+            delete_on_update: true
+        daten:
+            uri_prefix: '%app.path.images%'
+            upload_destination: daten_adapter
+            namer: vich_uploader.namer_uniqid
+            delete_on_update: true
 
 
 

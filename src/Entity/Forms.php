@@ -37,7 +37,7 @@ class Forms
     private $upload;
 
     /**
-     * @Vich\UploadableField(mapping="profil_picture", fileNameProperty="upload")
+     * @Vich\UploadableField(mapping="forms", fileNameProperty="upload")
      * @var File
      */
     private $uploadFile;
