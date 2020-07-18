@@ -13,6 +13,7 @@ use App\Service\AssignService;
 use App\Service\DatenweitergabeService;
 use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -200,13 +201,15 @@ class DatenweitergabeController extends AbstractController
      * @Route("/datenweitergabe/download/{id}", name="datenweitergabe_download_file", methods={"GET"})
      * @ParamConverter("datenweitergabe", options={"mapping"={"id"="id"}})
      */
-    public function downloadArticleReference(FilesystemInterface $datenFileSystem, Datenweitergabe $datenweitergabe, SecurityService $securityService)
+    public function downloadArticleReference(FilesystemInterface $datenFileSystem, Datenweitergabe $datenweitergabe, SecurityService $securityService, LoggerInterface $logger)
     {
 
         $stream = $datenFileSystem->read($datenweitergabe->getUpload());
 
         $team = $this->getUser()->getTeam();
         if ($securityService->teamDataCheck($datenweitergabe, $team) === false) {
+            $message = ['typ' => 'DOWNLOAD', 'error' => true, 'hinweis' => 'Fehlerhafter download. User nicht berechtigt!', 'dokument' => $datenweitergabe->getUpload(), 'user' => $this->getUser()->getUsername()];
+            $logger->error($message['typ'], $message);
             return $this->redirectToRoute('dashboard');
         }
 
@@ -219,6 +222,8 @@ class DatenweitergabeController extends AbstractController
         );
 
         $response->headers->set('Content-Disposition', $disposition);
+        $message = ['typ' => 'DOWNLOAD', 'error' => false, 'hinweis' => 'Download erfolgreich', 'dokument' => $datenweitergabe->getUpload(), 'user' => $this->getUser()->getUsername()];
+        $logger->info($message['typ'], $message);
         return $response;
     }
 }

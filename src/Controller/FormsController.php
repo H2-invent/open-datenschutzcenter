@@ -7,6 +7,7 @@ use App\Service\AssignService;
 use App\Service\FormsService;
 use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -118,13 +119,15 @@ class FormsController extends AbstractController
      * @Route("/forms/download/{id}", name="forms_download_file", methods={"GET"})
      * @ParamConverter("forms", options={"mapping"={"id"="id"}})
      */
-    public function downloadArticleReference(FilesystemInterface $formsFileSystem, Forms $forms, SecurityService $securityService)
+    public function downloadArticleReference(FilesystemInterface $formsFileSystem, Forms $forms, SecurityService $securityService, LoggerInterface $logger)
     {
 
         $stream = $formsFileSystem->read($forms->getUpload());
 
         $team = $this->getUser()->getTeam();
         if ($securityService->teamDataCheck($forms, $team) === false) {
+            $message = ['typ' => 'DOWNLOAD', 'error' => true, 'hinweis' => 'Fehlerhafter download. User nicht berechtigt!', 'dokument' => $forms->getUpload(), 'user' => $this->getUser()->getUsername()];
+            $logger->error($message['typ'], $message);
             return $this->redirectToRoute('dashboard');
         }
 
@@ -137,6 +140,8 @@ class FormsController extends AbstractController
         );
 
         $response->headers->set('Content-Disposition', $disposition);
+        $message = ['typ' => 'DOWNLOAD', 'error' => false, 'hinweis' => 'Download erfolgreich', 'dokument' => $forms->getUpload(), 'user' => $this->getUser()->getUsername()];
+        $logger->info($message['typ'], $message);
         return $response;
     }
 }

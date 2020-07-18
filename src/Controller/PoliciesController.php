@@ -7,6 +7,7 @@ use App\Service\AssignService;
 use App\Service\PoliciesService;
 use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -121,13 +122,15 @@ class PoliciesController extends AbstractController
      * @Route("/policy/download/{id}", name="policy_download_file", methods={"GET"})
      * @ParamConverter("policies", options={"mapping"={"id"="id"}})
      */
-    public function downloadArticleReference(FilesystemInterface $policiesFileSystem, Policies $policies, SecurityService $securityService)
+    public function downloadArticleReference(FilesystemInterface $policiesFileSystem, Policies $policies, SecurityService $securityService, LoggerInterface $logger)
     {
 
         $stream = $policiesFileSystem->read($policies->getUpload());
 
         $team = $this->getUser()->getTeam();
         if ($securityService->teamDataCheck($policies, $team) === false) {
+            $message = ['typ' => 'DOWNLOAD', 'error' => true, 'hinweis' => 'Fehlerhafter download. User nicht berechtigt!', 'dokument' => $policies->getUpload(), 'user' => $this->getUser()->getUsername()];
+            $logger->error($message['typ'], $message);
             return $this->redirectToRoute('dashboard');
         }
 
@@ -140,6 +143,8 @@ class PoliciesController extends AbstractController
         );
 
         $response->headers->set('Content-Disposition', $disposition);
+        $message = ['typ' => 'DOWNLOAD', 'error' => false, 'hinweis' => 'Download erfolgreich', 'dokument' => $policies->getUpload(), 'user' => $this->getUser()->getUsername()];
+        $logger->info($message['typ'], $message);
         return $response;
     }
 }
