@@ -8,6 +8,14 @@
     {% endif %}
 </div>
 <div class="mt-4">
+    {{ form_label(form.reference) }}
+    {% if activ %}
+        {{ form_widget(form.reference) }}
+    {% else %}
+        {{ form_widget(form.reference, { 'disabled':'disabled' }) }}
+    {% endif %}
+</div>
+<div class="mt-4">
     {{ form_label(form.name) }}
     {% if activ %}
         {{ form_widget(form.name) }}

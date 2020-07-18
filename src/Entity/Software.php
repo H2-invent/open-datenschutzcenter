@@ -113,6 +113,7 @@ class Software
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Encrypted()
      */
     private $nummer;
 
@@ -120,6 +121,12 @@ class Software
      * @ORM\ManyToMany(targetEntity=Datenweitergabe::class, inversedBy="software")
      */
     private $datenweitergabe;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Encrypted()
+     */
+    private $reference;
 
     public function __construct()
     {
@@ -422,6 +429,18 @@ class Software
         if ($this->datenweitergabe->contains($datenweitergabe)) {
             $this->datenweitergabe->removeElement($datenweitergabe);
         }
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }

@@ -16,6 +16,8 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Aktenzeichen</th>
+                    <th scope="col">Inventar</th>
                     <th scope="col">Verarbeitungen</th>
                     <th scope="col">Datenweitergaben</th>
                     <th scope="col">Anschaffung</th>
@@ -29,6 +31,8 @@
                     <tr class="clickable-row" data-href='{{ path('software_edit',{'id':d.id}) }}'>
                         <th scope="row">{{ d.id }}</th>
                         <td>{{ d.name }}</td>
+                        <td>{{ d.reference }}</td>
+                        <td>{{ d.nummer }}</td>
                         <td>{% for p in d.vvts if p.activ %}{{ p.name }}<br>{% endfor %}</td>
                         <td>{% for p in d.datenweitergabe if p.activ %}{{ p.gegenstand }}<br>{% endfor %}</td>
                         <td>{{ d.purchase|date('d.m.Y') }}</td>

@@ -1,4 +1,5 @@
-<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %}{{ d.name }} (id:{{ d.id }})</h2>
+<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %}{{ d.nummer }}: {{ d.name }}
+    (id:{{ d.id }})</h2>
 <style>
     th, td {
         padding: 5px;
@@ -12,6 +13,12 @@
             Name der Software
         </td>
         <td><a href="{{ absolute_url(path('software_edit', {'id':d.id})) }}">{{ d.name }}</a></td>
+    </tr>
+    <tr>
+        <td>
+            Aktenzeichen
+        </td>
+        <td>{{ d.reference }}</td>
     </tr>
     <tr>
         <td>

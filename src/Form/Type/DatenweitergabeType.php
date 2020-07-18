@@ -34,6 +34,7 @@ class DatenweitergabeType extends AbstractType
             ->add('nummer', TextType::class, ['label' => 'Nummer der Datenweitergabe', 'required' => true, 'translation_domain' => 'form'])
             ->add('verantwortlich', TextType::class, ['label' => 'Verantwortlich für die Datenweitergabe (Intern)', 'required' => true, 'translation_domain' => 'form'])
             ->add('vertragsform', TextType::class, ['label' => 'Vertragsform', 'required' => true, 'translation_domain' => 'form'])
+            ->add('reference', TextType::class, ['label' => 'Aktenzeichen', 'required' => false, 'translation_domain' => 'form'])
             ->add('zeichnungsdatum', DateType::class, ['label' => 'Zeichnungsdatum', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text'])
             ->add('kontakt', EntityType::class, [
                 'choice_label' => 'firma',

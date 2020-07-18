@@ -131,6 +131,11 @@ class Policies
      */
     private $title;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $reference;
+
     public function __construct()
     {
         $this->processes = new ArrayCollection();
@@ -433,6 +438,18 @@ class Policies
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }

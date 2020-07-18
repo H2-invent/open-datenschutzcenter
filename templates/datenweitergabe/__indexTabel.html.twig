@@ -5,16 +5,18 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">Aktenzeichen</th>
                 <th scope="col">Gegenstand</th>
                 <th scope="col">Verantwortlich</th>
                 <th scope="col">Kontakt</th>
-                <th scope="col">Datum</th>
+                <th scope="col">Zeichnungsdatum</th>
             </tr>
             </thead>
             <tbody>
             {% for t in table %}
                 <tr class="clickable-row" data-href='{{ path('datenweitergabe_edit',{'id':t.id}) }}'>
                     <th scope="row">{{ t.nummer }}</th>
+                    <td>{{ t.reference }}</td>
                     <td>{{ t.gegenstand }}</td>
                     <td>{{ t.verantwortlich }}</td>
                     <td>{{ t.kontakt.firma }} (id:{{ t.kontakt.id }})</td>

@@ -32,6 +32,7 @@ class SoftwareType extends AbstractType
             ->add('description', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Beschreibung der Software', 'required' => true, 'translation_domain' => 'form'])
             ->add('license', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Lizenzbeschreibung', 'required' => false, 'translation_domain' => 'form'])
             ->add('licenseExpiration', DateType::class, ['label' => 'Lizenzablaufsdatum', 'required' => false, 'translation_domain' => 'form'])
+            ->add('reference', TextType::class, ['label' => 'Aktenzeichen', 'required' => false, 'translation_domain' => 'form'])
             ->add('vvts', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVT::class,

@@ -1,4 +1,5 @@
-<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %}{{ d.gegenstand }} (id:{{ d.id }})</h2>
+<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %}{{ d.reference }}: {{ d.gegenstand }}
+    (id:{{ d.id }})</h2>
 <style>
     th, td {
         padding: 5px;
@@ -18,6 +19,12 @@
             Art der Datenweitergabe
         </td>
         <td>{% if d.art == 1 %}Datenweitergabe{% elseif d.art == 2 %}Auftragsdatenverarbeitung{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            Aktenzeichen
+        </td>
+        <td>{{ d.reference }}</td>
     </tr>
     <tr>
         <td>
@@ -47,7 +54,7 @@
         <td>
             Auftragsverarbeitungsvertrag vorhanden und hochgeladen
         </td>
-        <td>{% if d.image %}Ja{% else %}Nein{% endif %}</td>
+        <td>{% if d.upload %}Ja{% else %}Nein{% endif %}</td>
     </tr>
     <tr>
         <td>
