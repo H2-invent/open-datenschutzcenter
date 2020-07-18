@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class PolicyType extends AbstractType
 {
@@ -80,6 +81,14 @@ class PolicyType extends AbstractType
                 'label' => 'Status',
                 'translation_domain' => 'form',
                 'multiple' => false,
+            ])
+            ->add('uploadFile', VichImageType::class, [
+                'required' => false,
+                'allow_delete' => false,
+                'delete_label' => 'Löschen',
+                'label' => 'Dokument zur Richtlinie hochladen',
+                'translation_domain' => 'form',
+                'download_label' => false
             ])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }

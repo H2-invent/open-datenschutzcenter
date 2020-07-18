@@ -123,6 +123,20 @@
         {% endif %}
     </div>
 
+    <div class="mt-4">
+        {{ form_label(form.uploadFile) }}
+        {% if activ %}
+            {{ form_widget(form.uploadFile) }}
+        {% else %}
+            {{ form_widget(form.uploadFile, { 'disabled':'disabled' }) }}
+        {% endif %}
+    </div>
+
+    {% if policy.upload %}
+        <a href="{{ path('policy_download_file', {'id':policy.id}) }}" download class="btn btn-amber mb-4">Anhang
+            herunterladen</a>
+    {% endif %}
+
     {% if activ %}
         {{ form_widget(form.save) }}
     {% else %}

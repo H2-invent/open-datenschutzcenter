@@ -6,8 +6,12 @@ use App\Entity\Policies;
 use App\Service\AssignService;
 use App\Service\PoliciesService;
 use App\Service\SecurityService;
+use League\Flysystem\FilesystemInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -111,5 +115,31 @@ class PoliciesController extends AbstractController
             'activ' => $policy->getActiv(),
             'snack' => $request->get('snack')
         ]);
+    }
+
+    /**
+     * @Route("/policy/download/{id}", name="policy_download_file", methods={"GET"})
+     * @ParamConverter("policies", options={"mapping"={"id"="id"}})
+     */
+    public function downloadArticleReference(FilesystemInterface $policiesFileSystem, Policies $policies, SecurityService $securityService)
+    {
+
+        $stream = $policiesFileSystem->read($policies->getUpload());
+
+        $team = $this->getUser()->getTeam();
+        if ($securityService->teamDataCheck($policies, $team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $type = $policiesFileSystem->getMimetype($policies->getUpload());
+        $response = new Response($stream);
+        $response->headers->set('Content-Type', $type);
+        $disposition = HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
+            preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $policies->getUpload())
+        );
+
+        $response->headers->set('Content-Disposition', $disposition);
+        return $response;
     }
 }

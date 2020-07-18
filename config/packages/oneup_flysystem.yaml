@@ -7,6 +7,9 @@ oneup_flysystem:
         intern_adapter:
             local:
                 directory: '%kernel.project_dir%/data'
+        policy_adapter:
+            local:
+                directory: '%kernel.project_dir%/data/policies'
     filesystems:
         asset_filesystem:
             adapter: asset_adapter
@@ -16,3 +19,7 @@ oneup_flysystem:
             adapter: intern_adapter
             alias: League\Flysystem\Intern
             mount: intern_adapter
+        policies_fileSystem:
+            adapter: policy_adapter
+            alias: League\Flysystem\Intern
+            mount: policy_adapter
