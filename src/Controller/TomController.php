@@ -91,6 +91,12 @@ class TomController extends AbstractController
         $form->handleRequest($request);
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Is Current Version already a historical version.
+            if ($tom->getActiv() === false) {
+                return $this->redirectToRoute('tom_edit', array('id' => $tom->getId(), 'snack' => 'Version ist nicht mehr aktiv und kann nicht geändert werden.'));
+            }
+
             $tom->setActiv(false);
             $newTom = $form->getData();
             $errors = $validator->validate($newTom);

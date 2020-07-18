@@ -131,6 +131,12 @@ class AuditTomController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Is Current Version already a historical version.
+            if ($audit->getActiv() === false) {
+                return $this->redirectToRoute('audit_tom', array('tom' => $audit->getId(), 'snack' => 'Version ist nicht mehr aktiv und kann nicht geändert werden.'));
+            }
+
             $audit->setActiv(false);
             $newAudit = $form->getData();
             $errors = $validator->validate($newAudit);

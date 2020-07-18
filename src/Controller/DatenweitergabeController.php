@@ -163,6 +163,12 @@ class DatenweitergabeController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Is Current Version already a historical version.
+            if ($daten->getActiv() === false) {
+                return $this->redirectToRoute('datenweitergabe_edit', array('id' => $daten->getId(), 'snack' => 'Version ist nicht mehr aktiv und kann nicht geändert werden.'));
+            }
+
             $em = $this->getDoctrine()->getManager();
             $daten->setActiv(false);
             $newDaten = $form->getData();

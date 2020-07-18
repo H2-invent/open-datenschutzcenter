@@ -92,14 +92,17 @@ class PoliciesController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Is Current Version already a historical version.
+            if ($policy->getActiv() === false) {
+                return $this->redirectToRoute('policy_edit', array('id' => $policy->getId(), 'snack' => 'Version ist nicht mehr aktiv und kann nicht geändert werden.'));
+            }
+
             $em = $this->getDoctrine()->getManager();
             $policy->setActiv(false);
             $newPolicy = $form->getData();
-
             $errors = $validator->validate($newPolicy);
             if (count($errors) == 0) {
-
-
                 $em->persist($newPolicy);
                 $em->persist($policy);
                 $em->flush();

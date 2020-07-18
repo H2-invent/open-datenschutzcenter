@@ -96,6 +96,12 @@ class VvtController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Is Current Version already a historical version.
+            if ($vvt->getActiv() === false) {
+                return $this->redirectToRoute('vvt_edit', array('id' => $vvt->getId(), 'snack' => 'Version ist nicht mehr aktiv und kann nicht geändert werden.'));
+            }
+
             $em = $this->getDoctrine()->getManager();
             $vvt->setActiv(false);
             $newVvt = $form->getData();
@@ -194,6 +200,12 @@ class VvtController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Is Current Version already a historical version.
+            if ($dsfa->getActiv() === false) {
+                return $this->redirectToRoute('vvt_dsfa_edit', array('id' => $dsfa->getId(), 'snack' => 'Version ist nicht mehr aktiv und kann nicht geändert werden.'));
+            }
+
             $dsfa->setActiv(false);
             $newDsfa = $form->getData();
             $errors = $validator->validate($newDsfa);

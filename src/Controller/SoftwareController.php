@@ -88,6 +88,13 @@ class SoftwareController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Is Current Version already a historical version.
+            if ($software->getActiv() === false) {
+                return $this->redirectToRoute('software_edit', array('id' => $software->getId(), 'snack' => 'Version ist nicht mehr aktiv und kann nicht geändert werden.'));
+
+            }
+
             $em = $this->getDoctrine()->getManager();
             $software->setActiv(false);
             $newSoftware = $form->getData();

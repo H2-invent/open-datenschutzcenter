@@ -90,6 +90,12 @@ class FormsController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Is Current Version already a historical version.
+            if ($forms->getActiv() === false) {
+                return $this->redirectToRoute('forms_edit', array('id' => $forms->getId(), 'snack' => 'Version ist nicht mehr aktiv und kann nicht geändert werden.'));
+            }
+
             $em = $this->getDoctrine()->getManager();
             $forms->setActiv(false);
             $forms->setStatus(4);

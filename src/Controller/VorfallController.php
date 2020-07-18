@@ -90,6 +90,12 @@ class VorfallController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Is Current Version already a historical version.
+            if ($vorgang->getActiv() === false) {
+                return $this->redirectToRoute('vorfall_edit', array('id' => $vorgang->getId(), 'snack' => 'Version ist nicht mehr aktiv und kann nicht geändert werden.'));
+            }
+
             $vorgang->setActiv(false);
             $newVorgang = $form->getData();
             $errors = $validator->validate($newVorgang);
