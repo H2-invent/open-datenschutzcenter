@@ -91,7 +91,7 @@ class PoliciesController extends AbstractController
         $assign = $assignService->createForm($policy, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() === true) {
+        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved()) {
 
             $em = $this->getDoctrine()->getManager();
             $policy->setActiv(false);

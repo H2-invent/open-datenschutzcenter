@@ -89,7 +89,7 @@ class FormsController extends AbstractController
         $assign = $assignService->createForm($forms, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $forms->getActiv() === true) {
+        if ($form->isSubmitted() && $form->isValid() && $forms->getActiv() && !$forms->getApproved()) {
 
             $em = $this->getDoctrine()->getManager();
             $forms->setActiv(false);
