@@ -30,7 +30,15 @@
         <td>
             Status
         </td>
-        <td>{{ d.statusString }}</td>
+        <td>
+            {% if d.licenseExpiration < date() and d.licenseExpiration is not null %}
+                ABGELAUFEN
+            {% elseif d.approved %}
+                Software und Konfiguration freigegeben
+            {% else %}
+                {{ d.statusString }}
+            {% endif %}
+        </td>
     </tr>
     <tr>
         <td>

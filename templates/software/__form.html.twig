@@ -1,62 +1,60 @@
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-<div {% if not activ %}class="disabled"{% endif %}>
-    <div class="mt-4">
-        {{ form_label(form.nummer) }}
-        {{ form_widget(form.nummer) }}
-    </div>
-    <div class="mt-4">
-        {{ form_label(form.reference) }}
-        {{ form_widget(form.reference) }}
-    </div>
-    <div class="mt-4">
-        {{ form_label(form.name) }}
-        {{ form_widget(form.name) }}
-    </div>
-    <div class="mt-4">
-        {{ form_label(form.description) }}
-        {{ form_widget(form.description) }}
-    </div>
-    <div class="mt-4">
-        {{ form_label(form.status) }}
-        {{ form_widget(form.status) }}
-    </div>
-    <div class="mt-4">
-        {{ form_label(form.build) }}
-        {{ form_widget(form.build) }}
-    </div>
-    <div class="mt-4">
-        {{ form_label(form.license) }}
-        {{ form_widget(form.license) }}
-    </div>
-    <div class="mt-4 mb-4">
-        {{ form_label(form.location) }}
-        {{ form_widget(form.location) }}
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="mt-4">
-                {{ form_label(form.purchase) }}
-                {{ form_widget(form.purchase) }}
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="mt-4">
-                {{ form_label(form.licenseExpiration) }}
-                {{ form_widget(form.licenseExpiration) }}
-            </div>
-        </div>
-    </div>
-    <h4 class="h4-responsive mt-4">Verarbeitungen</h4>
-    <div class="mb-4">
-        {{ form_label(form.vvts) }}
-        {{ form_widget(form.vvts) }}
-    </div>
-    <h4 class="h4-responsive mt-4">Datenweitergabe</h4>
-    <div class="mb-4">
-        {{ form_label(form.datenweitergabe) }}
-        {{ form_widget(form.datenweitergabe) }}
-    </div>
-
-    {{ form_widget(form.save) }}
+<div class="mt-4">
+    {{ form_label(form.nummer) }}
+    {{ form_widget(form.nummer) }}
 </div>
+<div class="mt-4">
+    {{ form_label(form.reference) }}
+    {{ form_widget(form.reference) }}
+</div>
+<div class="mt-4">
+    {{ form_label(form.name) }}
+    {{ form_widget(form.name) }}
+</div>
+<div class="mt-4">
+    {{ form_label(form.description) }}
+    {{ form_widget(form.description) }}
+</div>
+<div class="mt-4">
+    {{ form_label(form.status) }}
+    {{ form_widget(form.status) }}
+</div>
+<div class="mt-4">
+    {{ form_label(form.build) }}
+    {{ form_widget(form.build) }}
+</div>
+<div class="mt-4">
+    {{ form_label(form.license) }}
+    {{ form_widget(form.license) }}
+</div>
+<div class="mt-4 mb-4">
+    {{ form_label(form.location) }}
+    {{ form_widget(form.location) }}
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="mt-4">
+            {{ form_label(form.purchase) }}
+            {{ form_widget(form.purchase) }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mt-4">
+            {{ form_label(form.licenseExpiration) }}
+            {{ form_widget(form.licenseExpiration) }}
+        </div>
+    </div>
+</div>
+<h4 class="h4-responsive mt-4">Verarbeitungen</h4>
+<div class="mb-4">
+    {{ form_label(form.vvts) }}
+    {{ form_widget(form.vvts) }}
+</div>
+<h4 class="h4-responsive mt-4">Datenweitergabe</h4>
+<div class="mb-4">
+    {{ form_label(form.datenweitergabe) }}
+    {{ form_widget(form.datenweitergabe) }}
+</div>
+
+{{ form_widget(form.save) }}
 {{ form_end(form) }}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Forms;
+use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\FormsService;
 use App\Service\SecurityService;
@@ -119,7 +120,7 @@ class FormsController extends AbstractController
     /**
      * @Route("/forms/approve", name="forms_approve")
      */
-    public function approvePolicy(Request $request, SecurityService $securityService)
+    public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService)
     {
         $team = $this->getUser()->getAdminUser();
         $forms = $this->getDoctrine()->getRepository(Forms::class)->find($request->get('id'));
@@ -127,18 +128,11 @@ class FormsController extends AbstractController
         if ($securityService->teamDataCheck($forms, $team) === false) {
             return $this->redirectToRoute('forms');
         }
-        if ($forms->getApproved()) {
-            $forms->setApproved(false);
-            $forms->setApprovedBy(null);
-        } else {
-            $forms->setApproved(true);
-            $forms->setApprovedBy($this->getUser());
-        }
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($forms);
-        $em->flush();
 
-        return $this->redirectToRoute('forms_edit', ['id' => $forms->getId(), 'snack' => 'Richtlinie freigegeben']);
+        $approve = $approveService->approve($forms, $this->getUser());
+
+        return $this->redirectToRoute('forms_edit', ['id' => $forms->getId(), 'snack' => $approve['snack']]);
+
     }
 
     /**

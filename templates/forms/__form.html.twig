@@ -35,7 +35,7 @@
     </div>
 
     <div class="col-md-4">
-        <div class="mt-2 {% if not activ %}disabled{% endif %}">
+        <div class="mt-2 {% if not activ or daten.approved %}disabled{% endif %}">
             {{ form_label(form.uploadFile) }}
             {{ form_widget(form.uploadFile) }}
         </div>

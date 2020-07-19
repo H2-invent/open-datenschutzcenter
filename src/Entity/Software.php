@@ -128,6 +128,16 @@ class Software
      */
     private $reference;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
+
     public function __construct()
     {
         $this->vvts = new ArrayCollection();
@@ -268,22 +278,22 @@ class Software
             case 0:
                 return 'Angelegt';
                 break;
-            case 1:
+            case 10:
                 return 'In Bearbeitung';
                 break;
-            case 2:
+            case 20:
                 return 'In Prüfung';
                 break;
-            case 3:
+            case 30:
                 return 'Zur Freigegebe vorgelegt';
                 break;
-            case 4:
+            case 40:
                 return 'Freigegeben';
                 break;
-            case 5:
+            case 50:
                 return 'Lizenz abgelaufen';
                 break;
-            case 6:
+            case 60:
                 return 'Nicht mehr in Verwendung';
                 break;
             default:
@@ -441,6 +451,30 @@ class Software
     public function setReference(?string $reference): self
     {
         $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
 
         return $this;
     }

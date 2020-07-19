@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Software;
 use App\Entity\SoftwareConfig;
+use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\SecurityService;
 use App\Service\SoftwareService;
@@ -17,8 +18,9 @@ class SoftwareController extends AbstractController
     /**
      * @Route("/software", name="software")
      */
-    public function index(SecurityService $securityService)
+    public function index(SecurityService $securityService, Request $request)
     {
+        //Request: snack: Snack Notice
         $team = $this->getUser()->getTeam();
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -28,6 +30,7 @@ class SoftwareController extends AbstractController
         return $this->render('software/index.html.twig', [
             'data' => $software,
             'today' => new \DateTime(),
+            'snack' => $request->get('snack'),
 
         ]);
     }
@@ -75,6 +78,7 @@ class SoftwareController extends AbstractController
      */
     public function editSoftware(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService, AssignService $assignService)
     {
+        //Request: id: SoftwareID, snack:Snack Notice
         $team = $this->getUser()->getTeam();
         $software = $this->getDoctrine()->getRepository(Software::class)->find($request->get('id'));
 
@@ -87,7 +91,7 @@ class SoftwareController extends AbstractController
         $assign = $assignService->createForm($software, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $software->getActiv() === true) {
+        if ($form->isSubmitted() && $form->isValid() && $software->getActiv() && !$software->getApproved()) {
 
             $em = $this->getDoctrine()->getManager();
             $software->setActiv(false);
@@ -124,6 +128,7 @@ class SoftwareController extends AbstractController
      */
     public function addConfig(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService)
     {
+        //Requests: id: SoftwareID, config: ConfigID
         $team = $this->getUser()->getTeam();
         $software = $this->getDoctrine()->getRepository(Software::class)->find($request->get('id'));
 
@@ -138,12 +143,17 @@ class SoftwareController extends AbstractController
             $config = $this->getDoctrine()->getRepository(SoftwareConfig::class)->find($req);
         }
 
+        if ($config->getSoftware() !== $software) {
+            return $this->redirectToRoute('software', ['snack' => 'FEHLER: Die Konfiguration gehört nicht zu der Software']);
+
+        }
+
         $form = $softwareService->createConfigForm($config);
         $form->handleRequest($request);
 
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $config->getSoftware()->getActiv() === true) {
+        if ($form->isSubmitted() && $form->isValid() && $config->getSoftware()->getActiv() && !$config->getSoftware()->getApproved()) {
             $config = $form->getData();
             $errors = $validator->validate($config);
             if (count($errors) == 0) {
@@ -157,8 +167,8 @@ class SoftwareController extends AbstractController
         return $this->render('software/newConfig.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Config anlegen für',
-            'activ' => true,
+            'title' => 'Konfiguration für',
+            'activ' => $software->getActiv(),
             'software' => $software,
         ]);
     }
@@ -168,17 +178,33 @@ class SoftwareController extends AbstractController
      */
     public function deleteConfig(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService)
     {
+        // Request: config: ConfigID
+        $team = $this->getUser()->getAdminUser();
+        $config = $this->getDoctrine()->getRepository(SoftwareConfig::class)->find($request->get('config'));
+
+        if ($securityService->teamDataCheck($config->getSoftware(), $team) === false) {
+            return $this->redirectToRoute('software');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($config);
+        $em->flush();
+        return $this->redirectToRoute('software_edit', ['id' => $config->getSoftware()->getId(), 'snack' => 'Konfiguration gelöscht']);
+    }
+
+    /**
+     * @Route("/software/approve", name="software_approve")
+     */
+    public function approveSoftware(Request $request, SecurityService $securityService, ApproveService $approveService)
+    {
         $team = $this->getUser()->getAdminUser();
         $software = $this->getDoctrine()->getRepository(Software::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) === false) {
-            return $this->redirectToRoute('software');
+            return $this->redirectToRoute('policies');
         }
+        $approve = $approveService->approve($software, $this->getUser());
 
-        $config = $this->getDoctrine()->getRepository(SoftwareConfig::class)->find($request->get('config'));
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($config);
-        $em->flush();
-        return $this->redirectToRoute('software_edit', ['id' => $software->getId(), 'snack' => 'Konfiguration gelöscht']);
+        return $this->redirectToRoute('software_edit', ['id' => $software->getId(), 'snack' => $approve['snack']]);
     }
 }

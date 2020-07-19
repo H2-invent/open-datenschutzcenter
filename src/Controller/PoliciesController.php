@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Policies;
+use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\PoliciesService;
 use App\Service\SecurityService;
@@ -119,7 +120,7 @@ class PoliciesController extends AbstractController
     /**
      * @Route("/policy/approve", name="policy_approve")
      */
-    public function approvePolicy(Request $request, SecurityService $securityService)
+    public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService)
     {
         $team = $this->getUser()->getAdminUser();
         $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
@@ -127,18 +128,9 @@ class PoliciesController extends AbstractController
         if ($securityService->teamDataCheck($policy, $team) === false) {
             return $this->redirectToRoute('policies');
         }
-        if ($policy->getApproved()) {
-            $policy->setApproved(false);
-            $policy->setApprovedBy(null);
-        } else {
-            $policy->setApproved(true);
-            $policy->setApprovedBy($this->getUser());
-        }
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($policy);
-        $em->flush();
+        $approve = $approveService->approve($policy, $this->getUser());
 
-        return $this->redirectToRoute('policy_edit', ['id' => $policy->getId(), 'snack' => 'Richtlinie freigegeben']);
+        return $this->redirectToRoute('policy_edit', ['id' => $policy->getId(), 'snack' => $approve['snack']]);
     }
 
     /**

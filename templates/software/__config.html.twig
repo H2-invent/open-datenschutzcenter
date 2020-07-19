@@ -14,7 +14,7 @@
             </a>
             {% if app.user.adminUser == software.team %}
                 <div class="col-xl-2">
-                    <a href="{{ path('software_config_delete',{'id':software.id,'config':c.id}) }}"
+                    <a href="{{ path('software_config_delete',{'config':c.id}) }}"
                        class="btn btn-danger btn-block mb-2">Konfiguration löschen
                     </a>
                 </div>

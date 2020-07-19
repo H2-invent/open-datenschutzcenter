@@ -9,12 +9,14 @@
             <span>PDF mit Historie erstellen</span>
         </a>
     {% endif %}
+    {{ include('base/__approveBtn.html.twig',{'data':software,'dataLink':'software_approve'}) }}
 {% endblock %}
 
 {% block body %}
     <div class="row">
         <div class="col-md-8">
             <h2 class="h2-responsive">{{ software.name }}: {{ title }}</h2>
+            {{ include('base/__approvedBy.html.twig', {'data':software}) }}
         </div>
         <div class="col-md-4 text-right">
             {{ include('assign/__assign.html.twig',{'data':software,'path':'assign_software'}) }}
@@ -34,7 +36,7 @@
             </div>
             <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
                  data-parent="#accordionExample">
-                <div class="card-body">
+                <div class="card-body {% if not activ or software.approved %}disabled{% endif %}">
                     {{ include('software/__form.html.twig') }}
                     <p>Erstellt von: {{ software.user.email }}</p>
                 </div>
@@ -50,7 +52,7 @@
                 </h5>
             </div>
             <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                <div class="card-body {% if not software.activ %}disabled{% endif %}">
+                <div class="card-body {% if not activ or software.approved %}disabled{% endif %}">
                     {{ include('software/__config.html.twig') }}
                 </div>
             </div>
