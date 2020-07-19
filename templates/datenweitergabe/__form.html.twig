@@ -49,17 +49,22 @@
         {{ form_label(form.grundlage) }}
         {{ form_widget(form.grundlage) }}
     </div>
-
-    <div class="mt-2">
-        {{ form_label(form.uploadFile) }}
-        {{ form_widget(form.uploadFile) }}
+</div>
+<div class="row">
+    <div class="col-md-8 {% if not activ %}disabled{% endif %}">
+        <div class="mt-2">
+            {{ form_label(form.uploadFile) }}
+            {{ form_widget(form.uploadFile) }}
+        </div>
+    </div>
+    <div class="col-md-4 mt-4">
+        {% if daten.upload %}
+            <a href="{{ path('datenweitergabe_download_file', {'id':daten.id}) }}" download class="btn btn-amber">AVV
+                herunterladen</a>
+        {% endif %}
     </div>
 </div>
 
-{% if daten.upload %}
-    <a href="{{ path('datenweitergabe_download_file', {'id':daten.id}) }}" download class="btn btn-amber">AVV
-        herunterladen</a>
-{% endif %}
 
 {{ form_label(form.save) }}
     {% if activ %}

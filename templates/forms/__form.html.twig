@@ -35,18 +35,14 @@
     </div>
 
     <div class="col-md-4">
-        {{ form_label(form.uploadFile) }}
-        {% if activ %}
+        <div class="mt-2 {% if not activ %}disabled{% endif %}">
+            {{ form_label(form.uploadFile) }}
             {{ form_widget(form.uploadFile) }}
-        {% else %}
-            {{ form_widget(form.uploadFile, { 'disabled':'disabled' }) }}
-        {% endif %}
-
+        </div>
         {% if daten.upload %}
             <a href="{{ path('forms_download_file', {'id':daten.id}) }}" download class="btn bg-forms">{{ daten.title }}
                 herunterladen</a>
         {% endif %}
-
     </div>
 </div>
 
