@@ -55,7 +55,7 @@
         <td>
             Lizenz Ablaufdatum
         </td>
-        <td>{{ d.licenseExpiration|date('d.m.Y') }}</td>
+        <td>{% if d.licenseExpiration %}{{ d.licenseExpiration|date('d.m.Y') }}{% endif %}</td>
     </tr>
 
     <tr>

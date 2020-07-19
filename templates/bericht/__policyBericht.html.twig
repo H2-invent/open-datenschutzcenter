@@ -19,7 +19,8 @@
 </p>
 
 <p>
-    Status: {{ d.statusString }}<br>
+    Status: {% if d.approved %}Richtlinie freigegeben von {{ d.approvedBy.username }}{% else %}{{ d.statusString }}{% endif %}
+    <br>
     Datum: {{ d.createdAt|date('d.m.Y') }}
 </p>
 

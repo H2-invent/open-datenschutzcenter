@@ -151,6 +151,16 @@ class Policies
      */
     private $uploadFile;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
+
     public function __construct()
     {
         $this->processes = new ArrayCollection();
@@ -422,7 +432,7 @@ class Policies
                 return 'Prüfung';
                 break;
             case 3:
-                return 'Freigegeben';
+                return 'Zur Freigabe vorgelegt';
                 break;
             case 4:
                 return 'Veraltet';
@@ -495,5 +505,29 @@ class Policies
     public function getUpload()
     {
         return $this->upload;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
+
+        return $this;
     }
 }

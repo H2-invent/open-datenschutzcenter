@@ -79,7 +79,7 @@ class PolicyType extends AbstractType
                     'Angelegt' => 0,
                     'In Bearbeitung' => 1,
                     'Prüfung' => 2,
-                    'Freigegeben' => 3,
+                    'Zur Freigabe vorgelegt' => 3,
                     'Veraltet' => 4,],
                 'label' => 'Status',
                 'translation_domain' => 'form',

@@ -19,7 +19,7 @@
                 <tr class="clickable-row" data-href='{{ path('forms_edit',{'id':t.id}) }}'>
                     <th scope="row">{{ t.id }}</th>
                     <td>{{ t.title }}</td>
-                    <td>{{ t.statusString }}</td>
+                    <td>{% if t.approved %}Freigegeben{% else %}{{ t.statusString }}{% endif %}</td>
                     <td>{{ t.version }}</td>
                     <td>{{ t.description }}</td>
                     <td>{% if t.products %}{% for de in t.products %}{{ de.name }}<br>{% endfor %}{% endif %}</td>

@@ -1,0 +1,5 @@
+{% if app.user.adminUser == data.team %}
+    <a class="btn btn-success ml-1 btn-sm " href="{{ path(dataLink,{'id':data.id}) }}">
+        {% if data.approved %}Freigabe entfernen{% else %}Element freigeben{% endif %}
+    </a>
+{% endif %}

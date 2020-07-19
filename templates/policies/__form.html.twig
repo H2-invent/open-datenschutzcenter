@@ -1,7 +1,7 @@
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 <div class="card card-body">
 
-    <div {% if not activ %}class="disabled"{% endif %}>
+    <div {% if not activ or policy.approved %}class="disabled"{% endif %}>
         <div class="mt-4">
             {{ form_label(form.title) }}
             {{ form_widget(form.title) }}
@@ -86,10 +86,10 @@
     </div>
 
 
-    {% if activ %}
-        {{ form_widget(form.save) }}
-    {% else %}
+    {% if not activ or policy.approved %}
         {{ form_widget(form.save, { 'disabled':'disabled' }) }}
+    {% else %}
+        {{ form_widget(form.save) }}
     {% endif %}
 
 

@@ -109,6 +109,16 @@ class Forms
      */
     private $assignedUser;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -334,7 +344,7 @@ class Forms
                 return 'Prüfung';
                 break;
             case 3:
-                return 'Freigegeben';
+                return 'Zur Freigabe vorgelegt';
                 break;
             case 4:
                 return 'Veraltet';
@@ -353,6 +363,30 @@ class Forms
     public function setAssignedUser(?User $assignedUser): self
     {
         $this->assignedUser = $assignedUser;
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
+
+        return $this;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
 
         return $this;
     }

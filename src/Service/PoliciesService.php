@@ -46,6 +46,8 @@ class PoliciesService
     {
         $newPolicy = clone $policy;
         $newPolicy->setPrevious($policy);
+        $newPolicy->setApproved(false);
+        $newPolicy->setApprovedBy(null);
         $newPolicy->setActiv(true);
         $newPolicy->setUser($user);
         $newPolicy->setCreatedAt(new \DateTime());

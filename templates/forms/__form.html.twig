@@ -1,6 +1,6 @@
 {{ form_start(form) }}
 <div class="row">
-    <div class="col-md-8 {% if not activ %}disabled{% endif %}">
+    <div class="col-md-8 {% if not activ or daten.approved %}disabled{% endif %}">
         <div class="mt-2">
             {{ form_label(form.title) }}
             {{ form_widget(form.title) }}
@@ -48,10 +48,10 @@
 
 
 {{ form_label(form.save) }}
-    {% if activ %}
-        {{ form_widget(form.save) }}
-    {% else %}
+    {% if not activ or daten.approved %}
         {{ form_widget(form.save, { 'disabled':'disabled' }) }}
+    {% else %}
+        {{ form_widget(form.save) }}
     {% endif %}
 
 {{ form_end(form) }}
