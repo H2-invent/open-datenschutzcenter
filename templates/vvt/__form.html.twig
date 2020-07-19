@@ -1,5 +1,5 @@
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-<div class="card card-body">
+<div class="card card-body {% if not activ %}disabled{% endif %}">
 
     {% if activNummer %}
         {{ form_label(form.nummer) }}
@@ -8,135 +8,69 @@
 
     <div class="mt-4">
         {{ form_label(form.name) }}
-        {% if activ %}
-            {{ form_widget(form.name) }}
-        {% else %}
-            {{ form_widget(form.name, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.name) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.status) }}
-        {% if activ %}
-            {{ form_widget(form.status) }}
-        {% else %}
-            {{ form_widget(form.status, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.status) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.abteilung) }}
-        {% if activ %}
-            {{ form_widget(form.abteilung) }}
-        {% else %}
-            {{ form_widget(form.abteilung, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.abteilung) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.produkt) }}
-        {% if activ %}
-            {{ form_widget(form.produkt) }}
-            {{ form_help(form.produkt) }}
-        {% else %}
-            {{ form_widget(form.produkt, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.produkt) }}
+        {{ form_help(form.produkt) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.userContract) }}
-        {% if activ %}
-            {{ form_widget(form.userContract) }}
-        {% else %}
-            {{ form_widget(form.userContract, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.userContract) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.verantwortlich) }}
-        {% if activ %}
-            {{ form_widget(form.verantwortlich) }}
-        {% else %}
-            {{ form_widget(form.verantwortlich, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.verantwortlich) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.grundlage) }}
-        {% if activ %}
-            {{ form_widget(form.grundlage) }}
-        {% else %}
-            {{ form_widget(form.grundlage, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.grundlage) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.zweck) }}
-        {% if activ %}
-            {{ form_widget(form.zweck) }}
-        {% else %}
-            {{ form_widget(form.zweck, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.zweck) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.speicherung) }}
-        {% if activ %}
-            {{ form_widget(form.speicherung) }}
-        {% else %}
-            {{ form_widget(form.speicherung, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.speicherung) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.loeschfrist) }}
-        {% if activ %}
-            {{ form_widget(form.loeschfrist) }}
-        {% else %}
-            {{ form_widget(form.loeschfrist, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.loeschfrist) }}
     </div>
 
     <div class="mt-4">
         {{ form_label(form.personengruppen) }}
-        {% if activ %}
-            {{ form_widget(form.personengruppen) }}
-        {% else %}
-            {{ form_widget(form.personengruppen, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.personengruppen) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.kategorien) }}
-        {% if activ %}
-            {{ form_widget(form.kategorien) }}
-        {% else %}
-            {{ form_widget(form.kategorien, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.kategorien) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.weitergabe) }}
-        {% if activ %}
-            {{ form_widget(form.weitergabe) }}
-        {% else %}
-            {{ form_widget(form.weitergabe, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.weitergabe) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.jointControl) }}
-        {% if activ %}
-            {{ form_widget(form.jointControl) }}
-        {% else %}
-            {{ form_widget(form.jointControl, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.jointControl) }}
         {{ form_label(form.auftragsverarbeitung) }}
-        {% if activ %}
-            {{ form_widget(form.auftragsverarbeitung) }}
-        {% else %}
-            {{ form_widget(form.auftragsverarbeitung, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.auftragsverarbeitung) }}
     </div>
     <stan class="mt-4">{{ form_label(form.datenweitergaben) }}</stan>
     <div class="row">
 
         <div class="col-md-6">
-
-            {% if activ %}
-                {{ form_widget(form.datenweitergaben) }}
-            {% else %}
-                {{ form_widget(form.datenweitergaben, { 'disabled':'disabled' }) }}
-            {% endif %}
-
+            {{ form_widget(form.datenweitergaben) }}
         </div>
         <div class="col-md-6">
             {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
@@ -167,75 +101,43 @@
     </div>
     <div class="mt-4">
         {{ form_label(form.software) }}
-        {% if activ %}
-            {{ form_widget(form.software) }}
-        {% else %}
-            {{ form_widget(form.software, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.software) }}
     </div>
 
     <div class="mt-4">
         {{ form_label(form.eu) }}
-        {% if activ %}
-            {{ form_widget(form.eu) }}
-        {% else %}
-            {{ form_widget(form.eu, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.eu) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.tomLink) }}
-        {% if activ %}
-            {{ form_widget(form.tomLink) }}
-        {% else %}
-            {{ form_widget(form.tomLink, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.tomLink) }}
     </div>
     <div class="mt-4">
         {{ form_label(form.tom) }}
-        {% if activ %}
-            {{ form_widget(form.tom) }}
-        {% else %}
-            {{ form_widget(form.tom, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.tom) }}
     </div>
 
     <h4 class="h4-responsive">Risikoabschätzung</h4>
     <div class="mt-4">
         {{ form_label(form.risiko) }}
-        {% if activ %}
-            {{ form_widget(form.risiko) }}
-        {% else %}
-            {{ form_widget(form.risiko, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.risiko) }}
     </div>
 
 
     <div class="row mt-4">
         <div class="col-md-6">
             {{ form_label(form.beurteilungEintritt) }}
-            {% if activ %}
-                {{ form_widget(form.beurteilungEintritt) }}
-            {% else %}
-                {{ form_widget(form.beurteilungEintritt, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.beurteilungEintritt) }}
         </div>
         <div class="col-md-6">
             {{ form_label(form.beurteilungSchaden) }}
-            {% if activ %}
-                {{ form_widget(form.beurteilungSchaden) }}
-            {% else %}
-                {{ form_widget(form.beurteilungSchaden, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.beurteilungSchaden) }}
         </div>
     </div>
 
     <div class="mt-4 ">
         {{ form_label(form.informationspflicht) }}
-        {% if activ %}
-            {{ form_widget(form.informationspflicht) }}
-        {% else %}
-            {{ form_widget(form.informationspflicht, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.informationspflicht) }}
         <p>
             Es sollte je Verfahren dokumentiert werden, wo und wie den Informationspflichten jeweils nachgekommen wird.
             Dies kann bspw. durch Verweis auf Datenschutzhinweise, Vertragsbestandteile, Disclaimer in Formularen, bei
@@ -245,11 +147,7 @@
     </div>
     <div class="mt-4 mb-4">
         {{ form_label(form.dsb) }}
-        {% if activ %}
-            {{ form_widget(form.dsb) }}
-        {% else %}
-            {{ form_widget(form.dsb, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.dsb) }}
         <p>
             Neben der verpflichtenden Erfassung des Verarbeitungszwecks sollte zur Erfüllung der Rechenschaftpflichten
             gem. Art. 5 auch die Rechtsgrundlage mitsamt ggfs. erforderlicher Abwägungen, Einwilligungsklauseln und
@@ -273,11 +171,7 @@
     </ul>
     </p>
 
-    {% if activ %}
-        {{ form_widget(form.save) }}
-    {% else %}
-        {{ form_widget(form.save, { 'disabled':'disabled' }) }}
-    {% endif %}
+    {{ form_widget(form.save) }}
 
 
 </div>

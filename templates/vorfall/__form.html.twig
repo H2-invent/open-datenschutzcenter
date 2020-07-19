@@ -1,93 +1,53 @@
 {{ form_start(form) }}
-<div class="row">
+<div class="row {% if not activ %}disabled{% endif %}">
     <div class="col-md-8">
         <div class="mb-4">
             {{ form_label(form.fakten) }}
-            {% if activ %}
-                {{ form_widget(form.fakten) }}
-            {% else %}
-                {{ form_widget(form.fakten, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.fakten) }}
         </div>
         <div class="mb-4">
             {{ form_label(form.auswirkung) }}
-            {% if activ %}
-                {{ form_widget(form.auswirkung) }}
-            {% else %}
-                {{ form_widget(form.auswirkung, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.auswirkung) }}
         </div>
         <div class="mb-4">
             {{ form_label(form.massnahmen) }}
-            {% if activ %}
-                {{ form_widget(form.massnahmen) }}
-            {% else %}
-                {{ form_widget(form.massnahmen, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.massnahmen) }}
         </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-4">
                     {{ form_label(form.personen) }}
-                    {% if activ %}
-                        {{ form_widget(form.personen) }}
-                    {% else %}
-                        {{ form_widget(form.personen, { 'disabled':'disabled' }) }}
-                    {% endif %}
+                    {{ form_widget(form.personen) }}
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="mb-4">
                     {{ form_label(form.daten) }}
-                    {% if activ %}
-                        {{ form_widget(form.daten) }}
-                    {% else %}
-                        {{ form_widget(form.daten, { 'disabled':'disabled' }) }}
-                    {% endif %}
+                    {{ form_widget(form.daten) }}
                 </div>
             </div>
         </div>
 
         {{ form_label(form.save) }}
-        {% if activ %}
-            {{ form_widget(form.save) }}
-        {% else %}
-            {{ form_widget(form.save, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.save) }}
     </div>
     <div class="col-md-4">
         <div class="mb-4">
             {{ form_label(form.datum) }}
-            {% if activ %}
-                {{ form_widget(form.datum) }}
-            {% else %}
-                {{ form_widget(form.datum, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.datum) }}
         </div>
         <h3>Meldungen</h3>
         <div class="mb-4">
             {{ form_label(form.gemeldet) }}
-            {% if activ %}
-                {{ form_widget(form.gemeldet) }}
-            {% else %}
-                {{ form_widget(form.gemeldet, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.gemeldet) }}
         </div>
         <div class="mb-4">
             {{ form_label(form.betroffeneGemeldet) }}
-            {% if activ %}
-                {{ form_widget(form.betroffeneGemeldet) }}
-            {% else %}
-                {{ form_widget(form.betroffeneGemeldet, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.betroffeneGemeldet) }}
         </div>
         <div class="mb-4">
             {{ form_label(form.auftraggeberGemeldet) }}
-            {% if activ %}
-                {{ form_widget(form.auftraggeberGemeldet) }}
-            {% else %}
-                {{ form_widget(form.auftraggeberGemeldet, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.auftraggeberGemeldet) }}
         </div>
     </div>
 </div>

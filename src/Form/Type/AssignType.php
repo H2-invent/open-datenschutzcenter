@@ -30,7 +30,7 @@ class AssignType extends AbstractType
                 'multiple' => false,
                 'required' => false
             ])
-            ->add('submit', SubmitType::class, ['attr' => array('class' => 'btn btn-outline-primary btn-sm'), 'label' => 'Zuweisen', 'translation_domain' => 'form']);
+            ->add('submit', SubmitType::class, ['attr' => array('class' => 'btn btn-outline-primary btn-sm'), 'label' => '✔', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

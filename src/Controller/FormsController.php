@@ -89,12 +89,7 @@ class FormsController extends AbstractController
         $assign = $assignService->createForm($forms, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // Is Current Version already a historical version.
-            if ($forms->getActiv() === false) {
-                return $this->redirectToRoute('forms_edit', array('id' => $forms->getId(), 'snack' => 'Version ist nicht mehr aktiv und kann nicht geändert werden.'));
-            }
+        if ($form->isSubmitted() && $form->isValid() && $forms->getActiv() === true) {
 
             $em = $this->getDoctrine()->getManager();
             $forms->setActiv(false);

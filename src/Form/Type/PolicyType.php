@@ -41,7 +41,8 @@ class PolicyType extends AbstractType
                 'label' => 'Betroffene Arbeitsvorgänge und Fachverfahren',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'required' => true
+                'required' => true,
+                'expanded' => true
             ])
             ->add('protection', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'Zu ergreifende Schutzmaßnahmen in kurzer, verständlicher Form', 'required' => false, 'translation_domain' => 'form'])
             ->add('notes', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Hinweis auf Schulungsangebotet', 'required' => false, 'translation_domain' => 'form'])
@@ -54,6 +55,7 @@ class PolicyType extends AbstractType
                 'label' => 'Die Daten welcher Personen werden verarbeitet?',
                 'translation_domain' => 'form',
                 'multiple' => true,
+                'expanded' => true
             ])
             ->add('categories', EntityType::class, [
                 'choice_label' => 'name',
@@ -62,6 +64,7 @@ class PolicyType extends AbstractType
                 'label' => 'Betroffene Datenkategorien sind betroffen',
                 'translation_domain' => 'form',
                 'multiple' => true,
+                'expanded' => true
             ])
             ->add('person', EntityType::class, [
                 'choice_label' => 'email',

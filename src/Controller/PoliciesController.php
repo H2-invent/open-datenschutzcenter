@@ -91,12 +91,7 @@ class PoliciesController extends AbstractController
         $assign = $assignService->createForm($policy, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // Is Current Version already a historical version.
-            if ($policy->getActiv() === false) {
-                return $this->redirectToRoute('policy_edit', array('id' => $policy->getId(), 'snack' => 'Version ist nicht mehr aktiv und kann nicht geändert werden.'));
-            }
+        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() === true) {
 
             $em = $this->getDoctrine()->getManager();
             $policy->setActiv(false);

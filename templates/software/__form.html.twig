@@ -1,112 +1,62 @@
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-<div class="mt-4">
-    {{ form_label(form.nummer) }}
-    {% if activ %}
+<div {% if not activ %}class="disabled"{% endif %}>
+    <div class="mt-4">
+        {{ form_label(form.nummer) }}
         {{ form_widget(form.nummer) }}
-    {% else %}
-        {{ form_widget(form.nummer, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="mt-4">
-    {{ form_label(form.reference) }}
-    {% if activ %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.reference) }}
         {{ form_widget(form.reference) }}
-    {% else %}
-        {{ form_widget(form.reference, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="mt-4">
-    {{ form_label(form.name) }}
-    {% if activ %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.name) }}
         {{ form_widget(form.name) }}
-    {% else %}
-        {{ form_widget(form.name, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="mt-4">
-    {{ form_label(form.description) }}
-    {% if activ %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.description) }}
         {{ form_widget(form.description) }}
-    {% else %}
-        {{ form_widget(form.description, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="mt-4">
-    {{ form_label(form.status) }}
-    {% if activ %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.status) }}
         {{ form_widget(form.status) }}
-    {% else %}
-        {{ form_widget(form.status, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="mt-4">
-    {{ form_label(form.build) }}
-    {% if activ %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.build) }}
         {{ form_widget(form.build) }}
-    {% else %}
-        {{ form_widget(form.build, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="mt-4">
-    {{ form_label(form.license) }}
-    {% if activ %}
+    </div>
+    <div class="mt-4">
+        {{ form_label(form.license) }}
         {{ form_widget(form.license) }}
-    {% else %}
-        {{ form_widget(form.license, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="mt-4 mb-4">
-    {{ form_label(form.location) }}
-    {% if activ %}
+    </div>
+    <div class="mt-4 mb-4">
+        {{ form_label(form.location) }}
         {{ form_widget(form.location) }}
-    {% else %}
-        {{ form_widget(form.location, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <div class="mt-4">
-            {{ form_label(form.purchase) }}
-            {% if activ %}
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mt-4">
+                {{ form_label(form.purchase) }}
                 {{ form_widget(form.purchase) }}
-            {% else %}
-                {{ form_widget(form.purchase, { 'disabled':'disabled' }) }}
-            {% endif %}
+            </div>
         </div>
-    </div>
-    <div class="col-md-6">
-        <div class="mt-4">
-            {{ form_label(form.licenseExpiration) }}
-            {% if activ %}
+        <div class="col-md-6">
+            <div class="mt-4">
+                {{ form_label(form.licenseExpiration) }}
                 {{ form_widget(form.licenseExpiration) }}
-            {% else %}
-                {{ form_widget(form.licenseExpiration, { 'disabled':'disabled' }) }}
-            {% endif %}
+            </div>
         </div>
     </div>
-</div>
-<h4 class="h4-responsive mt-4">Verarbeitungen</h4>
-<div class="mb-4">
-    {{ form_label(form.vvts) }}
-    {% if activ %}
+    <h4 class="h4-responsive mt-4">Verarbeitungen</h4>
+    <div class="mb-4">
+        {{ form_label(form.vvts) }}
         {{ form_widget(form.vvts) }}
-    {% else %}
-        {{ form_widget(form.vvts, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<h4 class="h4-responsive mt-4">Datenweitergabe</h4>
-<div class="mb-4">
-    {{ form_label(form.datenweitergabe) }}
-    {% if activ %}
+    </div>
+    <h4 class="h4-responsive mt-4">Datenweitergabe</h4>
+    <div class="mb-4">
+        {{ form_label(form.datenweitergabe) }}
         {{ form_widget(form.datenweitergabe) }}
-    {% else %}
-        {{ form_widget(form.datenweitergabe, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
+    </div>
 
-{% if activ %}
     {{ form_widget(form.save) }}
-{% else %}
-    {{ form_widget(form.save, { 'disabled':'disabled' }) }}
-{% endif %}
+</div>
 {{ form_end(form) }}
