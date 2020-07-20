@@ -4,6 +4,8 @@
     <div class="row">
         <div class="col-md-8">
             <h2 class="h2-responsive">{{ title }} zu {{ dsfa.vvt.name }}</h2>
+            <a href="{{ path('vvt_edit',{'id':dsfa.vvt.id}) }}" class="btn btn-sm btn-secondary">Zurück zur
+                Verarbeitung</a>
         </div>
         <div class="col-md-4 text-right">
             {% if assignForm is defined %}{{ include('assign/__assign.html.twig',{'data':dsfa,'path':'assign_dsfa'}) }}{% endif %}
@@ -11,7 +13,7 @@
     </div>
 
     {{ form_start(form) }}
-    <div class="card card-body {% if not activ %}disabled{% endif %}">
+    <div class="card card-body {% if not dsfa.vvt.activ or dsfa.vvt.approved %}disabled{% endif %}">
         {{ form_label(form.beschreibung) }}
         {{ form_widget(form.beschreibung) }}
 

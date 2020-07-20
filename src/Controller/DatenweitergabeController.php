@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Entity\Datenweitergabe;
+use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\DatenweitergabeService;
 use App\Service\SecurityService;
@@ -162,7 +163,7 @@ class DatenweitergabeController extends AbstractController
         $assign = $assignService->createForm($daten, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $daten->getActiv() === true) {
+        if ($form->isSubmitted() && $form->isValid() && $daten->getActiv() && !$daten->getApproved()) {
 
             $em = $this->getDoctrine()->getManager();
             $daten->setActiv(false);
@@ -226,5 +227,24 @@ class DatenweitergabeController extends AbstractController
         $message = ['typ' => 'DOWNLOAD', 'error' => false, 'hinweis' => 'Download erfolgreich', 'dokument' => $datenweitergabe->getUpload(), 'user' => $this->getUser()->getUsername()];
         $logger->info($message['typ'], $message);
         return $response;
+    }
+
+    /**
+     * @Route("/datenweitergabe/approve", name="datenweitergabe_approve")
+     */
+    public function approveDatenweitergabe(Request $request, SecurityService $securityService, ApproveService $approveService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($daten, $team) === false) {
+            if ($daten->getArt() === 1) {
+                return $this->redirectToRoute('datenweitergabe');
+            }
+            return $this->redirectToRoute('auftragsverarbeitung');
+        }
+        $approve = $approveService->approve($daten, $this->getUser());
+
+        return $this->redirectToRoute('datenweitergabe_edit', ['id' => $daten->getId(), 'snack' => $approve['snack']]);
     }
 }

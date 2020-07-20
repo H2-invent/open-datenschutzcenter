@@ -220,6 +220,16 @@ class VVT
      */
     private $software;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
+
     public function __construct()
     {
         $this->grundlage = new ArrayCollection();
@@ -839,6 +849,30 @@ class VVT
             $this->software->removeElement($software);
             $software->removeVvt($this);
         }
+
+        return $this;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
 
         return $this;
     }

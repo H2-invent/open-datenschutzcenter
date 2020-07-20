@@ -151,6 +151,16 @@ class Datenweitergabe
      */
     private $reference;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
+
     public function __construct()
     {
         $this->verfahren = new ArrayCollection();
@@ -448,6 +458,30 @@ class Datenweitergabe
     public function setReference(?string $reference): self
     {
         $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
 
         return $this;
     }

@@ -28,7 +28,9 @@
                         <td>{{ d.title }}</td>
                         <td>{{ d.scope }}</td>
                         <td>{% for p in d.processes if p.activ %}{{ p.name }}<br>{% endfor %}</td>
-                        <td>{% if d.approved %}Freigegeben{% else %}{{ d.statusString }}{% endif %}</td>
+                        <td>{% if d.approved %}<span
+                                    class="note-success p-1">Freigegeben</span>{% else %}{{ d.statusString }}{% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

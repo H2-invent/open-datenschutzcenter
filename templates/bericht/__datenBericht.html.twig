@@ -22,6 +22,12 @@
     </tr>
     <tr>
         <td>
+            Freigabe
+        </td>
+        <td>{% if d.approved %}Freigegeben von {{ d.approvedBy.username }}{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
             Aktenzeichen
         </td>
         <td>{{ d.reference }}</td>

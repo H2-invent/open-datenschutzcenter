@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Form\Type\VvtDsfaType;
+use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\SecurityService;
 use App\Service\VVTService;
@@ -95,7 +96,7 @@ class VvtController extends AbstractController
         $assign = $assignService->createForm($vvt, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $vvt->getActiv() === true) {
+        if ($form->isSubmitted() && $form->isValid() && $vvt->getActiv() && !$vvt->getApproved()) {
 
             $em = $this->getDoctrine()->getManager();
             $vvt->setActiv(false);
@@ -106,8 +107,10 @@ class VvtController extends AbstractController
 
                 if ($vvt->getActivDsfa()) {
                     $dsfa = $vvt->getActivDsfa();
-                    $dsfa->setVvt($newVvt);
-                    $em->persist($dsfa);
+                    $newDsfa = clone $dsfa;
+                    $newDsfa->setVvt($newVvt);
+                    $newDsfa->setPrevious(null);
+                    $em->persist($newDsfa);
                 }
                 foreach ($newVvt->getPolicies() as $item) {
                     $item->addProcess($newVvt);
@@ -194,7 +197,7 @@ class VvtController extends AbstractController
         $assign = $assignService->createForm($dsfa, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $dsfa->getActiv() === true) {
+        if ($form->isSubmitted() && $form->isValid() && $dsfa->getActiv() && !$dsfa->getVvt()->getApproved()) {
 
             $dsfa->setActiv(false);
             $newDsfa = $form->getData();
@@ -217,5 +220,21 @@ class VvtController extends AbstractController
             'activ' => $dsfa->getActiv(),
             'snack' => $request->get('snack')
         ]);
+    }
+
+    /**
+     * @Route("/vvt/approve", name="vvt_approve")
+     */
+    public function approveVvt(Request $request, SecurityService $securityService, ApproveService $approveService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($vvt, $team) === false) {
+            return $this->redirectToRoute('vvt');
+        }
+        $approve = $approveService->approve($vvt, $this->getUser());
+
+        return $this->redirectToRoute('vvt_edit', ['id' => $vvt->getId(), 'snack' => $approve['snack']]);
     }
 }

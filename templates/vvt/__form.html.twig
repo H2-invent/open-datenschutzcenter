@@ -1,5 +1,5 @@
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-<div class="card card-body {% if not activ %}disabled{% endif %}">
+<div class="card card-body {% if not activ or vvt.approved %}disabled{% endif %}">
 
     {% if activNummer %}
         {{ form_label(form.nummer) }}
@@ -162,6 +162,7 @@
 
     <p>
         Vorhandene interne Richtlinien zu dieser Verarbeitung
+    </p>
     <ul>
         {% for p in vvt.policies if p.activ %}
             <li>
@@ -169,7 +170,6 @@
             </li>
         {% endfor %}
     </ul>
-    </p>
 
     {{ form_widget(form.save) }}
 
