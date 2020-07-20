@@ -4,3 +4,4 @@
 @import '~datatables.net-buttons-dt/css/buttons.dataTables.css';
 @import "~vis-network/styles/vis-network.css";
 @import "style.css";
+@import "select-css.css";
