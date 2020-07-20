@@ -124,12 +124,12 @@
                 ab{{ n.abteilung.id }}:
                     '{{ n.abteilung.id }}',
                 {% endif %}
-            title
+                title
         :
-        '{{ n.name }}',
+        '{% if n.approved %}Freigegeben von {{ n.approvedBy.username }}<br>{% endif %}Status: {{ n.status.name }}<br>{{ n.name }}',
             label
         :
-        '{{ n.name|slice(0,28) }}',
+        '{% if n.approved %}✔ {% endif %}{{ n.name|slice(0,28) }}',
             color
         :
         '#34ce57',
@@ -154,10 +154,10 @@
                     {% endif %}
                 title
         :
-            '{{ s.name }}',
+            '{% if s.licenseExpiration < date() and s.licenseExpiration is not null %}LIZENZ ABGELAUFEN <br>{% endif %}{% if s.approved %}Freigegeben von {{ s.approvedBy.username }}<br>{% endif %}{% if s.licenseExpiration %}Lizenz: {{ s.licenseExpiration|date('d.m.Y') }}<br>{% endif %}{{ s.name }}',
                 label
         :
-            'Software \n{{ s.name|slice(0,28) }}',
+            '{% if s.licenseExpiration < date() and s.licenseExpiration is not null %}ABGELAUFEN \n{% endif %}{% if s.approved %}✔ {% endif %}Software \n{{ s.name|slice(0,28) }}',
                 color
         :
             '#2E9AFE',
@@ -192,7 +192,7 @@
                     {% endfor %}
                 label
         :
-            'DW \n{{ n.gegenstand }}',
+            '{% if n.approved %}✔ {% endif %}DW \n{{ n.gegenstand }}',
                 color
         :
             '#6f42c1',
@@ -214,7 +214,7 @@
         {% for n in av %}
         {
             id: 'daten{{ n.id }}',
-            {% for v in n.verfahren if v.activ %}
+                    {% for v in n.verfahren if v.activ %}
                     {% if v.abteilung %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
@@ -222,7 +222,7 @@
                     {% endfor %}
                 label
         :
-            'AV \n{{ n.gegenstand }}',
+            '{% if n.approved %}✔ {% endif %}AV \n{{ n.gegenstand }}',
                 color
         :
             '#7e57c2',
@@ -276,7 +276,7 @@
             id: 'pol{{ n.id }}',
                 label
         :
-            'POLICY \n{{ n.title }}',
+            '{% if n.approved %}✔ {% endif %}Richtlinie \n{{ n.title }}',
                 color
         :
             '#4b515d',
