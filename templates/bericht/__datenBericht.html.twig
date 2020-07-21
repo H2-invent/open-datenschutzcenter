@@ -78,7 +78,7 @@
         <td>
             Zugehörige Software
         </td>
-        <td>{% for p in d.software %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for p in d.software if p.activ %}{{ p.name }},<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
