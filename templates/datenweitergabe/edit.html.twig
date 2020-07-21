@@ -9,6 +9,7 @@
             <span>PDF mit Historie erstellen</span>
         </a>
         {{ include('base/__approveBtn.html.twig',{'data':daten,'dataLink':'datenweitergabe_approve'}) }}
+        {{ include('base/__disableBtn.html.twig',{'data':daten,'dataLink':'datenweitergabe_disable'}) }}
     {% endif %}
 {% endblock %}
 

@@ -237,4 +237,22 @@ class VvtController extends AbstractController
 
         return $this->redirectToRoute('vvt_edit', ['id' => $vvt->getId(), 'snack' => $approve['snack']]);
     }
+
+    /**
+     * @Route("/vvt/disable", name="vvt_disable")
+     */
+    public function disableVvt(Request $request, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($vvt, $team) === true && !$vvt->getApproved()) {
+            $vvt->setActiv(false);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($vvt);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('vvt');
+    }
 }

@@ -247,4 +247,26 @@ class DatenweitergabeController extends AbstractController
 
         return $this->redirectToRoute('datenweitergabe_edit', ['id' => $daten->getId(), 'snack' => $approve['snack']]);
     }
+
+    /**
+     * @Route("/datenweitergabe/disable", name="datenweitergabe_disable")
+     */
+    public function disableDatenweitergabe(Request $request, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($daten, $team) === true && !$daten->getApproved()) {
+
+            $daten->setActiv(false);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($daten);
+            $em->flush();
+        }
+
+        if ($daten->getArt() === 1) {
+            return $this->redirectToRoute('datenweitergabe');
+        }
+        return $this->redirectToRoute('auftragsverarbeitung');
+    }
 }

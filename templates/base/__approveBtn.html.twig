@@ -1,5 +1,6 @@
 {% if app.user.adminUser == data.team %}
-    <a class="btn btn-success ml-1 btn-sm " href="{{ path(dataLink,{'id':data.id}) }}">
-        {% if data.approved %}Freigabe entfernen{% else %}Element freigeben{% endif %}
-    </a>
+    <a onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen?{% endtrans %}')"
+       href='{{ path(dataLink,{'id':data.id}) }}' type='button'
+       class='btn btn-success ml-1 btn-sm'>{% if data.approved %}{% trans %}Freigabe löschen{% endtrans %}{% else %}{% trans %}Freigeben{% endtrans %}{% endif %}</a>
+
 {% endif %}
