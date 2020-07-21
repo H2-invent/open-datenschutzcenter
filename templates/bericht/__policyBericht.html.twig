@@ -12,11 +12,15 @@
     {{ d.title }}
 </h1>
 <p>
+    Referenz: {{ d.reference }}
+</p>
+<p>
     {{ d.scope|nl2br }}
 </p>
 
 <p>
-    Status: {{ d.statusString }}<br>
+    Status: {% if d.approved %}Richtlinie freigegeben von {{ d.approvedBy.username }}{% else %}{{ d.statusString }}{% endif %}
+    <br>
     Datum: {{ d.createdAt|date('d.m.Y') }}
 </p>
 
@@ -49,7 +53,7 @@
         <td>
             Betroffene Arbeitsvorgänge und Fachverfahren
         </td>
-        <td>{% for p in d.processes %}{{ p.name }}<br>{% endfor %}</td>
+        <td>{% for p in d.processes if p.activ %}{{ p.name }}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>

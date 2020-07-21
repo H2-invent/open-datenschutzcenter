@@ -40,6 +40,9 @@
             <li class="{{ app.request.attributes.get('_route') == 'auftragsverarbeitung' ? 'active' }}">
                 <a href="{{ path('auftragsverarbeitung') }}">Auftragsverarbeitung</a>
             </li>
+            <li class="{{ app.request.attributes.get('_route') == 'software' ? 'active' }}">
+                <a href="{{ path('software') }}">Software</a>
+            </li>
             <li class="{{ app.request.attributes.get('_route') == 'forms' ? 'active' }}">
                 <a href="{{ path('forms') }}">Formulare</a>
             </li>
@@ -87,7 +90,7 @@
     <ul class="list-unstyled CTAs">
         {% if app.user.akademieUser %}
             <li>
-                <a href="{{ path('akademie') }}" class="btn bg-akademie"><img style="height: 30px"
+                <a href="{{ path('akademie') }}" class="btn bg-akademie"><img style="height: 30px" alt="Akademie"
                                                                               src="{{ asset('images/online-learning.png') }}">
                     Akademie</a>
             </li>

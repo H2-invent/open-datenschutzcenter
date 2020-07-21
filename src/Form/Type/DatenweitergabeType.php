@@ -12,6 +12,7 @@ use App\Entity\Datenweitergabe;
 use App\Entity\DatenweitergabeGrundlagen;
 use App\Entity\DatenweitergabeStand;
 use App\Entity\Kontakte;
+use App\Entity\Software;
 use App\Entity\VVT;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -33,6 +34,7 @@ class DatenweitergabeType extends AbstractType
             ->add('nummer', TextType::class, ['label' => 'Nummer der Datenweitergabe', 'required' => true, 'translation_domain' => 'form'])
             ->add('verantwortlich', TextType::class, ['label' => 'Verantwortlich für die Datenweitergabe (Intern)', 'required' => true, 'translation_domain' => 'form'])
             ->add('vertragsform', TextType::class, ['label' => 'Vertragsform', 'required' => true, 'translation_domain' => 'form'])
+            ->add('reference', TextType::class, ['label' => 'Aktenzeichen', 'required' => false, 'translation_domain' => 'form'])
             ->add('zeichnungsdatum', DateType::class, ['label' => 'Zeichnungsdatum', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text'])
             ->add('kontakt', EntityType::class, [
                 'choice_label' => 'firma',
@@ -46,16 +48,17 @@ class DatenweitergabeType extends AbstractType
                 'choice_label' => 'name',
                 'class' => VVT::class,
                 'choices' => $options['verfahren'],
-                'label'=>'Zugehörige Verarbeitungstätigkeit',
+                'label' => 'Zugehörige Verarbeitungstätigkeit',
                 'translation_domain' => 'form',
-                'multiple' =>true,
-                'required' => false
+                'multiple' => true,
+                'required' => false,
+                'expanded' => true
             ])
             ->add('stand', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => DatenweitergabeStand::class,
                 'choices' => $options['stand'],
-                'label'=>'Stand der Verhandlung',
+                'label' => 'Stand der Verhandlung',
                 'translation_domain' => 'form',
                 'multiple' => false,
             ])
@@ -66,6 +69,15 @@ class DatenweitergabeType extends AbstractType
                 'label' => 'Grundlage für die Verarbeitung',
                 'translation_domain' => 'form',
                 'multiple' => false,
+            ])
+            ->add('software', EntityType::class, [
+                'choice_label' => 'name',
+                'class' => Software::class,
+                'choices' => $options['software'],
+                'label' => 'Software, die in der Weitergabe involviert ist',
+                'translation_domain' => 'form',
+                'multiple' => true,
+                'expanded' => true
             ])
             ->add('uploadFile', VichImageType::class, [
                 'required' => false,
@@ -87,6 +99,7 @@ class DatenweitergabeType extends AbstractType
             'grundlage' => array(),
             'kontakt' => array(),
             'verfahren' => array(),
+            'software' => array()
         ]);
     }
 }

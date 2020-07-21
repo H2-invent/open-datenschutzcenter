@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Form\Type\VvtDsfaType;
+use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\SecurityService;
 use App\Service\VVTService;
@@ -68,7 +69,7 @@ class VvtController extends AbstractController
         return $this->render('vvt/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Verarbeitungstätigkeit erfassen',
+            'title' => 'Verarbeitung erfassen',
             'activNummer' => true,
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
@@ -95,7 +96,8 @@ class VvtController extends AbstractController
         $assign = $assignService->createForm($vvt, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $vvt->getActiv() && !$vvt->getApproved()) {
+
             $em = $this->getDoctrine()->getManager();
             $vvt->setActiv(false);
             $newVvt = $form->getData();
@@ -105,12 +107,18 @@ class VvtController extends AbstractController
 
                 if ($vvt->getActivDsfa()) {
                     $dsfa = $vvt->getActivDsfa();
-                    $dsfa->setVvt($newVvt);
-                    $em->persist($dsfa);
+                    $newDsfa = clone $dsfa;
+                    $newDsfa->setVvt($newVvt);
+                    $newDsfa->setPrevious(null);
+                    $em->persist($newDsfa);
                 }
                 foreach ($newVvt->getPolicies() as $item) {
                     $item->addProcess($newVvt);
                     $em->persist($item);
+                }
+                foreach ($newVvt->getSoftware() as $software) {
+                    $software->addVvt($newVvt);
+                    $em->persist($software);
                 }
 
                 $em->persist($newVvt);
@@ -124,7 +132,7 @@ class VvtController extends AbstractController
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
             'errors' => $errors,
-            'title' => 'Verarbeitungstätigkeit bearbeiten',
+            'title' => 'Verarbeitung bearbeiten',
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'activNummer' => false,
@@ -189,7 +197,8 @@ class VvtController extends AbstractController
         $assign = $assignService->createForm($dsfa, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $dsfa->getActiv() && !$dsfa->getVvt()->getApproved()) {
+
             $dsfa->setActiv(false);
             $newDsfa = $form->getData();
             $errors = $validator->validate($newDsfa);
@@ -211,5 +220,39 @@ class VvtController extends AbstractController
             'activ' => $dsfa->getActiv(),
             'snack' => $request->get('snack')
         ]);
+    }
+
+    /**
+     * @Route("/vvt/approve", name="vvt_approve")
+     */
+    public function approveVvt(Request $request, SecurityService $securityService, ApproveService $approveService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($vvt, $team) === false) {
+            return $this->redirectToRoute('vvt');
+        }
+        $approve = $approveService->approve($vvt, $this->getUser());
+
+        return $this->redirectToRoute('vvt_edit', ['id' => $vvt->getId(), 'snack' => $approve['snack']]);
+    }
+
+    /**
+     * @Route("/vvt/disable", name="vvt_disable")
+     */
+    public function disableVvt(Request $request, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($vvt, $team) === true && !$vvt->getApproved()) {
+            $vvt->setActiv(false);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($vvt);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('vvt');
     }
 }

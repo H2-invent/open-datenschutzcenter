@@ -4,6 +4,8 @@
     <div class="row">
         <div class="col-md-8">
             <h2 class="h2-responsive">{{ title }} zu {{ dsfa.vvt.name }}</h2>
+            <a href="{{ path('vvt_edit',{'id':dsfa.vvt.id}) }}" class="btn btn-sm btn-secondary">Zurück zur
+                Verarbeitung</a>
         </div>
         <div class="col-md-4 text-right">
             {% if assignForm is defined %}{{ include('assign/__assign.html.twig',{'data':dsfa,'path':'assign_dsfa'}) }}{% endif %}
@@ -11,61 +13,29 @@
     </div>
 
     {{ form_start(form) }}
-    <div class="card card-body">
+    <div class="card card-body {% if not dsfa.vvt.activ or dsfa.vvt.approved %}disabled{% endif %}">
         {{ form_label(form.beschreibung) }}
-        {% if activ %}
-            {{ form_widget(form.beschreibung) }}
-        {% else %}
-            {{ form_widget(form.beschreibung, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.beschreibung) }}
 
         {{ form_label(form.notwendigkeit) }}
-        {% if activ %}
-            {{ form_widget(form.notwendigkeit) }}
-        {% else %}
-            {{ form_widget(form.notwendigkeit, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.notwendigkeit) }}
 
         {{ form_label(form.risiko) }}
-        {% if activ %}
-            {{ form_widget(form.risiko) }}
-        {% else %}
-            {{ form_widget(form.risiko, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.risiko) }}
 
         {{ form_label(form.abhilfe) }}
-        {% if activ %}
-            {{ form_widget(form.abhilfe) }}
-        {% else %}
-            {{ form_widget(form.abhilfe, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.abhilfe) }}
 
         {{ form_label(form.standpunkt) }}
-        {% if activ %}
-            {{ form_widget(form.standpunkt) }}
-        {% else %}
-            {{ form_widget(form.standpunkt, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.standpunkt) }}
 
         {{ form_label(form.dsb) }}
-        {% if activ %}
-            {{ form_widget(form.dsb) }}
-        {% else %}
-            {{ form_widget(form.dsb, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.dsb) }}
 
         {{ form_label(form.ergebnis) }}
-        {% if activ %}
-            {{ form_widget(form.ergebnis) }}
-        {% else %}
-            {{ form_widget(form.ergebnis, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.ergebnis) }}
 
-        {% if activ %}
-            {{ form_widget(form.save) }}
-        {% else %}
-            {{ form_widget(form.save, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.save) }}
 
     </div>
     {{ form_end(form) }}

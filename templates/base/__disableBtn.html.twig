@@ -1,0 +1,5 @@
+{% if app.user.adminUser == data.team and not data.approved %}
+    <a onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen?{% endtrans %}')"
+       href='{{ path(dataLink,{'id':data.id}) }}' type='button'
+       class='btn btn-danger ml-1 btn-sm'>{% trans %}Löschen{% endtrans %}</a>
+{% endif %}

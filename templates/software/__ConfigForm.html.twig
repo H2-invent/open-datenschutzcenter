@@ -1,0 +1,16 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<div class="mt-4">
+    {{ form_label(form.name) }}
+    {{ form_widget(form.name) }}
+</div>
+<div class="mt-4">
+    {{ form_label(form.config) }}
+    {{ form_widget(form.config) }}
+</div>
+<div class="mt-4">
+    {{ form_label(form.activ) }}
+    {{ form_widget(form.activ) }}
+</div>
+
+{{ form_widget(form.save) }}
+{{ form_end(form) }}

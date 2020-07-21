@@ -6,6 +6,7 @@ use App\Entity\AuditTom;
 use App\Entity\Datenweitergabe;
 use App\Entity\Forms;
 use App\Entity\Policies;
+use App\Entity\Software;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Service\AssignService;
@@ -28,6 +29,7 @@ class AssignController extends AbstractController
         $assignDsfa = $this->getUser()->getAssignedDsfa()->toarray();
         $assignForms = $this->getUser()->getAssignedForms()->toarray();
         $assignPolicies = $this->getUser()->getAssignedPolicies()->toarray();
+        $assignSoftware = $this->getUser()->getAssignedSoftware()->toarray();
 
         return $this->render('assign/index.html.twig', [
             'assignDaten' => $assignDatenweitergabe,
@@ -35,7 +37,8 @@ class AssignController extends AbstractController
             'assignAudit' => $assignAudit,
             'assignDsfa' => $assignDsfa,
             'assignForms' => $assignForms,
-            'assignPolicies' => $assignPolicies
+            'assignPolicies' => $assignPolicies,
+            'assignSoftware' => $assignSoftware
         ]);
     }
 
@@ -126,6 +129,21 @@ class AssignController extends AbstractController
         }
 
         $res = $assignService->assignPolicy($request, $policy);
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @Route("/assign/software", name="assign_software")
+     */
+    public function assignSoftware(Request $request, AssignService $assignService, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getTeam();
+        $software = $this->getDoctrine()->getRepository(Software::class)->find($request->get('id'));
+        if ($securityService->teamDataCheck($software, $team) === false) {
+            return $this->redirectToRoute('software');
+        }
+
+        $res = $assignService->assignSoftware($request, $software);
         return $this->redirect($request->headers->get('referer'));
     }
 }

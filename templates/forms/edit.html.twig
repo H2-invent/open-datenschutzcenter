@@ -1,12 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block CTA %}
+    {{ include('base/__approveBtn.html.twig',{'data':daten,'dataLink':'forms_approve'}) }}
 {% endblock %}
 
 {% block body %}
     <div class="row">
         <div class="col-md-8">
             <h2 class="h2-responsive">{{ title }}</h2>
+            {{ include('base/__approvedBy.html.twig', {'data':daten}) }}
         </div>
         <div class="col-md-4 text-right">
             {{ include('assign/__assign.html.twig',{'data':daten,'path':'assign_form'}) }}

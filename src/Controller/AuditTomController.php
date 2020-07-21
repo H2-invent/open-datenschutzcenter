@@ -130,7 +130,8 @@ class AuditTomController extends AbstractController
         $assign = $assignService->createForm($audit, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $audit->getActiv() === true) {
+
             $audit->setActiv(false);
             $newAudit = $form->getData();
             $errors = $validator->validate($newAudit);

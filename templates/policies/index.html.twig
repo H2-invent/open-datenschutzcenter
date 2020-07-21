@@ -14,7 +14,7 @@
             <table id="data-table" class="table display table-striped ">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">Aktenzeichen</th>
                     <th scope="col">Bezeichnung</th>
                     <th scope="col">Geltungsbereiches</th>
                     <th scope="col">Verarbeitungen</th>
@@ -24,11 +24,13 @@
                 <tbody>
                 {% for d in data %}
                     <tr class="clickable-row" data-href='{{ path('policy_edit',{'id':d.id}) }}'>
-                        <th scope="row">{{ d.id }}</th>
+                        <th scope="row">{{ d.reference }}</th>
                         <td>{{ d.title }}</td>
                         <td>{{ d.scope }}</td>
                         <td>{% for p in d.processes if p.activ %}{{ p.name }}<br>{% endfor %}</td>
-                        <td>{{ d.statusString }}</td>
+                        <td>{% if d.approved %}<span
+                                    class="note-success p-1">Freigegeben</span>{% else %}{{ d.statusString }}{% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -156,6 +156,11 @@ class Team
      */
     private $signature;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Software::class, mappedBy="team")
+     */
+    private $software;
+
 
     public function __construct()
     {
@@ -174,6 +179,7 @@ class Team
         $this->produktes = new ArrayCollection();
         $this->forms = new ArrayCollection();
         $this->policies = new ArrayCollection();
+        $this->software = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -771,6 +777,37 @@ class Team
     public function setSignature(?string $signature): self
     {
         $this->signature = $signature;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Software[]
+     */
+    public function getSoftware(): Collection
+    {
+        return $this->software;
+    }
+
+    public function addSoftware(Software $software): self
+    {
+        if (!$this->software->contains($software)) {
+            $this->software[] = $software;
+            $software->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoftware(Software $software): self
+    {
+        if ($this->software->contains($software)) {
+            $this->software->removeElement($software);
+            // set the owning side to null (unless already changed)
+            if ($software->getTeam() === $this) {
+                $software->setTeam(null);
+            }
+        }
 
         return $this;
     }

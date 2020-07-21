@@ -14,7 +14,7 @@
             <div class="container-fluid">
 
                 <button type="button" id="sidebarCollapse" class="btn btn-info btn-sm">
-                    Sidebar
+                    Navigation
                 </button>
 
                 <button class="btn btn-dark btn-sm d-inline-block d-lg-none ml-auto" type="button"
@@ -32,11 +32,15 @@
 
         {{ include('base/__footer.html.twig') }}
     </div>
+
+
     <div class="modal fade" id="loadContentModal" tabindex="-1" role="dialog" aria-labelledby="loadContentModal"
          aria-hidden="true">
 
     </div>
 </div>
+<!-- Dark Overlay element -->
+<div class="overlay"></div>
 {{ include('base/__script.html.twig') }}
 {% block javascripts %}{% endblock %}
 </body>

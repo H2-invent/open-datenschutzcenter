@@ -1,85 +1,57 @@
 {{ form_start(form) }}
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-8 {% if not activ or daten.approved %}disabled{% endif %}">
         <div class="mt-2">
             {{ form_label(form.title) }}
-            {% if activ %}
-                {{ form_widget(form.title) }}
-            {% else %}
-                {{ form_widget(form.title, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.title) }}
         </div>
         <div class="mt-2">
             {{ form_label(form.version) }}
-            {% if activ %}
-                {{ form_widget(form.version) }}
-            {% else %}
-                {{ form_widget(form.version, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.version) }}
         </div>
         <div class="mt-2">
             {{ form_label(form.description) }}
-            {% if activ %}
-                {{ form_widget(form.description) }}
-            {% else %}
-                {{ form_widget(form.description, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.description) }}
         </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="mt-2">
                     {{ form_label(form.products) }}
-                    {% if activ %}
-                        {{ form_widget(form.products) }}
-                    {% else %}
-                        {{ form_widget(form.products, { 'disabled':'disabled' }) }}
-                    {% endif %}
+                    {{ form_widget(form.products) }}
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="mt-2">
                     {{ form_label(form.departments) }}
-                    {% if activ %}
-                        {{ form_widget(form.departments) }}
-                    {% else %}
-                        {{ form_widget(form.departments, { 'disabled':'disabled' }) }}
-                    {% endif %}
+                    {{ form_widget(form.departments) }}
                 </div>
             </div>
         </div>
         <div class="mt-2">
             {{ form_label(form.status) }}
-            {% if activ %}
-                {{ form_widget(form.status) }}
-            {% else %}
-                {{ form_widget(form.status, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_widget(form.status) }}
         </div>
 
     </div>
 
     <div class="col-md-4">
-        {{ form_label(form.uploadFile) }}
-        {% if activ %}
+        <div class="mt-2 {% if not activ or daten.approved %}disabled{% endif %}">
+            {{ form_label(form.uploadFile) }}
             {{ form_widget(form.uploadFile) }}
-        {% else %}
-            {{ form_widget(form.uploadFile, { 'disabled':'disabled' }) }}
-        {% endif %}
-
+        </div>
         {% if daten.upload %}
             <a href="{{ path('forms_download_file', {'id':daten.id}) }}" download class="btn bg-forms">{{ daten.title }}
                 herunterladen</a>
         {% endif %}
-
     </div>
 </div>
 
 
 {{ form_label(form.save) }}
-    {% if activ %}
-        {{ form_widget(form.save) }}
-    {% else %}
+    {% if not activ or daten.approved %}
         {{ form_widget(form.save, { 'disabled':'disabled' }) }}
+    {% else %}
+        {{ form_widget(form.save) }}
     {% endif %}
 
 {{ form_end(form) }}

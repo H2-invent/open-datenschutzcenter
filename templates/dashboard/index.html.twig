@@ -68,7 +68,7 @@
         </div>
         <div class="card-body">
             <label>
-                <select id="nodeFilterSelect" class="custom-select-lg">
+                <select id="nodeFilterSelect" class="custom-select-lg select-css">
                     <option value>Alle Abteilungen</option>
                     {% for a in app.user.team.abteilungen if a.activ %}
                         <option value="ab{{ a.id }}">{{ a.name }}</option>
@@ -124,12 +124,12 @@
                 ab{{ n.abteilung.id }}:
                     '{{ n.abteilung.id }}',
                 {% endif %}
-            title
+                title
         :
-        '{{ n.name }}',
+        '{% if n.approved %}Freigegeben von {{ n.approvedBy.username }}<br>{% endif %}Status: {{ n.status.name }}<br>{{ n.name }}',
             label
         :
-        '{{ n.name|slice(0,28) }}',
+        '{% if n.approved %}✔ {% endif %}{{ n.name|slice(0,28) }}',
             color
         :
         '#34ce57',
@@ -144,11 +144,47 @@
         :
         "{{ path('vvt_edit', {'id':n.id}) }}"
         },
+
+        {% for s in n.software if s.activ %}
+        {
+            id: 'software{{ s.id }}',
+                    {% if n.abteilung %}
+                ab{{ n.abteilung.id }}:
+            '{{ n.abteilung.id }}',
+                    {% endif %}
+                title
+        :
+            '{% if s.licenseExpiration < date() and s.licenseExpiration is not null %}LIZENZ ABGELAUFEN <br>{% endif %}{% if s.approved %}Freigegeben von {{ s.approvedBy.username }}<br>{% endif %}{% if s.licenseExpiration %}Lizenz: {{ s.licenseExpiration|date('d.m.Y') }}<br>{% endif %}{{ s.name }}',
+                label
+        :
+            '{% if s.licenseExpiration < date() and s.licenseExpiration is not null %}ABGELAUFEN \n{% endif %}{% if s.approved %}✔ {% endif %}Software \n{{ s.name|slice(0,28) }}',
+                color
+        :
+            '#2E9AFE',
+                font
+        :
+            {
+                face: "Monospace"
+            }
+        ,
+            shape: "box",
+                url
+        :
+            "{{ path('software_edit', {'id':s.id}) }}"
+        }
+        ,
         {% endfor %}
+
+
+        {% endfor %}
+
+
+
+
         {% for n in daten %}
         {
             id: 'daten{{ n.id }}',
-            {% for v in n.verfahren if v.activ %}
+                    {% for v in n.verfahren if v.activ %}
                     {% if v.abteilung %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
@@ -156,7 +192,7 @@
                     {% endfor %}
                 label
         :
-            'DW \n{{ n.gegenstand }}',
+            '{% if n.approved %}✔ {% endif %}DW \n{{ n.gegenstand }}',
                 color
         :
             '#6f42c1',
@@ -178,7 +214,7 @@
         {% for n in av %}
         {
             id: 'daten{{ n.id }}',
-            {% for v in n.verfahren if v.activ %}
+                    {% for v in n.verfahren if v.activ %}
                     {% if v.abteilung %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
@@ -186,7 +222,7 @@
                     {% endfor %}
                 label
         :
-            'AV \n{{ n.gegenstand }}',
+            '{% if n.approved %}✔ {% endif %}AV \n{{ n.gegenstand }}',
                 color
         :
             '#7e57c2',
@@ -240,7 +276,7 @@
             id: 'pol{{ n.id }}',
                 label
         :
-            'POLICY \n{{ n.title }}',
+            '{% if n.approved %}✔ {% endif %}Richtlinie \n{{ n.title }}',
                 color
         :
             '#4b515d',
@@ -303,7 +339,6 @@
         const edges = new vis.DataSet([
 
             {% for ee in vvt %}
-            {from: '0', to: 'vvt{{ ee.id }}'},
             {% for e in ee.datenweitergaben if e.activ %}
             {% if e.art == 2 %}
             {from: 'vvt{{ ee.id }}', to: 'daten{{ e.id }}'},
@@ -314,6 +349,13 @@
             {% if ee.tomLink is not null %}
             {from: 'vvt{{ ee.id }}', to: 'tom{{ ee.tomLink.id }}'},
             {% endif %}
+
+            {% for e in ee.software if e.activ %}
+            {from: 'software{{ e.id }}', to: 'vvt{{ ee.id }}'},
+            {% for d in e.datenweitergabe if d.activ %}
+            {from: 'daten{{ d.id }}', to: 'software{{ e.id }}'},
+            {% endfor %}
+            {% endfor %}
 
             {% for e in ee.policies if e.activ %}
             {from: 'vvt{{ ee.id }}', to: 'pol{{ e.id }}'},

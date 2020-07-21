@@ -7,10 +7,13 @@ use App\Repository\PoliciesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=PoliciesRepository::class)
+ * @Vich\Uploadable
  */
 class Policies
 {
@@ -130,6 +133,33 @@ class Policies
      * @ORM\Column(type="text")
      */
     private $title;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $reference;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     * @var string
+     */
+    private $upload;
+
+    /**
+     * @Vich\UploadableField(mapping="policies", fileNameProperty="upload")
+     * @var File
+     */
+    private $uploadFile;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
 
     public function __construct()
     {
@@ -402,7 +432,7 @@ class Policies
                 return 'Prüfung';
                 break;
             case 3:
-                return 'Freigegeben';
+                return 'Zur Freigabe vorgelegt';
                 break;
             case 4:
                 return 'Veraltet';
@@ -433,6 +463,70 @@ class Policies
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function setUploadFile(File $upload = null)
+    {
+        $this->uploadFile = $upload;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($upload) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->createdAt = new \DateTime('now');
+        }
+    }
+
+    public function getUploadFile()
+    {
+        return $this->uploadFile;
+    }
+
+    public function setUpload($upload)
+    {
+        $this->upload = $upload;
+    }
+
+    public function getUpload()
+    {
+        return $this->upload;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
 
         return $this;
     }

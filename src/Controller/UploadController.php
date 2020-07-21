@@ -40,8 +40,9 @@ class UploadController extends AbstractController
             $em->flush();
             $stream = $internFileSystem->read($upload->getFile());
             $data = json_decode($stream);
-            $verify = $parserService->verify(json_encode($data->entry),$data->signature);
+            $verify = $parserService->verify($data);
             if($verify != 1){
+                $internFileSystem->delete($upload->getFile());
                 return $this->redirectToRoute('upload_fail',array('message'=>'
                 Die Signatur ist ungültig. Bitte kontaktieren Sie die Personen, die Ihnen die Datei überlassen hat.'));
             }
@@ -58,8 +59,10 @@ class UploadController extends AbstractController
             }
 
             if ($res) {
+                $internFileSystem->delete($upload->getFile());
                 return $this->redirectToRoute('upload_success');
             } else {
+                $internFileSystem->delete($upload->getFile());
                 return $this->redirectToRoute('upload_fail',array('message'=>'
                 Die Datei ist fehlerhaft und kann nicht eingelesen werden. 
                 Es können jedoch bereits Daten in Ihren Datenstamm eingetragen worden sein. 

@@ -189,9 +189,11 @@ class ParserService
         }
     }
 
-    function verify($data, $signature)
+    function verify($json)
     {
         try {
+            $data = json_encode($json->entry);
+            $signature = $json->signature;
             $res = openssl_verify($data, hex2bin($signature), file_get_contents($this->parameterBag->get('projectRoot') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public.key'), OPENSSL_ALGO_SHA256);
             return $res;
         } catch (\Exception $e) {

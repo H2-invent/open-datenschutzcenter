@@ -89,7 +89,8 @@ class VorfallController extends AbstractController
         $form->handleRequest($request);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $vorgang->getActiv() === true) {
+
             $vorgang->setActiv(false);
             $newVorgang = $form->getData();
             $errors = $validator->validate($newVorgang);

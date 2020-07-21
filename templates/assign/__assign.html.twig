@@ -1,14 +1,16 @@
 {% if data.assignedUser is null %}
-    {{ form_start(assignForm,{'action': path(path,{'id':data.id})}) }}
-    <div class="row">
-        <div class="col-8">
-            {{ form_widget(assignForm.user) }}
+    {% if data.activ %}
+        {{ form_start(assignForm,{'action': path(path,{'id':data.id})}) }}
+        <div class="row">
+            <div class="col-xl-8 col-lg-7 col-xs-10">
+                {{ form_widget(assignForm.user) }}
+            </div>
+            <div class="col-xl-4 col-lg-5 col-xs-2">
+                {{ form_widget(assignForm.submit) }}
+            </div>
         </div>
-        <div class="col-4">
-            {{ form_widget(assignForm.submit) }}
-        </div>
-    </div>
-    {{ form_end(assignForm) }}
+        {{ form_end(assignForm) }}
+    {% endif %}
 {% else %}
     <span class="small">{{ data.assignedUser.email }}</span>  <a class="btn btn-danger btn-sm rounded"
                                                                  title="Zuweisung entfernen"

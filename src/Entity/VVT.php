@@ -215,6 +215,21 @@ class VVT
      */
     private $policies;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Software::class, mappedBy="vvts")
+     */
+    private $software;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
+
     public function __construct()
     {
         $this->grundlage = new ArrayCollection();
@@ -225,6 +240,7 @@ class VVT
         $this->datenweitergaben = new ArrayCollection();
         $this->produkt = new ArrayCollection();
         $this->policies = new ArrayCollection();
+        $this->software = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -805,6 +821,58 @@ class VVT
             $this->policies->removeElement($policy);
             $policy->removeProcess($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Software[]
+     */
+    public function getSoftware(): Collection
+    {
+        return $this->software;
+    }
+
+    public function addSoftware(Software $software): self
+    {
+        if (!$this->software->contains($software)) {
+            $this->software[] = $software;
+            $software->addVvt($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoftware(Software $software): self
+    {
+        if ($this->software->contains($software)) {
+            $this->software->removeElement($software);
+            $software->removeVvt($this);
+        }
+
+        return $this;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
 
         return $this;
     }

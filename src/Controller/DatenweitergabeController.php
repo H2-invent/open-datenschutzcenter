@@ -9,10 +9,12 @@
 namespace App\Controller;
 
 use App\Entity\Datenweitergabe;
+use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\DatenweitergabeService;
 use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -161,13 +163,18 @@ class DatenweitergabeController extends AbstractController
         $assign = $assignService->createForm($daten, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $daten->getActiv() && !$daten->getApproved()) {
+
             $em = $this->getDoctrine()->getManager();
             $daten->setActiv(false);
             $newDaten = $form->getData();
 
             foreach ($newDaten->getVerfahren() as $item) {
                 $item->addDatenweitergaben($newDaten);
+                $em->persist($item);
+            }
+            foreach ($newDaten->getSoftware() as $item) {
+                $item->addDatenweitergabe($newDaten);
                 $em->persist($item);
             }
 
@@ -196,17 +203,19 @@ class DatenweitergabeController extends AbstractController
      * @Route("/datenweitergabe/download/{id}", name="datenweitergabe_download_file", methods={"GET"})
      * @ParamConverter("datenweitergabe", options={"mapping"={"id"="id"}})
      */
-    public function downloadArticleReference(FilesystemInterface $internFileSystem, Datenweitergabe $datenweitergabe, SecurityService $securityService)
+    public function downloadArticleReference(FilesystemInterface $datenFileSystem, Datenweitergabe $datenweitergabe, SecurityService $securityService, LoggerInterface $logger)
     {
 
-        $stream = $internFileSystem->read($datenweitergabe->getUpload());
+        $stream = $datenFileSystem->read($datenweitergabe->getUpload());
 
         $team = $this->getUser()->getTeam();
         if ($securityService->teamDataCheck($datenweitergabe, $team) === false) {
+            $message = ['typ' => 'DOWNLOAD', 'error' => true, 'hinweis' => 'Fehlerhafter download. User nicht berechtigt!', 'dokument' => $datenweitergabe->getUpload(), 'user' => $this->getUser()->getUsername()];
+            $logger->error($message['typ'], $message);
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $internFileSystem->getMimetype($datenweitergabe->getUpload());
+        $type = $datenFileSystem->getMimetype($datenweitergabe->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(
@@ -215,6 +224,49 @@ class DatenweitergabeController extends AbstractController
         );
 
         $response->headers->set('Content-Disposition', $disposition);
+        $message = ['typ' => 'DOWNLOAD', 'error' => false, 'hinweis' => 'Download erfolgreich', 'dokument' => $datenweitergabe->getUpload(), 'user' => $this->getUser()->getUsername()];
+        $logger->info($message['typ'], $message);
         return $response;
+    }
+
+    /**
+     * @Route("/datenweitergabe/approve", name="datenweitergabe_approve")
+     */
+    public function approveDatenweitergabe(Request $request, SecurityService $securityService, ApproveService $approveService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($daten, $team) === false) {
+            if ($daten->getArt() === 1) {
+                return $this->redirectToRoute('datenweitergabe');
+            }
+            return $this->redirectToRoute('auftragsverarbeitung');
+        }
+        $approve = $approveService->approve($daten, $this->getUser());
+
+        return $this->redirectToRoute('datenweitergabe_edit', ['id' => $daten->getId(), 'snack' => $approve['snack']]);
+    }
+
+    /**
+     * @Route("/datenweitergabe/disable", name="datenweitergabe_disable")
+     */
+    public function disableDatenweitergabe(Request $request, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($daten, $team) === true && !$daten->getApproved()) {
+
+            $daten->setActiv(false);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($daten);
+            $em->flush();
+        }
+
+        if ($daten->getArt() === 1) {
+            return $this->redirectToRoute('datenweitergabe');
+        }
+        return $this->redirectToRoute('auftragsverarbeitung');
     }
 }

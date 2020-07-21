@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Forms;
+use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\FormsService;
 use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -88,7 +90,8 @@ class FormsController extends AbstractController
         $assign = $assignService->createForm($forms, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $forms->getActiv() && !$forms->getApproved()) {
+
             $em = $this->getDoctrine()->getManager();
             $forms->setActiv(false);
             $forms->setStatus(4);
@@ -115,20 +118,40 @@ class FormsController extends AbstractController
     }
 
     /**
+     * @Route("/forms/approve", name="forms_approve")
+     */
+    public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $forms = $this->getDoctrine()->getRepository(Forms::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($forms, $team) === false) {
+            return $this->redirectToRoute('forms');
+        }
+
+        $approve = $approveService->approve($forms, $this->getUser());
+
+        return $this->redirectToRoute('forms_edit', ['id' => $forms->getId(), 'snack' => $approve['snack']]);
+
+    }
+
+    /**
      * @Route("/forms/download/{id}", name="forms_download_file", methods={"GET"})
      * @ParamConverter("forms", options={"mapping"={"id"="id"}})
      */
-    public function downloadArticleReference(FilesystemInterface $internFileSystem, Forms $forms, SecurityService $securityService)
+    public function downloadArticleReference(FilesystemInterface $formsFileSystem, Forms $forms, SecurityService $securityService, LoggerInterface $logger)
     {
 
-        $stream = $internFileSystem->read($forms->getUpload());
+        $stream = $formsFileSystem->read($forms->getUpload());
 
         $team = $this->getUser()->getTeam();
         if ($securityService->teamDataCheck($forms, $team) === false) {
+            $message = ['typ' => 'DOWNLOAD', 'error' => true, 'hinweis' => 'Fehlerhafter download. User nicht berechtigt!', 'dokument' => $forms->getUpload(), 'user' => $this->getUser()->getUsername()];
+            $logger->error($message['typ'], $message);
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $internFileSystem->getMimetype($forms->getUpload());
+        $type = $formsFileSystem->getMimetype($forms->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(
@@ -137,6 +160,8 @@ class FormsController extends AbstractController
         );
 
         $response->headers->set('Content-Disposition', $disposition);
+        $message = ['typ' => 'DOWNLOAD', 'error' => false, 'hinweis' => 'Download erfolgreich', 'dokument' => $forms->getUpload(), 'user' => $this->getUser()->getUsername()];
+        $logger->info($message['typ'], $message);
         return $response;
     }
 }

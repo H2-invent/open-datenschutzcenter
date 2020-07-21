@@ -1,98 +1,76 @@
 {{ form_start(form) }}
+<div {% if not activ or daten.approved %}class="disabled"{% endif %}>
     {% if activNummer %}
         {{ form_label(form.nummer) }}
         {{ form_widget(form.nummer) }}
     {% endif %}
-<div class="mt-2">
-    {{ form_label(form.gegenstand) }}
-    {% if activ %}
+    <div class="mt-2">
+        {{ form_label(form.gegenstand) }}
         {{ form_widget(form.gegenstand) }}
-    {% else %}
-        {{ form_widget(form.gegenstand, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="mt-2">
-    {{ form_label(form.verantwortlich) }}
-    {% if activ %}
+    </div>
+    <div class="mt-2">
+        {{ form_label(form.reference) }}
+        {{ form_widget(form.reference) }}
+    </div>
+    <div class="mt-2">
+        {{ form_label(form.verantwortlich) }}
         {{ form_widget(form.verantwortlich) }}
-    {% else %}
-        {{ form_widget(form.verantwortlich, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="mt-2">
-    {{ form_label(form.vertragsform) }}
-    {% if activ %}
+    </div>
+    <div class="mt-2">
+        {{ form_label(form.vertragsform) }}
         {{ form_widget(form.vertragsform) }}
-    {% else %}
-        {{ form_widget(form.vertragsform, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="mt-2">
-    {{ form_label(form.zeichnungsdatum) }}
-    {% if activ %}
+    </div>
+    <div class="mt-2">
+        {{ form_label(form.zeichnungsdatum) }}
         {{ form_widget(form.zeichnungsdatum) }}
-    {% else %}
-        {{ form_widget(form.zeichnungsdatum, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
-<div class="mt-2">
-    {{ form_label(form.kontakt) }}
-    {% if activ %}
+    </div>
+    <div class="mt-2">
+        {{ form_label(form.kontakt) }}
         {{ form_widget(form.kontakt) }}
-    {% else %}
-        {{ form_widget(form.kontakt, { 'disabled':'disabled' }) }}
-    {% endif %}
-</div>
+    </div>
 
-<div class="row mt-2">
-    <div class="col-md-6">
+    <div class="mt-2">
         {{ form_label(form.verfahren) }}
-        {% if activ %}
-            {{ form_widget(form.verfahren) }}
-        {% else %}
-            {{ form_widget(form.verfahren, { 'disabled':'disabled' }) }}
-        {% endif %}
+        {{ form_widget(form.verfahren) }}
+    </div>
 
-        <div class="mt-2">
-            {{ form_label(form.stand) }}
-            {% if activ %}
-                {{ form_widget(form.stand) }}
-            {% else %}
-                {{ form_widget(form.stand, { 'disabled':'disabled' }) }}
-            {% endif %}
-        </div>
+    <div class="mt-2 {% if daten.art != 1 %}disabled{% endif %}">
+        {{ form_label(form.software) }}
+        <p>{% if daten.art != 1 %}Einer Auftragsverarbeitung kann keine Software zugewiesen werden.{% endif %}</p>
+        {{ form_widget(form.software) }}
+    </div>
 
+    <div class="mt-2">
+        {{ form_label(form.stand) }}
+        {{ form_widget(form.stand) }}
+    </div>
+
+    <div class="mt-2">
+        {{ form_label(form.grundlage) }}
+        {{ form_widget(form.grundlage) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 {% if not activ or daten.approved %}disabled{% endif %}">
         <div class="mt-2">
-            {{ form_label(form.grundlage) }}
-            {% if activ %}
-                {{ form_widget(form.grundlage) }}
-            {% else %}
-                {{ form_widget(form.grundlage, { 'disabled':'disabled' }) }}
-            {% endif %}
+            {{ form_label(form.uploadFile) }}
+            {{ form_widget(form.uploadFile) }}
         </div>
     </div>
-    <div class="col-md-4">
-        {{ form_label(form.uploadFile) }}
-        {% if activ %}
-            {{ form_widget(form.uploadFile) }}
-        {% else %}
-            {{ form_widget(form.uploadFile, { 'disabled':'disabled' }) }}
-        {% endif %}
-
+    <div class="col-md-4 mt-4">
         {% if daten.upload %}
             <a href="{{ path('datenweitergabe_download_file', {'id':daten.id}) }}" download class="btn btn-amber">AVV
                 herunterladen</a>
         {% endif %}
-
     </div>
 </div>
 
 
 {{ form_label(form.save) }}
-    {% if activ %}
-        {{ form_widget(form.save) }}
-    {% else %}
+    {% if not activ or daten.approved %}
         {{ form_widget(form.save, { 'disabled':'disabled' }) }}
+    {% else %}
+        {{ form_widget(form.save) }}
     {% endif %}
 
 {{ form_end(form) }}

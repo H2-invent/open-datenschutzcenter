@@ -126,7 +126,7 @@ class Datenweitergabe
     private $upload;
 
     /**
-     * @Vich\UploadableField(mapping="profil_picture", fileNameProperty="upload")
+     * @Vich\UploadableField(mapping="daten", fileNameProperty="upload")
      * @var File
      */
     private $uploadFile;
@@ -141,9 +141,30 @@ class Datenweitergabe
      */
     private $assignedUser;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Software::class, mappedBy="datenweitergabe")
+     */
+    private $software;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $reference;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
+
     public function __construct()
     {
         $this->verfahren = new ArrayCollection();
+        $this->software = new ArrayCollection();
     }
 
 
@@ -397,6 +418,70 @@ class Datenweitergabe
     public function setAssignedUser(?User $assignedUser): self
     {
         $this->assignedUser = $assignedUser;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Software[]
+     */
+    public function getSoftware(): Collection
+    {
+        return $this->software;
+    }
+
+    public function addSoftware(Software $software): self
+    {
+        if (!$this->software->contains($software)) {
+            $this->software[] = $software;
+            $software->addDatenweitergabe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoftware(Software $software): self
+    {
+        if ($this->software->contains($software)) {
+            $this->software->removeElement($software);
+            $software->removeDatenweitergabe($this);
+        }
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
 
         return $this;
     }

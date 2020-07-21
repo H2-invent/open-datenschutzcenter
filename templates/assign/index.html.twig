@@ -43,6 +43,12 @@
                    aria-selected="false"><img style="width: 30px" src="{{ asset('images/contract.png') }}"> <span
                             class="d-none d-sm-block">Richtlinien</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#software" role="tab"
+                   aria-controls="contact"
+                   aria-selected="false"><img style="width: 30px" src="{{ asset('images/monitor.png') }}"> <span
+                            class="d-none d-sm-block">Software</span></a>
+            </li>
         </ul>
 
         <div class="tab-content" id="myTabContent">
@@ -168,6 +174,31 @@
                                     </div>
                                     <div class="col-md-9">
                                         {{ a.title }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        {{ a.createdAt|date('d.m.Y') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="tab-pane fade" id="software" role="tabpanel" aria-labelledby="contact-tab">
+                {% for a in assignSoftware %}
+                    {% if a.activ %}
+                        <a href="{{ path('software_edit',{'id':a.id}) }}">
+                            <div class="btn btn-block bg-software text-xl-left mt-1">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img style="width: 30px" src="{{ asset('images/monitor.png') }}">
+                                    </div>
+                                    <div class="col-md-5">
+                                        {{ a.name }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        Konfigurationen: {{ a.config|length }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.createdAt|date('d.m.Y') }}
