@@ -377,4 +377,41 @@ class BerichtController extends AbstractController
         // Send some text response
         return new Response("The PDF file has been succesfully generated !");
     }
+
+    /**
+     * @Route("/bericht/backup", name="bericht_backup")
+     */
+    public function backupSoftware(DompdfWrapper $wrapper, Request $request)
+    {
+
+        $req = $request->get('id');
+
+        $team = $this->getUser()->getTeam();
+
+        $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+
+        if (count($software) < 1) {
+            return $this->redirectToRoute('bericht');
+        }
+
+        // Center Team authentication
+        if ($team === null || $software[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/backup.html.twig', [
+            'daten' => $software,
+            'titel' => 'Archivierungskonzept',
+            'team' => $this->getUser()->getTeam(),
+            'all' => $request->get('all'),
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse($html, "Archivierungskonzept.pdf");
+        $response->send();
+
+        // Send some text response
+        return new Response("The PDF file has been succesfully generated !");
+    }
 }

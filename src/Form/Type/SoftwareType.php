@@ -68,6 +68,7 @@ class SoftwareType extends AbstractType
                 'multiple' => false,
             ])
             ->add('location', TextType::class, ['label' => 'Standort der Software', 'required' => false, 'translation_domain' => 'form'])
+            ->add('archiving', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Archivierungskonzept', 'required' => false, 'translation_domain' => 'form'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 

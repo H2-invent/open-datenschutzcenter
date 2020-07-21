@@ -138,6 +138,11 @@ class Software
      */
     private $approvedBy;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $archiving;
+
     public function __construct()
     {
         $this->vvts = new ArrayCollection();
@@ -475,6 +480,18 @@ class Software
     public function setApprovedBy(?User $approvedBy): self
     {
         $this->approvedBy = $approvedBy;
+
+        return $this;
+    }
+
+    public function getArchiving(): ?string
+    {
+        return $this->archiving;
+    }
+
+    public function setArchiving(?string $archiving): self
+    {
+        $this->archiving = $archiving;
 
         return $this;
     }

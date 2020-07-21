@@ -74,6 +74,12 @@
     </tr>
     <tr>
         <td>
+            Archivierungskonzept
+        </td>
+        <td>{{ d.archiving|nl2br }}</td>
+    </tr>
+    <tr>
+        <td>
             Verbundene Verarbeitungen
         </td>
         <td>{% for data in d.vvts if data.activ %}{{ data.name }}<br>{% endfor %}</td>
