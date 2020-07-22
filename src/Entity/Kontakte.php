@@ -89,7 +89,7 @@ class Kontakte
     private $team;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
     private $activ;
@@ -103,6 +103,16 @@ class Kontakte
      * @ORM\OneToMany(targetEntity=Datenweitergabe::class, mappedBy="kontakt")
      */
     private $datenweitergaben;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
 
     public function __construct()
     {
@@ -258,12 +268,12 @@ class Kontakte
         return $this;
     }
 
-    public function getActiv(): ?bool
+    public function getActiv(): ?int
     {
         return $this->activ;
     }
 
-    public function setActiv(bool $activ): self
+    public function setActiv(int $activ): self
     {
         $this->activ = $activ;
 
@@ -309,6 +319,30 @@ class Kontakte
                 $datenweitergaben->setKontakt(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
 
         return $this;
     }

@@ -10,6 +10,8 @@ namespace App\Controller;
 
 use App\Entity\Kontakte;
 use App\Form\Type\KontaktType;
+use App\Service\ApproveService;
+use App\Service\DisableService;
 use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,9 +99,41 @@ class KontaktController extends AbstractController
         }
         return $this->render('kontakt/edit.html.twig', [
             'form' => $form->createView(),
+            'kontakt' => $kontakt,
             'errors' => $errors,
             'title' => 'Kontakt erstellen',
             'snack' => $request->get('snack')
         ]);
+    }
+
+    /**
+     * @Route("/kontakt/approve", name="kontakt_approve")
+     */
+    public function approve(Request $request, SecurityService $securityService, ApproveService $approveService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $kontakt = $this->getDoctrine()->getRepository(Kontakte::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($kontakt, $team) === false) {
+            return $this->redirectToRoute('kontakt');
+        }
+        $approve = $approveService->approve($kontakt, $this->getUser());
+
+        return $this->redirectToRoute('kontakt_edit', ['id' => $kontakt->getId(), 'snack' => $approve['snack']]);
+    }
+
+    /**
+     * @Route("/kontakt/disable", name="kontakt_disable")
+     */
+    public function disable(Request $request, SecurityService $securityService, DisableService $disableService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $kontakt = $this->getDoctrine()->getRepository(Kontakte::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($kontakt, $team) === true && !$kontakt->getApproved()) {
+            $disableService->disable($kontakt, $this->getUser());
+        }
+
+        return $this->redirectToRoute('kontakt');
     }
 }

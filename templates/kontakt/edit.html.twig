@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
-
+{% block CTA %}
+    {{ include('base/__approveBtn.html.twig',{'data':kontakt,'dataLink':'kontakt_approve'}) }}
+    {{ include('base/__disableBtn.html.twig',{'data':kontakt,'dataLink':'kontakt_disable'}) }}
+{% endblock %}
 {% block body %}
 
     <h2 class="h2-responsive">{{ title }}</h2>
+    {{ include('base/__approvedBy.html.twig', {'data':kontakt}) }}
 
-    {{ form_start(form) }}
-    <div class="card card-body">
+    <div class="card card-body {% if kontakt.approved or not kontakt.activ == 1 %}disabled{% endif %}">
+        {{ form_start(form) }}
         <div class="row">
             <div class="col-md-4">{{ form_row(form.art) }}</div>
             <div class="col-md-2">{{ form_row(form.nummer) }}</div>
@@ -29,8 +33,9 @@
             <div class="col-md-12">{{ form_row(form.bemerkung) }}</div>
         </div>
         {{ form_widget(form.save) }}
+        {{ form_end(form) }}
     </div>
-    {{ form_end(form) }}
+
     {{ include('base/__snack.html.twig') }}
 {% endblock %}
 
