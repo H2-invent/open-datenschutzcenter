@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Repository\TomRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 
 /**
  * @ORM\Entity(repositoryClass=TomRepository::class)
@@ -47,7 +47,7 @@ class Tom
     private $vvts;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="integer")
      */
     private $activ;
 
@@ -182,6 +182,16 @@ class Tom
      */
     private $titel;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
+
     public function __construct()
     {
         $this->vvts = new ArrayCollection();
@@ -259,12 +269,12 @@ class Tom
         return $this;
     }
 
-    public function getActiv(): ?bool
+    public function getActiv(): ?int
     {
         return $this->activ;
     }
 
-    public function setActiv(bool $activ): self
+    public function setActiv(int $activ): self
     {
         $this->activ = $activ;
 
@@ -495,6 +505,30 @@ class Tom
     public function setTitel(string $titel): self
     {
         $this->titel = $titel;
+
+        return $this;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
 
         return $this;
     }
