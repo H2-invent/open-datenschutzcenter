@@ -148,6 +148,11 @@ class Software
      */
     private $recovery;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $permissions;
+
     public function __construct()
     {
         $this->vvts = new ArrayCollection();
@@ -509,6 +514,18 @@ class Software
     public function setRecovery(?string $recovery): self
     {
         $this->recovery = $recovery;
+
+        return $this;
+    }
+
+    public function getPermissions(): ?string
+    {
+        return $this->permissions;
+    }
+
+    public function setPermissions(?string $permissions): self
+    {
+        $this->permissions = $permissions;
 
         return $this;
     }
