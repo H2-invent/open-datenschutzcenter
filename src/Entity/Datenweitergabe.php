@@ -71,7 +71,7 @@ class Datenweitergabe
     private $team;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="integer")
      */
     private $activ;
 
@@ -258,12 +258,12 @@ class Datenweitergabe
         return $this;
     }
 
-    public function getActiv(): ?bool
+    public function getActiv(): ?int
     {
         return $this->activ;
     }
 
-    public function setActiv(bool $activ): self
+    public function setActiv(int $activ): self
     {
         $this->activ = $activ;
 
