@@ -61,7 +61,7 @@ class SoftwareType extends AbstractType
                     'In Bearbeitung' => 10,
                     'In Prüfung' => 20,
                     'Zur Freigegebe vorgelegt' => 30,
-                    'Nicht mehr in Verwendung' => 60,],
+                    'Inaktiv' => 60,],
                 'label' => 'Status',
                 'translation_domain' => 'form',
                 'multiple' => false,

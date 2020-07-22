@@ -293,13 +293,13 @@ class Software
                 return 'Zur Freigegebe vorgelegt';
                 break;
             case 40:
-                return 'Freigegeben';
+                return 'Freigegeben'; //Nicht mehr in Verwendung
                 break;
             case 50:
-                return 'Lizenz abgelaufen';
+                return 'Lizenz abgelaufen'; //Nicht mehr in Verwendung
                 break;
             case 60:
-                return 'Nicht mehr in Verwendung';
+                return 'Inaktiv';
                 break;
             default:
                 return "Angelegt";
