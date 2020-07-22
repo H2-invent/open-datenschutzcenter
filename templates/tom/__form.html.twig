@@ -1,5 +1,5 @@
 {{ form_start(form) }}
-<div {% if not activ %}class="disabled"{% endif %}>
+<div {% if not activ or tom.approved %}class="disabled"{% endif %}>
     <div class="mb-4">
         {% if activTitel %}
             {{ form_label(form.titel) }}

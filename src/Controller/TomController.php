@@ -92,7 +92,7 @@ class TomController extends AbstractController
         $form->remove('titel');
         $form->handleRequest($request);
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === true) {
+        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === 1 && !$tom->getApproved()) {
 
             $tom->setActiv(false);
             $newTom = $form->getData();
