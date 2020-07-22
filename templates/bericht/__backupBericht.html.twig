@@ -28,6 +28,20 @@
     </tr>
     <tr>
         <td>
+            Status
+        </td>
+        <td>
+            {% if d.licenseExpiration < date() and d.licenseExpiration is not null %}
+                ABGELAUFEN
+            {% elseif d.approved %}
+                Software und Konfiguration freigegeben
+            {% else %}
+                {{ d.statusString }}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>
             Archivierungskonzept
         </td>
         <td>{{ d.archiving|nl2br }}</td>

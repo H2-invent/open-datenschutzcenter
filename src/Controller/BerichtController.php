@@ -379,12 +379,10 @@ class BerichtController extends AbstractController
     }
 
     /**
-     * @Route("/bericht/backup", name="bericht_backup")
+     * @Route("/bericht/backupconcept", name="bericht_backupconcept")
      */
     public function backupSoftware(DompdfWrapper $wrapper, Request $request)
     {
-
-        $req = $request->get('id');
 
         $team = $this->getUser()->getTeam();
 
