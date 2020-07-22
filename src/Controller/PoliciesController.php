@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Policies;
 use App\Service\ApproveService;
 use App\Service\AssignService;
+use App\Service\DisableService;
 use App\Service\PoliciesService;
 use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
@@ -131,6 +132,21 @@ class PoliciesController extends AbstractController
         $approve = $approveService->approve($policy, $this->getUser());
 
         return $this->redirectToRoute('policy_edit', ['id' => $policy->getId(), 'snack' => $approve['snack']]);
+    }
+
+    /**
+     * @Route("/policy/disable", name="policy_disable")
+     */
+    public function disable(Request $request, SecurityService $securityService, DisableService $disableService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($policy, $team) === true && !$policy->getApproved()) {
+            $disableService->disable($policy, $this->getUser());
+        }
+
+        return $this->redirectToRoute('policies');
     }
 
     /**
