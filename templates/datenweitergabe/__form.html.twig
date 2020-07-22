@@ -9,6 +9,10 @@
         {{ form_widget(form.gegenstand) }}
     </div>
     <div class="mt-2">
+        {{ form_label(form.stand) }}
+        {{ form_widget(form.stand) }}
+    </div>
+    <div class="mt-2">
         {{ form_label(form.reference) }}
         {{ form_widget(form.reference) }}
     </div>
@@ -38,11 +42,6 @@
         {{ form_label(form.software) }}
         <p>{% if daten.art != 1 %}Einer Auftragsverarbeitung kann keine Software zugewiesen werden.{% endif %}</p>
         {{ form_widget(form.software) }}
-    </div>
-
-    <div class="mt-2">
-        {{ form_label(form.stand) }}
-        {{ form_widget(form.stand) }}
     </div>
 
     <div class="mt-2">

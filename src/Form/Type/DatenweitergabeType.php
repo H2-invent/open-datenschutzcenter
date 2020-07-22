@@ -58,7 +58,7 @@ class DatenweitergabeType extends AbstractType
                 'choice_label' => 'name',
                 'class' => DatenweitergabeStand::class,
                 'choices' => $options['stand'],
-                'label' => 'Stand der Verhandlung',
+                'label' => 'Status',
                 'translation_domain' => 'form',
                 'multiple' => false,
             ])
