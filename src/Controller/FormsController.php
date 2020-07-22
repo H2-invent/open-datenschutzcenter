@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Forms;
 use App\Service\ApproveService;
 use App\Service\AssignService;
+use App\Service\DisableService;
 use App\Service\FormsService;
 use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
@@ -133,6 +134,21 @@ class FormsController extends AbstractController
 
         return $this->redirectToRoute('forms_edit', ['id' => $forms->getId(), 'snack' => $approve['snack']]);
 
+    }
+
+    /**
+     * @Route("/forms/disable", name="forms_disable")
+     */
+    public function disable(Request $request, SecurityService $securityService, DisableService $disableService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $forms = $this->getDoctrine()->getRepository(Forms::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($forms, $team) === true && !$forms->getApproved()) {
+            $disableService->disable($forms, $this->getUser());
+        }
+
+        return $this->redirectToRoute('forms');
     }
 
     /**
