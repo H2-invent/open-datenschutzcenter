@@ -9,6 +9,8 @@
 namespace App\Controller;
 
 use App\Entity\Vorfall;
+use App\Service\ApproveService;
+use App\Service\AssignService;
 use App\Service\SecurityService;
 use App\Service\VorfallService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -74,7 +76,7 @@ class VorfallController extends AbstractController
     /**
      * @Route("/vorfall/edit", name="vorfall_edit")
      */
-    public function EditVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService)
+    public function EditVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService, AssignService $assignService)
     {
         $team = $this->getUser()->getTeam();
         $vorgang = $this->getDoctrine()->getRepository(Vorfall::class)->find($request->get('id'));
@@ -87,7 +89,7 @@ class VorfallController extends AbstractController
 
         $form = $vorfallService->createForm($newVorgang, $team);
         $form->handleRequest($request);
-
+        $assign = $assignService->createForm($vorgang, $team);
         $errors = array();
         if ($form->isSubmitted() && $form->isValid() && $vorgang->getActiv() === true) {
 
@@ -105,11 +107,28 @@ class VorfallController extends AbstractController
         }
         return $this->render('vorfall/edit.html.twig', [
             'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
             'errors' => $errors,
             'title' => 'Datenschutzvorfall bearbeiten',
             'vorfall' => $vorgang,
             'activ' => $vorgang->getActiv(),
             'snack' => $request->get('snack')
         ]);
+    }
+
+    /**
+     * @Route("/vorfall/approve", name="vorfall_approve")
+     */
+    public function approve(Request $request, SecurityService $securityService, ApproveService $approveService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $vorfall = $this->getDoctrine()->getRepository(Vorfall::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($vorfall, $team) === false) {
+            return $this->redirectToRoute('vvt');
+        }
+        $approve = $approveService->approve($vorfall, $this->getUser());
+
+        return $this->redirectToRoute('vorfall_edit', ['id' => $vorfall->getId(), 'snack' => $approve['snack']]);
     }
 }

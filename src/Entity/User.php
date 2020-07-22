@@ -140,6 +140,11 @@ class User extends BaseUser
      */
     private $assignedSoftware;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Vorfall::class, mappedBy="assignedUser")
+     */
+    private $assignedVorfalls;
+
 
     public function __construct()
     {
@@ -163,6 +168,7 @@ class User extends BaseUser
         $this->assignedForms = new ArrayCollection();
         $this->software = new ArrayCollection();
         $this->assignedSoftware = new ArrayCollection();
+        $this->assignedVorfalls = new ArrayCollection();
     }
 
     public function getTeam(): ?Team
@@ -784,6 +790,37 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($assignedSoftware->getAssignedUser() === $this) {
                 $assignedSoftware->setAssignedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Vorfall[]
+     */
+    public function getAssignedVorfalls(): Collection
+    {
+        return $this->assignedVorfalls;
+    }
+
+    public function addAssignedVorfall(Vorfall $assignedVorfall): self
+    {
+        if (!$this->assignedVorfalls->contains($assignedVorfall)) {
+            $this->assignedVorfalls[] = $assignedVorfall;
+            $assignedVorfall->setAssignedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignedVorfall(Vorfall $assignedVorfall): self
+    {
+        if ($this->assignedVorfalls->contains($assignedVorfall)) {
+            $this->assignedVorfalls->removeElement($assignedVorfall);
+            // set the owning side to null (unless already changed)
+            if ($assignedVorfall->getAssignedUser() === $this) {
+                $assignedVorfall->setAssignedUser(null);
             }
         }
 

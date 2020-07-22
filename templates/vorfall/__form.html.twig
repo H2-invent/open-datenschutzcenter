@@ -1,5 +1,5 @@
 {{ form_start(form) }}
-<div class="row {% if not activ %}disabled{% endif %}">
+<div class="row {% if not activ or vorfall.approved %}disabled{% endif %}">
     <div class="col-md-8">
         <div class="mb-4">
             {{ form_label(form.fakten) }}
