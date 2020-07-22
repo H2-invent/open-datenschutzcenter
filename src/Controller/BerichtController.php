@@ -387,6 +387,7 @@ class BerichtController extends AbstractController
         $team = $this->getUser()->getTeam();
 
         $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($team);
 
         if (count($software) < 1) {
             return $this->redirectToRoute('bericht');
@@ -400,6 +401,7 @@ class BerichtController extends AbstractController
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/backup.html.twig', [
             'daten' => $software,
+            'vvt' => $vvt,
             'titel' => 'Archivierungskonzept',
             'team' => $this->getUser()->getTeam(),
             'all' => $request->get('all'),

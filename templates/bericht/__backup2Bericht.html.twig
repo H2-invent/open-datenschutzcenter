@@ -1,0 +1,39 @@
+<h2>{% if not d.activ %}Historie: {% endif %}{{ d.nummer }}: {{ d.name }}
+    (id:{{ d.id }})</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Verarbeitung
+        </td>
+        <td><a href="{{ absolute_url(path('vvt_edit', {'id':d.id})) }}">{{ d.name }}</a></td>
+    </tr>
+    <tr>
+        <td>
+            Nummer
+        </td>
+        <td>{{ d.nummer }}</td>
+    </tr>
+    <tr>
+        <td>
+            Archivierungskonzept
+        </td>
+        <td>
+            {% for s in d.software %}
+                {{ s.archiving|nl2br }}
+            {% endfor %}
+        </td>
+    </tr>
+</table>
+
+
+{{ d.createdAt|date('d.m.Y H:i') }} by {{ d.user.email }}
+{% if d.previous and all == 1 %}
+    {{ include('bericht/__backupBericht.html.twig', {'d':d.previous}) }}
+{% endif %}
