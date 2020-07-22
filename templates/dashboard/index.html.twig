@@ -144,14 +144,17 @@
         :
         "{{ path('vvt_edit', {'id':n.id}) }}"
         },
+        {% endfor %}
 
-        {% for s in n.software if s.activ %}
+        {% for s in software if s.status != 60 %}
         {
             id: 'software{{ s.id }}',
+                    {% for n in s.vvts %}
                     {% if n.abteilung %}
                 ab{{ n.abteilung.id }}:
             '{{ n.abteilung.id }}',
                     {% endif %}
+                    {% endfor %}
                 title
         :
             '{% if s.licenseExpiration < date() and s.licenseExpiration is not null %}LIZENZ ABGELAUFEN <br>{% endif %}{% if s.approved %}Freigegeben von {{ s.approvedBy.username }}<br>{% endif %}{% if s.licenseExpiration %}Lizenz: {{ s.licenseExpiration|date('d.m.Y') }}<br>{% endif %}{{ s.name }}',
@@ -173,9 +176,6 @@
             "{{ path('software_edit', {'id':s.id}) }}"
         }
         ,
-        {% endfor %}
-
-
         {% endfor %}
 
 
@@ -211,6 +211,8 @@
         }
         ,
         {% endfor %}
+
+
         {% for n in av if n.stand.network %}
         {
             id: 'daten{{ n.id }}',
@@ -244,7 +246,7 @@
         {% for n in tom %}
         {
             id: 'tom{{ n.id }}',
-            {% for v in n.vvts if v.activ %}
+                    {% for v in n.vvts if v.activ %}
                     {% if v.abteilung %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
@@ -252,7 +254,7 @@
                     {% endfor %}
                 label
         :
-            'TOM \n{{ n.titel }}',
+            '{% if n.approved %}✔ {% endif %}TOM \n{{ n.titel }}',
                 color
         :
             '#0e4377',
@@ -271,6 +273,8 @@
         }
         ,
         {% endfor %}
+
+
         {% for n in policies %}
         {
             id: 'pol{{ n.id }}',
@@ -301,12 +305,15 @@
         }
         ,
         {% endfor %}
+
+
+
         {% for n in kontakte %}
         {
             id: 'kon{{ n.id }}',
                 label
         :
-            'KONTAKT \n{{ n.firma }}',
+            '{% if n.approved %}✔ {% endif %}KONTAKT \n{{ n.firma }}',
                 color
         :
             '#6a1b9a',
