@@ -97,6 +97,7 @@ class ParserService
                 if (!$status) {
                     $status = new VVTStatus();
                     $status->setName($e->status);
+                    $status->setNetwork(true);
                     $this->em->persist($status);
                     $this->em->flush();
                 }
