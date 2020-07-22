@@ -414,4 +414,39 @@ class BerichtController extends AbstractController
         // Send some text response
         return new Response("The PDF file has been succesfully generated !");
     }
+
+    /**
+     * @Route("/bericht/revoceryconcept", name="bericht_recoveryconcept")
+     */
+    public function recoverySoftware(DompdfWrapper $wrapper, Request $request)
+    {
+
+        $team = $this->getUser()->getTeam();
+
+        $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+
+        if (count($software) < 1) {
+            return $this->redirectToRoute('bericht');
+        }
+
+        // Center Team authentication
+        if ($team === null || $software[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/recovery.html.twig', [
+            'daten' => $software,
+            'titel' => 'Recoverykonzept und Widerherstellungskonzept',
+            'team' => $this->getUser()->getTeam(),
+            'all' => $request->get('all'),
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse($html, "Recoverykonzept.pdf");
+        $response->send();
+
+        // Send some text response
+        return new Response("The PDF file has been succesfully generated !");
+    }
 }

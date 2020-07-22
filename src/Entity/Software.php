@@ -143,6 +143,11 @@ class Software
      */
     private $archiving;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $recovery;
+
     public function __construct()
     {
         $this->vvts = new ArrayCollection();
@@ -492,6 +497,18 @@ class Software
     public function setArchiving(?string $archiving): self
     {
         $this->archiving = $archiving;
+
+        return $this;
+    }
+
+    public function getRecovery(): ?string
+    {
+        return $this->recovery;
+    }
+
+    public function setRecovery(?string $recovery): self
+    {
+        $this->recovery = $recovery;
 
         return $this;
     }
