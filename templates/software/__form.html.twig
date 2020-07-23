@@ -1,71 +1,125 @@
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-<div class="mt-4">
-    {{ form_label(form.nummer) }}
-    {{ form_widget(form.nummer) }}
-</div>
-<div class="mt-4">
-    {{ form_label(form.reference) }}
-    {{ form_widget(form.reference) }}
-</div>
-<div class="mt-4">
-    {{ form_label(form.name) }}
-    {{ form_widget(form.name) }}
-</div>
-<div class="mt-4">
-    {{ form_label(form.description) }}
-    {{ form_widget(form.description) }}
-</div>
-<div class="mt-4">
-    {{ form_label(form.status) }}
-    {{ form_widget(form.status) }}
-</div>
-<div class="mt-4">
-    {{ form_label(form.build) }}
-    {{ form_widget(form.build) }}
-</div>
-<div class="mt-4">
-    {{ form_label(form.license) }}
-    {{ form_widget(form.license) }}
-</div>
-<div class="mt-4 mb-4">
-    {{ form_label(form.location) }}
-    {{ form_widget(form.location) }}
-</div>
-<div class="mt-4 mb-4">
-    {{ form_label(form.archiving) }}
-    {{ form_widget(form.archiving) }}
-</div>
-<div class="mt-4 mb-4">
-    {{ form_label(form.recovery) }}
-    {{ form_widget(form.recovery) }}
-</div>
-<div class="mt-4 mb-4">
-    {{ form_label(form.permissions) }}
-    {{ form_widget(form.permissions) }}
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <div class="mt-4">
-            {{ form_label(form.purchase) }}
-            {{ form_widget(form.purchase) }}
-        </div>
+<div class="mt-4 row">
+    <div class="col-md-3">
+        {{ form_label(form.nummer) }}
     </div>
-    <div class="col-md-6">
-        <div class="mt-4">
-            {{ form_label(form.licenseExpiration) }}
-            {{ form_widget(form.licenseExpiration) }}
-        </div>
+    <div class="col-md-9">
+        {{ form_widget(form.nummer) }}
+    </div>
+</div>
+<div class="mt-4 row">
+    <div class="col-md-3">
+        {{ form_label(form.reference) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.reference) }}
+    </div>
+</div>
+<div class="mt-4 row">
+    <div class="col-md-3">
+        {{ form_label(form.name) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.name) }}
+    </div>
+</div>
+<div class="mt-4 row">
+    <div class="col-md-3">
+        {{ form_label(form.description) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.description) }}
+    </div>
+</div>
+<div class="mt-4 row">
+    <div class="col-md-3">
+        {{ form_label(form.status) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.status) }}
+    </div>
+</div>
+<div class="mt-4 row">
+    <div class="col-md-3">
+        {{ form_label(form.build) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.build) }}
+    </div>
+</div>
+<div class="mt-4 row">
+    <div class="col-md-3">
+        {{ form_label(form.license) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.license) }}
+    </div>
+</div>
+<div class="mt-4 row">
+    <div class="col-md-3">
+        {{ form_label(form.location) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.location) }}
+    </div>
+</div>
+<div class="mt-4 row">
+    <div class="col-md-3">
+        {{ form_label(form.archiving) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.archiving) }}
+    </div>
+</div>
+<div class="mt-4 row">
+    <div class="col-md-3">
+        {{ form_label(form.recovery) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.recovery) }}
+    </div>
+</div>
+<div class="mt-4 row">
+    <div class="col-md-3">
+        {{ form_label(form.permissions) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.permissions) }}
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-md-3">
+        {{ form_label(form.licenseExpiration) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.licenseExpiration) }}
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-md-3">
+        {{ form_label(form.purchase) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.purchase) }}
     </div>
 </div>
 <h4 class="h4-responsive mt-4">Verarbeitungen</h4>
 <div class="mb-4">
-    {{ form_label(form.vvts) }}
-    {{ form_widget(form.vvts) }}
+    <div class="col-md-3">
+        {{ form_label(form.vvts) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.vvts) }}
+    </div>
 </div>
 <h4 class="h4-responsive mt-4">Datenweitergabe</h4>
 <div class="mb-4">
-    {{ form_label(form.datenweitergabe) }}
-    {{ form_widget(form.datenweitergabe) }}
+    <div class="col-md-3">
+        {{ form_label(form.datenweitergabe) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.datenweitergabe) }}
+    </div>
 </div>
 
 {{ form_widget(form.save) }}
