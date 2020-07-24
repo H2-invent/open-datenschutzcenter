@@ -17,6 +17,8 @@ use App\Entity\Tom;
 use App\Entity\Vorfall;
 use App\Entity\VVT;
 use Core23\DompdfBundle\Wrapper\DompdfWrapper;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,7 +46,7 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/vvt", name="bericht_vvt")
      */
-    public function berichtVvt(DompdfWrapper $wrapper, Request $request)
+    public function berichtVvt(Request $request)
     {
         $req = $request->get('id');
         $team = $this->getUser()->getTeam();
@@ -63,6 +65,10 @@ class BerichtController extends AbstractController
         if ($team === null || $vvt[0]->getTeam() !== $team) {
             return $this->redirectToRoute('dashboard');
         }
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
+
 
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/vvt.html.twig', [
@@ -73,9 +79,18 @@ class BerichtController extends AbstractController
             'min' => $request->get('min'),
         ]);
 
-        //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Verarbeitungstaetigkeit.pdf");
-        $response->send();
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("Verarbeitungsverzeichnis.pdf", [
+            "Attachment" => true
+        ]);
 
         // Send some text response
         return new Response("The PDF file has been succesfully generated !");
@@ -84,7 +99,7 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/audit", name="bericht_audit")
      */
-    public function berichtAudit(DompdfWrapper $wrapper, Request $request)
+    public function berichtAudit(Request $request)
     {
 
         $req = $request->get('id');
@@ -110,17 +125,27 @@ class BerichtController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
+
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/audit.html.twig', [
             'daten' => $audit,
-            'titel' => 'Bericht zu TOM Auditfragen',
+            'titel' => 'Bericht zu Auditfragen',
             'team' => $this->getUser()->getTeam(),
             'all' => $request->get('all'),
         ]);
 
-        //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Self-Audit.pdf");
-        $response->send();
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("Auditfragen.pdf", [
+            "Attachment" => true
+        ]);
 
         // Send some text response
         return new Response("The PDF file has been succesfully generated !");
@@ -129,7 +154,7 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/tom", name="bericht_tom")
      */
-    public function berichtTom(DompdfWrapper $wrapper, Request $request)
+    public function berichtTom(Request $request)
     {
 
         $req = $request->get('id');
@@ -149,6 +174,9 @@ class BerichtController extends AbstractController
         if ($team === null || $tom[0]->getTeam() !== $team) {
             return $this->redirectToRoute('dashboard');
         }
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
 
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/berichtTom.html.twig', [
@@ -157,9 +185,15 @@ class BerichtController extends AbstractController
             'team' => $team,
         ]);
 
-        //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Technische-und-organisatorische-Massnahmen.pdf");
-        $response->send();
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("Technische-und-organisatorische-Massnahmen.pdf", [
+            "Attachment" => true
+        ]);
 
         // Send some text response
         return new Response("The PDF file has been succesfully generated !");
@@ -168,7 +202,7 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/global_tom", name="bericht_global_tom")
      */
-    public function berichtGlobalTom(DompdfWrapper $wrapper)
+    public function berichtGlobalTom()
     {
 
         $team = $this->getUser()->getTeam();
@@ -184,6 +218,9 @@ class BerichtController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/berichtGlobalTom.html.twig', [
             'daten' => $audit,
@@ -191,9 +228,10 @@ class BerichtController extends AbstractController
             'team' => $team,
         ]);
 
-        //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Globale-TOM.pdf");
-        $response->send();
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("Globale-technische-und-organisatorische-Massnahmen.pdf", [
+            "Attachment" => true
+        ]);
 
         // Send some text response
         return new Response("The PDF file has been succesfully generated !");

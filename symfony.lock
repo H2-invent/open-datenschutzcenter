@@ -93,6 +93,9 @@
     "jms/metadata": {
         "version": "2.1.0"
     },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.0.4"
+    },
     "league/flysystem": {
         "version": "1.0.67"
     },
@@ -113,6 +116,9 @@
     },
     "nikolaposa/version": {
         "version": "3.2.0"
+    },
+    "nucleos/dompdf-bundle": {
+        "version": "3.0.0"
     },
     "ocramius/package-versions": {
         "version": "1.5.1"
