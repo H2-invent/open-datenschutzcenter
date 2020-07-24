@@ -11,6 +11,7 @@
         "michaeldegroot/doctrine-encrypt-bundle": "^4.0",
         "myclabs/deep-copy": "^1.9",
         "oneup/flysystem-bundle": "^3.4",
+        "phpoffice/phpword": "^0.17.0",
         "sensio/framework-extra-bundle": "^5.1",
         "shivas/versioning-bundle": "^3.2",
         "symfony/apache-pack": "^1.0",

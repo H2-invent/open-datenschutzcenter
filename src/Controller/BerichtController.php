@@ -17,8 +17,13 @@ use App\Entity\Tom;
 use App\Entity\Vorfall;
 use App\Entity\VVT;
 use Core23\DompdfBundle\Wrapper\DompdfWrapper;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BerichtController extends AbstractController
@@ -422,7 +427,6 @@ class BerichtController extends AbstractController
     {
 
         $team = $this->getUser()->getTeam();
-
         $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
 
         if (count($software) < 1) {
@@ -448,5 +452,86 @@ class BerichtController extends AbstractController
 
         // Send some text response
         return new Response("The PDF file has been succesfully generated !");
+    }
+
+    /**
+     * @Route("/bericht/information", name="bericht_information")
+     */
+    public function informationSoftware()
+    {
+
+        $team = $this->getUser()->getTeam();
+
+        $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+
+        if (count($software) < 1) {
+            return $this->redirectToRoute('bericht');
+        }
+
+        // Center Team authentication
+        if ($team === null || $software[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Create a new Word document
+        $phpWord = new PhpWord();
+        $phpWord->addTitleStyle(1, array('bold' => true), array('spaceAfter' => 240));
+        $phpWord->addTitleStyle(2, array('bold' => true), array('spaceBefore' => 300));
+        $header = array('size' => 34, 'bold' => true);
+
+        $title = 'Archivierungskonzept nach Anwendungen von ' . $team->getName();
+
+        $sectionMain = $phpWord->addSection();
+        $sectionMain->addText($title, $header);
+        $section = $phpWord->addSection();
+
+        foreach ($software as $item) {
+
+            if ($item->getApproved()) {
+                $status = 'Freigegeben von ' . $item->getApprovedBy()->getUsername();
+            } else {
+                $status = $item->getStatusString();
+            }
+            // Adding a software to the document...
+            $section->addTitle($item->getName(), 2);
+
+            $table = $section->addTable();
+            $table->addRow();
+            $table->addCell(100 * 50)->addText('Aktenzeichen');
+            $table->addCell(100 * 50)->addText($item->getReference());
+
+            $table->addRow();
+            $table->addCell()->addText('Inventarnummer');
+            $table->addCell()->addText($item->getNummer());
+
+            $table->addRow();
+            $table->addCell()->addText('Status');
+            $table->addCell()->addText($status);
+
+            $section->addText('Archivierungskonzept');
+            $section->addText($item->getArchiving());
+        }
+
+        $section->addHeader()->addText($title);
+        $section->addFooter()->addText('Powered by open-datenschutzcenter.de');
+
+        // Saving the document as OOXML file...
+        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+
+        // Create a temporal file in the system
+        $fileName = 'Archivierungskonzept.docx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+
+        // Write in the temporal filepath
+        $objWriter->save($temp_file);
+
+        // Send the temporal file as response (as an attachment)
+        $response = new BinaryFileResponse($temp_file);
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $fileName
+        );
+
+        return $response;
     }
 }
