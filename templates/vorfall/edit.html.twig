@@ -16,7 +16,7 @@
 
     <h2 class="h2-responsive">{{ title }} (Nummer: {{ vorfall.id }})</h2>
     {{ include('base/__approvedBy.html.twig', {'data':vorfall}) }}
-    {% if assignForm is defined %}{{ include('assign/__assign.html.twig',{'data':vorfall,'path':'assign_vorfall'}) }}{% endif %}
+
     <div class="card card-body">
         {{ include('vorfall/__form.html.twig') }}
     </div>
