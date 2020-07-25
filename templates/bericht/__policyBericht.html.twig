@@ -15,7 +15,7 @@
     Referenz: {{ d.reference }}
 </p>
 <p>
-    {{ d.scope|nl2br }}
+    {{ d.scope|raw }}
 </p>
 
 <p>
@@ -26,7 +26,7 @@
 
 <p>
     <b>Risiken:</b><br>
-    {{ d.risk|nl2br }}
+    {{ d.risk|raw }}
 </p>
 
 <p>
@@ -36,16 +36,16 @@
 
 <p>
     <b>Zu ergreifende Schutzmaßnahmen:</b> <br>
-    {{ d.protection }}
+    {{ d.protection|raw }}
 </p>
 
 <p>
-    {{ d.consequences }}
+    {{ d.consequences|raw }}
 </p>
 
 <p style="margin-bottom: 60px">
     <b>Hinweis:</b><br>
-    {{ d.notes }}
+    {{ d.notes|raw }}
 </p>
 
 <table style="table-layout:fixed; width: 100%">

@@ -1,7 +1,4 @@
 {
-    "core23/dompdf-bundle": {
-        "version": "2.6.0"
-    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {

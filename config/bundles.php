@@ -20,5 +20,4 @@ return [
     Ambta\DoctrineEncryptBundle\AmbtaDoctrineEncryptBundle::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Nucleos\DompdfBundle\NucleosDompdfBundle::class => ['all' => true],
-    Core23\DompdfBundle\Core23DompdfBundle::class => ['all' => true],
 ];

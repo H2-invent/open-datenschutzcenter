@@ -57,13 +57,13 @@ $(document).ready(function () {
     $('.summernote').summernote({
         placeholder: 'Gebe hier den Text ein',
         tabsize: 2,
-        height: 600,
+        height: 200,
         focus: true,
         lang: 'de-DE',
         toolbar: [
             ['style', ['pre']],
             ['font', ['bold', 'underline', 'clear']],
-            ['color', ['color']],
+            ['color', []],
             ['para', ['ul', 'ol', 'paragraph']],
             ['table', ['table']],
             ['insert', ['link']],

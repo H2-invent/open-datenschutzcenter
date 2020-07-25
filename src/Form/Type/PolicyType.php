@@ -30,9 +30,9 @@ class PolicyType extends AbstractType
 
         $builder
             ->add('title', TextType::class, ['label' => 'Name der Richtlinie', 'required' => true, 'translation_domain' => 'form'])
-            ->add('scope', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Festlegung des Geltungsbereiches', 'required' => true, 'translation_domain' => 'form'])
-            ->add('risk', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Abzuwehrende IT-Risiken, bestehende Gefahren und mögliche Konsequenzen (wichtig für die Motivation!)', 'required' => true, 'translation_domain' => 'form'])
-            ->add('foundation', TextareaType::class, ['attr' => ['rows' => 6, 'class' => 'summernote'], 'label' => 'Bezug zu Gesetzen, Verordnungen und Standards', 'required' => true, 'translation_domain' => 'form'])
+            ->add('scope', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Festlegung des Geltungsbereiches', 'required' => true, 'translation_domain' => 'form'])
+            ->add('risk', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Abzuwehrende IT-Risiken, bestehende Gefahren und mögliche Konsequenzen (wichtig für die Motivation!)', 'required' => true, 'translation_domain' => 'form'])
+            ->add('foundation', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Bezug zu Gesetzen, Verordnungen und Standards', 'required' => true, 'translation_domain' => 'form'])
             ->add('reference', TextType::class, ['label' => 'Aktenzeichen', 'required' => false, 'translation_domain' => 'form'])
             ->add('processes', EntityType::class, [
                 'choice_label' => 'name',
@@ -44,10 +44,10 @@ class PolicyType extends AbstractType
                 'required' => true,
                 'expanded' => true
             ])
-            ->add('protection', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'Zu ergreifende Schutzmaßnahmen in kurzer, verständlicher Form', 'required' => false, 'translation_domain' => 'form'])
-            ->add('notes', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Hinweis auf Schulungsangebotet', 'required' => false, 'translation_domain' => 'form'])
-            ->add('consequences', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Konsequenzen bei Nichtbeachtung der Sicherheitsrichtlinie', 'required' => false, 'translation_domain' => 'form'])
-            ->add('contact', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Kontaktdaten von IT-Sicherheitsverantwortlichen und Datenschutzbeauftragten', 'required' => false, 'translation_domain' => 'form'])
+            ->add('protection', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Zu ergreifende Schutzmaßnahmen in kurzer, verständlicher Form', 'required' => false, 'translation_domain' => 'form'])
+            ->add('notes', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Hinweis auf Schulungsangebotet', 'required' => false, 'translation_domain' => 'form'])
+            ->add('consequences', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Konsequenzen bei Nichtbeachtung der Sicherheitsrichtlinie', 'required' => false, 'translation_domain' => 'form'])
+            ->add('contact', TextareaType::class, ['attr' => ['row' => 5], 'label' => 'Kontaktdaten von IT-Sicherheitsverantwortlichen und Datenschutzbeauftragten', 'required' => false, 'translation_domain' => 'form'])
             ->add('people', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTPersonen::class,
