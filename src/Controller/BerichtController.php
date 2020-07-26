@@ -24,7 +24,6 @@ use PhpOffice\PhpWord\PhpWord;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -373,10 +372,8 @@ class BerichtController extends AbstractController
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Datenschutzrichtlinie.pdf");
+        $response = $wrapper->getStreamResponse($html, "Zertifikat.pdf");
         $response->send();
-
-        // Send some text response
         return new Response("The PDF file has been succesfully generated !");
     }
 

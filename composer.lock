@@ -1749,19 +1749,19 @@
             "time": "2020-05-20T16:45:56+00:00"
         },
         {
-            "name": "league/flysystem",
-            "version": "1.0.69",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "7106f78428a344bc4f643c233a94e48795f10967"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/7106f78428a344bc4f643c233a94e48795f10967",
-                "reference": "7106f78428a344bc4f643c233a94e48795f10967",
-                "shasum": ""
-            },
+          "name": "league/flysystem",
+          "version": "1.0.70",
+          "source": {
+            "type": "git",
+            "url": "https://github.com/thephpleague/flysystem.git",
+            "reference": "585824702f534f8d3cf7fab7225e8466cc4b7493"
+          },
+          "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/585824702f534f8d3cf7fab7225e8466cc4b7493",
+            "reference": "585824702f534f8d3cf7fab7225e8466cc4b7493",
+            "shasum": ""
+          },
             "require": {
                 "ext-fileinfo": "*",
                 "php": ">=5.5.9"
@@ -1770,8 +1770,8 @@
                 "league/flysystem-sftp": "<1.0.6"
             },
             "require-dev": {
-                "phpspec/phpspec": "^3.4",
-                "phpunit/phpunit": "^5.7.26"
+              "phpspec/phpspec": "^3.4 || ^4.0 || ^5.0 || ^6.0",
+              "phpunit/phpunit": "^5.7.26"
             },
             "suggest": {
                 "ext-fileinfo": "Required for MimeType",
@@ -1830,7 +1830,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2020-05-18T15:13:39+00:00"
+          "time": "2020-07-26T07:20:36+00:00"
         },
         {
             "name": "lorenzo/pinky",
@@ -8208,20 +8208,20 @@
         }
     ],
     "packages-dev": [
-        {
-            "name": "nikic/php-parser",
-            "version": "v4.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "c346bbfafe2ff60680258b631afb730d186ed864"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/c346bbfafe2ff60680258b631afb730d186ed864",
-                "reference": "c346bbfafe2ff60680258b631afb730d186ed864",
-                "shasum": ""
-            },
+      {
+        "name": "nikic/php-parser",
+        "version": "v4.7.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/nikic/PHP-Parser.git",
+          "reference": "21dce06dfbf0365c6a7cc8fdbdc995926c6a9300"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/21dce06dfbf0365c6a7cc8fdbdc995926c6a9300",
+          "reference": "21dce06dfbf0365c6a7cc8fdbdc995926c6a9300",
+          "shasum": ""
+        },
             "require": {
                 "ext-tokenizer": "*",
                 "php": ">=7.0"
@@ -8236,7 +8236,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.3-dev"
+                  "dev-master": "4.7-dev"
                 }
             },
             "autoload": {
@@ -8258,7 +8258,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2020-07-02T17:12:47+00:00"
+        "time": "2020-07-25T13:18:53+00:00"
         },
         {
             "name": "symfony/browser-kit",
