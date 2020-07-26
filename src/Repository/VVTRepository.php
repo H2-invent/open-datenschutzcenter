@@ -3,9 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\VVT;
-use App\Entity\VVTDsfa;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * @method VVT|null find($id, $lockMode = null, $lockVersion = null)
