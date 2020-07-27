@@ -47,9 +47,13 @@
                 </p>
                 <spacer size="16"></spacer>
                 <p style="text-align: center">
-                    <a href="{{ dataPrivacy }}">Datenschutzhinweis</a>
+                    <a href="{{ dataPrivacy }}">Datenschutzhinweis</a><br>
+                    {% if team is defined and team is not null %}
+                        {% trans %}Diese Mail wurde Ihnen gesendet im Auftrag von:{% endtrans %}
+                        {{ team.name }} - {{ team.strasse }}, {{ team.plz }} {{ team.stadt }}
+                    {% endif %}
                 </p>
-                <spacer size="16"></spacer>
+
             </columns>
         </row>
         <center>
