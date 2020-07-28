@@ -1,5 +1,3 @@
-<h4 style="text-align: center">Interne Dateschutzrichtlinie
-    von {{ d.team.name }} {% if not d.activ %}Historie {% endif %}</h4>
 <style>
     th, td {
         padding: 5px;
@@ -8,6 +6,9 @@
     }
 </style>
 
+<h4 style="text-align: center">Interne Dateschutzrichtlinie
+    von {{ d.team.name }} {% if not d.activ %}Historie {% endif %}</h4>
+
 <h1 style="margin-bottom: 20px; text-align: center">
     {{ d.title }}
 </h1>
@@ -15,7 +16,7 @@
     Referenz: {{ d.reference }}
 </p>
 <p>
-    {{ d.scope|nl2br }}
+    {{ d.scope|raw }}
 </p>
 
 <p>
@@ -26,26 +27,26 @@
 
 <p>
     <b>Risiken:</b><br>
-    {{ d.risk|nl2br }}
+    {{ d.risk|raw }}
 </p>
 
 <p>
     <b>Bezug zu Gesetzen, Verordnungen und Standards:</b> <br>
-    {{ d.foundation|nl2br }}
+    {{ d.foundation|raw }}
 </p>
 
 <p>
     <b>Zu ergreifende Schutzmaßnahmen:</b> <br>
-    {{ d.protection }}
+    {{ d.protection|raw }}
 </p>
 
 <p>
-    {{ d.consequences }}
+    {{ d.consequences|raw }}
 </p>
 
 <p style="margin-bottom: 60px">
     <b>Hinweis:</b><br>
-    {{ d.notes }}
+    {{ d.notes|raw }}
 </p>
 
 <table style="table-layout:fixed; width: 100%">

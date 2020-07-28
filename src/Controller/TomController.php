@@ -10,6 +10,8 @@ namespace App\Controller;
 use App\Entity\AuditTom;
 use App\Entity\Tom;
 use App\Form\Type\TomType;
+use App\Service\ApproveService;
+use App\Service\DisableService;
 use App\Service\SecurityService;
 use App\Service\TomService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -90,7 +92,7 @@ class TomController extends AbstractController
         $form->remove('titel');
         $form->handleRequest($request);
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === true) {
+        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === 1 && !$tom->getApproved()) {
 
             $tom->setActiv(false);
             $newTom = $form->getData();
@@ -147,5 +149,36 @@ class TomController extends AbstractController
 
         return $this->redirectToRoute('audit_tom');
 
+    }
+
+    /**
+     * @Route("/tom/approve", name="tom_approve")
+     */
+    public function approve(Request $request, SecurityService $securityService, ApproveService $approveService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $tom = $this->getDoctrine()->getRepository(Tom::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($tom, $team) === false) {
+            return $this->redirectToRoute('tom');
+        }
+        $approve = $approveService->approve($tom, $this->getUser());
+
+        return $this->redirectToRoute('tom_edit', ['tom' => $tom->getId(), 'snack' => $approve['snack']]);
+    }
+
+    /**
+     * @Route("/tom/disable", name="tom_disable")
+     */
+    public function disable(Request $request, SecurityService $securityService, DisableService $disableService)
+    {
+        $team = $this->getUser()->getAdminUser();
+        $tom = $this->getDoctrine()->getRepository(Tom::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($tom, $team) === true) {
+            $disableService->disable($tom, $this->getUser());
+        }
+
+        return $this->redirectToRoute('tom');
     }
 }

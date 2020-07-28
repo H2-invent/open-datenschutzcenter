@@ -42,7 +42,7 @@ class Policies
     private $createdAt;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="integer")
      */
     private $activ;
 
@@ -209,12 +209,12 @@ class Policies
         return $this;
     }
 
-    public function getActiv(): ?bool
+    public function getActiv(): ?int
     {
         return $this->activ;
     }
 
-    public function setActiv(bool $activ): self
+    public function setActiv(int $activ): self
     {
         $this->activ = $activ;
 

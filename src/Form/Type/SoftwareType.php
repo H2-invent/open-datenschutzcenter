@@ -61,13 +61,15 @@ class SoftwareType extends AbstractType
                     'In Bearbeitung' => 10,
                     'In Prüfung' => 20,
                     'Zur Freigegebe vorgelegt' => 30,
-                    'Lizenz abgelaufen' => 50,
-                    'Nicht mehr in Verwendung' => 60,],
+                    'Inaktiv' => 60,],
                 'label' => 'Status',
                 'translation_domain' => 'form',
                 'multiple' => false,
             ])
             ->add('location', TextType::class, ['label' => 'Standort der Software', 'required' => false, 'translation_domain' => 'form'])
+            ->add('archiving', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Archivierungskonzept', 'required' => false, 'translation_domain' => 'form'])
+            ->add('recovery', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Notfallplanung und Widerherstellungskonzept', 'required' => false, 'translation_domain' => 'form'])
+            ->add('permissions', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Berechtigungskonzept', 'required' => false, 'translation_domain' => 'form'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 

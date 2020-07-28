@@ -12,6 +12,7 @@ use App\Entity\Datenweitergabe;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\DatenweitergabeService;
+use App\Service\DisableService;
 use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
 use Psr\Log\LoggerInterface;
@@ -251,17 +252,13 @@ class DatenweitergabeController extends AbstractController
     /**
      * @Route("/datenweitergabe/disable", name="datenweitergabe_disable")
      */
-    public function disableDatenweitergabe(Request $request, SecurityService $securityService)
+    public function disableDatenweitergabe(Request $request, SecurityService $securityService, DisableService $disableService)
     {
         $team = $this->getUser()->getAdminUser();
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) === true && !$daten->getApproved()) {
-
-            $daten->setActiv(false);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($daten);
-            $em->flush();
+            $disableService->disable($daten, $this->getUser());
         }
 
         if ($daten->getArt() === 1) {

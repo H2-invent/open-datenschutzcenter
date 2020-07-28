@@ -7,6 +7,7 @@ import '../css/app.css';
 
 import $ from 'jquery';
 import 'datatables.net-dt';
+import 'summernote/dist/summernote-bs4';
 
 global.$ = global.jQuery = $;
 
@@ -51,6 +52,23 @@ $(document).ready(function () {
             'csv', 'excel'
 
         ]
+    });
+
+    $('.summernote').summernote({
+        placeholder: 'Gebe hier den Text ein',
+        tabsize: 2,
+        height: 200,
+        focus: true,
+        lang: 'de-DE',
+        toolbar: [
+            ['style', ['pre']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['color', []],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link']],
+            ['view', ['fullscreen', 'codeview']]
+        ],
     });
 });
 

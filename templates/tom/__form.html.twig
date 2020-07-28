@@ -1,100 +1,172 @@
 {{ form_start(form) }}
-<div {% if not activ %}class="disabled"{% endif %}>
-    <div class="mb-4">
+<div {% if not activ or tom.approved %}class="disabled"{% endif %}>
+    <div class="mb-4 row">
         {% if activTitel %}
-            {{ form_label(form.titel) }}
-            {{ form_widget(form.titel) }}
+            <div class="col-md-3">
+                {{ form_label(form.titel) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.titel) }}
+            </div>
         {% endif %}
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.beschreibung) }}
-        {{ form_widget(form.beschreibung) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.beschreibung) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.beschreibung) }}
+        </div>
     </div>
 
     <h3>A. Pseudonymisierung Verschlüsselung (Art. 32 Abs. 1 lit. a) DSGVO)</h3>
-    <div class="mb-4">
-        {{ form_label(form.tomPseudo) }}
-        {{ form_widget(form.tomPseudo) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomPseudo) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomPseudo) }}
+        </div>
     </div>
 
     <h3>B. Vertraulichkeit (Art. 32 Abs. 1 lit. b) DSGVO) </h3>
-    <div class="mb-4">
-        {{ form_label(form.tomZutrittskontrolle) }}
-        {{ form_widget(form.tomZutrittskontrolle) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomZutrittskontrolle) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomZutrittskontrolle) }}
+        </div>
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.tomZugangskontrolle) }}
-        {{ form_widget(form.tomZugangskontrolle) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomZugangskontrolle) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomZugangskontrolle) }}
+        </div>
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.tomZugriffskontrolle) }}
-        {{ form_widget(form.tomZugriffskontrolle) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomZugriffskontrolle) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomZugriffskontrolle) }}
+        </div>
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.tomBenutzerkontrolle) }}
-        {{ form_widget(form.tomBenutzerkontrolle) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomBenutzerkontrolle) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomBenutzerkontrolle) }}
+        </div>
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.tomSpeicherkontrolle) }}
-        {{ form_widget(form.tomSpeicherkontrolle) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomSpeicherkontrolle) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomSpeicherkontrolle) }}
+        </div>
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.tomTrennbarkeit) }}
-        {{ form_widget(form.tomTrennbarkeit) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomTrennbarkeit) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomTrennbarkeit) }}
+        </div>
     </div>
 
     <h3>C. Integrität (Art. 32 Abs. 1 lit. c) DSGVO) </h3>
-    <div class="mb-4">
-        {{ form_label(form.tomDatenintegritaet) }}
-        {{ form_widget(form.tomDatenintegritaet) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomDatenintegritaet) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomDatenintegritaet) }}
+        </div>
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.tomTransportkontrolle) }}
-        {{ form_widget(form.tomTransportkontrolle) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomTransportkontrolle) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomTransportkontrolle) }}
+        </div>
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.tomUebertragungskontrolle) }}
-        {{ form_widget(form.tomUebertragungskontrolle) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomUebertragungskontrolle) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomUebertragungskontrolle) }}
+        </div>
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.tomEingabekontrolle) }}
-        {{ form_widget(form.tomEingabekontrolle) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomEingabekontrolle) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomEingabekontrolle) }}
+        </div>
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.tomZuverlaessigkeit) }}
-        {{ form_widget(form.tomZuverlaessigkeit) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomZuverlaessigkeit) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomZuverlaessigkeit) }}
+        </div>
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.tomAuftragskontrolle) }}
-        {{ form_widget(form.tomAuftragskontrolle) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomAuftragskontrolle) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomAuftragskontrolle) }}
+        </div>
     </div>
 
     <h3>D. Verfügbarkeit und Belastbarkeit (Art. 32 Abs. 1 lit. c) DSGVO) </h3>
-    <div class="mb-4">
-        {{ form_label(form.tomVerfuegbarkeitskontrolle) }}
-        {{ form_widget(form.tomVerfuegbarkeitskontrolle) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomVerfuegbarkeitskontrolle) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomVerfuegbarkeitskontrolle) }}
+        </div>
     </div>
 
-    <div class="mb-4">
-        {{ form_label(form.tomWiederherstellbarkeit) }}
-        {{ form_widget(form.tomWiederherstellbarkeit) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomWiederherstellbarkeit) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomWiederherstellbarkeit) }}
+        </div>
     </div>
 
     <h3>E. Verfahren zur regelmässigen Überprüfung, Bewertung und Evaluierung (Art. 32 Abs. 1 lit. c) DSGVO)</h3>
-    <div class="mb-4">
-        {{ form_label(form.tomAudit) }}
-        {{ form_widget(form.tomAudit) }}
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.tomAudit) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.tomAudit) }}
+        </div>
     </div>
 
     {{ form_widget(form.save) }}

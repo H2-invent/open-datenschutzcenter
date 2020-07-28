@@ -22,6 +22,11 @@ class DatenweitergabeStand
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $network;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +40,18 @@ class DatenweitergabeStand
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getNetwork(): ?bool
+    {
+        return $this->network;
+    }
+
+    public function setNetwork(?bool $network): self
+    {
+        $this->network = $network;
 
         return $this;
     }

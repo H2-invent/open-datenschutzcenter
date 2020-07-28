@@ -138,6 +138,21 @@ class Software
      */
     private $approvedBy;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $archiving;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $recovery;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $permissions;
+
     public function __construct()
     {
         $this->vvts = new ArrayCollection();
@@ -288,13 +303,13 @@ class Software
                 return 'Zur Freigegebe vorgelegt';
                 break;
             case 40:
-                return 'Freigegeben';
+                return 'Freigegeben'; //Nicht mehr in Verwendung
                 break;
             case 50:
-                return 'Lizenz abgelaufen';
+                return 'Lizenz abgelaufen'; //Nicht mehr in Verwendung
                 break;
             case 60:
-                return 'Nicht mehr in Verwendung';
+                return 'Inaktiv';
                 break;
             default:
                 return "Angelegt";
@@ -475,6 +490,42 @@ class Software
     public function setApprovedBy(?User $approvedBy): self
     {
         $this->approvedBy = $approvedBy;
+
+        return $this;
+    }
+
+    public function getArchiving(): ?string
+    {
+        return $this->archiving;
+    }
+
+    public function setArchiving(?string $archiving): self
+    {
+        $this->archiving = $archiving;
+
+        return $this;
+    }
+
+    public function getRecovery(): ?string
+    {
+        return $this->recovery;
+    }
+
+    public function setRecovery(?string $recovery): self
+    {
+        $this->recovery = $recovery;
+
+        return $this;
+    }
+
+    public function getPermissions(): ?string
+    {
+        return $this->permissions;
+    }
+
+    public function setPermissions(?string $permissions): self
+    {
+        $this->permissions = $permissions;
 
         return $this;
     }

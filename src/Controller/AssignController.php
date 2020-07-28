@@ -7,6 +7,7 @@ use App\Entity\Datenweitergabe;
 use App\Entity\Forms;
 use App\Entity\Policies;
 use App\Entity\Software;
+use App\Entity\Vorfall;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Service\AssignService;
@@ -144,6 +145,21 @@ class AssignController extends AbstractController
         }
 
         $res = $assignService->assignSoftware($request, $software);
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @Route("/assign/vorfall", name="assign_vorfall")
+     */
+    public function assignVorfall(Request $request, AssignService $assignService, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getTeam();
+        $vorfall = $this->getDoctrine()->getRepository(Vorfall::class)->find($request->get('id'));
+        if ($securityService->teamDataCheck($vorfall, $team) === false) {
+            return $this->redirectToRoute('vorfall');
+        }
+
+        $res = $assignService->assignVorfall($request, $vorfall);
         return $this->redirect($request->headers->get('referer'));
     }
 }

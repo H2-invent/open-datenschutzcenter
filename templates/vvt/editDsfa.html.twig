@@ -14,29 +14,67 @@
 
     {{ form_start(form) }}
     <div class="card card-body {% if not dsfa.vvt.activ or dsfa.vvt.approved %}disabled{% endif %}">
-        {{ form_label(form.beschreibung) }}
-        {{ form_widget(form.beschreibung) }}
-
-        {{ form_label(form.notwendigkeit) }}
-        {{ form_widget(form.notwendigkeit) }}
-
-        {{ form_label(form.risiko) }}
-        {{ form_widget(form.risiko) }}
-
-        {{ form_label(form.abhilfe) }}
-        {{ form_widget(form.abhilfe) }}
-
-        {{ form_label(form.standpunkt) }}
-        {{ form_widget(form.standpunkt) }}
-
-        {{ form_label(form.dsb) }}
-        {{ form_widget(form.dsb) }}
-
-        {{ form_label(form.ergebnis) }}
-        {{ form_widget(form.ergebnis) }}
-
+        <div class="row">
+            <div class="col-md-3">
+                {{ form_label(form.beschreibung) }}
+                {{ form_help(form.beschreibung) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.beschreibung) }}
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-3">
+                {{ form_label(form.notwendigkeit) }}
+                {{ form_help(form.notwendigkeit) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.notwendigkeit) }}
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-3">
+                {{ form_label(form.risiko) }}
+                {{ form_help(form.risiko) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.risiko) }}
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-3">
+                {{ form_label(form.abhilfe) }}
+                {{ form_help(form.abhilfe) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.abhilfe) }}
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-3">
+                {{ form_label(form.standpunkt) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.standpunkt) }}
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-3">
+                {{ form_label(form.dsb) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.dsb) }}
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-3">
+                {{ form_label(form.ergebnis) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.ergebnis) }}
+            </div>
+        </div>
         {{ form_widget(form.save) }}
-
     </div>
     {{ form_end(form) }}
     <p>Erstellt von: {{ dsfa.user.email }}</p>

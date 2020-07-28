@@ -16,6 +16,7 @@ use App\Entity\Policies;
 use App\Entity\Software;
 use App\Entity\Team;
 use App\Entity\User;
+use App\Entity\Vorfall;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Form\Type\AssignType;
@@ -240,6 +241,30 @@ class AssignService
                 $software->setAssignedUser(null);
             }
             $this->em->persist($software);
+            $this->em->flush();
+
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    function assignVorfall($request, Vorfall $vorfall)
+    {
+        try {
+
+            if ($vorfall->getAssignedUser() == null) {
+                $data = $request->get('assign');
+                $user = $this->em->getRepository(User::class)->find($data['user']);
+                if ($vorfall->getTeam() === $user->getTeam()) {
+                    $vorfall->setAssignedUser($user);
+                    $content = $this->twig->render('email/assignementVorfall.html.twig', ['assign' => $vorfall->getFakten(), 'data' => $vorfall, 'team' => $user->getTeam()]);
+                    $this->notificationService->sendNotificationAssign($content, $user);
+                }
+            } else {
+                $vorfall->setAssignedUser(null);
+            }
+            $this->em->persist($vorfall);
             $this->em->flush();
 
             return true;

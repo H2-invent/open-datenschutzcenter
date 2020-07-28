@@ -1,54 +1,76 @@
+<div class="row">
+    <div class="col-md-3">
+        <p>Vorfall zuweisen</p>
+    </div>
+    <div class="col-md-9">
+        {% if assignForm is defined %}{{ include('assign/__assign.html.twig',{'data':vorfall,'path':'assign_vorfall'}) }}{% endif %}
+    </div>
+</div>
 {{ form_start(form) }}
-<div class="row {% if not activ %}disabled{% endif %}">
-    <div class="col-md-8">
-        <div class="mb-4">
+<div class="{% if not activ or vorfall.approved %}disabled{% endif %}">
+    <div class="row mt-4">
+        <div class="col-md-3">
             {{ form_label(form.fakten) }}
+        </div>
+        <div class="col-md-9">
             {{ form_widget(form.fakten) }}
         </div>
-        <div class="mb-4">
-            {{ form_label(form.auswirkung) }}
-            {{ form_widget(form.auswirkung) }}
-        </div>
-        <div class="mb-4">
-            {{ form_label(form.massnahmen) }}
-            {{ form_widget(form.massnahmen) }}
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-4">
-                    {{ form_label(form.personen) }}
-                    {{ form_widget(form.personen) }}
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-4">
-                    {{ form_label(form.daten) }}
-                    {{ form_widget(form.daten) }}
-                </div>
-            </div>
-        </div>
-
-        {{ form_label(form.save) }}
-        {{ form_widget(form.save) }}
     </div>
-    <div class="col-md-4">
-        <div class="mb-4">
+    <div class="row mt-4">
+        <div class="col-md-3">
             {{ form_label(form.datum) }}
+        </div>
+        <div class="col-md-9">
             {{ form_widget(form.datum) }}
         </div>
-        <h3>Meldungen</h3>
-        <div class="mb-4">
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            {{ form_label(form.auswirkung) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.auswirkung) }}
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            {{ form_label(form.massnahmen) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.massnahmen) }}
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            {{ form_label(form.personen) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.personen) }}
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            {{ form_label(form.daten) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.daten) }}
+        </div>
+    </div>
+    <h3 class="h3-responsive mt-4">Meldungen</h3>
+    <div class="row mt-4">
+        <div class="col-md-3">
             {{ form_label(form.gemeldet) }}
-            {{ form_widget(form.gemeldet) }}
-        </div>
-        <div class="mb-4">
-            {{ form_label(form.betroffeneGemeldet) }}
-            {{ form_widget(form.betroffeneGemeldet) }}
-        </div>
-        <div class="mb-4">
             {{ form_label(form.auftraggeberGemeldet) }}
+            {{ form_label(form.betroffeneGemeldet) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.gemeldet) }}
+            {{ form_widget(form.betroffeneGemeldet) }}
             {{ form_widget(form.auftraggeberGemeldet) }}
         </div>
     </div>
+
+    {{ form_label(form.save) }}
+    {{ form_widget(form.save) }}
 </div>
 {{ form_end(form) }}

@@ -13,6 +13,7 @@ use App\Entity\VVTDsfa;
 use App\Form\Type\VvtDsfaType;
 use App\Service\ApproveService;
 use App\Service\AssignService;
+use App\Service\DisableService;
 use App\Service\SecurityService;
 use App\Service\VVTService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -241,16 +242,13 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/disable", name="vvt_disable")
      */
-    public function disableVvt(Request $request, SecurityService $securityService)
+    public function disableVvt(Request $request, SecurityService $securityService, DisableService $disableService)
     {
         $team = $this->getUser()->getAdminUser();
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) === true && !$vvt->getApproved()) {
-            $vvt->setActiv(false);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($vvt);
-            $em->flush();
+            $disableService->disable($vvt, $this->getUser());
         }
 
         return $this->redirectToRoute('vvt');

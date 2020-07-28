@@ -6,7 +6,7 @@ use App\Entity\AkademieBuchungen;
 use App\Entity\User;
 use App\Form\Type\NewMemberType;
 use App\Service\InviteService;
-use Core23\DompdfBundle\Wrapper\DompdfWrapper;
+use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

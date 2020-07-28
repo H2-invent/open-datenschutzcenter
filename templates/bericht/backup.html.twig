@@ -1,0 +1,16 @@
+{% extends 'bericht/berichtBase.html.twig' %}
+
+{% block body %}
+    <div style="page-break-before: always;">
+        <h1>Archiviungskonzept nach Software</h1>
+        {% for d in daten %}
+            {{ include('bericht/__backupBericht.html.twig', {'d':d}) }}
+        {% endfor %}
+    </div>
+    <div style="page-break-before: always;">
+        <h1>Archiviungskonzept nach Verarbeitungen</h1>
+        {% for d in vvt %}
+            {{ include('bericht/__backup2Bericht.html.twig', {'d':d}) }}
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -21,6 +21,12 @@
     </tr>
     <tr>
         <td>
+            Freigabe
+        </td>
+        <td>{% if d.approved %}Vorfall freigegeben von {{ d.approvedBy.username }}{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
             Fakten und Beschreibung des Datenschutzvorfalls
         </td>
         <td>{{ d.fakten|nl2br }}</td>

@@ -1,6 +1,6 @@
 {{ form_start(form) }}
 <div class="row">
-    <div class="col-md-8 {% if not activ or daten.approved %}disabled{% endif %}">
+    <div class="col-md-8 {% if not activ == 1 or daten.approved %}disabled{% endif %}">
         <div class="mt-2">
             {{ form_label(form.title) }}
             {{ form_widget(form.title) }}

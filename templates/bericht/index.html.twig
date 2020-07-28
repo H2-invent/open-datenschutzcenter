@@ -86,6 +86,26 @@
                 </a>
             </div>
 
+            <div class="col-lg-3 mt-2">
+                <h4>Software</h4>
+                <a class="btn btn-block bg-software" href="{{ path('bericht_software') }}"
+                   title="Exportieren Sie alle Anwenungen und Konfigurationen">
+                    <span>Alle Anwendungen exportieren</span>
+                </a>
+                <a class="btn btn-block bg-software" href="{{ path('bericht_software', {'all':1}) }}"
+                   title="Exportieren Sie alle Anwendungen mit allen Änderungen">
+                    <span>Alle Anwendungen mit Historie exportieren</span>
+                </a>
+                <a class="btn btn-block bg-software" href="{{ path('bericht_backupconcept') }}"
+                   title="Exportieren Sie das Archivierungskonzept von allen Anwendungen">
+                    <span>Archivierungskonzept exportieren</span>
+                </a>
+                <a class="btn btn-block bg-software" href="{{ path('bericht_recoveryconcept') }}"
+                   title="Exportieren Sie das Archivierungskonzept von allen Anwendungen">
+                    <span>Recoverykonzept exportieren</span>
+                </a>
+            </div>
+
             {% if app.user.adminUser %}
                 <div class="col-lg-3 mt-2">
                     <h4>Akademie</h4>

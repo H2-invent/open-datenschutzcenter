@@ -8,8 +8,9 @@
         <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_software', {'id':software.id, 'all':1}) }}">
             <span>PDF mit Historie erstellen</span>
         </a>
+        {{ include('base/__approveBtn.html.twig',{'data':software,'dataLink':'software_approve'}) }}
     {% endif %}
-    {{ include('base/__approveBtn.html.twig',{'data':software,'dataLink':'software_approve'}) }}
+
 {% endblock %}
 
 {% block body %}

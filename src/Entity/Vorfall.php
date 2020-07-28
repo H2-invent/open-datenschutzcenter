@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Repository\VorfallRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 
 /**
  * @ORM\Entity(repositoryClass=VorfallRepository::class)
@@ -100,6 +100,21 @@ class Vorfall
      * @ORM\ManyToMany(targetEntity=VVTDatenkategorie::class)
      */
     private $daten;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $approvedBy;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedVorfalls")
+     */
+    private $assignedUser;
 
     public function __construct()
     {
@@ -316,6 +331,42 @@ class Vorfall
         if ($this->daten->contains($daten)) {
             $this->daten->removeElement($daten);
         }
+
+        return $this;
+    }
+
+    public function getApproved(): ?bool
+    {
+        return $this->approved;
+    }
+
+    public function setApproved(?bool $approved): self
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
+    public function getApprovedBy(): ?User
+    {
+        return $this->approvedBy;
+    }
+
+    public function setApprovedBy(?User $approvedBy): self
+    {
+        $this->approvedBy = $approvedBy;
+
+        return $this;
+    }
+
+    public function getAssignedUser(): ?User
+    {
+        return $this->assignedUser;
+    }
+
+    public function setAssignedUser(?User $assignedUser): self
+    {
+        $this->assignedUser = $assignedUser;
 
         return $this;
     }

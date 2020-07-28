@@ -1,0 +1,55 @@
+<h2>{% if not d.activ %}Historie: {% endif %}{{ d.nummer }}: {{ d.name }}
+    (id:{{ d.id }})</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Name der Software
+        </td>
+        <td><a href="{{ absolute_url(path('software_edit', {'id':d.id})) }}">{{ d.name }}</a></td>
+    </tr>
+    <tr>
+        <td>
+            Aktenzeichen
+        </td>
+        <td>{{ d.reference }}</td>
+    </tr>
+    <tr>
+        <td>
+            Inventarnummer
+        </td>
+        <td>{{ d.nummer }}</td>
+    </tr>
+    <tr>
+        <td>
+            Status
+        </td>
+        <td>
+            {% if d.licenseExpiration < date() and d.licenseExpiration is not null %}
+                ABGELAUFEN
+            {% elseif d.approved %}
+                Software und Konfiguration freigegeben
+            {% else %}
+                {{ d.statusString }}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Archivierungskonzept
+        </td>
+        <td>{{ d.archiving|nl2br }}</td>
+    </tr>
+</table>
+
+
+{{ d.createdAt|date('d.m.Y H:i') }} by {{ d.user.email }}
+{% if d.previous and all == 1 %}
+    {{ include('bericht/__backupBericht.html.twig', {'d':d.previous}) }}
+{% endif %}
