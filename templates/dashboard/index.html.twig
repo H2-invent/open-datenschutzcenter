@@ -190,6 +190,14 @@
             '{{ v.abteilung.id }}',
                     {% endif %}
                     {% endfor %}
+                    {% for s in n.software if s.activ %}
+                    {% for v in s.vvts if v.activ %}
+                    {% if v.abteilung %}
+                ab{{ v.abteilung.id }}:
+            '{{ v.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
                 label
         :
             '{% if n.approved %}✔ {% endif %}DW \n{{ n.gegenstand }}',
@@ -221,6 +229,14 @@
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
                     {% endif %}
+                    {% endfor %}
+                    {% for s in n.software if s.activ %}
+                    {% for v in s.vvts if v.activ %}
+                    {% if v.abteilung %}
+                ab{{ v.abteilung.id }}:
+            '{{ v.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
                     {% endfor %}
                 label
         :

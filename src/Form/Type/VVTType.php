@@ -142,7 +142,7 @@ class VVTType extends AbstractType
             ->add('dsb', TextareaType::class, ['attr' => ['rows' => 6], 'label' => 'Kommentar des Datenschutzbeauftragten', 'required' => false, 'translation_domain' => 'form'])
             ->add('beurteilungEintritt', ChoiceType::class, [
                 'choices' => [
-                    'Bitte auswählen' => null,
+                    'Bitte auswählen' => 0,
                     'Vernachlässigbar' => 1,
                     'Eingeschränk möglich' => 2,
                     'Signifikant' => 3,
@@ -155,7 +155,7 @@ class VVTType extends AbstractType
             ])
             ->add('beurteilungSchaden', ChoiceType::class, [
                 'choices' => [
-                    'Bitte auswählen' => null,
+                    'Bitte auswählen' => 0,
                     'Gering (kaum Auswirkung)' => 1,
                     'Eingeschränkt vorhanden' => 2,
                     'Signifikant' => 3,
