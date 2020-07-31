@@ -345,12 +345,20 @@
                 url
         :
             "{{ path('kontakt_edit', {'id':n.id}) }}",
-            {% for d in n.datenweitergaben if d.activ %}
-            {% for v in d.verfahren if v.activ %}
+                    {% for d in n.datenweitergaben if d.activ %}
+                    {% for v in d.verfahren if v.activ %}
+                    {% if v.abteilung and d.stand.network %}
+                ab{{ v.abteilung.id }}:
+            '{{ v.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
+                    {% for s in d.software if s.activ %}
+                    {% for v in s.vvts if v.activ %}
                     {% if v.abteilung and d.stand.network %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
             {% endif %}
+            {% endfor %}
             {% endfor %}
             {% endfor %}
         }
