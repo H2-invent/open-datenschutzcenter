@@ -36,10 +36,11 @@
 
 <main>
     <div style="font-family: Helvetica">
-        <h1>{{ titel }}</h1>
-        <h3>Verantwortliche Stelle: {{ team.name }}</h3>
-        <h3>Letze Version erstellt am: {{ daten[0].createdAt|date('d.m.Y H:i') }}</h3>
-        <h4>Letze Version erstellt von: {{ daten[0].user.email }}</h4>
+        <h1 style="margin-top: 200px">{{ titel }}</h1>
+        <h3 style="margin-top: 50px">Verantwortliche Stelle: {{ team.name }}</h3>
+        <h4>{{ team.signature|nl2br }}</h4>
+        <h5 style="margin-top: 40px">Export erstellt am: {{ "now"|date('d.m.Y H:i') }}</h5>
+        <h5>Version erstellt von: {{ app.user.email }}</h5>
 
         {% block body %}{% endblock %}
     </div>
@@ -47,6 +48,7 @@
 
 <footer>
     Erstellt am: {{ "now"|date("d.m.Y H:i") }} mit <strong>Open-Datenschutz Center</strong><br>
-    <small>Open-Datenschutz Center ist die Open Source Lösung um Datenschutzdokumente schnell, einfach und sicher zu erstellen</small>
+    <small>Open-Datenschutz Center ist die Open Source Lösung um Datenschutzdokumente schnell, einfach und sicher zu
+        erstellen</small>
 </footer>
 </body>
