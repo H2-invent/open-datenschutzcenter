@@ -112,8 +112,12 @@
                     <b>{{ c.id }}: {{ c.name }} ({{ c.createdAt|date('d.m.Y') }})</b>
                 </p>
                 <p>
-                    {{ c.config|nl2br }}
+                    {{ c.config|raw }}
                 </p>
+                {% if c.upload %}
+                    <a href="{{ absolute_url(path('software_config_new',{'id':d.id, 'config':c.id})) }}">Bild
+                        anzeigen</a>
+                {% endif %}
             </td>
         </tr>
     {% endfor %}

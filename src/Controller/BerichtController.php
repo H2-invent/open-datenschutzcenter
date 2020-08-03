@@ -346,7 +346,6 @@ class BerichtController extends AbstractController
         if ($team === null || $software[0]->getTeam() !== $team) {
             return $this->redirectToRoute('dashboard');
         }
-
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/software.html.twig', [
             'daten' => $software,

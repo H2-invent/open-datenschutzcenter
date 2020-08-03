@@ -8,8 +8,10 @@ use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\SecurityService;
 use App\Service\SoftwareService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -166,6 +168,7 @@ class SoftwareController extends AbstractController
         }
         return $this->render('software/newConfig.html.twig', [
             'form' => $form->createView(),
+            'config' => $config,
             'errors' => $errors,
             'title' => 'Konfiguration für',
             'activ' => $software->getActiv(),
@@ -206,5 +209,22 @@ class SoftwareController extends AbstractController
         $approve = $approveService->approve($software, $this->getUser());
 
         return $this->redirectToRoute('software_edit', ['id' => $software->getId(), 'snack' => $approve['snack']]);
+    }
+
+    /**
+     * @Route("/software/config/download/{id}", name="software_config_download_file", methods={"GET"})
+     * @ParamConverter("softwareConfig", options={"mapping"={"id"="id"}})
+     */
+    public function downloadArticleReference(SoftwareConfig $softwareConfig, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getTeam();
+        $path = $this->getParameter('kernel.project_dir') . "/data/software/" . $softwareConfig->getUpload();
+
+        if ($securityService->teamDataCheck($softwareConfig->getSoftware(), $team) === false) {
+            return $this->redirectToRoute('software');
+        }
+
+        $file = file_get_contents($path);
+        return new Response($file, 200);
     }
 }

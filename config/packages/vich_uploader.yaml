@@ -22,6 +22,11 @@ vich_uploader:
             upload_destination: daten_adapter
             namer: vich_uploader.namer_uniqid
             delete_on_update: true
+        software:
+            uri_prefix: '%kernel.project_dir%/data/software'
+            upload_destination: software_adapter
+            namer: vich_uploader.namer_uniqid
+            delete_on_update: true
 
 
 

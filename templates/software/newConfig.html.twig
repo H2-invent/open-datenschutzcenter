@@ -2,6 +2,8 @@
 
 {% block body %}
     <h2 class="h2-responsive">{{ title }} {{ software.name }}</h2>
+    <a href="{{ path('software_edit', {'id':software.id}) }}"
+       class="btn btn-sm btn-primary">{% trans %}Zurück zur Software{% endtrans %}</a>
     <div class="card card-body {% if not activ or software.approved %}disabled{% endif %}">
         {{ include('software/__ConfigForm.html.twig') }}
     </div>
