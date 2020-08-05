@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class SoftwareConfigType extends AbstractType
 {
@@ -24,9 +25,17 @@ class SoftwareConfigType extends AbstractType
 
         $builder
             ->add('name', TextType::class, ['label' => 'Bezeichnung der Konfiguration', 'required' => true, 'translation_domain' => 'form'])
-            ->add('config', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Konfiguration', 'required' => true, 'translation_domain' => 'form'])
+            ->add('config', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Konfiguration', 'required' => true, 'translation_domain' => 'form'])
             ->add('activ', CheckboxType::class, ['label' => 'Konfiguration Aktiv', 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form'])
+            ->add('uploadFile', VichImageType::class, [
+                'required' => false,
+                'allow_delete' => true,
+                'delete_label' => 'Löschen',
+                'label' => 'Bild hochladen',
+                'translation_domain' => 'form',
+                'download_label' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -96,9 +96,17 @@
     </tr>
     <tr>
         <td>
-            Verwendete Software
+            Verwendete Software<br> und verbundene Datenweitergaben
         </td>
-        <td>{% for dd in d.software if dd.activ %}{{ dd.name }}<br>{% endfor %}</td>
+        <td>{% for dd in d.software if dd.activ %}
+                {{ dd.name }}
+                <ul>
+                    {% for d in dd.datenweitergabe if d.activ %}
+                        <li>{{ d.gegenstand }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </td>
     </tr>
     <tr>
         <td>
@@ -151,7 +159,7 @@
         <td>
             Beurteilung und Kommentar des Datenschutzbeauftragten
         </td>
-        <td>{{ d.dsb }}</td>
+        <td>{{ d.dsb|nl2br }}</td>
     </tr>
     <tr>
         <td>
@@ -164,4 +172,8 @@
 {{ d.createdAt|date('d.m.Y H:i') }} by {{ d.user.email }}
 {% if d.previous and all == 1 %}
     {{ include('bericht/__vvtBericht.html.twig', {'d':d.previous}) }}
+{% endif %}
+
+{% if d.activDsfa and min is null %}
+    {{ include('bericht/__vvtDsfaBericht.html.twig', {'dsfa':d.activDsfa, 'd':d}) }}
 {% endif %}

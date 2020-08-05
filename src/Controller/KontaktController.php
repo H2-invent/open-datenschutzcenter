@@ -50,7 +50,7 @@ class KontaktController extends AbstractController
 
         $kontakt = new Kontakte();
         $kontakt->setTeam($team);
-        $kontakt->setActiv(true);
+        $kontakt->setActiv(1);
         $form = $this->createForm(KontaktType::class, $kontakt);
         $form->handleRequest($request);
 
@@ -66,9 +66,11 @@ class KontaktController extends AbstractController
             }
         }
         return $this->render('kontakt/edit.html.twig', [
+            'kontakt' => $kontakt,
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Kontakt erstellen',
+            'new' => true,
         ]);
     }
 
