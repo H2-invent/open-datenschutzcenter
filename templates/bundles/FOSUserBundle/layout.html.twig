@@ -41,9 +41,6 @@
                         <hr class="mt-4">
                         {% if app.user.email is defined and app.user.email is not null %}
                             <a class="btn btn-secondary" href="{{ path('dashboard') }}">Zurück zum Dashboard</a>
-                        {% else %}
-                            <a class="btn btn-secondary"
-                               href="{{ path('fos_user_registration_register') }}">Hier Registrieren</a>
                         {% endif %}
                         <a class="btn btn-elegant" href="{{ path('fos_user_resetting_request') }}">Forgot Password?</a>
                     </div>

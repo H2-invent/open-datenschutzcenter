@@ -20,13 +20,13 @@ class CronController extends AbstractController
         $today = new \DateTime();
 
         if ($request->get('token') !== $this->getParameter('cronToken')) {
-            $message = ['error' => false, 'hinweis' => 'Token fehlerhaft', 'token' => $request->get('token'), 'ip' => $request->getClientIp()];
+            $message = ['error' => true, 'hinweis' => 'Token fehlerhaft', 'token' => $request->get('token'), 'ip' => $request->getClientIp()];
             $logger->error($message['hinweis'], $message);
             return new JsonResponse($message);
         }
 
         if ($this->getParameter('cronIPAdress') !== $request->getClientIp()) {
-            $message = ['error' => false, 'hinweis' => 'IP Adresse fuer Cron Jobs nicht zugelassen', 'ip' => $request->getClientIp()];
+            $message = ['error' => true, 'hinweis' => 'IP Adresse fuer Cron Jobs nicht zugelassen', 'ip' => $request->getClientIp()];
             $logger->error($message['hinweis'], $message);
             return new JsonResponse($message);
         }
@@ -43,7 +43,7 @@ class CronController extends AbstractController
                 $em->persist($buchung);
                 ++$countNeu;
             } else {
-                $content = $this->renderView('email/errinnerungKurs.html.twig', ['buchung' => $buchung]);
+                $content = $this->renderView('email/errinnerungKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeam()]);
                 ++$countWdh;
             }
             $notificationService->sendNotificationAkademie($buchung, $content);
