@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block CTA %}
-
+    <a onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen?{% endtrans %}')"
+       href='{{ path('task_disable',{'id':task.id}) }}' type='button'
+       class='btn btn-danger ml-1 btn-sm'>{% if task.activ == 1 %}{% trans %}Löschen{% endtrans %}{% else %}{% trans %}Widerherstellen{% endtrans %}{% endif %}</a>
 {% endblock %}
 
 {% block body %}

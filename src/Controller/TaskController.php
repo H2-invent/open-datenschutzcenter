@@ -115,7 +115,14 @@ class TaskController extends AbstractController
         $task = $this->getDoctrine()->getRepository(Task::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($task, $team) === true) {
-            $disableService->disable($task, $this->getUser());
+            if ($task->getActiv() === 1) {
+                $task->setActiv(2);
+            } else {
+                $task->setActiv(1);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($task);
+            $em->flush();
         }
 
         return $this->redirectToRoute('tasks');

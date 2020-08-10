@@ -15,20 +15,22 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Titel</th>
-                    <th scope="col">Aufgabe</th>
-                    <th scope="col">Titel</th>
                     <th scope="col">Beschreibung</th>
+                    <th scope="col">Erstellt am</th>
+                    <th scope="col">Zugewiesen an</th>
                     <th scope="col">Erledigt</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for t in task %}
-                    <tr class="clickable-row" data-href='{{ path('task_edit',{'id':t.id}) }}'>
+                    <tr class="clickable-row" {% if t.done %}style="background-color: #00e676"{% endif %}
+                        data-href='{{ path('task_edit',{'id':t.id}) }}'>
                         <th scope="row">{{ t.id }}</th>
                         <td>{{ t.title }}</td>
                         <td>{{ t.task|raw }}</td>
                         <td>{{ t.createdAt|date('d.m.Y') }}</td>
-                        <td>{{ t.done ?'Ja':'Nein' }}</td>
+                        <td>{% if t.assignedUser %}{{ t.assignedUser.username }}{% endif %}</td>
+                        <td>{% if t.done %}Ja{% else %}Nein{% endif %}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
