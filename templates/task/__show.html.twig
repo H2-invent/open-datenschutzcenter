@@ -1,38 +1,38 @@
 <div class="row">
-    <div class="col-md-4">
-        {% trans %}Betreff{% endtrans %}:
-    </div>
-    <div class="col-md-8">
-        {{ task.title }}
-    </div>
+    <div class="col-md-5">
+        <div class="row">
+            <div class="col-md-6">
+                {% trans %}Betreff{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.title }}
+            </div>
+            <div class="col-md-6">
+                {% trans %}Erstellt am{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.createdAt|date('d.m.Y') }}
+            </div>
 
-    <div class="col-md-4">
-        {% trans %}Aufgabe{% endtrans %}:
-    </div>
-    <div class="col-md-8">
-        {{ task.task|raw }}
-    </div>
-</div>
-<div class="row mt-3">
-    <div class="col-md-4">
-        {% trans %}Erstellt am{% endtrans %}:
-    </div>
-    <div class="col-md-8">
-        {{ task.createdAt|date('d.m.Y') }}
-    </div>
+            <div class="col-md-6">
+                {% trans %}Zu erledigen bis{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.endDate|date('d.m.Y') }}
+            </div>
 
-    <div class="col-md-4">
-        {% trans %}Zu erledigen bis{% endtrans %}:
+            <div class="col-md-6">
+                {% trans %}Erledigt am{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.doneDate|date('d.m.Y') }}
+            </div>
+        </div>
     </div>
-    <div class="col-md-8">
-        {{ task.endDate|date('d.m.Y') }}
+    <div class="col-md-7" style="border-left-color: #3f4e5e; border-left-width: 1px; border-left-style: dashed">
+        <span>
+        <p>{% trans %}Aufgabe{% endtrans %}:</p>
+            {{ task.task|raw }}
+        </span>
     </div>
-
-    <div class="col-md-4">
-        {% trans %}Erledigt am{% endtrans %}:
-    </div>
-    <div class="col-md-8">
-        {{ task.doneDate|date('d.m.Y') }}
-    </div>
-
 </div>

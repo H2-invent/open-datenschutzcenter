@@ -18,7 +18,7 @@
 {% block body %}
     <div class="row">
         <div class="col-md-8">
-            <h2 class="h2-responsive">{{ task.title }} - {{ title }}</h2>
+            <h2 class="h2-responsive">{% if edit %}{{ title }}{% else %}{{ task.title }}{% endif %}</h2>
         </div>
         <div class="col-md-4 text-right">
             {{ include('assign/__assign.html.twig',{'data':task,'path':'assign_task'}) }}
