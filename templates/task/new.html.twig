@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2 class="h2-responsive">{{ title }}</h2>
+    <div class="card card-body">
+        {{ include('task/__form.html.twig') }}
+    </div>
+
+    <p>Erstellt von: {{ task.user.email }}</p>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

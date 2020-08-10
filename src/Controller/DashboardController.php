@@ -15,6 +15,7 @@ use App\Entity\Forms;
 use App\Entity\Kontakte;
 use App\Entity\Policies;
 use App\Entity\Software;
+use App\Entity\Task;
 use App\Entity\Tom;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
@@ -46,6 +47,7 @@ class DashboardController extends AbstractController
         $forms = $this->getDoctrine()->getRepository(Forms::class)->findPublicByTeam($team);
         $policies = $this->getDoctrine()->getRepository(Policies::class)->findPublicByTeam($team);
         $software = $this->getDoctrine()->getRepository(Software::class)->findActivByTeam($team);
+        $tasks = $this->getDoctrine()->getRepository(Task::class)->findActivByTeam($team);
 
         $qb = $this->getDoctrine()->getRepository(AuditTom::class)->createQueryBuilder('audit');
         $qb->andWhere('audit.team = :team')
@@ -79,6 +81,7 @@ class DashboardController extends AbstractController
         $assignAudit = $this->getUser()->getAssignedAudits()->toarray();
         $assignDsfa = $this->getUser()->getAssignedDsfa()->toarray();
         $assignDatenweitergabe = $this->getUser()->getAssignedDatenweitergaben()->toarray();
+        $assignTasks = $this->getUser()->getTasks()->toarray();
 
         $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findActivBuchungenByUser($this->getUser());
 
@@ -101,7 +104,9 @@ class DashboardController extends AbstractController
             'akademie' => $buchungen,
             'forms' => $forms,
             'policies' => $policies,
-            'software' => $software
+            'software' => $software,
+            'assignTasks' => $assignTasks,
+            'tasks' => $tasks
         ]);
     }
 }

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="h2-responsive">{{ task.title }} - {{ title }}</h2>
+        </div>
+        <div class="col-md-4 text-right">
+            {{ include('assign/__assign.html.twig',{'data':task,'path':'assign_task'}) }}
+        </div>
+    </div>
+    <div class="card card-body">
+        {{ include('task/__form.html.twig') }}
+    </div>
+    <p>Erstellt von: {{ task.user.email }}</p>
+    {{ include('base/__snack.html.twig') }}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
