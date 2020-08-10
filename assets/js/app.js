@@ -67,7 +67,7 @@ $(document).ready(function () {
             ['para', ['ul', 'ol', 'paragraph']],
             ['table', ['table']],
             ['insert', ['link']],
-            ['view', ['fullscreen', 'codeview']]
+            ['view', ['fullscreen']]
         ],
     });
 });
