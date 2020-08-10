@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        {% if team.video %}
+            <div class="col-md-6 mt-2">
+                <a href="{{ path('external_video') }}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6>Videokonferenz starten mit {{ team.video }}</h6>
+                        </div>
+                        <div class="card-footer">
+                            @ {{ team.video }}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+        {% if team.externalLink %}
+            <div class="col-md-6 mt-2">
+                <a href="{{ path('external_doc') }}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6>Externe Ressource über Stammdaten</h6>
+                        </div>
+                        <div class="card-footer">
+                            @ {{ team.externalLink }}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

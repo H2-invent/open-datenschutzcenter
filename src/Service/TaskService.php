@@ -26,12 +26,13 @@ class TaskService
 
     function newTask(Team $team, User $user)
     {
-        $tom = new Task();
-        $tom->setTeam($team);
-        $tom->setActiv(true);
-        $tom->setCreatedAt(new \DateTime());
-        $tom->setUser($user);
+        $task = new Task();
+        $task->setTeam($team);
+        $task->setActiv(true);
+        $task->setCreatedAt(new \DateTime());
+        $task->setUser($user);
+        $task->setDone(false);
 
-        return $tom;
+        return $task;
     }
 }

@@ -16,19 +16,24 @@
                     <th scope="col">#</th>
                     <th scope="col">Titel</th>
                     <th scope="col">Beschreibung</th>
-                    <th scope="col">Erstellt am</th>
+                    <th scope="col">Priorität</th>
+                    <th scope="col">Datum</th>
                     <th scope="col">Zugewiesen an</th>
                     <th scope="col">Erledigt</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for t in task %}
-                    <tr class="clickable-row" {% if t.done %}style="background-color: #00e676"{% endif %}
+                    <tr class="clickable-row"
+                        style="{% if t.done %}background-color: #00e676;{% elseif t.prio == 4 and not t.done %}background-color: #e23317{% endif %}"
                         data-href='{{ path('task_edit',{'id':t.id}) }}'>
                         <th scope="row">{{ t.id }}</th>
                         <td>{{ t.title }}</td>
                         <td>{{ t.task|raw }}</td>
-                        <td>{{ t.createdAt|date('d.m.Y') }}</td>
+                        <td>{{ t.prioString }}</td>
+                        <td>Erstellt am: {{ t.createdAt|date('d.m.Y') }}{% if t.endDate %}
+                                <br>Zu erledigen bis: {{ t.endDate|date('d.m.Y') }}{% endif %}{% if t.doneDate %}
+                                <br>Erledigt am: {{ t.doneDate|date('d.m.Y') }}{% endif %}</td>
                         <td>{% if t.assignedUser %}{{ t.assignedUser.username }}{% endif %}</td>
                         <td>{% if t.done %}Ja{% else %}Nein{% endif %}</td>
                     </tr>

@@ -18,7 +18,6 @@ require('datatables.net-buttons/js/buttons.flash.js')(window, $);
 require('datatables.net-buttons/js/buttons.html5.js')(window, $);
 import('moment');
 
-
 $(document).ready(function () {
     setTimeout(function () {
         var x = document.getElementById("snackbar");

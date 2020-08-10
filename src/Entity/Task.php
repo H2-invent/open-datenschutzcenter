@@ -60,6 +60,21 @@ class Task
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $endDate;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $prio;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $doneDate;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -157,6 +172,66 @@ class Task
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->endDate;
+    }
+
+    public function setEndDate(?\DateTimeInterface $endDate): self
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    public function getPrio(): ?int
+    {
+        return $this->prio;
+    }
+
+    public function getPrioString()
+    {
+        switch ($this->prio) {
+            case 0:
+                return 'Ohne Priorität';
+                break;
+            case 1:
+                return 'Wenig Wichtig';
+                break;
+            case 2:
+                return 'Normal';
+                break;
+            case 3:
+                return 'Wichtig';
+                break;
+            case 4:
+                return 'Sehr wichtig';
+                break;
+            default:
+                return "Ohne Priorität";
+                break;
+        }
+    }
+
+    public function setPrio(int $prio): self
+    {
+        $this->prio = $prio;
+
+        return $this;
+    }
+
+    public function getDoneDate(): ?\DateTimeInterface
+    {
+        return $this->doneDate;
+    }
+
+    public function setDoneDate(?\DateTimeInterface $doneDate): self
+    {
+        $this->doneDate = $doneDate;
 
         return $this;
     }

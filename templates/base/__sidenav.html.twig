@@ -57,6 +57,9 @@
                 <a href="{{ path('bericht') }}">Berichte</a>
             </li>
         {% endif %}
+        <li class="{{ app.request.attributes.get('_route') == 'external' ? 'active' }}">
+            <a href="{{ path('external') }}">External</a>
+        </li>
         {% if app.user.adminUser %}
             <li>
                 <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Admin</a>
