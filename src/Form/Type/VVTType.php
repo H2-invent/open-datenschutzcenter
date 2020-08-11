@@ -57,12 +57,12 @@ class VVTType extends AbstractType
                 'multiple' => true,
                 'required' => false
             ])
-            ->add('zweck', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'Zweck der Verarbeitung', 'required' => true, 'translation_domain' => 'form'])
+            ->add('zweck', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Zweck der Verarbeitung', 'required' => true, 'translation_domain' => 'form'])
             ->add('jointControl', CheckboxType::class, ['label' => 'Handelt es sich um Joint Control (gem. Verarbeitung)', 'required' => false, 'translation_domain' => 'form'])
             ->add('auftragsverarbeitung', CheckboxType::class, ['label' => 'Handelt es sich um eine Auftragsverarbeitung', 'required' => false, 'translation_domain' => 'form'])
-            ->add('speicherung', TextareaType::class, ['label' => 'Wo werden die Daten gespeichert/abgelegt', 'required' => true, 'translation_domain' => 'form'])
-            ->add('loeschfrist', TextType::class, ['label' => 'Löschfristen', 'required' => true, 'translation_domain' => 'form'])
-            ->add('weitergabe', TextareaType::class, ['label' => 'An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben', 'required' => false, 'translation_domain' => 'form'])
+            ->add('speicherung', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Wo werden die Daten gespeichert/abgelegt', 'required' => true, 'translation_domain' => 'form'])
+            ->add('loeschfrist', TextType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Löschfristen', 'required' => true, 'translation_domain' => 'form'])
+            ->add('weitergabe', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben', 'required' => false, 'translation_domain' => 'form'])
             ->add('grundlage', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTGrundlage::class,
@@ -111,7 +111,7 @@ class VVTType extends AbstractType
                 'multiple' => false,
                 'required' => false
             ])
-            ->add('tom', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'Weitere Hinweise zur TOM', 'required' => false, 'translation_domain' => 'form'])
+            ->add('tom', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Weitere Hinweise zur TOM', 'required' => false, 'translation_domain' => 'form'])
             ->add('risiko', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTRisiken::class,
@@ -138,8 +138,8 @@ class VVTType extends AbstractType
                 'multiple' => false,
                 'required' => false
             ])
-            ->add('informationspflicht', TextareaType::class, ['attr' => ['rows' => 6], 'label' => 'Informationspflicht', 'required' => false, 'translation_domain' => 'form'])
-            ->add('dsb', TextareaType::class, ['attr' => ['rows' => 6], 'label' => 'Kommentar des Datenschutzbeauftragten', 'required' => false, 'translation_domain' => 'form'])
+            ->add('informationspflicht', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Informationspflicht', 'required' => false, 'translation_domain' => 'form'])
+            ->add('dsb', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Kommentar des Datenschutzbeauftragten', 'required' => false, 'translation_domain' => 'form'])
             ->add('beurteilungEintritt', ChoiceType::class, [
                 'choices' => [
                     'Bitte auswählen' => 0,
