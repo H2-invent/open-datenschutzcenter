@@ -86,9 +86,9 @@ class TaskController extends AbstractController
         if ($form->isSubmitted() && $form->isValid() && $task->getActiv() === 1) {
 
             $task = $form->getData();
+            $task->setUpdatedBy($this->getUser());
             $errors = $validator->validate($task);
             if (count($errors) == 0) {
-
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($task);
                 $em->flush();

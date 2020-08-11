@@ -8,6 +8,28 @@
                 {{ task.title }}
             </div>
             <div class="col-md-6">
+                {% trans %}Priorität{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.prioString }}
+            </div>
+            <div class="col-md-6">
+                {% trans %}Erstellt von{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.user.username }}
+            </div>
+            {% if task.updatedBy %}
+                <div class="col-md-6">
+                    {% trans %}Bearbeitet von{% endtrans %}:
+                </div>
+                <div class="col-md-6">
+                    {{ task.updatedBy.username }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6">
                 {% trans %}Erstellt am{% endtrans %}:
             </div>
             <div class="col-md-6">
@@ -29,10 +51,9 @@
             </div>
         </div>
     </div>
-    <div class="col-md-7" style="border-left-color: #3f4e5e; border-left-width: 1px; border-left-style: dashed">
-        <span>
+    <div class="col-md-7 mt-5 mt-md-0"
+         style="border-left-color: #3f4e5e; border-left-width: 1px; border-left-style: dashed">
         <p>{% trans %}Aufgabe{% endtrans %}:</p>
             {{ task.task|raw }}
-        </span>
     </div>
 </div>

@@ -75,6 +75,11 @@ class Task
      */
     private $doneDate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $updatedBy;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -232,6 +237,18 @@ class Task
     public function setDoneDate(?\DateTimeInterface $doneDate): self
     {
         $this->doneDate = $doneDate;
+
+        return $this;
+    }
+
+    public function getUpdatedBy(): ?User
+    {
+        return $this->updatedBy;
+    }
+
+    public function setUpdatedBy(?User $updatedBy): self
+    {
+        $this->updatedBy = $updatedBy;
 
         return $this;
     }
