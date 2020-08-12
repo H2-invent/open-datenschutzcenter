@@ -21,8 +21,4 @@ services:
       PHP_EXTENSION_XDEBUG: "1"
       PHP_INI_MEMORY_LIMIT: "1G"
     volumes:
-      - ./sources/app:/var/www/html:rw
-
-volumes:
-  mysql_data:
-    driver: local
+      - .:/var/www/html:rw
