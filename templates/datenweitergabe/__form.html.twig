@@ -76,7 +76,8 @@
         </div>
     </div>
 
-    <div class="mt-4 {% if daten.art != 1 %}disabled{% endif %} row">
+    <div class="mt-4 {% if daten.art != 1 %}disabled{% endif %} row"
+         {% if daten.art != 1 %}style="visibility: hidden"{% endif %}>
         <div class="col-md-3">
             {{ form_label(form.software) }}
         </div>
