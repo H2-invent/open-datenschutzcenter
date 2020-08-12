@@ -14,17 +14,12 @@ services:
     image: thecodingmachine/php:7.3-v2-apache-node10
     labels:
       - traefik.enable=true
-      - traefik.backend=app
-      - traefik.frontend.rule=Host:app.localhost
+      - traefik.backend=odc
+      - traefik.frontend.rule=Host:odc.localhost
     environment:
       APACHE_DOCUMENT_ROOT: "public/"
       PHP_EXTENSION_XDEBUG: "1"
       PHP_INI_MEMORY_LIMIT: "1G"
-      # Symfony
-      APP_ENV: "dev"
-      APP_SECRET: "15c5a69c40aed494dfa1e83a1910017e"
-      DATABASE_URL: "mysql://datenschutz:datenschutz@localhost:3306/datenschutz"
-      DATABSE_SERVER: "mariadb-10.4.6"
     volumes:
       - ./sources/app:/var/www/html:rw
 
