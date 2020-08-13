@@ -24,7 +24,7 @@
                 </thead>
                 <tbody>
                 {% for a in client %}
-                    <tr class="clickable-row" data-href='{{ path('client_show',{'id':team.id,'token':a.token}) }}'>
+                    <tr class="clickable-row" data-href='{{ path('client_requests_show',{'id':a.id}) }}'>
                         <th scope="row">{{ a.uuid }}</th>
                         <td>{{ a.title }}</td>
                         <td>{{ a.createdAt|date('d.m.Y') }}</td>

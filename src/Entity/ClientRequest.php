@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Repository\ClientRequestRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,7 +24,6 @@ class ClientRequest
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
-     * @Encrypted()
      */
     private $uuid;
 
@@ -96,6 +97,16 @@ class ClientRequest
      * @ORM\JoinColumn(nullable=false)
      */
     private $team;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ClientComment::class, mappedBy="clientRequest")
+     */
+    private $clientComments;
+
+    public function __construct()
+    {
+        $this->clientComments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -275,6 +286,37 @@ class ClientRequest
     public function setTeam(?Team $team): self
     {
         $this->team = $team;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientComment[]
+     */
+    public function getClientComments(): Collection
+    {
+        return $this->clientComments;
+    }
+
+    public function addClientComment(ClientComment $clientComment): self
+    {
+        if (!$this->clientComments->contains($clientComment)) {
+            $this->clientComments[] = $clientComment;
+            $clientComment->setClientRequest($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientComment(ClientComment $clientComment): self
+    {
+        if ($this->clientComments->contains($clientComment)) {
+            $this->clientComments->removeElement($clientComment);
+            // set the owning side to null (unless already changed)
+            if ($clientComment->getClientRequest() === $this) {
+                $clientComment->setClientRequest(null);
+            }
+        }
 
         return $this;
     }

@@ -19,4 +19,22 @@
             </p>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card-body card mt-2">
+                {{ form_start(form,{'action': path('client_request_comment',{'clientRequest':data.id})}) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            {% for c in data.clientComments %}
+                <div class="card-body card mt-2">
+                    {{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}<br>
+                    <hr>
+                    {{ c.comment|nl2br }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="card card-body">
+        <h1 class="h1-responsive text-center">{{ data.title }}</h1>
+
+        <p>
+            {% trans %}Email Adresse{% endtrans %}: {{ data.email }} {% if data.emailValid %}✅{% endif %}<br>
+            {% trans %}Name{% endtrans %}: {{ data.name }}<br>
+            {% trans %}Erstellt am{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
+            {% trans %}Grund der Anfrage{% endtrans %}: {{ data.itemstring }}
+        </p>
+        <p>
+            {% trans %}Beschreibung{% endtrans %}: {{ data.description|raw }}
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card-body card mt-2">
+                {{ form_start(form,{'action': path('client_request_comment',{'clientRequest':data.id})}) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            {% for c in data.clientComments %}
+                <div class="card-body card mt-2">
+                    {{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}<br>
+                    <hr>
+                    {{ c.comment|nl2br }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

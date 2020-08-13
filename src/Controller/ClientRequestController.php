@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\ClientComment;
 use App\Entity\ClientRequest;
 use App\Entity\Team;
+use App\Form\Type\ClientRequesCommentType;
 use App\Form\Type\ClientRequestType;
 use App\Form\Type\ClientRequestViewType;
 use App\Service\SecurityService;
@@ -31,6 +33,59 @@ class ClientRequestController extends AbstractController
             'client' => $client,
             'team' => $team
         ]);
+    }
+
+    /**
+     * @Route("/client-requests/show", name="client_requests_show")
+     */
+    public function showClientRequests(SecurityService $securityService, Request $request)
+    {
+
+        $team = $this->getUser()->getTeam();
+        $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
+            return $this->redirectToRoute('client_requests');
+        }
+
+        $form = $this->createForm(ClientRequesCommentType::class);
+
+        return $this->render('client_request/internalShow.html.twig', [
+            'data' => $clientRequest,
+            'team' => $team,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/client-requests/comment", name="client_request_comment")
+     */
+    public function clientRequestComment(SecurityService $securityService, Request $request)
+    {
+        $clientComment = new ClientComment();
+
+        $data = $request->get('client_reques_comment');
+        $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('clientRequest'));
+
+        $team = $this->getUser()->getTeam();
+        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
+            return $this->redirectToRoute('client_requests');
+        }
+
+        if ($this->getUser()) {
+            $clientComment->setName($this->getUser()->getUsername());
+            $clientComment->setInternal(true);
+        } else {
+            $clientComment->setName($clientRequest->getName());
+            $clientComment->setInternal(false);
+        }
+        $clientComment->setComment($data['comment']);
+        $clientComment->setClientRequest($clientRequest);
+        $clientComment->setCreatedAt(new \DateTime());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($clientComment);
+        $em->flush();
+        return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
     }
 
     /**
@@ -87,11 +142,15 @@ class ClientRequestController extends AbstractController
      * @Route("/client/{id}/show", name="client_show")
      * @ParamConverter("team", options={"mapping": {"id": "id"}})
      */
-    public function showRequest(Request $request, ValidatorInterface $validator, Team $team)
+    public function showRequest(Request $request, Team $team)
     {
         $data = $request->get('client_request_view');
+
         if ($data != null) {
             $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findOneBy(['uuid' => $data['uuid']]);
+            if (!$clientRequest) {
+                return $this->redirectToRoute('client_index');
+            }
             if ($clientRequest->getEmail() !== $data['email']) {
                 return $this->redirectToRoute('client_index');
             }
@@ -103,6 +162,29 @@ class ClientRequestController extends AbstractController
             'data' => $clientRequest,
             'team' => $team
         ]);
+    }
+
+    /**
+     * @Route("/client/{id}/comment", name="client_comment")
+     * @ParamConverter("team", options={"mapping": {"id": "id"}})
+     */
+    public function clientComment(Request $request, Team $team)
+    {
+        $clientComment = new ClientComment();
+
+        $data = $request->get('client_reques_comment');
+        $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('clientRequest'));
+
+        $clientComment->setName($clientRequest->getName());
+        $clientComment->setInternal(false);
+        $clientComment->setComment($data['comment']);
+        $clientComment->setClientRequest($clientRequest);
+        $clientComment->setCreatedAt(new \DateTime());
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($clientComment);
+        $em->flush();
+        return $this->redirectToRoute('client_show', ['id' => $team->getId(), 'token' => $clientRequest->getToken()]);
     }
 
     /**
