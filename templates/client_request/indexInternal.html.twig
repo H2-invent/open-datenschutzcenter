@@ -19,7 +19,7 @@
                     <th scope="col">Email</th>
                     <th scope="col">Name</th>
                     <th scope="col">Grund</th>
-                    <th scope="col">Aktiv</th>
+                    <th scope="col">Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,7 +31,7 @@
                         <td>{{ a.email }}</td>
                         <td>{{ a.name }}</td>
                         <td>{{ a.itemString }}</td>
-                        <td>{{ a.activ }}</td>
+                        <td>{{ a.activ?'Aktiv':'Archiviert' }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

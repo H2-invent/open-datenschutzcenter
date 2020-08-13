@@ -56,4 +56,17 @@ class NotificationService
         return true;
     }
 
+    function sendNotificationRequest($content, $email)
+    {
+        $this->mailer->sendEmail(
+            'Datenschutzcenter',
+            $this->parameterBag->get('defaultEmail'),
+            $email,
+            'Es ist eine neue Nachricht für Sie vorhanden',
+            $content
+        );
+
+        return true;
+    }
+
 }

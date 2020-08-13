@@ -23,7 +23,7 @@ class ClientRequestController extends AbstractController
     public function allClientRequests(SecurityService $securityService)
     {
         $team = $this->getUser()->getTeam();
-        $client = $this->getDoctrine()->getRepository(ClientRequest::class)->findBy(['team' => $team]);
+        $client = $this->getDoctrine()->getRepository(ClientRequest::class)->findBy(['team' => $team, 'emailValid' => true]);
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
