@@ -10,7 +10,7 @@
 
             <p>
                 {% trans %}Email Adresse{% endtrans %}: {{ data.email }} {% if data.emailValid %}✅{% endif %}<br>
-                {% trans %}Name{% endtrans %}: {{ data.name }}<br>
+                {% trans %}Name{% endtrans %}: {{ data.name }} {% if data.validUser %}✅{% endif %}<br>
                 {% trans %}Erstellt am{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
                 {% trans %}Grund der Anfrage{% endtrans %}: {{ data.itemstring }}
             </p>
@@ -22,17 +22,17 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card-body card mt-2">
-                {{ form_start(form,{'action': path('client_request_comment',{'clientRequest':data.id})}) }}
+                {{ form_start(form,{'action': path('client_comment',{'id':data.team.id, 'clientRequest':data.id})}) }}
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
             </div>
         </div>
-        <div class="col-md-6">
-            {% for c in data.clientComments %}
+        <div class="col-md-6 mb-4">
+            {% for c in data.clientComments|sort((b, a) => a.createdAt <=> b.createdAt) %}
                 <div class="card-body card mt-2">
                     {{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}<br>
                     <hr>
-                    {{ c.comment|nl2br }}
+                    {{ c.comment|raw }}
                 </div>
             {% endfor %}
         </div>

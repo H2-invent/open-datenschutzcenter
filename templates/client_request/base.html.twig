@@ -6,12 +6,11 @@
 <body>
 {% block back %}{% endblock %}
 <div style="background-image: url('{{ asset('images/login.jpg') }}'); background-size: cover; min-height: 100vh">
-    <div class="col-lg-8 offset-lg-2 pt-5">
+    <div class="col-lg-10 offset-lg-1 pt-5">
         {% block content %}{% endblock %}
     </div>
 
     {{ include('base/__script.html.twig') }}
-
 
 </body>
 

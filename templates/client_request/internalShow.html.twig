@@ -1,16 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block CTA %}
-
+    {% if app.user.adminUser == data.team %}
+        <a href="{{ path('client_valid_user',{'id':data.id}) }}"
+           class="btn btn-sm btn-primary">{{ data.validUser?'Nutzervalidierung rückgängig':'Nutzer ist verifiziert' }}</a>
+        <a href="{{ path('client_request_close',{'id':data.id}) }}"
+           class="btn btn-sm btn-danger">{{ data.activ?'Archivieren':'Wiederherstellen' }}</a>
+    {% endif %}
 {% endblock %}
 
 {% block body %}
     <div class="card card-body">
         <h1 class="h1-responsive text-center">{{ data.title }}</h1>
-
+        {% if not data.activ %}
+            <div class="note-info text-center">
+                {% trans %}Diese Anfrage ist geschlossen.{% endtrans %}
+            </div>
+        {% endif %}
         <p>
             {% trans %}Email Adresse{% endtrans %}: {{ data.email }} {% if data.emailValid %}✅{% endif %}<br>
-            {% trans %}Name{% endtrans %}: {{ data.name }}<br>
+            {% trans %}Name{% endtrans %}
+            : {{ data.name }} {% if data.validUser %}✅ by {{ data.userValidBy.username }}{% endif %}<br>
             {% trans %}Erstellt am{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
             {% trans %}Grund der Anfrage{% endtrans %}: {{ data.itemstring }}
         </p>
@@ -27,11 +37,11 @@
             </div>
         </div>
         <div class="col-md-6">
-            {% for c in data.clientComments %}
+            {% for c in data.clientComments|sort((b, a) => a.createdAt <=> b.createdAt) %}
                 <div class="card-body card mt-2">
                     {{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}<br>
                     <hr>
-                    {{ c.comment|nl2br }}
+                    {{ c.comment|raw }}
                 </div>
             {% endfor %}
         </div>

@@ -53,8 +53,7 @@ class ClientRequest
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     * @Encrypted()
+     * @Assert\Email()
      */
     private $email;
 
@@ -102,6 +101,16 @@ class ClientRequest
      * @ORM\OneToMany(targetEntity=ClientComment::class, mappedBy="clientRequest")
      */
     private $clientComments;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $validUser;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $userValidBy;
 
     public function __construct()
     {
@@ -317,6 +326,30 @@ class ClientRequest
                 $clientComment->setClientRequest(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getValidUser(): ?bool
+    {
+        return $this->validUser;
+    }
+
+    public function setValidUser(bool $validUser): self
+    {
+        $this->validUser = $validUser;
+
+        return $this;
+    }
+
+    public function getUserValidBy(): ?User
+    {
+        return $this->userValidBy;
+    }
+
+    public function setUserValidBy(?User $userValidBy): self
+    {
+        $this->userValidBy = $userValidBy;
 
         return $this;
     }
