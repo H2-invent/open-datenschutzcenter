@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+{{ include('base/__head.html.twig') }}
+
+<body>
+{% block back %}{% endblock %}
+<div style="background-image: url('{{ asset('images/login.jpg') }}'); background-size: cover; min-height: 100vh">
+    <div class="col-lg-8 offset-lg-2 pt-5">
+        {% block content %}{% endblock %}
+    </div>
+
+    {{ include('base/__script.html.twig') }}
+
+
+</body>
+
+</html>

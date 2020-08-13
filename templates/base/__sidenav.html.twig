@@ -52,6 +52,9 @@
             <li class="{{ app.request.attributes.get('_route') == 'vorfall' ? 'active' }}">
                 <a href="{{ path('vorfall') }}">Vorfälle</a>
             </li>
+            <li class="{{ app.request.attributes.get('_route') == 'client_requests' ? 'active' }}">
+                <a href="{{ path('client_requests') }}">Kundenanfragen</a>
+            </li>
 
             <li class="{{ app.request.attributes.get('_route') == 'bericht' ? 'active' }}">
                 <a href="{{ path('bericht') }}">Berichte</a>

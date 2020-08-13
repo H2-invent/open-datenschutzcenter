@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('client_new',{'id':team.id}) }}">
+        <span>Neues Anfrage anlegen</span>
+    </a>
+{% endblock %}
+
+{% block body %}
+    <h2 class="h2-responsive">Alle Anfragen</h2>
+    <div class="card card-body">
+        <div class="table-responsive">
+            <table id="data-table" class="table display table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">UID</th>
+                    <th scope="col">Betreff</th>
+                    <th scope="col">Datum</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Grund</th>
+                    <th scope="col">Aktiv</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for a in client %}
+                    <tr class="clickable-row" data-href='{{ path('client_show',{'id':team.id,'token':a.token}) }}'>
+                        <th scope="row">{{ a.uuid }}</th>
+                        <td>{{ a.title }}</td>
+                        <td>{{ a.createdAt|date('d.m.Y') }}</td>
+                        <td>{{ a.email }}</td>
+                        <td>{{ a.name }}</td>
+                        <td>{{ a.itemString }}</td>
+                        <td>{{ a.activ }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

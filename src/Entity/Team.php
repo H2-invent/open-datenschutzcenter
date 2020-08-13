@@ -179,6 +179,11 @@ class Team
      */
     private $video;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ClientRequest::class, mappedBy="team")
+     */
+    private $clientRequests;
+
 
     public function __construct()
     {
@@ -199,6 +204,7 @@ class Team
         $this->policies = new ArrayCollection();
         $this->software = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->clientRequests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -882,6 +888,37 @@ class Team
     public function setVideo(?string $video): self
     {
         $this->video = $video;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientRequest[]
+     */
+    public function getClientRequests(): Collection
+    {
+        return $this->clientRequests;
+    }
+
+    public function addClientRequest(ClientRequest $clientRequest): self
+    {
+        if (!$this->clientRequests->contains($clientRequest)) {
+            $this->clientRequests[] = $clientRequest;
+            $clientRequest->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientRequest(ClientRequest $clientRequest): self
+    {
+        if ($this->clientRequests->contains($clientRequest)) {
+            $this->clientRequests->removeElement($clientRequest);
+            // set the owning side to null (unless already changed)
+            if ($clientRequest->getTeam() === $this) {
+                $clientRequest->setTeam(null);
+            }
+        }
 
         return $this;
     }

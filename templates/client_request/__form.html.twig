@@ -1,0 +1,66 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-8">
+        <div {% if not activ %}class="disabled"{% endif %}>
+            {% if activNummer %}
+                {{ form_label(form.nummer) }}
+                {{ form_widget(form.nummer) }}
+            {% endif %}
+            <div class="mb-4">
+                {{ form_label(form.frage) }}
+                {{ form_widget(form.frage) }}
+            </div>
+            <div class="mb-4">
+                {{ form_label(form.bemerkung) }}
+                {{ form_widget(form.bemerkung) }}
+            </div>
+            <div class="mb-4">
+                {{ form_label(form.empfehlung) }}
+                {{ form_widget(form.empfehlung) }}
+            </div>
+        </div>
+        {{ form_label(form.save) }}
+        {% if activ %}
+            {{ form_widget(form.save) }}
+        {% else %}
+            {{ form_widget(form.save, { 'disabled':'disabled' }) }}
+        {% endif %}
+        {% if nextAudit is defined %}
+            <a class="btn btn-info" href="{{ path('audit_tom_edit',{'tom':nextAudit.id}) }}">Zur nächsten Frage</a>
+        {% endif %}
+    </div>
+    <div class="col-md-4 {% if not activ %}disabled{% endif %}">
+        <div class="mb-4">
+            <div class="danger-color">
+                {{ form_label(form.status) }}
+            </div>
+            {{ form_widget(form.status) }}
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(form.kategorie) }}
+            {{ form_widget(form.kategorie) }}
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(form.abteilung) }}
+            {{ form_widget(form.abteilung) }}
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(form.ziele) }}
+            {{ form_widget(form.ziele) }}
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(form.tomAttribut) }}
+            {{ form_widget(form.tomAttribut) }}
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(form.tomZiel) }}
+            {{ form_widget(form.tomZiel) }}
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

@@ -4,10 +4,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
-    <title>Datenschutzcenter</title>
+    {% block title %}
+        <title>Datenschutzcenter</title>
+    {% endblock %}
 
     {% if app.debug == 0 %}
-    <meta http-equiv="Content-Security-Policy" content="
+        <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     script-src 'self' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
@@ -16,7 +18,7 @@
     media-src https://*;
     object-src 'none'">
 
-    <meta http-equiv="X-Content-Security-Policy" content="
+        <meta http-equiv="X-Content-Security-Policy" content="
     default-src 'self';
     script-src 'self' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
@@ -25,7 +27,7 @@
     media-src https://* ;
     object-src 'none';">
 
-    <meta http-equiv="X-WebKit-CSP" content="
+        <meta http-equiv="X-WebKit-CSP" content="
     default-src 'self';
     script-src 'self' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';

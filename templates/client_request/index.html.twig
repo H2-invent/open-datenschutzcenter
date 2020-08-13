@@ -1,0 +1,39 @@
+{% extends 'client_request/base.html.twig' %}
+
+{% block title %}Hello ClientRequestController!{% endblock %}
+
+{% block content %}
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
+
+    <div class="example-wrapper">
+
+
+        <div class="card card-body">
+            <h1 class="h1-responsive text-center">Kundenportal von {{ team.name }}</h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <a href="{{ path('client_new', {'id':team.id}) }}" class="btn btn-primary">Neue Anfrage
+                        erstellen</a>
+                </div>
+                <div class="col-md-6">
+                    {{ form_start(form,{'action': path('client_show',{'id':team.id})}) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
