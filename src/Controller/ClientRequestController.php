@@ -153,7 +153,7 @@ class ClientRequestController extends AbstractController
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
             return $this->redirectToRoute('client_requests');
         }
-        $content = 'Anfrage wurde geändert <br><br>Alte Nachricht: ' . $clientRequest->getTitle() . '<br>Grund: ' . $clientRequest->getItemString() . '<br><br>Beschreibung' . $clientRequest->getDescription();
+        $content = '<b>Anfrage wurde geändert</b> <br><br>Alte Nachricht: ' . $clientRequest->getTitle() . '<br>Email: ' . $clientRequest->getEmail() . '<br>Name: ' . $clientRequest->getName() . '<br>Grund: ' . $clientRequest->getItemString() . '<br><br>Beschreibung' . $clientRequest->getDescription();
 
         $form = $this->createForm(ClientRequestType::class, $clientRequest);
         $form->handleRequest($request);
