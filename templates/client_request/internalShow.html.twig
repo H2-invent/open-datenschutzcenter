@@ -3,10 +3,14 @@
 {% block CTA %}
     {% if app.user.adminUser == data.team %}
         <a href="{{ path('client_valid_user',{'id':data.id}) }}"
-           class="btn btn-sm btn-primary">{{ data.validUser?'Nutzervalidierung rückgängig':'Nutzer ist verifiziert' }}</a>
+           class="btn btn-sm btn-success">{{ data.validUser?'Nutzervalidierung rückgängig':'Nutzer ist verifiziert' }}</a>
         <a href="{{ path('client_request_close',{'id':data.id}) }}"
            class="btn btn-sm btn-danger">{{ data.activ?'Archivieren':'Wiederherstellen' }}</a>
+        <a href="{{ path('client_requests_edit',{'id':data.id}) }}"
+           class="btn btn-sm btn-primary">Bearbeiten</a>
     {% endif %}
+    <a href="{{ path('client_requests_internal_note',{'id':data.id}) }}"
+       class="btn btn-sm btn-primary">Interne Bemerkung bearbeiten</a>
 {% endblock %}
 
 {% block body %}
@@ -24,9 +28,13 @@
             {% trans %}Erstellt am{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
             {% trans %}Grund der Anfrage{% endtrans %}: {{ data.itemstring }}
         </p>
-        <p>
-            {% trans %}Beschreibung{% endtrans %}: {{ data.description|raw }}
-        </p>
+        <div>
+            <b>{% trans %}Beschreibung{% endtrans %}:</b> {{ data.description|raw }}
+        </div>
+        <hr>
+        <div>
+            <b>{% trans %}Interne Bemerkungen{% endtrans %}:</b> {{ data.notes|raw }}
+        </div>
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -53,5 +61,5 @@
             {% endfor %}
         </div>
     </div>
-
+    {{ include('base/__snack.html.twig') }}
 {% endblock %}

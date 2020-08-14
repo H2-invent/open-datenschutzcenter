@@ -117,6 +117,12 @@ class ClientRequest
      */
     private $gdpr;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Encrypted()
+     */
+    private $notes;
+
     public function __construct()
     {
         $this->clientComments = new ArrayCollection();
@@ -367,6 +373,18 @@ class ClientRequest
     public function setGdpr(bool $gdpr): self
     {
         $this->gdpr = $gdpr;
+
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(string $notes): ?self
+    {
+        $this->notes = $notes;
 
         return $this;
     }

@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\ClientRequest;
 use App\Entity\Team;
 use App\Form\Type\ClientRequesCommentType;
+use App\Form\Type\ClientRequestInternalNoteType;
+use App\Form\Type\ClientRequestInternalType;
+use App\Form\Type\ClientRequestType;
 use App\Form\Type\ClientRequestViewType;
 use App\Service\ClientRequestService;
 use App\Service\NotificationService;
@@ -54,6 +57,7 @@ class ClientRequestController extends AbstractController
             'data' => $clientRequest,
             'team' => $team,
             'form' => $form->createView(),
+            'snack' => $request->get('snack')
         ]);
     }
 
@@ -105,6 +109,69 @@ class ClientRequestController extends AbstractController
         $clientRequestService->closeRequest($clientRequest, $this->getUser());
 
         return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
+    }
+
+    /**
+     * @Route("/client-requests/internalNote", name="client_requests_internal_note")
+     */
+    public function internalNoteClientRequests(SecurityService $securityService, Request $request, ValidatorInterface $validator)
+    {
+
+        $team = $this->getUser()->getTeam();
+        $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
+            return $this->redirectToRoute('client_requests');
+        }
+        $form = $this->createForm(ClientRequestInternalNoteType::class, $clientRequest);
+        $form->handleRequest($request);
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $clientRequest = $form->getData();
+
+            $errors = $validator->validate($clientRequest);
+            if (count($errors) == 0) {
+                $em->persist($clientRequest);
+                $em->flush();
+
+                return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => 'Änderung gespeichert']);
+            }
+        }
+        return $this->render('client_request/internalEdit.html.twig', ['data' => $clientRequest, 'team' => $team, 'form' => $form->createView(),]);
+    }
+
+
+    /**
+     * @Route("/client-requests/edit", name="client_requests_edit")
+     */
+    public function editClientRequests(SecurityService $securityService, Request $request, ValidatorInterface $validator, ClientRequestService $clientRequestService)
+    {
+
+        $team = $this->getUser()->getAdminUser();
+        $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
+        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
+            return $this->redirectToRoute('client_requests');
+        }
+        $content = 'Anfrage wurde geändert <br><br>Alte Nachricht: ' . $clientRequest->getTitle() . '<br>Grund: ' . $clientRequest->getItemString() . '<br><br>Beschreibung' . $clientRequest->getDescription();
+
+        $form = $this->createForm(ClientRequestType::class, $clientRequest);
+        $form->handleRequest($request);
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $clientRequest = $form->getData();
+            $errors = $validator->validate($clientRequest);
+            if (count($errors) == 0) {
+                $em->persist($clientRequest);
+                $em->flush();
+
+                $clientRequestService->newComment($clientRequest, $content, $this->getUser()->getTeam()->getName() . ' > ' . $this->getUser()->getUsername(), 1);
+
+                return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => 'Änderung gespeichert']);
+            }
+        }
+        return $this->render('client_request/internalEdit.html.twig', ['data' => $clientRequest, 'team' => $team, 'form' => $form->createView()]);
     }
 
 
