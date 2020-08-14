@@ -151,13 +151,9 @@ class ClientRequestController extends AbstractController
             if (count($errors) == 0) {
                 $em->persist($clientRequest);
                 $em->flush();
-                $content = $this->renderView('email/client/notificationVerify.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
-                $contentInternal = $this->renderView('email/client/notificationNew.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
 
+                $content = $this->renderView('email/client/notificationVerify.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
                 $notificationService->sendRequestVerify($content, $clientRequest->getEmail());
-                foreach ($clientRequest->getTeam()->getAdmins() as $admin) {
-                    $notificationService->sendRequestNew($contentInternal, $admin->getEmail());
-                }
 
                 return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
             }
@@ -204,7 +200,7 @@ class ClientRequestController extends AbstractController
      * @Route("/client/{slug}/verify", name="client_valid")
      * @ParamConverter("team", options={"mapping": {"slug": "slug"}})
      */
-    public function validateRequest(Request $request, Team $team)
+    public function validateRequest(Request $request, Team $team, NotificationService $notificationService, ClientRequestService $clientRequestService)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findOneBy(['uuid' => $request->get('token')]);
         if ($clientRequest) {
@@ -212,6 +208,14 @@ class ClientRequestController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($clientRequest);
             $em->flush();
+
+            $contentInternal = $this->renderView('email/client/notificationNew.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
+            foreach ($clientRequest->getTeam()->getAdmins() as $admin) {
+                $notificationService->sendRequestNew($contentInternal, $admin->getEmail());
+            }
+            $content = 'Email wurde erfolgreich verifiziert';
+            $clientRequestService->newComment($clientRequest, $content, $clientRequest->getName(), 0);
+
             return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
         }
         return $this->redirectToRoute('client_index', ['slug' => $team->getSlug()]);
