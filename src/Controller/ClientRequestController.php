@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\ClientComment;
 use App\Entity\ClientRequest;
 use App\Entity\Team;
 use App\Form\Type\ClientRequesCommentType;
-use App\Form\Type\ClientRequestType;
 use App\Form\Type\ClientRequestViewType;
+use App\Service\ClientRequestService;
+use App\Service\NotificationService;
 use App\Service\SecurityService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,10 +60,8 @@ class ClientRequestController extends AbstractController
     /**
      * @Route("/client-requests/comment", name="client_request_comment")
      */
-    public function clientRequestComment(SecurityService $securityService, Request $request)
+    public function clientRequestComment(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService)
     {
-        $clientComment = new ClientComment();
-
         $data = $request->get('client_reques_comment');
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('clientRequest'));
 
@@ -72,89 +70,47 @@ class ClientRequestController extends AbstractController
             return $this->redirectToRoute('client_requests');
         }
 
-        $clientComment->setName($this->getUser()->getUsername());
-        $clientComment->setInternal(true);
-
-        $clientComment->setComment($data['comment']);
-        $clientComment->setClientRequest($clientRequest);
-        $clientComment->setCreatedAt(new \DateTime());
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($clientComment);
-        $em->flush();
+        $content = $data['comment'];
+        $clientRequestService->newComment($clientRequest, $content, $this->getUser()->getTeam()->getName() . ' > ' . $this->getUser()->getUsername(), 1);
         return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
     }
 
     /**
      * @Route("/client-requests/userValidate", name="client_valid_user")
      */
-    public function validateUserRequest(SecurityService $securityService, Request $request)
+    public function validateUserRequest(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
 
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getAdminUser();
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
             return $this->redirectToRoute('client_requests');
         }
-        $comment = new ClientComment();
-        $comment->setName($this->getUser()->getUsername());
-        $comment->setCreatedAt(new \DateTime());
-        $comment->setClientRequest($clientRequest);
-        $comment->setInternal(false);
 
-        if ($clientRequest) {
-            if ($clientRequest->getValiduser()) {
-                $clientRequest->setValidUser(false);
-                $clientRequest->setUserValidBy(null);
-                $comment->setComment('Die Nutzervalidierung wurde wieder entfernt.');
-            } else {
-                $clientRequest->setValidUser(true);
-                $clientRequest->setUserValidBy($this->getUser());
-                $comment->setComment('Der Nutzer wurde als validiert markiert.');
-            }
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($clientRequest);
-            $em->persist($comment);
-            $em->flush();
-            return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
-        }
+        $clientRequestService->userValid($clientRequest, $this->getUser());
+        return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
     }
 
     /**
      * @Route("/client-requests/close", name="client_request_close")
      */
-    public function negativRequest(SecurityService $securityService, Request $request)
+    public function closeRequest(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
 
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getAdminUser();
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
             return $this->redirectToRoute('client_requests');
         }
-        $comment = new ClientComment();
-        $comment->setName($this->getUser()->getUsername());
-        $comment->setCreatedAt(new \DateTime());
-        $comment->setClientRequest($clientRequest);
-        $comment->setInternal(false);
-        if ($clientRequest) {
-            if ($clientRequest->getActiv()) {
-                $clientRequest->setActiv(false);
-                $comment->setComment('Diese Anfrage wurde geschlossen.');
-            } else {
-                $clientRequest->setActiv(true);
-                $comment->setComment('Diese Anfrage wurde wieder geöffnet.');
-            }
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($clientRequest);
-            $em->persist($comment);
-            $em->flush();
-            return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
-        }
+        $clientRequestService->closeRequest($clientRequest, $this->getUser());
+
+        return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
     }
 
 
     /**
-     * @Route("/client/{id}", name="client_index")
-     * @ParamConverter("team", options={"mapping": {"id": "id"}})
+     * @Route("/client/{slug}", name="client_index")
+     * @ParamConverter("team", options={"mapping": {"slug": "slug"}})
      */
     public function index(Team $team, Request $request)
     {
@@ -167,7 +123,7 @@ class ClientRequestController extends AbstractController
             $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findOneBy(['uuid' => $search['uuid'], 'email' => $search['email']]);
 
             if (count($errors) == 0 && $clientRequest) {
-                return $this->redirectToRoute('client_show', ['id' => $team->getId(), 'token' => $clientRequest->getToken()]);
+                return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
             }
         }
 
@@ -178,21 +134,12 @@ class ClientRequestController extends AbstractController
     }
 
     /**
-     * @Route("/client/{id}/new", name="client_new")
-     * @ParamConverter("team", options={"mapping": {"id": "id"}})
+     * @Route("/client/{slug}/new", name="client_new")
+     * @ParamConverter("team", options={"mapping": {"slug": "slug"}})
      */
-    public function newRequest(Request $request, ValidatorInterface $validator, Team $team)
+    public function newRequest(Request $request, ValidatorInterface $validator, Team $team, ClientRequestService $clientRequestService, NotificationService $notificationService)
     {
-        $clientRequest = new ClientRequest();
-        $clientRequest->setUuid(uniqid());
-        $clientRequest->setCreatedAt(new \DateTime());
-        $clientRequest->setEmailValid(false);
-        $clientRequest->setToken(md5(uniqid()));
-        $clientRequest->setTeam($team);
-        $clientRequest->setActiv(true);
-        $clientRequest->setValidUser(false);
-
-        $form = $this->createForm(ClientRequestType::class, $clientRequest);
+        $form = $clientRequestService->newRequest($team);
         $form->handleRequest($request);
 
         $errors = array();
@@ -204,7 +151,15 @@ class ClientRequestController extends AbstractController
             if (count($errors) == 0) {
                 $em->persist($clientRequest);
                 $em->flush();
-                return $this->redirectToRoute('client_show', ['id' => $team->getId(), 'token' => $clientRequest->getToken()]);
+                $content = $this->renderView('email/client/notificationVerify.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
+                $contentInternal = $this->renderView('email/client/notificationNew.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
+
+                $notificationService->sendRequestVerify($content, $clientRequest->getEmail());
+                foreach ($clientRequest->getTeam()->getAdmins() as $admin) {
+                    $notificationService->sendRequestNew($contentInternal, $admin->getEmail());
+                }
+
+                return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
             }
         }
         return $this->render('client_request/new.html.twig', [
@@ -215,8 +170,8 @@ class ClientRequestController extends AbstractController
     }
 
     /**
-     * @Route("/client/{id}/show", name="client_show")
-     * @ParamConverter("team", options={"mapping": {"id": "id"}})
+     * @Route("/client/{slug}/show", name="client_show")
+     * @ParamConverter("team", options={"mapping": {"slug": "slug"}})
      */
     public function showRequest(Request $request, Team $team)
     {
@@ -231,48 +186,34 @@ class ClientRequestController extends AbstractController
     }
 
     /**
-     * @Route("/client/{id}/comment", name="client_comment")
-     * @ParamConverter("team", options={"mapping": {"id": "id"}})
+     * @Route("/client/{slug}/comment", name="client_comment")
+     * @ParamConverter("team", options={"mapping": {"slug": "slug"}})
      */
-    public function clientComment(Request $request, Team $team)
+    public function clientComment(Request $request, Team $team, ClientRequestService $clientRequestService)
     {
-        $clientComment = new ClientComment();
+        $data = $request->get('client_reques_comment');
+        $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findOneBy(['token' => $request->get('token')]);
 
-        try {
-            $data = $request->get('client_reques_comment');
-            $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('clientRequest'));
+        $content = $data['comment'];
+        $clientRequestService->newComment($clientRequest, $content, $clientRequest->getName(), 0);
 
-            $clientComment->setName($clientRequest->getName());
-            $clientComment->setInternal(false);
-            $clientComment->setComment($data['comment']);
-            $clientComment->setClientRequest($clientRequest);
-            $clientComment->setCreatedAt(new \DateTime());
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($clientComment);
-            $em->flush();
-        } catch (\Exception $exception) {
-        }
-
-        return $this->redirectToRoute('client_show', ['id' => $team->getId(), 'token' => $clientRequest->getToken()]);
+        return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
     }
 
     /**
-     * @Route("/client/v", name="client_valid")
+     * @Route("/client/{slug}/verify", name="client_valid")
+     * @ParamConverter("team", options={"mapping": {"slug": "slug"}})
      */
-    public function validateRequest(Request $request)
+    public function validateRequest(Request $request, Team $team)
     {
-        $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findOneBy(['token' => $request->get('token')]);
-
+        $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findOneBy(['uuid' => $request->get('token')]);
         if ($clientRequest) {
             $clientRequest->setEmailValid(true);
             $em = $this->getDoctrine()->getManager();
             $em->persist($clientRequest);
             $em->flush();
-            return $this->redirectToRoute('client_show', ['token' => $clientRequest->getToken()]);
+            return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
         }
-
-        return $this->redirectToRoute('client_index', ['id' => $clientRequest->getTeam()->getId()]);
-
+        return $this->redirectToRoute('client_index', ['slug' => $team->getSlug()]);
     }
 }

@@ -184,6 +184,11 @@ class Team
      */
     private $clientRequests;
 
+    /**
+     * @ORM\Column(type="text", nullable=true, unique=true)
+     */
+    private $slug;
+
 
     public function __construct()
     {
@@ -919,6 +924,18 @@ class Team
                 $clientRequest->setTeam(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

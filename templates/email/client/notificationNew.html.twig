@@ -1,0 +1,33 @@
+{% extends 'email/base.html.twig' %}
+{% block header %}
+    -- Neue Kundenanfrage --
+{% endblock %}
+
+{% block content %}
+    <b>
+        Hallo!
+    </b>
+    <p>
+        Im Datenschutzcenter ist eine neue Kundeanfrage bezüglich {{ data.itemString }} eingegangen.
+    </p>
+    <p>
+        Anfrage: {{ title }}
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        <a href="{{ absolute_url(path('client_requests_show', {'id':data.id})) }}">Klicken Sie hier um
+            die Anfrage anzuzeigen</a>
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Sie erhalten diese E-Mail, weil Sie Mitglied des Adminteams {{ data.team.name }} sind.
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei Ihrem
+        Datenschutzbeauftragten, den Datenschutzkoordinatoren.<br>
+        E-Mail: {{ data.team.email }}<br>
+        Telefon: {{ data.team.telefon }}
+    </p>
+
+{% endblock %}

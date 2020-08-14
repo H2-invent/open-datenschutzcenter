@@ -112,6 +112,11 @@ class ClientRequest
      */
     private $userValidBy;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $gdpr;
+
     public function __construct()
     {
         $this->clientComments = new ArrayCollection();
@@ -350,6 +355,18 @@ class ClientRequest
     public function setUserValidBy(?User $userValidBy): self
     {
         $this->userValidBy = $userValidBy;
+
+        return $this;
+    }
+
+    public function getGdpr(): ?bool
+    {
+        return $this->gdpr;
+    }
+
+    public function setGdpr(bool $gdpr): self
+    {
+        $this->gdpr = $gdpr;
 
         return $this;
     }

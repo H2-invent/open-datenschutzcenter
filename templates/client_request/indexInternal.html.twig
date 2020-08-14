@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block CTA %}
-    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('client_new',{'id':team.id}) }}">
+    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('client_new',{'slug':team.slug}) }}">
         <span>Neues Anfrage anlegen</span>
     </a>
 {% endblock %}

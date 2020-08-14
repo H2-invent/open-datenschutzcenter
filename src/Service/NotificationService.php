@@ -69,4 +69,30 @@ class NotificationService
         return true;
     }
 
+    function sendRequestVerify($content, $email)
+    {
+        $this->mailer->sendEmail(
+            'Datenschutzcenter',
+            $this->parameterBag->get('defaultEmail'),
+            $email,
+            'Bestätigen Sie Ihre Email Adresse',
+            $content
+        );
+
+        return true;
+    }
+
+    function sendRequestNew($content, $email)
+    {
+        $this->mailer->sendEmail(
+            'Datenschutzcenter',
+            $this->parameterBag->get('defaultEmail'),
+            $email,
+            'Neue Kundenanfrage in Datenschutcenter',
+            $content
+        );
+
+        return true;
+    }
+
 }

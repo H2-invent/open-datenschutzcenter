@@ -22,12 +22,19 @@
 
         <div class="card card-body">
             <h1 class="h1-responsive text-center">Kundenportal von {{ team.name }}</h1>
-            <div class="row">
+            <hr>
+            <div class="row mt-5 mb-5">
                 <div class="col-md-6">
-                    <a href="{{ path('client_new', {'id':team.id}) }}" class="btn btn-primary">Neue Anfrage
+                    <p class="small">Hier könnne Sie eine neue Anfrage an {{ team.name }} und Ihr Recht auf Auskunft,
+                        Korrektur, Löschen, Vergessenwerden, Übertragung und Widerspruch in Anspruch nehmen</p>
+                    <a href="{{ path('client_new', {'slug':team.slug}) }}" class="btn btn-primary">Neue Anfrage
                         erstellen</a>
                 </div>
                 <div class="col-md-6">
+                    <p class="small">
+                        Suchen Sie nach Ihrer Bestehenden Anfrage.
+                    </p>
+
                     {{ form_start(form) }}
                     {{ form_widget(form) }}
                     {{ form_end(form) }}

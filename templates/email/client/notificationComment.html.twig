@@ -1,0 +1,37 @@
+{% extends 'email/base.html.twig' %}
+{% block header %}
+    -- Ein neuer Kommentar zu Ihrer Anfrage --
+{% endblock %}
+
+{% block content %}
+    <h4 class="text-center">
+        {{ title }}
+    </h4>
+    <b>
+        Hallo!
+    </b>
+    <p>
+        Es gibt eine neue Nachricht in Ihrer Anfrage {{ data.title }}.
+    </p>
+    <p>
+        Anfrage: {{ title }}
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        <a href="{{ absolute_url(path('client_show', {'slug':team.slug, 'token':data.token})) }}">Klicken Sie hier um
+            direkt zur Anfrage
+            zu gelangen.</a>
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Sie erhalten diese E-Mail, weil Sie eine Anfrage über den Datenschutzcenter {{ team.name }} gestellt haben.
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei Ihrem
+        Datenschutzbeauftragten, den Datenschutzkoordinatoren.<br>
+        E-Mail: {{ data.team.email }}<br>
+        Telefon: {{ data.team.telefon }}
+    </p>
+
+{% endblock %}

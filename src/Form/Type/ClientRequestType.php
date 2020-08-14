@@ -10,6 +10,7 @@ namespace App\Form\Type;
 
 use App\Entity\ClientRequest;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -24,9 +25,6 @@ class ClientRequestType extends AbstractType
 
         $builder
             ->add('title', TextType::class, ['label' => 'Betreff', 'required' => true, 'translation_domain' => 'form'])
-            ->add('email', TextType::class, ['label' => 'Email Adresse', 'required' => true, 'translation_domain' => 'form'])
-            ->add('name', TextType::class, ['label' => 'Name des Antragstellers', 'required' => true, 'translation_domain' => 'form'])
-            ->add('description', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Beschreibung der Anfrage', 'required' => true, 'translation_domain' => 'form'])
             ->add('item', ChoiceType::class, [
                 'choices' => [
                     'Antrag auf Auskunft' => 0,
@@ -38,6 +36,10 @@ class ClientRequestType extends AbstractType
                 'multiple' => false,
                 'required' => true
             ])
+            ->add('email', TextType::class, ['label' => 'Email Adresse', 'required' => true, 'translation_domain' => 'form'])
+            ->add('name', TextType::class, ['label' => 'Name des Antragstellers', 'required' => true, 'translation_domain' => 'form'])
+            ->add('description', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Beschreibung der Anfrage', 'required' => true, 'translation_domain' => 'form'])
+            ->add('gdpr', CheckboxType::class, ['label' => 'Ich habe die Datenschutzhinweise gelesen und akzeptiere die Verarbeitung meiner Daten. Diese Verarbeitung ist notwendig, damit wir Ihre Anfrage beantworten können.', 'required' => true, 'translation_domain' => 'form'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 

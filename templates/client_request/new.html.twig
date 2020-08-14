@@ -6,7 +6,7 @@
 
 {% block content %}
     <div>
-        <a href="{{ path('client_index', {'id':team.id}) }}" class="btn btn-primary btn-sm">Zurück zum Portal</a>
+        <a href="{{ path('client_index', {'slug':team.slug}) }}" class="btn btn-primary btn-sm">Zurück zum Portal</a>
         <div class="card card-body">
             <h1 class="h1-responsive text-center">Neue Anfrage stellen</h1>
             {{ form_start(form) }}

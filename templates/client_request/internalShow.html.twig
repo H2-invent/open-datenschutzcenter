@@ -30,15 +30,22 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="card-body card mt-2">
-                {{ form_start(form,{'action': path('client_request_comment',{'clientRequest':data.id})}) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
-            </div>
+            {% if data.activ == 1 %}
+                <div class="card-body card mt-2">
+                    {{ form_start(form,{'action': path('client_request_comment',{'clientRequest':data.id})}) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                </div>
+            {% else %}
+                <div class="note-info text-center mt-2">
+                    {% trans %}Diese Anfrage ist geschlossen.{% endtrans %}
+                </div>
+            {% endif %}
         </div>
         <div class="col-md-6">
             {% for c in data.clientComments|sort((b, a) => a.createdAt <=> b.createdAt) %}
-                <div class="card-body card mt-2">
+                <div class="card-body card mt-2"
+                     style="{% if c.internal %}border-left-style: solid; border-left-width: 17px;{% else %}border-right-style: solid; border-right-width: 17px;{% endif %}">
                     {{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}<br>
                     <hr>
                     {{ c.comment|raw }}
