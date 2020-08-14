@@ -5,7 +5,7 @@
 
 {% block content %}
     <b>
-        Hallo!
+        Hallo {{ data.name }}!
     </b>
     <p>
         Bevor wir Ihre Anfrage weiter bearbeiten können, müssen Sie Ihre Email Adresse bestätigen. Klicken Sie dazu auf
@@ -23,9 +23,7 @@
         nicht weiter verifizieren können.
     </p>
     <p>
-        Anfrage: {{ title }}
-    </p>
-    <p>
+        Anfrage: {{ title }}<br>
         Ticket ID: {{ data.uuid }}
     </p>
     <spacer size="16"></spacer>

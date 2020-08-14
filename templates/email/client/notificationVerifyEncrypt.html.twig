@@ -15,8 +15,8 @@ Sie können die Einwilligung zur Speicherung der Daten jederzeit widerrufen. Mit
 mehr in der Lage, die Anfrage weiter zu bearbeiten, da wir Sie nicht mehr kontaktieren dürfen und Ihre Idendität
 nicht weiter verifizieren können.
 
-Anfrage {{ data.title }}.
-
+Anfrage: {{ data.title }}
+Ticket ID: {{ data.uuid }}
 
 {{ absolute_url(path('client_valid', {'slug':data.team.slug, 'token':data.uuid})) }}
 Klicken Sie hier um Ihre Adresse zu bestätigen

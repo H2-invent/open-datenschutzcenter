@@ -27,6 +27,7 @@
             </div>
         {% endif %}
         <p>
+            {% trans %}Ticket ID{% endtrans %}: {{ data.uuid }}<br>
             {% trans %}Email Adresse{% endtrans %}
             : {{ data.email }} {% if data.pgp %}🔒 {% endif %}{% if data.emailValid %}✅{% endif %}<br>
             {% trans %}Name{% endtrans %}

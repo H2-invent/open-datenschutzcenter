@@ -188,7 +188,7 @@ class ClientRequestController extends AbstractController
     {
         $form = $this->createForm(ClientRequestViewType::class);
         $form->handleRequest($request);
-
+        $snack = $request->get('snack');
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $search = $form->getData();
@@ -198,11 +198,13 @@ class ClientRequestController extends AbstractController
             if (count($errors) == 0 && $clientRequest) {
                 return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
             }
+            $snack = 'Login war nicht erfolgreich. Bitte versuchen Sie es noch einmal.';
         }
 
         return $this->render('client_request/index.html.twig', [
             'form' => $form->createView(),
-            'team' => $team
+            'team' => $team,
+            'snack' => $snack
         ]);
     }
 
@@ -280,19 +282,25 @@ class ClientRequestController extends AbstractController
     public function validateRequest(Request $request, Team $team, NotificationService $notificationService, ClientRequestService $clientRequestService)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findOneBy(['uuid' => $request->get('token')]);
+        $comment = 'Es wurde kein offenes Ticket gefunden.';
         if ($clientRequest) {
-            $clientRequest->setEmailValid(true);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($clientRequest);
-            $em->flush();
+            if (!$clientRequest->getEmailValid()) {
+                $clientRequest->setEmailValid(true);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($clientRequest);
+                $em->flush();
 
-            $contentInternal = $this->renderView('email/client/notificationNew.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
-            foreach ($clientRequest->getTeam()->getAdmins() as $admin) {
-                $notificationService->sendRequestNew($contentInternal, $admin->getEmail());
+                $contentInternal = $this->renderView('email/client/notificationNew.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
+                foreach ($clientRequest->getTeam()->getAdmins() as $admin) {
+                    $notificationService->sendRequestNew($contentInternal, $admin->getEmail());
+                }
+                $content = 'Email wurde erfolgreich verifiziert';
+                $clientRequestService->newComment($clientRequest, $content, $clientRequest->getName(), 1);
+                $comment = 'Email wurde erfolgreich verifiziert';
+            } else {
+                $comment = 'Email bereits verifiziert';
             }
-            $content = 'Email wurde erfolgreich verifiziert';
-            $clientRequestService->newComment($clientRequest, $content, $clientRequest->getName(), 0);
         }
-        return $this->redirectToRoute('client_index', ['slug' => $team->getSlug()]);
+        return $this->redirectToRoute('client_index', ['slug' => $team->getSlug(), 'snack' => $comment]);
     }
 }

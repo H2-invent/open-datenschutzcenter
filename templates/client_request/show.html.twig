@@ -13,11 +13,18 @@
                 </div>
             {% endif %}
             {% if not data.emailValid %}
-                <div class="note-warning text-center">
-                    ACHTUNG!<br>
-                    Bevor wir die Anfrage weiter bearbeiten können, müssen Sie die Email Adresse verifizieren. Wir haben
-                    gerade eine Email mit einem Link an Ihre Email Adresse geschickt. Klicken Sie auf den Link oder
-                    kopieren diesen in eine Browser und bestätigen Sie Ihre Email Adresse.
+                <div class="note-warning text-center mt-2">
+                    {% trans %}ACHTUNG!<br>
+                        Bevor wir die Anfrage weiter bearbeiten können, müssen Sie die Email Adresse verifizieren. Wir haben
+                        gerade eine Email mit einem Link an Ihre Email Adresse geschickt. Klicken Sie auf den Link oder
+                        kopieren diesen in eine Browser und bestätigen Sie Ihre Email Adresse.{% endtrans %}
+                </div>
+            {% endif %}
+            {% if not data.validUser %}
+                <div class="note-danger text-center mt-2">
+                    {% trans %}WICHTIG!<br>
+                        Zum aktuellen Zeitpunkt konnten wir Ihre Identidät noch nicht verifizieren. Für uns ist der Datenschutz sehr wichtig. Je nach Grund der Anfrage werden wir Sie bitten weitere Informationen zu Ihrer Person zu liefern, damit wir Ihre Identidät zweifelsfrei feststellen können.
+                        Ohne Identifikation können wir Ihnen nur einen Negativbescheid zukommenlassen.{% endtrans %}
                 </div>
             {% endif %}
             {% if data.pgp %}
@@ -25,12 +32,13 @@
                     {% trans %}Alle Emails werden mit OpenPGP verschlüsselt verschickt. 🔒{% endtrans %}
                 </div>
             {% endif %}
-            <p>
+            <p class="mt-3">
+                {% trans %}Ticket ID{% endtrans %}: {{ data.uuid }}<br>
                 {% trans %}Email Adresse{% endtrans %}
                 : {{ data.email }} {% if data.pgp %}🔒 {% endif %}{% if data.emailValid %}✅{% endif %}<br>
                 {% trans %}Name{% endtrans %}: {{ data.name }} {% if data.validUser %}✅{% endif %}<br>
                 {% trans %}Erstellt am{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
-                {% trans %}Grund der Anfrage{% endtrans %}: {{ data.itemstring }}
+                {% trans %}Grund{% endtrans %}: {{ data.itemstring }}
             </p>
             <p>
                 {% trans %}Beschreibung{% endtrans %}: {{ data.description|raw }}
@@ -52,6 +60,11 @@
             {% endif %}
         </div>
         <div class="col-md-6 mb-4">
+            <div class="card card-body mt-2">
+                <h2 class="h2-responsive">
+                    {{ 'Kommentare'|trans }}
+                </h2>
+            </div>
             {% for c in data.clientComments|sort((b, a) => a.createdAt <=> b.createdAt) %}
                 <div class="card-body card mt-2"
                      style="{% if c.internal %}border-left-style: solid; border-left-width: 17px;{% else %}border-right-style: solid; border-right-width: 17px;{% endif %}">

@@ -16,11 +16,9 @@
     <p>
         Anfrage: {{ title }}
     </p>
-    <spacer size="16"></spacer>
     <p>
-        <a href="{{ absolute_url(path('client_show', {'slug':team.slug, 'token':data.token})) }}">Klicken Sie hier um
-            direkt zur Anfrage
-            zu gelangen.</a>
+        Schauen Sie in unserem Kundenportal vorbei um die Nachricht zu lesen: <a
+                href="{{ absolute_url(path('client_index', {'slug':team.slug})) }}">Klicken Sie hier</a>
     </p>
     <spacer size="16"></spacer>
     <p>
