@@ -9,6 +9,8 @@
 namespace App\Service;
 
 
+use nicoSWD\GPG\GPG;
+use nicoSWD\GPG\PublicKey;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 
@@ -44,6 +46,21 @@ class MailerService
         foreach ($attachment as $data) {
             $message->attach(new \Swift_Attachment($data['body'], $data['filename'], $data['type']));
         };
+        $this->swift->send($message);
+    }
+
+    public function sendEncrypt($pgp, $sender, $from, $to, $betreff, $content, $attachment = array())
+    {
+        $message = (new \Swift_Message($betreff))
+            ->setFrom(array($from => $sender))
+            ->setTo($to);
+        foreach ($attachment as $data) {
+            $message->attach(new \Swift_Attachment($data['body'], $data['filename'], $data['type']));
+        };
+        $gpg = new GPG();
+        $privat = new PublicKey($pgp);
+        $data = $gpg->encrypt($privat, $content);
+        $message->setBody($data, 'text/plain');
         $this->swift->send($message);
     }
 }

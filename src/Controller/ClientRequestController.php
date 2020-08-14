@@ -153,9 +153,10 @@ class ClientRequestController extends AbstractController
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
             return $this->redirectToRoute('client_requests');
         }
-        $content = '<b>Anfrage wurde geändert</b> <br><br>Alte Nachricht: ' . $clientRequest->getTitle() . '<br>Email: ' . $clientRequest->getEmail() . '<br>Name: ' . $clientRequest->getName() . '<br>Grund: ' . $clientRequest->getItemString() . '<br><br>Beschreibung' . $clientRequest->getDescription();
+        $content = 'Anfrage wurde geändert | Alte Nachricht: ' . $clientRequest->getTitle() . '| Email: ' . $clientRequest->getEmail() . '| Name: ' . $clientRequest->getName() . '| Grund: ' . $clientRequest->getItemString() . '| Beschreibung: ' . $clientRequest->getDescription();
 
         $form = $this->createForm(ClientRequestType::class, $clientRequest);
+        $form->remove('password');
         $form->handleRequest($request);
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
@@ -171,7 +172,11 @@ class ClientRequestController extends AbstractController
                 return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => 'Änderung gespeichert']);
             }
         }
-        return $this->render('client_request/internalEdit.html.twig', ['data' => $clientRequest, 'team' => $team, 'form' => $form->createView()]);
+        return $this->render('client_request/internalEdit.html.twig', [
+            'data' => $clientRequest,
+            'team' => $team,
+            'form' => $form->createView()
+        ]);
     }
 
 
@@ -187,7 +192,8 @@ class ClientRequestController extends AbstractController
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $search = $form->getData();
-            $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findOneBy(['uuid' => $search['uuid'], 'email' => $search['email']]);
+            $pass = sha1($search['password']);
+            $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findOneBy(['uuid' => $search['uuid'], 'email' => $search['email'], 'password' => $pass]);
 
             if (count($errors) == 0 && $clientRequest) {
                 return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
@@ -213,15 +219,19 @@ class ClientRequestController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $clientRequest = $form->getData();
+            $clientRequest->setPassword(sha1($clientRequest->getPassword()));
 
             $errors = $validator->validate($clientRequest);
             if (count($errors) == 0) {
                 $em->persist($clientRequest);
                 $em->flush();
-
-                $content = $this->renderView('email/client/notificationVerify.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
-                $notificationService->sendRequestVerify($content, $clientRequest->getEmail());
-
+                if ($clientRequest->getPgp()) {
+                    $content = $this->renderView('email/client/notificationVerifyEncrypt.html.twig', ['data' => $clientRequest]);
+                    $notificationService->sendEncrypt($clientRequest->getPgp(), $content, $clientRequest->getEmail(), 'Neue Nachricht vom Datenschutzcenter');
+                } else {
+                    $content = $this->renderView('email/client/notificationVerify.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
+                    $notificationService->sendRequestVerify($content, $clientRequest->getEmail());
+                }
                 return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
             }
         }
@@ -282,8 +292,6 @@ class ClientRequestController extends AbstractController
             }
             $content = 'Email wurde erfolgreich verifiziert';
             $clientRequestService->newComment($clientRequest, $content, $clientRequest->getName(), 0);
-
-            return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
         }
         return $this->redirectToRoute('client_index', ['slug' => $team->getSlug()]);
     }

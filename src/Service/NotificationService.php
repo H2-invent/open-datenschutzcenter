@@ -69,6 +69,20 @@ class NotificationService
         return true;
     }
 
+    function sendEncrypt($pgp, $content, $email, $betreff)
+    {
+        $this->mailer->sendEncrypt(
+            $pgp,
+            'Datenschutzcenter',
+            $this->parameterBag->get('defaultEmail'),
+            $email,
+            $betreff,
+            $content
+        );
+
+        return true;
+    }
+
     function sendRequestVerify($content, $email)
     {
         $this->mailer->sendEmail(

@@ -21,8 +21,14 @@
                 {% trans %}Diese Anfrage ist geschlossen.{% endtrans %}
             </div>
         {% endif %}
+        {% if data.pgp %}
+            <div class="note-success text-center">
+                {% trans %}Alle Emails werden mit OpenPGP verschlüsselt verschickt. 🔒 {% endtrans %}
+            </div>
+        {% endif %}
         <p>
-            {% trans %}Email Adresse{% endtrans %}: {{ data.email }} {% if data.emailValid %}✅{% endif %}<br>
+            {% trans %}Email Adresse{% endtrans %}
+            : {{ data.email }} {% if data.pgp %}🔒 {% endif %}{% if data.emailValid %}✅{% endif %}<br>
             {% trans %}Name{% endtrans %}
             : {{ data.name }} {% if data.validUser %}✅ by {{ data.userValidBy.username }}{% endif %}<br>
             {% trans %}Erstellt am{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
@@ -56,7 +62,7 @@
                      style="{% if c.internal %}border-left-style: solid; border-left-width: 17px;{% else %}border-right-style: solid; border-right-width: 17px;{% endif %}">
                     {{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}<br>
                     <hr>
-                    {{ c.comment|raw }}
+                    {{ c.comment|nl2br }}
                 </div>
             {% endfor %}
         </div>

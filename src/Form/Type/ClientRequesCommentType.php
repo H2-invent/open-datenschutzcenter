@@ -20,7 +20,7 @@ class ClientRequesCommentType extends AbstractType
     {
 
         $builder
-            ->add('comment', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Nachricht', 'required' => true, 'translation_domain' => 'form'])
+            ->add('comment', TextareaType::class, ['label' => 'Nachricht', 'required' => true, 'translation_domain' => 'form'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Senden', 'translation_domain' => 'form']);
     }
 

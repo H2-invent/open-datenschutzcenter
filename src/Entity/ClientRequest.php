@@ -123,6 +123,18 @@ class ClientRequest
      */
     private $notes;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Encrypted()
+     */
+    private $pgp;
+
+    /**
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     */
+    private $password;
+
     public function __construct()
     {
         $this->clientComments = new ArrayCollection();
@@ -385,6 +397,30 @@ class ClientRequest
     public function setNotes(string $notes): ?self
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getPgp(): ?string
+    {
+        return $this->pgp;
+    }
+
+    public function setPgp(?string $pgp): self
+    {
+        $this->pgp = $pgp;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }

@@ -1,0 +1,27 @@
+-- Ein neuer Kommentar zu Ihrer Anfrage --
+
+Neue Anfrage {{ data.title }}
+
+Hallo!
+Es gibt eine neue Nachricht in Ihrer Anfrage {{ data.title }}.
+{{ comment.comment }}
+
+
+{{ absolute_url(path('client_show', {'slug':data.team.slug, 'token':data.token})) }}
+Klicken Sie hier um direkt zur Anfrage zu gelangen.
+
+
+Sie erhalten diese E-Mail, weil Sie eine Anfrage über den Datenschutzcenter {{ data.team.name }} gestellt haben.
+
+
+Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei dem
+Datenschutzbeauftragten.
+{{ data.team.name }}
+E-Mail: {{ data.team.email }}
+Telefon: {{ data.team.telefon }}
+
+
+{{ data.team.signature }}
+
+Diese Mail wurde Ihnen gesendet im Auftrag von: {{ data.team.name }}
+Datenschutzhinweis unter {{ dataPrivacy }}

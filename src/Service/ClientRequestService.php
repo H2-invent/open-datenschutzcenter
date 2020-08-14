@@ -75,8 +75,14 @@ class ClientRequestService
             $clientComment->setCreatedAt(new \DateTime());
 
             if ($type) {
-                $content = $this->twig->render('email/client/notificationComment.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
-                $this->notificationService->sendNotificationRequest($content, $clientRequest->getEmail());
+                if ($clientRequest->getPgp()) {
+                    $content = $this->twig->render('email/client/notificationCommentEncrypt.html.twig', ['data' => $clientRequest, 'comment' => $clientComment]);
+                    $this->notificationService->sendEncrypt($clientRequest->getPgp(), $content, $clientRequest->getEmail(), 'Neue Nachricht vorhanden');
+                } else {
+                    $content = $this->twig->render('email/client/notificationComment.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
+                    $this->notificationService->sendNotificationRequest($content, $clientRequest->getEmail());
+                }
+
             } else {
                 foreach ($clientRequest->getTeam()->getAdmins() as $admins) {
                     $content = $this->twig->render('email/client/notificationCommentInternal.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
@@ -126,7 +132,7 @@ class ClientRequestService
             $clientRequest->setUuid(uniqid());
             $clientRequest->setCreatedAt(new \DateTime());
             $clientRequest->setEmailValid(false);
-            $clientRequest->setToken(md5(uniqid()));
+            $clientRequest->setToken(sha1(uniqid('REQUEST-', true)));
             $clientRequest->setTeam($team);
             $clientRequest->setActiv(true);
             $clientRequest->setValidUser(false);

@@ -9,6 +9,7 @@
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,6 +21,7 @@ class ClientRequestViewType extends AbstractType
     {
 
         $builder
+            ->add('password', PasswordType::class, ['label' => 'Zugangspasswort ', 'required' => true, 'translation_domain' => 'form'])
             ->add('uuid', TextType::class, ['label' => 'Ticket ID ', 'required' => true, 'translation_domain' => 'form'])
             ->add('email', TextType::class, ['label' => 'Email Adresse', 'required' => true, 'translation_domain' => 'form'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Anzeigen', 'translation_domain' => 'form']);

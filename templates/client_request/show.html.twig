@@ -20,8 +20,14 @@
                     kopieren diesen in eine Browser und bestätigen Sie Ihre Email Adresse.
                 </div>
             {% endif %}
+            {% if data.pgp %}
+                <div class="note-success text-center">
+                    {% trans %}Alle Emails werden mit OpenPGP verschlüsselt verschickt. 🔒{% endtrans %}
+                </div>
+            {% endif %}
             <p>
-                {% trans %}Email Adresse{% endtrans %}: {{ data.email }} {% if data.emailValid %}✅{% endif %}<br>
+                {% trans %}Email Adresse{% endtrans %}
+                : {{ data.email }} {% if data.pgp %}🔒 {% endif %}{% if data.emailValid %}✅{% endif %}<br>
                 {% trans %}Name{% endtrans %}: {{ data.name }} {% if data.validUser %}✅{% endif %}<br>
                 {% trans %}Erstellt am{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
                 {% trans %}Grund der Anfrage{% endtrans %}: {{ data.itemstring }}
@@ -51,7 +57,7 @@
                      style="{% if c.internal %}border-left-style: solid; border-left-width: 17px;{% else %}border-right-style: solid; border-right-width: 17px;{% endif %}">
                     {{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}<br>
                     <hr>
-                    {{ c.comment|raw }}
+                    {{ c.comment|nl2br }}
                 </div>
             {% endfor %}
         </div>

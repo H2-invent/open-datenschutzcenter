@@ -25,6 +25,9 @@
     <p>
         Anfrage: {{ title }}
     </p>
+    <p>
+        Ticket ID: {{ data.uuid }}
+    </p>
     <spacer size="16"></spacer>
     <p>
         <a href="{{ absolute_url(path('client_valid', {'slug':team.slug, 'token':data.uuid})) }}">Klicken Sie hier um
