@@ -6,6 +6,10 @@
            class="btn btn-sm btn-success">{{ data.validUser?'Nutzervalidierung rückgängig':'Nutzer ist verifiziert' }}</a>
         <a href="{{ path('client_request_close',{'id':data.id}) }}"
            class="btn btn-sm btn-danger">{{ data.activ?'Archivieren':'Wiederherstellen' }}</a>
+        {% if not data.activ %}
+            <a href="{{ path('client_request_make_internal',{'id':data.id}) }}"
+               class="btn btn-sm btn-danger">{{ data.open?'Intern schalten':'Öffentlich schalten' }}</a>
+        {% endif %}
         <a href="{{ path('client_requests_edit',{'id':data.id}) }}"
            class="btn btn-sm btn-primary">Bearbeiten</a>
     {% endif %}
@@ -21,8 +25,13 @@
                 {% trans %}Diese Anfrage ist geschlossen.{% endtrans %}
             </div>
         {% endif %}
+        {% if not data.open %}
+            <div class="note-warning text-center mt-2">
+                {% trans %}Diese Anfrage ist intern geschalten.{% endtrans %}
+            </div>
+        {% endif %}
         {% if data.pgp %}
-            <div class="note-success text-center">
+            <div class="note-success text-center mt-2">
                 {% trans %}Alle Emails werden mit OpenPGP verschlüsselt verschickt. 🔒 {% endtrans %}
             </div>
         {% endif %}

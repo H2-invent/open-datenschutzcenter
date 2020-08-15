@@ -135,6 +135,11 @@ class ClientRequest
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $open;
+
     public function __construct()
     {
         $this->clientComments = new ArrayCollection();
@@ -421,6 +426,18 @@ class ClientRequest
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getOpen(): ?bool
+    {
+        return $this->open;
+    }
+
+    public function setOpen(bool $open): self
+    {
+        $this->open = $open;
 
         return $this;
     }

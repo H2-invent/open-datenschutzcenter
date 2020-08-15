@@ -125,14 +125,38 @@ class ClientRequestService
         }
     }
 
+    function interalRequest(ClientRequest $clientRequest)
+    {
+        try {
+            if ($clientRequest) {
+                if (!$clientRequest->getActiv()) {
+                    if ($clientRequest->getOpen()) {
+                        $clientRequest->setOpen(false);
+                    } else {
+                        $clientRequest->setOpen(true);
+                    }
+                }
+
+                $this->em->persist($clientRequest);
+                $this->em->flush();
+
+                return true;
+            }
+        } catch
+        (\Exception $exception) {
+            return false;
+        }
+    }
+
     function newRequest($team)
     {
         try {
             $clientRequest = new ClientRequest();
             $clientRequest->setUuid(uniqid());
+            $clientRequest->setOpen(true);
             $clientRequest->setCreatedAt(new \DateTime());
             $clientRequest->setEmailValid(false);
-            $clientRequest->setToken(sha1(uniqid('REQUEST-', true)));
+            $clientRequest->setToken(uniqid(bin2hex(random_bytes(150)), true));
             $clientRequest->setTeam($team);
             $clientRequest->setActiv(true);
             $clientRequest->setValidUser(false);
