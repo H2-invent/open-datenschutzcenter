@@ -15,6 +15,9 @@
     {% endif %}
     <a href="{{ path('client_requests_internal_note',{'id':data.id}) }}"
        class="btn btn-sm btn-primary">Interne Bemerkung bearbeiten</a>
+    <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_request', {'id':data.id}) }}">
+        <span>PDF erstellen</span>
+    </a>
 {% endblock %}
 
 {% block body %}

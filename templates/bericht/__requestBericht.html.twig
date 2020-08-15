@@ -1,0 +1,51 @@
+<h2 style="page-break-before: always;">{{ d.title }} (UId:{{ d.uuid }})</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Name
+        </td>
+        <td>{{ d.name }}</td>
+    </tr>
+    <tr>
+        <td>
+            Email
+        </td>
+        <td>{{ d.email }}</td>
+    </tr>
+    <tr>
+        <td>
+            Erstellt am
+        </td>
+        <td>{{ d.createdAt|date('d.m.Y H:i') }}</td>
+    </tr>
+    <tr>
+        <td>
+            Beschreibung
+        </td>
+        <td>{{ d.description|raw }}</td>
+    </tr>
+    <tr>
+        <td>
+            Interne Notizen
+        </td>
+        <td>{{ d.notes|raw }}</td>
+    </tr>
+</table>
+<h3>
+    Kommentare
+</h3>
+<table style="table-layout:fixed; width: 100%">
+    {% for c in d.clientComments|reverse %}
+        <tr>
+            <td>{{ c.name }}<br>{{ c.createdAt|date('d.m.Y H:i') }}</td>
+            <td>{{ c.comment|nl2br }}</td>
+        </tr>
+    {% endfor %}
+</table>

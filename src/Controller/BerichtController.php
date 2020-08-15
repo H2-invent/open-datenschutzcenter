@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\AkademieBuchungen;
 use App\Entity\AuditTom;
+use App\Entity\ClientRequest;
 use App\Entity\Datenweitergabe;
 use App\Entity\Policies;
 use App\Entity\Software;
@@ -415,6 +416,45 @@ class BerichtController extends AbstractController
         $html = $this->renderView('bericht/recovery.html.twig', [
             'daten' => $software,
             'titel' => 'Recoverykonzept und Widerherstellungskonzept',
+            'team' => $this->getUser()->getTeam(),
+            'all' => $request->get('all'),
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse($html, "Recoverykonzept.pdf");
+        $response->send();
+    }
+
+    /**
+     * @Route("/bericht/request", name="bericht_request")
+     */
+    public function berichtRequest(DompdfWrapper $wrapper, Request $request)
+    {
+
+        $req = $request->get('id');
+        $team = $this->getUser()->getTeam();
+
+        if ($req) {
+            $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findBy(array('id' => $req));
+            $title = 'Bericht zur Kundenanfrage und Datenauskunft von ' . $clientRequest[0]->getName();
+        } else {
+            $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+            $title = 'Bericht zur Kundenanfrage und Datenauskunft';
+        }
+
+        if (count($clientRequest) < 1) {
+            return $this->redirectToRoute('bericht');
+        }
+
+        // Center Team authentication
+        if ($team === null || $clientRequest[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/request.html.twig', [
+            'daten' => $clientRequest,
+            'titel' => $title,
             'team' => $this->getUser()->getTeam(),
             'all' => $request->get('all'),
         ]);

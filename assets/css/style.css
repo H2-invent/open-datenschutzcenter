@@ -87,6 +87,11 @@
     color: whitesmoke !important;
 }
 
+.bg-request {
+    background-color: #0b2e13;
+    color: whitesmoke !important;
+}
+
 /* poppins-regular - latin */
 @font-face {
     font-family: 'Poppins';
