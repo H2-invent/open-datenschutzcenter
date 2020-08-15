@@ -170,6 +170,7 @@ class Team
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
+     * @Assert\Url()
      */
     private $externalLink;
 
@@ -186,6 +187,7 @@ class Team
 
     /**
      * @ORM\Column(type="text", nullable=true, unique=true)
+     * @Assert\Unique()
      */
     private $slug;
 
