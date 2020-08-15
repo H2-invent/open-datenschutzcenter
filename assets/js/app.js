@@ -20,10 +20,9 @@ import('moment');
 
 $(document).ready(function () {
     setTimeout(function () {
-        var x = document.getElementById("snackbar");
-        x.className = "show";
+        $('#snackbar').addClass('show');
         setTimeout(function () {
-            x.className = x.className.replace("show", "");
+            $('#snackbar').removeClass('show');
         }, 3000);
     }, 500);
 

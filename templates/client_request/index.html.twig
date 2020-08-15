@@ -17,31 +17,32 @@
         }
     </style>
 
-    <div class="example-wrapper">
+    <div class="card card-body">
+        <h1 class="h1-responsive text-center">Kundenportal von {{ team.name }}</h1>
+        <hr>
+        <div class="row mt-5 mb-5">
+            <div class="col-md-6">
+                <h4 class="h4-responsive">{{ team.name }}</h4>
+                <p>
+                    {{ team.strasse }}<br>
+                    {{ team.plz }} {{ team.stadt }}<br>
+                </p>
+                <p>Hier könnne Sie eine neue Anfrage an {{ team.name }} und Ihr Recht auf Auskunft,
+                    Korrektur, Löschen, Vergessenwerden, Übertragung und Widerspruch in Anspruch nehmen</p>
+                <a href="{{ path('client_new', {'slug':team.slug}) }}" class="btn btn-primary">Neue Anfrage
+                    erstellen</a>
+            </div>
+            <div class="col-md-6">
+                <p>
+                    Suchen Sie nach Ihrer Bestehenden Anfrage.
+                </p>
 
-
-        <div class="card card-body">
-            <h1 class="h1-responsive text-center">Kundenportal von {{ team.name }}</h1>
-            <hr>
-            <div class="row mt-5 mb-5">
-                <div class="col-md-6">
-                    <p class="small">Hier könnne Sie eine neue Anfrage an {{ team.name }} und Ihr Recht auf Auskunft,
-                        Korrektur, Löschen, Vergessenwerden, Übertragung und Widerspruch in Anspruch nehmen</p>
-                    <a href="{{ path('client_new', {'slug':team.slug}) }}" class="btn btn-primary">Neue Anfrage
-                        erstellen</a>
-                </div>
-                <div class="col-md-6">
-                    <p class="small">
-                        Suchen Sie nach Ihrer Bestehenden Anfrage.
-                    </p>
-
-                    {{ form_start(form) }}
+                {{ form_start(form) }}
                     {{ form_widget(form) }}
                     {{ form_end(form) }}
                 </div>
             </div>
 
         </div>
-    </div>
     {{ include('base/__snack.html.twig') }}
 {% endblock %}
