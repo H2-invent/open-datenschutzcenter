@@ -460,7 +460,7 @@ class BerichtController extends AbstractController
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Recoverykonzept.pdf");
+        $response = $wrapper->getStreamResponse($html, $title . ".pdf");
         $response->send();
     }
 
