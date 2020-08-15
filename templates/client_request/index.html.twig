@@ -20,15 +20,30 @@
     <div class="card card-body">
         <h1 class="h1-responsive text-center">Kundenportal von {{ team.name }}</h1>
         <hr>
-        <div class="row mt-5 mb-5">
+        <div class="text-center">
+            <h4 class="h4-responsive">{{ team.name }}</h4>
+            <p>
+                {{ team.strasse }}<br>
+                {{ team.plz }} {{ team.stadt }}<br>
+            </p>
+            <hr>
+        </div>
+        <div class="row mb-5">
             <div class="col-md-6">
-                <h4 class="h4-responsive">{{ team.name }}</h4>
-                <p>
-                    {{ team.strasse }}<br>
-                    {{ team.plz }} {{ team.stadt }}<br>
+                <p>Hier könnne Sie eine neue Anfrage einreichen und Ihre Rechte nach der DSGVO an {{ team.name }}
+                    geltend machen.
                 </p>
-                <p>Hier könnne Sie eine neue Anfrage an {{ team.name }} und Ihr Recht auf Auskunft,
-                    Korrektur, Löschen, Vergessenwerden, Übertragung und Widerspruch in Anspruch nehmen</p>
+                <ul>
+                    <li>
+                        Tragen Sie alle Daten in das Formular ein.
+                    </li>
+                    <li>
+                        Bestätigen Sie Ihre Email Adresse.
+                    </li>
+                    <li>
+                        Warten Sie auf eine Antwort von {{ team.name }}.
+                    </li>
+                </ul>
                 <a href="{{ path('client_new', {'slug':team.slug}) }}" class="btn btn-primary">Neue Anfrage
                     erstellen</a>
             </div>
@@ -38,11 +53,62 @@
                 </p>
 
                 {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    {{ form_end(form) }}
-                </div>
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
             </div>
-
         </div>
+
+        <h3 class="h3-responsive mt-3">Ihre Rechte nach der DSGVO</h3>
+        <p class="small">
+            Werden personenbezogene Daten von Ihnen verarbeitet, sind Sie Betroffener i.S.d. DSGVO und es stehen Ihnen
+            die nachfolgenden Rechte gegenüber uns als dem Verantwortlichen zu.
+        </p>
+        <p class="small">
+            a) Rechte nach Art. 15 ff. DSGVO<br>
+            Die betroffene Person hat das Recht, von dem Verantwortlichen eine Bestätigung darüber zu verlangen, ob
+            sie betreffende personenbezogene Daten verarbeitet werden; ist dies der Fall, so hat sie ein <b>Recht auf
+                Auskunft</b> über diese personenbezogenen Daten und auf die in Art. 15 DSGVO im einzelnen aufgeführten
+            Informationen. Unter bestimmten gesetzlichen Voraussetzungen haben Sie das <b>Recht auf Berichtigung</b>
+            nach
+            Artikel 16 DSGVO, das <b>Recht auf Einschränkung der Verarbeitung</b> nach Artikel 18 DSGVO und das <b>Recht
+                auf
+                Löschung („Recht auf Vergessenwerden“)</b> nach Artikel 17 DSGVO. Für das Recht auf Auskunft und
+            Löschung gelten
+            ergänzend die §§ 34, 35 BDSG. Zudem haben Sie das <b>Recht auf Herausgabe der von Ihnen bereitgestellten
+                Daten</b>
+            in einem strukturierten, gängigen und maschinenlesbaren Format (Recht auf Datenübertragbarkeit) nach Artikel
+            20 DSGVO, sofern die Verarbeitung mithilfe automatisierter Verfahren erfolgt und auf einer Einwilligung nach
+            Art. 6 Abs. 1 lit. a) oder Art. 9 Abs. 2 lit. a) oder auf einem Vertrag gem. Art. 6 Abs. 1 lit. b) DSGVO
+            beruht.
+        </p>
+        <p class="small">
+            b) Widerruf einer Einwilligung nach Art. 7 Abs. 3 DSGVO<br>
+            Beruht die Verarbeitung auf einer Einwilligung können Sie die Einwilligung in die Verarbeitung
+            personenbezogener Daten jederzeit uns gegenüber widerrufen. Bitte beachten Sie, dass der Widerruf erst für
+            die Zukunft wirkt. Verarbeitungen, die vor dem Widerruf erfolgt sind, sind davon nicht betroffen.
+        </p>
+        <p class="small">
+            c) Beschwerderecht<br>
+            Sie haben die Möglichkeit, sich mit einer Beschwerde an uns oder an eine Datenschutzaufsichtsbehörde zu
+            wenden (Artikel 77 DSGVO).
+        </p>
+        <p class="small">
+            d) Widerspruchsrecht nach Artikel 21 DSGVO<br>
+            Zusätzlich zu den vorgenannten Rechten, steht Ihnen ein Widerspruchsrecht wie folgt zu:<br>
+            <b>Einzelfallbezogenes Widerspruchsrecht</b><br>
+            Sie haben das Recht aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit gegen die
+            Verarbeitung Sie betreffender personenbezogener Daten, die aufgrund von Artikel 6 Abs. 1 S. 1 lit. e) DSGVO
+            (Datenverarbeitung im öffentlichen Interesse) und Artikel 6 Abs. 1 S.1 lit. f) DSGVO (Datenverarbeitung auf
+            der
+            Grundlage einer Interessenabwägung) erfolgt, Widerspruch einzulegen; dies gilt auch für ein auf diese
+            Bestimmung
+            gestütztes Proﬁling im Sinne von Artikel 4 Nr. 4 DSGVO. Legen Sie Widerspruch ein, werden wir Ihre
+            personenbezogenen Daten nicht mehr verarbeiten, es sei denn, wir können zwingende schutzwürdige Gründe für
+            die
+            Verarbeitung nachweisen, die Ihre Interessen, Rechte und Freiheiten überwiegen oder die Verarbeitung dient
+            der
+            Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen.
+        </p>
+    </div>
     {{ include('base/__snack.html.twig') }}
 {% endblock %}

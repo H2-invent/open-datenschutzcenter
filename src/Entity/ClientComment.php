@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Repository\ClientCommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ClientCommentRepository::class)
@@ -19,11 +21,14 @@ class ClientComment
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Encrypted()
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     * @Encrypted()
      */
     private $comment;
 

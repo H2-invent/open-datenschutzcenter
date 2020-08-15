@@ -80,7 +80,7 @@ class ClientRequest
     private $emailValid;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", unique=true)
      * @Assert\NotBlank()
      */
     private $token;
@@ -202,16 +202,22 @@ class ClientRequest
     {
         switch ($this->item) {
             case 0:
-                return 'Antrag auf Auskunft';
+                return 'Antrag auf Auskunft nach Art. 15 DSGVO';
                 break;
             case 10:
-                return 'Antrag auf Berichtigung';
+                return 'Antrag auf Berichtigung nach Art. 16 DSGVO';
                 break;
             case 20:
-                return 'Antrag auf Datenübertragung';
+                return 'Antrag auf Datenübertragung/Herausgabe nach Art. 18 DSGVO';
                 break;
             case 30:
-                return 'Antrag auf Löschung';
+                return 'Antrag auf Löschung (Recht auf Vergessenwerden) nach Art. 17 DSGVO';
+                break;
+            case 40:
+                return 'Antrag auf Widerruf einer Einwilligung nach Art. 7 Abs. 3 DSGVO';
+                break;
+            case 50:
+                return 'Antrag auf einzelfallbezogenes Widerspruchsrecht nach Art. 21 DSGVO';
                 break;
             default:
                 return "Nicht ausgewählt";
