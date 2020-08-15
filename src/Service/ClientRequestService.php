@@ -109,6 +109,7 @@ class ClientRequestService
                     $comment = 'Diese Anfrage wurde geschlossen.';
                 } else {
                     $clientRequest->setActiv(true);
+                    $clientRequest->setOpen(true);
                     $comment = 'Diese Anfrage wurde wieder geöffnet.';
                 }
 

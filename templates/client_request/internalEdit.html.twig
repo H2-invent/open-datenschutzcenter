@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block CTA %}
-
+    <a href="{{ path('client_requests_show',{'id':data.id}) }}" class="btn btn-sm btn-primary">Zurück</a>
 {% endblock %}
 
 {% block body %}

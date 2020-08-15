@@ -48,11 +48,13 @@
             {% trans %}Grund der Anfrage{% endtrans %}: {{ data.itemstring }}
         </p>
         <div>
-            <b>{% trans %}Beschreibung{% endtrans %}:</b> {{ data.description|raw }}
+            <b>{% trans %}Beschreibung{% endtrans %}:</b>
+            {{ data.description|raw }}
         </div>
         <hr>
         <div>
-            <b>{% trans %}Interne Bemerkungen{% endtrans %}:</b> {{ data.notes|raw }}
+            <b>{% trans %}Interne Bemerkungen{% endtrans %}:</b><br>
+            {{ data.notes|raw }}
         </div>
     </div>
     <div class="row">
