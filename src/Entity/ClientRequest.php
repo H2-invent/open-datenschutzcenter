@@ -80,7 +80,7 @@ class ClientRequest
     private $emailValid;
 
     /**
-     * @ORM\Column(type="text", unique=true)
+     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
     private $token;
