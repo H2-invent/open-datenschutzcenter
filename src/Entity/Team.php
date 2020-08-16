@@ -186,7 +186,7 @@ class Team
     private $clientRequests;
 
     /**
-     * @ORM\Column(type="text", nullable=true, unique=true, options={"length": 100})
+     * @ORM\Column(type="text", nullable=true)
      * @Assert\Unique()
      */
     private $slug;
