@@ -28,13 +28,14 @@ class ClientRequestType extends AbstractType
             ->add('title', TextType::class, ['label' => 'Betreff', 'required' => true, 'translation_domain' => 'form'])
             ->add('item', ChoiceType::class, [
                 'choices' => [
-                    'Antrag auf Auskunft nach Art. 15 DSGVO' => 0,
-                    'Antrag auf Berichtigung nach Art. 16 DSGVO' => 10,
-                    'Antrag auf Einschränkung nach Art. 18 DSGVO' => 15,
+                    'Antrag auf Auskunft nach Art. 15 DSGVO' => 15,
+                    'Antrag auf Berichtigung nach Art. 16 DSGVO' => 16,
+                    'Antrag auf Einschränkung nach Art. 18 DSGVO' => 18,
                     'Antrag auf Datenübertragung/Herausgabe nach Art. 20 DSGVO' => 20,
-                    'Antrag auf Löschung (Recht auf Vergessenwerden) nach Art. 17 DSGVO' => 30,
-                    'Antrag auf Widerruf einer Einwilligung nach Art. 7 Abs. 3 DSGVO' => 40,
-                    'Antrag auf einzelfallbezogenes Widerspruchsrecht nach Art. 21 DSGVO' => 50],
+                    'Antrag auf Löschung (Recht auf Vergessenwerden) nach Art. 17 DSGVO' => 17,
+                    'Antrag auf Widerruf einer Einwilligung nach Art. 7 Abs. 3 DSGVO' => 73,
+                    'Antrag auf einzelfallbezogenes Widerspruchsrecht nach Art. 21 DSGVO' => 21,
+                    'Einreichnung einer Beschwerde nach Art. 77 DSGVO' => 77],
                 'label' => 'Grund der Anfrage',
                 'translation_domain' => 'form',
                 'multiple' => false,

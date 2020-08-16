@@ -201,29 +201,32 @@ class ClientRequest
     public function getItemString()
     {
         switch ($this->item) {
-            case 0:
+            case 15:
                 return 'Antrag auf Auskunft nach Art. 15 DSGVO';
                 break;
-            case 10:
+            case 16:
                 return 'Antrag auf Berichtigung nach Art. 16 DSGVO';
                 break;
-            case 15:
+            case 18:
                 return 'Antrag auf Einschränkung nach Art. 18 DSGVO';
                 break;
             case 20:
                 return 'Antrag auf Datenübertragung/Herausgabe nach Art. 20 DSGVO';
                 break;
-            case 30:
+            case 17:
                 return 'Antrag auf Löschung (Recht auf Vergessenwerden) nach Art. 17 DSGVO';
                 break;
-            case 40:
+            case 73:
                 return 'Antrag auf Widerruf einer Einwilligung nach Art. 7 Abs. 3 DSGVO';
                 break;
-            case 50:
+            case 21:
                 return 'Antrag auf einzelfallbezogenes Widerspruchsrecht nach Art. 21 DSGVO';
                 break;
+            case 77:
+                return 'Einreichnung einer Beschwerde nach Art. 77 DSGVO';
+                break;
             default:
-                return "Nicht ausgewählt";
+                return "Grund nicht mehr vorhanden";
                 break;
         }
     }
