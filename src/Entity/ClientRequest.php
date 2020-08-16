@@ -22,7 +22,7 @@ class ClientRequest
     private $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", options={"length": 100})
      * @Assert\NotBlank()
      */
     private $uuid;
