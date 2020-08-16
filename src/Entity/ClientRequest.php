@@ -22,7 +22,7 @@ class ClientRequest
     private $id;
 
     /**
-     * @ORM\Column(type="text", unique=true)
+     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
     private $uuid;
