@@ -30,7 +30,8 @@ class ClientRequestType extends AbstractType
                 'choices' => [
                     'Antrag auf Auskunft nach Art. 15 DSGVO' => 0,
                     'Antrag auf Berichtigung nach Art. 16 DSGVO' => 10,
-                    'Antrag auf Datenübertragung/Herausgabe nach Art. 18 DSGVO' => 20,
+                    'Antrag auf Einschränkung nach Art. 18 DSGVO' => 15,
+                    'Antrag auf Datenübertragung/Herausgabe nach Art. 20 DSGVO' => 20,
                     'Antrag auf Löschung (Recht auf Vergessenwerden) nach Art. 17 DSGVO' => 30,
                     'Antrag auf Widerruf einer Einwilligung nach Art. 7 Abs. 3 DSGVO' => 40,
                     'Antrag auf einzelfallbezogenes Widerspruchsrecht nach Art. 21 DSGVO' => 50],

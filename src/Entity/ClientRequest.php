@@ -207,8 +207,11 @@ class ClientRequest
             case 10:
                 return 'Antrag auf Berichtigung nach Art. 16 DSGVO';
                 break;
+            case 15:
+                return 'Antrag auf Einschränkung nach Art. 18 DSGVO';
+                break;
             case 20:
-                return 'Antrag auf Datenübertragung/Herausgabe nach Art. 18 DSGVO';
+                return 'Antrag auf Datenübertragung/Herausgabe nach Art. 20 DSGVO';
                 break;
             case 30:
                 return 'Antrag auf Löschung (Recht auf Vergessenwerden) nach Art. 17 DSGVO';
