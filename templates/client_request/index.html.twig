@@ -30,8 +30,7 @@
         </div>
         <div class="row mb-5">
             <div class="col-md-6">
-                <p>Hier könnne Sie eine neue Anfrage einreichen und Ihre Rechte nach der DSGVO an {{ team.name }}
-                    geltend machen.
+                <p>Hier könnne Sie eine neue Anfrage einreichen und Ihre Rechte nach der DSGVO geltend machen.
                 </p>
                 <ul>
                     <li>
@@ -41,7 +40,13 @@
                         Bestätigen Sie Ihre Email Adresse.
                     </li>
                     <li>
-                        Warten Sie auf eine Antwort von {{ team.name }}.
+                        Führen Sie die Indentifikation ihrer Person nach den Vorgaben von {{ team.name }} durch.
+                    </li>
+                    <li>
+                        Kommunizieren Sie mit {{ team.name }} über eine verschlüsselte Verbindung.
+                    </li>
+                    <li>
+                        Erhalten Sie die Antwort auf Ihre Anfrage.
                     </li>
                 </ul>
                 <a href="{{ path('client_new', {'slug':team.slug}) }}" class="btn btn-primary">Neue Anfrage
@@ -49,7 +54,7 @@
             </div>
             <div class="col-md-6">
                 <p>
-                    Suchen Sie nach Ihrer Bestehenden Anfrage.
+                    Suchen Sie nach Ihrer bestehenden Anfrage.
                 </p>
 
                 {{ form_start(form) }}
