@@ -24,7 +24,7 @@
                 {% for t in tom %}
                     <tr class="clickable-row" data-href='{{ path('tom_edit',{'tom':t.id}) }}'>
                         <th scope="row">{{ t.id }}</th>
-                        <td>{% for vv in t.Vvts %}{{ vv.name }}{% endfor %}</td>
+                        <td>{% for vv in t.Vvts if vv.activ %}{{ vv.name }}<br>{% endfor %}</td>
                         <td>{{ t.createdAt|date('d.m.Y') }}</td>
                         <td>{{ t.titel }}</td>
                         <td>{{ t.beschreibung }}</td>
