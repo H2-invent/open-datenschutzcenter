@@ -153,7 +153,7 @@ class ClientRequestService
     {
         try {
             $clientRequest = new ClientRequest();
-            $clientRequest->setUuid(uniqid());
+            $clientRequest->setUuid(uniqid('', true));
             $clientRequest->setOpen(true);
             $clientRequest->setCreatedAt(new \DateTime());
             $clientRequest->setEmailValid(false);
