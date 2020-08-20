@@ -1,281 +1,315 @@
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-<div class="card card-body {% if not activ or vvt.approved %}disabled{% endif %}">
 
-    {% if activNummer %}
-        {{ form_label(form.nummer) }}
-        {{ form_widget(form.nummer) }}
-    {% endif %}
+<div class="card mt-4">
+    <h4 class="h4-responsive card-header">Daten zur Verarbeitung</h4>
 
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.name) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.name) }}
-        </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.status) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.status) }}
-        </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.abteilung) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.abteilung) }}
-        </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.produkt) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.produkt) }}
-            {{ form_help(form.produkt) }}
-        </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.userContract) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.userContract) }}
-        </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.verantwortlich) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.verantwortlich) }}
-        </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.grundlage) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.grundlage) }}
-        </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.zweck) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.zweck) }}
-        </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.speicherung) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.speicherung) }}
-        </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.loeschfrist) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.loeschfrist) }}
-        </div>
-    </div>
-    <h4 class="h4-responsive mt-4">Erfasste Daten</h4>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.personengruppen) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.personengruppen) }}
-        </div>
+    <div class="card-body{% if not activ or vvt.approved %}disabled{% endif %}">
+        {% if activNummer %}
+            {{ form_label(form.nummer) }}
+            {{ form_widget(form.nummer) }}
+        {% endif %}
 
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.kategorien) }}
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.name) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.name) }}
+            </div>
         </div>
-        <div class="col-md-9">
-            {{ form_widget(form.kategorien) }}
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.status) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.status) }}
+            </div>
         </div>
-    </div>
-    <h4 class="h4-responsive mt-4">Datenweitergabe und Auftragsverarbeitung</h4>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.weitergabe) }}
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.abteilung) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.abteilung) }}
+            </div>
         </div>
-        <div class="col-md-9">
-            {{ form_widget(form.weitergabe) }}
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.produkt) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.produkt) }}
+                {{ form_help(form.produkt) }}
+            </div>
         </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.jointControl) }}
-            {{ form_label(form.auftragsverarbeitung) }}
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.userContract) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.userContract) }}
+            </div>
         </div>
-        <div class="col-md-9">
-            {{ form_widget(form.jointControl) }}
-            {{ form_widget(form.auftragsverarbeitung) }}
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.verantwortlich) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.verantwortlich) }}
+            </div>
+        </div>
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.grundlage) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.grundlage) }}
+            </div>
+        </div>
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.zweck) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.zweck) }}
+            </div>
+        </div>
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.speicherung) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.speicherung) }}
+            </div>
+        </div>
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.loeschfrist) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.loeschfrist) }}
+            </div>
+        </div>
+        <h4 class="h4-responsive mt-4">Erfasste Daten</h4>
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.personengruppen) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.personengruppen) }}
+            </div>
+
+        </div>
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.kategorien) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.kategorien) }}
+            </div>
         </div>
 
     </div>
-    <div class="mt-4 row">
+</div>
 
-        <div class="col-md-3">
-            {{ form_label(form.datenweitergaben) }}
+<div class="card mt-4">
+    <h4 class="h4-responsive card-header">Datenweitergabe und Auftragsverarbeitung</h4>
+
+    <div class="card-body{% if not activ or vvt.approved %}disabled{% endif %}">
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.weitergabe) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.weitergabe) }}
+            </div>
         </div>
-        <div class="col-md-5">
-            {{ form_widget(form.datenweitergaben) }}
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.jointControl) }}
+                {{ form_label(form.auftragsverarbeitung) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.jointControl) }}
+                {{ form_widget(form.auftragsverarbeitung) }}
+            </div>
+
         </div>
-        <div class="col-md-4">
-            {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
-                <b>Zugehörige Datenweitergaben</b><br>
-                <ul>
-                    {% for d in vvt.datenweitergaben %}
-                        {% if d.activ == 1 %}
-                            {% if d.art == 1 %}
-                                <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
-                                </li>
+        <div class="mt-4 row">
+
+            <div class="col-md-3">
+                {{ form_label(form.datenweitergaben) }}
+            </div>
+            <div class="col-md-5">
+                {{ form_widget(form.datenweitergaben) }}
+            </div>
+            <div class="col-md-4">
+                {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
+                    <b>Zugehörige Datenweitergaben</b><br>
+                    <ul>
+                        {% for d in vvt.datenweitergaben %}
+                            {% if d.activ == 1 %}
+                                {% if d.art == 1 %}
+                                    <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
+                                    </li>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <b>Zugehörige Auftragsdatenverarbeitungen</b><br>
+                    <ul>
+                        {% for d in vvt.datenweitergaben %}
+                            {% if d.activ == 1 %}
+                                {% if d.art == 2 %}
+                                    <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.eu) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.eu) }}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="card mt-4">
+    <h4 class="h4-responsive card-header">Technische und organisatorische Maßnahmen</h4>
+
+    <div class="card-body{% if not activ or vvt.approved %}disabled{% endif %}">
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.software) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.software) }}
+            </div>
+        </div>
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.tomLink) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.tomLink) }}
+            </div>
+        </div>
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.tom) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.tom) }}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="card mt-4">
+    <h4 class="h4-responsive card-header">Risikoabschätzung</h4>
+    {% if vvt.activDsfa is not null %}<a href="{{ path('vvt_dsfa_edit',{'dsfa':vvt.activDsfa.id}) }}"
+                                         class="btn btn-primary btn-sm">DSFA anzeigen</a>{% endif %}
+
+    <div class="card-body{% if not activ or vvt.approved %}disabled{% endif %}">
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.risiko) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.risiko) }}
+            </div>
+        </div>
+
+
+        <div class="row mt-4">
+            <div class="col-md-3">
+                {{ form_label(form.beurteilungEintritt) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.beurteilungEintritt) }}
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-3">
+                {{ form_label(form.beurteilungSchaden) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.beurteilungSchaden) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card mt-4">
+    <h4 class="h4-responsive card-header">Informationspflicht</h4>
+
+    <div class="card-body{% if not activ or vvt.approved %}disabled{% endif %}">
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.informationspflicht) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.informationspflicht) }}
+                <p>
+                    Es sollte je Verfahren dokumentiert werden, wo und wie den Informationspflichten jeweils
+                    nachgekommen
+                    wird.
+                    Dies kann bspw. durch Verweis auf Datenschutzhinweise, Vertragsbestandteile, Disclaimer in
+                    Formularen,
+                    bei
+                    Mitarbeiterdaten z.B. auch durch Verweise bei Erhebung auf intern bekanntgemachte
+                    Betriebsvereinbarung
+                    etc.
+                    erfolgen.
+                </p>
+            </div>
+        </div>
+        <div class="mt-4 mb-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.dsb) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.dsb) }}
+                <p>
+                    Neben der verpflichtenden Erfassung des Verarbeitungszwecks sollte zur Erfüllung der
+                    Rechenschaftpflichten
+                    gem. Art. 5 auch die Rechtsgrundlage mitsamt ggfs. erforderlicher Abwägungen, Einwilligungsklauseln
+                    und
+                    Prüfvermerken, ob bspw. die Anforderungen an Widerspruchsmöglichkeiten oder die automatisierte
+                    Einzelentscheidung berücksichtigt wurden.
+                </p>
+                <p>
+                    Datenminimierung: Dies kann bspw. durch einen Prüfvermerk des Datenschutzbeauftragten, ob diese
+                    Grundsätze
+                    nach seiner Einschätzung ausreichend berücksichtigt wurde, dokumentiert werden.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-md-3 col-md-9">
+                <p>
+                    Vorhandene interne Richtlinien zu dieser Verarbeitung
+                </p>
+                <ul>
+                    {% for p in vvt.policies if p.activ %}
+                        <li>
+                            <a href="{{ path('policy_edit',{'id':p.id}) }}">{{ p.scope|nl2br }}</a>
+                        </li>
                     {% endfor %}
                 </ul>
-                <b>Zugehörige Auftragsdatenverarbeitungen</b><br>
-                <ul>
-                    {% for d in vvt.datenweitergaben %}
-                        {% if d.activ == 1 %}
-                            {% if d.art == 2 %}
-                                <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
-                                </li>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            {% endif %}
+            </div>
         </div>
     </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.eu) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.eu) }}
-        </div>
-    </div>
-
-    <h4 class="h4-responsive mt-4">Technische und organisatorische Maßnahmen</h4>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.software) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.software) }}
-        </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.tomLink) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.tomLink) }}
-        </div>
-    </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.tom) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.tom) }}
-        </div>
-    </div>
-
-    <h4 class="h4-responsive mt-4">Risikoabschätzung</h4>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.risiko) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.risiko) }}
-        </div>
-    </div>
-
-
-    <div class="row mt-4">
-        <div class="col-md-3">
-            {{ form_label(form.beurteilungEintritt) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.beurteilungEintritt) }}
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-3">
-            {{ form_label(form.beurteilungSchaden) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.beurteilungSchaden) }}
-        </div>
-    </div>
-
-    <h4 class="h4-responsive mt-4">Informationspflicht</h4>
-    <div class="mt-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.informationspflicht) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.informationspflicht) }}
-            <p>
-                Es sollte je Verfahren dokumentiert werden, wo und wie den Informationspflichten jeweils nachgekommen
-                wird.
-                Dies kann bspw. durch Verweis auf Datenschutzhinweise, Vertragsbestandteile, Disclaimer in Formularen,
-                bei
-                Mitarbeiterdaten z.B. auch durch Verweise bei Erhebung auf intern bekanntgemachte Betriebsvereinbarung
-                etc.
-                erfolgen.
-            </p>
-        </div>
-    </div>
-    <div class="mt-4 mb-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.dsb) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.dsb) }}
-            <p>
-                Neben der verpflichtenden Erfassung des Verarbeitungszwecks sollte zur Erfüllung der
-                Rechenschaftpflichten
-                gem. Art. 5 auch die Rechtsgrundlage mitsamt ggfs. erforderlicher Abwägungen, Einwilligungsklauseln und
-                Prüfvermerken, ob bspw. die Anforderungen an Widerspruchsmöglichkeiten oder die automatisierte
-                Einzelentscheidung berücksichtigt wurden.
-            </p>
-            <p>
-                Datenminimierung: Dies kann bspw. durch einen Prüfvermerk des Datenschutzbeauftragten, ob diese
-                Grundsätze
-                nach seiner Einschätzung ausreichend berücksichtigt wurde, dokumentiert werden.
-            </p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="offset-md-3 col-md-9">
-            <p>
-                Vorhandene interne Richtlinien zu dieser Verarbeitung
-            </p>
-            <ul>
-                {% for p in vvt.policies if p.activ %}
-                    <li>
-                        <a href="{{ path('policy_edit',{'id':p.id}) }}">{{ p.scope|nl2br }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
     {{ form_widget(form.save) }}
 
 
