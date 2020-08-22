@@ -296,17 +296,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="offset-md-3 col-md-9">
+            <div class="col-md-3">
                 <p>
-                    Vorhandene interne Richtlinien zu dieser Verarbeitung
+                    Dieser Verarbeitung wurden folgende interne Richtlinien und Arbeitsanweisungen angefügt.
                 </p>
-                <ul>
-                    {% for p in vvt.policies if p.activ %}
-                        <li>
-                            <a href="{{ path('policy_edit',{'id':p.id}) }}">{{ p.scope|nl2br }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
+            </div>
+            <div class="col-md-9">
+                {% for p in vvt.policies if p.activ %}
+                    <a href="{{ path('policy_edit',{'id':p.id}) }}" class="btn btn-sm bg-policy">{{ p.title }}</a>
+                {% endfor %}
             </div>
         </div>
     </div>
