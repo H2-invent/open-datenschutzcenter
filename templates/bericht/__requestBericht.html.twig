@@ -15,9 +15,31 @@
     </tr>
     <tr>
         <td>
+            Grund der Anfrage
+        </td>
+        <td>{{ d.itemString }}</td>
+    </tr>
+    <tr>
+        <td>
             Email
         </td>
         <td>{{ d.email }}</td>
+    </tr>
+    <tr>
+        <td>
+            PGP Schlüssel vorhanden
+        </td>
+        <td>{{ d.pgp?'Ja':'Nein' }}</td>
+    </tr>
+    <tr>
+        <td>
+            Status
+        </td>
+        <td>
+            Aktiv: {{ d.activ?'Ja':'Nein' }}<br>
+            Für Kunde offen: {{ d.open?'Ja':'Nein' }}
+
+        </td>
     </tr>
     <tr>
         <td>
@@ -37,9 +59,15 @@
         </td>
         <td>{{ d.notes|raw }}</td>
     </tr>
+    <tr>
+        <td>
+            Identität bestätigt
+        </td>
+        <td>{{ d.validUser?'Ja':'Nein' }} {% if d.validuser %}{{ 'bei'|trans }} {{ d.userValidBy.email }}{% endif %}</td>
+    </tr>
 </table>
 <h3>
-    Kommentare
+    Protokoll
 </h3>
 <table style="table-layout:fixed; width: 100%">
     {% for c in d.clientComments|reverse %}
