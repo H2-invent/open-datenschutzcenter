@@ -166,7 +166,7 @@ class AkademieController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Mitglieder verwalten',
-            'data' => $this->getUser()->getTeam()->getAkademieUsers(),
+            'data' => $team->getAkademieUsers(),
         ]);
     }
 

@@ -109,7 +109,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_ziel/deaktivieren", name="team_ziel_deativate")
      */
-    public function addZielDeactivate(Request $request, SecurityService $securityService)
+    public function zielDeactivate(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -240,7 +240,7 @@ class TeamController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Mitglieder verwalten',
-            'data' => $this->getUser()->getTeam()->getMembers(),
+            'data' => $team->getMembers(),
         ]);
     }
 
