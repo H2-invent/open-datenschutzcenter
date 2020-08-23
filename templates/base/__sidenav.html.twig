@@ -25,43 +25,44 @@
             <li class="{{ app.request.attributes.get('_route') == 'audit_tom' ? 'active' }}">
                 <a href="{{ path('audit_tom') }}">Auditfragen</a>
             </li>
-            <li class="{{ app.request.attributes.get('_route') == 'tom' ? 'active' }}">
-                <a href="{{ path('tom') }}">TOM</a>
-            </li>
-            <li class="{{ app.request.attributes.get('_route') == 'vvt' ? 'active' }}">
-                <a href="{{ path('vvt') }}">Verarbeitungen</a>
-            </li>
-            <li class="{{ app.request.attributes.get('_route') == 'policies' ? 'active' }}">
-                <a href="{{ path('policies') }}">Richtlinien</a>
-            </li>
-            <li class="{{ app.request.attributes.get('_route') == 'kontakt' ? 'active' }}">
-                <a href="{{ path('kontakt') }}">Kontakte</a>
-            </li>
-            <li class="{{ app.request.attributes.get('_route') == 'datenweitergabe' ? 'active' }}">
-                <a href="{{ path('datenweitergabe') }}">Datenweitergabe</a>
-            </li>
-            <li class="{{ app.request.attributes.get('_route') == 'auftragsverarbeitung' ? 'active' }}">
-                <a href="{{ path('auftragsverarbeitung') }}">Auftragsverarbeitung</a>
-            </li>
-            <li class="{{ app.request.attributes.get('_route') == 'software' ? 'active' }}">
-                <a href="{{ path('software') }}">Software</a>
-            </li>
-            <li class="{{ app.request.attributes.get('_route') == 'forms' ? 'active' }}">
-                <a href="{{ path('forms') }}">Formulare</a>
-            </li>
-            <li class="{{ app.request.attributes.get('_route') == 'vorfall' ? 'active' }}">
-                <a href="{{ path('vorfall') }}">Vorfälle</a>
-            </li>
-            <li class="{{ app.request.attributes.get('_route') == 'client_requests' ? 'active' }}">
-                <a href="{{ path('client_requests') }}">Kundenanfragen</a>
-            </li>
+        <li class="{{ app.request.attributes.get('_route') == 'tom' ? 'active' }}">
+            <a href="{{ path('tom') }}">TOM</a>
+        </li>
+        <li class="{{ app.request.attributes.get('_route') == 'vvt' ? 'active' }}">
+            <a href="{{ path('vvt') }}">Verarbeitungen</a>
+        </li>
+        <li class="{{ app.request.attributes.get('_route') == 'policies' ? 'active' }}">
+            <a href="{{ path('policies') }}">Richtlinien</a>
+        </li>
+        <li class="{{ app.request.attributes.get('_route') == 'kontakt' ? 'active' }}">
+            <a href="{{ path('kontakt') }}">Kontakte</a>
+        </li>
+        <li class="{{ app.request.attributes.get('_route') == 'datenweitergabe' ? 'active' }}">
+            <a href="{{ path('datenweitergabe') }}">Datenweitergabe</a>
+        </li>
+        <li class="{{ app.request.attributes.get('_route') == 'auftragsverarbeitung' ? 'active' }}">
+            <a href="{{ path('auftragsverarbeitung') }}">Auftragsverarbeitung</a>
+        </li>
+        <li class="{{ app.request.attributes.get('_route') == 'software' ? 'active' }}">
+            <a href="{{ path('software') }}">Software</a>
+        </li>
+        <li class="{{ app.request.attributes.get('_route') == 'forms' ? 'active' }}">
+            <a href="{{ path('forms') }}">Formulare</a>
+        </li>
+        <li class="{{ app.request.attributes.get('_route') == 'vorfall' ? 'active' }}">
+            <a href="{{ path('vorfall') }}">Vorfälle</a>
+        </li>
+        <li class="{{ app.request.attributes.get('_route') == 'client_requests' ? 'active' }}">
+            <a href="{{ path('client_requests') }}">Kundenanfragen</a>
+        </li>
 
-            <li class="{{ app.request.attributes.get('_route') == 'bericht' ? 'active' }}">
-                <a href="{{ path('bericht') }}">Berichte</a>
-            </li>
-        {% endif %}
+        <li class="{{ app.request.attributes.get('_route') == 'bericht' ? 'active' }}">
+            <a href="{{ path('bericht') }}">Berichte</a>
+        </li>
         <li class="{{ app.request.attributes.get('_route') == 'external' ? 'active' }}">
             <a href="{{ path('external') }}">External</a>
+            {% endif %}
+
         </li>
         {% if app.user.adminUser %}
             <li>

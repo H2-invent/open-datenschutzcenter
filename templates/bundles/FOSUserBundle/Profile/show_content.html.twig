@@ -10,9 +10,11 @@
         Letzer Login: {{ user.lastLogin|date('d.m.Y H:i') }} Uhr
     </p>
 
-    <p>
-        Team: {{ user.team.name }}<br>
-        Akademie: {{ user.akademieuser.name }}<br>
-        Team: {{ user.adminUser.name }}
-    </p>
+    {% if user.team %}
+        <p>
+            Team: {{ user.team.name }}<br>
+            Akademie: {{ user.akademieuser.name }}<br>
+            Team: {{ user.adminUser.name }}
+        </p>
+    {% endif %}
 </div>

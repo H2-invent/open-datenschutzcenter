@@ -34,7 +34,7 @@ class DashboardController extends AbstractController
         if ($team === null && $this->getUser()->getAkademieUser() !== null) {
             return $this->redirectToRoute('akademie');
         } elseif ($team === null && $this->getUser()->getAkademieUser() === null) {
-            return $this->redirectToRoute('fos_user_security_logout');
+            return $this->redirectToRoute('no_team');
         }
 
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
@@ -107,6 +107,23 @@ class DashboardController extends AbstractController
             'software' => $software,
             'assignTasks' => $assignTasks,
             'tasks' => $tasks
+        ]);
+    }
+
+    /**
+     * @Route("/no_team", name="no_team")
+     */
+    public function noTeam()
+    {
+        if ($this->getUser()->getTeam()) {
+            return $this->redirectToRoute('dashboard');
+        }
+        if ($this->getUser()->getAkademieUser()) {
+            return $this->redirectToRoute('akademie');
+        }
+
+        return $this->render('dashboard/noteam.html.twig', [
+            'user' => $this->getUser(),
         ]);
     }
 }

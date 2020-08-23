@@ -31,7 +31,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if (!$securityService->adminCheck($this->getUser(), $team)) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -67,7 +67,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -113,7 +113,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('team_ziel');
         }
 
@@ -135,7 +135,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -179,7 +179,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('team_abteilungen');
         }
 
@@ -201,7 +201,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -251,7 +251,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('team_mitglieder');
         }
 
@@ -274,7 +274,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
