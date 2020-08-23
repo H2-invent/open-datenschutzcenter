@@ -153,6 +153,11 @@ class Software
      */
     private $permissions;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $licenseType;
+
     public function __construct()
     {
         $this->vvts = new ArrayCollection();
@@ -526,6 +531,54 @@ class Software
     public function setPermissions(?string $permissions): self
     {
         $this->permissions = $permissions;
+
+        return $this;
+    }
+
+    public function getLicenseTypeString()
+    {
+        switch ($this->licenseType) {
+            case 0:
+                return 'Keine Angabe';
+                break;
+            case 10:
+                return 'Free and Open Source (FOSS)';
+                break;
+            case 20:
+                return 'Kostenlos/Closed Source';
+                break;
+            case 30:
+                return 'Benutzerlizenzen';
+                break;
+            case 40:
+                return 'Gerätelizenzen';
+                break;
+            case 50:
+                return 'Serverlizenzen';
+                break;
+            case 60:
+                return 'Managed Service';
+                break;
+            case 70:
+                return 'Misch-Lizenzen';
+                break;
+            case 90:
+                return 'Andere Lizenz';
+                break;
+            default:
+                return "Keine Angabe";
+                break;
+        }
+    }
+
+    public function getLicenseType(): ?int
+    {
+        return $this->licenseType;
+    }
+
+    public function setLicenseType(int $licenseType): self
+    {
+        $this->licenseType = $licenseType;
 
         return $this;
     }

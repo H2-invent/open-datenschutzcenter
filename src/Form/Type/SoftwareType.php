@@ -30,6 +30,21 @@ class SoftwareType extends AbstractType
             ->add('name', TextType::class, ['label' => 'Name der Software', 'required' => true, 'translation_domain' => 'form'])
             ->add('nummer', TextType::class, ['label' => 'Software Nummer', 'required' => false, 'translation_domain' => 'form'])
             ->add('description', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Beschreibung der Software', 'required' => true, 'translation_domain' => 'form'])
+            ->add('licenseType', ChoiceType::class, [
+                'choices' => [
+                    'Keine Angabe' => 0,
+                    'Free and Open Source (FOSS)' => 10,
+                    'Kostenlos/Closed Source' => 20,
+                    'Benutzerlizenzen' => 30,
+                    'Gerätelizenzen' => 40,
+                    'Serverlizenzen' => 50,
+                    'Managed Service' => 60,
+                    'Misch-Lizenzen' => 70,
+                    'Andere Lizenz' => 90,],
+                'label' => 'Lizenz Typ',
+                'translation_domain' => 'form',
+                'multiple' => false,
+            ])
             ->add('license', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Lizenzbeschreibung', 'required' => false, 'translation_domain' => 'form'])
             ->add('licenseExpiration', DateType::class, ['label' => 'Lizenzablaufsdatum', 'required' => false, 'translation_domain' => 'form'])
             ->add('reference', TextType::class, ['label' => 'Aktenzeichen', 'required' => false, 'translation_domain' => 'form'])
