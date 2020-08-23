@@ -68,6 +68,14 @@ $(document).ready(function () {
             ['view', ['fullscreen']]
         ],
     });
+
+    $('.checkboxSelect').on('change', function () {
+        if ($(this).prop("checked") === true) {
+            $('.sendButton').removeClass('disabled');
+        } else if ($(this).prop("checked") === false) {
+            $('.sendButton').addClass('disabled');
+        }
+    });
 });
 
 $(".clickable-row").click(function () {

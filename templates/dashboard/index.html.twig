@@ -2,7 +2,11 @@
 
 {% block title %}{{ team.name }}{% endblock %}
 
+{% block CTA %}
+    <h4 class="h4-responsive ml-md-5">{{ 'Datenschutzcenter von '|trans }}{{ team.name }}</h4>
+{% endblock %}
 {% block body %}
+
     <div class="row wow fadeIn mt-5">
 
         <!--Grid column-->
