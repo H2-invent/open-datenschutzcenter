@@ -71,13 +71,13 @@ class SecurityService
 
     function adminCheck($user, $team)
     {
-        if ($this->teamCheck($team)) {
+        if (!$this->teamCheck($team)) {
             return false;
         }
 
         //Sicherheitsfunktion, dass Admin Team zu Team passt
         if ($user->getTeam() !== $user->getAdminUser()) {
-            $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer Admin Team passt icht zu Team'];
+            $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer Admin Team passt nicht zu Team'];
             $this->logger->error($message['typ'], $message);
             return false;
         }

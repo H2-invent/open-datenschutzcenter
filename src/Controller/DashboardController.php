@@ -20,6 +20,7 @@ use App\Entity\Tom;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
@@ -27,12 +28,14 @@ class DashboardController extends AbstractController
     /**
      * @Route("/", name="dashboard")
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $team = $this->getUser()->getTeam();
 
         if ($team === null && $this->getUser()->getAkademieUser() !== null) {
             return $this->redirectToRoute('akademie');
+        } elseif ($team === null && count($dsbTeams = $this->getUser()->getTeamDsb()) > 0) {
+            return $this->redirectToRoute('dsb');
         } elseif ($team === null && $this->getUser()->getAkademieUser() === null) {
             return $this->redirectToRoute('no_team');
         }
@@ -106,7 +109,8 @@ class DashboardController extends AbstractController
             'policies' => $policies,
             'software' => $software,
             'assignTasks' => $assignTasks,
-            'tasks' => $tasks
+            'tasks' => $tasks,
+            'snack' => $request->get('snack')
         ]);
     }
 
@@ -120,6 +124,9 @@ class DashboardController extends AbstractController
         }
         if ($this->getUser()->getAkademieUser()) {
             return $this->redirectToRoute('akademie');
+        }
+        if (count($this->getUser()->getTeamDsb()) > 0) {
+            return $this->redirectToRoute('dsb');
         }
 
         return $this->render('dashboard/noteam.html.twig', [

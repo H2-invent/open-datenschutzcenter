@@ -191,6 +191,11 @@ class Team
      */
     private $slug;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="teamDsb")
+     */
+    private $dsbUser;
+
 
     public function __construct()
     {
@@ -938,6 +943,18 @@ class Team
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getDsbUser(): ?User
+    {
+        return $this->dsbUser;
+    }
+
+    public function setDsbUser(?User $dsbUser): self
+    {
+        $this->dsbUser = $dsbUser;
 
         return $this;
     }
