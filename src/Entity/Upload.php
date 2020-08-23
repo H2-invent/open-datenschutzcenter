@@ -41,14 +41,23 @@ class Upload
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $UId;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $amount;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
 
-
-    public function setFileFile(File $fileFile= null)
+    public function setFileFile(File $fileFile = null)
     {
         $this->fileFile = $fileFile;
 
@@ -84,6 +93,30 @@ class Upload
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUId(): ?string
+    {
+        return $this->UId;
+    }
+
+    public function setUId(string $UId): self
+    {
+        $this->UId = $UId;
+
+        return $this;
+    }
+
+    public function getAmount(): ?int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(int $amount): self
+    {
+        $this->amount = $amount;
 
         return $this;
     }
