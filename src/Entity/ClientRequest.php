@@ -201,6 +201,9 @@ class ClientRequest
     public function getItemString()
     {
         switch ($this->item) {
+            case 0:
+                return 'Ich weiß nicht, welchen Grund ich angeben soll';
+                break;
             case 15:
                 return 'Antrag auf Auskunft nach Art. 15 DSGVO';
                 break;

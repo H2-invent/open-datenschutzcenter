@@ -28,6 +28,7 @@ class ClientRequestType extends AbstractType
             ->add('title', TextType::class, ['label' => 'Betreff', 'required' => true, 'translation_domain' => 'form'])
             ->add('item', ChoiceType::class, [
                 'choices' => [
+                    'Ich weiß nicht, welchen Grund ich angeben soll' => 0,
                     'Antrag auf Auskunft nach Art. 15 DSGVO' => 15,
                     'Antrag auf Berichtigung nach Art. 16 DSGVO' => 16,
                     'Antrag auf Einschränkung nach Art. 18 DSGVO' => 18,
@@ -39,11 +40,12 @@ class ClientRequestType extends AbstractType
                 'label' => 'Grund der Anfrage',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'help' => 'Wenn Sie nicht wissen, welchen Grund nach der DSGVO Sie angeben müssen werden wir entsprechend Ihrer Beschreibung den Grund nachträglich eintragen',
                 'required' => true
             ])
-            ->add('email', TextType::class, ['label' => 'Email Adresse', 'required' => true, 'translation_domain' => 'form'])
+            ->add('email', TextType::class, ['label' => 'Email Adresse', 'required' => true, 'help' => 'Wir nutzen diese Email Adresse um Ihnen Updates zu Ihrer Anfrage zu schicken. Sie müssen die Email Adresse nach dem Absenden bestätigen.', 'translation_domain' => 'form'])
             ->add('name', TextType::class, ['label' => 'Name des Antragstellers', 'required' => true, 'translation_domain' => 'form'])
-            ->add('password', PasswordType::class, ['label' => 'Zugangspasswort festlegen (Für jede Anfrage muss ein neues Passwort festgelegt werden. Bitte verwenden Sie ihr Passwort nur einmal um Ihre Daten bestmöglich zu schützen.)', 'required' => true, 'translation_domain' => 'form'])
+            ->add('password', PasswordType::class, ['label' => 'Zugangspasswort festlegen', 'required' => true, 'help' => 'Für jede Anfrage muss ein neues Passwort festgelegt werden. Bitte verwenden Sie ihr Passwort nur einmal um Ihre Daten bestmöglich zu schützen.', 'translation_domain' => 'form'])
             ->add('description', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Beschreibung der Anfrage', 'required' => true, 'translation_domain' => 'form'])
             ->add('pgp', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'OpenPDP Public Key für die Verschlüsselung von Emails. (Alle Benachrichtigungen werden mit Ihrem öffentlichen Schlüssel verschlüsselt)', 'required' => false, 'translation_domain' => 'form'])
             ->add('gdpr', CheckboxType::class, ['label' => 'Ich habe die Datenschutzhinweise gelesen und akzeptiere die Verarbeitung meiner Daten. Diese Verarbeitung ist notwendig, damit wir Ihre Anfrage beantworten können.', 'required' => true, 'translation_domain' => 'form'])
