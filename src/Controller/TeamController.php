@@ -12,6 +12,7 @@ use App\Entity\AuditTomAbteilung;
 use App\Entity\AuditTomZiele;
 use App\Entity\User;
 use App\Form\Type\AbteilungType;
+use App\Form\Type\DsbType;
 use App\Form\Type\NewMemberType;
 use App\Form\Type\TeamType;
 use App\Form\Type\ZielType;
@@ -31,7 +32,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if (!$securityService->adminCheck($this->getUser(), $team)) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -67,7 +68,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -109,11 +110,11 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_ziel/deaktivieren", name="team_ziel_deativate")
      */
-    public function addZielDeactivate(Request $request, SecurityService $securityService)
+    public function zielDeactivate(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('team_ziel');
         }
 
@@ -135,7 +136,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -179,7 +180,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('team_abteilungen');
         }
 
@@ -201,7 +202,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -240,7 +241,7 @@ class TeamController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Mitglieder verwalten',
-            'data' => $this->getUser()->getTeam()->getMembers(),
+            'data' => $team->getMembers(),
         ]);
     }
 
@@ -251,7 +252,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('team_mitglieder');
         }
 
@@ -274,7 +275,7 @@ class TeamController extends AbstractController
     {
         $team = $this->getUser()->getAdminUser();
 
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -292,5 +293,77 @@ class TeamController extends AbstractController
         $em->persist($user);
         $em->flush();
         return $this->redirectToRoute('team_mitglieder');
+    }
+
+    /**
+     * @Route("/ext_team_dsb", name="team_dsb")
+     */
+    public function addDsb(Request $request, InviteService $inviteService, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getAdminUser();
+
+        if (!$securityService->adminCheck($this->getUser(), $team)) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $form = $this->createForm(DsbType::class);
+        $form->handleRequest($request);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $dsb = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $email = $dsb['dsb'];
+            $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('email' => $email));
+            if (!$user) {
+                $user = $inviteService->newUser($email, $team);
+            }
+            if (!$team->getDsbUser()) {
+                $team->setDsbUser($user);
+                $em->persist($team);
+            }
+
+            $em->flush();
+            return $this->redirectToRoute('team_dsb', ['snack' => 'DSB wurde hinzugefügt']);
+        }
+        return $this->render('team/dsb.html.twig', [
+            'form' => $form->createView(),
+            'errors' => $errors,
+            'title' => 'Externen DSB verwalten',
+            'data' => $team->getDsbUser(),
+            'snack' => $request->get('snack')
+        ]);
+    }
+
+    /**
+     * @Route("/team_dsb/remove", name="team_dsb_remove")
+     */
+    public function removeDsb(Request $request, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getAdminUser();
+
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('id' => $request->get('id')));
+
+        if ($team->getDsbUser() === $user) {
+            $snack = 'Sie können sich nicht selbst aus dem Team entfernen und wurden daher nur als externer DSB entfernt.';
+            if ($this->getUser() !== $team->getDsbUser()) {
+                $user->setTeam(null);
+                $user->setAdminUser(null);
+                $user->setAkademieUser(null);
+                $snack = 'Sie haben den externen DSB aus Ihrem Team entfernt';
+            }
+            $team->setDsbUser(null);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($team);
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirectToRoute('team_dsb', ['snack' => $snack]);
     }
 }

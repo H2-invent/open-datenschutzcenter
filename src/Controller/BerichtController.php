@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\AkademieBuchungen;
 use App\Entity\AuditTom;
+use App\Entity\ClientRequest;
 use App\Entity\Datenweitergabe;
 use App\Entity\Policies;
 use App\Entity\Software;
@@ -30,14 +31,14 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht", name="bericht")
      */
-    public function bericht()
+    public function bericht(Request $request)
     {
         // Center Team authentication
         if ($this->getUser()->getTeam() === null) {
             return $this->redirectToRoute('dashboard');
         }
 
-        return $this->render('bericht/index.html.twig');
+        return $this->render('bericht/index.html.twig', ['snack' => $request->get('snack')]);
     }
 
     /**
@@ -57,7 +58,7 @@ class BerichtController extends AbstractController
         }
 
         if (count($vvt) < 1) {
-            return $this->redirectToRoute('bericht');
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication
@@ -100,7 +101,7 @@ class BerichtController extends AbstractController
         }
 
         if (count($audit) < 1) {
-            return $this->redirectToRoute('bericht');
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication
@@ -137,7 +138,7 @@ class BerichtController extends AbstractController
         }
 
         if (count($tom) < 1) {
-            return $this->redirectToRoute('bericht');
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication
@@ -168,7 +169,7 @@ class BerichtController extends AbstractController
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
 
         if (count($audit) < 1) {
-            return $this->redirectToRoute('bericht');
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication
@@ -205,7 +206,7 @@ class BerichtController extends AbstractController
         }
 
         if (count($daten) < 1) {
-            return $this->redirectToRoute('bericht');
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication
@@ -263,7 +264,7 @@ class BerichtController extends AbstractController
         }
 
         if (count($daten) < 1) {
-            return $this->redirectToRoute('bericht');
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication
@@ -301,7 +302,7 @@ class BerichtController extends AbstractController
         }
 
         if (count($policies) < 1) {
-            return $this->redirectToRoute('bericht');
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication
@@ -339,7 +340,7 @@ class BerichtController extends AbstractController
         }
 
         if (count($software) < 1) {
-            return $this->redirectToRoute('bericht');
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication
@@ -371,7 +372,7 @@ class BerichtController extends AbstractController
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($team);
 
         if (count($software) < 1) {
-            return $this->redirectToRoute('bericht');
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication
@@ -403,7 +404,7 @@ class BerichtController extends AbstractController
         $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
 
         if (count($software) < 1) {
-            return $this->redirectToRoute('bericht');
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication
@@ -425,6 +426,45 @@ class BerichtController extends AbstractController
     }
 
     /**
+     * @Route("/bericht/request", name="bericht_request")
+     */
+    public function berichtRequest(DompdfWrapper $wrapper, Request $request)
+    {
+
+        $req = $request->get('id');
+        $team = $this->getUser()->getTeam();
+
+        if ($req) {
+            $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findBy(array('id' => $req));
+            $title = 'Bericht zur Kundenanfrage und Datenauskunft von ' . $clientRequest[0]->getName();
+        } else {
+            $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+            $title = 'Bericht zur Kundenanfrage und Datenauskunft';
+        }
+
+        if (count($clientRequest) < 1) {
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+        }
+
+        // Center Team authentication
+        if ($team === null || $clientRequest[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/request.html.twig', [
+            'daten' => $clientRequest,
+            'titel' => $title,
+            'team' => $this->getUser()->getTeam(),
+            'all' => $request->get('all'),
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse($html, $title . ".pdf");
+        $response->send();
+    }
+
+    /**
      * @Route("/bericht/information", name="bericht_information")
      */
     public function informationSoftware()
@@ -435,7 +475,7 @@ class BerichtController extends AbstractController
         $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
 
         if (count($software) < 1) {
-            return $this->redirectToRoute('bericht');
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication

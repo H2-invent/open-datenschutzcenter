@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Upload;
 use App\Form\Type\UploadTyp;
 use App\Service\ParserService;
+use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,11 +16,11 @@ class UploadController extends AbstractController
     /**
      * @Route("/upload", name="upload_new")
      */
-    public function index(Request $request, FilesystemInterface $internFileSystem, ParserService $parserService)
+    public function index(Request $request, FilesystemInterface $internFileSystem, ParserService $parserService, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
         // Admin Route only
-        if ($team === null) {
+        if (!$securityService->adminCheck($this->getUser(), $team)) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -30,10 +31,12 @@ class UploadController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $upload->setUpdatedAt(new \DateTime());
+            $upload->setUId('Not completed');
+            $upload->setAmount(0);
             $upload = $form->getData();
             $em->persist($upload);
             if (!preg_match('/odif$/', $upload->getFile())) {
-                return $this->redirectToRoute('upload_fail',array('message'=>'
+                return $this->redirectToRoute('upload_fail', array('message' => '
                 Der Dateityp ist fehlerhaft. Die Datei muss mit .odif enden.'));
             }
 
@@ -49,10 +52,10 @@ class UploadController extends AbstractController
             $res = false;
             switch ($data->table) {
                 case 'Audit':
-                    $res = $parserService->parseAudit($data, $team, $this->getUser());
+                    $res = $parserService->parseAudit($data, $team, $this->getUser(), $upload);
                     break;
                 case 'VVT':
-                    $res = $parserService->parseVVT($data, $team, $this->getUser());
+                    $res = $parserService->parseVVT($data, $team, $this->getUser(), $upload);
                     break;
                 default:
                     break;

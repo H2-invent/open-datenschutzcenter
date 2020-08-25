@@ -1,10 +1,15 @@
 <!-- Sidebar  -->
-<nav id="sidebar">
+<nav id="sidebar" class="scrollbar-deep-purple bordered-deep-purple thin overflow-auto">
     <div class="sidebar-header">
         <a href="{{ path('dashboard') }}"><img src="{{ asset('logo.png') }}" class="img-fluid"></a>
     </div>
 
-    <ul class="list-unstyled components">
+    <ul class="list-unstyled components ">
+        {% if app.user.TeamDsb is not empty %}
+            <li class="{{ app.request.attributes.get('_route') == 'dsb' ? 'active' }}">
+                <a href="{{ path('dsb') }}">Externer DSB</a>
+            </li>
+        {% endif %}
         {% if app.user.team %}
             <li class="{{ app.request.attributes.get('_route') == 'dashboard' ? 'active' }}">
                 <a href="{{ path('dashboard') }}">Dashboard</a>
@@ -52,14 +57,18 @@
             <li class="{{ app.request.attributes.get('_route') == 'vorfall' ? 'active' }}">
                 <a href="{{ path('vorfall') }}">Vorfälle</a>
             </li>
+            <li class="{{ app.request.attributes.get('_route') == 'client_requests' ? 'active' }}">
+                <a href="{{ path('client_requests') }}">Kundenanfragen</a>
+            </li>
 
             <li class="{{ app.request.attributes.get('_route') == 'bericht' ? 'active' }}">
                 <a href="{{ path('bericht') }}">Berichte</a>
             </li>
+            <li class="{{ app.request.attributes.get('_route') == 'external' ? 'active' }}">
+                <a href="{{ path('external') }}">External</a>
+            </li>
         {% endif %}
-        <li class="{{ app.request.attributes.get('_route') == 'external' ? 'active' }}">
-            <a href="{{ path('external') }}">External</a>
-        </li>
+
         {% if app.user.adminUser %}
             <li>
                 <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Admin</a>
@@ -69,6 +78,9 @@
                     </li>
                     <li>
                         <a href="{{ path('team_mitglieder') }}">Datenschutzkoordinatoren</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('team_dsb') }}">Externer DSB</a>
                     </li>
                     <li>
                         <a href="{{ path('akademie_mitglieder') }}">Akademiemitglieder</a>

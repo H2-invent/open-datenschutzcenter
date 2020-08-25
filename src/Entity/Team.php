@@ -7,10 +7,12 @@ use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TeamRepository::class)
+ * @UniqueEntity("slug")
  */
 class Team
 {
@@ -170,6 +172,7 @@ class Team
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
+     * @Assert\Url()
      */
     private $externalLink;
 
@@ -178,6 +181,21 @@ class Team
      * @Encrypted()
      */
     private $video;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ClientRequest::class, mappedBy="team")
+     */
+    private $clientRequests;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $slug;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="teamDsb")
+     */
+    private $dsbUser;
 
 
     public function __construct()
@@ -199,6 +217,7 @@ class Team
         $this->policies = new ArrayCollection();
         $this->software = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->clientRequests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -882,6 +901,61 @@ class Team
     public function setVideo(?string $video): self
     {
         $this->video = $video;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientRequest[]
+     */
+    public function getClientRequests(): Collection
+    {
+        return $this->clientRequests;
+    }
+
+    public function addClientRequest(ClientRequest $clientRequest): self
+    {
+        if (!$this->clientRequests->contains($clientRequest)) {
+            $this->clientRequests[] = $clientRequest;
+            $clientRequest->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientRequest(ClientRequest $clientRequest): self
+    {
+        if ($this->clientRequests->contains($clientRequest)) {
+            $this->clientRequests->removeElement($clientRequest);
+            // set the owning side to null (unless already changed)
+            if ($clientRequest->getTeam() === $this) {
+                $clientRequest->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getDsbUser(): ?User
+    {
+        return $this->dsbUser;
+    }
+
+    public function setDsbUser(?User $dsbUser): self
+    {
+        $this->dsbUser = $dsbUser;
 
         return $this;
     }

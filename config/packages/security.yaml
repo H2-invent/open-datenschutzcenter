@@ -41,5 +41,6 @@ security:
         - { path: /login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /cron/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /client/, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /register, role: ROLE_ADMIN }
         - { path: /, role: ROLE_USER }

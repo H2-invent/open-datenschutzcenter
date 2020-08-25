@@ -68,7 +68,7 @@ class PoliciesController extends AbstractController
             'form' => $form->createView(),
             'policy' => $policy,
             'errors' => $errors,
-            'title' => 'Richtlinie erstellen',
+            'title' => 'Richtlinie & Arbeitsanweisung erstellen',
             'activNummer' => true,
             'vvt' => $policy,
             'activ' => $policy->getActiv(),
@@ -112,7 +112,7 @@ class PoliciesController extends AbstractController
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
             'errors' => $errors,
-            'title' => 'Richtlinie bearbeiten',
+            'title' => 'Richtlinie / Arbeitsanweisung bearbeiten',
             'policy' => $policy,
             'activ' => $policy->getActiv(),
             'snack' => $request->get('snack')

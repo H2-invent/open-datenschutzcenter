@@ -1,4 +1,7 @@
 {
+    "container-interop/container-interop": {
+        "version": "1.2.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -90,6 +93,21 @@
     "jms/metadata": {
         "version": "2.1.0"
     },
+    "laminas/laminas-loader": {
+        "version": "2.6.1"
+    },
+    "laminas/laminas-mail": {
+        "version": "2.12.3"
+    },
+    "laminas/laminas-mime": {
+        "version": "2.7.4"
+    },
+    "laminas/laminas-stdlib": {
+        "version": "3.2.1"
+    },
+    "laminas/laminas-validator": {
+        "version": "2.13.4"
+    },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.4"
     },
@@ -107,6 +125,9 @@
     },
     "myclabs/deep-copy": {
         "version": "1.9.5"
+    },
+    "nicoswd/php-gpg": {
+        "version": "1.7.1"
     },
     "nikic/php-parser": {
         "version": "v4.4.0"
@@ -138,6 +159,9 @@
     "paragonie/constant_time_encoding": {
         "version": "v2.3.0"
     },
+    "paragonie/gpg-mailer": {
+        "version": "v0.5.0"
+    },
     "paragonie/halite": {
         "version": "v4.6.0"
     },
@@ -149,6 +173,15 @@
     },
     "pclzip/pclzip": {
         "version": "2.8.2"
+    },
+    "pear/console_commandline": {
+        "version": "v1.2.3"
+    },
+    "pear/crypt_gpg": {
+        "version": "v1.6.4"
+    },
+    "pear/pear_exception": {
+        "version": "v1.0.1"
     },
     "phenx/php-font-lib": {
         "version": "0.5.2"
@@ -173,6 +206,9 @@
     },
     "phpoffice/phpword": {
         "version": "0.17.0"
+    },
+    "phpseclib/phpseclib": {
+        "version": "2.0.28"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -203,6 +239,9 @@
     },
     "shivas/versioning-bundle": {
         "version": "3.2.3"
+    },
+    "singpolyma/openpgp-php": {
+        "version": "0.4.0"
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.2.3"
@@ -618,6 +657,9 @@
     },
     "tijsverkoyen/css-to-inline-styles": {
         "version": "2.2.2"
+    },
+    "true/punycode": {
+        "version": "v2.1.1"
     },
     "twig/cssinliner-extra": {
         "version": "v3.0.3"

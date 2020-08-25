@@ -31,6 +31,7 @@ class TeamType extends AbstractType
             ->add('dsb', TextType::class, ['label' => 'Datenschutzbeauftragter', 'required' => true, 'translation_domain' => 'form'])
             ->add('ceo', TextType::class, ['label' => 'Geschäftsführung', 'required' => true, 'translation_domain' => 'form'])
             ->add('signature', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Email Signatur', 'required' => false, 'translation_domain' => 'form'])
+            ->add('slug', TextType::class, ['label' => 'Slug für Kundenplattform (Darf keine Leerzeichen oder Sonderzeichen enthalten)', 'required' => false, 'translation_domain' => 'form'])
             ->add('externalLink', TextType::class, ['label' => 'Externer Link zu Kommunikationplattform', 'required' => false, 'translation_domain' => 'form'])
             ->add('video', TextType::class, ['label' => 'Externer Link zur internen Jitsi Installation', 'required' => false, 'translation_domain' => 'form'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Speichern', 'translation_domain' => 'form']);

@@ -121,6 +121,14 @@
                     <span>Alle Richtlinien exportieren</span>
                 </a>
             </div>
+
+            <div class="col-lg-3 mt-2">
+                <h4>Kundenanfragen</h4>
+                <a class="btn btn-block bg-request mb-1" href="{{ path('bericht_request') }}">
+                    <span>Alle Anfragen exportieren</span>
+                </a>
+            </div>
         </div>
     </div>
+    {{ include('base/__snack.html.twig') }}
 {% endblock %}

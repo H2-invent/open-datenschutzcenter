@@ -6,6 +6,7 @@ use App\Entity\AkademieBuchungen;
 use App\Entity\User;
 use App\Form\Type\NewMemberType;
 use App\Service\InviteService;
+use App\Service\SecurityService;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +18,11 @@ class AkademieController extends AbstractController
     /**
      * @Route("/akademie", name="akademie")
      */
-    public function index()
+    public function index(SecurityService $securityService)
     {
+        $team = $this->getUser()->getAkademieUser();
 
-        if ($this->getUser()->getAkademieUser() === null) {
+        if (!$securityService->teamCheck($team)) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -34,11 +36,16 @@ class AkademieController extends AbstractController
     /**
      * @Route("/akademie/kurs", name="akademie_kurs")
      */
-    public function akademieKurs(Request $request)
+    public function akademieKurs(Request $request, SecurityService $securityService)
     {
+        $team = $this->getUser()->getAkademieUser();
 
         $today = new \DateTime();
         $buchung = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findOneBy(array('id' => $request->get('kurs')));
+
+        if (!$securityService->teamCheck($team) || $buchung->getUser() !== $this->getUser()) {
+            return $this->redirectToRoute('akademie');
+        }
 
         if ($buchung->getZugewiesen() < $today) {
             if ($buchung->getStart() == null) {
@@ -63,11 +70,17 @@ class AkademieController extends AbstractController
     /**
      * @Route("/akademie/kurs/finish", name="akademie_kurs_finish")
      */
-    public function akademieKursFinish(Request $request)
+    public function akademieKursFinish(Request $request, SecurityService $securityService)
     {
+        $team = $this->getUser()->getAkademieUser();
 
         $today = new \DateTime();
         $buchung = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findOneBy(array('finishedID' => $request->get('id')));
+
+        if (!$securityService->teamCheck($team) || $buchung->getUser() !== $this->getUser()) {
+            return $this->redirectToRoute('akademie');
+        }
+
         $newBuchung = clone $buchung;
         $buchung->setAbgeschlossen(true);
         $buchung->setEnde($today);
@@ -95,15 +108,13 @@ class AkademieController extends AbstractController
      */
     public function akademieKursZertifikat(DompdfWrapper $wrapper, Request $request)
     {
-
         $buchung = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->find($request->get('buchung'));
 
-        // Abfrage, ob es auch die richtige Person ist, die das Zertifikat anfrägt.
         if ($buchung->getUser() !== $this->getUser()) {
             return $this->redirectToRoute('akademie');
         }
 
-        //Abfrage pb der Kurs abgeschlossen ist
+        //Abfrage ob der Kurs abgeschlossen ist
         if ($buchung->getAbgeschlossen() === true) {
             // Retrieve the HTML generated in our twig file
             $html = $this->renderView('bericht/zertifikatAkademie.html.twig', [
@@ -124,12 +135,12 @@ class AkademieController extends AbstractController
     /**
      * @Route("/akademie/mitglieder", name="akademie_mitglieder")
      */
-    public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService)
+    public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
         // Admin Route only
-        if ($team === null) {
+        if (!$securityService->adminCheck($this->getUser(), $team)) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -166,19 +177,19 @@ class AkademieController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Mitglieder verwalten',
-            'data' => $this->getUser()->getTeam()->getAkademieUsers(),
+            'data' => $team->getAkademieUsers(),
         ]);
     }
 
     /**
      * @Route("/akademie/mitglieder/remove", name="akademie_mitglieder_remove")
      */
-    public function removeMitglieder(Request $request)
+    public function removeMitglieder(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
         // Admin Route only
-        if ($team === null) {
+        if (!$securityService->adminCheck($this->getUser(), $team)) {
             return $this->redirectToRoute('dashboard');
         }
 

@@ -26,7 +26,7 @@
                href="{{ path('software_config_new',{'id':software.id,'config':c.id}) }}">
                 <div class="col-md-8">
                     <b>{{ c.id }}: {{ c.name }}</b><br>
-                    {{ c.config|nl2br }}
+                    {{ c.config|raw }}
                 </div>
                 <div class="col-md-4">
                     Erstellt: {{ c.createdAt|date('d.m.Y') }}

@@ -56,4 +56,57 @@ class NotificationService
         return true;
     }
 
+    function sendNotificationRequest($content, $email)
+    {
+        $this->mailer->sendEmail(
+            'Datenschutzcenter',
+            $this->parameterBag->get('defaultEmail'),
+            $email,
+            'Es ist eine neue Nachricht für Sie vorhanden',
+            $content
+        );
+
+        return true;
+    }
+
+    function sendEncrypt($pgp, $content, $email, $betreff)
+    {
+        $this->mailer->sendEncrypt(
+            $pgp,
+            'Datenschutzcenter',
+            $this->parameterBag->get('defaultEmail'),
+            $email,
+            $betreff,
+            $content
+        );
+
+        return true;
+    }
+
+    function sendRequestVerify($content, $email)
+    {
+        $this->mailer->sendEmail(
+            'Datenschutzcenter',
+            $this->parameterBag->get('defaultEmail'),
+            $email,
+            'Bestätigen Sie Ihre Email Adresse',
+            $content
+        );
+
+        return true;
+    }
+
+    function sendRequestNew($content, $email)
+    {
+        $this->mailer->sendEmail(
+            'Datenschutzcenter',
+            $this->parameterBag->get('defaultEmail'),
+            $email,
+            'Neue Kundenanfrage in Datenschutcenter',
+            $content
+        );
+
+        return true;
+    }
+
 }

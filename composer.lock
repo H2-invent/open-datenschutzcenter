@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "05a55fa9171457281342b2b0056fd5de",
+  "content-hash": "41ee2f89189a9112187cb8b65d6218bf",
   "packages": [
     {
       "name": "composer/package-versions-deprecated",
@@ -15,16 +15,16 @@
         "reference": "dd51b4443d58b34b6d9344cf4c288e621c9a826f"
       },
       "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/dd51b4443d58b34b6d9344cf4c288e621c9a826f",
-                "reference": "dd51b4443d58b34b6d9344cf4c288e621c9a826f",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.1.0 || ^2.0",
-                "php": "^7"
-            },
-            "replace": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/dd51b4443d58b34b6d9344cf4c288e621c9a826f",
+        "reference": "dd51b4443d58b34b6d9344cf4c288e621c9a826f",
+        "shasum": ""
+      },
+      "require": {
+        "composer-plugin-api": "^1.1.0 || ^2.0",
+        "php": "^7"
+      },
+      "replace": {
                 "ocramius/package-versions": "1.10.99"
             },
             "require-dev": {
@@ -53,25 +53,57 @@
                     "name": "Marco Pivetta",
                     "email": "ocramius@gmail.com"
                 },
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be"
-                }
+              {
+                "name": "Jordi Boggiano",
+                "email": "j.boggiano@seld.be"
+              }
             ],
-            "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "time": "2020-07-15T08:39:18+00:00"
-        },
-        {
-            "name": "doctrine/annotations",
-            "version": "1.10.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/annotations.git",
-                "reference": "5db60a4969eba0e0c197a19c077780aadbc43c5d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/5db60a4969eba0e0c197a19c077780aadbc43c5d",
+      "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
+      "time": "2020-07-15T08:39:18+00:00"
+    },
+    {
+      "name": "container-interop/container-interop",
+      "version": "1.2.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/container-interop/container-interop.git",
+        "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/container-interop/container-interop/zipball/79cbf1341c22ec75643d841642dd5d6acd83bdb8",
+        "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8",
+        "shasum": ""
+      },
+      "require": {
+        "psr/container": "^1.0"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "Interop\\Container\\": "src/Interop/Container/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
+      "homepage": "https://github.com/container-interop/container-interop",
+      "abandoned": "psr/container",
+      "time": "2017-02-14T19:40:03+00:00"
+    },
+    {
+      "name": "doctrine/annotations",
+      "version": "1.10.3",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/doctrine/annotations.git",
+        "reference": "5db60a4969eba0e0c197a19c077780aadbc43c5d"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/doctrine/annotations/zipball/5db60a4969eba0e0c197a19c077780aadbc43c5d",
                 "reference": "5db60a4969eba0e0c197a19c077780aadbc43c5d",
                 "shasum": ""
             },
@@ -536,15 +568,15 @@
                     "homepage": "http://www.doctrine-project.org/"
                 }
             ],
-            "description": "Symfony DoctrineBundle",
-            "homepage": "http://www.doctrine-project.org",
-            "keywords": [
-                "database",
-                "dbal",
-                "orm",
-                "persistence"
-            ],
-            "time": "2020-05-25T19:56:00+00:00"
+          "description": "Symfony DoctrineBundle",
+          "homepage": "http://www.doctrine-project.org",
+          "keywords": [
+            "database",
+            "dbal",
+            "orm",
+            "persistence"
+          ],
+          "time": "2020-05-25T19:56:00+00:00"
         },
     {
       "name": "doctrine/doctrine-migrations-bundle",
@@ -560,21 +592,21 @@
         "reference": "96e730b0ffa0bb39c0f913c1966213f1674bf249",
         "shasum": ""
       },
-            "require": {
-              "doctrine/doctrine-bundle": "~1.0|~2.0",
-              "doctrine/migrations": "~3.0",
-              "php": "^7.2",
-              "symfony/framework-bundle": "~3.4|~4.0|~5.0"
-            },
-            "require-dev": {
-              "doctrine/coding-standard": "^5.0",
-              "doctrine/orm": "^2.6",
-              "phpstan/phpstan": "^0.11",
-              "phpstan/phpstan-deprecation-rules": "^0.11",
-              "phpstan/phpstan-phpunit": "^0.11",
-              "phpstan/phpstan-strict-rules": "^0.11",
-              "phpunit/phpunit": "^6.4|^7.0"
-            },
+      "require": {
+        "doctrine/doctrine-bundle": "~1.0|~2.0",
+        "doctrine/migrations": "~3.0",
+        "php": "^7.2",
+        "symfony/framework-bundle": "~3.4|~4.0|~5.0"
+      },
+      "require-dev": {
+        "doctrine/coding-standard": "^5.0",
+        "doctrine/orm": "^2.6",
+        "phpstan/phpstan": "^0.11",
+        "phpstan/phpstan-deprecation-rules": "^0.11",
+        "phpstan/phpstan-phpunit": "^0.11",
+        "phpstan/phpstan-strict-rules": "^0.11",
+        "phpunit/phpunit": "^6.4|^7.0"
+      },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -878,15 +910,15 @@
                 }
             ],
             "description": "PHP Doctrine Lexer parser library that can be used in Top-Down, Recursive Descent Parsers.",
-            "homepage": "https://www.doctrine-project.org/projects/lexer.html",
-            "keywords": [
-                "annotations",
-                "docblock",
-                "lexer",
-                "parser",
-                "php"
-            ],
-            "time": "2020-05-25T17:44:05+00:00"
+          "homepage": "https://www.doctrine-project.org/projects/lexer.html",
+          "keywords": [
+            "annotations",
+            "docblock",
+            "lexer",
+            "parser",
+            "php"
+          ],
+          "time": "2020-05-25T17:44:05+00:00"
         },
     {
       "name": "doctrine/migrations",
@@ -902,16 +934,16 @@
         "reference": "69eaf2ca5bc48357b43ddbdc31ccdffc0e2a0882",
         "shasum": ""
       },
-            "require": {
-              "doctrine/dbal": "^2.10",
-              "doctrine/event-manager": "^1.0",
-              "ocramius/package-versions": "^1.3",
-              "ocramius/proxy-manager": "^2.0.2",
-              "php": "^7.2",
-              "psr/log": "^1.1.3",
-              "symfony/console": "^3.4||^4.0||^5.0",
-              "symfony/stopwatch": "^3.4||^4.0||^5.0"
-            },
+      "require": {
+        "doctrine/dbal": "^2.10",
+        "doctrine/event-manager": "^1.0",
+        "ocramius/package-versions": "^1.3",
+        "ocramius/proxy-manager": "^2.0.2",
+        "php": "^7.2",
+        "psr/log": "^1.1.3",
+        "symfony/console": "^3.4||^4.0||^5.0",
+        "symfony/stopwatch": "^3.4||^4.0||^5.0"
+      },
             "require-dev": {
               "doctrine/coding-standard": "^7.0",
               "doctrine/orm": "^2.6",
@@ -1692,26 +1724,326 @@
                 "BSD-3-Clause"
             ],
             "description": "Trigger and listen to events within a PHP application",
-            "homepage": "https://laminas.dev",
-            "keywords": [
-                "event",
-                "eventmanager",
-                "events",
-                "laminas"
-            ],
-            "time": "2019-12-31T16:44:52+00:00"
+          "homepage": "https://laminas.dev",
+          "keywords": [
+            "event",
+            "eventmanager",
+            "events",
+            "laminas"
+          ],
+          "time": "2019-12-31T16:44:52+00:00"
         },
+    {
+      "name": "laminas/laminas-loader",
+      "version": "2.6.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/laminas/laminas-loader.git",
+        "reference": "5d01c2c237ae9e68bec262f339947e2ea18979bc"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/laminas/laminas-loader/zipball/5d01c2c237ae9e68bec262f339947e2ea18979bc",
+        "reference": "5d01c2c237ae9e68bec262f339947e2ea18979bc",
+        "shasum": ""
+      },
+      "require": {
+        "laminas/laminas-zendframework-bridge": "^1.0",
+        "php": "^5.6 || ^7.0"
+      },
+      "replace": {
+        "zendframework/zend-loader": "self.version"
+      },
+      "require-dev": {
+        "laminas/laminas-coding-standard": "~1.0.0",
+        "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.4"
+      },
+      "type": "library",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "2.6.x-dev",
+          "dev-develop": "2.7.x-dev"
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Laminas\\Loader\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "description": "Autoloading and plugin loading strategies",
+      "homepage": "https://laminas.dev",
+      "keywords": [
+        "laminas",
+        "loader"
+      ],
+      "time": "2019-12-31T17:18:27+00:00"
+    },
+    {
+      "name": "laminas/laminas-mail",
+      "version": "2.12.3",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/laminas/laminas-mail.git",
+        "reference": "c154a733b122539ac2c894561996c770db289f70"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/laminas/laminas-mail/zipball/c154a733b122539ac2c894561996c770db289f70",
+        "reference": "c154a733b122539ac2c894561996c770db289f70",
+        "shasum": ""
+      },
+      "require": {
+        "ext-iconv": "*",
+        "laminas/laminas-loader": "^2.5",
+        "laminas/laminas-mime": "^2.5",
+        "laminas/laminas-stdlib": "^2.7 || ^3.0",
+        "laminas/laminas-validator": "^2.10.2",
+        "laminas/laminas-zendframework-bridge": "^1.0",
+        "php": "^7.1",
+        "true/punycode": "^2.1"
+      },
+      "replace": {
+        "zendframework/zend-mail": "^2.10.0"
+      },
+      "require-dev": {
+        "laminas/laminas-coding-standard": "~1.0.0",
+        "laminas/laminas-config": "^2.6",
+        "laminas/laminas-crypt": "^2.6 || ^3.0",
+        "laminas/laminas-servicemanager": "^3.2.1",
+        "phpunit/phpunit": "^7.5.20"
+      },
+      "suggest": {
+        "laminas/laminas-crypt": "Crammd5 support in SMTP Auth",
+        "laminas/laminas-servicemanager": "^2.7.10 || ^3.3.1 when using SMTP to deliver messages"
+      },
+      "type": "library",
+      "extra": {
+        "laminas": {
+          "component": "Laminas\\Mail",
+          "config-provider": "Laminas\\Mail\\ConfigProvider"
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Laminas\\Mail\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "description": "Provides generalized functionality to compose and send both text and MIME-compliant multipart e-mail messages",
+      "homepage": "https://laminas.dev",
+      "keywords": [
+        "laminas",
+        "mail"
+      ],
+      "funding": [
         {
-            "name": "laminas/laminas-zendframework-bridge",
-            "version": "1.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
-                "reference": "fcd87520e4943d968557803919523772475e8ea3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/fcd87520e4943d968557803919523772475e8ea3",
+          "url": "https://funding.communitybridge.org/projects/laminas-project",
+          "type": "community_bridge"
+        }
+      ],
+      "time": "2020-08-12T14:51:33+00:00"
+    },
+    {
+      "name": "laminas/laminas-mime",
+      "version": "2.7.4",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/laminas/laminas-mime.git",
+        "reference": "e45a7d856bf7b4a7b5bd00d6371f9961dc233add"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/laminas/laminas-mime/zipball/e45a7d856bf7b4a7b5bd00d6371f9961dc233add",
+        "reference": "e45a7d856bf7b4a7b5bd00d6371f9961dc233add",
+        "shasum": ""
+      },
+      "require": {
+        "laminas/laminas-stdlib": "^2.7 || ^3.0",
+        "laminas/laminas-zendframework-bridge": "^1.0",
+        "php": "^5.6 || ^7.0"
+      },
+      "replace": {
+        "zendframework/zend-mime": "^2.7.2"
+      },
+      "require-dev": {
+        "laminas/laminas-coding-standard": "~1.0.0",
+        "laminas/laminas-mail": "^2.6",
+        "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.5.20"
+      },
+      "suggest": {
+        "laminas/laminas-mail": "Laminas\\Mail component"
+      },
+      "type": "library",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "2.7.x-dev",
+          "dev-develop": "2.8.x-dev"
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Laminas\\Mime\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "description": "Create and parse MIME messages and parts",
+      "homepage": "https://laminas.dev",
+      "keywords": [
+        "laminas",
+        "mime"
+      ],
+      "time": "2020-03-29T13:12:07+00:00"
+    },
+    {
+      "name": "laminas/laminas-stdlib",
+      "version": "3.2.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/laminas/laminas-stdlib.git",
+        "reference": "2b18347625a2f06a1a485acfbc870f699dbe51c6"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/2b18347625a2f06a1a485acfbc870f699dbe51c6",
+        "reference": "2b18347625a2f06a1a485acfbc870f699dbe51c6",
+        "shasum": ""
+      },
+      "require": {
+        "laminas/laminas-zendframework-bridge": "^1.0",
+        "php": "^5.6 || ^7.0"
+      },
+      "replace": {
+        "zendframework/zend-stdlib": "self.version"
+      },
+      "require-dev": {
+        "laminas/laminas-coding-standard": "~1.0.0",
+        "phpbench/phpbench": "^0.13",
+        "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2"
+      },
+      "type": "library",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "3.2.x-dev",
+          "dev-develop": "3.3.x-dev"
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Laminas\\Stdlib\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "description": "SPL extensions, array utilities, error handlers, and more",
+      "homepage": "https://laminas.dev",
+      "keywords": [
+        "laminas",
+        "stdlib"
+      ],
+      "time": "2019-12-31T17:51:15+00:00"
+    },
+    {
+      "name": "laminas/laminas-validator",
+      "version": "2.13.4",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/laminas/laminas-validator.git",
+        "reference": "93593684e70b8ed1e870cacd34ca32b0c0ace185"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/laminas/laminas-validator/zipball/93593684e70b8ed1e870cacd34ca32b0c0ace185",
+        "reference": "93593684e70b8ed1e870cacd34ca32b0c0ace185",
+        "shasum": ""
+      },
+      "require": {
+        "container-interop/container-interop": "^1.1",
+        "laminas/laminas-stdlib": "^3.2.1",
+        "laminas/laminas-zendframework-bridge": "^1.0",
+        "php": "^7.1"
+      },
+      "replace": {
+        "zendframework/zend-validator": "^2.13.0"
+      },
+      "require-dev": {
+        "laminas/laminas-cache": "^2.6.1",
+        "laminas/laminas-coding-standard": "~1.0.0",
+        "laminas/laminas-config": "^2.6",
+        "laminas/laminas-db": "^2.7",
+        "laminas/laminas-filter": "^2.6",
+        "laminas/laminas-http": "^2.5.4",
+        "laminas/laminas-i18n": "^2.6",
+        "laminas/laminas-math": "^2.6",
+        "laminas/laminas-servicemanager": "^2.7.5 || ^3.0.3",
+        "laminas/laminas-session": "^2.8",
+        "laminas/laminas-uri": "^2.5",
+        "phpunit/phpunit": "^7.5.20 || ^8.5.2",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.0"
+      },
+      "suggest": {
+        "laminas/laminas-db": "Laminas\\Db component, required by the (No)RecordExists validator",
+        "laminas/laminas-filter": "Laminas\\Filter component, required by the Digits validator",
+        "laminas/laminas-i18n": "Laminas\\I18n component to allow translation of validation error messages",
+        "laminas/laminas-i18n-resources": "Translations of validator messages",
+        "laminas/laminas-math": "Laminas\\Math component, required by the Csrf validator",
+        "laminas/laminas-servicemanager": "Laminas\\ServiceManager component to allow using the ValidatorPluginManager and validator chains",
+        "laminas/laminas-session": "Laminas\\Session component, ^2.8; required by the Csrf validator",
+        "laminas/laminas-uri": "Laminas\\Uri component, required by the Uri and Sitemap\\Loc validators",
+        "psr/http-message": "psr/http-message, required when validating PSR-7 UploadedFileInterface instances via the Upload and UploadFile validators"
+      },
+      "type": "library",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "2.13.x-dev",
+          "dev-develop": "2.14.x-dev"
+        },
+        "laminas": {
+          "component": "Laminas\\Validator",
+          "config-provider": "Laminas\\Validator\\ConfigProvider"
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Laminas\\Validator\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "description": "Validation classes for a wide range of domains, and the ability to chain validators to create complex validation criteria",
+      "homepage": "https://laminas.dev",
+      "keywords": [
+        "laminas",
+        "validator"
+      ],
+      "time": "2020-03-31T18:57:01+00:00"
+    },
+    {
+      "name": "laminas/laminas-zendframework-bridge",
+      "version": "1.0.4",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
+        "reference": "fcd87520e4943d968557803919523772475e8ea3"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/fcd87520e4943d968557803919523772475e8ea3",
                 "reference": "fcd87520e4943d968557803919523772475e8ea3",
                 "shasum": ""
             },
@@ -1744,15 +2076,15 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": "Alias legacy ZF class names to Laminas Project equivalents.",
-            "keywords": [
-                "ZendFramework",
-                "autoloading",
-                "laminas",
-                "zf"
-            ],
-            "time": "2020-05-20T16:45:56+00:00"
-        },
+      "description": "Alias legacy ZF class names to Laminas Project equivalents.",
+      "keywords": [
+        "ZendFramework",
+        "autoloading",
+        "laminas",
+        "zf"
+      ],
+      "time": "2020-05-20T16:45:56+00:00"
+    },
     {
       "name": "league/flysystem",
       "version": "1.0.70",
@@ -1778,16 +2110,16 @@
         "phpspec/phpspec": "^3.4 || ^4.0 || ^5.0 || ^6.0",
         "phpunit/phpunit": "^5.7.26"
       },
-            "suggest": {
-                "ext-fileinfo": "Required for MimeType",
-                "ext-ftp": "Allows you to use FTP server storage",
-                "ext-openssl": "Allows you to use FTPS server storage",
-                "league/flysystem-aws-s3-v2": "Allows you to use S3 storage with AWS SDK v2",
-                "league/flysystem-aws-s3-v3": "Allows you to use S3 storage with AWS SDK v3",
-                "league/flysystem-azure": "Allows you to use Windows Azure Blob storage",
-                "league/flysystem-cached-adapter": "Flysystem adapter decorator for metadata caching",
-                "league/flysystem-eventable-filesystem": "Allows you to use EventableFilesystem",
-                "league/flysystem-rackspace": "Allows you to use Rackspace Cloud Files",
+      "suggest": {
+        "ext-fileinfo": "Required for MimeType",
+        "ext-ftp": "Allows you to use FTP server storage",
+        "ext-openssl": "Allows you to use FTPS server storage",
+        "league/flysystem-aws-s3-v2": "Allows you to use S3 storage with AWS SDK v2",
+        "league/flysystem-aws-s3-v3": "Allows you to use S3 storage with AWS SDK v3",
+        "league/flysystem-azure": "Allows you to use Windows Azure Blob storage",
+        "league/flysystem-cached-adapter": "Flysystem adapter decorator for metadata caching",
+        "league/flysystem-eventable-filesystem": "Allows you to use EventableFilesystem",
+        "league/flysystem-rackspace": "Allows you to use Rackspace Cloud Files",
                 "league/flysystem-sftp": "Allows you to use SFTP server storage via phpseclib",
                 "league/flysystem-webdav": "Allows you to use WebDAV storage",
                 "league/flysystem-ziparchive": "Allows you to use ZipArchive adapter",
@@ -2060,26 +2392,78 @@
                 "MIT"
             ],
             "description": "Create deep copies (clones) of your objects",
-            "keywords": [
-                "clone",
-                "copy",
-                "duplicate",
-                "object",
-                "object graph"
-            ],
-            "time": "2020-06-29T13:22:24+00:00"
+          "keywords": [
+            "clone",
+            "copy",
+            "duplicate",
+            "object",
+            "object graph"
+          ],
+          "time": "2020-06-29T13:22:24+00:00"
+        },
+    {
+      "name": "nicoswd/php-gpg",
+      "version": "1.7.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/nicoSWD/php-gpg.git",
+        "reference": "868cf938c3c03b64c4001acf25ade7b0d8fb43c3"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/nicoSWD/php-gpg/zipball/868cf938c3c03b64c4001acf25ade7b0d8fb43c3",
+        "reference": "868cf938c3c03b64c4001acf25ade7b0d8fb43c3",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=7.0",
+        "phpseclib/phpseclib": "^2.0"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "^5.1"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "nicoSWD\\GPG\\": "src"
+        },
+        "files": [
+          "src/globals.php"
+        ]
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "GPL-1.0+"
+      ],
+      "authors": [
+        {
+          "name": "Jason Hinkle"
         },
         {
-            "name": "nikolaposa/version",
-            "version": "3.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nikolaposa/version.git",
-                "reference": "7ff2bbf2fe6a47efe47832d6198924e99b4a4f5a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nikolaposa/version/zipball/7ff2bbf2fe6a47efe47832d6198924e99b4a4f5a",
+          "name": "Ian Carroll"
+        },
+        {
+          "name": "Nicolas Oelgart"
+        }
+      ],
+      "description": "Pure PHP GPG implementation, forked from php-gpg.",
+      "keywords": [
+        "PGP",
+        "gpg"
+      ],
+      "time": "2018-04-09T09:19:41+00:00"
+    },
+    {
+      "name": "nikolaposa/version",
+      "version": "3.2.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/nikolaposa/version.git",
+        "reference": "7ff2bbf2fe6a47efe47832d6198924e99b4a4f5a"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/nikolaposa/version/zipball/7ff2bbf2fe6a47efe47832d6198924e99b4a4f5a",
                 "reference": "7ff2bbf2fe6a47efe47832d6198924e99b4a4f5a",
                 "shasum": ""
             },
@@ -2413,26 +2797,78 @@
                 "base32_encode",
                 "base64",
                 "base64_decode",
-                "base64_encode",
-                "bin2hex",
-                "encoding",
-                "hex",
-                "hex2bin",
-                "rfc4648"
+              "base64_encode",
+              "bin2hex",
+              "encoding",
+              "hex",
+              "hex2bin",
+              "rfc4648"
             ],
-            "time": "2019-11-06T19:20:29+00:00"
+          "time": "2019-11-06T19:20:29+00:00"
         },
+    {
+      "name": "paragonie/gpg-mailer",
+      "version": "v0.5.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/paragonie/gpg-mailer.git",
+        "reference": "fe2e810ffaadb0c03ee7ec66cd7301bbb2873ac1"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/paragonie/gpg-mailer/zipball/fe2e810ffaadb0c03ee7ec66cd7301bbb2873ac1",
+        "reference": "fe2e810ffaadb0c03ee7ec66cd7301bbb2873ac1",
+        "shasum": ""
+      },
+      "require": {
+        "laminas/laminas-mail": "^2.8",
+        "pear/crypt_gpg": "^1.6",
+        "php": "^7.2"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "^8",
+        "vimeo/psalm": "^3"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "ParagonIE\\GPGMailer\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
         {
-            "name": "paragonie/halite",
-            "version": "v4.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/paragonie/halite.git",
-                "reference": "7b96cdcf355fc7d09c58ee602ba22724bc8545d3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/halite/zipball/7b96cdcf355fc7d09c58ee602ba22724bc8545d3",
+          "name": "Paragon Initiative Enterprises",
+          "email": "info@paragonie.com",
+          "homepage": "https://paragonie.com",
+          "role": "Development Team"
+        }
+      ],
+      "description": "Encrypt outbound emails with Crypt_GPG",
+      "homepage": "https://paragonie.com",
+      "keywords": [
+        "cryptography",
+        "email",
+        "gnupg",
+        "gpg",
+        "mailer"
+      ],
+      "time": "2020-04-20T10:13:32+00:00"
+    },
+    {
+      "name": "paragonie/halite",
+      "version": "v4.6.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/paragonie/halite.git",
+        "reference": "7b96cdcf355fc7d09c58ee602ba22724bc8545d3"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/paragonie/halite/zipball/7b96cdcf355fc7d09c58ee602ba22724bc8545d3",
                 "reference": "7b96cdcf355fc7d09c58ee602ba22724bc8545d3",
                 "shasum": ""
             },
@@ -2647,25 +3083,202 @@
                     "name": "Vincent Blavet"
                 }
             ],
-            "description": "A PHP library that offers compression and extraction functions for Zip formatted archives",
-            "homepage": "http://www.phpconcept.net/pclzip",
-            "keywords": [
-                "php",
-                "zip"
-            ],
-            "time": "2014-06-05T11:42:24+00:00"
+          "description": "A PHP library that offers compression and extraction functions for Zip formatted archives",
+          "homepage": "http://www.phpconcept.net/pclzip",
+          "keywords": [
+            "php",
+            "zip"
+          ],
+          "time": "2014-06-05T11:42:24+00:00"
+        },
+    {
+      "name": "pear/console_commandline",
+      "version": "v1.2.3",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/pear/Console_CommandLine.git",
+        "reference": "331b295d00c9fa2dae30fe14538d430d72d954c6"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/pear/Console_CommandLine/zipball/331b295d00c9fa2dae30fe14538d430d72d954c6",
+        "reference": "331b295d00c9fa2dae30fe14538d430d72d954c6",
+        "shasum": ""
+      },
+      "require": {
+        "ext-dom": "*",
+        "ext-xml": "*",
+        "pear/pear_exception": "^1.0.0",
+        "php": ">=5.3.0"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "*"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-0": {
+          "Console": "./"
+        },
+        "exclude-from-classmap": [
+          "tests/"
+        ]
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "include-path": [
+        ""
+      ],
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "Richard Quadling",
+          "email": "rquadling@gmail.com"
         },
         {
-            "name": "phenx/php-font-lib",
-            "version": "0.5.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PhenX/php-font-lib.git",
-                "reference": "ca6ad461f032145fff5971b5985e5af9e7fa88d8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/ca6ad461f032145fff5971b5985e5af9e7fa88d8",
+          "name": "David Jean Louis",
+          "email": "izimobil@gmail.com"
+        }
+      ],
+      "description": "A full featured command line options and arguments parser.",
+      "homepage": "https://github.com/pear/Console_CommandLine",
+      "keywords": [
+        "console"
+      ],
+      "time": "2020-04-16T15:04:15+00:00"
+    },
+    {
+      "name": "pear/crypt_gpg",
+      "version": "v1.6.4",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/pear/Crypt_GPG.git",
+        "reference": "7aa6a2a2b0017acb7eb9adf109ee4bfee0bf1d2f"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/pear/Crypt_GPG/zipball/7aa6a2a2b0017acb7eb9adf109ee4bfee0bf1d2f",
+        "reference": "7aa6a2a2b0017acb7eb9adf109ee4bfee0bf1d2f",
+        "shasum": ""
+      },
+      "require": {
+        "ext-mbstring": "*",
+        "pear/console_commandline": "*",
+        "pear/pear_exception": "*",
+        "php": ">=5.4.8"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "^4.8.36 || ^5.7.21 || ^6 || ^7"
+      },
+      "suggest": {
+        "ext-posix": "May require the posix PHP extension"
+      },
+      "bin": [
+        "scripts/crypt-gpg-pinentry"
+      ],
+      "type": "library",
+      "autoload": {
+        "classmap": [
+          "Crypt/"
+        ]
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "include-path": [
+        "./"
+      ],
+      "license": [
+        "LGPL-2.1"
+      ],
+      "authors": [
+        {
+          "name": "Michael Gauthier",
+          "email": "mike@silverorange.com"
+        },
+        {
+          "name": "Nathan Fredrickson",
+          "email": "nathan@silverorange.com"
+        },
+        {
+          "name": "Aleksander Machniak",
+          "email": "alec@alec.pl"
+        }
+      ],
+      "description": "Provides an object oriented interface to the GNU Privacy Guard (GnuPG). It requires the GnuPG executable to be on the system.",
+      "homepage": "https://github.com/pear/Crypt_GPG",
+      "keywords": [
+        "PGP",
+        "encryption",
+        "gnupg",
+        "gpg"
+      ],
+      "time": "2020-03-22T11:49:18+00:00"
+    },
+    {
+      "name": "pear/pear_exception",
+      "version": "v1.0.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/pear/PEAR_Exception.git",
+        "reference": "dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/pear/PEAR_Exception/zipball/dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7",
+        "reference": "dbb42a5a0e45f3adcf99babfb2a1ba77b8ac36a7",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=4.4.0"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "*"
+      },
+      "type": "class",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "1.0.x-dev"
+        }
+      },
+      "autoload": {
+        "classmap": [
+          "PEAR/"
+        ]
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "include-path": [
+        "."
+      ],
+      "license": [
+        "BSD-2-Clause"
+      ],
+      "authors": [
+        {
+          "name": "Helgi Thormar",
+          "email": "dufuz@php.net"
+        },
+        {
+          "name": "Greg Beaver",
+          "email": "cellog@php.net"
+        }
+      ],
+      "description": "The PEAR Exception base class.",
+      "homepage": "https://github.com/pear/PEAR_Exception",
+      "keywords": [
+        "exception"
+      ],
+      "time": "2019-12-10T10:24:42+00:00"
+    },
+    {
+      "name": "phenx/php-font-lib",
+      "version": "0.5.2",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/PhenX/php-font-lib.git",
+        "reference": "ca6ad461f032145fff5971b5985e5af9e7fa88d8"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/ca6ad461f032145fff5971b5985e5af9e7fa88d8",
                 "reference": "ca6ad461f032145fff5971b5985e5af9e7fa88d8",
                 "shasum": ""
             },
@@ -3033,26 +3646,132 @@
                 "office",
                 "pdf",
                 "php",
-                "reader",
-                "rtf",
-                "template",
-                "template processor",
-                "word",
-                "writer"
+              "reader",
+              "rtf",
+              "template",
+              "template processor",
+              "word",
+              "writer"
             ],
-            "time": "2019-10-01T20:43:33+00:00"
+          "time": "2019-10-01T20:43:33+00:00"
+        },
+    {
+      "name": "phpseclib/phpseclib",
+      "version": "2.0.28",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/phpseclib/phpseclib.git",
+        "reference": "d1ca58cf33cb21046d702ae3a7b14fdacd9f3260"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/d1ca58cf33cb21046d702ae3a7b14fdacd9f3260",
+        "reference": "d1ca58cf33cb21046d702ae3a7b14fdacd9f3260",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.3.3"
+      },
+      "require-dev": {
+        "phing/phing": "~2.7",
+        "phpunit/phpunit": "^4.8.35|^5.7|^6.0",
+        "sami/sami": "~2.0",
+        "squizlabs/php_codesniffer": "~2.0"
+      },
+      "suggest": {
+        "ext-gmp": "Install the GMP (GNU Multiple Precision) extension in order to speed up arbitrary precision integer arithmetic operations.",
+        "ext-libsodium": "SSH2/SFTP can make use of some algorithms provided by the libsodium-php extension.",
+        "ext-mcrypt": "Install the Mcrypt extension in order to speed up a few other cryptographic operations.",
+        "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations."
+      },
+      "type": "library",
+      "autoload": {
+        "files": [
+          "phpseclib/bootstrap.php"
+        ],
+        "psr-4": {
+          "phpseclib\\": "phpseclib/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "Jim Wigginton",
+          "email": "terrafrost@php.net",
+          "role": "Lead Developer"
         },
         {
-            "name": "psr/cache",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/cache.git",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
+          "name": "Patrick Monnerat",
+          "email": "pm@datasphere.ch",
+          "role": "Developer"
+        },
+        {
+          "name": "Andreas Fischer",
+          "email": "bantu@phpbb.com",
+          "role": "Developer"
+        },
+        {
+          "name": "Hans-Jürgen Petrich",
+          "email": "petrich@tronic-media.com",
+          "role": "Developer"
+        },
+        {
+          "name": "Graham Campbell",
+          "email": "graham@alt-three.com",
+          "role": "Developer"
+        }
+      ],
+      "description": "PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.",
+      "homepage": "http://phpseclib.sourceforge.net",
+      "keywords": [
+        "BigInteger",
+        "aes",
+        "asn.1",
+        "asn1",
+        "blowfish",
+        "crypto",
+        "cryptography",
+        "encryption",
+        "rsa",
+        "security",
+        "sftp",
+        "signature",
+        "signing",
+        "ssh",
+        "twofish",
+        "x.509",
+        "x509"
+      ],
+      "funding": [
+        {
+          "url": "https://github.com/terrafrost",
+          "type": "github"
+        },
+        {
+          "url": "https://www.patreon.com/phpseclib",
+          "type": "patreon"
+        },
+        {
+          "url": "https://tidelift.com/funding/github/packagist/phpseclib/phpseclib",
+          "type": "tidelift"
+        }
+      ],
+      "time": "2020-07-08T09:08:33+00:00"
+    },
+    {
+      "name": "psr/cache",
+      "version": "1.0.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/php-fig/cache.git",
+        "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
                 "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
                 "shasum": ""
             },
@@ -5468,16 +6187,16 @@
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
+          "authors": [
+            {
+              "name": "Fabien Potencier",
+              "email": "fabien@symfony.com"
+            },
+            {
+              "name": "Symfony Community",
+              "homepage": "https://symfony.com/contributors"
+            }
+          ],
           "description": "Symfony OptionsResolver Component",
           "homepage": "https://symfony.com",
           "keywords": [
@@ -5526,16 +6245,16 @@
       "dist": {
         "type": "zip",
         "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/b740103edbdcc39602239ee8860f0f45a8eb9aa5",
-                "reference": "b740103edbdcc39602239ee8860f0f45a8eb9aa5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "suggest": {
-                "ext-intl": "For best performance"
-            },
-            "type": "library",
+        "reference": "b740103edbdcc39602239ee8860f0f45a8eb9aa5",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.3.3"
+      },
+      "suggest": {
+        "ext-intl": "For best performance"
+      },
+      "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "1.18-dev"
@@ -7849,26 +8568,72 @@
             ],
             "authors": [
                 {
-                    "name": "Tijs Verkoyen",
-                    "email": "css_to_inline_styles@verkoyen.eu",
-                    "role": "Developer"
+                  "name": "Tijs Verkoyen",
+                  "email": "css_to_inline_styles@verkoyen.eu",
+                  "role": "Developer"
                 }
             ],
-            "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
-            "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
-            "time": "2020-07-13T06:12:54+00:00"
+          "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
+          "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
+          "time": "2020-07-13T06:12:54+00:00"
         },
+    {
+      "name": "true/punycode",
+      "version": "v2.1.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/true/php-punycode.git",
+        "reference": "a4d0c11a36dd7f4e7cd7096076cab6d3378a071e"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/true/php-punycode/zipball/a4d0c11a36dd7f4e7cd7096076cab6d3378a071e",
+        "reference": "a4d0c11a36dd7f4e7cd7096076cab6d3378a071e",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.3.0",
+        "symfony/polyfill-mbstring": "^1.3"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "~4.7",
+        "squizlabs/php_codesniffer": "~2.0"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "TrueBV\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
         {
-            "name": "twig/cssinliner-extra",
-            "version": "v3.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/twigphp/cssinliner-extra.git",
-                "reference": "0c837fec0bdcb723e84346df421c5a3f4e696e3c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/cssinliner-extra/zipball/0c837fec0bdcb723e84346df421c5a3f4e696e3c",
+          "name": "Renan Gonçalves",
+          "email": "renan.saddam@gmail.com"
+        }
+      ],
+      "description": "A Bootstring encoding of Unicode for Internationalized Domain Names in Applications (IDNA)",
+      "homepage": "https://github.com/true/php-punycode",
+      "keywords": [
+        "idna",
+        "punycode"
+      ],
+      "time": "2016-11-16T10:37:54+00:00"
+    },
+    {
+      "name": "twig/cssinliner-extra",
+      "version": "v3.0.4",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/twigphp/cssinliner-extra.git",
+        "reference": "0c837fec0bdcb723e84346df421c5a3f4e696e3c"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/twigphp/cssinliner-extra/zipball/0c837fec0bdcb723e84346df421c5a3f4e696e3c",
                 "reference": "0c837fec0bdcb723e84346df421c5a3f4e696e3c",
                 "shasum": ""
             },
@@ -8265,16 +9030,16 @@
         },
         "bin": [
           "bin/php-parse"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                  "dev-master": "4.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PhpParser\\": "lib/PhpParser"
+        ],
+        "type": "library",
+        "extra": {
+          "branch-alias": {
+            "dev-master": "4.7-dev"
+          }
+        },
+        "autoload": {
+          "psr-4": {
+            "PhpParser\\": "lib/PhpParser"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -8286,24 +9051,71 @@
                     "name": "Nikita Popov"
                 }
             ],
-            "description": "A PHP parser written in PHP",
-            "keywords": [
-                "parser",
-                "php"
-            ],
+        "description": "A PHP parser written in PHP",
+        "keywords": [
+          "parser",
+          "php"
+        ],
         "time": "2020-07-25T13:18:53+00:00"
+      },
+      {
+        "name": "singpolyma/openpgp-php",
+        "version": "0.4.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/singpolyma/openpgp-php.git",
+          "reference": "67aba786991e3cb3e555025b6d357779ab32a0ab"
         },
-        {
-            "name": "symfony/browser-kit",
-            "version": "v4.4.11",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/browser-kit.git",
-                "reference": "f53310646af9901292488b2ff36e26ea10f545f5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/f53310646af9901292488b2ff36e26ea10f545f5",
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/singpolyma/openpgp-php/zipball/67aba786991e3cb3e555025b6d357779ab32a0ab",
+          "reference": "67aba786991e3cb3e555025b6d357779ab32a0ab",
+          "shasum": ""
+        },
+        "require": {
+          "php": "^5.6 || ^7.0",
+          "phpseclib/phpseclib": "^2.0 !=2.0.8"
+        },
+        "require-dev": {
+          "phpunit/phpunit": "^5.0"
+        },
+        "suggest": {
+          "ext-mcrypt": "required if you use encryption cast5"
+        },
+        "type": "library",
+        "autoload": {
+          "classmap": [
+            "lib/"
+          ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+          "Unlicense"
+        ],
+        "authors": [
+          {
+            "name": "Arto Bendiken",
+            "email": "arto.bendiken@gmail.com"
+          },
+          {
+            "name": "Stephen Paul Weber",
+            "email": "singpolyma@singpolyma.net"
+          }
+        ],
+        "description": "Pure-PHP implementation of the OpenPGP Message Format (RFC 4880)",
+        "time": "2019-08-01T18:11:09+00:00"
+      },
+      {
+        "name": "symfony/browser-kit",
+        "version": "v4.4.11",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/symfony/browser-kit.git",
+          "reference": "f53310646af9901292488b2ff36e26ea10f545f5"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/symfony/browser-kit/zipball/f53310646af9901292488b2ff36e26ea10f545f5",
                 "reference": "f53310646af9901292488b2ff36e26ea10f545f5",
                 "shasum": ""
             },
@@ -8765,15 +9577,16 @@
             "time": "2020-07-23T08:31:43+00:00"
         }
     ],
-    "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
-    "prefer-stable": false,
-    "prefer-lowest": false,
-    "platform": {
-        "php": "^7.1.3",
-        "ext-ctype": "*",
-        "ext-iconv": "*"
-    },
-    "platform-dev": []
+  "aliases": [],
+  "minimum-stability": "stable",
+  "stability-flags": [],
+  "prefer-stable": false,
+  "prefer-lowest": false,
+  "platform": {
+    "php": "^7.1.3",
+    "ext-ctype": "*",
+    "ext-iconv": "*"
+  },
+  "platform-dev": [],
+  "plugin-api-version": "1.1.0"
 }
