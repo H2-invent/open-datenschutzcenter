@@ -1,0 +1,39 @@
+{% extends 'email/base.html.twig' %}
+{% block header %}
+    -- Aufgabe zugewiesen --
+{% endblock %}
+
+{% block content %}
+    <h4 class="text-center">
+        {{ assign }}
+    </h4>
+    <b>
+        Hallo!
+    </b>
+    <p>
+        Ihnen wurde eine Aufgabe zum Bearbeiten zugewiesen.
+    </p>
+    <b>
+        Aufgabe: {{ assign }}
+    </b>
+    <b>
+        {{ data.task|raw }}
+    </b>
+    <spacer size="16"></spacer>
+    <p>
+        <a href="{{ absolute_url(path('vorfall_edit', {'id':data.id})) }}">Klicken Sie hier um direkt zu Element
+            zu gelangen.</a>
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Sie erhalten diese E-Mail, weil Sie Mitglied des Datenschutzcenterteams {{ data.team.name }} sind.
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei Ihrem
+        Datenschutzbeauftragten, den Datenschutzkoordinatoren oder bei der Geschäftsführung.<br>
+        E-Mail: {{ data.team.email }}<br>
+        Telefon: {{ data.team.telefon }}
+    </p>
+
+{% endblock %}

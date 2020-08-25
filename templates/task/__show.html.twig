@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-md-5">
+        <div class="row">
+            <div class="col-md-6">
+                {% trans %}Betreff{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.title }}
+            </div>
+            <div class="col-md-6">
+                {% trans %}Priorität{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.prioString }}
+            </div>
+            <div class="col-md-6">
+                {% trans %}Erstellt von{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.user.username }}
+            </div>
+            {% if task.updatedBy %}
+                <div class="col-md-6">
+                    {% trans %}Bearbeitet von{% endtrans %}:
+                </div>
+                <div class="col-md-6">
+                    {{ task.updatedBy.username }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                {% trans %}Erstellt am{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.createdAt|date('d.m.Y') }}
+            </div>
+
+            <div class="col-md-6">
+                {% trans %}Zu erledigen bis{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.endDate|date('d.m.Y') }}
+            </div>
+
+            <div class="col-md-6">
+                {% trans %}Erledigt am{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ task.doneDate|date('d.m.Y') }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7 mt-5 mt-md-0"
+         style="border-left-color: #3f4e5e; border-left-width: 1px; border-left-style: dashed">
+        <p>{% trans %}Aufgabe{% endtrans %}:</p>
+            {{ task.task|raw }}
+    </div>
+</div>

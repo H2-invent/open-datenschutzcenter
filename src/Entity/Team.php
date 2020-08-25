@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -161,6 +162,23 @@ class Team
      */
     private $software;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="team")
+     */
+    private $tasks;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Encrypted()
+     */
+    private $externalLink;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Encrypted()
+     */
+    private $video;
+
 
     public function __construct()
     {
@@ -180,6 +198,7 @@ class Team
         $this->forms = new ArrayCollection();
         $this->policies = new ArrayCollection();
         $this->software = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -808,6 +827,61 @@ class Team
                 $software->setTeam(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): self
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+            $task->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        if ($this->tasks->contains($task)) {
+            $this->tasks->removeElement($task);
+            // set the owning side to null (unless already changed)
+            if ($task->getTeam() === $this) {
+                $task->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getExternalLink(): ?string
+    {
+        return $this->externalLink;
+    }
+
+    public function setExternalLink(?string $externalLink): self
+    {
+        $this->externalLink = $externalLink;
+
+        return $this;
+    }
+
+    public function getVideo(): ?string
+    {
+        return $this->video;
+    }
+
+    public function setVideo(?string $video): self
+    {
+        $this->video = $video;
 
         return $this;
     }

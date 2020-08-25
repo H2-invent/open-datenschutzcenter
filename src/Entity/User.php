@@ -145,6 +145,11 @@ class User extends BaseUser
      */
     private $assignedVorfalls;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="assignedUser")
+     */
+    private $tasks;
+
 
     public function __construct()
     {
@@ -169,6 +174,7 @@ class User extends BaseUser
         $this->software = new ArrayCollection();
         $this->assignedSoftware = new ArrayCollection();
         $this->assignedVorfalls = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
     }
 
     public function getTeam(): ?Team
@@ -821,6 +827,37 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($assignedVorfall->getAssignedUser() === $this) {
                 $assignedVorfall->setAssignedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): self
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+            $task->setAssignedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        if ($this->tasks->contains($task)) {
+            $this->tasks->removeElement($task);
+            // set the owning side to null (unless already changed)
+            if ($task->getAssignedUser() === $this) {
+                $task->setAssignedUser(null);
             }
         }
 

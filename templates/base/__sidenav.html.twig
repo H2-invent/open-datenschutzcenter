@@ -12,6 +12,9 @@
             <li class="{{ app.request.attributes.get('_route') == 'assign' ? 'active' }}">
                 <a href="{{ path('assign') }}">Meine Zuweisungen</a>
             </li>
+            <li class="{{ app.request.attributes.get('_route') == 'tasks' ? 'active' }}">
+                <a href="{{ path('tasks') }}">Aufgaben</a>
+            </li>
         {% endif %}
         {% if app.user.akademieUser %}
             <li class="{{ app.request.attributes.get('_route') == 'akademie' ? 'active' }}">
@@ -54,6 +57,9 @@
                 <a href="{{ path('bericht') }}">Berichte</a>
             </li>
         {% endif %}
+        <li class="{{ app.request.attributes.get('_route') == 'external' ? 'active' }}">
+            <a href="{{ path('external') }}">External</a>
+        </li>
         {% if app.user.adminUser %}
             <li>
                 <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Admin</a>

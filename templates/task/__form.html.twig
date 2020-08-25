@@ -1,0 +1,41 @@
+{{ form_start(form) }}
+<div {% if not activ %}class="disabled"{% endif %}>
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.title) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.title) }}
+        </div>
+    </div>
+
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.task) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.task) }}
+        </div>
+    </div>
+
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.endDate) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.endDate) }}
+        </div>
+    </div>
+
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.prio) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.prio) }}
+        </div>
+    </div>
+
+    {{ form_widget(form.save) }}
+</div>
+{{ form_end(form) }}
