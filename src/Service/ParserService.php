@@ -13,6 +13,7 @@ use App\Entity\AuditTom;
 use App\Entity\AuditTomStatus;
 use App\Entity\AuditTomZiele;
 use App\Entity\Team;
+use App\Entity\Upload;
 use App\Entity\User;
 use App\Entity\VVT;
 use App\Entity\VVTDatenkategorie;
@@ -37,14 +38,17 @@ class ParserService
     }
 
 
-    function parseAudit($data, Team $team, User $user)
+    function parseAudit($data, Team $team, User $user, Upload $upload)
     {
         try {
+            $upload->setAmount($data->amount);
+            $upload->setUId($data->uid);
+            $this->em->persist($upload);
             foreach ($data->entry as $e) {
                 $audit = new AuditTom();
                 if ($e->nummer == null) {
                     $audit->setNummer('AUDIT-' . hexdec(uniqid()));
-                }else {
+                } else {
                     $audit->setNummer($e->nummer);
                 }
                 $audit->setFrage($e->frage);
@@ -85,9 +89,13 @@ class ParserService
 
     }
 
-    function parseVVT($data, $team, User $user)
+    function parseVVT($data, $team, User $user, Upload $upload)
     {
         try {
+            $upload->setAmount($data->amount);
+            $upload->setUId($data->uid);
+            $this->em->persist($upload);
+
             foreach ($data->entry as $e) {
                 $vvt = new VVT();
                 $vvt->setName($e->name);

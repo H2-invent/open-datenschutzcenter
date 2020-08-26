@@ -50,5 +50,10 @@
             {{ include('dashboard/__card.html.twig',{'farbe':'bg-software','title':'Software','metrik':software|length}) }}
         </a>
     </div>
+    <div class="col-xl-6 col-md-6 col-lg-12 mt-2">
+        <a href="{{ path('tasks') }}">
+            {{ include('dashboard/__card.html.twig',{'farbe':'bg-tasks','title':'Aufgaben','metrik':tasks|length}) }}
+        </a>
+    </div>
 
 </div>

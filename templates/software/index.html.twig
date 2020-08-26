@@ -14,7 +14,6 @@
             <table id="data-table" class="table display table-striped ">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Aktenzeichen</th>
                     <th scope="col">Inventar</th>
@@ -29,14 +28,13 @@
                 <tbody>
                 {% for d in data %}
                     <tr class="clickable-row" data-href='{{ path('software_edit',{'id':d.id}) }}'>
-                        <th scope="row">{{ d.id }}</th>
-                        <td>{{ d.name }}</td>
+                        <th scope="row">{{ d.name }}</th>
                         <td>{{ d.reference }}</td>
                         <td>{{ d.nummer }}</td>
                         <td>{% for p in d.vvts if p.activ %}{{ p.name }}<br>{% endfor %}</td>
                         <td>{% for p in d.datenweitergabe if p.activ %}{{ p.gegenstand }}<br>{% endfor %}</td>
                         <td>{{ d.purchase|date('d.m.Y') }}</td>
-                        <td>{{ d.license }}</td>
+                        <td>{{ d.licenseTypeString }}</td>
                         <td>{% if d.licenseExpiration %}{{ d.licenseExpiration|date('d.m.Y') }}{% else %}Ohne Ablaufdatum{% endif %}</td>
                         <td>{% if d.licenseExpiration < date() and d.licenseExpiration is not null %}<span
                                     class="bg-danger p-1">ABGELAUFEN</span>{% elseif d.approved %}Software und Konfiguration freigegeben{% elseif d.status == 60 %}

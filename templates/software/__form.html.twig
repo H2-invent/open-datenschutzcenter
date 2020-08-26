@@ -49,6 +49,14 @@
 </div>
 <div class="mt-4 row">
     <div class="col-md-3">
+        {{ form_label(form.licenseType) }}
+    </div>
+    <div class="col-md-9">
+        {{ form_widget(form.licenseType) }}
+    </div>
+</div>
+<div class="mt-4 row">
+    <div class="col-md-3">
         {{ form_label(form.license) }}
     </div>
     <div class="col-md-9">
@@ -104,7 +112,7 @@
     </div>
 </div>
 <h4 class="h4-responsive mt-4">Verarbeitungen</h4>
-<div class="mb-4">
+<div class="row mb-4">
     <div class="col-md-3">
         {{ form_label(form.vvts) }}
     </div>
@@ -113,7 +121,7 @@
     </div>
 </div>
 <h4 class="h4-responsive mt-4">Datenweitergabe</h4>
-<div class="mb-4">
+<div class="row mb-4">
     <div class="col-md-3">
         {{ form_label(form.datenweitergabe) }}
     </div>

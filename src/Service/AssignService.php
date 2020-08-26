@@ -14,6 +14,7 @@ use App\Entity\Datenweitergabe;
 use App\Entity\Forms;
 use App\Entity\Policies;
 use App\Entity\Software;
+use App\Entity\Task;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\Vorfall;
@@ -77,7 +78,12 @@ class AssignService
 
     function createForm($data, Team $team)
     {
-        $form = $this->formBuilder->create(AssignType::class, $data, ['user' => $team->getMembers()]);
+        $teamMembers = $team->getMembers();
+
+        if (!in_array($team->getDsbUser(), $teamMembers->toArray())) {
+            $teamMembers->add($team->getDsbUser());
+        }
+        $form = $this->formBuilder->create(AssignType::class, $data, ['user' => $teamMembers]);
         return $form;
     }
 
@@ -265,6 +271,30 @@ class AssignService
                 $vorfall->setAssignedUser(null);
             }
             $this->em->persist($vorfall);
+            $this->em->flush();
+
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    function assignTask($request, Task $task)
+    {
+        try {
+
+            if ($task->getAssignedUser() == null) {
+                $data = $request->get('assign');
+                $user = $this->em->getRepository(User::class)->find($data['user']);
+                if ($task->getTeam() === $user->getTeam()) {
+                    $task->setAssignedUser($user);
+                    $content = $this->twig->render('email/assignementTask.html.twig', ['assign' => $task->getTitle(), 'data' => $task, 'team' => $user->getTeam()]);
+                    $this->notificationService->sendNotificationAssign($content, $user);
+                }
+            } else {
+                $task->setAssignedUser(null);
+            }
+            $this->em->persist($task);
             $this->em->flush();
 
             return true;

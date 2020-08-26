@@ -15,9 +15,10 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col" title="AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung">Typ</th>
                     <th scope="col">Name</th>
                     <th scope="col">Grundlage</th>
-                    <th scope="col">DSFA vorhanden</th>
+                    <th scope="col" title="Datenschutzfolgenabschätzung">DSFA vorhanden</th>
                     <th scope="col">Kategorie</th>
                     <th scope="col">Abteilung</th>
                     <th scope="col">Produkte</th>
@@ -29,6 +30,7 @@
                 {% for v in vvt %}
                     <tr class="clickable-row" data-href='{{ path('vvt_edit',{'id':v.id}) }}'>
                         <th scope="row">{{ v.nummer }}</th>
+                        <td>{{ v.auftragsverarbeitung? 'AV':'' }}<br>{{ v.jointControl? 'GV':'' }}</td>
                         <td>{{ v.name }}</td>
                         <td>{% for g in v.grundlage %}- {{ g.name }}<br>{% endfor %}</td>
                         <td>{{ v.activDsfa?'Ja':'Nein' }}</a></td>

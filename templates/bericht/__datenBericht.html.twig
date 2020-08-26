@@ -101,6 +101,27 @@
         </td>
         <td>{{ d.stand.name }}</td>
     </tr>
+    <tr>
+        <td>
+            Der Vertrag zur Auftragsverarbeitung nach Art. 28 Abs. 3 DSGVO berücksichtigt folgende Punkte
+        </td>
+        <td>
+            {{ d.checkItems ? 'Gegenstand und Dauer der Verarbeitung, Art und Zweck der Verarbeitung<br><br>' }}
+            {{ d.checkPeople ? 'Die Kategorien betroffener Personen<br><br>' }}
+            {{ d.checkData ? 'Die Art der per-sonenbezogenen Daten <br><br>' }}
+            {{ d.checkDocumentation ? 'Verarbeitung auf dokumentierte Weisung des Verantwortlichen<br><br>' }}
+            {{ d.checkTrust ? 'Vertraulichkeitsverpflichtung<br><br>' }}
+            {{ d.checkTom ? 'Ergreifen erforderlicher technischer und organisatorischer Maßnahmen<br><br>' }}
+            {{ d.checkSubcontractor ? 'Inanspruchnahme von Unterauftragnehmern nach Art. Art. 28 Abs. 2 und Abs. 4 DSGVO<br><br>' }}
+            {{ d.checkSupport ? 'Unterstützung des Verantwortlichen bei der Beantwortung von Betroffenenanfragen<br><br>' }}
+            {{ d.checkSupport3236 ? 'Unterstützung des Verantwortlichen bei den Pflichten nach Art. 32 – 36 DSGVO<br><br>' }}
+            {{ d.checkEnding ? 'Umgang mit personenbezogenen Daten nach Beendigung der Auftragsverarbeitung<br><br>' }}
+            {{ d.checkAudit ? 'Zurverfügungstellung von Informationen und Ermöglichung von Überprüfungen<br><br>' }}
+            {{ d.checkNotes ? 'Hinweispflicht<br>' }}
+
+
+        </td>
+    </tr>
 
 </table>
 {{ d.createdAt|date('d.m.Y H:i') }} by {{ d.user.email }}

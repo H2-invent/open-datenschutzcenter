@@ -15,10 +15,12 @@ use App\Entity\Forms;
 use App\Entity\Kontakte;
 use App\Entity\Policies;
 use App\Entity\Software;
+use App\Entity\Task;
 use App\Entity\Tom;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
@@ -26,14 +28,16 @@ class DashboardController extends AbstractController
     /**
      * @Route("/", name="dashboard")
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $team = $this->getUser()->getTeam();
 
         if ($team === null && $this->getUser()->getAkademieUser() !== null) {
             return $this->redirectToRoute('akademie');
+        } elseif ($team === null && count($dsbTeams = $this->getUser()->getTeamDsb()) > 0) {
+            return $this->redirectToRoute('dsb');
         } elseif ($team === null && $this->getUser()->getAkademieUser() === null) {
-            return $this->redirectToRoute('fos_user_security_logout');
+            return $this->redirectToRoute('no_team');
         }
 
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
@@ -46,6 +50,7 @@ class DashboardController extends AbstractController
         $forms = $this->getDoctrine()->getRepository(Forms::class)->findPublicByTeam($team);
         $policies = $this->getDoctrine()->getRepository(Policies::class)->findPublicByTeam($team);
         $software = $this->getDoctrine()->getRepository(Software::class)->findActivByTeam($team);
+        $tasks = $this->getDoctrine()->getRepository(Task::class)->findActivByTeam($team);
 
         $qb = $this->getDoctrine()->getRepository(AuditTom::class)->createQueryBuilder('audit');
         $qb->andWhere('audit.team = :team')
@@ -79,6 +84,7 @@ class DashboardController extends AbstractController
         $assignAudit = $this->getUser()->getAssignedAudits()->toarray();
         $assignDsfa = $this->getUser()->getAssignedDsfa()->toarray();
         $assignDatenweitergabe = $this->getUser()->getAssignedDatenweitergaben()->toarray();
+        $assignTasks = $this->getUser()->getTasks()->toarray();
 
         $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findActivBuchungenByUser($this->getUser());
 
@@ -101,7 +107,30 @@ class DashboardController extends AbstractController
             'akademie' => $buchungen,
             'forms' => $forms,
             'policies' => $policies,
-            'software' => $software
+            'software' => $software,
+            'assignTasks' => $assignTasks,
+            'tasks' => $tasks,
+            'snack' => $request->get('snack')
+        ]);
+    }
+
+    /**
+     * @Route("/no_team", name="no_team")
+     */
+    public function noTeam()
+    {
+        if ($this->getUser()->getTeam()) {
+            return $this->redirectToRoute('dashboard');
+        }
+        if ($this->getUser()->getAkademieUser()) {
+            return $this->redirectToRoute('akademie');
+        }
+        if (count($this->getUser()->getTeamDsb()) > 0) {
+            return $this->redirectToRoute('dsb');
+        }
+
+        return $this->render('dashboard/noteam.html.twig', [
+            'user' => $this->getUser(),
         ]);
     }
 }

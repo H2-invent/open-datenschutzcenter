@@ -12,15 +12,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProduktController extends AbstractController
 {
-    /**
-     * @Route("/produkt", name="produkt")
-     */
-    public function index()
-    {
-        return $this->render('produkt/index.html.twig', [
-            'controller_name' => 'ProduktController',
-        ]);
-    }
 
     /**
      * @Route("/team_produkte", name="team_produkt")

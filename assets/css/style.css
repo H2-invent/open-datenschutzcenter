@@ -82,6 +82,16 @@
     color: whitesmoke !important;
 }
 
+.bg-tasks {
+    background-color: #789339;
+    color: whitesmoke !important;
+}
+
+.bg-request {
+    background-color: #0b2e13;
+    color: whitesmoke !important;
+}
+
 /* poppins-regular - latin */
 @font-face {
     font-family: 'Poppins';
@@ -91,6 +101,7 @@
     src: local('Poppins Regular'), local('Poppins-Regular'),
     url('../../public/fonts/poppins-v9-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('../../public/fonts/poppins-v9-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */ url('../../public/fonts/poppins-v9-latin-regular.woff') format('woff'), /* Modern Browsers */ url('../../public/fonts/poppins-v9-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */ url('../../public/fonts/poppins-v9-latin-regular.svg#Poppins') format('svg'); /* Legacy iOS */
 }
+
 body {
     font-family: 'Poppins';
     background: var(--contrast-extra-light);
@@ -101,7 +112,7 @@ p {
     font-size: 1.1em;
     font-weight: 300;
     line-height: 1.7em;
-    color: #999;
+    color: #000;
 }
 
 a,
@@ -441,4 +452,130 @@ label.required:after {
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
+}
+
+/* No Team found background animation */
+.headerBorder {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 60vh;
+    margin: auto;
+    background-color: #21d4fd;
+    background-image: linear-gradient(19deg, #83000a 0%, #20388a 100%);
+    border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
+    box-shadow: 15px 15px 50px rgba(0, 0, 0, 0.2);
+    animation: morphing 10s infinite;
+    overflow: hidden;
+}
+
+.headerBorder:hover {
+    animation-play-state: paused;
+}
+
+@-moz-keyframes morphing {
+    0% {
+        border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
+        box-shadow: 15px 15px 50px rgba(0, 0, 0, 0.2);
+    }
+    25% {
+        border-radius: 58% 42% 75% 25%/76% 46% 54% 24%;
+    }
+    50% {
+        border-radius: 50% 50% 33% 67%/55% 27% 73% 45%;
+        box-shadow: -10px -5px 50px rgba(0, 0, 0, 0.2);
+    }
+    75% {
+        border-radius: 33% 67% 58% 42%/63% 68% 32% 37%;
+    }
+}
+
+@-webkit-keyframes morphing {
+    0% {
+        border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
+        box-shadow: 15px 15px 50px rgba(0, 0, 0, 0.2);
+    }
+    25% {
+        border-radius: 58% 42% 75% 25%/76% 46% 54% 24%;
+    }
+    50% {
+        border-radius: 50% 50% 33% 67%/55% 27% 73% 45%;
+        box-shadow: -10px -5px 50px rgba(0, 0, 0, 0.2);
+    }
+    75% {
+        border-radius: 33% 67% 58% 42%/63% 68% 32% 37%;
+    }
+}
+
+@-o-keyframes morphing {
+    0% {
+        border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
+        box-shadow: 15px 15px 50px rgba(0, 0, 0, 0.2);
+    }
+    25% {
+        border-radius: 58% 42% 75% 25%/76% 46% 54% 24%;
+    }
+    50% {
+        border-radius: 50% 50% 33% 67%/55% 27% 73% 45%;
+        box-shadow: -10px -5px 50px rgba(0, 0, 0, 0.2);
+    }
+    75% {
+        border-radius: 33% 67% 58% 42%/63% 68% 32% 37%;
+    }
+}
+
+@keyframes morphing {
+    0% {
+        border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
+        box-shadow: 15px 15px 50px rgba(0, 0, 0, 0.2);
+    }
+    25% {
+        border-radius: 58% 42% 75% 25%/76% 46% 54% 24%;
+    }
+    50% {
+        border-radius: 50% 50% 33% 67%/55% 27% 73% 45%;
+        box-shadow: -10px -5px 50px rgba(0, 0, 0, 0.2);
+    }
+    75% {
+        border-radius: 33% 67% 58% 42%/63% 68% 32% 37%;
+    }
+}
+
+/* MDB Scrollbar */
+.scrollbar-deep-purple::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+.scrollbar-deep-purple::-webkit-scrollbar {
+    width: 12px;
+    background-color: transparent;
+}
+
+.scrollbar-deep-purple::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--main-color);
+}
+
+.scrollbar-deep-purple {
+    scrollbar-color: var(--main-color);
+}
+
+
+.bordered-deep-purple::-webkit-scrollbar-track {
+    -webkit-box-shadow: none;
+    border: 1px solid var(--main-color);
+}
+
+.bordered-deep-purple::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: none;
+}
+
+
+.thin::-webkit-scrollbar {
+    width: 10px;
 }

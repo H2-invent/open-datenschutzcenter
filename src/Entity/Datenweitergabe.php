@@ -161,6 +161,71 @@ class Datenweitergabe
      */
     private $approvedBy;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $notes;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkItems;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkPeople;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkData;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkDocumentation;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkTrust;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkTom;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkSubcontractor;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkSupport;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkSupport3236;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkEnding;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkAudit;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $checkNotes;
+
     public function __construct()
     {
         $this->verfahren = new ArrayCollection();
@@ -482,6 +547,162 @@ class Datenweitergabe
     public function setApprovedBy(?User $approvedBy): self
     {
         $this->approvedBy = $approvedBy;
+
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getCheckItems(): ?bool
+    {
+        return $this->checkItems;
+    }
+
+    public function setCheckItems(bool $checkItems): self
+    {
+        $this->checkItems = $checkItems;
+
+        return $this;
+    }
+
+    public function getCheckPeople(): ?bool
+    {
+        return $this->checkPeople;
+    }
+
+    public function setCheckPeople(bool $checkPeople): self
+    {
+        $this->checkPeople = $checkPeople;
+
+        return $this;
+    }
+
+    public function getCheckData(): ?bool
+    {
+        return $this->checkData;
+    }
+
+    public function setCheckData(bool $checkData): self
+    {
+        $this->checkData = $checkData;
+
+        return $this;
+    }
+
+    public function getCheckDocumentation(): ?bool
+    {
+        return $this->checkDocumentation;
+    }
+
+    public function setCheckDocumentation(bool $checkDocumentation): self
+    {
+        $this->checkDocumentation = $checkDocumentation;
+
+        return $this;
+    }
+
+    public function getCheckTrust(): ?bool
+    {
+        return $this->checkTrust;
+    }
+
+    public function setCheckTrust(bool $checkTrust): self
+    {
+        $this->checkTrust = $checkTrust;
+
+        return $this;
+    }
+
+    public function getCheckTom(): ?bool
+    {
+        return $this->checkTom;
+    }
+
+    public function setCheckTom(bool $checkTom): self
+    {
+        $this->checkTom = $checkTom;
+
+        return $this;
+    }
+
+    public function getCheckSubcontractor(): ?bool
+    {
+        return $this->checkSubcontractor;
+    }
+
+    public function setCheckSubcontractor(bool $checkSubcontractor): self
+    {
+        $this->checkSubcontractor = $checkSubcontractor;
+
+        return $this;
+    }
+
+    public function getCheckSupport(): ?bool
+    {
+        return $this->checkSupport;
+    }
+
+    public function setCheckSupport(bool $checkSupport): self
+    {
+        $this->checkSupport = $checkSupport;
+
+        return $this;
+    }
+
+    public function getCheckSupport3236(): ?bool
+    {
+        return $this->checkSupport3236;
+    }
+
+    public function setCheckSupport3236(bool $checkSupport3236): self
+    {
+        $this->checkSupport3236 = $checkSupport3236;
+
+        return $this;
+    }
+
+    public function getCheckEnding(): ?bool
+    {
+        return $this->checkEnding;
+    }
+
+    public function setCheckEnding(bool $checkEnding): self
+    {
+        $this->checkEnding = $checkEnding;
+
+        return $this;
+    }
+
+    public function getCheckAudit(): ?bool
+    {
+        return $this->checkAudit;
+    }
+
+    public function setCheckAudit(bool $checkAudit): self
+    {
+        $this->checkAudit = $checkAudit;
+
+        return $this;
+    }
+
+    public function getCheckNotes(): ?bool
+    {
+        return $this->checkNotes;
+    }
+
+    public function setCheckNotes(bool $checkNotes): self
+    {
+        $this->checkNotes = $checkNotes;
 
         return $this;
     }

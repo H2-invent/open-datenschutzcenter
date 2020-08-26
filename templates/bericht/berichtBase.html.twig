@@ -31,7 +31,7 @@
 </style>
 <body>
 <header>
-    {{ daten[0].nummer }} - {{ team.name }}
+    {% if daten[0].nummer is defined %}{{ daten[0].nummer }} - {% endif %}{{ team.name }}
 </header>
 
 <main>

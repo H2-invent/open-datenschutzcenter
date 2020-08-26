@@ -145,6 +145,26 @@ class User extends BaseUser
      */
     private $assignedVorfalls;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="assignedUser")
+     */
+    private $tasks;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ClientRequest::class, mappedBy="user")
+     */
+    private $clientRequests;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ClientRequest::class, mappedBy="assignedUser")
+     */
+    private $assignedRequests;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="dsbUser")
+     */
+    private $teamDsb;
+
 
     public function __construct()
     {
@@ -169,6 +189,10 @@ class User extends BaseUser
         $this->software = new ArrayCollection();
         $this->assignedSoftware = new ArrayCollection();
         $this->assignedVorfalls = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
+        $this->clientRequests = new ArrayCollection();
+        $this->assignedRequests = new ArrayCollection();
+        $this->teamDsb = new ArrayCollection();
     }
 
     public function getTeam(): ?Team
@@ -821,6 +845,130 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($assignedVorfall->getAssignedUser() === $this) {
                 $assignedVorfall->setAssignedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): self
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+            $task->setAssignedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        if ($this->tasks->contains($task)) {
+            $this->tasks->removeElement($task);
+            // set the owning side to null (unless already changed)
+            if ($task->getAssignedUser() === $this) {
+                $task->setAssignedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientRequest[]
+     */
+    public function getClientRequests(): Collection
+    {
+        return $this->clientRequests;
+    }
+
+    public function addClientRequest(ClientRequest $clientRequest): self
+    {
+        if (!$this->clientRequests->contains($clientRequest)) {
+            $this->clientRequests[] = $clientRequest;
+            $clientRequest->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientRequest(ClientRequest $clientRequest): self
+    {
+        if ($this->clientRequests->contains($clientRequest)) {
+            $this->clientRequests->removeElement($clientRequest);
+            // set the owning side to null (unless already changed)
+            if ($clientRequest->getUser() === $this) {
+                $clientRequest->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientRequest[]
+     */
+    public function getAssignedRequests(): Collection
+    {
+        return $this->assignedRequests;
+    }
+
+    public function addAssignedRequest(ClientRequest $assignedRequest): self
+    {
+        if (!$this->assignedRequests->contains($assignedRequest)) {
+            $this->assignedRequests[] = $assignedRequest;
+            $assignedRequest->setAssignedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssignedRequest(ClientRequest $assignedRequest): self
+    {
+        if ($this->assignedRequests->contains($assignedRequest)) {
+            $this->assignedRequests->removeElement($assignedRequest);
+            // set the owning side to null (unless already changed)
+            if ($assignedRequest->getAssignedUser() === $this) {
+                $assignedRequest->setAssignedUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeamDsb(): Collection
+    {
+        return $this->teamDsb;
+    }
+
+    public function addTeamDsb(Team $teamDsb): self
+    {
+        if (!$this->teamDsb->contains($teamDsb)) {
+            $this->teamDsb[] = $teamDsb;
+            $teamDsb->setDsbUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeamDsb(Team $teamDsb): self
+    {
+        if ($this->teamDsb->contains($teamDsb)) {
+            $this->teamDsb->removeElement($teamDsb);
+            // set the owning side to null (unless already changed)
+            if ($teamDsb->getDsbUser() === $this) {
+                $teamDsb->setDsbUser(null);
             }
         }
 

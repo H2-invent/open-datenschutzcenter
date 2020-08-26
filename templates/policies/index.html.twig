@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">Interne Richtlinien</h2>
+    <h2 class="h2-responsive">Interne Richtlinien und Arbeitsanweisungen</h2>
 
     <div class="card card-body">
         <div class="table-responsive">
@@ -26,7 +26,7 @@
                     <tr class="clickable-row" data-href='{{ path('policy_edit',{'id':d.id}) }}'>
                         <th scope="row">{{ d.reference }}</th>
                         <td>{{ d.title }}</td>
-                        <td>{{ d.scope }}</td>
+                        <td>{{ d.scope|raw }}</td>
                         <td>{% for p in d.processes if p.activ %}{{ p.name }}<br>{% endfor %}</td>
                         <td>{% if d.approved %}<span
                                     class="note-success p-1">Freigegeben</span>{% else %}{{ d.statusString }}{% endif %}

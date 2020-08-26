@@ -1,0 +1,48 @@
+{% extends 'email/base.html.twig' %}
+{% block header %}
+    -- Bestätigen Sie Ihre Email Adresse --
+{% endblock %}
+
+{% block content %}
+    <b>
+        Hallo {{ data.name }}!
+    </b>
+    <p>
+        Bevor wir Ihre Anfrage weiter bearbeiten können, müssen Sie Ihre Email Adresse bestätigen. Klicken Sie dazu auf
+        den Link in dieser Email.<br>
+        Um Sie während der Bearbeitung der Anfrage kontaktieren zu dürfen, benötigen wir eine Bestätigung, dass Sie der
+        Inhaber der angegebenen Email-Adresse sind und dass Sie mit dem Empfang von Emails einverstanden sind.
+    </p>
+    <p>
+        Die erhobenen Daten dienen nur zur Bearbeitung der Anfrage und der Dokumentation Ihrer Zustimmung. Eine andere
+        Verarbeitung oder Weitergabe an Dritte erfolgt nicht.
+    </p>
+    <p>
+        Sie können die Einwilligung zur Speicherung der Daten jederzeit widerrufen. Mit dem Widerruf sind jedoch nicht
+        mehr in der Lage, die Anfrage weiter zu bearbeiten, da wir Sie nicht mehr kontaktieren dürfen und Ihre Idendität
+        nicht weiter verifizieren können.
+    </p>
+    <p>
+        Anfrage: {{ title }}<br>
+        Ticket ID: {{ data.uuid }}
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        <a href="{{ absolute_url(path('client_valid', {'slug':team.slug, 'token':data.uuid})) }}">Klicken Sie hier um
+            Ihre Adresse zu bestätigen</a>
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Sie erhalten diese E-Mail, weil Sie eine Anfrage über den Datenschutzcenter {{ team.name }} gestellt haben und
+        Ihre Email verifizieren müssen.
+    </p>
+    <spacer size="16"></spacer>
+    <p>
+        Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei dem
+        Datenschutzbeauftragten.<br>
+        {{ data.team.name }}<br>
+        E-Mail: {{ data.team.email }}<br>
+        Telefon: {{ data.team.telefon }}
+    </p>
+
+{% endblock %}

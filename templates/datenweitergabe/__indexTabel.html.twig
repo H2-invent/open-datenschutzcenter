@@ -10,6 +10,7 @@
                 <th scope="col">Verantwortlich</th>
                 <th scope="col">Kontakt</th>
                 <th scope="col">Zeichnungsdatum</th>
+                <th scope="col">Freigegeben</th>
             </tr>
             </thead>
             <tbody>
@@ -21,6 +22,7 @@
                     <td>{{ t.verantwortlich }}</td>
                     <td>{{ t.kontakt.firma }} (id:{{ t.kontakt.id }})</td>
                     <td>{{ t.zeichnungsdatum|date('Y.m.d') }}</td>
+                    <td>{{ t.approved?'Ja':'Nein' }}</td>
                 </tr>
             {% endfor %}
             </tbody>
