@@ -56,7 +56,7 @@ $(document).ready(function () {
         placeholder: 'Gebe hier den Text ein',
         tabsize: 2,
         height: 200,
-        focus: true,
+        focus: false,
         lang: 'de-DE',
         toolbar: [
             ['style', ['pre']],

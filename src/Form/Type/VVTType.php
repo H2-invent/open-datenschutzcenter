@@ -176,7 +176,7 @@ class VVTType extends AbstractType
                 'multiple' => true,
                 'required' => false
             ])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)
