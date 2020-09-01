@@ -61,7 +61,7 @@ class VVTType extends AbstractType
             ->add('jointControl', CheckboxType::class, ['label' => 'Handelt es sich um Joint Control (gem. Verarbeitung)', 'required' => false, 'translation_domain' => 'form'])
             ->add('auftragsverarbeitung', CheckboxType::class, ['label' => 'Handelt es sich um eine Auftragsverarbeitung', 'required' => false, 'translation_domain' => 'form'])
             ->add('speicherung', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Wo werden die Daten gespeichert/abgelegt', 'required' => true, 'translation_domain' => 'form'])
-            ->add('loeschfrist', TextType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Löschfristen', 'required' => true, 'translation_domain' => 'form'])
+            ->add('loeschfrist', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Löschfristen', 'required' => true, 'translation_domain' => 'form'])
             ->add('weitergabe', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben', 'required' => false, 'translation_domain' => 'form'])
             ->add('grundlage', EntityType::class, [
                 'choice_label' => 'name',
