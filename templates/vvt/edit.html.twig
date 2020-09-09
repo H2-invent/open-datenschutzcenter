@@ -13,6 +13,9 @@
         </a>
     {% endif %}
     {% if vvt.activ %}
+        <a class="btn btn-cyan btn-sm ml-1" href="{{ path('vvt_clone', {'id':vvt.id}) }}">
+            <span>Verarbeitung duplizieren</span>
+        </a>
         <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_vvt', {'id':vvt.id}) }}">
             <span>PDF erstellen</span>
         </a>

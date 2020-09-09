@@ -240,6 +240,51 @@ class VvtController extends AbstractController
     }
 
     /**
+     * @Route("/vvt/clone", name="vvt_clone")
+     */
+    public function cloneVvt(Request $request, SecurityService $securityService, VVTService $VVTService, ValidatorInterface $validator)
+    {
+        $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
+        $team = $this->getUser()->getTeam();
+
+        if ($securityService->teamDataCheck($vvt, $team) === false) {
+            return $this->redirectToRoute('vvt');
+        }
+
+        $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
+        $newVvt->setPrevious(null);
+        foreach ($newVvt->getDsfa() as $dsfa) {
+            $newVvt->removeDsfa($dsfa);
+        }
+
+
+        $form = $VVTService->createForm($newVvt, $team);
+        $form->handleRequest($request);
+
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $vvt = $form->getData();
+            $errors = $validator->validate($vvt);
+            if (count($errors) == 0) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($vvt);
+                $em->flush();
+                return $this->redirectToRoute('vvt');
+            }
+        }
+        return $this->render('vvt/new.html.twig', [
+            'form' => $form->createView(),
+            'errors' => $errors,
+            'title' => 'Verarbeitung erfassen',
+            'activNummer' => true,
+            'vvt' => $vvt,
+            'activ' => $vvt->getActiv(),
+            'CTA' => false,
+        ]);
+    }
+
+    /**
      * @Route("/vvt/disable", name="vvt_disable")
      */
     public function disableVvt(Request $request, SecurityService $securityService, DisableService $disableService)
