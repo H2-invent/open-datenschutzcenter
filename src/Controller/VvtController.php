@@ -256,6 +256,9 @@ class VvtController extends AbstractController
         foreach ($newVvt->getDsfa() as $dsfa) {
             $newVvt->removeDsfa($dsfa);
         }
+        foreach ($newVvt->getPolicies() as $policy) {
+            $newVvt->removePolicy($policy);
+        }
 
 
         $form = $VVTService->createForm($newVvt, $team);
