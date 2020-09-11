@@ -263,11 +263,9 @@ class VvtController extends AbstractController
             $newVvt->removePolicy($policy);
         }
 
-
         $form = $VVTService->createForm($newVvt, $team);
         $form->handleRequest($request);
 
-        dump($newVvt);
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $vvt = $form->getData();
