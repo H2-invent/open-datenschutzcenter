@@ -41,7 +41,7 @@
                 {% trans %}Grund{% endtrans %}: {{ data.itemstring }}
             </p>
             <p>
-                {% trans %}Beschreibung{% endtrans %}: {{ data.description|raw }}
+                {% trans %}Beschreibung{% endtrans %}:<br> {{ data.description|nl2br }}
             </p>
         </div>
     </div>
