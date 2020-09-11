@@ -253,6 +253,9 @@ class VvtController extends AbstractController
 
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
         $newVvt->setPrevious(null);
+        $newVvt->setApproved(null);
+        $newVvt->setApprovedBy(null);
+
         foreach ($newVvt->getDsfa() as $dsfa) {
             $newVvt->removeDsfa($dsfa);
         }
@@ -264,7 +267,7 @@ class VvtController extends AbstractController
         $form = $VVTService->createForm($newVvt, $team);
         $form->handleRequest($request);
 
-
+        dump($newVvt);
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $vvt = $form->getData();
@@ -281,8 +284,8 @@ class VvtController extends AbstractController
             'errors' => $errors,
             'title' => 'Verarbeitung erfassen',
             'activNummer' => true,
-            'vvt' => $vvt,
-            'activ' => $vvt->getActiv(),
+            'vvt' => $newVvt,
+            'activ' => $newVvt->getActiv(),
             'CTA' => false,
         ]);
     }
