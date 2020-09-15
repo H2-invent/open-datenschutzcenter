@@ -46,8 +46,8 @@ class ParserService
             $this->em->persist($upload);
             foreach ($data->entry as $e) {
                 $audit = new AuditTom();
-                if ($e->nummer === "") {
-                    $audit->setNummer('AUDIT-' . date('Y') . hexdec(uniqid()));
+                if ($e->nummer == null) {
+                    $audit->setNummer('AUDIT-' . hexdec(uniqid()));
                 } else {
                     $audit->setNummer($e->nummer);
                 }
@@ -163,9 +163,9 @@ class ParserService
                 $vvt->setWeitergabe($e->weitergabe);
                 $vvt->setTom($e->hinweisTom);
                 $vvt->setUserContract($user);
-                if ($e->nummer === "") {
-                    $vvt->setNummer('VVT-' . date('Y') . hexdec(uniqid()));
-                } else {
+                if ($e->nummer == null) {
+                    $vvt->setNummer('VVT-' . hexdec(uniqid()));
+                }else {
                     $vvt->setNummer($e->nummer);
                 }
 
@@ -201,13 +201,7 @@ class ParserService
     function verify($json)
     {
         try {
-            $data = $json->entry;
-            $data[] = [$json->uid];
-            $data[] = [$json->amount];
-            $data[] = [$json->author];
-            $data[] = [$json->version];
-            $data[] = [$json->table];
-            $data = json_encode($data);
+            $data = json_encode($json->entry);
             $signature = $json->signature;
             $res = openssl_verify($data, hex2bin($signature), file_get_contents($this->parameterBag->get('projectRoot') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public.key'), OPENSSL_ALGO_SHA256);
             return $res;

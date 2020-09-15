@@ -30,8 +30,6 @@ Folgende Funktionen sind bereits im Open Datenschutzcenter integriert:
 * Erstellung von Berichten als PDF und Excel.
 * Stammdaten mit Abteilungen, Schutzzielen, Produkten und Nutzerverwaltung.
 * Import von Auditfragen und Verarbeitungstätigkeiten als .odif Dateien.
-* To Dos und Aufgaben festhalten und zuteilen.
-* Dokumentieren von Software und Konfigurationen die den Datenschutz betreffen.
 
 ### Import .odif Datei
 Folgende Parameter stehen in den odif Dateien zum Import zur Verfügung und müssen auch im Dokument vorhanden sein.

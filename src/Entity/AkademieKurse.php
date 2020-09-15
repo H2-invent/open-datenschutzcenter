@@ -64,11 +64,6 @@ class AkademieKurse
      */
     private $user;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $type;
-
     public function __construct()
     {
         $this->team = new ArrayCollection();
@@ -205,18 +200,6 @@ class AkademieKurse
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getType(): ?int
-    {
-        return $this->type;
-    }
-
-    public function setType(int $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }
