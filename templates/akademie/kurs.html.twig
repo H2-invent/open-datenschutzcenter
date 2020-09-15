@@ -3,56 +3,18 @@
 {% block body %}
     <h2 class="h2-responsive">{{ kurs.title }}</h2>
     <div class="card card-body text-center">
-
-        {% if kurs.type == 0 %}
-            {% if not buchung.abgeschlossen %}<p class="alert-info">Dieses Video kann nicht gestoppt werden. Am
-                Ende des Videos können Sie den Kurs als abgeschlossen markieren.</p>{% endif %}
-            <div class="offset-md-2 col-md-8">
-                <video style="width: 100%; text-align: center" {% if buchung.abgeschlossen %}
-                    controls{% else %}autoplay{% endif %} id="akademie_video_kurs">
-                    <source src="{{ kurs.video }}" type="video/mp4">
-                    Ihr Browser kann dieses Video nicht wiedergeben.
-                </video>
-            </div>
-        {% elseif kurs.type == 1 %}
-            <p class="alert-warning">Dieses Video wird von Vimeo gestreamt.</p>
-            <div class="btn-block">
-                <a class="btn btn-sm btn-primary startBtn">{% trans %}Video starten{% endtrans %}</a>
-                <a class="btn btn-sm btn-secondary pauseBtn disabled">{% trans %}Video pausieren{% endtrans %}</a>
-            </div>
-            <div class="offset-md-2 col-md-8" id="vimeoVideo"></div>
-
-        {% endif %}
         {% if not buchung.abgeschlossen %}
-            <!-- Modal -->
-            <div class="modal fade" id="finishModal" tabindex="-1" role="dialog" aria-labelledby="finishModal"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content note-warning">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="finishModalLabel">Kurs abgeschließen</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>
-                                Sie haben diesen Kurs komplett angeschaut. Klicken Sie auf den Button "Kurs
-                                abschließen" um Ihren Abschluss an Ihren Datenschutzbeauftragen zu melden.
-                            </p>
-                            <p>
-                                Nach Anschluss des Kurses können Sie das Video erneut, diesmal mit Pausieren und
-                                Vorspulen, anschauen.
-                            </p>
+            <button class="btn btn-primary btn-lg sendButton"
+                    disabled>{% trans %}Kurs abschließen{% endtrans %}</button>
+        {% endif %}
+        <video style="width: 100%; text-align: center" {% if buchung.abgeschlossen %}controls{% else %}autoplay{% endif %}  id="akademie_video_kurs">
+            <source src="{{ kurs.video }}" type="video/mp4">
+            Ihr Browser kann dieses Video nicht wiedergeben.
+        </video>
 
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-lg btn-primary sendButton"
-                                    disabled>{% trans %}Kurs abschließen{% endtrans %}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        {% if not buchung.abgeschlossen %}
+            <button class="btn btn-primary btn-lg sendButton"
+                    disabled>{% trans %}Kurs abschließen{% endtrans %}</button>
         {% endif %}
 
 
@@ -61,45 +23,11 @@
 {% endblock %}
 
 {% block javascripts %}
-    {% if kurs.type == 0 and not buchung.abgeschlossen %}
-        <!-- Lokaler Storage -->
-        <script>
-            var vid = document.getElementById("akademie_video_kurs");
-            vid.onended = function () {
-                $('.sendButton').wrap('<a href="{{ path('akademie_kurs_finish',{'id':buchung.finishedID}) }}">');
-                $('.sendButton').prop('disabled', false);
-                $('#finishModal').modal('show', true);
-            };
-        </script>
-        <!-- Vimeo SDK -->
-    {% elseif kurs.type == 1 %}
-        <script src="https://player.vimeo.com/api/player.js"></script>
-        <script>
-            var options = {
-                url: "{{ kurs.video }}",
-                {% if not buchung.abgeschlossen %}
-                controls: false,
-                title: false,
-                {% endif %}
-                responsive: true
-            };
-            var videoPlayer = new Vimeo.Player('vimeoVideo', options);
-
-            {% if not buchung.abgeschlossen %}
-            videoPlayer.on('ended', function () {
-                $('.sendButton').wrap('<a href="{{ path('akademie_kurs_finish',{'id':buchung.finishedID}) }}">');
-                $('.sendButton').prop('disabled', false);
-                $('#finishModal').modal('show', true);
-            });
-            {% endif %}
-
-            $('.startBtn').click(function () {
-                videoPlayer.play();
-                $('.pauseBtn').removeClass('disabled');
-            });
-            $('.pauseBtn').click(function () {
-                videoPlayer.pause();
-            });
-        </script>
-    {% endif %}
+<script>
+    var vid = document.getElementById("akademie_video_kurs");
+    vid.onended = function() {
+        jQuery('.sendButton').wrap('<a class="btn btn-info" href="{{ path('akademie_kurs_finish',{'id':buchung.finishedID}) }}">');
+        jQuery('.sendButton').prop('disabled', false);
+    };
+</script>
 {% endblock %}
