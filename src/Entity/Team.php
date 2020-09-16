@@ -197,6 +197,11 @@ class Team
      */
     private $dsbUser;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="team")
+     */
+    private $reports;
+
 
     public function __construct()
     {
@@ -218,6 +223,7 @@ class Team
         $this->software = new ArrayCollection();
         $this->tasks = new ArrayCollection();
         $this->clientRequests = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -956,6 +962,37 @@ class Team
     public function setDsbUser(?User $dsbUser): self
     {
         $this->dsbUser = $dsbUser;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Report[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): self
+    {
+        if ($this->reports->contains($report)) {
+            $this->reports->removeElement($report);
+            // set the owning side to null (unless already changed)
+            if ($report->getTeam() === $this) {
+                $report->setTeam(null);
+            }
+        }
 
         return $this;
     }

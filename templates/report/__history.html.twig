@@ -1,0 +1,4 @@
+<a href="{{ path('tom_edit',{'tom':p.id}) }}"><span>{{ p.createdAt|date('d.m.Y H:i') }} -- {{ p.titel }}-- {{ p.user.email }}</span></a>
+{% if p.previous %}
+    {{ include('tom/__history.html.twig', {'p':p.previous}) }}
+{% endif %}
