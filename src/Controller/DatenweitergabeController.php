@@ -65,6 +65,7 @@ class DatenweitergabeController extends AbstractController
      */
     public function addDatenweitergabe(ValidatorInterface $validator, Request $request, DatenweitergabeService $datenweitergabeService, SecurityService $securityService)
     {
+        set_time_limit(600);
         $team = $this->getUser()->getTeam();
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -106,6 +107,7 @@ class DatenweitergabeController extends AbstractController
      */
     public function addAuftragsverarbeitung(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService)
     {
+        set_time_limit(600);
         $team = $this->getUser()->getTeam();
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -147,6 +149,7 @@ class DatenweitergabeController extends AbstractController
      */
     public function EditDatenweitergabe(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService, AssignService $assignService)
     {
+        set_time_limit(600);
         $team = $this->getUser()->getTeam();
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
 
