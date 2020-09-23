@@ -1,0 +1,34 @@
+<h2 style="page-break-before: always;">id:{{ d.id }}</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Datum
+        </td>
+        <td>{{ d.date|date('d.m.Y') }}</td>
+    </tr>
+    <tr>
+        <td>
+            Zeit
+        </td>
+        <td>{{ d.start|date('H:i') }} - {{ d.end|date('H:i') }}</td>
+    </tr>
+    <tr>
+        <td>
+            Abgerechnete Zeit
+        </td>
+        <td>{{ d.calcTime }} Minuten</td>
+    </tr>
+    <tr>
+        <td>
+            Beschreibung
+        </td>
+        <td>{{ d.description }}</td>
+    </tr>
+</table>

@@ -27,6 +27,7 @@ class ReportService
     {
         $report = new Report();
         $report->setTeam($team);
+        $report->setDate(new \DateTime());
         $report->setActiv(true);
         $report->setCreatedAt(new \DateTime());
 
