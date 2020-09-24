@@ -1,4 +1,4 @@
-<h2>{% if not d.activ %}Historie: {% endif %}{{ d.nummer }}: {{ d.name }}
+<h2>{% if not d.activ %}{{ d.approved?'Freigegebene':'' }} Historie: {% endif %}{{ d.nummer }}: {{ d.name }}
     (id:{{ d.id }})</h2>
 <style>
     th, td {
