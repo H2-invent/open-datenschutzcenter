@@ -26,26 +26,38 @@ class ApproveService
     function approve($data, User $user)
     {
         $status = array();
+        $status['data'] = $data->getId();
+        $status['clone'] = false;
         try {
-            if ($data->getApproved()) {
-                $data->setApproved(false);
-                $data->setApprovedBy(null);
+
+            if ($data->getApproved() === true) {
+                $newdata = clone $data;
+                $data->setActiv(false);
+                $newdata->setPrevious($data);
+                $newdata->setApproved(false);
+                $newdata->setApprovedBy(null);
+                $this->em->persist($newdata);
+                $this->em->persist($data);
+                $this->em->flush();
+
                 $status['status'] = true;
-                $status['snack'] = 'Freigabe entfernt';
+                $status['snack'] = 'Freigabe entfernt und neue Version angelegt';
+                $status['data'] = $newdata->getId();
+                $status['clone'] = true;
             } else {
                 $data->setApproved(true);
                 $data->setApprovedBy($user);
                 $status['status'] = true;
                 $status['snack'] = 'Element freigegeben';
+                $this->em->persist($data);
+                $this->em->flush();
             }
 
-            $this->em->persist($data);
-            $this->em->flush();
-            return $status;
         } catch (\Exception $e) {
             $status['status'] = false;
             $status['snack'] = 'FEHLER: Element konnte nicht freigegeben werden. Versuchen Sie es noch einmal.';
-            return $status;
         }
+
+        return $status;
     }
 }

@@ -202,6 +202,13 @@ class ParserService
     {
         try {
             $data = json_encode($json->entry);
+            $data = $json->entry;
+            $data[] = [$json->uid];
+            $data[] = [$json->amount];
+            $data[] = [$json->author];
+            $data[] = [$json->version];
+            $data[] = [$json->table];
+            $data = json_encode($data);
             $signature = $json->signature;
             $res = openssl_verify($data, hex2bin($signature), file_get_contents($this->parameterBag->get('projectRoot') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public.key'), OPENSSL_ALGO_SHA256);
             return $res;

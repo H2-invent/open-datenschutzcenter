@@ -164,7 +164,7 @@ class TomController extends AbstractController
         }
         $approve = $approveService->approve($tom, $this->getUser());
 
-        return $this->redirectToRoute('tom_edit', ['tom' => $tom->getId(), 'snack' => $approve['snack']]);
+        return $this->redirectToRoute('tom_edit', ['tom' => $approve['data'], 'snack' => $approve['snack']]);
     }
 
     /**
