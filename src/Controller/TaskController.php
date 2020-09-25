@@ -18,10 +18,17 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks", name="tasks")
      */
-    public function index(SecurityService $securityService)
+    public function index(SecurityService $securityService, Request $request)
     {
         $team = $this->getUser()->getTeam();
-        $tasks = $this->getDoctrine()->getRepository(Task::class)->findActivByTeam($team);
+        if ($request->get('all')) {
+            $tasks = $this->getDoctrine()->getRepository(Task::class)->findActivByTeam($team);
+            $all = true;
+        } else {
+            $tasks = $this->getDoctrine()->getRepository(Task::class)->findBy(['team' => $team, 'activ' => true, 'done' => false]);
+            $all = false;
+        }
+
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -29,6 +36,7 @@ class TaskController extends AbstractController
 
         return $this->render('task/index.html.twig', [
             'task' => $tasks,
+            'all' => $all
         ]);
     }
 
