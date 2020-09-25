@@ -25,7 +25,6 @@
                     <th scope="col">Priorität</th>
                     <th scope="col">Datum</th>
                     <th scope="col">Zugewiesen an</th>
-                    <th scope="col">Erledigt</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,7 +40,6 @@
                                 <br>Zu erledigen bis: {{ t.endDate|date('d.m.Y') }}{% endif %}{% if t.doneDate %}
                                 <br>Erledigt am: {{ t.doneDate|date('d.m.Y') }}{% endif %}</td>
                         <td>{% if t.assignedUser %}{{ t.assignedUser.username }}{% endif %}</td>
-                        <td>{% if t.done %}Ja{% else %}Nein{% endif %}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
