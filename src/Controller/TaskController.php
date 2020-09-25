@@ -44,7 +44,7 @@ class TaskController extends AbstractController
 
         $task = $taskService->newTask($team, $this->getUser());
 
-        $form = $this->createForm(TasksType::class, $task);
+        $form = $this->createForm(TasksType::class, $task, ['user' => $team->getMembers()]);
         $form->handleRequest($request);
 
         $errors = array();
@@ -79,7 +79,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('tasks');
         }
 
-        $form = $this->createForm(TasksType::class, $task);
+        $form = $this->createForm(TasksType::class, $task, ['user' => $team->getMembers()]);
         $form->handleRequest($request);
         $assign = $assignService->createForm($task, $team);
         $errors = array();
