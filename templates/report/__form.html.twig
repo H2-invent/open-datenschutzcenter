@@ -1,0 +1,62 @@
+{{ form_start(form) }}
+<div {% if not activ or report.invoice %}class="disabled"{% endif %}>
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.user) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.user) }}
+        </div>
+    </div>
+
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            <p>Zeiten</p>
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.date) }}
+            {{ form_widget(form.date) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.start) }}
+            {{ form_widget(form.start) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_label(form.end) }}
+            {{ form_widget(form.end) }}
+        </div>
+    </div>
+
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.calcTime) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.calcTime) }}
+        </div>
+    </div>
+
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.description) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.description) }}
+        </div>
+    </div>
+
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            Weitere Optionen
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.invoice) }}
+            {{ form_widget(form.inReport) }}
+            {{ form_widget(form.onsite) }}
+        </div>
+    </div>
+
+
+    {{ form_widget(form.save) }}
+</div>
+{{ form_end(form) }}
