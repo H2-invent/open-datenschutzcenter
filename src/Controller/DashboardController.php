@@ -50,7 +50,7 @@ class DashboardController extends AbstractController
         $forms = $this->getDoctrine()->getRepository(Forms::class)->findPublicByTeam($team);
         $policies = $this->getDoctrine()->getRepository(Policies::class)->findPublicByTeam($team);
         $software = $this->getDoctrine()->getRepository(Software::class)->findActivByTeam($team);
-        $tasks = $this->getDoctrine()->getRepository(Task::class)->findActivByTeam($team);
+        $tasks = $this->getDoctrine()->getRepository(Task::class)->findBy(['team' => $team, 'activ' => true, 'done' => false]);
 
         $qb = $this->getDoctrine()->getRepository(AuditTom::class)->createQueryBuilder('audit');
         $qb->andWhere('audit.team = :team')
