@@ -113,11 +113,11 @@ class VvtController extends AbstractController
                     $newDsfa->setPrevious(null);
                     $em->persist($newDsfa);
                 }
-                foreach ($newVvt->getPolicies() as $item) {
+                foreach ($vvt->getPolicies() as $item) {
                     $item->addProcess($newVvt);
                     $em->persist($item);
                 }
-                foreach ($newVvt->getSoftware() as $software) {
+                foreach ($vvt->getSoftware() as $software) {
                     $software->addVvt($newVvt);
                     $em->persist($software);
                 }
@@ -235,8 +235,32 @@ class VvtController extends AbstractController
             return $this->redirectToRoute('vvt');
         }
         $approve = $approveService->approve($vvt, $this->getUser());
+        if ($approve['clone'] === true) {
+            $newVvt = $this->getDoctrine()->getRepository(VVT::class)->find($approve['data']);
 
-        return $this->redirectToRoute('vvt_edit', ['id' => $vvt->getId(), 'snack' => $approve['snack']]);
+            $em = $this->getDoctrine()->getManager();
+            if ($vvt->getActivDsfa()) {
+                $dsfa = $vvt->getActivDsfa();
+                $newDsfa = clone $dsfa;
+                $newDsfa->setVvt($newVvt);
+                $newDsfa->setPrevious(null);
+                $em->persist($newDsfa);
+            }
+            foreach ($vvt->getPolicies() as $item) {
+                $item->addProcess($newVvt);
+                $em->persist($item);
+            }
+            foreach ($vvt->getSoftware() as $software) {
+                $software->addVvt($newVvt);
+                $em->persist($software);
+            }
+
+            $em->persist($newVvt);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('vvt_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+
     }
 
     /**

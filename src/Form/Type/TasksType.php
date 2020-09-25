@@ -9,6 +9,8 @@
 namespace App\Form\Type;
 
 use App\Entity\Task;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -26,7 +28,7 @@ class TasksType extends AbstractType
         $builder
             ->add('title', TextType::class, ['label' => 'Titel', 'required' => true, 'translation_domain' => 'form'])
             ->add('task', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Beschreibung der Aufgabe', 'required' => true, 'translation_domain' => 'form'])
-            ->add('endDate', DateType::class, ['label' => 'Enddatum', 'required' => false, 'translation_domain' => 'form'])
+            ->add('endDate', DateType::class, ['label' => 'Enddatum', 'format' => 'dd.MM.yyyy', 'required' => false, 'translation_domain' => 'form'])
             ->add('prio', ChoiceType::class, [
                 'choices' => [
                     'Ohne Priorität' => 0,
@@ -38,6 +40,16 @@ class TasksType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' => false,
             ])
+            ->add('assignedUser', EntityType::class, [
+                'choice_label' => 'email',
+                'class' => User::class,
+                'choices' => $options['user'],
+                'label' => 'Aufgabe zuweisen',
+                'translation_domain' => 'form',
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false
+            ])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 
@@ -45,6 +57,7 @@ class TasksType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Task::class,
+            'user' => array()
         ]);
     }
 }

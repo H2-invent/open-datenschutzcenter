@@ -129,6 +129,6 @@ class VorfallController extends AbstractController
         }
         $approve = $approveService->approve($vorfall, $this->getUser());
 
-        return $this->redirectToRoute('vorfall_edit', ['id' => $vorfall->getId(), 'snack' => $approve['snack']]);
+        return $this->redirectToRoute('vorfall_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
     }
 }

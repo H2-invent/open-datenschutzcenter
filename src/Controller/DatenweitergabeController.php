@@ -249,7 +249,22 @@ class DatenweitergabeController extends AbstractController
         }
         $approve = $approveService->approve($daten, $this->getUser());
 
-        return $this->redirectToRoute('datenweitergabe_edit', ['id' => $daten->getId(), 'snack' => $approve['snack']]);
+        if ($approve['clone'] === true) {
+            $newDaten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($approve['data']);
+            $em = $this->getDoctrine()->getManager();
+
+            foreach ($newDaten->getVerfahren() as $item) {
+                $item->addDatenweitergaben($newDaten);
+                $em->persist($item);
+            }
+            foreach ($newDaten->getSoftware() as $item) {
+                $item->addDatenweitergabe($newDaten);
+                $em->persist($item);
+            }
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
     }
 
     /**

@@ -36,6 +36,15 @@
         </div>
     </div>
 
+    <div class="mb-4 row">
+        <div class="col-md-3">
+            {{ form_label(form.assignedUser) }}
+        </div>
+        <div class="col-md-9">
+            {{ form_widget(form.assignedUser) }}
+        </div>
+    </div>
+
     {{ form_widget(form.save) }}
 </div>
 {{ form_end(form) }}

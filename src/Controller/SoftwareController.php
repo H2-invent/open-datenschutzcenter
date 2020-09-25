@@ -208,7 +208,19 @@ class SoftwareController extends AbstractController
         }
         $approve = $approveService->approve($software, $this->getUser());
 
-        return $this->redirectToRoute('software_edit', ['id' => $software->getId(), 'snack' => $approve['snack']]);
+        if ($approve['clone'] === true) {
+            $newSoftware = $this->getDoctrine()->getRepository(Software::class)->find($approve['data']);
+            $em = $this->getDoctrine()->getManager();
+            foreach ($software->getConfig() as $config) {
+                $newConfig = clone $config;
+                $newConfig->setSoftware($newSoftware);
+
+                $em->persist($newConfig);
+            }
+            $em->persist($newSoftware);
+            $em->flush();
+        }
+        return $this->redirectToRoute('software_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
     }
 
     /**

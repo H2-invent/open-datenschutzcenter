@@ -132,7 +132,7 @@ class FormsController extends AbstractController
 
         $approve = $approveService->approve($forms, $this->getUser());
 
-        return $this->redirectToRoute('forms_edit', ['id' => $forms->getId(), 'snack' => $approve['snack']]);
+        return $this->redirectToRoute('forms_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
 
     }
 
