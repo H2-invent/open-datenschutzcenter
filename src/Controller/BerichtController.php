@@ -556,8 +556,9 @@ class BerichtController extends AbstractController
                 $table->addCell()->addText('Vor Ort');
                 $table->addCell()->addText($item->getOnSite() ? 'Ja' : 'Nein');
 
-                $section->addText('Beschreibung', $secHeader);
-                $section->addText($item->getDescription());
+                $table->addRow();
+                $table->addCell()->addText('Beschreibung');
+                $table->addCell()->addText($item->getDescription());
             }
 
             $section->addHeader()->addText($title);
