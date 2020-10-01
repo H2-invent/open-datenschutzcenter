@@ -18,10 +18,17 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks", name="tasks")
      */
-    public function index(SecurityService $securityService)
+    public function index(SecurityService $securityService, Request $request)
     {
         $team = $this->getUser()->getTeam();
-        $tasks = $this->getDoctrine()->getRepository(Task::class)->findActivByTeam($team);
+        if ($request->get('all')) {
+            $tasks = $this->getDoctrine()->getRepository(Task::class)->findActivByTeam($team);
+            $all = true;
+        } else {
+            $tasks = $this->getDoctrine()->getRepository(Task::class)->findBy(['team' => $team, 'activ' => true, 'done' => false]);
+            $all = false;
+        }
+
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -29,6 +36,7 @@ class TaskController extends AbstractController
 
         return $this->render('task/index.html.twig', [
             'task' => $tasks,
+            'all' => $all
         ]);
     }
 
@@ -44,7 +52,7 @@ class TaskController extends AbstractController
 
         $task = $taskService->newTask($team, $this->getUser());
 
-        $form = $this->createForm(TasksType::class, $task);
+        $form = $this->createForm(TasksType::class, $task, ['user' => $team->getMembers()]);
         $form->handleRequest($request);
 
         $errors = array();
@@ -79,7 +87,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('tasks');
         }
 
-        $form = $this->createForm(TasksType::class, $task);
+        $form = $this->createForm(TasksType::class, $task, ['user' => $team->getMembers()]);
         $form->handleRequest($request);
         $assign = $assignService->createForm($task, $team);
         $errors = array();

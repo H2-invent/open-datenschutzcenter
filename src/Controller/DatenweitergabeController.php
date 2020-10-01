@@ -65,6 +65,7 @@ class DatenweitergabeController extends AbstractController
      */
     public function addDatenweitergabe(ValidatorInterface $validator, Request $request, DatenweitergabeService $datenweitergabeService, SecurityService $securityService)
     {
+        set_time_limit(600);
         $team = $this->getUser()->getTeam();
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -106,6 +107,7 @@ class DatenweitergabeController extends AbstractController
      */
     public function addAuftragsverarbeitung(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService)
     {
+        set_time_limit(600);
         $team = $this->getUser()->getTeam();
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -147,6 +149,7 @@ class DatenweitergabeController extends AbstractController
      */
     public function EditDatenweitergabe(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService, AssignService $assignService)
     {
+        set_time_limit(600);
         $team = $this->getUser()->getTeam();
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
 
@@ -246,7 +249,22 @@ class DatenweitergabeController extends AbstractController
         }
         $approve = $approveService->approve($daten, $this->getUser());
 
-        return $this->redirectToRoute('datenweitergabe_edit', ['id' => $daten->getId(), 'snack' => $approve['snack']]);
+        if ($approve['clone'] === true) {
+            $newDaten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($approve['data']);
+            $em = $this->getDoctrine()->getManager();
+
+            foreach ($newDaten->getVerfahren() as $item) {
+                $item->addDatenweitergaben($newDaten);
+                $em->persist($item);
+            }
+            foreach ($newDaten->getSoftware() as $item) {
+                $item->addDatenweitergabe($newDaten);
+                $em->persist($item);
+            }
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
     }
 
     /**

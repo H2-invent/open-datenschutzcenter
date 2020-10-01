@@ -13,10 +13,12 @@ use App\Entity\AuditTom;
 use App\Entity\ClientRequest;
 use App\Entity\Datenweitergabe;
 use App\Entity\Policies;
+use App\Entity\Report;
 use App\Entity\Software;
 use App\Entity\Tom;
 use App\Entity\Vorfall;
 use App\Entity\VVT;
+use App\Form\Type\ReportExportType;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
@@ -464,62 +466,206 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    /**
-     * @Route("/bericht/information", name="bericht_information")
-     */
-    public function informationSoftware()
-    {
 
+    /**
+     * @Route("/bericht/reports", name="bericht_reports")
+     */
+    public function berichtReports(Request $request)
+    {
+        $team = $this->getUser()->getTeam();
+        $users = $team->getMembers();
+
+        $members = array();
+        foreach ($users as $item) {
+            $members[$item->getEmail()] = $item->getId();
+        }
+
+        $form = $this->createForm(ReportExportType::class, ['action' => $this->generateUrl('bericht_reports'), 'method' => 'GET']);
+        $form->handleRequest($request);
+
+        $title = 'Tätigkeitsbericht erstellen';
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $data = $form->getData();
+            $qb = $this->getDoctrine()->getRepository(Report::class)->createQueryBuilder('s');
+            $qb->andWhere(
+                $qb->expr()->between('s.date', ':von', ':bis')
+            )
+                ->andWhere('s.activ = 1')
+                ->setParameter('von', $data['von'])
+                ->setParameter('bis', $data['bis']);
+
+            if ($data['user'] !== null) {
+                $qb->innerJoin('s.user', 'u')
+                    ->andWhere('u.email = :user')
+                    ->setParameter('user', $data['user']);
+            }
+
+            if ($data['report'] === 1) {
+                $qb->andWhere('s.inReport = 1');
+            }
+
+            $report = $qb->getQuery()->getResult();
+
+            if (count($report) < 1) {
+                return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            }
+
+            // Center Team authentication
+            if ($team === null || $report[0]->getTeam() !== $team) {
+                return $this->redirectToRoute('dashboard');
+            }
+
+
+            // Create a new Word document
+            $phpWord = new PhpWord();
+            $phpWord->addTitleStyle(1, array('bold' => true), array('spaceAfter' => 240));
+            $phpWord->addTitleStyle(2, array('bold' => true), array('spaceBefore' => 300));
+            $header = array('size' => 34, 'bold' => true);
+            $secHeader = array('size' => 13, 'bold' => true);
+
+            $title = $data['title'];
+
+            $section = $phpWord->addSection();
+            $section->addText($title, $header);
+
+            foreach ($report as $item) {
+
+                // Adding a software to the document...
+                $section->addTitle($item->getDate()->format('d.m.Y'), 2);
+
+                $table = $section->addTable();
+                $table->addRow();
+                $table->addCell(100 * 50)->addText('Datum');
+                $table->addCell(100 * 50)->addText($item->getDate()->format('d.m.Y'));
+
+                $table->addRow();
+                $table->addCell()->addText('Startzeit');
+                $table->addCell()->addText($item->getStart()->format('H:i'));
+
+                $table->addRow();
+                $table->addCell()->addText('Endzeit');
+                $table->addCell()->addText($item->getEnd()->format('H:i'));
+
+                $table->addRow();
+                $table->addCell()->addText('Bearbeiter');
+                $table->addCell()->addText($item->getUser()->getEmail());
+
+                $table->addRow();
+                $table->addCell()->addText('Vor Ort');
+                $table->addCell()->addText($item->getOnSite() ? 'Ja' : 'Nein');
+
+                $table->addRow();
+                $table->addCell()->addText('Beschreibung');
+                $table->addCell()->addText($item->getDescription());
+            }
+
+            $section->addHeader()->addText($title);
+            $section->addFooter()->addText('Powered by open-datenschutzcenter.de');
+
+            // Saving the document as OOXML file...
+            $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+
+            // Create a temporal file in the system
+            $fileName = $data['title'] . '.docx';
+            $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+
+            // Write in the temporal filepath
+            $objWriter->save($temp_file);
+
+            // Send the temporal file as response (as an attachment)
+            $response = new BinaryFileResponse($temp_file);
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                $fileName
+            );
+
+            return $response;
+        }
+
+        return $this->render('bericht/modalView.html.twig', array('form' => $form->createView(), 'title' => $title, 'members' => $users));
+    }
+
+
+    /**
+     * @Route("/bericht/reports/generate", name="bericht_reports_generate")
+     */
+    public function berichtGernateReports(Request $request)
+    {
         $team = $this->getUser()->getTeam();
 
-        $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+        $data = $request->get('report_export');
+        $qb = $this->getDoctrine()->getRepository(Report::class)->createQueryBuilder('s');
+        $qb->andWhere(
+            $qb->expr()->between('s.date', ':von', ':bis')
+        )
+            ->andWhere('s.activ = 1')
+            ->setParameter('von', $data['von'])
+            ->setParameter('bis', $data['bis']);
 
-        if (count($software) < 1) {
+        if ($data['user'] !== null) {
+            $qb->innerJoin('s.user', 'u')
+                ->andWhere('u.email = :user')
+                ->setParameter('user', $data['user']);
+        }
+
+        if ($data['report'] === 1) {
+            $qb->andWhere('s.inReport = 1');
+        }
+
+        $report = $qb->getQuery()->getResult();
+
+        if (count($report) < 1) {
             return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
         }
 
         // Center Team authentication
-        if ($team === null || $software[0]->getTeam() !== $team) {
+        if ($team === null || $report[0]->getTeam() !== $team) {
             return $this->redirectToRoute('dashboard');
         }
+
 
         // Create a new Word document
         $phpWord = new PhpWord();
         $phpWord->addTitleStyle(1, array('bold' => true), array('spaceAfter' => 240));
         $phpWord->addTitleStyle(2, array('bold' => true), array('spaceBefore' => 300));
         $header = array('size' => 34, 'bold' => true);
+        $secHeader = array('size' => 13, 'bold' => true);
 
-        $title = 'Archivierungskonzept nach Anwendungen von ' . $team->getName();
+        $title = $data['title'];
 
-        $sectionMain = $phpWord->addSection();
-        $sectionMain->addText($title, $header);
         $section = $phpWord->addSection();
+        $section->addText($title, $header);
 
-        foreach ($software as $item) {
+        foreach ($report as $item) {
 
-            if ($item->getApproved()) {
-                $status = 'Freigegeben von ' . $item->getApprovedBy()->getUsername();
-            } else {
-                $status = $item->getStatusString();
-            }
             // Adding a software to the document...
-            $section->addTitle($item->getName(), 2);
+            $section->addTitle($item->getDate()->format('d.m.Y'), 2);
 
             $table = $section->addTable();
             $table->addRow();
-            $table->addCell(100 * 50)->addText('Aktenzeichen');
-            $table->addCell(100 * 50)->addText($item->getReference());
+            $table->addCell(100 * 50)->addText('Datum');
+            $table->addCell(100 * 50)->addText($item->getDate()->format('d.m.Y'));
 
             $table->addRow();
-            $table->addCell()->addText('Inventarnummer');
-            $table->addCell()->addText($item->getNummer());
+            $table->addCell()->addText('Startzeit');
+            $table->addCell()->addText($item->getStart()->format('H:i'));
 
             $table->addRow();
-            $table->addCell()->addText('Status');
-            $table->addCell()->addText($status);
+            $table->addCell()->addText('Endzeit');
+            $table->addCell()->addText($item->getStart()->format('H:i'));
 
-            $section->addText('Archivierungskonzept');
-            $section->addText($item->getArchiving());
+            $table->addRow();
+            $table->addCell()->addText('Bearbeiter');
+            $table->addCell()->addText($item->getUser()->getEmail());
+
+            $table->addRow();
+            $table->addCell()->addText('Vor Ort');
+            $table->addCell()->addText($item->getOnSite() ? 'Ja' : 'Nein');
+
+            $section->addText('Beschreibung', $secHeader);
+            $section->addText($item->getDescription());
         }
 
         $section->addHeader()->addText($title);
@@ -529,7 +675,7 @@ class BerichtController extends AbstractController
         $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
 
         // Create a temporal file in the system
-        $fileName = 'Archivierungskonzept.docx';
+        $fileName = $data['title'] . '.docx';
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
 
         // Write in the temporal filepath

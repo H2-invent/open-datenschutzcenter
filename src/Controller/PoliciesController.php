@@ -132,7 +132,7 @@ class PoliciesController extends AbstractController
         }
         $approve = $approveService->approve($policy, $this->getUser());
 
-        return $this->redirectToRoute('policy_edit', ['id' => $policy->getId(), 'snack' => $approve['snack']]);
+        return $this->redirectToRoute('policy_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
     }
 
     /**

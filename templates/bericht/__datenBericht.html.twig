@@ -1,4 +1,5 @@
-<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %}{{ d.reference }}: {{ d.gegenstand }}
+<h2 style="page-break-before: always;">{% if not d.activ %}{{ d.approved?'Freigegebene':'' }} Historie: {% endif %}{{ d.reference }}
+    : {{ d.gegenstand }}
     (id:{{ d.id }})</h2>
 <style>
     th, td {

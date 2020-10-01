@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+    {% if not edit and report.user == app.user %}
+        <a href="{{ path('report_edit', {'id':report.id,'edit':1}) }}"
+           class="btn btn-outline-elegant btn-sm">{% trans %}Akitivität bearbeiten{% endtrans %}</a>
+        <a href="{{ path('report_invoice', {'id':report.id}) }}"
+           class="btn btn-primary btn-sm">{% trans %}Akitivität abgerechnet{% endtrans %}</a>
+    {% endif %}
+
+    {% if app.user.adminUser == report.team %}
+        <a href="{{ path('report_delete', {'id':report.id}) }}"
+           class="btn btn-primary btn-sm">{% trans %}Akitivität löschen{% endtrans %}</a>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="h2-responsive">{{ title }}</h2>
+        </div>
+    </div>
+    <div class="card card-body">
+        {% if edit %}
+            {{ include('report/__form.html.twig') }}
+        {% else %}
+            {{ include('report/__show.html.twig') }}
+        {% endif %}
+    </div>
+    {{ include('base/__snack.html.twig') }}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

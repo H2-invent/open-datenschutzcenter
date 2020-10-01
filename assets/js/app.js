@@ -78,6 +78,15 @@ $(document).ready(function () {
     });
 });
 
+$(document).on('click', '.loadContent', function (e) {
+    e.preventDefault();
+    var url = $(this).attr('href');
+    $('#loadContentModal').load(url, function () {
+        $('#loadContentModal ').modal('show');
+
+    });
+});
+
 $(".clickable-row").click(function () {
     window.location = $(this).data("href");
 });

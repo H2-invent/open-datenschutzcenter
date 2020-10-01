@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="col-md-5">
+        <div class="row">
+            <div class="col-md-6">
+                {% trans %}Bearbeiter{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ report.user.email }}
+            </div>
+            <div class="col-md-6">
+                {% trans %}Erstellt am{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ report.createdAt|date('d.m.Y') }}
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                {% trans %}Datum{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ report.date|date('d.m.Y') }}
+            </div>
+            <div class="col-md-6">
+                {% trans %}Start{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ report.start|date('H:i') }} {% trans %}Uhr{% endtrans %}
+            </div>
+            <div class="col-md-6">
+                {% trans %}Ende{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ report.end|date('H:i') }} {% trans %}Uhr{% endtrans %}
+            </div>
+            <div class="col-md-6">
+                {% trans %}Abgerechnete Zeit{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ report.calcTime }} {% trans %}Minuten{% endtrans %}
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                {% trans %}Bereits Abgerechnet{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ report.invoice?'Ja':'Nein' }}
+            </div>
+            <div class="col-md-6">
+                {% trans %}Im Tätigkeitsbereich darstellen{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ report.inReport?'Ja':'Nein' }}
+            </div>
+            <div class="col-md-6">
+                {% trans %}Vor Ort Aktivität{% endtrans %}:
+            </div>
+            <div class="col-md-6">
+                {{ report.onsite?'Ja':'Nein' }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7 mt-5 mt-md-0"
+         style="border-left-color: #3f4e5e; border-left-width: 1px; border-left-style: dashed">
+        {% trans %}Beschreibung{% endtrans %}:<br>
+        {{ report.description|nl2br }}
+    </div>
+</div>
+</div>
