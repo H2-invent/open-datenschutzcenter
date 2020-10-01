@@ -28,7 +28,7 @@ class TasksType extends AbstractType
         $builder
             ->add('title', TextType::class, ['label' => 'Titel', 'required' => true, 'translation_domain' => 'form'])
             ->add('task', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Beschreibung der Aufgabe', 'required' => true, 'translation_domain' => 'form'])
-            ->add('endDate', DateType::class, ['label' => 'Enddatum', 'format' => 'dd.MM.yyyy', 'required' => false, 'translation_domain' => 'form'])
+            ->add('endDate', DateType::class, ['label' => 'Enddatum', 'widget' => 'single_text', 'required' => false, 'translation_domain' => 'form'])
             ->add('prio', ChoiceType::class, [
                 'choices' => [
                     'Ohne Priorität' => 0,

@@ -546,7 +546,7 @@ class BerichtController extends AbstractController
 
                 $table->addRow();
                 $table->addCell()->addText('Endzeit');
-                $table->addCell()->addText($item->getStart()->format('H:i'));
+                $table->addCell()->addText($item->getEnd()->format('H:i'));
 
                 $table->addRow();
                 $table->addCell()->addText('Bearbeiter');
