@@ -6,17 +6,13 @@
 
         </div>
         <div class="modal-body">
-
-            {{ form_start(form) }}
+            {{ form_start(form, {'attr': {'action': path('bericht_reports'), 'method': 'GET'}}) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
-
-            {{ dump(app.user.team) }}
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary "
                     data-dismiss="modal">{% trans %}Abbrechen{% endtrans %}</button>
         </div>
-
     </div>
 </div>

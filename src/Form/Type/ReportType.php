@@ -27,7 +27,7 @@ class ReportType extends AbstractType
     {
 
         $builder
-            ->add('description', TextareaType::class, ['label' => 'Beschreibung', 'required' => true, 'translation_domain' => 'form'])
+            ->add('description', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'Beschreibung', 'required' => true, 'translation_domain' => 'form'])
             ->add('user', EntityType::class, [
                 'choice_label' => 'email',
                 'class' => User::class,

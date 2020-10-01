@@ -8,8 +8,6 @@
 
 namespace App\Form\Type;
 
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -25,25 +23,16 @@ class ReportExportType extends AbstractType
 
         $builder
             ->add('title', TextType::class, ['label' => 'Titel', 'required' => true, 'translation_domain' => 'form'])
-            ->add('von', DateType::class, ['label' => 'Von', 'format' => 'dd.MM.yyyy', 'required' => true, 'translation_domain' => 'form'])
-            ->add('bis', DateType::class, ['label' => 'Bis', 'format' => 'dd.MM.yyyy', 'required' => true, 'translation_domain' => 'form'])
-            ->add('kontakt', EntityType::class, [
-                'choice_label' => 'email',
-                'class' => User::class,
-                'choices' => $options['user'],
-                'label' => 'Bearbeiter',
-                'translation_domain' => 'form',
-                'multiple' => false,
-                'required' => false
-            ])
+            ->add('von', DateType::class, ['label' => 'Von', 'format' => 'dd.MM.yyyy', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text'])
+            ->add('bis', DateType::class, ['label' => 'Bis', 'format' => 'dd.MM.yyyy', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text'])
+            ->add('user', TextType::class, ['label' => 'Bearbeiter (Email Adresse)', 'required' => false, 'translation_domain' => 'form'])
             ->add('report', CheckboxType::class, ['label' => 'Nur Aktivitäten für offiziellen Tätigkeitsbericht beinhalten', 'required' => false, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary reportBtn'), 'label' => 'Weiter', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Export erstellen', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'user' => array()
         ]);
     }
 }
