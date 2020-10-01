@@ -37,7 +37,7 @@ class ReportType extends AbstractType
                 'multiple' => false,
                 'required' => true
             ])
-            ->add('date', DateType::class, ['label' => 'Datum', 'format' => 'dd.MM.yyyy', 'required' => true, 'translation_domain' => 'form'])
+            ->add('date', DateType::class, ['label' => 'Datum', 'widget' => 'single_text', 'required' => true, 'translation_domain' => 'form'])
             ->add('start', TimeType::class, ['label' => 'Startzeit', 'required' => true, 'translation_domain' => 'form'])
             ->add('end', TimeType::class, ['label' => 'Endzeit', 'required' => true, 'translation_domain' => 'form'])
             ->add('calcTime', TextType::class, ['label' => 'Abrechenbare Zeit in Minuten', 'required' => true, 'translation_domain' => 'form'])
