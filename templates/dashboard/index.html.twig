@@ -93,6 +93,7 @@
         function startNetwork(data) {
             const container = document.getElementById("mynetwork");
             const options = {
+                interaction: {hover: true},
                 layout: {
                     hierarchical: {
                         direction: "UD",
@@ -110,13 +111,19 @@
             };
             var network = new vis.Network(container, data, options);
 
-            network.on("doubleClick", function (params) {
+            network.on("click", function (params) {
                 if (params.nodes.length === 1) {
                     var node = nodes.get(params.nodes[0]);
                     if (node.url != null) {
                         window.open(node.url, "_self");
                     }
                 }
+            });
+            network.on("hoverNode", function (params) {
+                network.canvas.body.container.style.cursor = 'pointer'
+            });
+            network.on("blurNode", function (params) {
+                network.canvas.body.container.style.cursor = 'default'
             });
         }
 
