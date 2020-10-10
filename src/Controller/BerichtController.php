@@ -78,7 +78,7 @@ class BerichtController extends AbstractController
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Verarbeitungsverziechnis.pdf");
+        $response = $wrapper->getStreamResponse($html, "Verarbeitungsverzeichnis.pdf");
         $response->send();
     }
 

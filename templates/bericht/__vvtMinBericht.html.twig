@@ -18,7 +18,7 @@
         <td>
             Zweck der Verarbeitung
         </td>
-        <td>{{ d.zweck|nl2br }}</td>
+        <td>{{ d.zweck|raw }}</td>
     </tr>
     <tr>
         <td>
@@ -42,13 +42,13 @@
         <td>
             Die Daten werden an folgenden Stellen gespeichert/abgelegt.
         </td>
-        <td>{{ d.speicherung|nl2br }}</td>
+        <td>{{ d.speicherung|raw }}</td>
     </tr>
     <tr>
         <td>
             An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben
         </td>
-        <td>{{ d.weitergabe|nl2br }}</td>
+        <td>{{ d.weitergabe|raw }}</td>
     </tr>
     <tr>
         <td>
@@ -66,6 +66,6 @@
         <td>
             Weitere Hinweise zur TOM
         </td>
-        <td>{{ d.tom|nl2br }}</td>
+        <td>{{ d.tom|raw }}</td>
     </tr>
 </table>
