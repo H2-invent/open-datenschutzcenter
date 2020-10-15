@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Task;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -54,6 +55,16 @@ class TaskRepository extends ServiceEntityRepository
             ->andWhere('a.team = :val AND a.activ = 1')
             ->setParameter('val', $value)
             ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActivByUser(User $user)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.assignedUser = :user')
+            ->andWhere('a.done = 0')
+            ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
     }
