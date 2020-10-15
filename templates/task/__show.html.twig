@@ -40,20 +40,24 @@
                 {% trans %}Zu erledigen bis{% endtrans %}:
             </div>
             <div class="col-md-6">
-                {{ task.endDate|date('d.m.Y') }}
+                {% if task.endDate %}
+                    {{ task.endDate|date('d.m.Y') }}
+                {% endif %}
             </div>
 
             <div class="col-md-6">
                 {% trans %}Erledigt am{% endtrans %}:
             </div>
             <div class="col-md-6">
-                {{ task.doneDate|date('d.m.Y') }}
+                {% if task.doneDate %}
+                    {{ task.doneDate|date('d.m.Y') }}
+                {% endif %}
             </div>
         </div>
     </div>
     <div class="col-md-7 mt-5 mt-md-0"
          style="border-left-color: #3f4e5e; border-left-width: 1px; border-left-style: dashed">
         <p>{% trans %}Aufgabe{% endtrans %}:</p>
-            {{ task.task|raw }}
+        {{ task.task|raw }}
     </div>
 </div>
