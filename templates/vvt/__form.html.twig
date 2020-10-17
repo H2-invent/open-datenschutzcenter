@@ -321,6 +321,15 @@
     <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
         <div class="mt-4 row">
             <div class="col-md-3">
+                {{ form_label(form.source) }}
+                {{ form_help(form.source) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.source) }}
+            </div>
+        </div>
+        <div class="mt-4 row">
+            <div class="col-md-3">
                 {{ form_label(form.informationspflicht) }}
                 {{ form_help(form.informationspflicht) }}
             </div>
