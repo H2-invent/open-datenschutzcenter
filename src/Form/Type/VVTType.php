@@ -151,7 +151,7 @@ class VVTType extends AbstractType
                 'choices' => [
                     'Bitte auswählen' => 0,
                     'Vernachlässigbar' => 1,
-                    'Eingeschränk möglich' => 2,
+                    'Eingeschränkt möglich' => 2,
                     'Signifikant' => 3,
                     'Sehr wahrscheinlich' => 4,
                 ],
