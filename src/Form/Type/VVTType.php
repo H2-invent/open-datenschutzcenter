@@ -132,6 +132,7 @@ class VVTType extends AbstractType
                 'label' => 'Status',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'help' => 'Im Status Inaktiv wird die Verarbeitung nicht im Datenflussplan auf dem Dashboard angezeigt.'
             ])
             ->add('abteilung', EntityType::class, [
                 'choice_label' => 'name',
