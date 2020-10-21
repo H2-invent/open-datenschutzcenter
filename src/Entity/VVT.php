@@ -230,6 +230,7 @@ class VVT
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $source;
 
