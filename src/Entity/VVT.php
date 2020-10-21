@@ -229,8 +229,7 @@ class VVT
     private $approvedBy;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
+     * @ORM\Column(type="text", nullable=true)
      */
     private $source;
 
@@ -886,7 +885,7 @@ class VVT
         return $this->source;
     }
 
-    public function setSource(string $source): self
+    public function setSource(?string $source): self
     {
         $this->source = $source;
 
