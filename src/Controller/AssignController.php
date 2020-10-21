@@ -32,6 +32,7 @@ class AssignController extends AbstractController
         $assignForms = $this->getUser()->getAssignedForms()->toarray();
         $assignPolicies = $this->getUser()->getAssignedPolicies()->toarray();
         $assignSoftware = $this->getUser()->getAssignedSoftware()->toarray();
+        $assignTasks = $this->getDoctrine()->getRepository(Task::class)->findActivByUser($this->getUser());
 
         return $this->render('assign/index.html.twig', [
             'assignDaten' => $assignDatenweitergabe,
@@ -40,7 +41,8 @@ class AssignController extends AbstractController
             'assignDsfa' => $assignDsfa,
             'assignForms' => $assignForms,
             'assignPolicies' => $assignPolicies,
-            'assignSoftware' => $assignSoftware
+            'assignSoftware' => $assignSoftware,
+            'assignTasks' => $assignTasks
         ]);
     }
 

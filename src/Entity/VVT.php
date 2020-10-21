@@ -228,6 +228,11 @@ class VVT
      */
     private $approvedBy;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $source;
+
     public function __construct()
     {
         $this->grundlage = new ArrayCollection();
@@ -871,6 +876,18 @@ class VVT
     public function setApprovedBy(?User $approvedBy): self
     {
         $this->approvedBy = $approvedBy;
+
+        return $this;
+    }
+
+    public function getSource(): ?string
+    {
+        return $this->source;
+    }
+
+    public function setSource(?string $source): self
+    {
+        $this->source = $source;
 
         return $this;
     }

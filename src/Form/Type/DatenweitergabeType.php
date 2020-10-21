@@ -31,13 +31,13 @@ class DatenweitergabeType extends AbstractType
     {
 
         $builder
-            ->add('gegenstand', TextareaType::class, ['label' => 'Vertragsgegenstand', 'required' => true, 'translation_domain' => 'form'])
+            ->add('gegenstand', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Vertragsgegenstand', 'required' => true, 'translation_domain' => 'form', 'help' => 'Geben Sie hier den Gegenstand der Datenweitergabe oder Auftragsverarbeitung an. Der Gegenstand ist in den meisten Verträgen bereits in einem der ersten Paragraphen beschreiben und muss nur übernommen werden.'])
             ->add('notes', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Bemerkungen', 'required' => false, 'translation_domain' => 'form'])
             ->add('nummer', TextType::class, ['label' => 'Nummer der Datenweitergabe', 'required' => true, 'translation_domain' => 'form'])
             ->add('verantwortlich', TextType::class, ['label' => 'Verantwortlich für die Datenweitergabe (Intern)', 'required' => true, 'translation_domain' => 'form'])
             ->add('vertragsform', TextType::class, ['label' => 'Vertragsform', 'required' => true, 'translation_domain' => 'form'])
-            ->add('reference', TextType::class, ['label' => 'Aktenzeichen', 'required' => false, 'translation_domain' => 'form'])
-            ->add('zeichnungsdatum', DateType::class, ['label' => 'Zeichnungsdatum', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text'])
+            ->add('reference', TextType::class, ['label' => 'Aktenzeichen', 'required' => false, 'translation_domain' => 'form', 'help' => 'Hängen Sie den original Vertrag in einem Ordner ab. Geben Sie hier den Pfad zu diesem Lagerort oder das Aktenziech an, damit Sie das Dokument später wieder finden können.'])
+            ->add('zeichnungsdatum', DateType::class, ['label' => 'Zeichnungsdatum', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text', 'help' => 'Ab wann ist die Datenweitergabe oder Auftragsverarbeitung unterschrieben. Geben Sie hier das Datum der Unterschrift an.'])
             ->add('checkItems', CheckboxType::class, ['label' => 'Gegenstand und Dauer der Verarbeitung, Art und Zweck der Verarbeitung', 'required' => false, 'translation_domain' => 'form'])
             ->add('checkPeople', CheckboxType::class, ['label' => 'Art der personenbezogenen Daten', 'required' => false, 'translation_domain' => 'form'])
             ->add('checkData', CheckboxType::class, ['label' => 'Kategorien betroffener Personen', 'required' => false, 'translation_domain' => 'form'])
@@ -66,7 +66,8 @@ class DatenweitergabeType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => false,
-                'expanded' => true
+                'expanded' => true,
+                'help' => 'Zu jeder Datenweitergabe und Auftragsverarbeitung muss mindestens eine Verarbeitung eingetragen werden, da die Datenweitergabe und Auftragsverarbeitung sonst kein Funktion erfüllt oder keine Verarbeitung nach der DSGVO darstellt.'
             ])
             ->add('stand', EntityType::class, [
                 'choice_label' => 'name',
@@ -83,6 +84,7 @@ class DatenweitergabeType extends AbstractType
                 'label' => 'Grundlage für die Verarbeitung',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'help' => 'Auf welcher Grundlage wird der Vertrag abgeschlossen. Nach der DSGVO stehen unterschiedliche Möglichkeiten zur Verfügung, die unterschiedlich betrachtet und bewertet werden müssen.'
             ])
             ->add('software', EntityType::class, [
                 'choice_label' => 'name',
