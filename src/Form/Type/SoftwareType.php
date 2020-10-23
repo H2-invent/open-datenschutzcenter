@@ -46,7 +46,7 @@ class SoftwareType extends AbstractType
                 'multiple' => false,
             ])
             ->add('license', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Lizenzbeschreibung', 'required' => false, 'translation_domain' => 'form'])
-            ->add('licenseExpiration', DateType::class, ['label' => 'Lizenzablaufsdatum', 'required' => false, 'translation_domain' => 'form'])
+            ->add('licenseExpiration', DateType::class, ['label' => 'Lizenzablaufsdatum', 'required' => false, 'translation_domain' => 'form', 'widget' => 'single_text'])
             ->add('reference', TextType::class, ['label' => 'Aktenzeichen', 'required' => false, 'translation_domain' => 'form'])
             ->add('vvts', EntityType::class, [
                 'choice_label' => 'name',
@@ -68,7 +68,7 @@ class SoftwareType extends AbstractType
                 'required' => true,
                 'expanded' => true
             ])
-            ->add('purchase', DateType::class, ['label' => 'Kaufdatum/Anschaffungsdatum', 'required' => false, 'translation_domain' => 'form'])
+            ->add('purchase', DateType::class, ['label' => 'Kaufdatum/Anschaffungsdatum', 'required' => false, 'translation_domain' => 'form', 'widget' => 'single_text'])
             ->add('build', TextType::class, ['label' => 'Version', 'required' => true, 'translation_domain' => 'form'])
             ->add('status', ChoiceType::class, [
                 'choices' => [
