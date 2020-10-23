@@ -1,12 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block CTA %}
-    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('client_new',{'slug':team.slug}) }}">
-        <span>Neues Anfrage anlegen</span>
-    </a>
-    <a class="btn btn-secondary ml-1 btn-sm" target="_blank" href="{{ path('client_index',{'slug':team.slug}) }}">
-        <span>Kundenportal</span>
-    </a>
+    {% if team.slug %}
+        <a class="btn btn-primary ml-1 btn-sm" href="{{ path('client_new',{'slug':team.slug}) }}">
+            <span>Neues Anfrage anlegen</span>
+        </a>
+        <a class="btn btn-secondary ml-1 btn-sm" target="_blank" href="{{ path('client_index',{'slug':team.slug}) }}">
+            <span>Kundenportal</span>
+        </a>
+    {% endif %}
 {% endblock %}
 
 {% block body %}
