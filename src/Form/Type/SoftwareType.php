@@ -80,11 +80,12 @@ class SoftwareType extends AbstractType
                 'label' => 'Status',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'help' => 'Software mit dem Status Inaktiv wird nicht mehr auf dem Datenflussplan angezeigt.'
             ])
             ->add('location', TextType::class, ['label' => 'Standort der Software', 'required' => false, 'translation_domain' => 'form'])
-            ->add('archiving', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Archivierungskonzept', 'required' => false, 'translation_domain' => 'form'])
-            ->add('recovery', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Notfallplanung und Widerherstellungskonzept', 'required' => false, 'translation_domain' => 'form'])
-            ->add('permissions', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Berechtigungskonzept', 'required' => false, 'translation_domain' => 'form'])
+            ->add('archiving', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Archivierungskonzept/Backup', 'required' => false, 'translation_domain' => 'form', 'help' => 'Das Archivierungskonzept kann ausgefüllt werden, um zu dokumentieren, wie, wo und nach welchem Vorgehen die Daten archiviert werden. Es handelt sich bei dem Archivierungskonzept nicht um das Löschkonzept. Die Angabe ist vor allem für ein vollständiges Informationsmanagmeentsystem wichtig.'])
+            ->add('recovery', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Notfallplanung und Widerherstellungskonzept', 'required' => false, 'translation_domain' => 'form', 'help' => 'Der Notfallplan ist die Dokumentation der Backup und Wiederherstellungsschritte im Falle eines Notfalls. Die Angabe ist vor allem für ein vollständiges Informationsmanagmeentsystem wichtig.'])
+            ->add('permissions', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Berechtigungskonzept', 'required' => false, 'translation_domain' => 'form', 'help' => 'Im Berechtigungskonzept kann dokumentiert werden, wie die Berechtigungen vergeben und kontrolliert werden und wie die Berechtigungsstruktur aufgebaut ist. Je nach Anwendung kann beschrieben werden wo die Benutzer gespeichert werden. Die Angabe ist vor allem für ein vollständiges Informationsmanagmeentsystem wichtig.'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 
