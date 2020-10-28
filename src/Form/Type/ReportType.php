@@ -35,7 +35,11 @@ class ReportType extends AbstractType
                 'label' => 'User',
                 'translation_domain' => 'form',
                 'multiple' => false,
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('date', DateType::class, ['label' => 'Datum', 'widget' => 'single_text', 'required' => true, 'translation_domain' => 'form'])
             ->add('start', TimeType::class, ['label' => 'Startzeit', 'required' => true, 'translation_domain' => 'form'])

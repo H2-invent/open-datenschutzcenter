@@ -32,7 +32,7 @@ class VorfallType extends AbstractType
             ->add('fakten', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Fakten zum Datenschutzvorfall', 'required' => true, 'translation_domain' => 'form'])
             ->add('auswirkung', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Auswirkungen und Folgen der Datenschutzverletzung', 'required' => true, 'translation_domain' => 'form'])
             ->add('massnahmen', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Getroffene Maßnahmen', 'required' => true, 'translation_domain' => 'form'])
-            ->add('datum', DateTimeType::class, ['label' => 'Datenschutzvorfall bemerkt *', 'required' => true, 'translation_domain' => 'form'])
+            ->add('datum', DateTimeType::class, ['label' => 'Datenschutzvorfall bemerkt', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form'])
             ->add('personen', EntityType::class, [
                 'choice_label' => 'name',
@@ -41,7 +41,10 @@ class VorfallType extends AbstractType
                 'label' => 'Betroffene Personenkategorien',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'expanded' => true
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('daten', EntityType::class, [
                 'choice_label' => 'name',
@@ -50,7 +53,10 @@ class VorfallType extends AbstractType
                 'label' => 'Betroffene Datenkategorien',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'expanded' => true
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ]);
     }
 
