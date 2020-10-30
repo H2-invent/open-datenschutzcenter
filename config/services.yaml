@@ -11,7 +11,10 @@ parameters:
     defaultEmail: '%env(DEFAULT_EMAIL)%'
     cronToken: '%env(CRON_TOKEN)%'
     cronIPAdress: '%env(CRON_IPADRESS)%'
-
+    KEYCLOAK_URL: '%env(OAUTH_KEYCLOAK_SERVER)%'
+    KEYCLOAK_REALM: '%env(OAUTH_KEYCLOAK_REALM)%'
+    KEYCLOAK_SECRETE: '%env(OAUTH_KEYCLOAK_CLIENT_SECRET)%'
+    KEYCLOAK_ID: '%env(OAUTH_KEYCLOAK_CLIENT_ID)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -32,5 +35,3 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    FOS\UserBundle\Mailer\MailerInterface: '@fos_user.mailer.twig_swift'

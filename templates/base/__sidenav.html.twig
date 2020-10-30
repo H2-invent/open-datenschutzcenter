@@ -3,7 +3,7 @@
     <div class="sidebar-header">
         <a href="{{ path('dashboard') }}"><img src="{{ asset('logo.png') }}" class="img-fluid"></a>
     </div>
-
+{% if app.user is defined and app.user is not null %}
     <ul class="list-unstyled components ">
         {% if app.user.TeamDsb is not empty %}
             <li class="{{ app.request.attributes.get('_route') == 'dsb' ? 'active' }}">
@@ -116,6 +116,6 @@
             </li>
         {% endif %}
     </ul>
-
+{% endif %}
 </nav>
 

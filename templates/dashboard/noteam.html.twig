@@ -9,8 +9,7 @@
     <div class="headerBorder text-white text-center">
         <span>
                 <h2 class="h2-responsive">{{ 'Kein Team vorhanden'|trans }}</h2>
-                <p class="p-3">{% trans with {'%user%':user.email} %}Für Ihren Benutzer mit der Email Adresse %user% ist kein Team vorhanden.{% endtrans %}</p>
-                <a href="{{ path('fos_user_security_logout') }}" class="btn btn-primary">Logout</a>
+                <p class="p-3">{% trans %}Für Ihren Benutzer mit der Email Adresse ist kein Team vorhanden.{% endtrans %}</p>
             </span>
     </div>
 {% endblock %}

@@ -200,6 +200,8 @@ class TeamController extends AbstractController
      */
     public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
     {
+
+        // todo das hier muss du neu machen. ich beue dir den Grundstock auf, das nur eine Url in der EMial steht :) schön uss du es dann machen
         $team = $this->getUser()->getAdminUser();
 
         if ($securityService->adminCheck($this->getUser(), $team) === false) {
@@ -221,14 +223,10 @@ class TeamController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 foreach ($lines as $line) {
                     $newMember = trim($line);
-                    $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('email' => $newMember));
-                    if (!$user) {
-                        $user = $inviteService->newUser($newMember, $team);
-                    }
+                    $user = $inviteService->newUser($newMember);
                     if ($user->getTeam() === null) {
                         $user->setTeam($team);
                         $em->persist($user);
-
                     }
                 }
                 $em->flush();

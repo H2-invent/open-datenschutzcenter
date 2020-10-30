@@ -6,7 +6,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use FOS\UserBundle\Model\User as BaseUser;
+use App\Entity\UserBase as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -165,10 +165,49 @@ class User extends BaseUser
      */
     private $teamDsb;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $keycloakId;
+
+    /**
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $username;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $registerId;
+
 
     public function __construct()
     {
-        parent::__construct();
         $this->datenweitergabes = new ArrayCollection();
         $this->vVTs = new ArrayCollection();
         $this->auditToms = new ArrayCollection();
@@ -971,6 +1010,97 @@ class User extends BaseUser
                 $teamDsb->setDsbUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getKeycloakId(): ?string
+    {
+        return $this->keycloakId;
+    }
+
+    public function setKeycloakId(?string $keycloakId): self
+    {
+        $this->keycloakId = $keycloakId;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function setUsername(?string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getRegisterId(): ?string
+    {
+        return $this->registerId;
+    }
+
+    public function setRegisterId(?string $registerId): self
+    {
+        $this->registerId = $registerId;
 
         return $this;
     }
