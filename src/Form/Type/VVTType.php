@@ -77,7 +77,7 @@ class VVTType extends AbstractType
                 'choice_label' => 'name',
                 'class' => VVTGrundlage::class,
                 'choices' => $options['grundlage'],
-                'label' => 'Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Zweck und Grundlage) *',
+                'label' => 'Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Zweck und Grundlage)',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => true,
@@ -90,7 +90,7 @@ class VVTType extends AbstractType
                 'choice_label' => 'name',
                 'class' => VVTPersonen::class,
                 'choices' => $options['personen'],
-                'label' => 'Die Daten welcher Personen werden verarbeitet? *',
+                'label' => 'Die Daten welcher Personen werden verarbeitet?',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'attr' => [
@@ -115,7 +115,7 @@ class VVTType extends AbstractType
                 'choice_label' => 'name',
                 'class' => VVTDatenkategorie::class,
                 'choices' => $options['kategorien'],
-                'label' => 'Welche Daten(kategorien) werden verarbeitet? *',
+                'label' => 'Welche Daten(kategorien) werden verarbeitet?',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'attr' => [

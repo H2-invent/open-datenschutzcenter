@@ -1,15 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'client_request/base.html.twig' %}
 
-{% block CTA %}
 
-{% endblock %}
+{% block content %}
 
-{% block body %}
-
-    <div class="headerBorder text-white text-center">
-        <span>
-                <h2 class="h2-responsive">{{ 'Kein Team vorhanden'|trans }}</h2>
-                <p class="p-3">{% trans %}Für Ihren Benutzer mit der Email Adresse ist kein Team vorhanden.{% endtrans %}</p>
-            </span>
+    <div class="card text-center mt-5">
+        <div class="card-header">
+            <h2 class="h2-responsive">{{ 'Kein Team vorhanden'|trans }}</h2>
+        </div>
+        <div class="card-body ">
+            <p>{% trans %}Für Ihren Benutzer ist kein Team vorhanden.
+                    <br>Fragen Sie Ihrem Administrator oder beim Support der H2 invent nach.{% endtrans %}</p>
+            <a class="btn btn-secondary" href="mailto:{{ supportMail }}">Support anfragen</a>
+        </div>
     </div>
+
 {% endblock %}

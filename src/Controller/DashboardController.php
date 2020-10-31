@@ -119,16 +119,17 @@ class DashboardController extends AbstractController
      */
     public function noTeam()
     {
-        if ($this->getUser()->getTeam()) {
-            return $this->redirectToRoute('dashboard');
+        if ($this->getUser()) {
+            if ($this->getUser()->getTeam()) {
+                return $this->redirectToRoute('dashboard');
+            }
+            if ($this->getUser()->getAkademieUser()) {
+                return $this->redirectToRoute('akademie');
+            }
+            if (count($this->getUser()->getTeamDsb()) > 0) {
+                return $this->redirectToRoute('dsb');
+            }
         }
-        if ($this->getUser()->getAkademieUser()) {
-            return $this->redirectToRoute('akademie');
-        }
-        if (count($this->getUser()->getTeamDsb()) > 0) {
-            return $this->redirectToRoute('dsb');
-        }
-
         return $this->render('dashboard/noteam.html.twig', [
             'user' => $this->getUser(),
         ]);
