@@ -39,6 +39,9 @@ class TasksType extends AbstractType
                 'label' => 'Priorität',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                ],
             ])
             ->add('assignedUser', EntityType::class, [
                 'choice_label' => 'email',
@@ -47,8 +50,11 @@ class TasksType extends AbstractType
                 'label' => 'Aufgabe zuweisen',
                 'translation_domain' => 'form',
                 'multiple' => false,
-                'expanded' => false,
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }

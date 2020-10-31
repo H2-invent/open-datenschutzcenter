@@ -57,6 +57,10 @@ class DatenweitergabeType extends AbstractType
                 'label' => 'Kontakt',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ]
             ])
             ->add('verfahren', EntityType::class, [
                 'choice_label' => 'name',
@@ -66,7 +70,10 @@ class DatenweitergabeType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => false,
-                'expanded' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
                 'help' => 'Zu jeder Datenweitergabe und Auftragsverarbeitung muss mindestens eine Verarbeitung eingetragen werden, da die Datenweitergabe und Auftragsverarbeitung sonst kein Funktion erfüllt oder keine Verarbeitung nach der DSGVO darstellt.'
             ])
             ->add('stand', EntityType::class, [
@@ -76,6 +83,9 @@ class DatenweitergabeType extends AbstractType
                 'label' => 'Status',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                ],
             ])
             ->add('grundlage', EntityType::class, [
                 'choice_label' => 'name',
@@ -84,6 +94,10 @@ class DatenweitergabeType extends AbstractType
                 'label' => 'Grundlage für die Verarbeitung',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
                 'help' => 'Auf welcher Grundlage wird der Vertrag abgeschlossen. Nach der DSGVO stehen unterschiedliche Möglichkeiten zur Verfügung, die unterschiedlich betrachtet und bewertet werden müssen.'
             ])
             ->add('software', EntityType::class, [
@@ -93,7 +107,10 @@ class DatenweitergabeType extends AbstractType
                 'label' => 'Software, die in der Weitergabe involviert ist',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'expanded' => true
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('uploadFile', VichImageType::class, [
                 'required' => false,

@@ -42,7 +42,11 @@ class PolicyType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => true,
-                'expanded' => true
+                'expanded' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ]
             ])
             ->add('protection', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Zu ergreifende Schutzmaßnahmen in kurzer, verständlicher Form', 'required' => false, 'translation_domain' => 'form'])
             ->add('notes', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Hinweis auf Schulungsangebotet', 'required' => false, 'translation_domain' => 'form'])
@@ -55,7 +59,11 @@ class PolicyType extends AbstractType
                 'label' => 'Die Daten welcher Personen werden verarbeitet?',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'expanded' => true
+                'expanded' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ]
             ])
             ->add('categories', EntityType::class, [
                 'choice_label' => 'name',
@@ -64,7 +72,11 @@ class PolicyType extends AbstractType
                 'label' => 'Betroffene Datenkategorien sind betroffen',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'expanded' => true
+                'expanded' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ]
             ])
             ->add('person', EntityType::class, [
                 'choice_label' => 'email',
@@ -73,6 +85,10 @@ class PolicyType extends AbstractType
                 'label' => 'Konkrete Verantwortlichkeiten für die Schutzmaßnahmen',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ]
             ])
             ->add('status', ChoiceType::class, [
                 'choices' => [
@@ -84,6 +100,10 @@ class PolicyType extends AbstractType
                 'label' => 'Status',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ]
             ])
             ->add('uploadFile', VichImageType::class, [
                 'required' => false,

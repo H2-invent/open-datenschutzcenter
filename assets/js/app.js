@@ -17,6 +17,7 @@ import ('datatables.net-buttons-dt');
 require('datatables.net-buttons/js/buttons.flash.js')(window, $);
 require('datatables.net-buttons/js/buttons.html5.js')(window, $);
 import('moment');
+import('bootstrap-select');
 
 $(document).ready(function () {
     setTimeout(function () {
