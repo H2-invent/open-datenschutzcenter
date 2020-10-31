@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 
 class InviteService
@@ -24,16 +25,16 @@ class InviteService
     private $router;
     private $mailer;
     private $parameterBag;
+    private $twig;
 
-    public function __construct(ParameterBagInterface $parameterBag, MailerService $mailerService, EntityManagerInterface $entityManager, TranslatorInterface $translator, UrlGeneratorInterface $urlGenerator)
+    public function __construct(Environment $environment, ParameterBagInterface $parameterBag, MailerService $mailerService, EntityManagerInterface $entityManager, TranslatorInterface $translator, UrlGeneratorInterface $urlGenerator)
     {
         $this->translator = $translator;
         $this->em = $entityManager;
         $this->router = $urlGenerator;
-
         $this->mailer = $mailerService;
-
         $this->parameterBag = $parameterBag;
+        $this->twig = $environment;
     }
 
     public function newUser($email)
@@ -53,14 +54,14 @@ class InviteService
             $user->setEmail($email);
             $this->em->persist($user);
             $this->em->flush();
-            //here we send the invitation Email for this fancy lancy user
-            //todo make the email nice and smoooooooth
+            $link = $this->router->generate('invitation_accept', array('id' => $user->getRegisterId()), UrlGeneratorInterface::ABSOLUTE_URL);
+            $content = $this->twig->render('email/addUser/resetting_html.html.twig', ['link' => $link]);
             $this->mailer->sendEmail(
                 $this->parameterBag->get('defaultEmail'),
                 $this->parameterBag->get('defaultEmail'),
                 $email,
                 $this->translator->trans('Einladung zum ODC'),
-                $this->router->generate('invitation_accept', array('id' => $user->getRegisterId()),UrlGeneratorInterface::ABSOLUTE_URL));
+                $content);
         }
         return $user;
     }

@@ -57,7 +57,7 @@ class TeamController extends AbstractController
             'controller_name' => 'TeamController',
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Team bearbeiten'
+            'title' => 'Stammdaten'
         ]);
     }
 
@@ -204,6 +204,7 @@ class TeamController extends AbstractController
         // todo das hier muss du neu machen. ich beue dir den Grundstock auf, das nur eine Url in der EMial steht :) schön uss du es dann machen
         $team = $this->getUser()->getAdminUser();
 
+        dump($team);
         if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }

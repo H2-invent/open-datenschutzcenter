@@ -5,14 +5,14 @@
         Passwort neu setzen
 
         <h3>
-            Hallo {{ user.username }}
+            Hallo!
         </h3>
 
         Sie wurden gerade von einem Administrator zu einem Datenschutz Team auf Ihrem Datenschutz Center hinzugefügt.
 
         Um ihr Passwort nun festzulegen klicken Sie den nachfolgenden Link.
 
-        {{ confirmationUrl }}
+        {{ link }}
 
 
         Mit freundlichen Grüßen
@@ -27,5 +27,5 @@
         Including a template as done here allows keeping things DRY by using
         the template inheritance in it
     #}
-    {% include 'email/fosUser/resetting_html.html.twig' %}
+    {% include 'email/addUser/resetting_html.html.twig' %}
 {% endblock %}
