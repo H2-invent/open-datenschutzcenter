@@ -82,6 +82,7 @@
                         {% endfor %}
                     </optgroup>
 
+                    {# todo set all teams in the dataflow chart #}
                     <optgroup label="Breads" data-max-options="2">
                         <option>Plain</option>
                         <option>Steamed</option>
@@ -442,6 +443,7 @@
         filter function should return true or false
         based on whether item in DataView satisfies a given condition.
         */
+        {# todo add filters on products and teams #}
         const nodesFilter = node => {
             if (nodeFilterValue === "") {
                 return true;
