@@ -31,8 +31,9 @@
                         <th scope="row">{{ d.name }}</th>
                         <td>{{ d.reference }}</td>
                         <td>{{ d.nummer }}</td>
-                        <td>{% for p in d.vvts if p.activ %}{{ p.name }}<br>{% endfor %}</td>
-                        <td>{% for p in d.datenweitergabe if p.activ %}{{ p.gegenstand }}<br>{% endfor %}</td>
+                        <td>{% for p in d.vvts | filter(p => p.activ) %}{{ p.name }}<br>{% endfor %}</td>
+                        <td>{% for p in d.datenweitergabe | filter(p => p.activ) %}{{ p.gegenstand }}<br>{% endfor %}
+                        </td>
                         <td>{{ d.purchase|date('d.m.Y') }}</td>
                         <td>{{ d.licenseTypeString }}</td>
                         <td>{% if d.licenseExpiration %}{{ d.licenseExpiration|date('d.m.Y') }}{% else %}Ohne Ablaufdatum{% endif %}</td>

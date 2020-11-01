@@ -72,12 +72,23 @@
         </div>
         <div class="card-body">
             <label>
-                <select id="nodeFilterSelect" class="custom-select-lg select-css">
-                    <option value>Alle Abteilungen</option>
-                    {% for a in app.user.team.abteilungen if a.activ %}
-                        <option value="ab{{ a.id }}">{{ a.name }}</option>
-                    {% endfor %}
+
+                <select id="nodeFilterSelect" class="selectpicker" data-live-search="true"
+                        data-width="auto">
+                    <optgroup label="Abteilungen" data-max-options="1">
+                        <option value>H2 invent Alle Abteilungen</option>
+                        {% for a in app.user.team.abteilungen|filter(a => a.activ) %}
+                            <option value="ab{{ a.id }}">H2 invent {{ a.name }}</option>
+                        {% endfor %}
+                    </optgroup>
+
+                    <optgroup label="Breads" data-max-options="2">
+                        <option>Plain</option>
+                        <option>Steamed</option>
+                        <option>Toasted</option>
+                    </optgroup>
                 </select>
+
             </label>
             <div id="mynetwork"></div>
         </div>
@@ -94,6 +105,7 @@
             const container = document.getElementById("mynetwork");
             const options = {
                 interaction: {hover: true},
+                hoverConnectedEdges: true,
                 layout: {
                     hierarchical: {
                         direction: "UD",
@@ -103,13 +115,17 @@
                 },
                 autoResize: true,
                 physics: {
-                    physics: false,
                     hierarchicalRepulsion: {
-                        avoidOverlap: 1
+                        gravitationalConstant: -26,
+                        centralGravity: 0.005,
+                        springLength: 600,
+                        springConstant: 0.18,
+                        avoidOverlap: 3
                     }
                 },
             };
             var network = new vis.Network(container, data, options);
+
 
             network.on("click", function (params) {
                 if (params.nodes.length === 1) {
@@ -129,7 +145,7 @@
 
         const nodes = new vis.DataSet([
 
-            {% for n in vvt if n.status.network %}
+            {% for n in vvt | filter(n => n.status.network) %}
             {
                 id: 'vvt{{ n.id }}',
                 {% if n.abteilung %}
@@ -158,7 +174,7 @@
         },
         {% endfor %}
 
-        {% for s in software if s.status != 60 %}
+        {% for s in software | filter(s => s.status != 60) %}
         {
             id: 'software{{ s.id }}',
                     {% for n in s.vvts %}
@@ -193,17 +209,17 @@
 
 
 
-        {% for n in daten if n.stand.network %}
+        {% for n in daten | filter(n => n.stand.network) %}
         {
             id: 'daten{{ n.id }}',
-                    {% for v in n.verfahren if v.activ %}
+                    {% for v in n.verfahren | filter(v => v.activ) %}
                     {% if v.abteilung %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
                     {% endif %}
                     {% endfor %}
-                    {% for s in n.software if s.activ %}
-                    {% for v in s.vvts if v.activ %}
+                    {% for s in n.software | filter(s => s.activ) %}
+                    {% for v in s.vvts | filter(v => v.activ) %}
                     {% if v.abteilung %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
@@ -233,17 +249,17 @@
         {% endfor %}
 
 
-        {% for n in av if n.stand.network %}
+        {% for n in av | filter(n => n.stand.network) %}
         {
             id: 'daten{{ n.id }}',
-                    {% for v in n.verfahren if v.activ %}
+                    {% for v in n.verfahren | filter(v => v.activ) %}
                     {% if v.abteilung %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
                     {% endif %}
                     {% endfor %}
-                    {% for s in n.software if s.activ %}
-                    {% for v in s.vvts if v.activ %}
+                    {% for s in n.software | filter(s => s.activ) %}
+                    {% for v in s.vvts | filter(v => v.activ) %}
                     {% if v.abteilung %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
@@ -274,7 +290,7 @@
         {% for n in tom %}
         {
             id: 'tom{{ n.id }}',
-                    {% for v in n.vvts if v.activ %}
+                    {% for v in n.vvts | filter(v => v.activ) %}
                     {% if v.abteilung %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
@@ -324,7 +340,7 @@
                 url
         :
             "{{ path('policy_edit', {'id':n.id}) }}",
-            {% for v in n.processes if v.activ %}
+                    {% for v in n.processes | filter(v => v.activ) %}
                     {% if v.abteilung %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
@@ -357,15 +373,15 @@
                 url
         :
             "{{ path('kontakt_edit', {'id':n.id}) }}",
-                    {% for d in n.datenweitergaben if d.activ %}
-                    {% for v in d.verfahren if v.activ %}
+                    {% for d in n.datenweitergaben | filter(d => d.activ) %}
+                    {% for v in d.verfahren | filter(v => v.activ) %}
                     {% if v.abteilung and d.stand.network %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
                     {% endif %}
                     {% endfor %}
-                    {% for s in d.software if s.activ %}
-                    {% for v in s.vvts if v.activ %}
+                    {% for s in d.software | filter(s => s.activ) %}
+                    {% for v in s.vvts | filter(v => v.activ) %}
                     {% if v.abteilung and d.stand.network %}
                 ab{{ v.abteilung.id }}:
             '{{ v.abteilung.id }}',
@@ -382,7 +398,7 @@
         const edges = new vis.DataSet([
 
             {% for ee in vvt %}
-            {% for e in ee.datenweitergaben if e.activ %}
+            {% for e in ee.datenweitergaben | filter(e => e.activ) %}
             {% if e.art == 2 %}
             {from: 'vvt{{ ee.id }}', to: 'daten{{ e.id }}'},
             {% else %}
@@ -393,20 +409,20 @@
             {from: 'vvt{{ ee.id }}', to: 'tom{{ ee.tomLink.id }}'},
             {% endif %}
 
-            {% for e in ee.software if e.activ %}
+            {% for e in ee.software | filter(e => e.activ) %}
             {from: 'software{{ e.id }}', to: 'vvt{{ ee.id }}'},
-            {% for d in e.datenweitergabe if d.activ %}
+            {% for d in e.datenweitergabe | filter(d => d.activ) %}
             {from: 'daten{{ d.id }}', to: 'software{{ e.id }}'},
             {% endfor %}
             {% endfor %}
 
-            {% for e in ee.policies if e.activ %}
+            {% for e in ee.policies | filter(e => e.activ) %}
             {from: 'vvt{{ ee.id }}', to: 'pol{{ e.id }}'},
             {% endfor %}
             {% endfor %}
 
             {% for ee in kontakte %}
-            {% for e in ee.datenweitergaben if e.activ %}
+            {% for e in ee.datenweitergaben | filter(e => e.activ) %}
             {% if e.art == 2 %}
             {from: 'daten{{ e.id }}', to: 'kon{{ ee.id }}'},
             {% else %}
@@ -431,7 +447,7 @@
                 return true;
             }
             switch (nodeFilterValue) {
-                    {% for a in app.user.team.abteilungen if a.activ %}
+                    {% for a in app.user.team.abteilungen | filter(a => a.activ) %}
                 case "ab{{ a.id }}":
                     return node.ab{{ a.id }} === "{{ a.id }}";
                     {% endfor %}

@@ -201,10 +201,8 @@ class TeamController extends AbstractController
     public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
     {
 
-        // todo das hier muss du neu machen. ich beue dir den Grundstock auf, das nur eine Url in der EMial steht :) schön uss du es dann machen
         $team = $this->getUser()->getAdminUser();
 
-        dump($team);
         if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -240,7 +238,7 @@ class TeamController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Mitglieder verwalten',
-            'data' => $team->getMembers(),
+            'data' => $team,
         ]);
     }
 
