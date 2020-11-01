@@ -137,6 +137,15 @@ a:focus {
     border: none;
 }
 
+.navbar-btn-navigation {
+    background: linear-gradient(90deg, #1CB5E0 0%, #000880 100%);
+    color: #fff
+}
+
+.navbar-btn-navigation:hover {
+    color: #efefef !important;
+}
+
 .line {
     width: 100%;
     height: 1px;
