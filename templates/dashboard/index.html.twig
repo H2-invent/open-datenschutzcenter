@@ -75,19 +75,19 @@
 
                 <select id="nodeFilterSelect" class="selectpicker" data-live-search="true"
                         data-width="auto">
-                    <optgroup label="Abteilungen" data-max-options="1">
-                        <option value>H2 invent Alle Abteilungen</option>
+                    <optgroup label="{{ app.user.team.name }}" data-max-options="1">
+                        <option value>{{ app.user.team.name }} Alle Abteilungen</option>
                         {% for a in app.user.team.abteilungen|filter(a => a.activ) %}
-                            <option value="ab{{ a.id }}">H2 invent {{ a.name }}</option>
+                            <option value="ab{{ a.id }}">{{ app.user.team.name }} {{ a.name }}</option>
                         {% endfor %}
                     </optgroup>
 
-                    {# todo set all teams in the dataflow chart #}
+                    {# todo set all teams in the dataflow chart
                     <optgroup label="Breads" data-max-options="2">
                         <option>Plain</option>
                         <option>Steamed</option>
                         <option>Toasted</option>
-                    </optgroup>
+                    </optgroup> #}
                 </select>
 
             </label>

@@ -29,9 +29,11 @@
                     </p>
                     {% if demo == 'prod' %}
                         <a class="btn btn-primary btn-sm"
-                           href="{{ path('connect_keycloak_edit') }}">{% trans %}Profil bearbeiten{% endtrans %}</a>
+                           href="{{ path('connect_keycloak_edit') }}"
+                           target="_blank">{% trans %}Profil bearbeiten{% endtrans %}</a>
                         <a class="btn btn-primary btn-sm"
-                           href="{{ path('connect_keycloak_edit') }}">{% trans %}Passwort ändern{% endtrans %}</a>
+                           href="{{ path('connect_keycloak_edit') }}"
+                           target="_blank">{% trans %}Passwort ändern{% endtrans %}</a>
                     {% endif %}
                 </div>
                 <div class="modal-footer">
