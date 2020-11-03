@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use KnpU\OAuth2ClientBundle\Client\Provider\Auth0Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,13 +17,15 @@ class LoginControllerKeycloak extends AbstractController
     {
       return $clientRegistry->getClient('keycloak_main')->redirect(['email']);
     }
+
     /**
      * @Route("/login/keycloak_login/check", name="connect_keycloak_check")
      */
     public function check(ClientRegistry $clientRegistry, Request $request)
     {
-        //return $this->redirectToRoute('dashboard');
+
     }
+
     /**
      * @Route("/login/keycloak_edit", name="connect_keycloak_edit")
      */
