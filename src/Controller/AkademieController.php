@@ -161,7 +161,7 @@ class AkademieController extends AbstractController
                     $newMember = trim($line);
                     $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('email' => $newMember));
                     if (!$user) {
-                        $user = $inviteService->newUser($newMember, $team);
+                        $user = $inviteService->newUser($newMember);
                     }
                     if ($user->getAkademieUser() === null) {
                         $user->setAkademieUser($team);

@@ -57,7 +57,7 @@ class TeamController extends AbstractController
             'controller_name' => 'TeamController',
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Team bearbeiten'
+            'title' => 'Stammdaten'
         ]);
     }
 
@@ -200,6 +200,7 @@ class TeamController extends AbstractController
      */
     public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
     {
+
         $team = $this->getUser()->getAdminUser();
 
         if ($securityService->adminCheck($this->getUser(), $team) === false) {
@@ -221,14 +222,10 @@ class TeamController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 foreach ($lines as $line) {
                     $newMember = trim($line);
-                    $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('email' => $newMember));
-                    if (!$user) {
-                        $user = $inviteService->newUser($newMember, $team);
-                    }
+                    $user = $inviteService->newUser($newMember);
                     if ($user->getTeam() === null) {
                         $user->setTeam($team);
                         $em->persist($user);
-
                     }
                 }
                 $em->flush();
@@ -241,7 +238,7 @@ class TeamController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Mitglieder verwalten',
-            'data' => $team->getMembers(),
+            'data' => $team,
         ]);
     }
 

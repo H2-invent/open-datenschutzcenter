@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Team;
 use App\Entity\Vorfall;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Vorfall|null find($id, $lockMode = null, $lockVersion = null)

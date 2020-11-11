@@ -3,7 +3,7 @@
     <div class="sidebar-header">
         <a href="{{ path('dashboard') }}"><img src="{{ asset('logo.png') }}" class="img-fluid"></a>
     </div>
-
+{% if app.user is defined and app.user is not null %}
     <ul class="list-unstyled components ">
         {% if app.user.TeamDsb is not empty %}
             <li class="{{ app.request.attributes.get('_route') == 'dsb' ? 'active' }}">
@@ -106,16 +106,6 @@
             </li>
         {% endif %}
     </ul>
-
-    <ul class="list-unstyled CTAs">
-        {% if app.user.akademieUser %}
-            <li>
-                <a href="{{ path('akademie') }}" class="btn bg-akademie"><img style="height: 30px" alt="Akademie"
-                                                                              src="{{ asset('images/online-learning.png') }}">
-                    Akademie</a>
-            </li>
-        {% endif %}
-    </ul>
-
+{% endif %}
 </nav>
 

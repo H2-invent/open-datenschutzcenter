@@ -37,8 +37,11 @@ class FormsType extends AbstractType
                 'label' => 'Zugeordnete Abteilungen',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'expanded' => true,
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ]
             ])
             ->add('products', EntityType::class, [
                 'choice_label' => 'name',
@@ -47,8 +50,11 @@ class FormsType extends AbstractType
                 'label' => 'Zugeordnete Produkte/Dienstleistungen',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'expanded' => true,
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ]
             ])
             ->add('uploadFile', VichImageType::class, [
                 'required' => false,
@@ -68,6 +74,10 @@ class FormsType extends AbstractType
                 'label' => 'Status',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ]
             ])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }

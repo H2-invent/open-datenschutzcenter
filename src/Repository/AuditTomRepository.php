@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\AuditTom;
 use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method AuditTom|null find($id, $lockMode = null, $lockVersion = null)

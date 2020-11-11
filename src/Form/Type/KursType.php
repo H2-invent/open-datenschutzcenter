@@ -32,7 +32,10 @@ class KursType extends AbstractType
                 'label' => 'Videotyp angeben',
                 'translation_domain' => 'form',
                 'multiple' => false,
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                ],
             ])
             ->add('beschreibung', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'Beschreibung', 'required' => true, 'translation_domain' => 'form'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Speichern', 'translation_domain' => 'form']);

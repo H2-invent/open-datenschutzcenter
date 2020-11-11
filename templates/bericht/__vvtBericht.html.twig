@@ -98,11 +98,11 @@
         <td>
             Verwendete Software<br> und verbundene Datenweitergaben
         </td>
-        <td>{% for dd in d.software if dd.activ %}
+        <td>{% for dd in d.software | filter(dd => dd.activ) %}
                 <a
                 href="{{ absolute_url(path('software_edit',{'id':dd.id})) }}">{{ dd.name }}</a>{% if dd.approved %} {% trans %}Freigegeben{% endtrans %}{% endif %}
                 <ul>
-                    {% for d in dd.datenweitergabe if d.activ %}
+                    {% for d in dd.datenweitergabe | filter(d => d.activ) %}
                         <li>{{ d.gegenstand }}</li>
                     {% endfor %}
                 </ul>
@@ -160,7 +160,7 @@
         <td>
             Vorhandene interne Richtlinien
         </td>
-        <td>{% for p in d.policies if p.activ %}- <a
+        <td>{% for p in d.policies | filter(p => p.activ) %}- <a
                     href="{{ absolute_url(path('policy_edit',{'id':p.id})) }}">{{ p.title }}</a>{% if p.approved %} {% trans %}Freigegeben{% endtrans %}{% endif %}
             <br>{% endfor %}</a></td>
     </tr>

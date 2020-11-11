@@ -9,12 +9,31 @@
         <div class="row">
             <div class="col-md-7">
                 <ul class="list-group">
-                    {% for d in data %}
+                    {% for d in data.members|filter(d => d.keycloakId) %}
+                        <li class="list-group-item">{{ d.firstname }} {{ d.lastname }} ({{ d.email }})
+                            <div class="small">
+                                {% if data in d.teamDsb %}<span
+                                        class="badge-primary p-1 mt-sm-1 rounded">Ext. DSB</span>{% endif %} {% if d.adminUser == data %}
+                                    <span class="badge-success p-1 rounded">Admin</span>{% endif %} {% if d.akademieUser == data %}
+                                    <span class="badge-warning p-1 rounded">Akademie</span>{% endif %} {% if d.team == data %}
+                                    <span class="badge-info p-1 rounded">Koordinator</span>{% endif %}
+                            </div>
+                            <a class="btn btn-sm btn-info float-md-right"
+                               href="{{ path('team_mitglieder_admin', {'id':d.id}) }}">{% if d.adminUser %}{% trans %}Admin entfernen{% endtrans %}{% else %}{% trans %}Admin ernennen{% endtrans %}{% endif %}</a>
+                            <a class="btn btn-sm btn-danger float-md-right"
+                               href="{{ path('team_mitglieder_remove',{'id':d.id}) }}">{% trans %}Entfernen{% endtrans %}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <h5 class="h5-responsive mt-3">{% trans %}Offene Einladungen{% endtrans %}</h5>
+                <ul class="list-group">
+                    {% for d in data.members |filter(d => d.registerId) %}
                         <li class="list-group-item">{{ d.email }}
                             <a class="btn btn-sm btn-info float-md-right"
                                href="{{ path('team_mitglieder_admin',{'id':d.id}) }}">{% if d.adminUser %}{% trans %}Admin entfernen{% endtrans %}{% else %}{% trans %}Admin ernennen{% endtrans %}{% endif %}</a>
                             <a class="btn btn-sm btn-danger float-md-right"
-                               href="{{ path('team_mitglieder_remove',{'id':d.id}) }}">{% trans %}Entfernen{% endtrans %}</a>
+                               href="{{ path('team_mitglieder_remove',{'id':d.id}) }}">{% trans %}Einladung entfernen{% endtrans %}</a>
                         </li>
                     {% endfor %}
                 </ul>

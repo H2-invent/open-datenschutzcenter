@@ -47,6 +47,10 @@ class VVTType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'required' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
                 'help' => 'Wählen Sie hier den zuständigen Benutzer für diese Verarbeitung aus dem Datenschutzcenter. zu jeder Verarbeitung muss mindestens eine verantwortliche Person eingetragen werden.'
             ])
             ->add('software', EntityType::class, [
@@ -57,6 +61,10 @@ class VVTType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
                 'help' => 'Bei Bedarf können Sie hier die Software auswählen, die in dieser Verarbeitung eingesetzt werden. Diese Angabe ist für die Analyse der Informationssicherheit und zur Umsetzung der technischen Maßnahmen wichtig. Mit getrückter "STRG" Taste können mehrere Optionen ausgewählt werden.'
             ])
             ->add('zweck', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Zweck der Verarbeitung', 'required' => true, 'translation_domain' => 'form', 'help' => 'Geben Sie hier den Zweck der Verarbeitung und eine Beschreibung der Verarbeitung an. Wenn möglich beschreiben Sie hier zusätzlich den Nutzen der Verarbeitung mit Fokus auf Ihre Unternehmenstätigkeit.'])
@@ -69,20 +77,26 @@ class VVTType extends AbstractType
                 'choice_label' => 'name',
                 'class' => VVTGrundlage::class,
                 'choices' => $options['grundlage'],
-                'label' => 'Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Zweck und Grundlage) *',
+                'label' => 'Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Zweck und Grundlage)',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'expanded' => true,
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('personengruppen', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTPersonen::class,
                 'choices' => $options['personen'],
-                'label' => 'Die Daten welcher Personen werden verarbeitet? *',
+                'label' => 'Die Daten welcher Personen werden verarbeitet?',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'expanded' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('datenweitergaben', EntityType::class, [
                 'choice_label' => 'gegenstand',
@@ -92,16 +106,22 @@ class VVTType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => false,
-                'expanded' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('kategorien', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTDatenkategorie::class,
                 'choices' => $options['kategorien'],
-                'label' => 'Welche Daten(kategorien) werden verarbeitet? *',
+                'label' => 'Welche Daten(kategorien) werden verarbeitet?',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'expanded' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('eu', CheckboxType::class, ['label' => 'Ja, Daten werden außerhalb der EU verarbeitet', 'required' => false, 'translation_domain' => 'form', 'help' => 'Wenn Daten außerhalb der EU verarbeitet (gespeichert, erfasst, gelöscht) werden, müssen zusätzliche Vorsichtsmaßnahmen getroffen werden um die Daten nach der DSGVo zu schützen. Setzen Sie diesen Hacken, wenn Sie oder ein Auftragsverarbeiter die Daten die Daten im EU Außland verarbeitet.'])
             ->add('tomLink', EntityType::class, [
@@ -112,6 +132,10 @@ class VVTType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'required' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
                 'help' => 'Wenn Sie bereits ein TOM Dokument im Datenschutzcenter angelegt haben, können Sie diese bei Bedarf der Verarbeitung zuweisen. Die Verknüpfung wird soäter auch im Dashboard und Datenflussplan angezeigt.'
             ])
             ->add('tom', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Weitere Hinweise zur TOM', 'required' => false, 'translation_domain' => 'form', 'help' => 'Geben Sie hier bei Bedarf weitere technische und organisatorische Maßnahmen an, die nur diese Verarbeitung betreffen.'])
@@ -122,7 +146,10 @@ class VVTType extends AbstractType
                 'label' => 'Mögliche Risko-Quellen',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'expanded' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
                 'help' => 'Geben Sie hier alle möglichen Risiken an die in dieser Verarbeitung auftreten können. Die Risiken können direkt, indirekt, technisch oder organisatorisch mit der Verarbeitung zusammenhängen.'
             ])
             ->add('status', EntityType::class, [
@@ -132,6 +159,9 @@ class VVTType extends AbstractType
                 'label' => 'Status',
                 'translation_domain' => 'form',
                 'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                ],
                 'help' => 'Im Status Inaktiv wird die Verarbeitung nicht im Datenflussplan auf dem Dashboard angezeigt.'
             ])
             ->add('abteilung', EntityType::class, [
@@ -142,9 +172,13 @@ class VVTType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'required' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
                 'help' => 'Hier können Sie eine Abteilung zu der Verarbeitung hinzufügen. Die Abteilung ist hilfreich um den Datenflussplan filtern zu können und gleiche Verarbeitungen in unterschiedlichen Abteilungen eindeutig zu unterteilen.'
             ])
-            ->add('source', TextareaType::class, ['label' => 'Wie und wo werden die Daten erhoben?', 'required' => false, 'translation_domain' => 'form', 'help' => 'Die Daten können auf unterschiedliche Art und Weisen erfasst werden. Direkterhebung ist die bekannteste und kommt z.B. bei einem Newsletter auf der eigenen Webseite vor. Die Erhebung durch Dritte (z.B. durch Adresshändler) ist eine weitere Methode der Datenerhebung.'])
+            ->add('source', TextareaType::class, ['attr' => ['row' => 8], 'label' => 'Wie und wo werden die Daten erhoben?', 'required' => false, 'translation_domain' => 'form', 'help' => 'Die Daten können auf unterschiedliche Art und Weisen erfasst werden. Direkterhebung ist die bekannteste und kommt z.B. bei einem Newsletter auf der eigenen Webseite vor. Die Erhebung durch Dritte (z.B. durch Adresshändler) ist eine weitere Methode der Datenerhebung.'])
             ->add('informationspflicht', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Informationspflicht', 'required' => false, 'translation_domain' => 'form', 'help' => 'Es sollte je Verfahren dokumentiert werden, wo und wie den Informationspflichten jeweils nachgekommen wird. Dies kann bspw. durch Verweis auf Datenschutzhinweise, Vertragsbestandteile, Disclaimer in Formularen, bei Mitarbeiterdaten z.B. auch durch Verweise bei Erhebung auf intern bekanntgemachte Betriebsvereinbarung etc. erfolgen.'])
             ->add('dsb', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Kommentar des Datenschutzbeauftragten', 'required' => false, 'translation_domain' => 'form', 'help' => 'Neben der verpflichtenden Erfassung des Verarbeitungszwecks sollte zur Erfüllung der Rechenschaftpflichten gem. Art. 5 auch die Rechtsgrundlage mitsamt ggfs. erforderlicher Abwägungen, Einwilligungsklauseln und Prüfvermerken, ob bspw. die Anforderungen an Widerspruchsmöglichkeiten oder die automatisierte Einzelentscheidung berücksichtigt wurden.'])
             ->add('beurteilungEintritt', ChoiceType::class, [
@@ -159,6 +193,9 @@ class VVTType extends AbstractType
                 'translation_domain' => 'form',
                 'required' => true,
                 'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                ],
                 'help' => 'Für jede Verarbeitung muss auf Grundlage der ISO 27001 die Eintrittswahrscheinlichkeit dokumentiert werden. Dabei muss die Eintrittswahrscheinlichkeit festgelegt werden. Die Wahrscheinlichkeit lässt sich in vier Level unterteilen.'
             ])
             ->add('beurteilungSchaden', ChoiceType::class, [
@@ -173,6 +210,9 @@ class VVTType extends AbstractType
                 'translation_domain' => 'form',
                 'required' => true,
                 'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                ],
                 'help' => 'Für jede Verarbeitung muss auf Grundlage der ISO 27001 das Schadenspotenzial dokumentiert werden.'
             ])
             ->add('produkt', EntityType::class, [
@@ -183,7 +223,11 @@ class VVTType extends AbstractType
                 'help' => 'Mit gedrückter "STRG" Taste können mehrere Produkte ausgewählt werden',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }

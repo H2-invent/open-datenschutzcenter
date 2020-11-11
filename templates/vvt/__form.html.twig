@@ -354,7 +354,7 @@
                 </p>
             </div>
             <div class="col-md-9">
-                {% for p in vvt.policies if p.activ %}
+                {% for p in vvt.policies | filter(p => p.activ) %}
                     <a href="{{ path('policy_edit',{'id':p.id}) }}" class="btn btn-sm bg-policy">{{ p.title }}</a>
                 {% endfor %}
             </div>
