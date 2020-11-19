@@ -202,6 +202,21 @@ class Team
      */
     private $reports;
 
+    /**
+     * @ORM\OneToMany(targetEntity=VVTDatenkategorie::class, mappedBy="team")
+     */
+    private $vVTDatenkategories;
+
+    /**
+     * @ORM\OneToMany(targetEntity=VVTPersonen::class, mappedBy="team")
+     */
+    private $vVTPersonens;
+
+    /**
+     * @ORM\OneToMany(targetEntity=VVTRisiken::class, mappedBy="team")
+     */
+    private $vVTRisikens;
+
 
     public function __construct()
     {
@@ -224,6 +239,9 @@ class Team
         $this->tasks = new ArrayCollection();
         $this->clientRequests = new ArrayCollection();
         $this->reports = new ArrayCollection();
+        $this->vVTDatenkategories = new ArrayCollection();
+        $this->vVTPersonens = new ArrayCollection();
+        $this->vVTRisikens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -991,6 +1009,96 @@ class Team
             // set the owning side to null (unless already changed)
             if ($report->getTeam() === $this) {
                 $report->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VVTDatenkategorie[]
+     */
+    public function getVVTDatenkategories(): Collection
+    {
+        return $this->vVTDatenkategories;
+    }
+
+    public function addVVTDatenkategory(VVTDatenkategorie $vVTDatenkategory): self
+    {
+        if (!$this->vVTDatenkategories->contains($vVTDatenkategory)) {
+            $this->vVTDatenkategories[] = $vVTDatenkategory;
+            $vVTDatenkategory->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVVTDatenkategory(VVTDatenkategorie $vVTDatenkategory): self
+    {
+        if ($this->vVTDatenkategories->removeElement($vVTDatenkategory)) {
+            // set the owning side to null (unless already changed)
+            if ($vVTDatenkategory->getTeam() === $this) {
+                $vVTDatenkategory->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VVTPersonen[]
+     */
+    public function getVVTPersonens(): Collection
+    {
+        return $this->vVTPersonens;
+    }
+
+    public function addVVTPersonen(VVTPersonen $vVTPersonen): self
+    {
+        if (!$this->vVTPersonens->contains($vVTPersonen)) {
+            $this->vVTPersonens[] = $vVTPersonen;
+            $vVTPersonen->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVVTPersonen(VVTPersonen $vVTPersonen): self
+    {
+        if ($this->vVTPersonens->removeElement($vVTPersonen)) {
+            // set the owning side to null (unless already changed)
+            if ($vVTPersonen->getTeam() === $this) {
+                $vVTPersonen->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VVTRisiken[]
+     */
+    public function getVVTRisikens(): Collection
+    {
+        return $this->vVTRisikens;
+    }
+
+    public function addVVTRisiken(VVTRisiken $vVTRisiken): self
+    {
+        if (!$this->vVTRisikens->contains($vVTRisiken)) {
+            $this->vVTRisikens[] = $vVTRisiken;
+            $vVTRisiken->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVVTRisiken(VVTRisiken $vVTRisiken): self
+    {
+        if ($this->vVTRisikens->removeElement($vVTRisiken)) {
+            // set the owning side to null (unless already changed)
+            if ($vVTRisiken->getTeam() === $this) {
+                $vVTRisiken->setTeam(null);
             }
         }
 

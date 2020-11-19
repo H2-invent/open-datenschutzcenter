@@ -22,6 +22,11 @@ class VVTDatenkategorie
      */
     private $name;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="vVTDatenkategories")
+     */
+    private $team;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +40,18 @@ class VVTDatenkategorie
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): self
+    {
+        $this->team = $team;
 
         return $this;
     }

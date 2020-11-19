@@ -73,9 +73,11 @@ class TeamController extends AbstractController
         }
 
         $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findActivByTeam($team);
+        $edit = false;
 
         if ($request->get('id')) {
             $ziel = $this->getDoctrine()->getRepository(AuditTomZiele::class)->find($request->get('id'));
+            $edit = true;
 
         } else {
             $ziel = new AuditTomZiele();
@@ -101,9 +103,10 @@ class TeamController extends AbstractController
         return $this->render('team/ziel.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Schutzziele',
+            'title' => 'Schutzziele für Audits',
             'data' => $ziele,
             'default' => $default,
+            'edit' => $edit
         ]);
     }
 

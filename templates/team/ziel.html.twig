@@ -8,6 +8,7 @@
     <div class="card card-body ">
         <div class="row">
             <div class="col-md-6 mb-2">
+                <h4 class="h4-responsive">{% trans %}Bereits angelegt{% endtrans %}</h4>
                 <ul class="list-group">
                     {% if default is defined %}
                         {% for d in default %}
@@ -25,8 +26,9 @@
 
             </div>
             <div class="col-md-6">
+                <h4 class="h4-responsive">{% if edit %}{% trans %}Schutzziel bearbeiten{% endtrans %}{% else %}{% trans %}Neus Schutzziel hinzufügen{% endtrans %}{% endif %}</h4>
                 {{ form_start(form) }}
-                {{ form_widget(form) }}
+                {{ form_widget(form.name) }}
                 {{ form_end(form) }}
             </div>
         </div>
