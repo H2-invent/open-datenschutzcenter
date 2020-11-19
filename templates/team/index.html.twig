@@ -2,8 +2,8 @@
 
 {% block title %}{{ title }}{% endblock %}
 {% block body %}
-
-    <h2 class="h2-responsive">{{ title }}</h2>
+    <div class="container">
+        <h2 class="h2-responsive">{{ title }}</h2>
 
     <div class="card card-body ">
         <div>
@@ -12,7 +12,7 @@
             {{ form_end(form) }}
         </div>
     </div>
-
+    </div>
 {% endblock %}
 
 {% block javascript %}

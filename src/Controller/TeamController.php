@@ -14,10 +14,11 @@ use App\Entity\User;
 use App\Form\Type\AbteilungType;
 use App\Form\Type\DsbType;
 use App\Form\Type\NewMemberType;
+use App\Form\Type\NewType;
 use App\Form\Type\TeamType;
-use App\Form\Type\ZielType;
 use App\Service\InviteService;
 use App\Service\SecurityService;
+use App\Service\TeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +29,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_edit", name="team_edit")
      */
-    public function edit(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function index(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -61,91 +62,89 @@ class TeamController extends AbstractController
         ]);
     }
 
+
     /**
-     * @Route("/team_custom_audit", name="team_custom_audit")
+     * @Route("/team_custom", name="team_custom")
      */
-    public function customAudit(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function customShow(ValidatorInterface $validator, Request $request, SecurityService $securityService, TeamService $teamService)
     {
         $team = $this->getUser()->getAdminUser();
 
         if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $edit = false;
-        if ($request->get('id')) {
-            $ziel = $this->getDoctrine()->getRepository(AuditTomZiele::class)->find($request->get('id'));
-            $edit = true;
 
-        } else {
-            $ziel = new AuditTomZiele();
-            $ziel->setActiv(true);
-            $ziel->setTeam($team);
+        $data = $teamService->show($team);
+
+        return $this->render('team/custom.html.twig', [
+            'title' => 'Vorgaben für Formulare anpassen',
+            'data' => $data,
+            'edit' => false
+        ]);
+    }
+
+
+    /**
+     * @Route("/team_custom/create", name="team_custom_create")
+     */
+    public function customCreate(ValidatorInterface $validator, Request $request, SecurityService $securityService, TeamService $teamService)
+    {
+
+        $team = $this->getUser()->getAdminUser();
+
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
+            return $this->redirectToRoute('dashboard');
         }
-        $form = $this->createForm(ZielType::class, $ziel);
+
+        $data1 = $teamService->create($request->get('type'), $request->get('id'), $team);
+
+        $form = $this->createForm(NewType::class, $data1);
         $form->handleRequest($request);
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $errors = $validator->validate($data);
+
             if (count($errors) == 0) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($data);
                 $em->flush();
-                $text = 'Überprüfe Sie Ihre Eingabe';
-                return $this->redirectToRoute('team_custom_audit');
+                return $this->redirect($this->generateUrl('team_custom') . '#' . $request->get('type'));
             }
         }
-        $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findActivByTeam($team);
-        $defaultGrundlagen = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findBy(array('team' => null));
 
-        $data = array();
-        foreach ($defaultGrundlagen as $item) {
-            $data[1][$item->getId()]['id'] = $item->getId();
-            $data[1][$item->getId()]['name'] = $item->getName();
-            $data[1][$item->getId()]['default'] = true;
-        }
-        foreach ($ziele as $item) {
-            $data[1][$item->getId()]['id'] = $item->getId();
-            $data[1][$item->getId()]['name'] = $item->getName();
-            $data[1][$item->getId()]['default'] = false;
-        }
-
-        return $this->render('team/ziel.html.twig', [
-            'form' => $form->createView(),
-            'errors' => $errors,
-            'title' => 'Audit bearbeiten',
-            'data' => $data,
-            'edit' => $edit
-        ]);
+        return $this->render('team/modalView.html.twig', array('form' => $form->createView(), 'title' => $request->get('title'), 'type' => $request->get('type'), 'id' => $request->get('id')));
     }
 
+
     /**
-     * @Route("/team_custom_audit/deaktivieren", name="team_custom_audit_deativate")
+     * @Route("/team_custom/deaktivieren", name="team_custom_deativate")
      */
-    public function zielDeactivate(Request $request, SecurityService $securityService)
+    public function customDeactivate(Request $request, SecurityService $securityService, TeamService $teamService)
     {
         $team = $this->getUser()->getAdminUser();
 
         if ($securityService->adminCheck($this->getUser(), $team) === false) {
-            return $this->redirectToRoute('team_custom_audit');
+            return $this->redirectToRoute('team_custom');
         }
 
-        $ziel = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findOneBy(array('id' => $request->get('id')));
-        if ($ziel->getTeam() == $this->getUser()->getTeam()) {
-            $ziel->setActiv(false);
+        $data = $teamService->delete($request->get('type'), $request->get('id'));
+
+        if ($data->getTeam() == $this->getUser()->getTeam()) {
+            $data->setActiv(false);
         }
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($ziel);
+        $em->persist($data);
         $em->flush();
-        return $this->redirectToRoute('team_custom_audit');
+        return $this->redirectToRoute('team_custom');
     }
+
 
     /**
      * @Route("/team_abteilungen", name="team_abteilungen")
      */
-    public function addAbteilungen(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function abteilungenAdd(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -189,7 +188,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_abteilungen/deaktivieren", name="team_abteilungen_deativate")
      */
-    public function addAbteilungenDeactivate(Request $request, SecurityService $securityService)
+    public function abteilungenRemove(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -211,7 +210,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_mitglieder", name="team_mitglieder")
      */
-    public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
+    public function mitgliederAdd(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
     {
 
         $team = $this->getUser()->getAdminUser();
@@ -258,7 +257,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_mitglieder/remove", name="team_mitglieder_remove")
      */
-    public function removeMitglieder(Request $request, SecurityService $securityService)
+    public function mitgliederRemove(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -281,7 +280,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_mitglieder/admin", name="team_mitglieder_admin")
      */
-    public function adminMitglieder(Request $request, SecurityService $securityService)
+    public function adminToggle(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -308,7 +307,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/ext_team_dsb", name="team_dsb")
      */
-    public function addDsb(Request $request, InviteService $inviteService, SecurityService $securityService)
+    public function dsbAdd(Request $request, InviteService $inviteService, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -349,7 +348,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_dsb/remove", name="team_dsb_remove")
      */
-    public function removeDsb(Request $request, SecurityService $securityService)
+    public function dsbRemove(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 

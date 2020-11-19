@@ -217,6 +217,21 @@ class Team
      */
     private $vVTRisikens;
 
+    /**
+     * @ORM\OneToMany(targetEntity=VVTGrundlage::class, mappedBy="team")
+     */
+    private $vVTGrundlages;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $industry;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $specialty;
+
 
     public function __construct()
     {
@@ -242,6 +257,7 @@ class Team
         $this->vVTDatenkategories = new ArrayCollection();
         $this->vVTPersonens = new ArrayCollection();
         $this->vVTRisikens = new ArrayCollection();
+        $this->vVTGrundlages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1101,6 +1117,60 @@ class Team
                 $vVTRisiken->setTeam(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VVTGrundlage[]
+     */
+    public function getVVTGrundlages(): Collection
+    {
+        return $this->vVTGrundlages;
+    }
+
+    public function addVVTGrundlage(VVTGrundlage $vVTGrundlage): self
+    {
+        if (!$this->vVTGrundlages->contains($vVTGrundlage)) {
+            $this->vVTGrundlages[] = $vVTGrundlage;
+            $vVTGrundlage->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVVTGrundlage(VVTGrundlage $vVTGrundlage): self
+    {
+        if ($this->vVTGrundlages->removeElement($vVTGrundlage)) {
+            // set the owning side to null (unless already changed)
+            if ($vVTGrundlage->getTeam() === $this) {
+                $vVTGrundlage->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIndustry(): ?string
+    {
+        return $this->industry;
+    }
+
+    public function setIndustry(?string $industry): self
+    {
+        $this->industry = $industry;
+
+        return $this;
+    }
+
+    public function getSpecialty(): ?string
+    {
+        return $this->specialty;
+    }
+
+    public function setSpecialty(?string $specialty): self
+    {
+        $this->specialty = $specialty;
 
         return $this;
     }

@@ -22,6 +22,16 @@ class VVTGrundlage
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activ;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="vVTGrundlages")
+     */
+    private $team;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +45,30 @@ class VVTGrundlage
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getActiv(): ?bool
+    {
+        return $this->activ;
+    }
+
+    public function setActiv(bool $activ): self
+    {
+        $this->activ = $activ;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): self
+    {
+        $this->team = $team;
 
         return $this;
     }

@@ -27,6 +27,11 @@ class VVTPersonen
      */
     private $team;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activ;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,18 @@ class VVTPersonen
     public function setTeam(?Team $team): self
     {
         $this->team = $team;
+
+        return $this;
+    }
+
+    public function getActiv(): ?bool
+    {
+        return $this->activ;
+    }
+
+    public function setActiv(bool $activ): self
+    {
+        $this->activ = $activ;
 
         return $this;
     }
