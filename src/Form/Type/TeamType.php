@@ -28,7 +28,7 @@ class TeamType extends AbstractType
             ->add('stadt', TextType::class, ['label' => 'Stadt', 'required' => true, 'translation_domain' => 'form'])
             ->add('email', TextType::class, ['label' => 'E-Mail', 'required' => true, 'translation_domain' => 'form'])
             ->add('telefon', TextType::class, ['label' => 'Telefon', 'required' => true, 'translation_domain' => 'form'])
-            ->add('dsb', TextType::class, ['label' => 'Datenschutzbeauftragter', 'required' => true, 'translation_domain' => 'form'])
+            ->add('dsb', TextType::class, ['label' => 'Datenschutzbeauftragter', 'required' => false, 'translation_domain' => 'form'])
             ->add('ceo', TextType::class, ['label' => 'Geschäftsführung', 'required' => true, 'translation_domain' => 'form'])
             ->add('signature', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Email Signatur', 'required' => false, 'translation_domain' => 'form'])
             ->add('slug', TextType::class, ['label' => 'Slug für Kundenplattform (Darf keine Leerzeichen oder Sonderzeichen enthalten)', 'required' => false, 'translation_domain' => 'form'])

@@ -1,18 +1,38 @@
 {% if data.assignedUser is null %}
-    {% if data.activ %}
-        {{ form_start(assignForm,{'action': path(path,{'id':data.id})}) }}
-        <div class="row">
-            <div class="col-xl-8 col-lg-7 col-xs-10">
-                {{ form_widget(assignForm.user) }}
-            </div>
-            <div class="col-xl-4 col-lg-5 col-xs-2">
-                {{ form_widget(assignForm.submit) }}
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#assignModal">
+        Zuweisen
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="assignModalLabel">Dokument für die weitere Bearbeitung zuweisen</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{ form_start(assignForm,{'action': path(path,{'id':data.id})}) }}
+                {% if data.activ %}
+                    <div class="modal-body">
+
+                        {{ form_widget(assignForm.user) }}
+
+                    </div>
+                    <div class="modal-footer">
+                        {{ form_widget(assignForm.submit) }}
+                    </div>
+                {% endif %}
+                {{ form_end(assignForm) }}
             </div>
         </div>
-        {{ form_end(assignForm) }}
-    {% endif %}
+    </div>
 {% else %}
-    <span class="small">{{ data.assignedUser.email }}</span>  <a class="btn btn-danger btn-sm rounded"
+    <h4>{% trans %}Zugewiesen an:{% endtrans %} </h4>
+    <span class="small">{{ data.assignedUser.email }}</span>  <a class="btn btn-danger btn-sm rounded-circle"
                                                                  title="Zuweisung entfernen"
                                                                  href="{{ path(path,{'id':data.id}) }}">X</a>
 {% endif %}
