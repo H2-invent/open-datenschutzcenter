@@ -8,19 +8,15 @@
     <div class="card card-body ">
         <div class="row">
             <div class="col-md-6 mb-2">
-                <h4 class="h4-responsive">{% trans %}Bereits angelegt{% endtrans %}</h4>
+                <h4 class="h4-responsive">{% trans %}Schutzziele{% endtrans %}</h4>
                 <ul class="list-group">
-                    {% if default is defined %}
-                        {% for d in default %}
-                            <li class="list-group-item disabled">{{ d.name }} (Default)</li>
-                        {% endfor %}
-                    {% endif %}
-                    {% for d in data %}
-                        <li class="list-group-item">{{ d.name }}
-                            <a href="{{ path('team_ziel', {'id':d.id}) }}"
-                               class="btn btn-sm btn-info float-md-right">Bearbeiten</a>
-                            <a href="{{ path('team_ziel_deativate', {'id':d.id}) }}"
-                               class="btn btn-sm btn-danger float-md-right">Löschen</a></li>
+                    {% for d in data[1] %}
+                        <li
+                        class="list-group-item {% if d.default %}disabled{% endif %}">{{ d.name }}{% if not d.default %}
+                        <a href="{{ path('team_custom_audit', {'id':d.id}) }}"
+                           class="btn btn-sm btn-info float-md-right">Bearbeiten</a>
+                        <a href="{{ path('team_custom_audit_deativate', {'id':d.id}) }}"
+                           class="btn btn-sm btn-danger float-md-right">Löschen</a></li> {% else %} (Default){% endif %}
                     {% endfor %}
                 </ul>
 

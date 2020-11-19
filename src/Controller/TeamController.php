@@ -62,19 +62,16 @@ class TeamController extends AbstractController
     }
 
     /**
-     * @Route("/team_ziel", name="team_ziel")
+     * @Route("/team_custom_audit", name="team_custom_audit")
      */
-    public function addZiel(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function customAudit(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
         if ($securityService->adminCheck($this->getUser(), $team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-
-        $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findActivByTeam($team);
         $edit = false;
-
         if ($request->get('id')) {
             $ziel = $this->getDoctrine()->getRepository(AuditTomZiele::class)->find($request->get('id'));
             $edit = true;
@@ -96,29 +93,42 @@ class TeamController extends AbstractController
                 $em->persist($data);
                 $em->flush();
                 $text = 'Überprüfe Sie Ihre Eingabe';
-                return $this->redirectToRoute('team_ziel');
+                return $this->redirectToRoute('team_custom_audit');
             }
         }
-        $default = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findBy(array('team' => 1));
+        $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findActivByTeam($team);
+        $defaultGrundlagen = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findBy(array('team' => null));
+
+        $data = array();
+        foreach ($defaultGrundlagen as $item) {
+            $data[1][$item->getId()]['id'] = $item->getId();
+            $data[1][$item->getId()]['name'] = $item->getName();
+            $data[1][$item->getId()]['default'] = true;
+        }
+        foreach ($ziele as $item) {
+            $data[1][$item->getId()]['id'] = $item->getId();
+            $data[1][$item->getId()]['name'] = $item->getName();
+            $data[1][$item->getId()]['default'] = false;
+        }
+
         return $this->render('team/ziel.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Schutzziele für Audits',
-            'data' => $ziele,
-            'default' => $default,
+            'title' => 'Audit bearbeiten',
+            'data' => $data,
             'edit' => $edit
         ]);
     }
 
     /**
-     * @Route("/team_ziel/deaktivieren", name="team_ziel_deativate")
+     * @Route("/team_custom_audit/deaktivieren", name="team_custom_audit_deativate")
      */
     public function zielDeactivate(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
         if ($securityService->adminCheck($this->getUser(), $team) === false) {
-            return $this->redirectToRoute('team_ziel');
+            return $this->redirectToRoute('team_custom_audit');
         }
 
         $ziel = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findOneBy(array('id' => $request->get('id')));
@@ -129,7 +139,7 @@ class TeamController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($ziel);
         $em->flush();
-        return $this->redirectToRoute('team_ziel');
+        return $this->redirectToRoute('team_custom_audit');
     }
 
     /**

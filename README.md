@@ -38,6 +38,10 @@ Folgende Parameter stehen in den odif Dateien zum Import zur Verfügung und müs
 
 * [ODIF Import Datei](https://github.com/H2-invent/open-datenschutzcenter/wiki/ODIF-Datei)
 
+# Breaking Changes
+#### von 1.12.X auf 1.13.X
+* Es müssen alle Default Werte angepasst werden, da diese nun nicht mehr auf das Default Team mit der id=1 mappen sondern mit einer `null` definiert werden müssen.
+
 # Lizenz
 Die aktuelle Version von Open Datenschutzcenter wird unter der GPL-3.0 License bereitgestellt.
 Copyright (c) 2020 H2 invent
