@@ -3,26 +3,40 @@
 {% block title %}{{ title }}{% endblock %}
 {% block body %}
 
-    <h2 class="h2-responsive">{{ title }}</h2>
+    <div class="container">
 
-    <div class="card card-body">
-        <div class="row">
-            <div class="col-md-7">
-                <ul class="list-group">
-                    {% for d in data %}
-                        <li class="list-group-item">{{ d.email }} <a class="btn btn-sm btn-danger float-md-right"
-                                                                     href="{{ path('akademie_mitglieder_remove',{'id':d.id}) }}">Entfernen</a>
-                        </li>
-                    {% endfor %}
-                </ul>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#courses" role="tab"
+                   aria-controls="home"
+                   aria-selected="true">{% trans %}Datenschutzkurse{% endtrans %}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#user" role="tab" aria-controls="profile"
+                   aria-selected="false">{% trans %}Akademiemitglieder{% endtrans %}</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="courses" role="tabpanel" aria-labelledby="home-tab">
 
+                {{ include('kurs/__indexTabel.html.twig') }}
             </div>
-            <div class="col-md-5">
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
+            <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="profile-tab">
+
+                <div class="card card-body">
+                    <a href="{{ path('team_mitglieder_create', {'title':'Mitarbeitende zur Akademie hinzufügen', 'type':'academy'}) }}"
+                       class="btn btn-primary btn-sm loadContent">Mitglied hinzufügen</a>
+                    <ul class="list-group">
+                        {% for d in data %}
+                            <li class="list-group-item">{{ d.email }} <a class="btn btn-sm btn-danger float-md-right"
+                                                                         href="{{ path('akademie_mitglieder_remove',{'id':d.id}) }}">Entfernen</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
+
     </div>
 
 {% endblock %}

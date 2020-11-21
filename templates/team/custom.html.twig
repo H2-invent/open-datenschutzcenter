@@ -5,8 +5,8 @@
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
         <!-- Basic dropdown -->
-        <button class="btn btn-primary btn-sm dropdown-toggle mr-4" type="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">{% trans %}Auswählen{% endtrans %}</button>
+        <a class="btn btn-sm dropdown-toggle btn-cyan" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">{% trans %}Auswählen{% endtrans %}</a>
 
         <div class="dropdown-menu">
             {% for key,d in data %}

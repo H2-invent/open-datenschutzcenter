@@ -216,6 +216,7 @@ class TeamService
         return $data1;
     }
 
+
     function delete($type, $id)
     {
         switch ($type) {

@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\AkademieBuchungen;
+use App\Entity\AkademieKurse;
 use App\Entity\User;
-use App\Form\Type\NewMemberType;
 use App\Service\InviteService;
 use App\Service\SecurityService;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
@@ -29,6 +29,7 @@ class AkademieController extends AbstractController
         $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findMyBuchungenByUser($this->getUser());
         return $this->render('akademie/index.html.twig', [
             'buchungen' => $buchungen,
+
             'today' => $today = new \DateTime(),
         ]);
     }
@@ -133,7 +134,7 @@ class AkademieController extends AbstractController
     }
 
     /**
-     * @Route("/akademie/mitglieder", name="akademie_mitglieder")
+     * @Route("/akademie/admin", name="akademie_admin")
      */
     public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
     {
@@ -143,41 +144,12 @@ class AkademieController extends AbstractController
         if (!$securityService->adminCheck($this->getUser(), $team)) {
             return $this->redirectToRoute('dashboard');
         }
+        $kurse = $this->getDoctrine()->getRepository(AkademieKurse::class)->findKurseByTeam($team);
 
-        //Neue Mitglieder Form
-        $newMember = array();
-        $form = $this->createForm(NewMemberType::class, $newMember);
-        $form->handleRequest($request);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $newMembers = $form->getData();
-            $lines = explode("\n", $newMembers['member']);
-
-            if (!empty($lines)) {
-                $em = $this->getDoctrine()->getManager();
-                foreach ($lines as $line) {
-                    $newMember = trim($line);
-                    $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('email' => $newMember));
-                    if (!$user) {
-                        $user = $inviteService->newUser($newMember);
-                    }
-                    if ($user->getAkademieUser() === null) {
-                        $user->setAkademieUser($team);
-                        $em->persist($user);
-
-                    }
-                }
-                $em->flush();
-                return $this->redirectToRoute('akademie_mitglieder');
-            }
-        }
         return $this->render('akademie/member.html.twig', [
-            'form' => $form->createView(),
-            'errors' => $errors,
             'title' => 'Mitglieder verwalten',
             'data' => $team->getAkademieUsers(),
+            'kurse' => $kurse,
         ]);
     }
 
@@ -203,6 +175,6 @@ class AkademieController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
-        return $this->redirectToRoute('akademie_mitglieder');
+        return $this->redirectToRoute('akademie_admin');
     }
 }

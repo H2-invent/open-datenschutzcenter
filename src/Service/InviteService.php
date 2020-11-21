@@ -41,7 +41,6 @@ class InviteService
     {
         $user = $this->em->getRepository(User::class)->findOneBy(array('email' => $email));
         if (!$user) {
-            // hier wird der neue fos user angelegt
             $user = new User();
             $user->setLastName('')
                 ->setFirstName('')

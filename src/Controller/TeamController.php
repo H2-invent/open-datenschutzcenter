@@ -255,6 +255,53 @@ class TeamController extends AbstractController
     }
 
     /**
+     * @Route("/team_mitglieder/create", name="team_mitglieder_create")
+     */
+    public function teamMemberCreate(Request $request, SecurityService $securityService, TeamService $teamService, InviteService $inviteService)
+    {
+
+        $team = $this->getUser()->getAdminUser();
+
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $newMember = array();
+        $form = $this->createForm(NewMemberType::class, $newMember);
+        $form->handleRequest($request);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $newMembers = $form->getData();
+            $lines = explode("\n", $newMembers['member']);
+
+            if (!empty($lines)) {
+                $em = $this->getDoctrine()->getManager();
+                foreach ($lines as $line) {
+                    $newMember = trim($line);
+                    $user = $inviteService->newUser($newMember);
+                    if ($user->getTeam() === null && $request->get('type') === 'odc') {
+                        $user->setTeam($team);
+                        $em->persist($user);
+                    } elseif ($user->getAdminUser() === null && $request->get('type') === 'academy') {
+                        $user->setAkademieUser($team);
+                        $em->persist($user);
+                    }
+                }
+                $em->flush();
+                if ($request->get('type') === 'academy') {
+                    return $this->redirectToRoute('akademie_admin');
+                } else {
+                    return $this->redirectToRoute('team_mitglieder');
+                }
+            }
+        }
+
+        return $this->render('team/modalViewUser.html.twig', array('form' => $form->createView(), 'title' => $request->get('title'), 'type' => $request->get('type')));
+    }
+
+    /**
      * @Route("/team_mitglieder/remove", name="team_mitglieder_remove")
      */
     public function mitgliederRemove(Request $request, SecurityService $securityService)
