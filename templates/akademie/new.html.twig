@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="container">
+        <h2 class="h2-responsive">{{ title }}</h2>
+        <div class="card card-body">
 
-    <h2 class="h2-responsive">{{ title }}</h2>
-<div class="card card-body">
-
-    {{ form_start(form) }}
-    {{ form_widget(form)}}
-    {{ form_end(form) }}
-    <p class="alert-warning">
-        Wichtig bei Vimeo: Denken Sie an den Auftragsverarbeitungsvertrag zwischen Ihrer Organisation und Vimeo.
-    </p>
-</div>
-
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+            <p class="alert-warning">
+                Wichtig bei Vimeo: Denken Sie an den Auftragsverarbeitungsvertrag zwischen Ihrer Organisation und Vimeo.
+            </p>
+        </div>
+    </div>
 {% endblock %}

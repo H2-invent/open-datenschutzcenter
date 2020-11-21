@@ -22,7 +22,8 @@
                         <a href="{{ path('kurs_anmelden',{'id':t.id}) }}" class="btn btn-sm btn-success">Anmelden</a>
                         {% if app.user == t.user %}<a href="{{ path('akademie_kurs_edit',{'id':t.id}) }}"
                                                       class="btn btn-sm btn-info">Bearbeiten</a>{% endif %}
-                        <a href="{{ path('kurs_deaktivieren',{'id':t.id}) }}" class="btn btn-sm btn-danger">Löschen</a>
+                        <a onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen?{% endtrans %}')"
+                           href="{{ path('kurs_deaktivieren',{'id':t.id}) }}" class="btn btn-sm btn-danger">Löschen</a>
                     </td>
                 </tr>
             {% endfor %}

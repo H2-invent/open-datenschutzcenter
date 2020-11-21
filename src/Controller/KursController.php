@@ -131,11 +131,11 @@ class KursController extends AbstractController
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
-            return $this->redirectToRoute('kurse');
+            return $this->redirectToRoute('akademie_kurs');
         }
 
         $akademieService->removeKurs($team, $kurs);
 
-        return $this->redirectToRoute('kurse');
+        return $this->redirectToRoute('akademie_admin');
     }
 }

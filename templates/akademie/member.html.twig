@@ -29,6 +29,7 @@
                     <ul class="list-group">
                         {% for d in data %}
                             <li class="list-group-item">{{ d.email }} <a class="btn btn-sm btn-danger float-md-right"
+                                                                         onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen?{% endtrans %}')"
                                                                          href="{{ path('akademie_mitglieder_remove',{'id':d.id}) }}">Entfernen</a>
                             </li>
                         {% endfor %}

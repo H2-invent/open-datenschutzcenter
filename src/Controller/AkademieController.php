@@ -136,7 +136,7 @@ class AkademieController extends AbstractController
     /**
      * @Route("/akademie/admin", name="akademie_admin")
      */
-    public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
+    public function academyAdmin(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
