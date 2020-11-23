@@ -25,6 +25,16 @@
         </div>
         <div class="mt-4 row">
             <div class="col-md-3">
+                {{ form_label(form.auftragsverarbeitung) }}
+                {{ form_help(form.auftragsverarbeitung) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.auftragsverarbeitung) }}
+            </div>
+
+        </div>
+        <div class="mt-4 row">
+            <div class="col-md-3">
                 {{ form_label(form.status) }}
                 {{ form_help(form.status) }}
             </div>
@@ -137,15 +147,6 @@
     <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
         <div class="mt-4 row">
             <div class="col-md-3">
-                {{ form_label(form.weitergabe) }}
-                {{ form_help(form.weitergabe) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.weitergabe) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
                 {{ form_label(form.jointControl) }}
                 {{ form_help(form.jointControl) }}
             </div>
@@ -156,15 +157,14 @@
         </div>
         <div class="mt-4 row">
             <div class="col-md-3">
-                {{ form_label(form.auftragsverarbeitung) }}
-                {{ form_help(form.auftragsverarbeitung) }}
+                {{ form_label(form.weitergabe) }}
+                {{ form_help(form.weitergabe) }}
             </div>
             <div class="col-md-9">
-                {{ form_widget(form.auftragsverarbeitung) }}
-
+                {{ form_widget(form.weitergabe) }}
             </div>
-
         </div>
+
         <div class="mt-4 row">
 
             <div class="col-md-3">
