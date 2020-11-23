@@ -58,7 +58,7 @@ class AuditTomController extends AbstractController
         $audit->setCreatedAt($today);
         $audit->setUser($this->getUser());
         $status = $this->getDoctrine()->getRepository(AuditTomStatus::class)->findAll();
-        $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findAllTagetsByTeam($team);
+        $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findByTeam($team);
         $abteilungen = $this->getDoctrine()->getRepository(AuditTomAbteilung::class)->findAllByTeam($team);
 
         $form = $this->createForm(AuditTomType::class, $audit, ['abteilungen' => $abteilungen, 'ziele' => $ziele, 'status' => $status]);
