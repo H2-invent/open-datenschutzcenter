@@ -47,4 +47,14 @@ class VVTPersonenRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByTeam($value)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.team is null OR a.team = :val')
+            ->andWhere('a.activ = 1')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
 }
