@@ -250,11 +250,9 @@
 
 <div class="card mt-4">
     <h4 class="h4-responsive card-header">Risikoabschätzung</h4>
-    {% if vvt.activDsfa is not null %}<a href="{{ path('vvt_dsfa_edit',{'dsfa':vvt.activDsfa.id}) }}"
-                                         class="btn btn-primary btn-sm">DSFA anzeigen</a>{% endif %}
 
-    <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
-        <div class="mt-4 row">
+    <div class="card-body">
+        <div class="mt-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
             <div class="col-md-3">
                 {{ form_label(form.risiko) }}
                 {{ form_help(form.risiko) }}
@@ -265,7 +263,7 @@
         </div>
 
 
-        <div class="row mt-4">
+        <div class="row mt-4 {% if not activ or vvt.approved %} disabled{% endif %}">
             <div class="col-md-3">
                 {{ form_label(form.beurteilungEintritt) }}
                 {{ form_help(form.beurteilungEintritt) }}
@@ -290,7 +288,7 @@
                 </p>
             </div>
         </div>
-        <div class="row mt-4">
+        <div class="row mt-4 {% if not activ or vvt.approved %} disabled{% endif %}">
             <div class="col-md-3">
                 {{ form_label(form.beurteilungSchaden) }}
                 {{ form_help(form.beurteilungSchaden) }}
@@ -308,9 +306,22 @@
                         Beispiel: Eintrittswahrscheinlichkeit: 3, Schadenspotenzial: 4
                     </p>
                 </div>
+
             </div>
         </div>
-
+        <div class="row">
+            <div class="offset-md-3 col-md-9">
+                {% if vvt.activDsfa is not null %}
+                    <a href="{{ path('vvt_dsfa_edit',{'dsfa':vvt.activDsfa.id}) }}"
+                       class="btn btn-primary">DSFA anzeigen</a>
+                {% else %}
+                    <a class="btn btn-indigo" href="{{ path('vvt_dsfa_new', {'vvt':vvt.id}) }}"
+                       title="Datenschutzfolgeabschätzung anlegen">
+                        <span>DSFA anlegen</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 
 </div>
@@ -319,8 +330,8 @@
 <div class="card mt-4">
     <h4 class="h4-responsive card-header">Informationspflicht</h4>
 
-    <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
-        <div class="mt-4 row">
+    <div class="card-body">
+        <div class="mt-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
             <div class="col-md-3">
                 {{ form_label(form.source) }}
                 {{ form_help(form.source) }}
@@ -329,7 +340,7 @@
                 {{ form_widget(form.source) }}
             </div>
         </div>
-        <div class="mt-4 row">
+        <div class="mt-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
             <div class="col-md-3">
                 {{ form_label(form.informationspflicht) }}
                 {{ form_help(form.informationspflicht) }}
@@ -338,7 +349,7 @@
                 {{ form_widget(form.informationspflicht) }}
             </div>
         </div>
-        <div class="mt-4 mb-4 row">
+        <div class="mt-4 mb-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
             <div class="col-md-3">
                 {{ form_label(form.dsb) }}
                 {{ form_help(form.dsb) }}
@@ -355,11 +366,13 @@
             </div>
             <div class="col-md-9">
                 {% for p in vvt.policies | filter(p => p.activ) %}
-                    <a href="{{ path('policy_edit',{'id':p.id}) }}" class="btn btn-sm bg-policy">{{ p.title }}</a>
+                    <a href="{{ path('policy_edit',{'id':p.id}) }}" class="btn bg-policy">{{ p.title }}</a>
                 {% endfor %}
             </div>
         </div>
-        {{ form_widget(form.save) }}
+        <div class="{% if not activ or vvt.approved %} disabled{% endif %}">
+            {{ form_widget(form.save) }}
+        </div>
     </div>
 </div>
 {{ form_end(form) }}

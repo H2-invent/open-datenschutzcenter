@@ -3,15 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\AkademieBuchungen;
-use App\Entity\User;
-use App\Form\Type\NewMemberType;
-use App\Service\InviteService;
 use App\Service\SecurityService;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AkademieController extends AbstractController
 {
@@ -29,6 +25,7 @@ class AkademieController extends AbstractController
         $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findMyBuchungenByUser($this->getUser());
         return $this->render('akademie/index.html.twig', [
             'buchungen' => $buchungen,
+
             'today' => $today = new \DateTime(),
         ]);
     }
@@ -130,79 +127,5 @@ class AkademieController extends AbstractController
         }
 
         return $this->redirectToRoute('akademie');
-    }
-
-    /**
-     * @Route("/akademie/mitglieder", name="akademie_mitglieder")
-     */
-    public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
-    {
-        $team = $this->getUser()->getAdminUser();
-
-        // Admin Route only
-        if (!$securityService->adminCheck($this->getUser(), $team)) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        //Neue Mitglieder Form
-        $newMember = array();
-        $form = $this->createForm(NewMemberType::class, $newMember);
-        $form->handleRequest($request);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $newMembers = $form->getData();
-            $lines = explode("\n", $newMembers['member']);
-
-            if (!empty($lines)) {
-                $em = $this->getDoctrine()->getManager();
-                foreach ($lines as $line) {
-                    $newMember = trim($line);
-                    $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('email' => $newMember));
-                    if (!$user) {
-                        $user = $inviteService->newUser($newMember);
-                    }
-                    if ($user->getAkademieUser() === null) {
-                        $user->setAkademieUser($team);
-                        $em->persist($user);
-
-                    }
-                }
-                $em->flush();
-                return $this->redirectToRoute('akademie_mitglieder');
-            }
-        }
-        return $this->render('akademie/member.html.twig', [
-            'form' => $form->createView(),
-            'errors' => $errors,
-            'title' => 'Mitglieder verwalten',
-            'data' => $team->getAkademieUsers(),
-        ]);
-    }
-
-    /**
-     * @Route("/akademie/mitglieder/remove", name="akademie_mitglieder_remove")
-     */
-    public function removeMitglieder(Request $request, SecurityService $securityService)
-    {
-        $team = $this->getUser()->getAdminUser();
-
-        // Admin Route only
-        if (!$securityService->adminCheck($this->getUser(), $team)) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('id' => $request->get('id')));
-
-        // Nur Admin User dürfen eigene Akademie Mitglieder entfernen
-        if ($user->getAkademieUser() === $team) {
-            $user->setAkademieUser(null);
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
-        return $this->redirectToRoute('akademie_mitglieder');
     }
 }

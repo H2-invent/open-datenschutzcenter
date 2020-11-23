@@ -12,9 +12,6 @@
         <!--Grid column-->
         <div class="col-xl-6 col-lg-4 mb-4">
             {{ include ('dashboard/__cards.html.twig') }}
-            <div class="d-none d-xl-block mt-5">
-                {{ include('dashboard/__critical.html.twig') }}
-            </div>
         </div>
         <!--Grid column-->
 
@@ -23,46 +20,6 @@
 
             {{ include('dashboard/__assign.html.twig') }}
 
-            <!--Card-->
-            <div class="card mt-3">
-                <!-- Card header -->
-                <div class="card-header text-center">
-                    Letzte Änderungen
-                </div>
-                <!--Card content-->
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5 class="h5-responsive">Auditfragen</h5>
-                            <hr>
-                            <ul>
-                                {% for a in audit|slice(0, 5) %}
-                                    <a href="{{ path('audit_tom_edit', {'tom':a.id}) }}"><img style="width: 14px"
-                                                                                              src="{{ asset('images/pruefung.png') }}"> {{ a.frage }}
-                                    </a><br>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h5 class="h5-responsive">Verarbeitungen</h5>
-                            <hr>
-                            <ul>
-                                {% for v in vvt|slice(0, 5) %}
-                                    <img style="width: 14px" src="{{ asset('images/prozess.png') }}"> <a
-                                        href="{{ path('vvt_edit', {'id':v.id}) }}">{{ v.name }}</a><br>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-
-
-                </div>
-
-            </div>
-            <!--/.Card-->
-            <div class="d-block d-xl-none mt-3">
-                {{ include('dashboard/__critical.html.twig') }}
-            </div>
 
         </div>
     </div>

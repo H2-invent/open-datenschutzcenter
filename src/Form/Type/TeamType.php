@@ -30,10 +30,12 @@ class TeamType extends AbstractType
             ->add('telefon', TextType::class, ['label' => 'Telefon', 'required' => true, 'translation_domain' => 'form'])
             ->add('dsb', TextType::class, ['label' => 'Datenschutzbeauftragter', 'required' => false, 'translation_domain' => 'form'])
             ->add('ceo', TextType::class, ['label' => 'Geschäftsführung', 'required' => true, 'translation_domain' => 'form'])
+            ->add('industry', TextType::class, ['label' => 'Branche', 'required' => false, 'translation_domain' => 'form'])
+            ->add('specialty', TextType::class, ['label' => 'Spezialisierung', 'required' => false, 'translation_domain' => 'form'])
             ->add('signature', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Email Signatur', 'required' => false, 'translation_domain' => 'form'])
-            ->add('slug', TextType::class, ['label' => 'Slug für Kundenplattform (Darf keine Leerzeichen oder Sonderzeichen enthalten)', 'required' => false, 'translation_domain' => 'form'])
-            ->add('externalLink', TextType::class, ['label' => 'Externer Link zu Kommunikationplattform', 'required' => false, 'translation_domain' => 'form'])
-            ->add('video', TextType::class, ['label' => 'Externer Link zur internen Jitsi Installation', 'required' => false, 'translation_domain' => 'form'])
+            ->add('slug', TextType::class, ['label' => 'Slug für Kundenplattform (Darf keine Leerzeichen oder Sonderzeichen enthalten)', 'required' => false, 'translation_domain' => 'form', 'help' => 'Im ODC gibt es die Möglichkeit, ein Kundenportal für Betroffenenanfragen einzurichten. Damit das Protal von extern verfügbar ist, muss erst ein Slug ausgewählt werden. Der Slug kann der Mandantenname oder eine zufälle Kombination von Zeichen sein.'])
+            ->add('externalLink', TextType::class, ['label' => 'Externer Link zu Kommunikationplattform', 'required' => false, 'translation_domain' => 'form', 'help' => 'Hier können Sie eine externe Seite in den ODC einbinden, z.B. Wiki oder Intranet. Diese Seite ist danach über die Navigation -> External aufrufbar.'])
+            ->add('video', TextType::class, ['label' => 'Externer Link zur internen Jitsi Installation', 'required' => false, 'translation_domain' => 'form', 'help' => 'Hier können Sie Ihre eigene oder eine externe Jitsi Installation in den ODC einbinden. Jitsi Meet ist eine datenschutzfreundliche Alternative für zoom und Microsoft Teams.'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 
