@@ -3,15 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\AkademieBuchungen;
-use App\Entity\AkademieKurse;
-use App\Entity\User;
-use App\Service\InviteService;
 use App\Service\SecurityService;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AkademieController extends AbstractController
 {
@@ -131,50 +127,5 @@ class AkademieController extends AbstractController
         }
 
         return $this->redirectToRoute('akademie');
-    }
-
-    /**
-     * @Route("/akademie/admin", name="akademie_admin")
-     */
-    public function academyAdmin(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
-    {
-        $team = $this->getUser()->getAdminUser();
-
-        // Admin Route only
-        if (!$securityService->adminCheck($this->getUser(), $team)) {
-            return $this->redirectToRoute('dashboard');
-        }
-        $kurse = $this->getDoctrine()->getRepository(AkademieKurse::class)->findKurseByTeam($team);
-
-        return $this->render('akademie/member.html.twig', [
-            'title' => 'Mitglieder verwalten',
-            'data' => $team->getAkademieUsers(),
-            'kurse' => $kurse,
-        ]);
-    }
-
-    /**
-     * @Route("/akademie/mitglieder/remove", name="akademie_mitglieder_remove")
-     */
-    public function removeMitglieder(Request $request, SecurityService $securityService)
-    {
-        $team = $this->getUser()->getAdminUser();
-
-        // Admin Route only
-        if (!$securityService->adminCheck($this->getUser(), $team)) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('id' => $request->get('id')));
-
-        // Nur Admin User dürfen eigene Akademie Mitglieder entfernen
-        if ($user->getAkademieUser() === $team) {
-            $user->setAkademieUser(null);
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
-        return $this->redirectToRoute('akademie_admin');
     }
 }

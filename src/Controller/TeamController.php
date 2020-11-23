@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Entity\AkademieKurse;
 use App\Entity\AuditTomAbteilung;
 use App\Entity\AuditTomZiele;
 use App\Entity\User;
@@ -80,6 +81,26 @@ class TeamController extends AbstractController
             'title' => 'Vorgaben für Formulare anpassen',
             'data' => $data,
             'edit' => false
+        ]);
+    }
+
+    /**
+     * @Route("/akademie/admin", name="akademie_admin")
+     */
+    public function academyAdmin(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getAdminUser();
+
+        // Admin Route only
+        if (!$securityService->adminCheck($this->getUser(), $team)) {
+            return $this->redirectToRoute('dashboard');
+        }
+        $kurse = $this->getDoctrine()->getRepository(AkademieKurse::class)->findKurseByTeam($team);
+
+        return $this->render('team/academy.html.twig', [
+            'title' => 'Akademie verwalten',
+            'data' => $team->getAkademieUsers(),
+            'kurse' => $kurse,
         ]);
     }
 
@@ -249,7 +270,7 @@ class TeamController extends AbstractController
         return $this->render('team/member.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Mitglieder verwalten',
+            'title' => 'Benutzer verwalten',
             'data' => $team,
         ]);
     }
@@ -281,21 +302,30 @@ class TeamController extends AbstractController
                 foreach ($lines as $line) {
                     $newMember = trim($line);
                     $user = $inviteService->newUser($newMember);
-                    if ($user->getTeam() === null && $request->get('type') === 'odc') {
-                        $user->setTeam($team);
-                        $em->persist($user);
-                    } elseif ($user->getAdminUser() === null && $request->get('type') === 'academy') {
-                        $user->setAkademieUser($team);
-                        $em->persist($user);
+
+                    switch ($request->get('type')) {
+                        case 'odc':
+                            if ($user->getTeam() === null) {
+                                $user->setTeam($team);
+                                $em->persist($user);
+                                $target = $this->generateUrl('team_mitglieder');
+                                break;
+                            }
+                        case 'academy':
+                            if ($user->getAdminUser() === null) {
+                                $user->setAkademieUser($team);
+                                $em->persist($user);
+                                $target = $this->generateUrl('akademie_admin') . '#user';
+                                break;
+                            }
+                        default:
+                            $target = $this->generateUrl('team_mitglieder');
+                            break;
                     }
                 }
-                $em->flush();
-                if ($request->get('type') === 'academy') {
-                    return $this->redirectToRoute('akademie_admin');
-                } else {
-                    return $this->redirectToRoute('team_mitglieder');
-                }
             }
+            $em->flush();
+            return $this->redirect($target);
         }
 
         return $this->render('team/modalViewUser.html.twig', array('form' => $form->createView(), 'title' => $request->get('title'), 'type' => $request->get('type')));
@@ -314,14 +344,29 @@ class TeamController extends AbstractController
 
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('id' => $request->get('id')));
 
-        if ($this->getUser() !== $user && $user->getTeam() === $this->getUser()->getTeam()) {
-            $user->setTeam(null);
-            $user->setAdminUser(null);
+
+        switch ($request->get('type')) {
+            case 'academy' :
+                $user->setAkademieUser(null);
+                $target = $this->generateUrl('akademie_admin') . '#user';
+                break;
+            case 'odc':
+                if ($this->getUser() !== $user && $user->getTeam() === $this->getUser()->getTeam()) {
+                    $user->setTeam(null);
+                    $user->setAdminUser(null);
+                    $target = $this->generateUrl('team_mitglieder');
+                }
+                break;
+            default:
+                $target = $this->generateUrl('team_mitglieder');
+                break;
         }
+
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
-        return $this->redirectToRoute('team_mitglieder');
+        return $this->redirect($target);
     }
 
     /**
