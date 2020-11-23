@@ -40,7 +40,11 @@ Folgende Parameter stehen in den odif Dateien zum Import zur Verfügung und müs
 
 # Breaking Changes
 #### von 1.12.X auf 1.13.X
-* Es müssen alle Default Werte angepasst werden, da diese nun nicht mehr auf das Default Team mit der id=1 mappen sondern mit einer `null` definiert werden müssen.
+* nach einer umstellung des Default Teams muss eine migration der Datenbank vorgenommen werden. Für die Migration muss einmal der Command über die CLI durchgeführt werden.
+Danach werden alle Audit Ziele vom Default Team 1 auf null umgestellt.
+````
+php bin/console app:migrate:defaultTeam
+````
 
 # Lizenz
 Die aktuelle Version von Open Datenschutzcenter wird unter der GPL-3.0 License bereitgestellt.
