@@ -155,7 +155,6 @@ class TeamService
             }
         }
 
-        dump($data);
         return $data;
     }
 

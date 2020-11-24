@@ -37,12 +37,12 @@ class LoginController extends AbstractController
 
             // do something with all this new power!
             // e.g. $name = $user->getFirstName();
-            var_dump($user->getEmail()); die;
+            die;
             // ...
         } catch (IdentityProviderException $e) {
             // something went wrong!
             // probably you should return the reason to the user
-            var_dump($e->getMessage()); die;
+            die;
         }
     }
     /**

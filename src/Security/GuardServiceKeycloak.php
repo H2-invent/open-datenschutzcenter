@@ -7,21 +7,15 @@ namespace App\Security;
 use App\Entity\FosUser;
 use App\Entity\MyUser;
 use App\Entity\User;
-use App\Entity\UserBase;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use KnpU\OAuth2ClientBundle\Client\Provider\Auth0Client;
-use KnpU\OAuth2ClientBundle\Client\Provider\GithubClient;
-use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
 use KnpU\OAuth2ClientBundle\Client\Provider\KeycloakClient;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use League\OAuth2\Client\Provider\GoogleUser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
@@ -65,7 +59,6 @@ class GuardServiceKeycloak extends SocialAuthenticator
         $id = $keycloakUser->getId();
         $firstName = $keycloakUser->toArray()['given_name'];
         $lastName = $keycloakUser->toArray()['family_name'];
-        dump($id);
         // 1) have they logged in with keycloak befor then login the user
         $existingUser = $this->em->getRepository(User::class)->findOneBy(array('keycloakId' => $id));
         if ($existingUser) {
@@ -83,7 +76,6 @@ class GuardServiceKeycloak extends SocialAuthenticator
         $existingUser = null;
         $existingUser = $this->em->getRepository(User::class)->findOneBy(array('email' => $email));
         if ($existingUser) {
-            dump($existingUser);
             $existingUser->setKeycloakId($id);
             $existingUser->setLastLogin(new \DateTime());
             $existingUser->setEmail($email);
