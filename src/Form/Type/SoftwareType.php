@@ -52,11 +52,14 @@ class SoftwareType extends AbstractType
                 'choice_label' => 'name',
                 'class' => VVT::class,
                 'choices' => $options['processes'],
-                'label' => 'Mit dieser Software verbundene Verarbeitungen *',
+                'label' => 'Mit dieser Software verbundene Verarbeitungen',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => true,
-                'expanded' => true
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('datenweitergabe', EntityType::class, [
                 'choice_label' => 'gegenstand',
@@ -66,7 +69,10 @@ class SoftwareType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => true,
-                'expanded' => true
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('purchase', DateType::class, ['label' => 'Kaufdatum/Anschaffungsdatum', 'required' => false, 'translation_domain' => 'form', 'widget' => 'single_text'])
             ->add('build', TextType::class, ['label' => 'Version', 'required' => true, 'translation_domain' => 'form'])

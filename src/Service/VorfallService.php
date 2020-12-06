@@ -55,8 +55,8 @@ class VorfallService
 
     function createForm(Vorfall $vorfall, Team $team)
     {
-        $personen = $this->em->getRepository(VVTPersonen::class)->findAll();
-        $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findAll();
+        $personen = $this->em->getRepository(VVTPersonen::class)->findByTeam($team);
+        $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
 
         $form = $this->formBuilder->create(VorfallType::class, $vorfall, ['personen' => $personen, 'daten' => $kategorien]);
 
