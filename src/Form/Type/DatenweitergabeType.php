@@ -107,6 +107,7 @@ class DatenweitergabeType extends AbstractType
                 'label' => 'Software, die in der Weitergabe involviert ist',
                 'translation_domain' => 'form',
                 'multiple' => true,
+                'required' => false,
                 'attr' => [
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
