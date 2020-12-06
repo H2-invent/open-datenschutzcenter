@@ -115,6 +115,8 @@ class ParserService
                     if (!$grundlage) {
                         $grundlage = new VVTGrundlage();
                         $grundlage->setName($g);
+                        $grundlage->setTeam($team);
+                        $grundlage->setActiv(true);
                         $this->em->persist($grundlage);
                         $this->em->flush();
                     }
@@ -125,6 +127,8 @@ class ParserService
                     if (!$personen) {
                         $personen = new VVTPersonen();
                         $personen->setName($p);
+                        $personen->setTeam($team);
+                        $personen->setActiv(true);
                         $this->em->persist($personen);
                         $this->em->flush();
                     }
@@ -135,6 +139,8 @@ class ParserService
                     if (!$datenCategorie) {
                         $datenCategorie = new VVTDatenkategorie();
                         $datenCategorie->setName($d);
+                        $datenCategorie->setTeam($team);
+                        $datenCategorie->setActiv(true);
                         $this->em->persist($datenCategorie);
                         $this->em->flush();
                     }
@@ -145,6 +151,8 @@ class ParserService
                     if (!$risiko) {
                         $risiko = new VVTRisiken();
                         $risiko->setName($r);
+                        $risiko->setTeam($team);
+                        $risiko->setActiv(true);
                         $this->em->persist($risiko);
                         $this->em->flush();
                     }

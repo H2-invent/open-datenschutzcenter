@@ -1,16 +1,44 @@
 {% extends 'client_request/base.html.twig' %}
 
 {% block title %}
-    <title>Datenschutzcenter Kundenportal</title>
+    <title>{% trans %}Datenschutzcenter Kundenportal{% endtrans %}</title>
 {% endblock %}
 
 {% block content %}
     <div>
-        <a href="{{ path('client_index', {'slug':team.slug}) }}" class="btn btn-primary btn-sm">Zurück zum Portal</a>
+        <a href="{{ path('client_index', {'slug':team.slug}) }}"
+           class="btn btn-primary btn-sm">{% trans %}Zurück zum Portal{% endtrans %}</a>
         <div class="card card-body">
-            <h1 class="h1-responsive text-center">Neue Anfrage stellen</h1>
+            <h1 class="h1-responsive text-center">{% trans %}Neue Anfrage stellen{% endtrans %}</h1>
             {{ form_start(form) }}
-            {{ form_widget(form) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.item) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.password) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.pgp) }}
+
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h4 class="h4-responsive">{% trans %}Weitere Angaben zur Anfrage{% endtrans %}</h4>
+                </div>
+
+                <div class="card-body">
+                    <p>
+                        {% trans %}Für eine schnelle und unkomplizierte Identifikation, möchten wir Sie  darum bitten, uns folgende Daten zur Verifikation mitzuteilen:{% endtrans %}
+                    </p>
+                    {{ form_row(form.firstname) }}
+                    {{ form_row(form.lastname) }}
+                    {{ form_row(form.street) }}
+                    {{ form_row(form.city) }}
+                    {{ form_row(form.birthday) }}
+                </div>
+
+            </div>
+            {{ form_row(form.gdpr) }}
+            {{ form_row(form.save) }}
             {{ form_end(form) }}
         </div>
     </div>

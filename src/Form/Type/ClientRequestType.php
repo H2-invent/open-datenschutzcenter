@@ -12,6 +12,7 @@ use App\Entity\ClientRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -47,8 +48,13 @@ class ClientRequestType extends AbstractType
             ->add('name', TextType::class, ['label' => 'Name des Antragstellers', 'required' => true, 'translation_domain' => 'form'])
             ->add('password', PasswordType::class, ['label' => 'Zugangspasswort festlegen', 'required' => true, 'help' => 'Für jede Anfrage muss ein neues Passwort festgelegt werden. Bitte verwenden Sie ihr Passwort nur einmal um Ihre Daten bestmöglich zu schützen.', 'translation_domain' => 'form'])
             ->add('description', TextareaType::class, ['attr' => ['rows' => 10], 'label' => 'Beschreibung der Anfrage', 'required' => true, 'translation_domain' => 'form'])
-            ->add('pgp', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'OpenPDP Public Key für die Verschlüsselung von Emails. (Alle Benachrichtigungen werden mit Ihrem öffentlichen Schlüssel verschlüsselt)', 'required' => false, 'translation_domain' => 'form'])
+            ->add('pgp', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'OpenPGP Public Key für die Verschlüsselung von Emails.', 'required' => false, 'translation_domain' => 'form', 'help' => 'Alle Benachrichtigungen werden mit Ihrem öffentlichen PGP Schlüssel verschlüsselt'])
             ->add('gdpr', CheckboxType::class, ['label' => 'Ich habe die Datenschutzhinweise gelesen und akzeptiere die Verarbeitung meiner Daten. Diese Verarbeitung ist notwendig, damit wir Ihre Anfrage beantworten können.', 'required' => true, 'translation_domain' => 'form'])
+            ->add('firstname', TextType::class, ['label' => 'Vorname', 'required' => false, 'translation_domain' => 'form'])
+            ->add('lastname', TextType::class, ['label' => 'Nachname', 'required' => false, 'translation_domain' => 'form'])
+            ->add('birthday', DateType::class, ['label' => 'Geburtstag', 'required' => false, 'translation_domain' => 'form', 'widget' => 'single_text'])
+            ->add('street', TextType::class, ['label' => 'Straße und Hausnummer', 'required' => false, 'translation_domain' => 'form'])
+            ->add('city', TextType::class, ['label' => 'Postleitzahl und Stadt', 'required' => false, 'translation_domain' => 'form'])
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 

@@ -8,7 +8,14 @@
     <div class="card card-body">
         <ul class="nav nav-tabs" id="audit-tab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active text-center" id="home-tab" data-toggle="tab" href="#audit" role="tab"
+                <a class="nav-link active text-center" id="tasks-tab" data-toggle="tab" href="#tasks" role="tab"
+                   aria-controls="home"
+                   aria-selected="true"><img style="height: 30px" src="{{ asset('images/task.png') }}">
+                    <span
+                            class="d-none d-xl-block">Aufgaben</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-center" id="home-tab" data-toggle="tab" href="#audit" role="tab"
                    aria-controls="home"
                    aria-selected="true"><img style="height: 30px" src="{{ asset('images/pruefung.png') }}"> <span
                             class="d-none d-sm-block">Auditfragen</span></a>
@@ -52,7 +59,26 @@
         </ul>
 
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active " id="audit" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active" id="tasks" role="tabpanel" aria-labelledby="home-tab">
+                {% for a in assignTasks %}
+                    <a href="{{ path('task_edit',{'id':a.id}) }}">
+                        <div class="btn btn-block bg-tasks text-md-left mt-1">
+                            <div class="row">
+                                <div class="col-xl-1 d-none d-xl-block">
+                                    <img style="width: 21px" src="{{ asset('images/task.png') }}">
+                                </div>
+                                <div class="col-xl-6 col-md-7">
+                                    {{ a.team.name }}: {{ a.title }}
+                                </div>
+                                <div class="col-xl-3 col-md-5">
+                                    {{ a.createdAt|date('d.m.Y') }}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="audit" role="tabpanel" aria-labelledby="home-tab">
                 {% for a in assignAudit %}
                     {% if a.activ %}
                         <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
@@ -62,7 +88,7 @@
                                         <img style="width: 30px" src="{{ asset('images/pruefung.png') }}">
                                     </div>
                                     <div class="col-md-7">
-                                        {{ a.frage }}
+                                        {{ a.team.name }}: {{ a.frage }}
                                     </div>
                                     <div class="col-md-4">
                                         {{ a.status.name }}
@@ -83,7 +109,7 @@
                                         <img style="width: 30px" src="{{ asset('images/prozess.png') }}">
                                     </div>
                                     <div class="col-md-7">
-                                        {{ a.name }}
+                                        {{ a.team.name }}: {{ a.name }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.status.name }}
@@ -107,7 +133,7 @@
                                         <img style="width: 30px" src="{{ asset('images/dsta.png') }}">
                                     </div>
                                     <div class="col-md-7">
-                                        {{ a.beschreibung }}
+                                        {{ a.team.name }}: {{ a.beschreibung }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.vvt.name }}
@@ -131,7 +157,7 @@
                                         <img style="width: 30px" src="{{ asset('images/data.png') }}">
                                     </div>
                                     <div class="col-md-9">
-                                        {{ a.gegenstand }}
+                                        {{ a.team.name }}: {{ a.gegenstand }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.createdAt|date('d.m.Y') }}
@@ -152,7 +178,7 @@
                                         <img style="width: 30px" src="{{ asset('images/information.png') }}">
                                     </div>
                                     <div class="col-md-9">
-                                        {{ a.title }}
+                                        {{ a.team.name }}: {{ a.title }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.createdAt|date('d.m.Y') }}
@@ -173,7 +199,7 @@
                                         <img style="width: 30px" src="{{ asset('images/contract.png') }}">
                                     </div>
                                     <div class="col-md-9">
-                                        {{ a.title }}
+                                        {{ a.team.name }}: {{ a.title }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.createdAt|date('d.m.Y') }}
@@ -195,7 +221,7 @@
                                         <img style="width: 30px" src="{{ asset('images/monitor.png') }}">
                                     </div>
                                     <div class="col-md-5">
-                                        {{ a.name }}
+                                        {{ a.team.name }}: {{ a.name }}
                                     </div>
                                     <div class="col-md-4">
                                         Konfigurationen: {{ a.config|length }}

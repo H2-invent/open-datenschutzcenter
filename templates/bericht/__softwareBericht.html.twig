@@ -100,18 +100,18 @@
         <td>
             Verbundene Verarbeitungen
         </td>
-        <td>{% for data in d.vvts if data.activ %}{{ data.name }}<br>{% endfor %}</td>
+        <td>{% for data in d.vvts | filter(data => data.activ) %}{{ data.name }}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
             Verbundene Datenweitergaben
         </td>
-        <td>{% for data in d.datenweitergabe if data.activ %}{{ data.gegenstand }}<br>{% endfor %}</td>
+        <td>{% for data in d.datenweitergabe | filter(data => data.activ) %}{{ data.gegenstand }}<br>{% endfor %}</td>
     </tr>
 </table>
 <h4>Konfiguration</h4>
 <table style="width: 100%">
-    {% for c in d.config if c.activ %}
+    {% for c in d.config | filter(c => c.activ) %}
         <tr>
             <td>
                 <p>

@@ -73,17 +73,17 @@
         <td>
             Zugehörige Verarbeitungstätigkeit
         </td>
-        <td>{% for p in d.verfahren if p.activ %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for p in d.verfahren | filter(p => p.activ) %}{{ p.name }},<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
             Zugehörige Software und verbundene Verarbeitungstätigkeit
         </td>
         <td>
-            {% for p in d.software if p.activ %}
+            {% for p in d.software | filter(p => p.activ) %}
                 {{ p.name }}
                 <ul>
-                    {% for d in p.vvts if d.activ %}
+                    {% for d in p.vvts | filter(d => d.activ) %}
                         <li>{{ d.name }}</li>
                     {% endfor %}
                 </ul>

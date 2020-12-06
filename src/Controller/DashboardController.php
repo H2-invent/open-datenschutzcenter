@@ -84,7 +84,7 @@ class DashboardController extends AbstractController
         $assignAudit = $this->getUser()->getAssignedAudits()->toarray();
         $assignDsfa = $this->getUser()->getAssignedDsfa()->toarray();
         $assignDatenweitergabe = $this->getUser()->getAssignedDatenweitergaben()->toarray();
-        $assignTasks = $this->getUser()->getTasks()->toarray();
+        $assignTasks = $this->getDoctrine()->getRepository(Task::class)->findActivByUser($this->getUser());
 
         $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findActivBuchungenByUser($this->getUser());
 
@@ -119,16 +119,17 @@ class DashboardController extends AbstractController
      */
     public function noTeam()
     {
-        if ($this->getUser()->getTeam()) {
-            return $this->redirectToRoute('dashboard');
+        if ($this->getUser()) {
+            if ($this->getUser()->getTeam()) {
+                return $this->redirectToRoute('dashboard');
+            }
+            if ($this->getUser()->getAkademieUser()) {
+                return $this->redirectToRoute('akademie');
+            }
+            if (count($this->getUser()->getTeamDsb()) > 0) {
+                return $this->redirectToRoute('dsb');
+            }
         }
-        if ($this->getUser()->getAkademieUser()) {
-            return $this->redirectToRoute('akademie');
-        }
-        if (count($this->getUser()->getTeamDsb()) > 0) {
-            return $this->redirectToRoute('dsb');
-        }
-
         return $this->render('dashboard/noteam.html.twig', [
             'user' => $this->getUser(),
         ]);

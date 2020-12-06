@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\AuditTomZiele;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method AuditTomZiele|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,17 +47,14 @@ class AuditTomZieleRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function findAllTagetsByTeam($value)
+    public function findByTeam($value)
     {
         return $this->createQueryBuilder('a')
-            ->where('a.team = 1')
-            ->orWhere('a.team = :val')
+            ->where('a.team is null OR a.team = :val')
             ->andWhere('a.activ = 1')
             ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
     public function findActivByTeam($value)

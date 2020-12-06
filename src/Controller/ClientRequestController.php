@@ -173,7 +173,7 @@ class ClientRequestController extends AbstractController
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
             return $this->redirectToRoute('client_requests');
         }
-        $content = 'Anfrage wurde geändert | Alte Nachricht: ' . $clientRequest->getTitle() . '| Email: ' . $clientRequest->getEmail() . '| Name: ' . $clientRequest->getName() . '| Grund: ' . $clientRequest->getItemString() . '| Beschreibung: ' . $clientRequest->getDescription();
+        $content = 'Anfrage wurde geändert || Alte Nachricht: ' . $clientRequest->getTitle() . '| Email: ' . $clientRequest->getEmail() . '| Name: ' . $clientRequest->getName() . '| Grund: ' . $clientRequest->getItemString() . '| Beschreibung: ' . $clientRequest->getDescription() . '| Zusätzliche Angaben: ' . $clientRequest->getFirstname() . ' ' . $clientRequest->getLastname() . ', Geburtstag: ' . $clientRequest->getBirthday()->format('d.m.Y') . ', Adresse: ' . $clientRequest->getStreet() . ' ' . $clientRequest->getCity();
 
         $form = $this->createForm(ClientRequestType::class, $clientRequest);
         $form->remove('password');
@@ -247,14 +247,21 @@ class ClientRequestController extends AbstractController
             $errors = $validator->validate($clientRequest);
             if (count($errors) == 0) {
                 $em->persist($clientRequest);
-                $em->flush();
+
                 if ($clientRequest->getPgp()) {
                     $content = $this->renderView('email/client/notificationVerifyEncrypt.html.twig', ['data' => $clientRequest]);
-                    $notificationService->sendEncrypt($clientRequest->getPgp(), $content, $clientRequest->getEmail(), 'Neue Nachricht vom Datenschutzcenter');
-                } else {
+                    try {
+                        $notificationService->sendEncrypt($clientRequest->getPgp(), $content, $clientRequest->getEmail(), 'Neue Nachricht vom Datenschutzcenter');
+                    } catch (\Exception $e) {
+                        $clientRequest->setPgp(null);
+                        $em->persist($clientRequest);
+                    }
+                }
+                if (!$clientRequest->getPgp()) {
                     $content = $this->renderView('email/client/notificationVerify.html.twig', ['data' => $clientRequest, 'title' => $clientRequest->getTitle(), 'team' => $clientRequest->getTeam()]);
                     $notificationService->sendRequestVerify($content, $clientRequest->getEmail());
                 }
+                $em->flush();
                 return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
             }
         }

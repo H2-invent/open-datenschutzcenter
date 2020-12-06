@@ -50,10 +50,12 @@ class BerichtController extends AbstractController
     {
         $req = $request->get('id');
         $team = $this->getUser()->getTeam();
+        $doc = 'Verzeichnis der Verarbeitungstätigkeiten';
 
         if ($req) {
             $vvt = $this->getDoctrine()->getRepository(VVT::class)->findBy(array('id' => $req));
             $title = 'Export der Verarbeitungstätigkeit ' . $vvt[0]->getName();
+            $doc = $vvt[0]->getName();
         } else {
             $vvt = $this->getDoctrine()->getRepository(VVT::class)->findBy(array('team' => $team, 'activ' => true));
             $title = 'Verzeichnis der Verarbeitungstätigkeiten von ' . $team->getName();
@@ -78,7 +80,7 @@ class BerichtController extends AbstractController
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Verarbeitungsverziechnis.pdf");
+        $response = $wrapper->getStreamResponse($html, $doc . ".pdf");
         $response->send();
     }
 

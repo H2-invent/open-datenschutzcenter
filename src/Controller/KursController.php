@@ -16,23 +16,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class KursController extends AbstractController
 {
     /**
-     * @Route("/kurse", name="kurse")
-     */
-    public function index(SecurityService $securityService)
-    {
-        $team = $this->getUser()->getAdminUser();
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        $daten = $this->getDoctrine()->getRepository(AkademieKurse::class)->findKurseByTeam($team);
-        return $this->render('kurs/index.html.twig', [
-            'table' => $daten,
-            'titel' => 'Alle erstellen Kurse',
-        ]);
-    }
-
-    /**
      * @Route("/kurs/new", name="akademie_kurs_new")
      */
     public function addKurs(ValidatorInterface $validator, Request $request, SecurityService $securityService)
@@ -148,11 +131,11 @@ class KursController extends AbstractController
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
-            return $this->redirectToRoute('kurse');
+            return $this->redirectToRoute('akademie_kurs');
         }
 
         $akademieService->removeKurs($team, $kurs);
 
-        return $this->redirectToRoute('kurse');
+        return $this->redirectToRoute('akademie_admin');
     }
 }

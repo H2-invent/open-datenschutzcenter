@@ -8,16 +8,18 @@
 
 namespace App\Controller;
 
+use App\Entity\AkademieKurse;
 use App\Entity\AuditTomAbteilung;
 use App\Entity\AuditTomZiele;
 use App\Entity\User;
 use App\Form\Type\AbteilungType;
 use App\Form\Type\DsbType;
 use App\Form\Type\NewMemberType;
+use App\Form\Type\NewType;
 use App\Form\Type\TeamType;
-use App\Form\Type\ZielType;
 use App\Service\InviteService;
 use App\Service\SecurityService;
+use App\Service\TeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +30,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_edit", name="team_edit")
      */
-    public function edit(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function index(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -57,14 +59,15 @@ class TeamController extends AbstractController
             'controller_name' => 'TeamController',
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Team bearbeiten'
+            'title' => 'Stammdaten'
         ]);
     }
 
+
     /**
-     * @Route("/team_ziel", name="team_ziel")
+     * @Route("/team_custom", name="team_custom")
      */
-    public function addZiel(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function customShow(ValidatorInterface $validator, Request $request, SecurityService $securityService, TeamService $teamService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -72,67 +75,97 @@ class TeamController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findActivByTeam($team);
+        $data = $teamService->show($team);
 
-        if ($request->get('id')) {
-            $ziel = $this->getDoctrine()->getRepository(AuditTomZiele::class)->find($request->get('id'));
+        return $this->render('team/custom.html.twig', [
+            'title' => 'Vorgaben für Formulare anpassen',
+            'data' => $data,
+            'edit' => false
+        ]);
+    }
 
-        } else {
-            $ziel = new AuditTomZiele();
-            $ziel->setActiv(true);
-            $ziel->setTeam($team);
+    /**
+     * @Route("/akademie/admin", name="akademie_admin")
+     */
+    public function academyAdmin(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
+    {
+        $team = $this->getUser()->getAdminUser();
+
+        // Admin Route only
+        if (!$securityService->adminCheck($this->getUser(), $team)) {
+            return $this->redirectToRoute('dashboard');
         }
-        $form = $this->createForm(ZielType::class, $ziel);
+        $kurse = $this->getDoctrine()->getRepository(AkademieKurse::class)->findKurseByTeam($team);
+
+        return $this->render('team/academy.html.twig', [
+            'title' => 'Akademie verwalten',
+            'data' => $team->getAkademieUsers(),
+            'kurse' => $kurse,
+        ]);
+    }
+
+
+    /**
+     * @Route("/team_custom/create", name="team_custom_create")
+     */
+    public function customCreate(ValidatorInterface $validator, Request $request, SecurityService $securityService, TeamService $teamService)
+    {
+
+        $team = $this->getUser()->getAdminUser();
+
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $data1 = $teamService->create($request->get('type'), $request->get('id'), $team);
+
+        $form = $this->createForm(NewType::class, $data1);
         $form->handleRequest($request);
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $errors = $validator->validate($data);
+
             if (count($errors) == 0) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($data);
                 $em->flush();
-                $text = 'Überprüfe Sie Ihre Eingabe';
-                return $this->redirectToRoute('team_ziel');
+                return $this->redirect($this->generateUrl('team_custom') . '#' . $request->get('type'));
             }
         }
-        $default = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findBy(array('team' => 1));
-        return $this->render('team/ziel.html.twig', [
-            'form' => $form->createView(),
-            'errors' => $errors,
-            'title' => 'Schutzziele',
-            'data' => $ziele,
-            'default' => $default,
-        ]);
+
+        return $this->render('team/modalView.html.twig', array('form' => $form->createView(), 'title' => $request->get('title'), 'type' => $request->get('type'), 'id' => $request->get('id')));
     }
 
+
     /**
-     * @Route("/team_ziel/deaktivieren", name="team_ziel_deativate")
+     * @Route("/team_custom/deaktivieren", name="team_custom_deativate")
      */
-    public function zielDeactivate(Request $request, SecurityService $securityService)
+    public function customDeactivate(Request $request, SecurityService $securityService, TeamService $teamService)
     {
         $team = $this->getUser()->getAdminUser();
 
         if ($securityService->adminCheck($this->getUser(), $team) === false) {
-            return $this->redirectToRoute('team_ziel');
+            return $this->redirectToRoute('team_custom');
         }
 
-        $ziel = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findOneBy(array('id' => $request->get('id')));
-        if ($ziel->getTeam() == $this->getUser()->getTeam()) {
-            $ziel->setActiv(false);
+        $data = $teamService->delete($request->get('type'), $request->get('id'));
+
+        if ($data->getTeam() == $this->getUser()->getTeam()) {
+            $data->setActiv(false);
         }
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($ziel);
+        $em->persist($data);
         $em->flush();
-        return $this->redirectToRoute('team_ziel');
+        return $this->redirectToRoute('team_custom');
     }
+
 
     /**
      * @Route("/team_abteilungen", name="team_abteilungen")
      */
-    public function addAbteilungen(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function abteilungenAdd(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -176,7 +209,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_abteilungen/deaktivieren", name="team_abteilungen_deativate")
      */
-    public function addAbteilungenDeactivate(Request $request, SecurityService $securityService)
+    public function abteilungenRemove(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -198,8 +231,9 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_mitglieder", name="team_mitglieder")
      */
-    public function addMitglieder(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
+    public function mitgliederAdd(ValidatorInterface $validator, Request $request, InviteService $inviteService, SecurityService $securityService)
     {
+
         $team = $this->getUser()->getAdminUser();
 
         if ($securityService->adminCheck($this->getUser(), $team) === false) {
@@ -221,14 +255,10 @@ class TeamController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 foreach ($lines as $line) {
                     $newMember = trim($line);
-                    $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('email' => $newMember));
-                    if (!$user) {
-                        $user = $inviteService->newUser($newMember, $team);
-                    }
+                    $user = $inviteService->newUser($newMember);
                     if ($user->getTeam() === null) {
                         $user->setTeam($team);
                         $em->persist($user);
-
                     }
                 }
                 $em->flush();
@@ -240,15 +270,71 @@ class TeamController extends AbstractController
         return $this->render('team/member.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Mitglieder verwalten',
-            'data' => $team->getMembers(),
+            'title' => 'Benutzer verwalten',
+            'data' => $team,
         ]);
+    }
+
+    /**
+     * @Route("/team_mitglieder/create", name="team_mitglieder_create")
+     */
+    public function teamMemberCreate(Request $request, SecurityService $securityService, TeamService $teamService, InviteService $inviteService)
+    {
+
+        $team = $this->getUser()->getAdminUser();
+
+        if ($securityService->adminCheck($this->getUser(), $team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $newMember = array();
+        $form = $this->createForm(NewMemberType::class, $newMember);
+        $form->handleRequest($request);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $newMembers = $form->getData();
+            $lines = explode("\n", $newMembers['member']);
+
+            if (!empty($lines)) {
+                $em = $this->getDoctrine()->getManager();
+                foreach ($lines as $line) {
+                    $newMember = trim($line);
+                    $user = $inviteService->newUser($newMember);
+
+                    switch ($request->get('type')) {
+                        case 'odc':
+                            if ($user->getTeam() === null) {
+                                $user->setTeam($team);
+                                $em->persist($user);
+                                $target = $this->generateUrl('team_mitglieder');
+                                break;
+                            }
+                        case 'academy':
+                            if ($user->getAdminUser() === null) {
+                                $user->setAkademieUser($team);
+                                $em->persist($user);
+                                $target = $this->generateUrl('akademie_admin') . '#user';
+                                break;
+                            }
+                        default:
+                            $target = $this->generateUrl('team_mitglieder');
+                            break;
+                    }
+                }
+            }
+            $em->flush();
+            return $this->redirect($target);
+        }
+
+        return $this->render('team/modalViewUser.html.twig', array('form' => $form->createView(), 'title' => $request->get('title'), 'type' => $request->get('type')));
     }
 
     /**
      * @Route("/team_mitglieder/remove", name="team_mitglieder_remove")
      */
-    public function removeMitglieder(Request $request, SecurityService $securityService)
+    public function mitgliederRemove(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -258,20 +344,35 @@ class TeamController extends AbstractController
 
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('id' => $request->get('id')));
 
-        if ($this->getUser() !== $user && $user->getTeam() === $this->getUser()->getTeam()) {
-            $user->setTeam(null);
-            $user->setAdminUser(null);
+
+        switch ($request->get('type')) {
+            case 'academy' :
+                $user->setAkademieUser(null);
+                $target = $this->generateUrl('akademie_admin') . '#user';
+                break;
+            case 'odc':
+                if ($this->getUser() !== $user && $user->getTeam() === $this->getUser()->getTeam()) {
+                    $user->setTeam(null);
+                    $user->setAdminUser(null);
+                    $target = $this->generateUrl('team_mitglieder');
+                }
+                break;
+            default:
+                $target = $this->generateUrl('team_mitglieder');
+                break;
         }
+
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
-        return $this->redirectToRoute('team_mitglieder');
+        return $this->redirect($target);
     }
 
     /**
      * @Route("/team_mitglieder/admin", name="team_mitglieder_admin")
      */
-    public function adminMitglieder(Request $request, SecurityService $securityService)
+    public function adminToggle(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -298,7 +399,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/ext_team_dsb", name="team_dsb")
      */
-    public function addDsb(Request $request, InviteService $inviteService, SecurityService $securityService)
+    public function dsbAdd(Request $request, InviteService $inviteService, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 
@@ -339,7 +440,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/team_dsb/remove", name="team_dsb_remove")
      */
-    public function removeDsb(Request $request, SecurityService $securityService)
+    public function dsbRemove(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
 

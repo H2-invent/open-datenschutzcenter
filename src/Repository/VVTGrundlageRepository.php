@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\VVTGrundlage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method VVTGrundlage|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +47,14 @@ class VVTGrundlageRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByTeam($value)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.team is null OR a.team = :val')
+            ->andWhere('a.activ = 1')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
 }

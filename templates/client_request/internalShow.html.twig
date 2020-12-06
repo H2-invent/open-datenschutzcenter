@@ -47,6 +47,13 @@
             {% trans %}Erstellt am{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
             {% trans %}Grund der Anfrage{% endtrans %}: {{ data.itemstring }}
         </p>
+
+        <p>
+            <i>{% trans %}Weitere Angaben{% endtrans %}</i><br>
+            {% trans %}Name{% endtrans %}: {{ data.firstname }} {{ data.lastname }}<br>
+            {% trans %}Adresse{% endtrans %}: {{ data.street }}, {{ data.city }}<br>
+            {% if data.birthday %}{% trans %}Geburtstag{% endtrans %}: {{ data.birthday|date('d.m.Y') }}<br>{% endif %}
+        </p>
         <div>
             <b>{% trans %}Beschreibung{% endtrans %}:</b><br>
             {{ data.description|nl2br }}

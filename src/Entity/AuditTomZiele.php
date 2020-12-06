@@ -24,7 +24,7 @@ class AuditTomZiele
 
     /**
      * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="ziele")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $team;
 
@@ -55,7 +55,7 @@ class AuditTomZiele
         return $this->team;
     }
 
-    public function setTeam(?Team $team): self
+    public function setTeam(?Team $team): ?self
     {
         $this->team = $team;
 

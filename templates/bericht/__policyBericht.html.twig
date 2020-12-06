@@ -54,7 +54,7 @@
         <td>
             Betroffene Arbeitsvorgänge und Fachverfahren
         </td>
-        <td>{% for p in d.processes if p.activ %}{{ p.name }}<br>{% endfor %}</td>
+        <td>{% for p in d.processes | filter(p => p.activ) %}{{ p.name }}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>

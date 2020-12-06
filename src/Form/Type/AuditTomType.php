@@ -12,7 +12,6 @@ use App\Entity\AuditTom;
 use App\Entity\AuditTomAbteilung;
 use App\Entity\AuditTomStatus;
 use App\Entity\AuditTomZiele;
-use App\Entity\Team;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -36,27 +35,37 @@ class AuditTomType extends AbstractType
                 'choice_label' => 'name',
                 'class' => AuditTomZiele::class,
                 'choices' => $options['ziele'],
-                'label'=>'Schutzziele',
+                'label' => 'Schutzziele',
                 'translation_domain' => 'form',
-                'multiple' =>true,
-                'expanded' => true,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('abteilung', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => AuditTomAbteilung::class,
                 'choices' => $options['abteilungen'],
-                'label'=>'Abteilungen',
+                'label' => 'Abteilungen',
                 'translation_domain' => 'form',
-                'multiple' =>true,
-                'expanded' => true,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('status', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => AuditTomStatus::class,
                 'choices' => $options['status'],
-                'label'=>'Status',
+                'label' => 'Status',
                 'translation_domain' => 'form',
-                'multiple' =>false,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('tomAttribut', TextType::class, ['label' => 'Attribut für die globale TOM', 'required' => false, 'translation_domain' => 'form'])
             ->add('tomZiel', ChoiceType::class, [
@@ -78,11 +87,15 @@ class AuditTomType extends AbstractType
                     'Verfügbarkeitskontrolle' => 14,
                     'Wiederherstellbarkeit' => 15,
                     'Evaluierung' => 16,
-                    ],
-                'label'=>'TOM Possition des Attributes',
+                ],
+                'label' => 'TOM Possition des Attributes',
                 'translation_domain' => 'form',
                 'required' => false,
-                'multiple' =>false,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
             ->add('kategorie', ChoiceType::class, [
                 'choices'  => [
@@ -113,10 +126,14 @@ class AuditTomType extends AbstractType
                     'GoBD' => 'GoBD',
                     'Sonstiges' => 'Sonstiges',
                 ],
-                'label'=>'Kategorie',
+                'label' => 'Kategorie',
                 'translation_domain' => 'form',
                 'required' => true,
-                'multiple' =>false,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'selectpicker',
+                    'data-live-search' => 'true'
+                ],
             ])
 
             ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Speichern', 'translation_domain' => 'form']);

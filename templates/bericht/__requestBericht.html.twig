@@ -65,6 +65,16 @@
         </td>
         <td>{{ d.validUser?'Ja':'Nein' }} {% if d.validuser %}{{ 'bei'|trans }} {{ d.userValidBy.email }}{% endif %}</td>
     </tr>
+    <tr>
+        <td>
+            Weitere Angaben
+        </td>
+        <td>
+            Name: {{ d.firstname }} {{ d.lastname }}<br>
+            Adresse: {{ d.street }}, {{ d.city }}<br>
+            Geburtstag: {% if d.birthday %}{{ d.birthday|date('d.m.Y') }}{% endif %}
+        </td>
+    </tr>
 </table>
 <h3>
     Protokoll

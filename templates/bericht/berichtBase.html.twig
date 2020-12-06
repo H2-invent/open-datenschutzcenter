@@ -37,8 +37,25 @@
 <main>
     <div style="font-family: Helvetica">
         <h1 style="margin-top: 200px">{{ titel }}</h1>
-        <h3 style="margin-top: 50px">Verantwortliche Stelle: {{ team.name }}</h3>
-        <h4>{{ team.signature|nl2br }}</h4>
+        <h3 style="margin-top: 50px">Verantwortliche Stelle:</h3>
+        <h4>
+            {{ team.name }}<br>
+            {{ team.strasse }}<br>
+            {{ team. plz }} {{ team.stadt }}
+        </h4>
+
+        <p>-------------------------</p>
+        <h4>
+            {% trans %}Tel.{% endtrans %}: {{ team.telefon }}<br>
+            {% trans %}Email{% endtrans %}: {{ team.email }}
+        </h4>
+        <p>-------------------------</p>
+        <h4>
+            {% trans %}Vertreten durch{% endtrans %}: {{ team.ceo }}<br>
+            {% if team.dsb %}{% trans %}Datenschutzbeauftragter{% endtrans %}: {{ team.dsb }}{% endif %}
+        </h4>
+        <p>-------------------------</p>
+
         <h5 style="margin-top: 40px">Export erstellt am: {{ "now"|date('d.m.Y H:i') }}</h5>
         <h5>Version erstellt von: {{ app.user.email }}</h5>
 

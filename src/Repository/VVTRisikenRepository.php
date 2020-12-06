@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\VVTRisiken;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method VVTRisiken|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +47,14 @@ class VVTRisikenRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByTeam($value)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.team is null OR a.team = :val')
+            ->andWhere('a.activ = 1')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
 }

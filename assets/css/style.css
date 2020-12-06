@@ -12,7 +12,7 @@
     --contrast-base: rgb(85, 83, 80);
     --contrast-dark: rgb(23, 21, 18);
     --contrast-light: rgb(144, 142, 140);
-    --contrast-extra-light: rgb(232, 228, 226);
+    --contrast-extra-light: rgb(255, 255, 255);
     --contrast-white: rgb(253, 253, 253);
 }
 
@@ -104,7 +104,7 @@
 
 body {
     font-family: 'Poppins';
-    background: var(--contrast-extra-light);
+    background: var(--contrast-white);
 }
 
 p {
@@ -129,13 +129,21 @@ a:focus {
     border: none;
     border-radius: 0;
     margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-btn {
     box-shadow: none;
     outline: none !important;
     border: none;
+}
+
+.navbar-btn-navigation {
+    background: linear-gradient(90deg, #1CB5E0 0%, #000880 100%);
+    color: #fff
+}
+
+.navbar-btn-navigation:hover {
+    color: #efefef !important;
 }
 
 .line {
@@ -162,8 +170,10 @@ a:focus {
     left: -250px;
     height: 100vh;
     z-index: 999;
-    background: var(--contrast-light);
-    color: #fff;
+    background-image: url("/images/navigation.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #000000;
     transition: all 0.3s;
     overflow-y: scroll;
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
@@ -211,7 +221,7 @@ a:focus {
 
 #sidebar .sidebar-header {
     padding: 20px;
-    background: var(--contrast-light);
+
 }
 
 #sidebar ul.components {
@@ -231,14 +241,14 @@ a:focus {
 }
 
 #sidebar ul li a:hover {
-    color: #7386D5;
+    color: var(--main-color);
     background: #fff;
 }
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
     color: #fff;
-    background: #95999c;
+    background: var(--main-color);
 }
 
 a[data-toggle="collapse"] {
@@ -256,30 +266,12 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #6d7fcc;
-}
-
-ul.CTAs {
-    padding: 20px;
-}
-
-ul.CTAs a {
-    text-align: center;
-    font-size: 0.9em !important;
-    display: block;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
-
-a.download {
-    background: #fff;
-    color: #7386D5;
 }
 
 a.article,
 a.article:hover {
     background: #6d7fcc !important;
-    color: #fff !important;
+    color: #2fff0c !important;
 }
 
 /* ---------------------------------------------------

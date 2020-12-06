@@ -23,8 +23,7 @@
             {% if not data.validUser %}
                 <div class="note-danger text-center mt-2">
                     {% trans %}WICHTIG!<br>
-                        Zum aktuellen Zeitpunkt konnten wir Ihre Identidät noch nicht verifizieren. Für uns ist der Datenschutz sehr wichtig. Je nach Grund der Anfrage werden wir Sie bitten weitere Informationen zu Ihrer Person zu liefern, damit wir Ihre Identidät zweifelsfrei feststellen können.
-                        Ohne Identifikation können wir Ihnen nur einen Negativbescheid zukommenlassen.{% endtrans %}
+                        Zum aktuellen Zeitpunkt konnten wir Ihre Identidät noch nicht verifizieren. Für uns ist der Datenschutz sehr wichtig. Je nach Grund der Anfrage werden wir Sie bitten weitere Informationen zu Ihrer Person zu liefern, damit wir Ihre Identidät zweifelsfrei feststellen können.{% endtrans %}
                 </div>
             {% endif %}
             {% if data.pgp %}
@@ -39,6 +38,13 @@
                 {% trans %}Name{% endtrans %}: {{ data.name }} {% if data.validUser %}✅{% endif %}<br>
                 {% trans %}Erstellt am{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
                 {% trans %}Grund{% endtrans %}: {{ data.itemstring }}
+            </p>
+            <p>
+                <i>{% trans %}Weitere Angaben{% endtrans %}</i><br>
+                {% trans %}Name{% endtrans %}: {{ data.firstname }} {{ data.lastname }}<br>
+                {% trans %}Adresse{% endtrans %}: {{ data.street }}, {{ data.city }}<br>
+                {% if data.birthday %}{% trans %}Geburtstag{% endtrans %}: {{ data.birthday|date('d.m.Y') }}
+                    <br>{% endif %}
             </p>
             <p>
                 {% trans %}Beschreibung{% endtrans %}:<br> {{ data.description|nl2br }}

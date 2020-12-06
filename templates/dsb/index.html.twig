@@ -5,23 +5,25 @@
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">DSB Teams</h2>
+    <div class="container">
+        <h2 class="h2-responsive">DSB Teams</h2>
 
-    <div class="card card-body">
-        {% for t in teams %}
-            <div class="row">
-                <div class="col-6">
-                    <b>{{ t.name }}</b>, {{ t.strasse }} {{ t.plz }} {{ t.stadt }}
+        <div class="card card-body">
+            {% for t in teams %}
+                <div class="row text-center text-md-left">
+                    <div class="col-md-6">
+                        <b>{{ t.name }}</b>, {{ t.strasse }} {{ t.plz }} {{ t.stadt }}
+                    </div>
+                    <div class="col-md-3">
+                        {% if app.user.team == t %}<span
+                                class="badge-success z-depth-1 pl-1 pr-1">Aktuelles Team</span>{% endif %}
+                    </div>
+                    <div class="col-md-3 mt-2 mt-md-0">
+                        <a href="{{ path('dsb_change', {'id':t.id}) }}" class="btn btn-sm btn-elegant m-0">Wechseln</a>
+                    </div>
                 </div>
-                <div class="col-3">
-                    {% if app.user.team == t %}<span
-                            class="badge-success z-depth-1 pl-1 pr-1">Aktuelles Team</span>{% endif %}
-                </div>
-                <div class="col-3">
-                    <a href="{{ path('dsb_change', {'id':t.id}) }}" class="btn btn-sm btn-elegant m-0">Wechseln</a>
-                </div>
-            </div>
-            <hr>
-        {% endfor %}
+                <hr>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
