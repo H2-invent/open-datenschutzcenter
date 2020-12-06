@@ -36,6 +36,7 @@ class MigrateDefaultTeamCommand extends Command
 
         foreach ($auditZiele as $ziel) {
             $ziel->setTeam(null);
+            $ziel->setActiv(true);
             $this->em->persist($ziel);
         }
 

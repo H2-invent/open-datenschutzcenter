@@ -42,7 +42,7 @@ Alle Dokumente können über Formulare erfasst werden. Die Datenwerden in einer 
 
 ### Navigation
 Über die Navigation kann schnell auf jeden Bereich zugegriffen werden. Als Administrator des Mandanten stehen zusätzliche Funktionen zur Verfügung.
-![Forms](docs/images/navigation.jpg)
+![Navigation](docs/images/navigation.jpg)
 
 
 
@@ -58,7 +58,7 @@ Folgende Parameter stehen in den odif Dateien zum Import zur Verfügung und müs
 * [ODIF Import Datei](https://github.com/H2-invent/open-datenschutzcenter/wiki/ODIF-Datei)
 
 # Migrations
-#### von 1.12.X auf 1.13.X
+#### von 1.12.X auf 2.X
 * nach einer umstellung des Default Teams muss eine migration der Datenbank vorgenommen werden. Für die Migration muss einmal der Command über die CLI durchgeführt werden.
 Danach werden alle Audit Ziele vom Default Team 1 auf null umgestellt.
 ````
@@ -66,5 +66,5 @@ php bin/console app:migrate:defaultTeam
 ````
 
 # Lizenz
-Die aktuelle Version von Open Datenschutzcenter wird unter der GPL-3.0 License bereitgestellt.
+Die aktuelle Version von Open Datenschutzcenter wird unter der AGPL-3.0 License bereitgestellt. Weitere Informationen finden Sie in der LICENSE Datei in diesem Repo.
 Copyright (c) 2020 H2 invent
