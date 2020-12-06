@@ -15,7 +15,6 @@ return [
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
     Oneup\FlysystemBundle\OneupFlysystemBundle::class => ['all' => true],
-    Shivas\VersioningBundle\ShivasVersioningBundle::class => ['all' => true],
     Ambta\DoctrineEncryptBundle\AmbtaDoctrineEncryptBundle::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Nucleos\DompdfBundle\NucleosDompdfBundle::class => ['all' => true],
