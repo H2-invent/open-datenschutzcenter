@@ -11,3 +11,4 @@ twig:
         dataPrivacy: '%env(dataPrivacy)%'
         supportMail: '%env(SUPPORT_MAIL)%'
         demo: '%env(demo_installation)%'
+        laf_version: '%env(laF_version)%'
