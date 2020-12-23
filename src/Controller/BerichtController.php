@@ -48,6 +48,8 @@ class BerichtController extends AbstractController
      */
     public function berichtVvt(DompdfWrapper $wrapper, Request $request)
     {
+        set_time_limit(900);
+
         $req = $request->get('id');
         $team = $this->getUser()->getTeam();
         $doc = 'Verzeichnis der Verarbeitungstätigkeiten';
