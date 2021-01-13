@@ -73,7 +73,6 @@ class BerichtController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/vvt.html.twig', [
             'daten' => $vvt,

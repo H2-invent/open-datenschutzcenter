@@ -55,7 +55,7 @@ class SoftwareType extends AbstractType
                 'label' => 'Mit dieser Software verbundene Verarbeitungen',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
@@ -68,7 +68,7 @@ class SoftwareType extends AbstractType
                 'label' => 'Mit dieser Software verbundene Datenweitergaben',
                 'translation_domain' => 'form',
                 'multiple' => true,
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
