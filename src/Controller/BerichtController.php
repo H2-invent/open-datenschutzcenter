@@ -48,6 +48,9 @@ class BerichtController extends AbstractController
      */
     public function berichtVvt(DompdfWrapper $wrapper, Request $request)
     {
+        ini_set('max_execution_time', '900');
+        ini_set('memory_limit', '512M');
+
         $req = $request->get('id');
         $team = $this->getUser()->getTeam();
         $doc = 'Verzeichnis der Verarbeitungstätigkeiten';
@@ -69,6 +72,7 @@ class BerichtController extends AbstractController
         if ($team === null || $vvt[0]->getTeam() !== $team) {
             return $this->redirectToRoute('dashboard');
         }
+
 
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/vvt.html.twig', [
