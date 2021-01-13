@@ -8,6 +8,7 @@ import '../css/app.css';
 import $ from 'jquery';
 import 'datatables.net-dt';
 import 'summernote/dist/summernote-bs4';
+import * as h2Button from 'h2-invent-apps';
 
 global.$ = global.jQuery = $;
 
@@ -20,6 +21,7 @@ import('moment');
 import('bootstrap-select');
 
 $(document).ready(function () {
+    h2Button.init();
     setTimeout(function () {
         $('#snackbar').addClass('show');
         setTimeout(function () {
