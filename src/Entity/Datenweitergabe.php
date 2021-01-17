@@ -59,7 +59,6 @@ class Datenweitergabe
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Assert\Date()
      * @Assert\NotBlank()
      */
     private $zeichnungsdatum;
