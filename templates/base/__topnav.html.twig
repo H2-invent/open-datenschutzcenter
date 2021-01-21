@@ -6,8 +6,8 @@
        data-target="#sideModalTR">
         <img src="{{ asset('images/profil.svg') }}" style="max-height: 30px">
     </a>
-    <a href="{{ path('app_logout') }}" class="d-none d-lg-block"><img src="{{ asset('images/logout.svg') }}"
-                                                                      style="max-height: 30px"></a>
+    <a href="{{ path('logout_keycloak') }}" class="d-none d-lg-block"><img src="{{ asset('images/logout.svg') }}"
+                                                                           style="max-height: 30px"></a>
 
     <!-- To change the direction of the modal animation change .right class -->
     <div class="modal fade right" id="sideModalTR" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -39,7 +39,8 @@
                     {% endif %}
                 </div>
                 <div class="modal-footer">
-                    <a href="{{ path('app_logout') }}" class="btn btn-danger btn-sm">{% trans %}Logout{% endtrans %}</a>
+                    <a href="{{ path('logout_keycloak') }}"
+                       class="btn btn-danger btn-sm">{% trans %}Logout{% endtrans %}</a>
                 </div>
             </div>
         </div>
