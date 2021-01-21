@@ -51,33 +51,39 @@ class InviteService
                 ->setPassword('123')
                 ->setUuid('123');
             $user->setEmail($email);
-            $this->em->persist($user);
-            $this->em->flush();
-            $link = $this->router->generate('invitation_accept', array('id' => $user->getRegisterId()), UrlGeneratorInterface::ABSOLUTE_URL);
-            $content = $this->twig->render('email/addUser/resetting_html.html.twig', ['link' => $link]);
-            $this->mailer->sendEmail(
-                $this->parameterBag->get('defaultEmail'),
-                $this->parameterBag->get('defaultEmail'),
-                $email,
-                $this->translator->trans('Einladung zum ODC'),
-                $content);
         }
+
+        $user->setRegisterId(md5(uniqid('ksdjhfkhsdkjhjksd', true)));
+        $this->em->persist($user);
+        $this->em->flush();
+        $link = $this->router->generate('invitation_accept', array('id' => $user->getRegisterId()), UrlGeneratorInterface::ABSOLUTE_URL);
+        $content = $this->twig->render('email/addUser/resetting_html.html.twig', ['link' => $link]);
+        $this->mailer->sendEmail(
+            $this->parameterBag->get('defaultEmail'),
+            $this->parameterBag->get('defaultEmail'),
+            $email,
+            $this->translator->trans('Einladung zum ODC'),
+            $content);
         return $user;
     }
 
     public function connectUserWithEmail(User $userfromregisterId, User $user)
     {
-        if (!$user->getTeam()) {
-            $user->setTeam($userfromregisterId->getTeam());
+        if ($user !== $userfromregisterId) {
+            if (!$user->getTeam()) {
+                $user->setTeam($userfromregisterId->getTeam());
+            }
+            if (!$user->getAkademieUser()) {
+                $user->setAkademieUser($userfromregisterId->getAkademieUser());
+            }
+            foreach ($user->getTeamDsb() as $data) {
+                $user->addTeamDsb($data);
+            }
+            $this->em->remove($userfromregisterId);
         }
-        if (!$user->getAkademieUser()) {
-            $user->setAkademieUser($userfromregisterId->getAkademieUser());
-        }
-        foreach ($user->getTeamDsb() as $data) {
-            $user->addTeamDsb($data);
-        }
+
+        $user->setRegisterId(null);
         $this->em->persist($user);
-        $this->em->remove($userfromregisterId);
         $this->em->flush();
         return $user;
     }
