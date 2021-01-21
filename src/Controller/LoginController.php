@@ -19,6 +19,7 @@ class LoginController extends AbstractController
     {
       return $clientRegistry->getClient('auth0_main')->redirect(['user']);
     }
+
     /**
      * @Route("/login/auth0_login/check", name="connect_auth0_check")
      */
@@ -45,14 +46,15 @@ class LoginController extends AbstractController
             die;
         }
     }
+
     /**
      * @Route("/logout_keycloak", name="logout_keycloak")
      */
     public function logout(ClientRegistry $clientRegistry, Request $request)
     {
         $url = $this->getParameter('KEYCLOAK_URL')
-            .'/realms/'.$this->getParameter('KEYCLOAK_REALM')
-            .'/protocol/openid-connect/logout?redirect_uri='.$this->generateUrl('dashboard',[],UrlGenerator::ABSOLUTE_URL);
+            . '/realms/' . $this->getParameter('KEYCLOAK_REALM')
+            . '/protocol/openid-connect/logout?redirect_uri=' . $this->generateUrl('app_logout', [], UrlGenerator::ABSOLUTE_URL);
         return $this->redirect($url);
 
     }
