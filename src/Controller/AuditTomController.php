@@ -100,7 +100,7 @@ class AuditTomController extends AbstractController
         $today = new \DateTime();
         $status = $this->getDoctrine()->getRepository(AuditTomStatus::class)->findAll();
         $abteilungen = $this->getDoctrine()->getRepository(AuditTomAbteilung::class)->findAllByTeam($team);
-        $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findAllTagetsByTeam($team);
+        $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findByTeam($team);
 
 
         $allAudits = array_reverse($this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($this->getUser()->getTeam()));
