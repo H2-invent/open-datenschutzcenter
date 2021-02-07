@@ -63,7 +63,7 @@ class VVTService
 
     function createForm(VVT $VVT, Team $team)
     {
-        $status = $this->em->getRepository(VVTStatus::class)->findAll();
+        $status = $this->em->getRepository(VVTStatus::class)->findByTeam($team);
         $personen = $this->em->getRepository(VVTPersonen::class)->findByTeam($team);
         $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
         $risiken = $this->em->getRepository(VVTRisiken::class)->findByTeam($team);
