@@ -74,7 +74,7 @@ class VVTService
         $produkte = $this->em->getRepository(Produkte::class)->findActivByTeam($team);
         $software = $this->em->getRepository(Software::class)->findActivByTeam($team);
 
-        $form = $this->formBuilder->create(VVTType::class, $VVT, ['grundlage' => $team->getAbteilungen(), 'personen' => $personen, 'kategorien' => $kategorien, 'risiken' => $risiken, 'status' => $status, 'grundlage' => $grundlagen, 'user' => $team->getMembers(), 'daten' => $daten, 'tom' => $tom, 'abteilung' => $abteilung, 'produkte' => $produkte, 'software' => $software]);
+        $form = $this->formBuilder->create(VVTType::class, $VVT, ['personen' => $personen, 'kategorien' => $kategorien, 'risiken' => $risiken, 'status' => $status, 'grundlage' => $grundlagen, 'user' => $team->getMembers(), 'daten' => $daten, 'tom' => $tom, 'abteilung' => $abteilung, 'produkte' => $produkte, 'software' => $software]);
 
         return $form;
     }
