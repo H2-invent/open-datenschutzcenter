@@ -26,7 +26,7 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt", name="vvt")
      */
-    public function index(SecurityService $securityService)
+    public function index(SecurityService $securityService, Request $request)
     {
         $team = $this->getUser()->getTeam();
         if ($securityService->teamCheck($team) === false) {
@@ -36,6 +36,7 @@ class VvtController extends AbstractController
 
         return $this->render('vvt/index.html.twig', [
             'vvt' => $vvt,
+            'snack' => $request->get('snack')
 
         ]);
     }
@@ -64,7 +65,7 @@ class VvtController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($vvt);
                 $em->flush();
-                return $this->redirectToRoute('vvt');
+                return $this->redirectToRoute('vvt', ['snack' => 'Erfolgreich angelegt']);
             }
         }
         return $this->render('vvt/new.html.twig', [

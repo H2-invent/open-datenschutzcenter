@@ -78,10 +78,13 @@ class AssignService
 
     function createForm($data, Team $team)
     {
-        $teamMembers = $team->getMembers();
-
-        if (!in_array($team->getDsbUser(), $teamMembers->toArray())) {
-            $teamMembers->add($team->getDsbUser());
+        if (count($team->getMembers()) > 0) {
+            $teamMembers = $team->getMembers();
+            if (!in_array($team->getDsbUser(), $teamMembers->toArray())) {
+                $teamMembers->add($team->getDsbUser());
+            }
+        } else {
+            $teamMembers = array();
         }
         $form = $this->formBuilder->create(AssignType::class, $data, ['user' => $teamMembers]);
         return $form;

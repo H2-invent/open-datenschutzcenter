@@ -232,6 +232,21 @@ class Team
      */
     private $specialty;
 
+    /**
+     * @ORM\OneToMany(targetEntity=VVTStatus::class, mappedBy="team")
+     */
+    private $vVTStatuses;
+
+    /**
+     * @ORM\OneToMany(targetEntity=DatenweitergabeGrundlagen::class, mappedBy="team")
+     */
+    private $datenweitergabeGrundlagens;
+
+    /**
+     * @ORM\OneToMany(targetEntity=DatenweitergabeStand::class, mappedBy="team")
+     */
+    private $datenweitergabeStands;
+
 
     public function __construct()
     {
@@ -258,6 +273,9 @@ class Team
         $this->vVTPersonens = new ArrayCollection();
         $this->vVTRisikens = new ArrayCollection();
         $this->vVTGrundlages = new ArrayCollection();
+        $this->vVTStatuses = new ArrayCollection();
+        $this->datenweitergabeGrundlagens = new ArrayCollection();
+        $this->datenweitergabeStands = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1171,6 +1189,96 @@ class Team
     public function setSpecialty(?string $specialty): self
     {
         $this->specialty = $specialty;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VVTStatus[]
+     */
+    public function getVVTStatuses(): Collection
+    {
+        return $this->vVTStatuses;
+    }
+
+    public function addVVTStatus(VVTStatus $vVTStatus): self
+    {
+        if (!$this->vVTStatuses->contains($vVTStatus)) {
+            $this->vVTStatuses[] = $vVTStatus;
+            $vVTStatus->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVVTStatus(VVTStatus $vVTStatus): self
+    {
+        if ($this->vVTStatuses->removeElement($vVTStatus)) {
+            // set the owning side to null (unless already changed)
+            if ($vVTStatus->getTeam() === $this) {
+                $vVTStatus->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DatenweitergabeGrundlagen[]
+     */
+    public function getDatenweitergabeGrundlagens(): Collection
+    {
+        return $this->datenweitergabeGrundlagens;
+    }
+
+    public function addDatenweitergabeGrundlagen(DatenweitergabeGrundlagen $datenweitergabeGrundlagen): self
+    {
+        if (!$this->datenweitergabeGrundlagens->contains($datenweitergabeGrundlagen)) {
+            $this->datenweitergabeGrundlagens[] = $datenweitergabeGrundlagen;
+            $datenweitergabeGrundlagen->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDatenweitergabeGrundlagen(DatenweitergabeGrundlagen $datenweitergabeGrundlagen): self
+    {
+        if ($this->datenweitergabeGrundlagens->removeElement($datenweitergabeGrundlagen)) {
+            // set the owning side to null (unless already changed)
+            if ($datenweitergabeGrundlagen->getTeam() === $this) {
+                $datenweitergabeGrundlagen->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DatenweitergabeStand[]
+     */
+    public function getDatenweitergabeStands(): Collection
+    {
+        return $this->datenweitergabeStands;
+    }
+
+    public function addDatenweitergabeStand(DatenweitergabeStand $datenweitergabeStand): self
+    {
+        if (!$this->datenweitergabeStands->contains($datenweitergabeStand)) {
+            $this->datenweitergabeStands[] = $datenweitergabeStand;
+            $datenweitergabeStand->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDatenweitergabeStand(DatenweitergabeStand $datenweitergabeStand): self
+    {
+        if ($this->datenweitergabeStands->removeElement($datenweitergabeStand)) {
+            // set the owning side to null (unless already changed)
+            if ($datenweitergabeStand->getTeam() === $this) {
+                $datenweitergabeStand->setTeam(null);
+            }
+        }
 
         return $this;
     }

@@ -27,6 +27,16 @@ class DatenweitergabeStand
      */
     private $network;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="datenweitergabeStands")
+     */
+    private $team;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activ;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +62,30 @@ class DatenweitergabeStand
     public function setNetwork(?bool $network): self
     {
         $this->network = $network;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): self
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    public function getActiv(): ?bool
+    {
+        return $this->activ;
+    }
+
+    public function setActiv(bool $activ): self
+    {
+        $this->activ = $activ;
 
         return $this;
     }
