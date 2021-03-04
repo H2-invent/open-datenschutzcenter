@@ -48,7 +48,7 @@ class DatenweitergabeGrundlagenRepository extends ServiceEntityRepository
     }
     */
 
-    public function findByTeam($value)
+    public function findActivByTeam($value)
     {
         return $this->createQueryBuilder('a')
             ->where('a.team is null OR a.team = :val')
