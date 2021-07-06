@@ -22,7 +22,7 @@ class KursController extends AbstractController
         $team = $this->getUser()->getAdminUser();
 
         if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('kurse');
+            return $this->redirectToRoute('akademie_admin');
         }
 
         $today = new \DateTime();
@@ -62,11 +62,11 @@ class KursController extends AbstractController
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
-            return $this->redirectToRoute('kurse');
+            return $this->redirectToRoute('akademie_admin');
         }
 
         if ($this->getUser() !== $kurs->getUser()) {
-            return $this->redirectToRoute('kurse');
+            return $this->redirectToRoute('akademie_admin');
         }
 
         $today = new \DateTime();;
@@ -102,7 +102,7 @@ class KursController extends AbstractController
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
-            return $this->redirectToRoute('kurse');
+            return $this->redirectToRoute('akademie_admin');
         }
 
         $daten = array();
@@ -130,7 +130,7 @@ class KursController extends AbstractController
         $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
-            return $this->redirectToRoute('akademie_kurs');
+            return $this->redirectToRoute('akademie_admin');
         }
 
         $akademieService->removeKurs($team, $kurs);

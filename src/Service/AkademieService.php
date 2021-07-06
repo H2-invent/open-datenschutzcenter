@@ -46,6 +46,8 @@ class AkademieService
 
         foreach ($daten['user'] as $user) {
             $buchung->setUser($user);
+            $this->em->persist($buchung);
+            $this->em->flush();
             if ($daten['invite'] === true) {
                 $content = $this->twig->render('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $user->getTeam()]);
                 $buchung->setInvitation(true);
@@ -54,6 +56,7 @@ class AkademieService
             $this->em->persist($buchung);
         }
         $this->em->flush();
+
     }
 
     function removeKurs(Team $team, AkademieKurse $kurs)
