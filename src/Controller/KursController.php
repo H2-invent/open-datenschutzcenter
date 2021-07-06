@@ -10,7 +10,6 @@ use App\Service\NotificationService;
 use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class KursController extends AbstractController
@@ -114,7 +113,7 @@ class KursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $daten = $form->getData();
             $akademieService->addUser($kurs, $daten);
-            return $this->redirectToRoute('kurse');
+            return $this->redirectToRoute('akademie_admin');
         }
         return $this->render('akademie/new.html.twig', [
             'form' => $form->createView(),
