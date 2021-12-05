@@ -81,7 +81,9 @@ class AssignService
         if (count($team->getMembers()) > 0) {
             $teamMembers = $team->getMembers();
             if (!in_array($team->getDsbUser(), $teamMembers->toArray())) {
-                $teamMembers->add($team->getDsbUser());
+                if ($team->getDsbUser()) {
+                    $teamMembers->add($team->getDsbUser());
+                }
             }
         } else {
             $teamMembers = array();
