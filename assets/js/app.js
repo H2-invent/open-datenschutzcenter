@@ -21,7 +21,7 @@ import('moment');
 import('bootstrap-select');
 
 $(document).ready(function () {
-    h2Button.init();
+    h2Button.init("https://www3.h2-invent.com/appsv2.json");
     setTimeout(function () {
         $('#snackbar').addClass('show');
         setTimeout(function () {
