@@ -20,7 +20,7 @@
         "datatables.net": "^1.10.21",
         "datatables.net-buttons-dt": "^1.6.2",
         "datatables.net-dt": "^1.10.21",
-        "h2-invent-apps": "^1.11.0",
+        "h2-invent-apps": "^2.2.0",
         "jquery": "^3.5.1",
         "jszip": "^3.5.0",
         "mdbootstrap": "^4.19.1",
