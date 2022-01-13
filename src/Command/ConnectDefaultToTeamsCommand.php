@@ -39,15 +39,18 @@ class ConnectDefaultToTeamsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $teams = $this->em->getRepository(Team::class)->findAll();
         $io->success(sprintf('We connect %d Teams',sizeof($teams)));
-        $progressBar = new ProgressBar($output, sizeof($teams));
+        $section1 = $output->section();
+        $section2 = $output->section();
+        $progressBar = new ProgressBar($section1, sizeof($teams));
         $progressBar->start();
+
         foreach ($teams as $data) {
-            $this->connectDefaultService->connectDefault($data,$output);
+            $this->connectDefaultService->connectDefault($data,$section2);
             $progressBar->advance();
         }
         $progressBar->finish();
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('We ');
 
         return Command::SUCCESS;
     }

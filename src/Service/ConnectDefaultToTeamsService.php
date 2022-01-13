@@ -49,6 +49,7 @@ class ConnectDefaultToTeamsService
         $this->grundlagenDatenweitergabe();
         $this->standDatenweitergabe();
         $this->schutzZiele();
+        $this->finishProgress();
     }
 
     private function personenGruppen()
@@ -59,7 +60,7 @@ class ConnectDefaultToTeamsService
         $this->increaseProgress(sizeof($personenGruppen));
         foreach ($personenGruppen as $data) {
             $pG = clone $data;
-            $pG->setTeam($this->team);
+            $pG->setTeam($this->team)->setActiv(true);
             $this->em->persist($pG);
             $tmp[$data->getId()] = $pG;
             $data->setActiv(false);
@@ -111,7 +112,7 @@ class ConnectDefaultToTeamsService
             $this->advanceProgress();
         }
         $this->em->flush();
-      $this->finishProgress();
+
     }
 
 
@@ -122,7 +123,7 @@ class ConnectDefaultToTeamsService
         $this->increaseProgress(sizeof($risikoGruppen));
         foreach ($risikoGruppen as $data) {
             $rG = clone $data;
-            $rG->setTeam($this->team);
+            $rG->setTeam($this->team)->setActiv(true);
             $this->em->persist($rG);
             $tmp[$data->getId()] = $rG;
             $data->setActiv(false);
@@ -143,7 +144,7 @@ class ConnectDefaultToTeamsService
             $this->advanceProgress();
         }
         $this->em->flush();
-        $this->finishProgress();
+
     }
 
     private function datenGruppen()
@@ -153,7 +154,7 @@ class ConnectDefaultToTeamsService
         $this->increaseProgress(sizeof($datenkategorie));
         foreach ($datenkategorie as $data) {
             $dK = clone $data;
-            $dK->setTeam($this->team);
+            $dK->setTeam($this->team)->setActiv(true);
             $this->em->persist($dK);
             $tmp[$data->getId()] = $dK;
             $data->setActiv(false);
@@ -202,7 +203,7 @@ class ConnectDefaultToTeamsService
             $this->advanceProgress();
         }
         $this->em->flush();
-        $this->finishProgress();
+
     }
 
     private function gesetzlicheGrundlagen()
@@ -212,7 +213,7 @@ class ConnectDefaultToTeamsService
         $this->increaseProgress(sizeof($grundlagen));
         foreach ($grundlagen as $data) {
             $new = clone $data;
-            $new->setTeam($this->team);
+            $new->setTeam($this->team)->setActiv(true);
             $this->em->persist($new);
             $tmp[$data->getId()] = $new;
             $data->setActiv(false);
@@ -234,7 +235,7 @@ class ConnectDefaultToTeamsService
             $this->advanceProgress();
         }
         $this->em->flush();
-        $this->finishProgress();
+
     }
 
     private function status()
@@ -244,7 +245,7 @@ class ConnectDefaultToTeamsService
         $this->increaseProgress(sizeof($status));
         foreach ($status as $data) {
             $new = clone $data;
-            $new->setTeam($this->team);
+            $new->setTeam($this->team)->setActiv(true);
             $this->em->persist($new);
             $tmp[$data->getId()] = $new;
             $data->setActiv(false);
@@ -263,7 +264,7 @@ class ConnectDefaultToTeamsService
             $this->advanceProgress();
         }
         $this->em->flush();
-        $this->finishProgress();
+
     }
 
     private function grundlagenDatenweitergabe()
@@ -273,7 +274,7 @@ class ConnectDefaultToTeamsService
         $this->increaseProgress(sizeof($grundlagenDatenweitergabe));
         foreach ($grundlagenDatenweitergabe as $data) {
             $new = clone $data;
-            $new->setTeam($this->team);
+            $new->setTeam($this->team)->setActiv(true);
             $this->em->persist($new);
             $tmp[$data->getId()] = $new;
             $data->setActiv(false);
@@ -292,7 +293,7 @@ class ConnectDefaultToTeamsService
             $this->advanceProgress();
         }
         $this->em->flush();
-        $this->finishProgress();
+
     }
 
     private function standDatenweitergabe()
@@ -302,7 +303,7 @@ class ConnectDefaultToTeamsService
         $this->increaseProgress(sizeof($defaultValue));
         foreach ($defaultValue as $data) {
             $new = clone $data;
-            $new->setTeam($this->team);
+            $new->setTeam($this->team)->setActiv(true);
             $this->em->persist($new);
             $tmp[$data->getId()] = $new;
             $data->setActiv(false);
@@ -320,7 +321,7 @@ class ConnectDefaultToTeamsService
             $this->advanceProgress();
         }
         $this->em->flush();
-        $this->finishProgress();
+
     }
 
     private function schutzZiele()
@@ -330,7 +331,7 @@ class ConnectDefaultToTeamsService
         $this->increaseProgress(sizeof($defaultValue));
         foreach ($defaultValue as $data) {
             $new = clone $data;
-            $new->setTeam($this->team);
+            $new->setTeam($this->team)->setActiv(true);
             $this->em->persist($new);
             $tmp[$data->getId()] = $new;
             $data->setActiv(false);
@@ -351,7 +352,7 @@ class ConnectDefaultToTeamsService
             $this->advanceProgress();
         }
         $this->em->flush();
-        $this->finishProgress();
+
     }
 
     private function increaseProgress($steps)
