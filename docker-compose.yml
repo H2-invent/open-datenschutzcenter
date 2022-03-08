@@ -1,24 +1,43 @@
 version: '3.7'
+# for production
 
 services:
-
-  traefik:
-    image: traefik:1.7
-    command: --docker --docker.exposedbydefault=false
-    ports:
-      - "80:80"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
   app:
-    image: thecodingmachine/php:7.3-v2-apache-node10
-    labels:
-      - traefik.enable=true
-      - traefik.backend=odc
-      - traefik.frontend.rule=Host:odc.localhost
+    build: .
+    # depends_on:
+    #   - db
+    #   - keycloak
+    # use override
+    # ports:
+    #   - "80:80"
     environment:
       APACHE_DOCUMENT_ROOT: "public/"
-      PHP_EXTENSION_XDEBUG: "1"
       PHP_INI_MEMORY_LIMIT: "1G"
-    volumes:
-      - .:/var/www/html:rw
+
+  # use e.g. override to activate what is required
+  # db:
+  #   image: mariadb:latest
+  #   environment:
+  #     MARIADB_ROOT_PASSWORD: test
+  #   volumes:
+  #     - mysql:/var/lib/mysql
+  #     - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+  # keycloak:
+  #   image: quay.io/keycloak/keycloak:latest
+  #   ports:
+  #     - "8081:8080"
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     KEYCLOAK_ADMIN: admin
+  #     KEYCLOAK_ADMIN_PASSWORD: test
+  #     KC_DB_URL: jdbc:mariadb://db:3306/keycloak
+  #     KC_DB: mariadb
+  #     KC_DB_USERNAME: keycloak
+  #     KC_DB_PASSWORD: test
+  #     # important!
+  #     KC_HOSTNAME: hostname
+  #     # see: https://www.keycloak.org/server/reverseproxy
+  #     KC_PROXY: edge
+# volumes:
+#   mysql:
