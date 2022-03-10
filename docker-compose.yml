@@ -13,6 +13,8 @@ services:
     environment:
       APACHE_DOCUMENT_ROOT: "public/"
       PHP_INI_MEMORY_LIMIT: "1G"
+    volumes:
+      - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
 
   # use e.g. override to activate what is required
   # db:
@@ -39,5 +41,6 @@ services:
   #     KC_HOSTNAME: hostname
   #     # see: https://www.keycloak.org/server/reverseproxy
   #     KC_PROXY: edge
-# volumes:
+volumes:
+  datenschutzcenter_uploads:
 #   mysql:
