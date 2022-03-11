@@ -3,12 +3,14 @@ USER root
 COPY . /var/www/html
 RUN npm install
 RUN composer install
-RUN npm --unsafe-perm --user root run build
+RUN mkdir -m 777 -p public/build
+RUN npm run build
+RUN chmod -R 775 public/build
 RUN mkdir -p var/cache
 RUN chown -R www-data:www-data var
 RUN chmod -R 775 var
-RUN mkdir -p public/uploads/images
-RUN chown -R www-data:www-data public/uploads/images
-RUN chmod -R 775 public/uploads/images
+RUN mkdir -p public/uploads
+RUN chown -R www-data:www-data public/uploads
+RUN chmod -R 775 public/uploads
 
 USER docker

@@ -12,9 +12,12 @@ services:
     #   - "80:80"
     environment:
       APACHE_DOCUMENT_ROOT: "public/"
+      APACHE_RUN_USER: www-data
+      APACHE_RUN_GROUP: www-data
       PHP_INI_MEMORY_LIMIT: "1G"
     volumes:
       - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
+      - datenschutzcenter_data:/var/www/html/public/data:rw
 
   # use e.g. override to activate what is required
   # db:
@@ -43,4 +46,5 @@ services:
   #     KC_PROXY: edge
 volumes:
   datenschutzcenter_uploads:
+  datenschutzcenter_data:
 #   mysql:

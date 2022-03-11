@@ -26,6 +26,8 @@ services:
       OAUTH_KEYCLOAK_REALM: master
     volumes:
       - ./:/var/www/html:rw
+      - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
+      - datenschutzcenter_data:/var/www/html/public/data:rw
 
   db:
     image: mariadb:latest
@@ -51,3 +53,5 @@ services:
       # KC_HOSTNAME not required because of start-dev
 volumes:
   mariadb:
+  datenschutzcenter_uploads:
+  datenschutzcenter_data:
