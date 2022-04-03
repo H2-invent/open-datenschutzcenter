@@ -21,12 +21,12 @@ cd dev
 mkdir -p public
 ln -s ../vendor .
 ln -s ../node_modules .
-for subf in ls ../public; do
+for subf in $(ls ../public); do
     if [ "$subf" != "build" ]; then
         ln -s "../dev_out/$subf" .
     fi
 done
-for subf in ls ../; do
+for subf in $(ls ../); do
     if [ "$subf" != "dev" ] && [ "$subf" != "dev_out" ] && [ "$subf" != "public" ] && [ "$subf" != "vendor" ] && [ "$subf" != "node_modules" ] && [ "$subf" != "var" ]; then
         ln -s "../dev_out/$subf" .
     fi
