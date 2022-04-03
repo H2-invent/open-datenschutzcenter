@@ -1,17 +1,9 @@
 FROM thecodingmachine/php:7.4.27-v4-apache-node16
 USER root
 RUN usermod -a -G www-data docker
-COPY . /var/www/html
+COPY . /var/www/html/prod
+WORKDIR /var/www/html/prod
 RUN npm install
 RUN composer install
-RUN mkdir -m 777 -p public/build
-RUN npm run build
-RUN chmod -R 775 public/build
-RUN mkdir -p var/cache
-RUN chown -R www-data:www-data var
-RUN chmod -R 775 var
-RUN mkdir -p public/uploads
-RUN chown -R www-data:www-data public/uploads
-RUN chmod -R 775 public/uploads
-
+RUN ./build.sh
 USER docker

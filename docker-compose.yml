@@ -2,49 +2,49 @@ version: '3.7'
 # for production
 
 services:
-  app:
-    build: .
-    # depends_on:
-    #   - db
-    #   - keycloak
-    # use override
-    # ports:
-    #   - "80:80"
-    environment:
-      APACHE_DOCUMENT_ROOT: "public/"
-      APACHE_RUN_USER: www-data
-      APACHE_RUN_GROUP: www-data
-      PHP_INI_MEMORY_LIMIT: "1G"
-    volumes:
-      - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
-      - datenschutzcenter_data:/var/www/html/public/data:rw
+    app:
+        build: .
+        # depends_on:
+        #   - db
+        #   - keycloak
+        # use override
+        # ports:
+        #   - "80:80"
+        environment:
+            APACHE_DOCUMENT_ROOT: 'prod/public/'
+            APACHE_RUN_USER: www-data
+            APACHE_RUN_GROUP: www-data
+            PHP_INI_MEMORY_LIMIT: '1G'
+        volumes:
+            - datenschutzcenter_uploads:/var/www/html/prod/public/uploads:rw
+            - datenschutzcenter_data:/var/www/html/prod/public/data:rw
 
-  # use e.g. override to activate what is required
-  # db:
-  #   image: mariadb:latest
-  #   environment:
-  #     MARIADB_ROOT_PASSWORD: test
-  #   volumes:
-  #     - mysql:/var/lib/mysql
-  #     - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-  # keycloak:
-  #   image: quay.io/keycloak/keycloak:latest
-  #   ports:
-  #     - "8081:8080"
-  #   depends_on:
-  #     - db
-  #   environment:
-  #     KEYCLOAK_ADMIN: admin
-  #     KEYCLOAK_ADMIN_PASSWORD: test
-  #     KC_DB_URL: jdbc:mariadb://db:3306/keycloak
-  #     KC_DB: mariadb
-  #     KC_DB_USERNAME: keycloak
-  #     KC_DB_PASSWORD: test
-  #     # important!
-  #     KC_HOSTNAME: hostname
-  #     # see: https://www.keycloak.org/server/reverseproxy
-  #     KC_PROXY: edge
+    # use e.g. override to activate what is required
+    # db:
+    #   image: mariadb:latest
+    #   environment:
+    #     MARIADB_ROOT_PASSWORD: test
+    #   volumes:
+    #     - mysql:/var/lib/mysql
+    #     - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    # keycloak:
+    #   image: quay.io/keycloak/keycloak:latest
+    #   ports:
+    #     - "8081:8080"
+    #   depends_on:
+    #     - db
+    #   environment:
+    #     KEYCLOAK_ADMIN: admin
+    #     KEYCLOAK_ADMIN_PASSWORD: test
+    #     KC_DB_URL: jdbc:mariadb://db:3306/keycloak
+    #     KC_DB: mariadb
+    #     KC_DB_USERNAME: keycloak
+    #     KC_DB_PASSWORD: test
+    #     # important!
+    #     KC_HOSTNAME: hostname
+    #     # see: https://www.keycloak.org/server/reverseproxy
+    #     KC_PROXY: edge
 volumes:
-  datenschutzcenter_uploads:
-  datenschutzcenter_data:
+    datenschutzcenter_uploads:
+    datenschutzcenter_data:
 #   mysql:
