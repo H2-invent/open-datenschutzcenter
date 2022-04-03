@@ -1,18 +1,16 @@
 #! /bin/sh
 # prod
 
-npm run build
 mkdir -m 777 -p public/build
-mkdir -p public/uploads
-chown -R www-data:www-data public/uploads
-chmod -R 775 public/uploads
-mkdir -p public/data
-chown -R www-data:www-data public/data
-chmod -R 775 public/data
+npm run build
+mkdir -m 775 -p public/uploads
+mkdir -m 775 -p public/data
 chmod -R 775 public/build
 mkdir -p var/cache
-chown -R www-data:www-data var
 chmod -R 775 var
+chown -R www-data:www-data public/uploads
+chown -R www-data:www-data public/data
+chown -R www-data:www-data var
 
 # dev
 mkdir -p dev_out
@@ -35,10 +33,13 @@ for subf in ls ../; do
 done
 mkdir -m 777 -p public/build
 npm run dev
-mkdir -p public/uploads
-mkdir -p public/data
+chmod -R 775 public/build
+mkdir -m 775 -p public/uploads
+mkdir -m 775 -p public/data
 mkdir -p var/cache
+chmod -R 775 var
+chown -R www-data:www-data public/uploads
+chown -R www-data:www-data public/data
+chown -R www-data:www-data var
 
 cd ..
-chown -R www-data:www-data dev
-chmod -R 775 dev
