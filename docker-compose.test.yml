@@ -26,8 +26,8 @@ services:
             OAUTH_KEYCLOAK_REALM: master
         volumes:
             - ./:/var/www/html/dev_out:rw
-            - datenschutzcenter_uploads:/var/www/html/prod/public/uploads:rw
-            - datenschutzcenter_data:/var/www/html/prod/public/data:rw
+            - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
+            - datenschutzcenter_data:/var/www/html/public/data:rw
 
     db:
         image: mariadb:latest
