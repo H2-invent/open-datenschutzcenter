@@ -1,0 +1,7 @@
+{% extends 'bericht/berichtBase.html.twig' %}
+
+{% block body %}
+    {% for d in daten %}
+        {{ include('bericht/__berichtLoeschkonzept.html.twig', {'d':d}) }}
+    {% endfor %}
+{% endblock %}

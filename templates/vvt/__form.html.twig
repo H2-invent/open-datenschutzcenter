@@ -104,15 +104,6 @@
                 {{ form_widget(form.speicherung) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.loeschfrist) }}
-                {{ form_help(form.loeschfrist) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.loeschfrist) }}
-            </div>
-        </div>
     </div>
 </div>
 
@@ -132,6 +123,7 @@
         <div class="mt-4 row">
             <div class="col-md-3">
                 {{ form_label(form.kategorien) }}
+                {{ form_help(form.kategorien) }}
             </div>
             <div class="col-md-9">
                 {{ form_widget(form.kategorien) }}

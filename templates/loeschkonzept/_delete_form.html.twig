@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('app_loeschkonzept_delete', {'id': loeschkonzept.id}) }}" onsubmit="return confirm('Möchten Sie diese Aktion wirklich durchführen?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ loeschkonzept.id) }}">
+    <button color = "red" class="btn btn-danger ml-1 btn-sm">Löschen</button>
+</form>

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Modified by
+ * User: Jan Juister
+ * Date: 13.05.2022
+ */
+
 namespace App\Entity;
 
 use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
@@ -247,6 +253,11 @@ class Team
      */
     private $datenweitergabeStands;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Loeschkonzept::class, mappedBy="team")
+     */
+    private $loeschkonzepts;
+
 
     public function __construct()
     {
@@ -276,7 +287,14 @@ class Team
         $this->vVTStatuses = new ArrayCollection();
         $this->datenweitergabeGrundlagens = new ArrayCollection();
         $this->datenweitergabeStands = new ArrayCollection();
+        $this->loeschkonzepts = new ArrayCollection();
     }
+
+    public function __toString(): ?string
+    {
+        return $this->name;
+    }
+
 
     public function getId(): ?int
     {
@@ -1277,6 +1295,36 @@ class Team
             // set the owning side to null (unless already changed)
             if ($datenweitergabeStand->getTeam() === $this) {
                 $datenweitergabeStand->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Loeschkonzept>
+     */
+    public function getLoeschkonzepts(): Collection
+    {
+        return $this->loeschkonzepts;
+    }
+
+    public function addLoeschkonzept(Loeschkonzept $loeschkonzept): self
+    {
+        if (!$this->loeschkonzepts->contains($loeschkonzept)) {
+            $this->loeschkonzepts[] = $loeschkonzept;
+            $loeschkonzept->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoeschkonzept(Loeschkonzept $loeschkonzept): self
+    {
+        if ($this->loeschkonzepts->removeElement($loeschkonzept)) {
+            // set the owning side to null (unless already changed)
+            if ($loeschkonzept->getTeam() === $this) {
+                $loeschkonzept->setTeam(null);
             }
         }
 

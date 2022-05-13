@@ -6,6 +6,12 @@
  * Time: 20:29
  */
 
+ /**
+ * Modified by
+ * User: Jan Juister
+ * Date: 13.05.2022
+ */
+
 namespace App\Form\Type;
 
 use App\Entity\AuditTomAbteilung;
@@ -71,7 +77,6 @@ class VVTType extends AbstractType
             ->add('jointControl', CheckboxType::class, ['label' => 'Ja, es handelt sich um eine Joint Control Verarbeitung (gemeinsame Verarbeitung)', 'required' => false, 'translation_domain' => 'form', 'help' => 'Gemeinsame Verarbeitung bedeutet, dass Ihr Unternehmen zusammen mit einer anderen Organisation die Dienstleistung anbietet und dafür Daten erfasst und verarbeitet, z.B. Facebook ist ein typisches Beispiel für eine gemeinsame Verarbeitung. In dieser Verabreitung werden Daten von Ihrer Organisation generiert, an Facebook weitergegeben und auch selber intern verarbeitet.'])
             ->add('auftragsverarbeitung', CheckboxType::class, ['label' => 'Ja, es handelt es sich um eine Verarbeitung im Auftrag einer weiteren Organisation', 'required' => false, 'translation_domain' => 'form', 'help' => 'Auftragsverarbeitung bedeutet, dass Ihre Organisation für eine weitere Organisation die Daten verarbeitet, meist in Form einer Dienstleistung. Ihre Organisation nutzt die Daten nur im Namen des Auftraggebers und nicht für eigene Zwecke.'])
             ->add('speicherung', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Wo werden die Daten gespeichert/abgelegt', 'required' => true, 'translation_domain' => 'form', 'help' => 'Geben Sie hier an wo und wie die Daten gespeichert werden. Die Speicherung ist eine wichtige Teilverarbeitung und sollte daher zusätzliche dokumentiert werden. Es ist auch im nachhinein einfacher den Datenfluss nachzuverfolgen, wenn die Speicherorte genau dokumentiert wurden.'])
-            ->add('loeschfrist', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Löschfristen', 'required' => true, 'translation_domain' => 'form', 'help' => 'Die Löschfrist ist in der DSGVO nicht vorgegeben. Die Verantwortlichen müssen für jede Verarbeitung selber eine Löschfrist definieren, dokumentieren und argumentieren. Die Argumentation kann auf bestehenden gesetzlichen Archivierungsfristen beruhen, z.B. dem Handelsgesetz oder Steuergesetz. Die gesetzlichen Archivierungspflichten stellen jedoch nur die minimale Speicherdauer dar und keine Löschfrist.'])
             ->add('weitergabe', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben', 'required' => false, 'translation_domain' => 'form', 'help' => 'Beschrieben Sie hier in Form einer Matrix/ Tabelle an welche Unternehmen oder Stellen Sie die Daten in Rahmen dieser Verarbeitung weitergeben. Nutzen Sie dafür die Angaben aus den vorherigen Felder "Personengruppen und Datenkategorien".'])
             ->add('grundlage', EntityType::class, [
                 'choice_label' => 'name',
@@ -112,7 +117,7 @@ class VVTType extends AbstractType
                 ],
             ])
             ->add('kategorien', EntityType::class, [
-                'choice_label' => 'name',
+                #'choice_label' => 'name',
                 'class' => VVTDatenkategorie::class,
                 'choices' => $options['kategorien'],
                 'label' => 'Welche Daten(kategorien) werden verarbeitet?',
@@ -122,6 +127,7 @@ class VVTType extends AbstractType
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
                 ],
+                'help' => 'Das Dropdown-Menü zeigt die Datenkategorien mit den zugeordneten Standard Löschfristen aus den Löschkonzepten, sofern die Datenkategorien einem Löschkonztept zugeordnet wurden.'
             ])
             ->add('eu', CheckboxType::class, ['label' => 'Ja, Daten werden außerhalb der EU verarbeitet', 'required' => false, 'translation_domain' => 'form', 'help' => 'Wenn Daten außerhalb der EU verarbeitet (gespeichert, erfasst, gelöscht) werden, müssen zusätzliche Vorsichtsmaßnahmen getroffen werden um die Daten nach der DSGVo zu schützen. Setzen Sie diesen Hacken, wenn Sie oder ein Auftragsverarbeiter die Daten die Daten im EU Außland verarbeitet.'])
             ->add('tomLink', EntityType::class, [

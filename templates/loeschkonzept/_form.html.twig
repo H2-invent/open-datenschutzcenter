@@ -1,0 +1,78 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<div class="card mt-4">
+    <div class="card-body">
+        
+
+        <div class="mt-4 row">
+            <div class="col-md-3">
+            {{ form_label(form.vvtdatenkategories) }}
+            </div>
+            <div class="col-md-9">
+            {{ form_widget(form.vvtdatenkategories) }}
+            </div>
+        </div>
+
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.standartlf) }}
+                {{ form_help(form.standartlf) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.standartlf) }}
+            </div>
+        </div>
+
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.loeschfrist) }}
+                {{ form_help(form.loeschfrist) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.loeschfrist) }}
+            </div>
+        </div>
+
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.speicherorte) }}
+                {{ form_help(form.speicherorte) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.speicherorte) }}
+            </div>
+        </div>
+
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.loeschbeauftragter) }}
+                {{ form_help(form.loeschbeauftragter) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.loeschbeauftragter) }}
+            </div>
+        </div>
+
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.beschreibung) }}
+                {{ form_help(form.beschreibung) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.beschreibung) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <p>
+                </p>
+            </div>
+        </div>
+
+        <div>
+            {{ form_widget(form) }}
+            <button class="btn btn-success btn-block btn waves-effect waves-light">{{ button_label|default('Speichern') }}</button>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+ {% block CTA %}
+    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_loeschkonzept_index') }}">
+        <span>Zurück</span>
+    </a>
+    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_loeschkonzept_edit',{'id': loeschkonzept.id}) }}">
+        <span>Bearbeiten</span>
+    </a>
+    {{ include('loeschkonzept/_delete_form.html.twig') }}
+
+    
+{% endblock %}
+
+{% block body %}
+    <h1>Löschkonzept</h1>
+
+    <table class="table">
+        <tbody>
+             <tr>
+                <th>Datenkategorien</th>
+                <td>{% for vv in loeschkonzept.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</td>
+            </tr>
+            <tr>
+                <th>Standard Löschfrist</th>
+                <td>{{ loeschkonzept.standartlf }}</td>
+            </tr>
+            <tr>
+                <th>gesetzliche Löschfrist</th>
+                <td>{{ loeschkonzept.loeschfrist }}</td>
+            </tr>
+            <tr>
+                <th>Speicherorte</th>
+                <td>{{ loeschkonzept.speicherorte }}</td>
+            </tr>
+            <tr>
+                <th>Löschbeauftragter</th>
+                <td>{{ loeschkonzept.loeschbeauftragter }}</td>
+            </tr>
+            <tr>
+                <th>Beschreibung</th>
+                <td>{{ loeschkonzept.beschreibung }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

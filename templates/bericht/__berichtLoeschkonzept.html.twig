@@ -1,0 +1,59 @@
+<h2 style="page-break-before: always;">{% for vv in d.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</h2>
+<style>
+    th, td {
+        padding: 5px;
+        border: 1px solid black;
+        width: 50%;
+    }
+</style>
+<h4>Löschkonzept (id:{{ d.id }})</h4>
+<table style="table-layout:fixed; width: 100%">
+    <tr>
+        <td>
+            Datenkategorien
+        </td>
+        <td><a href="{{ absolute_url(path('app_loeschkonzept_edit', {'id':d.id})) }}">{% for vv in d.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</a></td>
+    </tr>
+    <tr>
+        <td>
+            Datenarten
+        </td>
+        <td>{% for vv in d.vvtdatenkategories %}{{ vv.datenarten|raw }}<br>{% endfor %}</td>
+    </tr>
+    <tr>
+        <td>
+            Standard Löschfrist
+        </td>
+        <td>{{ d.standartlf|raw}}</td>
+    </tr>
+    <tr>
+        <td>
+            gesetzliche Löschfrist
+        </td>
+        <td>{{ d.loeschfrist|raw}}</td>
+    </tr>
+    <tr>
+        <td>
+            Speicherorte
+        </td>
+        <td>{{ d.speicherorte|raw}}</td>
+    </tr>
+    <tr>
+        <td>
+            Löschbeauftragter
+        </td>
+        <td>{{ d.loeschbeauftragter|raw}}</td>
+    </tr>
+      <tr>
+        <td>
+            Beschreibung
+        </td>
+        <td>{{ d.beschreibung|raw}}</td>
+    </tr>
+    
+    
+</table>
+
+{% if d.previous %}
+    {{ include('bericht/__berichtLoeschkonzept.html.twig', {'d':d.previous}) }}
+{% endif %}

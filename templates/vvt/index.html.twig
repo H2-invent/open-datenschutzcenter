@@ -19,7 +19,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Grundlage</th>
                     <th scope="col" title="Datenschutzfolgenabschätzung">DSFA vorhanden</th>
-                    <th scope="col">Kategorie</th>
+                    <th scope="col">Kategorie (Löschfrist)</th>
                     <th scope="col">Abteilung</th>
                     <th scope="col">Produkte</th>
                     <th scope="col">Status</th>
@@ -34,7 +34,9 @@
                         <td>{{ v.name }}</td>
                         <td>{% for g in v.grundlage %}- {{ g.name }}<br>{% endfor %}</td>
                         <td>{{ v.activDsfa?'Ja':'Nein' }}</a></td>
-                        <td>{% for k in v.kategorien %}{{ k.name }}<br>{% endfor %}</td>
+                        <td>{% for k in v.kategorien %}
+                            {% if k.loeschkonzept %}{{ k.name}} ({{ k.loeschkonzept }})<br>
+                            {% else %}{{ k.name }}<br>{% endif %}{% endfor %}</td>
                         <td>{% if v.abteilung %}{{ v.abteilung.name }}{% endif %}</td>
                         <td>{% if v.produkt %}{% for p in v.produkt %}{{ p.name }}<br>{% endfor %}{% endif %}</td>
                         <td>{% if v.approved %}<span

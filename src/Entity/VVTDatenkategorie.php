@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Modified by
+ * User: Jan Juister
+ * Date: 13.05.2022
+ */
+
 namespace App\Entity;
 
 use App\Repository\VVTDatenkategorieRepository;
@@ -27,10 +33,22 @@ class VVTDatenkategorie
      */
     private $team;
 
+
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity=Loeschkonzept::class, inversedBy="vvtdatenkategories")
      */
-    private $activ;
+    private $loeschkonzept;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $datenarten;
+
+    public function __toString()
+    {
+        //shorthand if/else
+        return ($this->loeschkonzept) ? $this->name . " (".$this->loeschkonzept.")" : $this->name;
+    }
 
     public function getId(): ?int
     {
@@ -61,14 +79,26 @@ class VVTDatenkategorie
         return $this;
     }
 
-    public function getActiv(): ?bool
+    public function getLoeschkonzept(): ?Loeschkonzept
     {
-        return $this->activ;
+        return $this->loeschkonzept;
     }
 
-    public function setActiv(bool $activ): self
+    public function setLoeschkonzept(?Loeschkonzept $loeschkonzept): self
     {
-        $this->activ = $activ;
+        $this->loeschkonzept = $loeschkonzept;
+
+        return $this;
+    }
+
+    public function getDatenarten(): ?string
+    {
+        return $this->datenarten;
+    }
+
+    public function setDatenarten(string $datenarten): self
+    {
+        $this->datenarten = $datenarten;
 
         return $this;
     }

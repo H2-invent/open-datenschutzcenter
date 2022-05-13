@@ -6,6 +6,12 @@
  * Time: 09:15
  */
 
+ /**
+ * Modified by
+ * User: Jan Juister
+ * Date: 13.05.2022
+ */
+
 namespace App\Controller;
 
 use App\Entity\AkademieBuchungen;
@@ -18,6 +24,8 @@ use App\Entity\Software;
 use App\Entity\Tom;
 use App\Entity\Vorfall;
 use App\Entity\VVT;
+use App\Entity\Loeschkonzept;
+use App\Entity\VVTDatenkategorie;
 use App\Form\Type\ReportExportType;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use PhpOffice\PhpWord\IOFactory;
@@ -590,6 +598,44 @@ class BerichtController extends AbstractController
         }
 
         return $this->render('bericht/modalView.html.twig', array('form' => $form->createView(), 'title' => $title, 'members' => $users));
+    }
+
+    /**
+     * @Route("/bericht/loeschkonzept", name="bericht_loeschkonzept")
+     */
+    public function berichtLoeschkonzept(DompdfWrapper $wrapper, Request $request)
+    {
+        ini_set('max_execution_time', '900');
+        ini_set('memory_limit', '512M');
+
+        $req = $request->get('id');
+        $team = $this->getUser()->getTeam();
+        $doc = 'Löschkonzepte';
+
+
+        $loeschkonzept = $this->getDoctrine()->getRepository(Loeschkonzept::class)->findBy(array('team' => $team));
+        $title = 'Verzeichnis der Löschkonzepte von ' . $team->getName();
+
+        if (count($loeschkonzept) < 1) {
+            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+        }
+
+        // Center Team authentication
+        if ($team === null || $loeschkonzept[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/loeschkonzept.html.twig', [
+            'daten' => $loeschkonzept,
+            'titel' => $title,
+            'team' => $team,
+            'all' => $request->get('all'),
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse($html, $doc . ".pdf");
+        $response->send();
     }
 
 

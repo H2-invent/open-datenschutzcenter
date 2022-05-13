@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Modified by
+ * User: Jan Juister
+ * Date: 13.05.2022
+ */
+
 namespace App\Entity;
 
 use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
@@ -83,12 +89,6 @@ class VVT
      */
     private $eu = false;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     * @Encrypted()
-     */
-    private $loeschfrist;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -425,17 +425,7 @@ class VVT
         return $this;
     }
 
-    public function getLoeschfrist(): ?string
-    {
-        return $this->loeschfrist;
-    }
 
-    public function setLoeschfrist(string $loeschfrist): self
-    {
-        $this->loeschfrist = $loeschfrist;
-
-        return $this;
-    }
 
     public function getTom(): ?string
     {

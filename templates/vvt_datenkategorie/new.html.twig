@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block CTA %}
+    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_vvtdatenkategorie_index') }}">
+        <span>Zurück</span>
+    </a>
+{% endblock %}
+
+{% block body %}
+    <h1>Neue Datenkategorie anlegen </h1>
+
+    {{ include('vvt_datenkategorie/_form.html.twig') }}
+
+{% endblock %}

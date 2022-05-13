@@ -1,0 +1,200 @@
+<?php
+
+/**
+ * Modified by
+ * User: Jan Juister
+ * Date: 13.05.2022
+ */
+
+namespace App\Entity;
+
+use App\Repository\LoeschkonzeptRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass=LoeschkonzeptRepository::class)
+ */
+class Loeschkonzept
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="text", length=255)
+     */
+    private $standartlf;
+
+    /**
+     * @ORM\Column(type="text", length=255, nullable=true)
+     */
+    private $loeschfrist;
+
+    /**
+     * @ORM\Column(type="text", length=511)
+     */
+    private $speicherorte;
+
+    /**
+     * @ORM\Column(type="text", length=255)
+     */
+    private $loeschbeauftragter;
+
+    /**
+     * @ORM\OneToMany(targetEntity=VVTDatenkategorie::class, mappedBy="loeschkonzept")
+     */
+    private $vvtdatenkategories;
+
+    /**
+     * @ORM\Column(type="text", length=1023, nullable=true)
+     */
+    private $beschreibung;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="loeschkonzepts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $team;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Loeschkonzept::class, cascade={"persist", "remove"})
+     */
+    private $previous;
+
+    public function __construct()
+    {
+        $this->vvtdatenkategories = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->standartlf;
+    }
+
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getStandartlf(): ?string
+    {
+        return $this->standartlf;
+    }
+
+    public function setStandartlf(string $standartlf): self
+    {
+        $this->standartlf = $standartlf;
+
+        return $this;
+    }
+
+    public function getLoeschfrist(): ?string
+    {
+        return $this->loeschfrist;
+    }
+
+    public function setLoeschfrist(?string $loeschfrist): self
+    {
+        $this->loeschfrist = $loeschfrist;
+
+        return $this;
+    }
+
+    public function getSpeicherorte(): ?string
+    {
+        return $this->speicherorte;
+    }
+
+    public function setSpeicherorte(string $speicherorte): self
+    {
+        $this->speicherorte = $speicherorte;
+
+        return $this;
+    }
+
+    public function getLoeschbeauftragter(): ?string
+    {
+        return $this->loeschbeauftragter;
+    }
+
+    public function setLoeschbeauftragter(string $loeschbeauftragter): self
+    {
+        $this->loeschbeauftragter = $loeschbeauftragter;
+
+        return $this;
+    }
+
+    public function getBeschreibung(): ?string
+    {
+        return $this->beschreibung;
+    }
+
+    public function setBeschreibung(?string $beschreibung): self
+    {
+        $this->beschreibung = $beschreibung;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VVTDatenkategorie>
+     */
+    public function getVvtdatenkategories(): Collection
+    {
+        return $this->vvtdatenkategories;
+    }
+
+    public function addVvtdatenkategory(VVTDatenkategorie $vvtdatenkategory): self
+    {
+        if (!$this->vvtdatenkategories->contains($vvtdatenkategory)) {
+            $this->vvtdatenkategories[] = $vvtdatenkategory;
+            $vvtdatenkategory->setLoeschkonzept($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVvtdatenkategory(VVTDatenkategorie $vvtdatenkategory): self
+    {
+        if ($this->vvtdatenkategories->removeElement($vvtdatenkategory)) {
+            // set the owning side to null (unless already changed)
+            if ($vvtdatenkategory->getLoeschkonzept() === $this) {
+                $vvtdatenkategory->setLoeschkonzept(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): self
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    public function getPrevious(): ?self
+    {
+        return $this->previous;
+    }
+
+    public function setPrevious(?self $previous): self
+    {
+        $this->previous = $previous;
+
+        return $this;
+    }
+
+   
+}

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Modified by
+ * User: Jan Juister
+ * Date: 13.05.2022
+ */
+
 namespace App\Repository;
 
 use App\Entity\VVTDatenkategorie;
@@ -51,8 +57,7 @@ class VVTDatenkategorieRepository extends ServiceEntityRepository
     public function findByTeam($value)
     {
         return $this->createQueryBuilder('a')
-            ->where('a.team is null OR a.team = :val')
-            ->andWhere('a.activ = 1')
+            ->where('a.team = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getResult();
