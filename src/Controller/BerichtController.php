@@ -613,7 +613,7 @@ class BerichtController extends AbstractController
         $doc = 'Löschkonzepte';
 
 
-        $loeschkonzept = $this->getDoctrine()->getRepository(Loeschkonzept::class)->findBy(array('team' => $team));
+        $loeschkonzept = $this->getDoctrine()->getRepository(Loeschkonzept::class)->findByTeam($team);
         $title = 'Verzeichnis der Löschkonzepte von ' . $team->getName();
 
         if (count($loeschkonzept) < 1) {

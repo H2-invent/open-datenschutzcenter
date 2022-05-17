@@ -140,8 +140,11 @@
            <div class="col-lg-3 mt-2">
                 <h4>Löschkonzpete</h4>
 
-                <a class="btn bg-vvt orange mb-1" href="{{ path('bericht_loeschkonzept') }}">
+                <a class="btn btn-block orange mb-1" href="{{ path('bericht_loeschkonzept') }}">
                     <span>PDF von allen Löschkonzepten erstellen</span>
+                </a>
+                <a class="btn btn-block orange mb-1" href="{{ path('bericht_loeschkonzept', {'all':1}) }}">
+                    <span>PDF von allen Löschkonzepten inkl. Historie erstellen</span>
                 </a>
             </div>
 

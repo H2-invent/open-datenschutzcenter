@@ -13,6 +13,7 @@ use App\Form\Type\LoeschkonzeptType;
 use App\Service\ApproveService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
+use App\Service\LoeschkonzeptService;
 use App\Repository\LoeschkonzeptRepository;
 use App\Repository\VVTDatenkategorieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 
 /**
@@ -37,22 +39,26 @@ class LoeschkonzeptController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
         return $this->render('loeschkonzept/index.html.twig', [
-            'loeschkonzepts' => $loeschkonzeptRepository->findBy(array('team' => $team)),
+            'loeschkonzepts' => $loeschkonzeptRepository->findByTeam($team),
         ]);
     }
 
     /**
      * @Route("/new", name="app_loeschkonzept_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, SecurityService $securityService): Response
+    public function new (Request $request, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, SecurityService $securityService, LoeschkonzeptService $loeschkonzeptService): Response
     {
         $team = $this->getUser()->getTeam();
+        $user = $this->getUser();
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
         $loeschkonzept = new Loeschkonzept();
         $loeschkonzept->setTeam($team);
-        $form = $this->createForm(LoeschkonzeptType::class, $loeschkonzept);
+        $loeschkonzept->setUser($user);
+        $loeschkonzept->setActiv(true);
+        $loeschkonzept->setCreateAt(new \DateTimeImmutable());
+        $form = $loeschkonzeptService->createForm($loeschkonzept, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -87,28 +93,29 @@ class LoeschkonzeptController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_loeschkonzept_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Loeschkonzept $loeschkonzept, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, VVTDatenkategorieRepository $VvtDatenkategorieRepository,SecurityService $securityService): Response
+    public function edit(Request $request, Loeschkonzept $loeschkonzept, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, VVTDatenkategorieRepository $VvtDatenkategorieRepository, LoeschkonzeptService $loeschkonzeptService, SecurityService $securityService, Loeschkonzeptservice $LoeschkonzeptService): Response
     {
         $team = $this->getUser()->getTeam();
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('app_loeschkonzept_index');
         }
-        $form = $this->createForm(LoeschkonzeptType::class, $loeschkonzept);
+        $newloeschkonzept = $LoeschkonzeptService->cloneLoeschkonzept($loeschkonzept);
+        $form = $loeschkonzeptService->createForm($newloeschkonzept, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $loeschkonzeptRepository->add($loeschkonzept);
+            $loeschkonzeptRepository->add($newloeschkonzept);
 
             $datenkategories = $VvtDatenkategorieRepository->findBy(array('team'=>$team));
             foreach ($datenkategories as $datenkategory) {
-                if ($datenkategory->getLoeschkonzept() == $loeschkonzept) {
+                if ($datenkategory->getLoeschkonzept() == $newloeschkonzept) {
                     $datenkategory->setLoeschkonzept(null);
                     $entityManager->persist($datenkategory);
                 }
             }
 
-            foreach ($loeschkonzept->getVvtdatenkategories() as $datenkategory) {
-                $datenkategory->setLoeschkonzept($loeschkonzept);
+            foreach ($newloeschkonzept->getVvtdatenkategories() as $datenkategory) {
+                $datenkategory->setLoeschkonzept($newloeschkonzept);
                 $entityManager->persist($datenkategory);
             }          
 
@@ -118,7 +125,7 @@ class LoeschkonzeptController extends AbstractController
         }
 
         return $this->renderForm('loeschkonzept/edit.html.twig', [
-            'loeschkonzept' => $loeschkonzept,
+            'loeschkonzept' => $newloeschkonzept,
             'form' => $form,
         ]);
     }
@@ -126,17 +133,22 @@ class LoeschkonzeptController extends AbstractController
     /**
      * @Route("/{id}", name="app_loeschkonzept_delete", methods={"POST"})
      */
-    public function delete(Request $request, Loeschkonzept $loeschkonzept, LoeschkonzeptRepository $loeschkonzeptRepository, SecurityService $securityService): Response
+    public function delete(Request $request, Loeschkonzept $loeschkonzept, LoeschkonzeptRepository $loeschkonzeptRepository, VVTDatenkategorieRepository $VvtDatenkategorieRepository, EntityManagerInterface $entityManager, SecurityService $securityService, DisableService $disableService): Response
     {
         $team = $this->getUser()->getAdminUser();
         if ($securityService->teamCheck($team) === true) 
         {
-            if ($this->isCsrfTokenValid('delete'.$loeschkonzept->getId(), $request->request->get('_token'))) {
-                foreach ($loeschkonzept->getVvtdatenkategories() as $vvtdatenkategory) {
-                    $vvtdatenkategory->setLoeschkonzept(null);
+            $datenkategories = $VvtDatenkategorieRepository->findBy(array('team'=>$team));
+            foreach ($datenkategories as $datenkategory) {
+                if ($datenkategory->getLoeschkonzept() == $loeschkonzept) {
+                    $datenkategory->setLoeschkonzept(null);
+                    $entityManager->persist($datenkategory);
                 }
-                $loeschkonzeptRepository->remove($loeschkonzept);
             }
+             
+            $loeschkonzept->setActiv(false);
+            $entityManager->persist($loeschkonzept);
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_loeschkonzept_index', [], Response::HTTP_SEE_OTHER);

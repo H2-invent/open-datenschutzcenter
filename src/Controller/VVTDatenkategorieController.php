@@ -35,7 +35,7 @@ class VVTDatenkategorieController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
         return $this->render('vvt_datenkategorie/index.html.twig', [
-            'vvtdatenkategories' => $vVTDatenkategorieRepository->findBy(array('team' => $team)),
+            'vvtdatenkategories' => $vVTDatenkategorieRepository->findByTeam($team),
         ]);
     }
 
@@ -50,6 +50,7 @@ class VVTDatenkategorieController extends AbstractController
         }
         $vVTDatenkategorie = new VVTDatenkategorie();
         $vVTDatenkategorie->setTeam($team);
+        $vVTDatenkategorie->setActive(true);
         $form = $this->createForm(VVTDatenkategorieType::class, $vVTDatenkategorie);
         $form->handleRequest($request);
 
@@ -110,7 +111,9 @@ class VVTDatenkategorieController extends AbstractController
         if ($securityService->teamCheck($team) === true) 
         {
             if ($this->isCsrfTokenValid('delete'.$vVTDatenkategorie->getId(), $request->request->get('_token'))) {
-                $entityManager->remove($vVTDatenkategorie);
+                
+                $vVTDatenkategorie->setActive(false);
+                $entityManager->persist($vVTDatenkategorie);
                 $entityManager->flush();
             }
         }

@@ -44,6 +44,11 @@ class VVTDatenkategorie
      */
     private $datenarten;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activ;
+
     public function __toString()
     {
         //shorthand if/else
@@ -99,6 +104,18 @@ class VVTDatenkategorie
     public function setDatenarten(string $datenarten): self
     {
         $this->datenarten = $datenarten;
+
+        return $this;
+    }
+
+    public function getActiv(): ?bool
+    {
+        return $this->activ;
+    }
+
+    public function setActiv(bool $activ): self
+    {
+        $this->activ = $activ;
 
         return $this;
     }

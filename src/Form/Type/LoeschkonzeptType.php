@@ -24,10 +24,12 @@ class LoeschkonzeptType extends AbstractType
     {
         $builder
             ->add('vvtdatenkategories', EntityType::class, [
-                'class' => VVTDatenkategorie::class, 
+                'class' => VVTDatenkategorie::class,
+                'choices' => $options['vvtdatenkategories'],
                 'label' => 'Datenkategorien',
                 'multiple' => true, 
                 'required' => false,
+                'translation_domain' => 'form',
                 'attr' => [
                     'class' => 'selectpicker',
                     'data-live-search' => 'true',
@@ -72,6 +74,7 @@ class LoeschkonzeptType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Loeschkonzept::class,
+            'vvtdatenkategories' => array(),
         ]);
     }
 }

@@ -66,6 +66,22 @@ class Loeschkonzept
      */
     private $previous;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $CreateAt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activ;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="loeschkonzepts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->vvtdatenkategories = new ArrayCollection();
@@ -192,6 +208,42 @@ class Loeschkonzept
     public function setPrevious(?self $previous): self
     {
         $this->previous = $previous;
+
+        return $this;
+    }
+
+    public function getCreateAt(): ?\DateTimeImmutable
+    {
+        return $this->CreateAt;
+    }
+
+    public function setCreateAt(\DateTimeImmutable $CreateAt): self
+    {
+        $this->CreateAt = $CreateAt;
+
+        return $this;
+    }
+
+    public function getActiv(): ?bool
+    {
+        return $this->activ;
+    }
+
+    public function setActiv(bool $activ): self
+    {
+        $this->activ = $activ;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

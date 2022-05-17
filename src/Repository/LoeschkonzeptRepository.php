@@ -84,6 +84,7 @@ class LoeschkonzeptRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->where('a.team = :val')
+            ->andWhere('a.activ = 1')
             ->setParameter('val', $value)
             ->getQuery()
             ->getResult();

@@ -100,6 +100,7 @@ class ParserService
                 $vvt = new VVT();
                 $vvt->setName($e->name);
                 $vvt->setZweck($e->zweck);
+                $vvt->setLoeschfrist($e->loeschfrist);
                 $status = $this->em->getRepository(VVTStatus::class)->findOneBy(array('name' => $e->status));
                 if (!$status) {
                     $status = new VVTStatus();

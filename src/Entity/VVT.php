@@ -233,6 +233,12 @@ class VVT
      */
     private $source;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * Encrypted() 
+    */
+    private $loeschfrist;
+
     public function __construct()
     {
         $this->grundlage = new ArrayCollection();
@@ -881,4 +887,16 @@ class VVT
 
         return $this;
     }
+
+    public function getLoeschfrist(): ?string
+    {
+        return $this->loeschfrist;
+    }
+
+    public function setLoeschfrist(?string $loeschfrist): self
+    {
+        $this->loeschfrist = $loeschfrist;
+
+        return $this;
+    } 
 }

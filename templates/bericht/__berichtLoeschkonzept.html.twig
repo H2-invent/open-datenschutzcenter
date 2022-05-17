@@ -1,4 +1,4 @@
-<h2 style="page-break-before: always;">{% for vv in d.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</h2>
+<h2 style="page-break-before: always;">{% if not d.activ %} Historie: {% endif %}{% for vv in d.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</h2>
 <style>
     th, td {
         padding: 5px;
@@ -50,10 +50,19 @@
         </td>
         <td>{{ d.beschreibung|raw}}</td>
     </tr>
+    </tr>
+      <tr>
+        <td>
+            Activ
+        </td>
+        <td>{{ d.activ|raw}}</td>
+    </tr>
     
     
 </table>
+{{ d.createAt|date('d.m.Y H:i') }} by {{ d.user.email }}
 
-{% if d.previous %}
+{% if d.previous and all == 1 %}
     {{ include('bericht/__berichtLoeschkonzept.html.twig', {'d':d.previous}) }}
 {% endif %}
+
