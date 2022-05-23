@@ -9,6 +9,8 @@
 namespace App\Entity;
 
 use App\Repository\VVTDatenkategorieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,12 +35,6 @@ class VVTDatenkategorie
      */
     private $team;
 
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Loeschkonzept::class, inversedBy="vvtdatenkategories")
-     */
-    private $loeschkonzept;
-
     /**
      * @ORM\Column(type="text")
      */
@@ -48,6 +44,16 @@ class VVTDatenkategorie
      * @ORM\Column(type="boolean")
      */
     private $activ;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Loeschkonzept::class, mappedBy="vvtdatenkategories")
+     */
+    private $loeschkonzept;
+
+    public function __construct()
+    {
+        $this->loeschkonzept = new ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -84,17 +90,6 @@ class VVTDatenkategorie
         return $this;
     }
 
-    public function getLoeschkonzept(): ?Loeschkonzept
-    {
-        return $this->loeschkonzept;
-    }
-
-    public function setLoeschkonzept(?Loeschkonzept $loeschkonzept): self
-    {
-        $this->loeschkonzept = $loeschkonzept;
-
-        return $this;
-    }
 
     public function getDatenarten(): ?string
     {
@@ -116,6 +111,33 @@ class VVTDatenkategorie
     public function setActiv(bool $activ): self
     {
         $this->activ = $activ;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Loeschkonzept>
+     */
+    public function getLoeschkonzept(): Collection
+    {
+        return $this->loeschkonzept;
+    }
+
+    public function addLoeschkonzept(Loeschkonzept $loeschkonzept): self
+    {
+        if (!$this->loeschkonzept->contains($loeschkonzept)) {
+            $this->loeschkonzept[] = $loeschkonzept;
+            $loeschkonzept->addVvtdatenkategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoeschkonzept(Loeschkonzept $loeschkonzept): self
+    {
+        if ($this->loeschkonzept->removeElement($loeschkonzept)) {
+            $loeschkonzept->removeVvtdatenkategory($this);
+        }
 
         return $this;
     }

@@ -46,11 +46,6 @@ class Loeschkonzept
     private $loeschbeauftragter;
 
     /**
-     * @ORM\OneToMany(targetEntity=VVTDatenkategorie::class, mappedBy="loeschkonzept")
-     */
-    private $vvtdatenkategories;
-
-    /**
      * @ORM\Column(type="text", length=1023, nullable=true)
      */
     private $beschreibung;
@@ -81,6 +76,11 @@ class Loeschkonzept
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=VVTDatenkategorie::class, inversedBy="loeschkonzept")
+     */
+    private $vvtdatenkategories;
 
     public function __construct()
     {
@@ -158,36 +158,6 @@ class Loeschkonzept
         return $this;
     }
 
-    /**
-     * @return Collection<int, VVTDatenkategorie>
-     */
-    public function getVvtdatenkategories(): Collection
-    {
-        return $this->vvtdatenkategories;
-    }
-
-    public function addVvtdatenkategory(VVTDatenkategorie $vvtdatenkategory): self
-    {
-        if (!$this->vvtdatenkategories->contains($vvtdatenkategory)) {
-            $this->vvtdatenkategories[] = $vvtdatenkategory;
-            $vvtdatenkategory->setLoeschkonzept($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVvtdatenkategory(VVTDatenkategorie $vvtdatenkategory): self
-    {
-        if ($this->vvtdatenkategories->removeElement($vvtdatenkategory)) {
-            // set the owning side to null (unless already changed)
-            if ($vvtdatenkategory->getLoeschkonzept() === $this) {
-                $vvtdatenkategory->setLoeschkonzept(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getTeam(): ?Team
     {
         return $this->team;
@@ -244,6 +214,30 @@ class Loeschkonzept
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VVTDatenkategorie>
+     */
+    public function getVvtdatenkategories(): Collection
+    {
+        return $this->vvtdatenkategories;
+    }
+
+    public function addVvtdatenkategory(VVTDatenkategorie $vvtdatenkategory): self
+    {
+        if (!$this->vvtdatenkategories->contains($vvtdatenkategory)) {
+            $this->vvtdatenkategories[] = $vvtdatenkategory;
+        }
+
+        return $this;
+    }
+
+    public function removeVvtdatenkategory(VVTDatenkategorie $vvtdatenkategory): self
+    {
+        $this->vvtdatenkategories->removeElement($vvtdatenkategory);
 
         return $this;
     }
