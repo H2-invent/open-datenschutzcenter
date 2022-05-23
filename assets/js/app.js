@@ -79,6 +79,8 @@ $(document).ready(function () {
         }
     });
 
+    $('.summernote-disable').summernote('disable');
+
     $('.checkboxSelect').on('change', function () {
         if ($(this).prop("checked") === true) {
             $('.sendButton').removeClass('disabled');

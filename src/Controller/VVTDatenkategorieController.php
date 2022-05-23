@@ -50,7 +50,7 @@ class VVTDatenkategorieController extends AbstractController
         }
         $vVTDatenkategorie = new VVTDatenkategorie();
         $vVTDatenkategorie->setTeam($team);
-        $vVTDatenkategorie->setActive(true);
+        $vVTDatenkategorie->setActiv(true);
         $form = $this->createForm(VVTDatenkategorieType::class, $vVTDatenkategorie);
         $form->handleRequest($request);
 
@@ -112,7 +112,7 @@ class VVTDatenkategorieController extends AbstractController
         {
             if ($this->isCsrfTokenValid('delete'.$vVTDatenkategorie->getId(), $request->request->get('_token'))) {
                 
-                $vVTDatenkategorie->setActive(false);
+                $vVTDatenkategorie->setActiv(false);
                 $entityManager->persist($vVTDatenkategorie);
                 $entityManager->flush();
             }

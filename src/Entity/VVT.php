@@ -235,7 +235,7 @@ class VVT
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * Encrypted() 
+     * @Encrypted() 
     */
     private $loeschfrist;
 
