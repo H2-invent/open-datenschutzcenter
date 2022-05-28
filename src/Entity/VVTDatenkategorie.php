@@ -50,15 +50,56 @@ class VVTDatenkategorie
      */
     private $loeschkonzept;
 
+    /**
+     * @ORM\OneToOne(targetEntity=VVTDatenkategorie::class, cascade={"persist", "remove"})
+     */
+    private $previous;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $CreatedAt;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="vVTDatenkategories")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=VVTDatenkategorie::class, inversedBy="parentOf")
+     */
+    private $cloneOf;
+
+    /**
+     * @ORM\OneToMany(targetEntity=VVTDatenkategorie::class, mappedBy="cloneOf")
+     */
+    private $parentOf;
+
     public function __construct()
     {
         $this->loeschkonzept = new ArrayCollection();
+        $this->parentOf = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): ?string
     {
-        //shorthand if/else
-        return ($this->loeschkonzept) ? $this->name . " (".$this->loeschkonzept.")" : $this->name;
+        if ($this->getLoeschkonzept())
+        {
+            $l = $this->getLoeschkonzept()->last();
+            
+            if ($l == false){
+                return $this->name;
+            }
+            if ($l->getActiv()) {
+                return $this->name . " (". $l. ")";
+            } else {
+                return $this->name;
+            }
+        } else {
+            return $this->name;
+        }
     }
 
     public function getId(): ?int
@@ -137,6 +178,84 @@ class VVTDatenkategorie
     {
         if ($this->loeschkonzept->removeElement($loeschkonzept)) {
             $loeschkonzept->removeVvtdatenkategory($this);
+        }
+
+        return $this;
+    }
+
+    public function getPrevious(): ?self
+    {
+        return $this->previous;
+    }
+
+    public function setPrevious(?self $previous): self
+    {
+        $this->previous = $previous;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->CreatedAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $CreatedAt): self
+    {
+        $this->CreatedAt = $CreatedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCloneOf(): ?self
+    {
+        return $this->cloneOf;
+    }
+
+    public function setCloneOf(?self $cloneOf): self
+    {
+        $this->cloneOf = $cloneOf;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getParentOf(): Collection
+    {
+        return $this->parentOf;
+    }
+
+    public function addParentOf(self $parentOf): self
+    {
+        if (!$this->parentOf->contains($parentOf)) {
+            $this->parentOf[] = $parentOf;
+            $parentOf->setCloneOf($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParentOf(self $parentOf): self
+    {
+        if ($this->parentOf->removeElement($parentOf)) {
+            // set the owning side to null (unless already changed)
+            if ($parentOf->getCloneOf() === $this) {
+                $parentOf->setCloneOf(null);
+            }
         }
 
         return $this;

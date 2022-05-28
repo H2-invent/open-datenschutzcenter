@@ -210,6 +210,11 @@ class User extends BaseUser
      */
     private $loeschkonzepts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=VVTDatenkategorie::class, mappedBy="user")
+     */
+    private $vVTDatenkategories;
+
 
     public function __construct()
     {
@@ -238,6 +243,7 @@ class User extends BaseUser
         $this->assignedRequests = new ArrayCollection();
         $this->teamDsb = new ArrayCollection();
         $this->loeschkonzepts = new ArrayCollection();
+        $this->vVTDatenkategories = new ArrayCollection();
     }
 
     public function getTeam(): ?Team
@@ -1135,6 +1141,36 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($loeschkonzept->getUser() === $this) {
                 $loeschkonzept->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VVTDatenkategorie>
+     */
+    public function getVVTDatenkategories(): Collection
+    {
+        return $this->vVTDatenkategories;
+    }
+
+    public function addVVTDatenkategory(VVTDatenkategorie $vVTDatenkategory): self
+    {
+        if (!$this->vVTDatenkategories->contains($vVTDatenkategory)) {
+            $this->vVTDatenkategories[] = $vVTDatenkategory;
+            $vVTDatenkategory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVVTDatenkategory(VVTDatenkategorie $vVTDatenkategory): self
+    {
+        if ($this->vVTDatenkategories->removeElement($vVTDatenkategory)) {
+            // set the owning side to null (unless already changed)
+            if ($vVTDatenkategory->getUser() === $this) {
+                $vVTDatenkategory->setUser(null);
             }
         }
 

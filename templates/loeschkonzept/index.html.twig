@@ -13,6 +13,7 @@
             <table id="data-table" class="table display table-striped">
                 <thead>
                 <tr>
+                    <th scope="col">ID</th>
                     <th scope="col">Datenkategorien</th>
                     <th scope="col">Datenarten</th>
                     <th scope="col">Standard Löschfrist</th>
@@ -23,8 +24,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for l in loeschkonzepts %}
+                {% for l in loeschkonzepte %}
                     <tr class="clickable-row" data-href='{{ path('app_loeschkonzept_edit', {'id': l.id}) }}'>
+                        <td>{{ l.id }}</td>
                         <td>{% for vv in l.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</td>
                         <td>{% for vv in l.vvtdatenkategories %}{{ vv.datenarten }}<br>{% endfor %}</td>
                         <td>{{ l.standartlf }}</td>

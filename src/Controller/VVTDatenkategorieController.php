@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\VVTDatenkategorie;
 use App\Form\Type\VVTDatenkategorieType;
+use App\Service\VVTDatenkategorieService;
 use App\Service\ApproveService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
@@ -42,16 +43,15 @@ class VVTDatenkategorieController extends AbstractController
     /**
      * @Route("/new", name="app_vvtdatenkategorie_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager, SecurityService $securityService): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SecurityService $securityService, VVTDatenkategorieService $vVTDatenkategorieService): Response
     {
-        $team = $this->getUser()->getTeam();
+        $user = $this->getUser();
+        $team = $user->getTeam();
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $vVTDatenkategorie = new VVTDatenkategorie();
-        $vVTDatenkategorie->setTeam($team);
-        $vVTDatenkategorie->setActiv(true);
-        $form = $this->createForm(VVTDatenkategorieType::class, $vVTDatenkategorie);
+        $vVTDatenkategorie = $vVTDatenkategorieService->newVVTDatenkategorie($team, $user);
+        $form = $form = $this->createForm(VVTDatenkategorieType::class, $vVTDatenkategorie);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -81,16 +81,31 @@ class VVTDatenkategorieController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_vvtdatenkategorie_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, VVTDatenkategorie $vVTDatenkategorie, EntityManagerInterface $entityManager, SecurityService $securityService): Response
+    public function edit(Request $request, VVTDatenkategorie $vVTDatenkategorie, VVTDatenkategorieRepository $vVTDatenkategorieRepository, EntityManagerInterface $entityManager, SecurityService $securityService, VVTDatenkategorieService $vVTDatenkategorieService): Response
     {
         $team = $this->getUser()->getTeam();
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('app_vvtdatenkategorie_index');
         }
-        $form = $this->createForm(VVTDatenkategorieType::class, $vVTDatenkategorie);
+
+        $newVVTDatenkategorie = $vVTDatenkategorieService->cloneVVTDatenkategorie($vVTDatenkategorie);
+        $form = $vVTDatenkategorieService->createForm($newVVTDatenkategorie, $team);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $vVTDatenkategorie->setActiv(false);
+            $entityManager->persist($vVTDatenkategorie);
+
+            $vVTDatenkategorieRepository->add($newVVTDatenkategorie);
+
+            
+
+            foreach ($newVVTDatenkategorie->getLoeschkonzept() as $loeschkonzept) {
+                $loeschkonzept->addVvtdatenkategory($newVVTDatenkategorie);
+                $entityManager->persist($loeschkonzept);
+            } 
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);

@@ -63,6 +63,12 @@ class VvtController extends AbstractController
             $errors = $validator->validate($vvt);
             if (count($errors) == 0) {
                 $em = $this->getDoctrine()->getManager();
+
+                $kategorien = array();
+                foreach ($vvt->getKategorien() as $kategorie){
+                    $kategorien[];
+                }
+
                 $em->persist($vvt);
                 $em->flush();
                 return $this->redirectToRoute('vvt', ['snack' => 'Erfolgreich angelegt']);

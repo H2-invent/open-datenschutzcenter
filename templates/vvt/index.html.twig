@@ -34,9 +34,7 @@
                         <td>{{ v.name }}</td>
                         <td>{% for g in v.grundlage %}- {{ g.name }}<br>{% endfor %}</td>
                         <td>{{ v.activDsfa?'Ja':'Nein' }}</a></td>
-                        <td>{% for k in v.kategorien %}
-                            {% if k.loeschkonzept %}{{ k.name}} ({{ k.loeschkonzept }})<br>
-                            {% else %}{{ k.name }}<br>{% endif %}{% endfor %}</td>
+                        <td>{% for k in v.kategorien %}{{k}}<br>{% endfor %}</td>
                         <td>{% if v.abteilung %}{{ v.abteilung.name }}{% endif %}</td>
                         <td>{% if v.produkt %}{% for p in v.produkt %}{{ p.name }}<br>{% endfor %}{% endif %}</td>
                         <td>{% if v.approved %}<span

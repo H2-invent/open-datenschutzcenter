@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Entity\Loeschkonzept;
 use App\Entity\VVTDatenkategorie;
 use App\Entity\Team;
+use App\Entity\User;
 use App\Form\Type\LoeschkonzeptType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -32,14 +33,23 @@ class LoeschkonzeptService
         return $form;
     }
 
+    function newLoeschkonzept(Team $team, User $user)
+    {
+        $loeschkonzept = new Loeschkonzept();
+        $loeschkonzept->setTeam($team);
+        $loeschkonzept->setCreateAt(new \DateTimeImmutable());
+        $loeschkonzept->setActiv(true);
+        $loeschkonzept->setUser($user);
+
+        return $loeschkonzept;
+    }
+
 
     function cloneLoeschkonzept(Loeschkonzept $loeschkonzept)
     {
-        $newVvt = clone $loeschkonzept;
-        $newVvt->setPrevious($loeschkonzept);
-        $loeschkonzept->setActiv(false);
-        $newVvt->setActiv(true);
-        $newVvt->setCreateAt(new \DateTimeImmutable());
-        return $newVvt;
+        $newLoeschkonzept = clone $loeschkonzept;
+        $newLoeschkonzept->setPrevious($loeschkonzept);
+        $newLoeschkonzept->setCreateAt(new \DateTimeImmutable());
+        return $newLoeschkonzept;
     }
 }

@@ -12,13 +12,13 @@
         <td>
             Datenkategorien
         </td>
-        <td><a href="{{ absolute_url(path('app_loeschkonzept_edit', {'id':d.id})) }}">{% for vv in d.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</a></td>
+        <td><a href="{{ absolute_url(path('app_loeschkonzept_edit', {'id':d.id})) }}">{% for vv in d.vvtdatenkategories %}{{ vv.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</a></td>
     </tr>
     <tr>
         <td>
             Datenarten
         </td>
-        <td>{% for vv in d.vvtdatenkategories %}{{ vv.datenarten|raw }}<br>{% endfor %}</td>
+        <td>{% for vv in d.vvtdatenkategories %}{{ vv.datenarten|raw }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>

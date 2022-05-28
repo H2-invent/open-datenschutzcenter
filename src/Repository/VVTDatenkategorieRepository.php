@@ -25,6 +25,18 @@ class VVTDatenkategorieRepository extends ServiceEntityRepository
         parent::__construct($registry, VVTDatenkategorie::class);
     }
 
+        /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function add(VVTDatenkategorie $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
     // /**
     //  * @return VVTDatenkategorie[] Returns an array of VVTDatenkategorie objects
     //  */

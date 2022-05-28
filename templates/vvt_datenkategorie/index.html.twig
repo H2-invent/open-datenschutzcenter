@@ -13,6 +13,7 @@
             <table id="data-table" class="table display table-striped">
                 <thead>
                 <tr>
+                    <th scope="col">ID</th>
                     <th scope="col">Datenkategorie</th>
                     <th scope="col">Datenarten</th>
                     <th scope="col">Löschfrist</th>
@@ -24,14 +25,27 @@
                 <tbody>
                 {% for d in vvtdatenkategories %}
                     <tr class="clickable-row" data-href='{{ path('app_vvtdatenkategorie_edit', {'id': d.id}) }}'>
+                        <td>{{ d.id }}</td>
                         <td>{{ d.name }}</td>
                         <td>{{ d.datenarten }}</td>
-                        <td>{% if d.loeschkonzept %}{{ d.loeschkonzept }}
-                            {% else %}{{ 'X' }}{% endif %}
+                        <td>{% if d.loeschkonzept %}
+                                {{ d.loeschkonzept|last }}
+                            {% else %}
+                                {{ 'X' }}
+                            {% endif %}
                         </td>
                         <td>
-                           {% if d.loeschkonzept %} <a href="{{ path('app_loeschkonzept_show', {'id': d.loeschkonzept.id}) }}">anzeigen</a> 
-                           {% else %}{{ 'X' }}{% endif %}
+                            {% if d.loeschkonzept %}
+                                {% if d.loeschkonzept|last %}
+                                    <a href="{{ path('app_loeschkonzept_show', {'id': d.loeschkonzept|last.id}) }}">anzeigen</a>
+                                {% else %}
+                                    {% for l in d.loeschkonzept %}
+                                    <a href="{{ path('app_loeschkonzept_show', {'id': l.id}) }}">anzeigen</a>
+                                    {% endfor %}
+                                {% endif %}
+                            {% else %}
+                                {{ 'X' }}
+                            {% endif %}
                             
                         </td>
                         <td>

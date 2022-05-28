@@ -42,19 +42,19 @@
         <td>
             Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Rechtsgrundlage)
         </td>
-        <td>{% for p in d.grundlage %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for p in d.grundlage %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
             Die Daten welcher Personen werden verarbeitet?
         </td>
-        <td>{% for p in d.personengruppen %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for p in d.personengruppen %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
             Welche Daten(kategorien) werden verarbeitet?
         </td>
-        <td>{% for p in d.kategorien %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for p in d.kategorien %}{{ p }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
@@ -133,7 +133,7 @@
         <td>
             Mögliche Risko-Quellen
         </td>
-        <td>{% for p in d.risiko %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for p in d.risiko %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>

@@ -87,7 +87,7 @@ class Loeschkonzept
         $this->vvtdatenkategories = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): ?string
     {
         return $this->standartlf;
     }
