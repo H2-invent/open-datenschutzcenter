@@ -126,7 +126,7 @@ class VvtController extends AbstractController
                     $newVvt->removeKategorien($kategorie);//wir entferenen die fiktive neues kategorie
                     $newVvt->addKategorien($tmp);//wir fügen die geklonte kategorie an
                 }
-
+                
                 if ($vvt->getActivDsfa()) {
                     $dsfa = $vvt->getActivDsfa();
                     $newDsfa = clone $dsfa;

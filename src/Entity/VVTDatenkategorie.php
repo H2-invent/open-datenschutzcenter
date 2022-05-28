@@ -262,7 +262,7 @@ class VVTDatenkategorie
     }
     public function getLastLoeschkonzept(): ?Loeschkonzept{
        $losch = $this->loeschkonzept->last();
-       if(!$losch){
+       if($losch !== false){
            return $losch;
        }
        return  null;

@@ -31,10 +31,9 @@ class MigrateKategorienCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $vvt = $this->em->getRepository(VVT::class)->findAll();
         foreach ($vvt as $data){
-            $data = new VVT();
             $kat = $data->getKategorien();
             foreach ($kat as $data2){
-                $data->addKategorien($this->VVTDatenkategorieService->cloneVVTDatenkategorie($data2));
+                $data->addKategorien($this->VVTDatenkategorieService->createChild($data2));
                 $data->removeKategorien($data2);
             }
             $this->em->persist($data);
