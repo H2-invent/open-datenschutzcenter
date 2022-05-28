@@ -61,7 +61,6 @@ class VvtController extends AbstractController
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $vvt = $form->getData();
-            //$vvt = new VVT();
             $errors = $validator->validate($vvt);
             if (count($errors) == 0) {
                 $em = $this->getDoctrine()->getManager();
@@ -134,10 +133,12 @@ class VvtController extends AbstractController
                     $newDsfa->setPrevious(null);
                     $em->persist($newDsfa);
                 }
+
                 foreach ($vvt->getPolicies() as $item) {
                     $item->addProcess($newVvt);
                     $em->persist($item);
                 }
+
                 foreach ($vvt->getSoftware() as $software) {
                     $software->addVvt($newVvt);
                     $em->persist($software);

@@ -56,24 +56,33 @@ class VVTDatenkategorieService
     function createChild(VVTDatenkategorie $vVTDatenkategorie)
     {
         //first we clone the datenkategorie
-        $childVVTDatenkategorie = clone $vVTDatenkategorie;
-
-        foreach ($childVVTDatenkategorie->getLoeschkonzept() as $data) {//cleanup existing löschkonzepts
-            $childVVTDatenkategorie->removeLoeschkonzept($data);
-        }
-        $childVVTDatenkategorie->setPrevious(null);
-        $childVVTDatenkategorie->setCreatedAt(new \DateTimeImmutable());
+        $childVVTDatenkategorie = new VVTDatenkategorie();
         $childVVTDatenkategorie->setCloneOf($vVTDatenkategorie);
+        $childVVTDatenkategorie->setCreatedAt(new \DateTimeImmutable())
+            ->setPrevious(null)
+            ->setName($vVTDatenkategorie->getName())
+            ->setDatenarten($vVTDatenkategorie->getDatenarten())
+            ->setTeam($vVTDatenkategorie->getTeam())
+            ->setUser($vVTDatenkategorie->getUser());
 
         // we clone the löschkonzept
         $loeschkonzept = $vVTDatenkategorie->getLastLoeschkonzept();
         if ($loeschkonzept) {
-            $childLoeschkonzept = clone $loeschkonzept;
-            foreach ($childLoeschkonzept->getVvtdatenkategories() as $data) {//cleanup existing kategories
-                $childLoeschkonzept->removeVvtdatenkategory($data);
-            }
+            $childLoeschkonzept =new Loeschkonzept();
+            $childLoeschkonzept->setUser($loeschkonzept->getUser())
+                ->setTeam($loeschkonzept->getTeam())
+                ->setPrevious(null)
+                ->setCloneOf($loeschkonzept)
+                ->setUser($loeschkonzept->getUser())
+                ->setActiv(false)
+                ->setBeschreibung($loeschkonzept->getBeschreibung())
+                ->setCreateAt(new \DateTimeImmutable())
+                ->setLoeschbeauftragter($loeschkonzept->getLoeschbeauftragter())
+                ->setLoeschfrist($loeschkonzept->getLoeschfrist())
+                ->setSpeicherorte($loeschkonzept->getSpeicherorte())
+                ->setStandartlf($loeschkonzept->getStandartlf());
+
             $childLoeschkonzept->addVvtdatenkategory($childVVTDatenkategorie);
-            $childLoeschkonzept->setCloneOf($loeschkonzept);
         }
         return $childVVTDatenkategorie;
     }
