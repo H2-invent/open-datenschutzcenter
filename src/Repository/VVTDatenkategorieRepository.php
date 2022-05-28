@@ -11,6 +11,7 @@ namespace App\Repository;
 use App\Entity\VVTDatenkategorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method VVTDatenkategorie|null find($id, $lockMode = null, $lockVersion = null)
@@ -68,8 +69,10 @@ class VVTDatenkategorieRepository extends ServiceEntityRepository
 
     public function findByTeam($value)
     {
-        return $this->createQueryBuilder('a')
-            ->where('a.team is null OR a.team = :val')
+        $qb = $this->createQueryBuilder('a');
+        return $qb
+            ->andWhere('a.team is null OR a.team = :val')
+            ->andWhere($qb->expr()->isNull('a.cloneOf'))
             ->andWhere('a.activ = 1')
             ->setParameter('val', $value)
             ->getQuery()

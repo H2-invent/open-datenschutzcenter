@@ -82,9 +82,20 @@ class Loeschkonzept
      */
     private $vvtdatenkategories;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Loeschkonzept::class, inversedBy="parentOf")
+     */
+    private $cloneOf;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Loeschkonzept::class, mappedBy="cloneOf")
+     */
+    private $parentOf;
+
     public function __construct()
     {
         $this->vvtdatenkategories = new ArrayCollection();
+        $this->parentOf = new ArrayCollection();
     }
 
     public function __toString(): ?string
@@ -238,6 +249,48 @@ class Loeschkonzept
     public function removeVvtdatenkategory(VVTDatenkategorie $vvtdatenkategory): self
     {
         $this->vvtdatenkategories->removeElement($vvtdatenkategory);
+
+        return $this;
+    }
+
+    public function getCloneOf(): ?self
+    {
+        return $this->cloneOf;
+    }
+
+    public function setCloneOf(?self $cloneOf): self
+    {
+        $this->cloneOf = $cloneOf;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getParentOf(): Collection
+    {
+        return $this->parentOf;
+    }
+
+    public function addParentOf(self $parentOf): self
+    {
+        if (!$this->parentOf->contains($parentOf)) {
+            $this->parentOf[] = $parentOf;
+            $parentOf->setCloneOf($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParentOf(self $parentOf): self
+    {
+        if ($this->parentOf->removeElement($parentOf)) {
+            // set the owning side to null (unless already changed)
+            if ($parentOf->getCloneOf() === $this) {
+                $parentOf->setCloneOf(null);
+            }
+        }
 
         return $this;
     }

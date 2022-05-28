@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use App\Entity\VVT;
 use App\Entity\VVTDatenkategorie;
 use App\Entity\Loeschkonzept;
 use App\Entity\Team;
@@ -54,6 +55,40 @@ class VVTDatenkategorieService
 
     function createChild(VVTDatenkategorie $vVTDatenkategorie)
     {
+        //first we clone the datenkategorie
         $childVVTDatenkategorie = clone $vVTDatenkategorie;
+
+        foreach ($childVVTDatenkategorie->getLoeschkonzept() as $data) {//cleanup existing löschkonzepts
+            $childVVTDatenkategorie->removeLoeschkonzept($data);
+        }
+        $childVVTDatenkategorie->setPrevious(null);
+        $childVVTDatenkategorie->setCreatedAt(new \DateTimeImmutable());
+        $childVVTDatenkategorie->setCloneOf($vVTDatenkategorie);
+
+        // we clone the löschkonzept
+        $loeschkonzept = $vVTDatenkategorie->getLastLoeschkonzept();
+        if ($loeschkonzept) {
+            $childLoeschkonzept = clone $loeschkonzept;
+            foreach ($childLoeschkonzept->getVvtdatenkategories() as $data) {//cleanup existing kategories
+                $childLoeschkonzept->removeVvtdatenkategory($data);
+            }
+            $childLoeschkonzept->addVvtdatenkategory($childVVTDatenkategorie);
+            $childLoeschkonzept->setCloneOf($loeschkonzept);
+        }
+        return $childVVTDatenkategorie;
     }
+
+    function findLatestKategorie(VVTDatenkategorie $VVTDatenkategorie): ?VVTDatenkategorie
+    {
+        $act = $VVTDatenkategorie;
+        for (; ;) {
+            $next = $this->em->getRepository(VVTDatenkategorie::class)->findOneBy(array('previous' => $act));
+            if ($next === null) {
+                return $act;
+            }
+            $act = $next;
+        }
+
+    }
+
 }

@@ -46,7 +46,7 @@ class VVTDatenkategorie
     private $activ;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Loeschkonzept::class, mappedBy="vvtdatenkategories")
+     * @ORM\ManyToMany(targetEntity=Loeschkonzept::class, mappedBy="vvtdatenkategories",cascade={"persist", "remove"})
      */
     private $loeschkonzept;
 
@@ -259,5 +259,12 @@ class VVTDatenkategorie
         }
 
         return $this;
+    }
+    public function getLastLoeschkonzept(): ?Loeschkonzept{
+       $losch = $this->loeschkonzept->last();
+       if(!$losch){
+           return $losch;
+       }
+       return  null;
     }
 }

@@ -74,7 +74,7 @@ class VVT
     private $personengruppen;
 
     /**
-     * @ORM\ManyToMany(targetEntity=VVTDatenkategorie::class)
+     * @ORM\ManyToMany(targetEntity=VVTDatenkategorie::class, cascade={"persist", "remove"})
      * @Assert\NotBlank()
      */
     private $kategorien;
