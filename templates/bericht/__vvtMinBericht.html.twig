@@ -34,9 +34,9 @@
     </tr>
     <tr>
         <td>
-            Verarbeitet Daten(kategorien)
+            Verarbeitet Datenkategorien (Löschfristen)
         </td>
-        <td>{% for p in d.kategorien %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
+        <td>{% for p in d.kategorien %}{{ p }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>

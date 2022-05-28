@@ -89,15 +89,15 @@ class VVTDatenkategorie
         {
             $l = $this->getLoeschkonzept()->last();
             
-            if ($l == false){
+            if ($l == false)
+            {
                 return $this->name;
             }
-            if ($l->getActiv()) {
+            else {
                 return $this->name . " (". $l. ")";
-            } else {
-                return $this->name;
             }
-        } else {
+        } 
+        else {
             return $this->name;
         }
     }

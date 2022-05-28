@@ -101,8 +101,7 @@ class VvtController extends AbstractController
         }
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
 
-        foreach ($newVvt->getKategorien() as $cloneKat){//hier haben wir die geklonten KAtegorien
-            $newVvt->removeKategorien($cloneKat);//wir entfernen de geclonte kategorie, da wir die originale neueste kategorie anzeigen wollen. Diese ist auch in der create Form als auswahl angezeigt
+        foreach ($vvt->getKategorien() as $cloneKat){//hier haben wir die geklonten KAtegorien
             $newVvt->addKategorien($VVTDatenkategorieService->findLatestKategorie($cloneKat->getCloneOf()));//wir hängen die neueste gültige Datenkategorie an den VVT clone an.
         }
 

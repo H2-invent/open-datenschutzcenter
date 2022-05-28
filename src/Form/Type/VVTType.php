@@ -120,7 +120,7 @@ class VVTType extends AbstractType
             ->add('kategorien', EntityType::class, [
                 'class' => VVTDatenkategorie::class,
                 'choices' => $options['kategorien'],
-                'label' => 'Welche Daten(kategorien) werden verarbeitet?',
+                'label' => 'Welche Datenkategorien (Löschfristen) werden verarbeitet?',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'attr' => [

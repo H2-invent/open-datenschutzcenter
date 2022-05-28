@@ -899,4 +899,10 @@ class VVT
 
         return $this;
     } 
+
+    public function __clone()
+    {
+        unset($this->kategorien);
+        $this->kategorien = new ArrayCollection();
+    }
 }

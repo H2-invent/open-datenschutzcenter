@@ -63,7 +63,8 @@ class VVTDatenkategorieService
             ->setName($vVTDatenkategorie->getName())
             ->setDatenarten($vVTDatenkategorie->getDatenarten())
             ->setTeam($vVTDatenkategorie->getTeam())
-            ->setUser($vVTDatenkategorie->getUser());
+            ->setUser($vVTDatenkategorie->getUser())
+            ->setActiv(false);
 
         // we clone the löschkonzept
         $loeschkonzept = $vVTDatenkategorie->getLastLoeschkonzept();
@@ -82,7 +83,8 @@ class VVTDatenkategorieService
                 ->setSpeicherorte($loeschkonzept->getSpeicherorte())
                 ->setStandartlf($loeschkonzept->getStandartlf());
 
-            $childLoeschkonzept->addVvtdatenkategory($childVVTDatenkategorie);
+            #$childLoeschkonzept->addVvtdatenkategory($childVVTDatenkategorie);
+            $childVVTDatenkategorie->addLoeschkonzept($childLoeschkonzept);
         }
         return $childVVTDatenkategorie;
     }
