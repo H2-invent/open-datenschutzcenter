@@ -56,14 +56,14 @@ class VVTDatenkategorie
     private $previous;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime_immutable", nullable = true)
      */
     private $CreatedAt;
 
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="vVTDatenkategories")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $user;
 

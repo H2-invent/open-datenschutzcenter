@@ -20,7 +20,7 @@ final class Version20220526163752 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE vvtdatenkategorie ADD previous_id INT DEFAULT NULL, ADD user_id INT NOT NULL, ADD created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('ALTER TABLE vvtdatenkategorie ADD previous_id INT DEFAULT NULL, ADD user_id INT, ADD created_at DATETIME COMMENT \'(DC2Type:datetime_immutable)\'');
         $this->addSql('ALTER TABLE vvtdatenkategorie ADD CONSTRAINT FK_91E13AAD2DE62210 FOREIGN KEY (previous_id) REFERENCES vvtdatenkategorie (id)');
         $this->addSql('ALTER TABLE vvtdatenkategorie ADD CONSTRAINT FK_91E13AADA76ED395 FOREIGN KEY (user_id) REFERENCES fos_user (id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_91E13AAD2DE62210 ON vvtdatenkategorie (previous_id)');
