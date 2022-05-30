@@ -117,7 +117,6 @@ class LoeschkonzeptController extends AbstractController
             return $this->redirectToRoute('app_loeschkonzept_index');
         }
 
-        dump($loeschkonzept->getVvtdatenkategories());
         # remove datenkategory from loeschkonzept if it is not the newest relation
         $vvtDatenkategories = $VvtDatenkategorieRepository->findByTeam($team);
         foreach ($vvtDatenkategories as $vvtDatenkategorie) {
@@ -130,10 +129,8 @@ class LoeschkonzeptController extends AbstractController
         foreach ($loeschkonzept->getVvtdatenkategories() as $datenkategorie){
             $newloeschkonzept->addVvtdatenkategory($datenkategorie);
         }
-        dump($loeschkonzept->getVvtdatenkategories());
         $form = $loeschkonzeptService->createForm($newloeschkonzept, $team);
         $form->handleRequest($request);
-        dump($loeschkonzept->getVvtdatenkategories());
 
         if ($form->isSubmitted() && $form->isValid()) {
 
