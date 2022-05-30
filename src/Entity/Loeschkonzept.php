@@ -12,6 +12,7 @@ use App\Repository\LoeschkonzeptRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=LoeschkonzeptRepository::class)
@@ -27,6 +28,7 @@ class Loeschkonzept
 
     /**
      * @ORM\Column(type="text", length=255)
+     * @Assert\NotBlank()
      */
     private $standartlf;
 
@@ -37,11 +39,13 @@ class Loeschkonzept
 
     /**
      * @ORM\Column(type="text", length=511)
+     * @Assert\NotBlank()
      */
     private $speicherorte;
 
     /**
      * @ORM\Column(type="text", length=255)
+     * @Assert\NotBlank()
      */
     private $loeschbeauftragter;
 
@@ -295,5 +299,11 @@ class Loeschkonzept
         return $this;
     }
 
-   
+    
+    public function __clone()
+    {
+        unset($this->vvtdatenkategories);
+        $this->vvtdatenkategories = new ArrayCollection();
+    }
+    
 }

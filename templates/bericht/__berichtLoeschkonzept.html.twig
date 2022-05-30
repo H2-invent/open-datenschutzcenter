@@ -1,4 +1,4 @@
-<h2 style="page-break-before: always;">{% if not d.activ %} Historie: {% endif %}{% for vv in d.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</h2>
+<h2 style="page-break-before: always;">{% if not d.activ %} Historie: Löschkonzept (id: {{ d.id }}) {% else %} <a href="{{ absolute_url(path('app_loeschkonzept_edit', {'id':d.id})) }}">Löschkonzept (id: {{ d.id }}) {% endif %}</a></h2>
 <style>
     th, td {
         padding: 5px;
@@ -6,19 +6,18 @@
         width: 50%;
     }
 </style>
-<h4>Löschkonzept (id:{{ d.id }})</h4>
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
             Datenkategorien
         </td>
-        <td><a href="{{ absolute_url(path('app_loeschkonzept_edit', {'id':d.id})) }}">{% for vv in d.vvtdatenkategories %}{{ vv.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</a></td>
+        <td>{% for vv in d.vvtdatenkategories %}{% if vv.activ %}<a href="{{ absolute_url(path('app_vvtdatenkategorie_edit', {'id':vv.id})) }}">{{ vv.name }}{% else %}{{ vv.name }} (inaktiv){% endif %}{% if not loop.last %},{% endif %}<br>{% endfor %}</a></td>
     </tr>
     <tr>
         <td>
             Datenarten
         </td>
-        <td>{% for vv in d.vvtdatenkategories %}{{ vv.datenarten|raw }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
+        <td>{% for vv in d.vvtdatenkategories %}{% if vv.activ %}{{ vv.datenarten|raw }}{% else %}{{ vv.datenarten|raw }} (inaktiv){% endif %}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>

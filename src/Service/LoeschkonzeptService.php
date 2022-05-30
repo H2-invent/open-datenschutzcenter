@@ -50,6 +50,7 @@ class LoeschkonzeptService
         $newLoeschkonzept = clone $loeschkonzept;
         $newLoeschkonzept->setPrevious($loeschkonzept);
         $newLoeschkonzept->setCreateAt(new \DateTimeImmutable());
+        
         return $newLoeschkonzept;
     }
 }

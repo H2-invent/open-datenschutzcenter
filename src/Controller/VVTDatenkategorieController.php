@@ -97,14 +97,13 @@ class VVTDatenkategorieController extends AbstractController
             $vVTDatenkategorie->setActiv(false);
             $entityManager->persist($vVTDatenkategorie);
 
-            $vVTDatenkategorieRepository->add($newVVTDatenkategorie);
-
+            $entityManager->persist($newVVTDatenkategorie);
             
-
-            foreach ($newVVTDatenkategorie->getLoeschkonzept() as $loeschkonzept) {
+            
+            foreach ($vVTDatenkategorie->getLoeschkonzept() as $loeschkonzept) {
                 $loeschkonzept->addVvtdatenkategory($newVVTDatenkategorie);
                 $entityManager->persist($loeschkonzept);
-            } 
+            }
 
             $entityManager->flush();
 

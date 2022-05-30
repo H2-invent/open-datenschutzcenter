@@ -117,7 +117,7 @@ class LoeschkonzeptController extends AbstractController
             return $this->redirectToRoute('app_loeschkonzept_index');
         }
 
-      
+        dump($loeschkonzept->getVvtdatenkategories());
         # remove datenkategory from loeschkonzept if it is not the newest relation
         $vvtDatenkategories = $VvtDatenkategorieRepository->findByTeam($team);
         foreach ($vvtDatenkategories as $vvtDatenkategorie) {
@@ -125,23 +125,25 @@ class LoeschkonzeptController extends AbstractController
                 $loeschkonzept->removeVvtdatenkategory($vvtDatenkategorie);
             }
         }
-
+        
         $newloeschkonzept = $loeschkonzeptService->cloneLoeschkonzept($loeschkonzept);
+        foreach ($loeschkonzept->getVvtdatenkategories() as $datenkategorie){
+            $newloeschkonzept->addVvtdatenkategory($datenkategorie);
+        }
+        dump($loeschkonzept->getVvtdatenkategories());
         $form = $loeschkonzeptService->createForm($newloeschkonzept, $team);
         $form->handleRequest($request);
+        dump($loeschkonzept->getVvtdatenkategories());
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $loeschkonzeptRepository->add($newloeschkonzept);
-            
+
+            $loeschkonzeptRepository->add($newloeschkonzept); 
+
             $newloeschkonzept->setActiv(true);
             $loeschkonzept->setActiv(false);
 
             $entityManager->persist($loeschkonzept);
-
-            foreach ($newloeschkonzept->getVvtdatenkategories() as $datenkategory) {
-                $datenkategory->addLoeschkonzept($newloeschkonzept);
-                $entityManager->persist($datenkategory);
-            }          
+            $entityManager->persist($newloeschkonzept);         
 
             $entityManager->flush();
 
