@@ -13,13 +13,13 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Löschkonzept</h1>
+    <h1>Löschkonzept {{loeschkonzept.id}}</h1>
 
     <table class="table">
         <tbody>
              <tr>
                 <th>Datenkategorien</th>
-                <td>{% for vv in loeschkonzept.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</td>
+                <td>{% for vv in loeschkonzept.vvtdatenkategories %}{% if vv.activ %}{{ vv.name }}<br>{% endif %}{% endfor %}</td>
             </tr>
             <tr>
                 <th>Standard Löschfrist</th>

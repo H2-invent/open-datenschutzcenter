@@ -24,7 +24,7 @@
         <td>
             Rechtsgrundlage für die Verarbeitung
         </td>
-        <td>{% for p in d.grundlage %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
+        <td>{% for g in d.grundlage %}{{ g.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
@@ -36,7 +36,7 @@
         <td>
             Verarbeitet Datenkategorien (Löschfristen)
         </td>
-        <td>{% for p in d.kategorien %}{{ p }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
+        <td>{% for k in d.kategorien %}{{ k }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>

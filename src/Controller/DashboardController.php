@@ -69,7 +69,7 @@ class DashboardController extends AbstractController
             ->orderBy('audit.createdAt', 'DESC')
             ->setParameter('team', $team);
         $query = $qb->getQuery();
-        $kristischeAudits = $query->getResult();
+        $kritischeAudits = $query->getResult();
 
         $qb = $this->getDoctrine()->getRepository(VVT::class)->createQueryBuilder('vvt');
         $qb->andWhere('vvt.team = :team')
@@ -78,7 +78,7 @@ class DashboardController extends AbstractController
             ->orderBy('vvt.CreatedAt', 'DESC')
             ->setParameter('team', $team);
         $query = $qb->getQuery();
-        $kristischeVvts = $query->getResult();
+        $kritischeVvts = $query->getResult();
 
         $qb = $this->getDoctrine()->getRepository(VVTDsfa::class)->createQueryBuilder('dsfa');
         $qb->innerJoin('dsfa.vvt', 'vvt')
@@ -105,8 +105,8 @@ class DashboardController extends AbstractController
             'vvt' => $vvt,
             'dsfa' => $vvtDsfa,
             'kontakte' => $kontakte,
-            'kAudit' => $kristischeAudits,
-            'kVvt' => $kristischeVvts,
+            'kAudit' => $kritischeAudits,
+            'kVvt' => $kritischeVvts,
             'openDsfa' => $openDsfa,
             'tom' => $tom,
             'av' => $av,

@@ -3,7 +3,7 @@
         <a href="{{ path('vvt') }}">
             {{ include('dashboard/__card.html.twig',{'farbe':'bg-vvt','title':'Verarbeitungen','metrik':vvt|length}) }}
             {% if kVvt|length > 0 %}
-                {{ include('dashboard/__card.html.twig',{'farbe':'red','title':'Krisitsche VVTs','metrik':kVvt|length}) }}
+                {{ include('dashboard/__card.html.twig',{'farbe':'red','title':'Kritische VVTs','metrik':kVvt|length}) }}
             {% endif %}
         </a>
     </div>

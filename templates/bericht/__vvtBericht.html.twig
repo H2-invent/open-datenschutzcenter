@@ -42,7 +42,7 @@
         <td>
             Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Rechtsgrundlage)
         </td>
-        <td>{% for p in d.grundlage %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
+        <td>{% for g in d.grundlage %}{{ g.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
@@ -54,7 +54,7 @@
         <td>
             Welche Datenkategorien (Löschfristen) werden verarbeitet?
         </td>
-        <td>{% for p in d.kategorien %}{{ p }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
+        <td>{% for k in d.kategorien %}{{ k }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
@@ -162,7 +162,7 @@
         </td>
         <td>{% for p in d.policies | filter(p => p.activ) %}- <a
                     href="{{ absolute_url(path('policy_edit',{'id':p.id})) }}">{{ p.title }}</a>{% if p.approved %} {% trans %}Freigegeben{% endtrans %}{% endif %}
-            <br>{% endfor %}</a></td>
+            <br>{% endfor %}</td>
     </tr>
     <tr>
         <td>

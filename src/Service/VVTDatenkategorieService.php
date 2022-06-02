@@ -83,7 +83,6 @@ class VVTDatenkategorieService
                 ->setSpeicherorte($loeschkonzept->getSpeicherorte())
                 ->setStandartlf($loeschkonzept->getStandartlf());
 
-            #$childLoeschkonzept->addVvtdatenkategory($childVVTDatenkategorie);
             $childVVTDatenkategorie->addLoeschkonzept($childLoeschkonzept);
         }
         return $childVVTDatenkategorie;
@@ -94,7 +93,7 @@ class VVTDatenkategorieService
         $act = $VVTDatenkategorie;
         for (; ;) {
             $next = $this->em->getRepository(VVTDatenkategorie::class)->findOneBy(array('previous' => $act));
-            if ($next === null) {
+            if ($next == null) {
                 return $act;
             }
             $act = $next;
