@@ -42,19 +42,19 @@
         <td>
             Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Rechtsgrundlage)
         </td>
-        <td>{% for p in d.grundlage %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for g in d.grundlage %}{{ g.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
             Die Daten welcher Personen werden verarbeitet?
         </td>
-        <td>{% for p in d.personengruppen %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for p in d.personengruppen %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Welche Daten(kategorien) werden verarbeitet?
+            Welche Datenkategorien (Löschfristen) werden verarbeitet?
         </td>
-        <td>{% for p in d.kategorien %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for k in d.kategorien %}{{ k }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
@@ -133,7 +133,7 @@
         <td>
             Mögliche Risko-Quellen
         </td>
-        <td>{% for p in d.risiko %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for p in d.risiko %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
@@ -162,11 +162,11 @@
         </td>
         <td>{% for p in d.policies | filter(p => p.activ) %}- <a
                     href="{{ absolute_url(path('policy_edit',{'id':p.id})) }}">{{ p.title }}</a>{% if p.approved %} {% trans %}Freigegeben{% endtrans %}{% endif %}
-            <br>{% endfor %}</a></td>
+            <br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Löschfristen
+            Alte Löschfrist (auf Verarbeitung bezogen)
         </td>
         <td>{{ d.loeschfrist|raw }}</td>
     </tr>

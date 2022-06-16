@@ -136,6 +136,19 @@
                     <span>Tätigkeitsbericht erstellen</span>
                 </a>
             </div>
+
+           <div class="col-lg-3 mt-2">
+                <h4>Löschkonzepte</h4>
+
+                <a class="btn btn-block orange mb-1" href="{{ path('bericht_loeschkonzept') }}">
+                    <span>PDF von allen Löschkonzepten erstellen</span>
+                </a>
+                <a class="btn btn-block orange mb-1" href="{{ path('bericht_loeschkonzept', {'all':1}) }}">
+                    <span>PDF von allen Löschkonzepten inkl. Historie erstellen</span>
+                </a>
+            </div>
+
+
         </div>
     </div>
     {{ include('base/__snack.html.twig') }}

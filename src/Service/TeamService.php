@@ -62,25 +62,6 @@ class TeamService
             }
         }
 
-        $id = 2;
-        $data1 = $this->em->getRepository(VVTDatenkategorie::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Datenkategorien');
-        $data[$id]['titleNew'] = $this->translator->trans('Neues Datenkategorie hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Datenkategorie bearbeiten');
-        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
-        foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
-                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
-                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
-                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['default'] = false;
-                if ($item->getTeam() === null) {
-                    $data[$id]['data'][$item->getId()]['default'] = true;
-                }
-            }
-        }
-
         $id = 3;
         $data1 = $this->em->getRepository(VVTRisiken::class)->findBy(array('activ' => true));
         $data[$id]['title'] = $this->translator->trans('Risiken der Verarbeitung');

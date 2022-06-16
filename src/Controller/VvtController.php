@@ -15,6 +15,7 @@ use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
+use App\Service\VVTDatenkategorieService;
 use App\Service\VVTService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,7 +45,7 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/new", name="vvt_new")
      */
-    public function addVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService)
+    public function addVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, VVTDatenkategorieService $VVTDatenkategorieService)
     {
         $team = $this->getUser()->getTeam();
 
@@ -63,6 +64,13 @@ class VvtController extends AbstractController
             $errors = $validator->validate($vvt);
             if (count($errors) == 0) {
                 $em = $this->getDoctrine()->getManager();
+
+                foreach ($vvt->getKategorien() as $kategorie){
+                    $tmp= $VVTDatenkategorieService->createChild($kategorie);
+                    $vvt->removeKategorien($kategorie);
+                    $vvt->addKategorien($tmp);
+                }
+
                 $em->persist($vvt);
                 $em->flush();
                 return $this->redirectToRoute('vvt', ['snack' => 'Erfolgreich angelegt']);
@@ -83,7 +91,7 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/edit", name="vvt_edit")
      */
-    public function editVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService)
+    public function editVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService, VVTDatenkategorieService $VVTDatenkategorieService)
     {
         $team = $this->getUser()->getTeam();
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
@@ -92,6 +100,11 @@ class VvtController extends AbstractController
             return $this->redirectToRoute('vvt');
         }
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
+
+        foreach ($vvt->getKategorien() as $cloneKat){//hier haben wir die geklonten KAtegorien
+            $newVvt->addKategorien($VVTDatenkategorieService->findLatestKategorie($cloneKat->getCloneOf()));//wir hängen die neueste gültige Datenkategorie an den VVT clone an.
+        }
+
         $form = $VVTService->createForm($newVvt, $team);
         $form->remove('nummer');
         $form->handleRequest($request);
@@ -106,7 +119,12 @@ class VvtController extends AbstractController
 
             $errors = $validator->validate($newVvt);
             if (count($errors) == 0) {
-
+                foreach ($newVvt->getKategorien() as $kategorie){ // wir haben die fiktiven neuesten Kategories
+                    $tmp= $VVTDatenkategorieService->createChild($kategorie);//wir klonen die kategorie damit diese revisionssicher ist
+                    $newVvt->removeKategorien($kategorie);//wir entferenen die fiktive neues kategorie
+                    $newVvt->addKategorien($tmp);//wir fügen die geklonte kategorie an
+                }
+                
                 if ($vvt->getActivDsfa()) {
                     $dsfa = $vvt->getActivDsfa();
                     $newDsfa = clone $dsfa;
@@ -114,10 +132,12 @@ class VvtController extends AbstractController
                     $newDsfa->setPrevious(null);
                     $em->persist($newDsfa);
                 }
+
                 foreach ($vvt->getPolicies() as $item) {
                     $item->addProcess($newVvt);
                     $em->persist($item);
                 }
+
                 foreach ($vvt->getSoftware() as $software) {
                     $software->addVvt($newVvt);
                     $em->persist($software);

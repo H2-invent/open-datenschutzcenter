@@ -205,6 +205,16 @@ class User extends BaseUser
      */
     private $registerId;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Loeschkonzept::class, mappedBy="user")
+     */
+    private $loeschkonzepts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=VVTDatenkategorie::class, mappedBy="user")
+     */
+    private $vVTDatenkategories;
+
 
     public function __construct()
     {
@@ -232,6 +242,8 @@ class User extends BaseUser
         $this->clientRequests = new ArrayCollection();
         $this->assignedRequests = new ArrayCollection();
         $this->teamDsb = new ArrayCollection();
+        $this->loeschkonzepts = new ArrayCollection();
+        $this->vVTDatenkategories = new ArrayCollection();
     }
 
     public function getTeam(): ?Team
@@ -1101,6 +1113,66 @@ class User extends BaseUser
     public function setRegisterId(?string $registerId): self
     {
         $this->registerId = $registerId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Loeschkonzept>
+     */
+    public function getLoeschkonzepts(): Collection
+    {
+        return $this->loeschkonzepts;
+    }
+
+    public function addLoeschkonzept(Loeschkonzept $loeschkonzept): self
+    {
+        if (!$this->loeschkonzepts->contains($loeschkonzept)) {
+            $this->loeschkonzepts[] = $loeschkonzept;
+            $loeschkonzept->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoeschkonzept(Loeschkonzept $loeschkonzept): self
+    {
+        if ($this->loeschkonzepts->removeElement($loeschkonzept)) {
+            // set the owning side to null (unless already changed)
+            if ($loeschkonzept->getUser() === $this) {
+                $loeschkonzept->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VVTDatenkategorie>
+     */
+    public function getVVTDatenkategories(): Collection
+    {
+        return $this->vVTDatenkategories;
+    }
+
+    public function addVVTDatenkategory(VVTDatenkategorie $vVTDatenkategory): self
+    {
+        if (!$this->vVTDatenkategories->contains($vVTDatenkategory)) {
+            $this->vVTDatenkategories[] = $vVTDatenkategory;
+            $vVTDatenkategory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVVTDatenkategory(VVTDatenkategorie $vVTDatenkategory): self
+    {
+        if ($this->vVTDatenkategories->removeElement($vVTDatenkategory)) {
+            // set the owning side to null (unless already changed)
+            if ($vVTDatenkategory->getUser() === $this) {
+                $vVTDatenkategory->setUser(null);
+            }
+        }
 
         return $this;
     }

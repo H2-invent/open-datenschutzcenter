@@ -24,19 +24,19 @@
         <td>
             Rechtsgrundlage für die Verarbeitung
         </td>
-        <td>{% for p in d.grundlage %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for g in d.grundlage %}{{ g.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
             Die Daten welcher Personen werden verarbeitet?
         </td>
-        <td>{% for p in d.personengruppen %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for p in d.personengruppen %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Verarbeitet Daten(kategorien)
+            Verarbeitet Datenkategorien (Löschfristen)
         </td>
-        <td>{% for p in d.kategorien %}{{ p.name }},<br>{% endfor %}</td>
+        <td>{% for k in d.kategorien %}{{ k }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>

@@ -6,6 +6,12 @@
  * Time: 09:15
  */
 
+ /**
+ * Modified by
+ * User: Jan Juister
+ * Date: 13.05.2022
+ */
+
 namespace App\Controller;
 
 use App\Entity\AkademieBuchungen;
@@ -19,6 +25,8 @@ use App\Entity\Task;
 use App\Entity\Tom;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
+use App\Entity\Loeschkonzept;
+use App\Entity\VVTDatenkategorie;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -51,6 +59,8 @@ class DashboardController extends AbstractController
         $policies = $this->getDoctrine()->getRepository(Policies::class)->findPublicByTeam($team);
         $software = $this->getDoctrine()->getRepository(Software::class)->findActivByTeam($team);
         $tasks = $this->getDoctrine()->getRepository(Task::class)->findBy(['team' => $team, 'activ' => true, 'done' => false]);
+        $loeschkonzepte = $this->getDoctrine()->getRepository(Loeschkonzept::class)->findByTeam($team);
+        $vvtdatenkategorien = $this->getDoctrine()->getRepository(VVTDatenkategorie::class)->findByTeam($team);
 
         $qb = $this->getDoctrine()->getRepository(AuditTom::class)->createQueryBuilder('audit');
         $qb->andWhere('audit.team = :team')
@@ -59,7 +69,7 @@ class DashboardController extends AbstractController
             ->orderBy('audit.createdAt', 'DESC')
             ->setParameter('team', $team);
         $query = $qb->getQuery();
-        $kristischeAudits = $query->getResult();
+        $kritischeAudits = $query->getResult();
 
         $qb = $this->getDoctrine()->getRepository(VVT::class)->createQueryBuilder('vvt');
         $qb->andWhere('vvt.team = :team')
@@ -68,7 +78,7 @@ class DashboardController extends AbstractController
             ->orderBy('vvt.CreatedAt', 'DESC')
             ->setParameter('team', $team);
         $query = $qb->getQuery();
-        $kristischeVvts = $query->getResult();
+        $kritischeVvts = $query->getResult();
 
         $qb = $this->getDoctrine()->getRepository(VVTDsfa::class)->createQueryBuilder('dsfa');
         $qb->innerJoin('dsfa.vvt', 'vvt')
@@ -95,8 +105,8 @@ class DashboardController extends AbstractController
             'vvt' => $vvt,
             'dsfa' => $vvtDsfa,
             'kontakte' => $kontakte,
-            'kAudit' => $kristischeAudits,
-            'kVvt' => $kristischeVvts,
+            'kAudit' => $kritischeAudits,
+            'kVvt' => $kritischeVvts,
             'openDsfa' => $openDsfa,
             'tom' => $tom,
             'av' => $av,
@@ -110,7 +120,11 @@ class DashboardController extends AbstractController
             'software' => $software,
             'assignTasks' => $assignTasks,
             'tasks' => $tasks,
-            'snack' => $request->get('snack')
+            'snack' => $request->get('snack'),
+            'loeschkonzepte' => $loeschkonzepte,
+            'vvtdatenkategorien' => $vvtdatenkategorien, 
+            
+
         ]);
     }
 

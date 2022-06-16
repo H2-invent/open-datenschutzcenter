@@ -30,11 +30,17 @@
             <li class="{{ app.request.attributes.get('_route') == 'audit_tom' ? 'active' }}">
                 <a href="{{ path('audit_tom') }}">Auditfragen</a>
             </li>
+            <li class="{{ app.request.attributes.get('_route') == 'vvtdatenkategorie' ? 'active' }}">
+                <a href="{{ path('app_vvtdatenkategorie_index') }}">Datenkategorien</a>
+            </li>
             <li class="{{ app.request.attributes.get('_route') == 'tom' ? 'active' }}">
                 <a href="{{ path('tom') }}">TOM</a>
             </li>
             <li class="{{ app.request.attributes.get('_route') == 'vvt' ? 'active' }}">
                 <a href="{{ path('vvt') }}">Verarbeitungen</a>
+            </li>
+            <li class="{{ app.request.attributes.get('_route') == 'loeschkonzept' ? 'active' }}">
+                <a href="{{ path('app_loeschkonzept_index') }}">Löschkonzepte</a>
             </li>
             <li class="{{ app.request.attributes.get('_route') == 'policies' ? 'active' }}">
                 <a href="{{ path('policies') }}">Richtlinien</a>
