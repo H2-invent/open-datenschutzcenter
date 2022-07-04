@@ -8,8 +8,7 @@
             <h2 class="h2-responsive">{{ 'Kein Team vorhanden'|trans }}</h2>
         </div>
         <div class="card-body ">
-            <p>{% trans %}Für Ihren Benutzer ist kein Team vorhanden.
-                    <br>Fragen Sie Ihrem Administrator oder beim Support der H2 invent nach.{% endtrans %}</p>
+            <p>{% trans %}Für Ihren Benutzer ist kein Team vorhanden{% endtrans %}</p>
             <a class="btn btn-elegant" href="mailto:{{ supportMail }}">Support anfragen</a>
             <a class="btn btn-secondary" href="{{ path('logout_keycloak') }}">Logout</a>
         </div>
