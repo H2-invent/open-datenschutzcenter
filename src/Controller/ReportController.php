@@ -19,7 +19,7 @@ class ReportController extends AbstractController
      */
     public function index(SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         $report = $this->getDoctrine()->getRepository(Report::class)->findActivByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {
@@ -36,7 +36,7 @@ class ReportController extends AbstractController
      */
     public function addReport(ValidatorInterface $validator, Request $request, SecurityService $securityService, ReportService $reportService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('report');
         }
@@ -71,7 +71,7 @@ class ReportController extends AbstractController
      */
     public function editReport(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         $report = $this->getDoctrine()->getRepository(Report::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) === false) {
@@ -108,7 +108,7 @@ class ReportController extends AbstractController
      */
     public function invoiceReport(Request $request, SecurityService $securityService, DisableService $disableService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         $report = $this->getDoctrine()->getRepository(Report::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) === true) {

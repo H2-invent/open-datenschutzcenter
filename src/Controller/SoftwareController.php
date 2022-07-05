@@ -23,7 +23,7 @@ class SoftwareController extends AbstractController
     public function index(SecurityService $securityService, Request $request)
     {
         //Request: snack: Snack Notice
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -42,7 +42,7 @@ class SoftwareController extends AbstractController
      */
     public function addSoftware(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('software');
@@ -81,7 +81,7 @@ class SoftwareController extends AbstractController
     public function editSoftware(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService, AssignService $assignService)
     {
         //Request: id: SoftwareID, snack:Snack Notice
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         $software = $this->getDoctrine()->getRepository(Software::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) === false) {
@@ -131,7 +131,7 @@ class SoftwareController extends AbstractController
     public function addConfig(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService)
     {
         //Requests: id: SoftwareID, config: ConfigID
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         $software = $this->getDoctrine()->getRepository(Software::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) === false) {
@@ -229,7 +229,7 @@ class SoftwareController extends AbstractController
      */
     public function downloadArticleReference(SoftwareConfig $softwareConfig, SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         $path = $this->getParameter('kernel.project_dir') . "/data/software/" . $softwareConfig->getUpload();
 
         if ($securityService->teamDataCheck($softwareConfig->getSoftware(), $team) === false) {

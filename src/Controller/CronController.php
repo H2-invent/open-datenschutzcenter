@@ -38,12 +38,12 @@ class CronController extends AbstractController
         $countWdh = 0;
         foreach ($buchungen as $buchung) {
             if (!$buchung->getInvitation()) {
-                $content = $this->renderView('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeam()]);
+                $content = $this->renderView('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()[0]]);
                 $buchung->setInvitation(true);
                 $em->persist($buchung);
                 ++$countNeu;
             } else {
-                $content = $this->renderView('email/errinnerungKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeam()]);
+                $content = $this->renderView('email/errinnerungKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()[0]]);
                 ++$countWdh;
             }
             $notificationService->sendNotificationAkademie($buchung, $content);

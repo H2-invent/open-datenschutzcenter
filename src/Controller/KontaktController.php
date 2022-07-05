@@ -25,7 +25,7 @@ class KontaktController extends AbstractController
      */
     public function index(SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }

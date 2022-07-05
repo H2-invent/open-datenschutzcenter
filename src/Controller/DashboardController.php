@@ -39,11 +39,12 @@ class DashboardController extends AbstractController
      */
     public function dashboard(Request $request)
     {
-        $team = $this->getUser()->getTeam();
-        $allTeams = $this->getDoctrine()->getRepository(Team::class)->findAll();
-        if (sizeof($allTeams) === 0){
+        $teams = $this->getUser()->getTeams();
+        if (sizeof($teams) === 0){
             return $this->redirectToRoute('first_run');
         }
+
+        $team = $teams ? $teams[0] : null;
         if ($team === null && $this->getUser()->getAkademieUser() !== null) {
             return $this->redirectToRoute('akademie');
         } elseif ($team === null && count($dsbTeams = $this->getUser()->getTeamDsb()) > 0) {
@@ -138,7 +139,7 @@ class DashboardController extends AbstractController
     public function noTeam()
     {
         if ($this->getUser()) {
-            if ($this->getUser()->getTeam()) {
+            if ($this->getUser()->getTeams()) {
                 return $this->redirectToRoute('dashboard');
             }
             if ($this->getUser()->getAkademieUser()) {

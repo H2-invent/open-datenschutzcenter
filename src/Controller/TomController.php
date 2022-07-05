@@ -26,7 +26,7 @@ class TomController extends AbstractController
      */
     public function index(SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {
@@ -43,7 +43,7 @@ class TomController extends AbstractController
      */
     public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('tom');
         }

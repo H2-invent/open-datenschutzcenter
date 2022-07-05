@@ -34,7 +34,7 @@ class FormsService
     {
         $form = new Forms();
         $form->setStatus(0);
-        $form->setTeam($user->getTeam());
+        $form->setTeam($user->getTeams()[0]);
         $form->setActiv(true);
         $form->setCreatedAt(new \DateTime());
         $form->setUser($user);

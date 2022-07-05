@@ -70,8 +70,8 @@ class InviteService
     public function connectUserWithEmail(User $userfromregisterId, User $user)
     {
         if ($user !== $userfromregisterId) {
-            if (!$user->getTeam()) {
-                $user->setTeam($userfromregisterId->getTeam());
+            if (!$user->getTeams()) {
+                $user->setTeams($userfromregisterId->getTeams());
             }
             if (!$user->getAkademieUser()) {
                 $user->setAkademieUser($userfromregisterId->getAkademieUser());

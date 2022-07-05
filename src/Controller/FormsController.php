@@ -25,7 +25,7 @@ class FormsController extends AbstractController
      */
     public function indexForms(SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -42,7 +42,7 @@ class FormsController extends AbstractController
      */
     public function addForms(ValidatorInterface $validator, Request $request, FormsService $formsService, SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -78,7 +78,7 @@ class FormsController extends AbstractController
      */
     public function EditFormulare(ValidatorInterface $validator, Request $request, SecurityService $securityService, FormsService $formsService, AssignService $assignService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         $forms = $this->getDoctrine()->getRepository(Forms::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($forms, $team) === false) {
@@ -160,7 +160,7 @@ class FormsController extends AbstractController
 
         $stream = $formsFileSystem->read($forms->getUpload());
 
-        $team = $this->getUser()->getTeam();
+        $team = $this->getUser()->getTeams()[0];
         if ($securityService->teamDataCheck($forms, $team) === false) {
             $message = ['typ' => 'DOWNLOAD', 'error' => true, 'hinweis' => 'Fehlerhafter download. User nicht berechtigt!', 'dokument' => $forms->getUpload(), 'user' => $this->getUser()->getUsername()];
             $logger->error($message['typ'], $message);

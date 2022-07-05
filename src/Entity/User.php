@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="fos_user")
+ * @ORM\Table(name="user")
  */
 class User extends BaseUser
 {
@@ -31,9 +31,9 @@ class User extends BaseUser
     protected $plainPassword;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="members")
+     * @ORM\ManyToMany(targetEntity=Team::class, inversedBy="members")
      */
-    private $team;
+    private $teams;
 
     /**
      * @ORM\OneToMany(targetEntity=Datenweitergabe::class, mappedBy="user")
@@ -246,16 +246,22 @@ class User extends BaseUser
         $this->vVTDatenkategories = new ArrayCollection();
     }
 
-    public function getTeam(): ?Team
+    public function getTeams(): ?array
     {
-        return $this->team;
+        return $this->teams->toArray();
     }
 
-    public function setTeam(?Team $team): self
+    public function setTeams(?array $teams): self
     {
-        $this->team = $team;
+        $this->teams = $teams;
 
         return $this;
+    }
+
+    // temporary solution for twig templates!!!
+    // TODO: save current team to session
+    public function team() {
+        return $this->teams->get(0);
     }
 
     /**
