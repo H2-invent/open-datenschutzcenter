@@ -23,7 +23,7 @@ services:
             MAILER_TRANSPORT: smtp
             OAUTH_KEYCLOAK_CLIENT_ID: datenschutzcenter
             OAUTH_KEYCLOAK_SERVER: http://${PUBLIC_IP}:8081
-            OAUTH_KEYCLOAK_REALM: master
+            OAUTH_KEYCLOAK_REALM: test
         volumes:
             - ./:/var/www/html/dev_out:rw
             - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
@@ -38,7 +38,7 @@ services:
             - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     keycloak:
         image: quay.io/keycloak/keycloak:latest
-        command: ['start-dev']
+        command: ['start-dev', '--import-realm']
         ports:
             - '8081:8080'
         depends_on:
@@ -51,6 +51,8 @@ services:
             KC_DB_USERNAME: keycloak
             KC_DB_PASSWORD: test
             # KC_HOSTNAME not required because of start-dev
+        volumes:
+            - ./test-realms:/opt/keycloak/data/import
 volumes:
     mariadb:
     datenschutzcenter_uploads:
