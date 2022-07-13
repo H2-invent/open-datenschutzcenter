@@ -76,10 +76,10 @@ services:
       PHP_EXTENSION_INTL: 1
       DATABASE_URL: mysql://odc:${JITSI_ADMIN_PW}@${RANDOMTAG}db-ja:3306/odc
       MAILER_TRANSPORT: smtp
-      OAUTH_KEYCLOAK_CLIENT_ID: jitsiadmin
+      OAUTH_KEYCLOAK_CLIENT_ID: opendatenschutzcenter
       OAUTH_KEYCLOAK_CLIENT_SECRET: ${OAUTH_KEYCLOAK_CLIENT_SECRET}
       OAUTH_KEYCLOAK_SERVER: ${HTTP_METHOD}://keycloak.${PUBLIC_URL}/auth
-      OAUTH_KEYCLOAK_REALM: jitsiadmin
+      OAUTH_KEYCLOAK_REALM: opendatenschutzcenter
       MAILER_DSN: ${MAILER_DSN}
       laF_version: ${GIT_VERSION}
       registerEmailAdress: ${registerEmailAdress}
