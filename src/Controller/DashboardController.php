@@ -22,6 +22,7 @@ use App\Entity\Kontakte;
 use App\Entity\Policies;
 use App\Entity\Software;
 use App\Entity\Task;
+use App\Entity\Team;
 use App\Entity\Tom;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
@@ -39,7 +40,10 @@ class DashboardController extends AbstractController
     public function dashboard(Request $request)
     {
         $team = $this->getUser()->getTeam();
-
+        $allTeams = $this->getDoctrine()->getRepository(Team::class)->findAll();
+        if (sizeof($allTeams) === 0){
+            return $this->redirectToRoute('first_run');
+        }
         if ($team === null && $this->getUser()->getAkademieUser() !== null) {
             return $this->redirectToRoute('akademie');
         } elseif ($team === null && count($dsbTeams = $this->getUser()->getTeamDsb()) > 0) {
