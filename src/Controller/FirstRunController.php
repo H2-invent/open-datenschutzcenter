@@ -17,12 +17,14 @@ class FirstRunController extends AbstractController
      */
     public function index(ValidatorInterface $validator, Request $request): Response
     {
-        $team = $this->getDoctrine()->getRepository(Team::class)->findAll();
-        if (sizeof($team) !== 0){
+        $teams = $this->getDoctrine()->getRepository(Team::class)->findAll();
+        if (sizeof($teams) !== 0){
             return $this->redirectToRoute('no_team');
         }
 
-        $form = $this->createForm(TeamType::class, $team);
+        $nteam = new Team();
+
+        $form = $this->createForm(TeamType::class, $nteam);
         $form->handleRequest($request);
 
         $errors = array();
