@@ -23,7 +23,7 @@ class FirstRunController extends AbstractController
         }
 
         $nteam = new Team();
-
+        $nteam->setActiv(true);
         $form = $this->createForm(TeamType::class, $nteam);
         $form->remove('video');
         $form->remove('externalLink');
