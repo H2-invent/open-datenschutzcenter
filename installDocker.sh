@@ -5,15 +5,13 @@ if [ -f "$FILE" ]; then
 else
   touch $FILE
     KEYCLOAK_PW=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-    JITSI_ADMIN_PW=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-    MERCURE_JWT_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+    ODC_DB_PW=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
     KEYCLOAK_ADMIN_PW=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
     NEW_UUID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
     echo "KEYCLOAK_PW=$KEYCLOAK_PW" >> $FILE
-    echo "MERCURE_JWT_SECRET=$MERCURE_JWT_SECRET" >> $FILE
     echo "KEYCLOAK_ADMIN_PW=$KEYCLOAK_ADMIN_PW" >> $FILE
     echo "NEW_UUID=$NEW_UUID" >> $FILE
-    echo "JITSI_ADMIN_PW=$JITSI_ADMIN_PW" >> $FILE
+    echo "ODC_DB_PW=$ODC_DB_PW" >> $FILE
   source $FILE
 fi
   ENVIRONMENT=${ENVIRONMENT:=dev}
@@ -102,14 +100,13 @@ fi
   echo -------------------------------------------------------------
   echo -----------------we build the Database-----------------------
   echo -------------------------------------------------------------
-sed -i "s|<open-datenschutzcenter-pw>|ODC_DB_PW|g" docker-entrypoint-initdb.d/init-userdb.sql
+sed -i "s|<open-datenschutzcenter-pw>|$ODC_DB_PW|g" docker-entrypoint-initdb.d/init-userdb.sql
 sed -i "s|<keycloak-pw>|$KEYCLOAK_PW|g" docker-entrypoint-initdb.d/init-userdb.sql
 
 
 export MAILER_DSN=smtp://$smtpUsername:$smtpPassword@$smtpHost:$smtpPort
 export laF_baseUrl=$HTTP_METHOD://$PUBLIC_URL
 
-export MERCURE_JWT_SECRET=$MERCURE_JWT_SECRET
 export GIT_VERSION=$(git rev-parse --short=5 HEAD)
 export PUBLIC_URL=$PUBLIC_URL
 export OAUTH_KEYCLOAK_CLIENT_SECRET=$NEW_UUID

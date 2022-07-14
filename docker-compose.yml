@@ -58,7 +58,7 @@ services:
       -  ./data/letsencrypt:/letsencrypt
       - ./tools/traefik/config.yml:/etc/traefik/dynamic_conf/conf.yml:ro
 
-  #Here is the Jitsi-Admin app
+  #Here is the ODC app
   app-odc:
     <<: *odc_app
     depends_on:
