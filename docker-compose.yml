@@ -8,12 +8,11 @@ x-app-common: &odc_app
     PHP_INI_MEMORY_LIMIT: "1G"
     PHP_EXTENSION_LDAP: 1
     PHP_EXTENSION_INTL: 1
-    DATABASE_URL: mysql://jitsiadmin:${JITSI_ADMIN_PW}@db-ja:3306/jitsiadmin
     MAILER_DSN: ${MAILER_DSN}
 
 
 services:
-  traefik-ja:
+  traefik-odc:
     image: "traefik:v2.5"
 
     command:
@@ -42,11 +41,11 @@ services:
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https@docker"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
 
-      - "traefik.http.routers.traefik-ja.rule=Host(`traefik.${PUBLIC_URL}`)"
-      - "traefik.http.routers.traefik-ja.entrypoints=web"
-      - "traefik.http.routers.traefik-ja.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.traefik-ja.service=api@internal"
-      - "traefik.http.routers.traefik-ja.middlewares=traefik-auth"
+      - "traefik.http.routers.traefik-odc.rule=Host(`traefik.${PUBLIC_URL}`)"
+      - "traefik.http.routers.traefik-odc.entrypoints=web"
+      - "traefik.http.routers.traefik-odc.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik-odc.service=api@internal"
+      - "traefik.http.routers.traefik-odc.middlewares=traefik-auth"
       - "traefik.http.middlewares.traefik-auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/" # test:test
 
 
@@ -60,13 +59,13 @@ services:
       - ./tools/traefik/config.yml:/etc/traefik/dynamic_conf/conf.yml:ro
 
   #Here is the Jitsi-Admin app
-  app-ja:
+  app-odc:
     <<: *odc_app
     depends_on:
-      - db-ja
-      - keycloak-ja
-      - mercure-ja
-      - traefik-ja
+      - db-odc
+      - keycloak-odc
+      - mercure-odc
+      - traefik-odc
 
     environment:
       APACHE_DOCUMENT_ROOT: "public/"
@@ -74,7 +73,7 @@ services:
       PHP_INI_MEMORY_LIMIT: "1G"
       PHP_EXTENSION_LDAP: 1
       PHP_EXTENSION_INTL: 1
-      DATABASE_URL: mysql://odc:${JITSI_ADMIN_PW}@${RANDOMTAG}db-ja:3306/odc
+      DATABASE_URL: mysql://odc:${ODC_DB_PW}@${RANDOMTAG}db-odc:3306/odc
       MAILER_TRANSPORT: smtp
       OAUTH_KEYCLOAK_CLIENT_ID: opendatenschutzcenter
       OAUTH_KEYCLOAK_CLIENT_SECRET: ${OAUTH_KEYCLOAK_CLIENT_SECRET}
@@ -91,23 +90,23 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app-ja.tls=true"
-      - "traefik.http.routers.app-ja.rule=Host(`${PUBLIC_URL}`)"
-      - "traefik.http.routers.app-ja.entrypoints=web"
-      - "traefik.http.services.app-ja.loadbalancer.server.port=80"
-      - "traefik.http.routers.app-ja.tls.certresolver=letsencrypt"
-      - "traefik.http.services.app-ja.loadbalancer.sticky=true"
-      - "traefik.http.services.app-ja.loadbalancer.sticky.cookie.name=jad"
-      - "traefik.http.services.app-ja.loadbalancer.sticky.cookie.secure=true"
+      - "traefik.http.routers.app-odc.tls=true"
+      - "traefik.http.routers.app-odc.rule=Host(`${PUBLIC_URL}`)"
+      - "traefik.http.routers.app-odc.entrypoints=web"
+      - "traefik.http.services.app-odc.loadbalancer.server.port=80"
+      - "traefik.http.routers.app-odc.tls.certresolver=letsencrypt"
+      - "traefik.http.services.app-odc.loadbalancer.sticky=true"
+      - "traefik.http.services.app-odc.loadbalancer.sticky.cookie.name=odc"
+      - "traefik.http.services.app-odc.loadbalancer.sticky.cookie.secure=true"
     volumes:
       - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
       - datenschutzcenter_data:/var/www/html/public/data:rw
       - $PWD/dockerupdate.sh:/etc/container/startup.sh
 
 
-  db-ja:
+  db-odc:
     image: mariadb:latest
-    hostname: ${RANDOMTAG}db-ja
+    hostname: ${RANDOMTAG}db-odc
     environment:
       MARIADB_ROOT_PASSWORD: test
     volumes:
@@ -115,18 +114,18 @@ services:
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
 
-  keycloak-ja:
+  keycloak-odc:
     image: jboss/keycloak:latest
 
     depends_on:
-      - db-ja
-      - traefik-ja
+      - db-odc
+      - traefik-odc
 
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: ${KEYCLOAK_ADMIN_PW}
       DB_VENDOR: mariadb
-      DB_ADDR: ${RANDOMTAG}db-ja
+      DB_ADDR: ${RANDOMTAG}db-odc
       DB_DATABASE: keycloak
       DB_USER: keycloak
       DB_PASSWORD: ${KEYCLOAK_PW}
@@ -135,11 +134,11 @@ services:
       KEYCLOAK_FRONTEND_URL: "${HTTP_METHOD}://keycloak.${PUBLIC_URL}/auth"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.keycloak-ja.tls=true"
-      - "traefik.http.routers.keycloak-ja.rule=Host(`keycloak.${PUBLIC_URL}`)"
-      - "traefik.http.routers.keycloak-ja.entrypoints=web"
-      - "traefik.http.services.keycloak-ja.loadbalancer.server.port=8080"
-      - "traefik.http.routers.keycloak-ja.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.keycloak-odc.tls=true"
+      - "traefik.http.routers.keycloak-odc.rule=Host(`keycloak.${PUBLIC_URL}`)"
+      - "traefik.http.routers.keycloak-odc.entrypoints=web"
+      - "traefik.http.services.keycloak-odc.loadbalancer.server.port=8080"
+      - "traefik.http.routers.keycloak-odc.tls.certresolver=letsencrypt"
 
     volumes:
       - ./keycloak/realm-export.json:/tmp/realm-export.json

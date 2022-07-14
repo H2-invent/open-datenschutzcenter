@@ -102,7 +102,7 @@ fi
   echo -------------------------------------------------------------
   echo -----------------we build the Database-----------------------
   echo -------------------------------------------------------------
-sed -i "s|<open-datenschutzcenter-pw>|$JITSI_ADMIN_PW|g" docker-entrypoint-initdb.d/init-userdb.sql
+sed -i "s|<open-datenschutzcenter-pw>|ODC_DB_PW|g" docker-entrypoint-initdb.d/init-userdb.sql
 sed -i "s|<keycloak-pw>|$KEYCLOAK_PW|g" docker-entrypoint-initdb.d/init-userdb.sql
 
 
@@ -115,7 +115,7 @@ export PUBLIC_URL=$PUBLIC_URL
 export OAUTH_KEYCLOAK_CLIENT_SECRET=$NEW_UUID
 export HTTP_METHOD=$HTTP_METHOD
 export KEYCLOAK_PW=$KEYCLOAK_PW
-export JITSI_ADMIN_PW=$JITSI_ADMIN_PW
+export ODC_DB_PW=ODC_DB_PW
 export KEYCLOAK_ADMIN_PW=$KEYCLOAK_ADMIN_PW
 export registerEmailAdress=$smtpFrom
 RANDOMTAG=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1);
