@@ -39,10 +39,14 @@ class DashboardController extends AbstractController
      */
     public function dashboard(Request $request)
     {
-        $teams = $this->getUser()->getTeams();
-        if (sizeof($teams) === 0){
+        // if no teams exist, redirect to first_run
+        $allTeams = $this->getDoctrine()->getRepository(Team::class)->findAll();
+        if (sizeof($allTeams) === 0){
             return $this->redirectToRoute('first_run');
         }
+
+        // else get teams for current user
+        $teams = $this->getUser()->getTeams();
 
         $team = $teams ? $teams[0] : null;
         if ($team === null && $this->getUser()->getAkademieUser() !== null) {
