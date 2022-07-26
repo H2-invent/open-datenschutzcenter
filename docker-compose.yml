@@ -64,7 +64,6 @@ services:
     depends_on:
       - db-odc
       - keycloak-odc
-      - mercure-odc
       - traefik-odc
 
     environment:
@@ -107,6 +106,10 @@ services:
   db-odc:
     image: mariadb:latest
     hostname: ${RANDOMTAG}db-odc
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
     environment:
       MARIADB_ROOT_PASSWORD: test
     volumes:
@@ -118,8 +121,8 @@ services:
     image: jboss/keycloak:latest
 
     depends_on:
-      - db-odc
-      - traefik-odc
+      db-odc:
+        condition: service_healthy
 
     environment:
       KEYCLOAK_USER: admin
