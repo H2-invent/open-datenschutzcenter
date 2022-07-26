@@ -62,9 +62,8 @@ services:
   app-odc:
     <<: *odc_app
     depends_on:
-      - db-odc
-      - keycloak-odc
-      - traefik-odc
+      db-odc:
+        condition: service_healthy
 
     environment:
       APACHE_DOCUMENT_ROOT: "public/"
