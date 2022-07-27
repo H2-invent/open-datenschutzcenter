@@ -1,0 +1,20 @@
+teamName: Team descriptor
+teamNameHelp: If a keycloak group should be connected to this team, the team descriptor must be identical to the group name.
+displayName: Display name (if different from team descriptor)
+street: Street
+postcode: Postcode
+city: City
+email: Email
+phone: Telephone
+dsb: Data protection official
+ceo: CEO
+industry: Sector
+specialty: Specialty
+signature: Email Signature
+slug: Slug for client platform (may not contain spaces or special characters)
+slugHelp: In ODC it is possible to set up a client portal for questions. If this portal should be available externally, a slug needs to be picked. This can be the team name or a random sequence of characters.
+externalLink: External link to communication platform
+externalLinkHelp: Here you can incorporate an external page in the ODC, such as a wiki or intranet. This page can then be reached via navigation -> external.
+jitsiLink: External link to Jitsi installation
+jitsiLinkHelp: Here you can incorporate a Jitsi installation in the ODC. Jitsi Meet is a privacy friendly alternative to Zoom and Microsoft Teams.
+save: Save

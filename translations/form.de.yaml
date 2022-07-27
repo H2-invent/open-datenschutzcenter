@@ -1,0 +1,20 @@
+teamName: Teambezeichnung
+teamNameHelp: Falls eine Keycloak Gruppe mit dem Team verknupft werden soll, muss die Teambezeichnung identisch zum Gruppennamen sein.
+displayName: Anzeigename (falls abweichend von der Teambezeichnung)
+street: Straße
+postcode: PLZ
+city: Stadt
+email: E-Mail
+phone: Telefon
+dsb: Datenschutzbeauftragte*r
+ceo: Geschäftsführung
+industry: Branche
+specialty: Spezialisierung
+signature: Email Signatur
+slug: Slug für Kundenplattform (Darf keine Leerzeichen oder Sonderzeichen enthalten)
+slugHelp: Im ODC gibt es die Möglichkeit, ein Kundenportal für Betroffenenanfragen einzurichten. Damit das Protal von extern verfügbar ist, muss erst ein Slug ausgewählt werden. Der Slug kann der Mandantenname oder eine zufälle Kombination von Zeichen sein.
+externalLink: Externer Link zu Kommunikationsplattform
+externalLinkHelp: Hier können Sie eine externe Seite in den ODC einbinden, z.B. Wiki oder Intranet. Diese Seite ist danach über die Navigation -> External aufrufbar.
+jitsiLink: Externer Link zur internen Jitsi Installation
+jitsiLinkHelp: Hier können Sie Ihre eigene oder eine externe Jitsi Installation in den ODC einbinden. Jitsi Meet ist eine datenschutzfreundliche Alternative für zoom und Microsoft Teams.
+save: Speichern

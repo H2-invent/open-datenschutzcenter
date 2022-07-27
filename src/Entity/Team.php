@@ -36,6 +36,10 @@ class Team
     private $name;
 
     /**
+     */
+    private $displayName;
+
+    /**
      * @ORM\Column(type="boolean")
      * @Assert\NotBlank()
      */
@@ -315,6 +319,18 @@ class Team
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDisplayName(): ?string
+    {
+        return $this->displayName;
+    }
+
+    public function setDisplayName(string $displayName): self
+    {
+        $this->displayName = $displayName;
 
         return $this;
     }
