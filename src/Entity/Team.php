@@ -262,13 +262,6 @@ class Team
      */
     private $loeschkonzepts;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $keycloakUserGroup;
-
-
-
     public function __construct()
     {
         $this->members = new ArrayCollection();
@@ -1349,18 +1342,6 @@ class Team
                 $loeschkonzept->setTeam(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getKeycloakUserGroup(): ?string
-    {
-        return $this->keycloakUserGroup;
-    }
-
-    public function setKeycloakUserGroup(string $keycloakUserGroup): self
-    {
-        $this->keycloakUserGroup = $keycloakUserGroup;
 
         return $this;
     }

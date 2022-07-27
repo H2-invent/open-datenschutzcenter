@@ -21,8 +21,7 @@ final class Version20220705145408 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE user_team ( user_id INT(11) NOT NULL , team_id INT(11) NOT NULL , PRIMARY KEY (user_id, team_id))');
-        $this->addSql('ALTER TABLE team ADD keycloak_user_group LONGTEXT DEFAULT NULL');
-        $this->addSql('ALTER TABLE fos_user DROP team_id');
+        $this->addSql('ALTER TABLE team ADD display_name LONGTEXT DEFAULT NULL');
         $this->addSql('ALTER TABLE fos_user RENAME TO user');
     }
 
@@ -30,8 +29,7 @@ final class Version20220705145408 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE user_team');
-        $this->addSql('ALTER TABLE team DROP keycloak_user_group');
+        $this->addSql('ALTER TABLE team DROP display_name');
         $this->addSql('ALTER TABLE user RENAME TO fos_user');
-        $this->addSql('ALTER TABLE fos_user ADD team_id INT DEFAULT NULL, ADD activ TINYINT(1) NOT NULL');
     }
 }
