@@ -118,7 +118,7 @@ class GuardServiceKeycloak extends SocialAuthenticator
     private function getTeamsFromKeycloakGroups(?array $groups) {
         $teams = [];
         foreach ($groups as $group) {
-            $team = $this->teamRepository->findOneBy(array('keycloakUserGroup' => $group));
+            $team = $this->teamRepository->findOneBy(array('name' => $group));
             if ($team) {
                 $teams[] = $team;
             }

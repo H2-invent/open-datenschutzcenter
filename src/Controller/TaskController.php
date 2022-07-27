@@ -20,7 +20,7 @@ class TaskController extends AbstractController
      */
     public function index(SecurityService $securityService, Request $request)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         if ($request->get('all')) {
             $tasks = $this->getDoctrine()->getRepository(Task::class)->findActivByTeam($team);
             $all = true;
@@ -45,7 +45,7 @@ class TaskController extends AbstractController
      */
     public function addTask(ValidatorInterface $validator, Request $request, SecurityService $securityService, TaskService $taskService)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('tasks');
         }
@@ -80,7 +80,7 @@ class TaskController extends AbstractController
      */
     public function EditTask(ValidatorInterface $validator, Request $request, SecurityService $securityService, AssignService $assignService)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         $task = $this->getDoctrine()->getRepository(Task::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($task, $team) === false) {

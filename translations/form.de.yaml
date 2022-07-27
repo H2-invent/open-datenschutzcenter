@@ -1,5 +1,5 @@
 teamName: Teambezeichnung
-teamNameHelp: Falls eine Keycloak Gruppe mit dem Team verknupft werden soll, muss die Teambezeichnung identisch zum Gruppennamen sein.
+teamNameHelp: Falls eine Keycloak Gruppe mit dem Team verknupft werden soll, muss die Teambezeichnung identisch zum Gruppennamen sein. Damit Keycloak die Gruppen übergibt, muss für den Client ein Mapper namens 'groups' existieren bei dem die Option 'Full group path' deaktiviert ist.
 displayName: Anzeigename (falls abweichend von der Teambezeichnung)
 street: Straße
 postcode: PLZ

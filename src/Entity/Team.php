@@ -36,6 +36,7 @@ class Team
     private $name;
 
     /**
+     * @ORM\Column(type="text")
      */
     private $displayName;
 

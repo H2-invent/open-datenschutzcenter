@@ -26,7 +26,7 @@ class ClientRequestController extends AbstractController
      */
     public function allClientRequests(SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         $client = $this->getDoctrine()->getRepository(ClientRequest::class)->findBy(['team' => $team, 'emailValid' => true]);
 
         if ($securityService->teamCheck($team) === false) {
@@ -45,7 +45,7 @@ class ClientRequestController extends AbstractController
     public function showClientRequests(SecurityService $securityService, Request $request)
     {
 
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
@@ -70,13 +70,13 @@ class ClientRequestController extends AbstractController
         $data = $request->get('client_reques_comment');
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('clientRequest'));
 
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
             return $this->redirectToRoute('client_requests');
         }
 
         $content = $data['comment'];
-        $clientRequestService->newComment($clientRequest, $content, $this->getUser()->getTeams()[0]->getName() . ' > ' . $this->getUser()->getUsername(), 1);
+        $clientRequestService->newComment($clientRequest, $content, $this->getUser()->getTeams()->get(0)->getName() . ' > ' . $this->getUser()->getUsername(), 1);
         return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
     }
 
@@ -137,7 +137,7 @@ class ClientRequestController extends AbstractController
     public function internalNoteClientRequests(SecurityService $securityService, Request $request, ValidatorInterface $validator)
     {
 
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
@@ -187,7 +187,7 @@ class ClientRequestController extends AbstractController
                 $em->persist($clientRequest);
                 $em->flush();
 
-                $clientRequestService->newComment($clientRequest, $content, $this->getUser()->getTeams()[0]->getName() . ' > ' . $this->getUser()->getUsername(), 1);
+                $clientRequestService->newComment($clientRequest, $content, $this->getUser()->getTeams()->get(0)->getName() . ' > ' . $this->getUser()->getUsername(), 1);
 
                 $snack = $translator->trans('Änderung gespeichert.');
                 return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => $snack]);

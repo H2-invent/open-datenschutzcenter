@@ -36,7 +36,7 @@ class DatenweitergabeService
     function newDatenweitergabe(User $user, $type, $prefix)
     {
         $daten = new Datenweitergabe();
-        $daten->setTeam($user->getTeams()[0]);
+        $daten->setTeam($user->getTeams()->get(0));
         $daten->setNummer($prefix . hexdec(uniqid()));
         $daten->setActiv(true);
         $daten->setCreatedAt(new \DateTime());

@@ -246,14 +246,35 @@ class User extends BaseUser
         $this->vVTDatenkategories = new ArrayCollection();
     }
 
-    public function getTeams(): ?array
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeams(): Collection
     {
-        return $this->teams->toArray();
+        return $this->teams;
     }
 
     public function setTeams(?array $teams): self
     {
         $this->teams = $teams;
+
+        return $this;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if(!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->contains($team)) {
+            $this->teams->removeElement($team);
+        }
 
         return $this;
     }

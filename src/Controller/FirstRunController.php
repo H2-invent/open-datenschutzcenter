@@ -35,11 +35,10 @@ class FirstRunController extends AbstractController
             $errors = $validator->validate($nTeam);
             if (count($errors) == 0) {
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($nTeam);
-                $em->flush();
                 $user = $this->getUser();
-                $user->setTeam($nTeam);
+                $user->addTeam($nteam);
                 $user->setAdminUser($nTeam);
+                $em->persist($nTeam);
                 $em->persist($user);
                 $em->flush();
                 return $this->redirectToRoute('dashboard');

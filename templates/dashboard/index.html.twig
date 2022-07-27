@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ team.name }}{% endblock %}
+{% block title %}{{ team.displayName ? team.displayName : team.name }}{% endblock %}
 
 {% block CTA %}
-    <h4 class="h4-responsive ml-md-5">{{ 'Datenschutzcenter der'|trans }} {{ team.name }}</h4>
+    <h4 class="h4-responsive ml-md-5">{{ team.displayName ? team.displayName : team.name }} {{ 'privacycenter'|trans }}</h4>
 {% endblock %}
 {% block body %}
 
@@ -25,17 +25,17 @@
     </div>
     <div class="card">
         <div class="card-header text-center">
-            <h4 class="h4-responsive">{% trans %}Datenflussplan{% endtrans %}</h4>
+            <h4 class="h4-responsive">{% trans %}flowChart{% endtrans %}</h4>
         </div>
         <div class="card-body">
             <label>
 
                 <select id="nodeFilterSelect" class="selectpicker" data-live-search="true"
                         data-width="auto">
-                    <optgroup label="{{ app.user.team.name }}" data-max-options="1">
-                        <option value>{{ app.user.team.name }} Alle Abteilungen</option>
+                    <optgroup label="{{ app.user.team.displayName ? app.user.team.displayName : app.user.team.name }}" data-max-options="1">
+                        <option value>{{ app.user.team.displayName ? app.user.team.displayName : app.user.team.name }} Alle Abteilungen</option>
                         {% for a in app.user.team.abteilungen|filter(a => a.activ) %}
-                            <option value="ab{{ a.id }}">{{ app.user.team.name }} {{ a.name }}</option>
+                            <option value="ab{{ a.id }}">{{ app.user.team.displayName ? app.user.team.displayName : app.user.team.name }} {{ a.name }}</option>
                         {% endfor %}
                     </optgroup>
 

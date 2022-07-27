@@ -1,5 +1,5 @@
 teamName: Team descriptor
-teamNameHelp: If a keycloak group should be connected to this team, the team descriptor must be identical to the group name.
+teamNameHelp: If a Keycloak group should be connected to this team, the team descriptor must be identical to the group name. For Keycloak to pass the group membership, the client must have a mapper named 'groups' with the option 'full group path' set to false.
 displayName: Display name (if different from team descriptor)
 street: Street
 postcode: Postcode

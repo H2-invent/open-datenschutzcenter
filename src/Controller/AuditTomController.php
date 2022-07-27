@@ -27,7 +27,7 @@ class AuditTomController extends AbstractController
      */
     public function index(SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {
@@ -44,7 +44,7 @@ class AuditTomController extends AbstractController
      */
     public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('audit_tom');
@@ -90,7 +90,7 @@ class AuditTomController extends AbstractController
      */
     public function EditAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, AssignService $assignService)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->find($request->get('tom'));
 
         if ($securityService->teamDataCheck($audit, $team) === false) {
@@ -103,7 +103,7 @@ class AuditTomController extends AbstractController
         $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findByTeam($team);
 
 
-        $allAudits = array_reverse($this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($this->getUser()->getTeams()[0]));
+        $allAudits = array_reverse($this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($this->getUser()->getTeams()->get(0)));
 
         $mykey = 0;
         foreach ($allAudits as $key=>$item) {
@@ -162,7 +162,7 @@ class AuditTomController extends AbstractController
      */
     public function CloneAuditTom(Request $request, SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('audit_tom');
         }

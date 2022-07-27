@@ -29,7 +29,7 @@ class VvtController extends AbstractController
      */
     public function index(SecurityService $securityService, Request $request)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -47,7 +47,7 @@ class VvtController extends AbstractController
      */
     public function addVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, VVTDatenkategorieService $VVTDatenkategorieService)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('vvt');
@@ -93,7 +93,7 @@ class VvtController extends AbstractController
      */
     public function editVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService, VVTDatenkategorieService $VVTDatenkategorieService)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
@@ -168,7 +168,7 @@ class VvtController extends AbstractController
      */
     public function newVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('vvt'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
@@ -205,7 +205,7 @@ class VvtController extends AbstractController
      */
     public function editVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService)
     {
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
         $dsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->find($request->get('dsfa'));
 
         if ($securityService->teamDataCheck($dsfa->getVvt(), $team) === false) {
@@ -290,7 +290,7 @@ class VvtController extends AbstractController
     public function cloneVvt(Request $request, SecurityService $securityService, VVTService $VVTService, ValidatorInterface $validator)
     {
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
-        $team = $this->getUser()->getTeams()[0];
+        $team = $this->getUser()->getTeams()->get(0);
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');

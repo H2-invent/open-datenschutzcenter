@@ -143,7 +143,7 @@ class DashboardController extends AbstractController
     public function noTeam()
     {
         if ($this->getUser()) {
-            if ($this->getUser()->getTeams()) {
+            if (count($this->getUser()->getTeams())) {
                 return $this->redirectToRoute('dashboard');
             }
             if ($this->getUser()->getAkademieUser()) {
