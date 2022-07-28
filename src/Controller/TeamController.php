@@ -20,6 +20,7 @@ use App\Form\Type\TeamType;
 use App\Service\InviteService;
 use App\Service\SecurityService;
 use App\Service\TeamService;
+use App\Service\CurrentTeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -472,10 +473,12 @@ class TeamController extends AbstractController
     /**
      * @Route("/team/switch", name="team_switch")
      */
-    public function switchTeam(ValidatorInterface $validator, Request $request, SecurityService $securityService, TeamService $teamService)
+    public function switchTeam(ValidatorInterface $validator, Request $request, CurrentTeamService $userService)
     {
         $team = $request->get('team');
-        // TODO: save new team in session
+
+        $userService->switchToTeam($team);
+
         return new RedirectResponse($request->headers->get('referer'));
     }
 }

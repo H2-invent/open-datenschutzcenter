@@ -1,12 +1,12 @@
 <ul class="nav navbar-nav ml-auto">
-    {% if app.user.teams|length > 1 %}
+    {% if app.user.teams|length > 1 and currentTeam is defined %}
         <li class="nav-item dropdown team-select mr-2">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ app.user.team.displayName ? app.user.team.displayName : app.user.team.name }}
+                {{ currentTeam.displayName ? currentTeam.displayName : currentTeam.name }}
             </a>
             <div class="dropdown-menu p-0" aria-labelledby="navbarDropdownMenuLink">
                 {% for team in app.user.teams %}
-                    {% if app.user.team == team %}
+                    {% if currentTeam == team %}
                         <a class="dropdown-item" disabled>{{ team.displayName ? team.displayName : team.name }}</a>
                     {% else %}
                         <a class="dropdown-item" href="{{ path('team_switch',{'team':team}) }}">{{ team.displayName ? team.displayName : team.name }}</a>

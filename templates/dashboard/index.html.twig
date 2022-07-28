@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ team.displayName ? team.displayName : team.name }}{% endblock %}
+{% block title %}{{ currentTeam.displayName ? currentTeam.displayName : currentTeam.name }}{% endblock %}
 
 {% block CTA %}
-    <h4 class="h4-responsive ml-4 mb-0 d-none d-md-block">{{ team.displayName ? team.displayName : team.name }} {{ 'privacycenter'|trans }}</h4>
+    <h4 class="h4-responsive ml-4 mb-0 d-none d-md-block">{{ currentTeam.displayName ? currentTeam.displayName : currentTeam.name }} {{ 'privacycenter'|trans }}</h4>
 {% endblock %}
 {% block body %}
-
     <div class="row wow fadeIn mt-5">
 
         <!--Grid column-->
@@ -32,19 +31,14 @@
 
                 <select id="nodeFilterSelect" class="selectpicker" data-live-search="true"
                         data-width="auto">
-                    <optgroup label="{{ app.user.team.displayName ? app.user.team.displayName : app.user.team.name }}" data-max-options="1">
-                        <option value>{{ app.user.team.displayName ? app.user.team.displayName : app.user.team.name }} Alle Abteilungen</option>
-                        {% for a in app.user.team.abteilungen|filter(a => a.activ) %}
-                            <option value="ab{{ a.id }}">{{ app.user.team.displayName ? app.user.team.displayName : app.user.team.name }} {{ a.name }}</option>
-                        {% endfor %}
-                    </optgroup>
-
-                    {# todo set all teams in the dataflow chart
-                    <optgroup label="Breads" data-max-options="2">
-                        <option>Plain</option>
-                        <option>Steamed</option>
-                        <option>Toasted</option>
-                    </optgroup> #}
+                    {% for team in app.user.teams %}
+                        <optgroup label="{{ team.displayName ? team.displayName : team.name }}" data-max-options="1">
+                            <option value>{{ team.displayName ? team.displayName : team.name }} Alle Abteilungen</option>
+                            {% for a in team.abteilungen|filter(a => a.activ) %}
+                                <option value="ab{{ a.id }}">{{ team.displayName ? team.displayName : team.name }} {{ a.name }}</option>
+                            {% endfor %}
+                        </optgroup>
+                    {% endfor %}
                 </select>
 
             </label>

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\UserBase as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Service\CurrentTeamService;
 
 /**
  * @ORM\Entity
@@ -215,8 +216,9 @@ class User extends BaseUser
      */
     private $vVTDatenkategories;
 
+    private $userService;
 
-    public function __construct()
+    public function __construct(CurrentTeamService $userService)
     {
         $this->datenweitergabes = new ArrayCollection();
         $this->vVTs = new ArrayCollection();
@@ -244,6 +246,7 @@ class User extends BaseUser
         $this->teamDsb = new ArrayCollection();
         $this->loeschkonzepts = new ArrayCollection();
         $this->vVTDatenkategories = new ArrayCollection();
+        $this->userService = $userService;
     }
 
     /**
@@ -282,6 +285,10 @@ class User extends BaseUser
     // temporary solution for twig templates!!!
     // TODO: save current team to session
     public function team() {
+        return $this->teams->get(0);
+    }
+
+    public function getCurrentTeam() {
         return $this->teams->get(0);
     }
 

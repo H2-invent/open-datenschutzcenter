@@ -31,13 +31,14 @@ use App\Entity\VVTDatenkategorie;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\CurrentTeamService;
 
 class DashboardController extends AbstractController
 {
     /**
      * @Route("/", name="dashboard")
      */
-    public function dashboard(Request $request)
+    public function dashboard(Request $request, CurrentTeamService $userService)
     {
         // if no teams exist, redirect to first_run
         $allTeams = $this->getDoctrine()->getRepository(Team::class)->findAll();
@@ -48,35 +49,36 @@ class DashboardController extends AbstractController
         // else get teams for current user
         $teams = $this->getUser()->getTeams();
 
-        $team = $teams ? $teams[0] : null;
-        if ($team === null && $this->getUser()->getAkademieUser() !== null) {
+        $currentTeam = $userService->getTeamFromSession($this->getUser());
+
+        if ($currentTeam === null && $this->getUser()->getAkademieUser() !== null) {
             return $this->redirectToRoute('akademie');
-        } elseif ($team === null && count($dsbTeams = $this->getUser()->getTeamDsb()) > 0) {
+        } elseif ($currentTeam === null && count($dsbTeams = $this->getUser()->getTeamDsb()) > 0) {
             return $this->redirectToRoute('dsb');
-        } elseif ($team === null && $this->getUser()->getAkademieUser() === null) {
+        } elseif ($currentTeam === null && $this->getUser()->getAkademieUser() === null) {
             return $this->redirectToRoute('no_team');
         }
 
-        $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => 1));
-        $av = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($team);
-        $vvtDsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->findActivByTeam($team);
-        $kontakte = $this->getDoctrine()->getRepository(Kontakte::class)->findActivByTeam($team);
-        $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($team);
-        $forms = $this->getDoctrine()->getRepository(Forms::class)->findPublicByTeam($team);
-        $policies = $this->getDoctrine()->getRepository(Policies::class)->findPublicByTeam($team);
-        $software = $this->getDoctrine()->getRepository(Software::class)->findActivByTeam($team);
-        $tasks = $this->getDoctrine()->getRepository(Task::class)->findBy(['team' => $team, 'activ' => true, 'done' => false]);
-        $loeschkonzepte = $this->getDoctrine()->getRepository(Loeschkonzept::class)->findByTeam($team);
-        $vvtdatenkategorien = $this->getDoctrine()->getRepository(VVTDatenkategorie::class)->findByTeam($team);
+        $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($currentTeam);
+        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $currentTeam, 'activ' => true, 'art' => 1));
+        $av = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $currentTeam, 'activ' => true, 'art' => 2));
+        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($currentTeam);
+        $vvtDsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->findActivByTeam($currentTeam);
+        $kontakte = $this->getDoctrine()->getRepository(Kontakte::class)->findActivByTeam($currentTeam);
+        $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($currentTeam);
+        $forms = $this->getDoctrine()->getRepository(Forms::class)->findPublicByTeam($currentTeam);
+        $policies = $this->getDoctrine()->getRepository(Policies::class)->findPublicByTeam($currentTeam);
+        $software = $this->getDoctrine()->getRepository(Software::class)->findActivByTeam($currentTeam);
+        $tasks = $this->getDoctrine()->getRepository(Task::class)->findBy(['team' => $currentTeam, 'activ' => true, 'done' => false]);
+        $loeschkonzepte = $this->getDoctrine()->getRepository(Loeschkonzept::class)->findByTeam($currentTeam);
+        $vvtdatenkategorien = $this->getDoctrine()->getRepository(VVTDatenkategorie::class)->findByTeam($currentTeam);
 
         $qb = $this->getDoctrine()->getRepository(AuditTom::class)->createQueryBuilder('audit');
         $qb->andWhere('audit.team = :team')
             ->andWhere('audit.activ = 1')
             ->andWhere('audit.status = 5 OR audit.status = 6')
             ->orderBy('audit.createdAt', 'DESC')
-            ->setParameter('team', $team);
+            ->setParameter('team', $currentTeam);
         $query = $qb->getQuery();
         $kritischeAudits = $query->getResult();
 
@@ -85,7 +87,7 @@ class DashboardController extends AbstractController
             ->andWhere('vvt.activ = 1')
             ->andWhere('vvt.status = 3')
             ->orderBy('vvt.CreatedAt', 'DESC')
-            ->setParameter('team', $team);
+            ->setParameter('team', $currentTeam);
         $query = $qb->getQuery();
         $kritischeVvts = $query->getResult();
 
@@ -95,7 +97,7 @@ class DashboardController extends AbstractController
             ->andWhere('dsfa.activ = 1')
             ->andWhere('dsfa.dsb IS NULL OR dsfa.ergebnis IS NULL')
             ->andWhere('vvt.team = :team')
-            ->setParameter('team', $team);
+            ->setParameter('team', $currentTeam);
         $query = $qb->getQuery();
         $openDsfa = $query->getResult();
 
@@ -108,7 +110,7 @@ class DashboardController extends AbstractController
         $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findActivBuchungenByUser($this->getUser());
 
         return $this->render('dashboard/index.html.twig', [
-            'team' => $team,
+            'currentTeam' => $currentTeam,
             'audit' => $audit,
             'daten' => $daten,
             'vvt' => $vvt,
