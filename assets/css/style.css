@@ -153,7 +153,39 @@ a:focus {
     margin: 40px 0;
 }
 
-/* ---------------------------------------------------
+.team-select .nav-link {
+    background: none !important;
+}
+
+.team-select .dropdown-item {
+    display: block !important;
+}
+
+.team-select .dropdown-item[disabled] {
+    color: #666 !important;
+    background: none !important;
+    cursor: auto;
+}
+
+.team-select {
+    padding-right: 1.5rem;
+}
+
+.team-select:after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-right: .325rem solid transparent;
+    border-left: .325rem solid transparent;
+    border-top: .325rem solid #212529;
+    right: .75rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ----------------------- .navbar-nav .nav-item .nav-link:hover {----------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
 
@@ -177,6 +209,17 @@ a:focus {
     transition: all 0.3s;
     overflow-y: scroll;
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+#sidebarCollapse {
+    border: transparent;
+    background: transparent;
+    outline: none;
+}
+
+#sidebarCollapse span {
+    width: 1.75rem;
+    height: 1.75rem;
 }
 
 #sidebar.active {
@@ -300,10 +343,6 @@ a.article:hover {
 
     #sidebar.active {
         margin-left: 0;
-    }
-
-    #sidebarCollapse span {
-        display: none;
     }
 }
 

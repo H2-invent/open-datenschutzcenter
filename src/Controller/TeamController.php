@@ -21,6 +21,7 @@ use App\Service\InviteService;
 use App\Service\SecurityService;
 use App\Service\TeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -466,5 +467,15 @@ class TeamController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('team_dsb', ['snack' => $snack]);
+    }
+
+    /**
+     * @Route("/team/switch", name="team_switch")
+     */
+    public function switchTeam(ValidatorInterface $validator, Request $request, SecurityService $securityService, TeamService $teamService)
+    {
+        $team = $request->get('team');
+        // TODO: save new team in session
+        return new RedirectResponse($request->headers->get('referer'));
     }
 }
