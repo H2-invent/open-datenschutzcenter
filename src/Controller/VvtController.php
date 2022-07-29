@@ -13,6 +13,7 @@ use App\Entity\VVTDsfa;
 use App\Form\Type\VvtDsfaType;
 use App\Service\ApproveService;
 use App\Service\AssignService;
+use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
 use App\Service\VVTDatenkategorieService;
@@ -27,9 +28,9 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt", name="vvt")
      */
-    public function index(SecurityService $securityService, Request $request)
+    public function index(SecurityService $securityService, Request $request, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -37,17 +38,17 @@ class VvtController extends AbstractController
 
         return $this->render('vvt/index.html.twig', [
             'vvt' => $vvt,
-            'snack' => $request->get('snack')
-
+            'snack' => $request->get('snack'),
+            'currentTeam' => $team,
         ]);
     }
 
     /**
      * @Route("/vvt/new", name="vvt_new")
      */
-    public function addVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, VVTDatenkategorieService $VVTDatenkategorieService)
+    public function addVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, VVTDatenkategorieService $VVTDatenkategorieService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('vvt');
@@ -91,9 +92,9 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/edit", name="vvt_edit")
      */
-    public function editVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService, VVTDatenkategorieService $VVTDatenkategorieService)
+    public function editVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService, VVTDatenkategorieService $VVTDatenkategorieService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
@@ -166,9 +167,9 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/dsfa/new", name="vvt_dsfa_new")
      */
-    public function newVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService)
+    public function newVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('vvt'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
@@ -203,9 +204,9 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/dsfa/edit", name="vvt_dsfa_edit")
      */
-    public function editVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService)
+    public function editVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $dsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->find($request->get('dsfa'));
 
         if ($securityService->teamDataCheck($dsfa->getVvt(), $team) === false) {
@@ -247,9 +248,9 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/approve", name="vvt_approve")
      */
-    public function approveVvt(Request $request, SecurityService $securityService, ApproveService $approveService)
+    public function approveVvt(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
@@ -287,10 +288,10 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/clone", name="vvt_clone")
      */
-    public function cloneVvt(Request $request, SecurityService $securityService, VVTService $VVTService, ValidatorInterface $validator)
+    public function cloneVvt(Request $request, SecurityService $securityService, VVTService $VVTService, ValidatorInterface $validator, CurrentTeamService $currentTeamService)
     {
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');

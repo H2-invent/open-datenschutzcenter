@@ -18,15 +18,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Service\CurrentTeamService;
 
 class TomController extends AbstractController
 {
     /**
      * @Route("/tom", name="tom")
      */
-    public function index(SecurityService $securityService)
+    public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {
@@ -35,15 +36,16 @@ class TomController extends AbstractController
 
         return $this->render('tom/index.html.twig', [
             'tom' => $tom,
+            'currentTeam' => $team
         ]);
     }
 
     /**
      * @Route("/tom/new", name="tom_new")
      */
-    public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService)
+    public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('tom');
         }
@@ -65,6 +67,7 @@ class TomController extends AbstractController
             }
         }
         return $this->render('tom/new.html.twig', [
+            'currentTeam' => $team,
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'TOM erstellen',
@@ -77,9 +80,9 @@ class TomController extends AbstractController
     /**
      * @Route("/tom/edit", name="tom_edit")
      */
-    public function EditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService)
+    public function EditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $tom = $this->getDoctrine()->getRepository(Tom::class)->find($request->get('tom'));
 
         if ($securityService->teamDataCheck($tom, $team) === false) {
@@ -113,16 +116,17 @@ class TomController extends AbstractController
             'tom' => $tom,
             'activ' => $tom->getActiv(),
             'activTitel' => false,
-            'snack' => $request->get('snack')
+            'snack' => $request->get('snack'),
+            'currentTeam' => $team
         ]);
     }
 
     /**
      * @Route("/tom/clone", name="tom_clone")
      */
-    public function cloneTom(Request $request)
+    public function cloneTom(Request $request, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($team === null) {
             return $this->redirectToRoute('dashboard');
         }

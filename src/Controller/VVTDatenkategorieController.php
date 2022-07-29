@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\VVTDatenkategorie;
 use App\Form\Type\VVTDatenkategorieType;
+use App\Service\CurrentTeamService;
 use App\Service\VVTDatenkategorieService;
 use App\Service\ApproveService;
 use App\Service\DisableService;
@@ -29,9 +30,9 @@ class VVTDatenkategorieController extends AbstractController
     /**
      * @Route("/", name="app_vvtdatenkategorie_index", methods={"GET"})
      */
-    public function index(VVTDatenkategorieRepository $vVTDatenkategorieRepository, SecurityService $securityService): Response
+    public function index(VVTDatenkategorieRepository $vVTDatenkategorieRepository, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -43,10 +44,10 @@ class VVTDatenkategorieController extends AbstractController
     /**
      * @Route("/new", name="app_vvtdatenkategorie_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager, SecurityService $securityService, VVTDatenkategorieService $vVTDatenkategorieService): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SecurityService $securityService, VVTDatenkategorieService $vVTDatenkategorieService, CurrentTeamService $currentTeamService): Response
     {
         $user = $this->getUser();
-        $team = $user->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -81,9 +82,9 @@ class VVTDatenkategorieController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_vvtdatenkategorie_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, VVTDatenkategorie $vVTDatenkategorie, VVTDatenkategorieRepository $vVTDatenkategorieRepository, EntityManagerInterface $entityManager, SecurityService $securityService, VVTDatenkategorieService $vVTDatenkategorieService): Response
+    public function edit(Request $request, VVTDatenkategorie $vVTDatenkategorie, EntityManagerInterface $entityManager, SecurityService $securityService, VVTDatenkategorieService $vVTDatenkategorieService, CurrentTeamService $currentTeamService): Response
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('app_vvtdatenkategorie_index');
         }

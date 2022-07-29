@@ -36,6 +36,8 @@ class CronController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $countNeu = 0;
         $countWdh = 0;
+
+        // TODO: How should users with multiple teams be handled?
         foreach ($buchungen as $buchung) {
             if (!$buchung->getInvitation()) {
                 $content = $this->renderView('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()->get(0)]);

@@ -38,7 +38,7 @@ class DashboardController extends AbstractController
     /**
      * @Route("/", name="dashboard")
      */
-    public function dashboard(Request $request, CurrentTeamService $userService)
+    public function dashboard(Request $request, CurrentTeamService $currentTeamService)
     {
         // if no teams exist, redirect to first_run
         $allTeams = $this->getDoctrine()->getRepository(Team::class)->findAll();
@@ -46,10 +46,8 @@ class DashboardController extends AbstractController
             return $this->redirectToRoute('first_run');
         }
 
-        // else get teams for current user
-        $teams = $this->getUser()->getTeams();
-
-        $currentTeam = $userService->getTeamFromSession($this->getUser());
+        // else get team for current user
+        $currentTeam = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($currentTeam === null && $this->getUser()->getAkademieUser() !== null) {
             return $this->redirectToRoute('akademie');

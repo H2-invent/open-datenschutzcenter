@@ -31,9 +31,14 @@
 
                 <select id="nodeFilterSelect" class="selectpicker" data-live-search="true"
                         data-width="auto">
+                    <!-- TODO: Make select work properly for multiple teams -->
                     {% for team in app.user.teams %}
                         <optgroup label="{{ team.displayName ? team.displayName : team.name }}" data-max-options="1">
-                            <option value>{{ team.displayName ? team.displayName : team.name }} Alle Abteilungen</option>
+                            {% if team == currentTeam %}
+                                <option selected value>{{ team.displayName ? team.displayName : team.name }} Alle Abteilungen</option>
+                            {% else %}
+                                <option value>{{ team.displayName ? team.displayName : team.name }} Alle Abteilungen</option>
+                            {% endif %}
                             {% for a in team.abteilungen|filter(a => a.activ) %}
                                 <option value="ab{{ a.id }}">{{ team.displayName ? team.displayName : team.name }} {{ a.name }}</option>
                             {% endfor %}

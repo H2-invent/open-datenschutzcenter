@@ -282,6 +282,11 @@ class User extends BaseUser
         return $this;
     }
 
+    public function hasTeam(Team $team): self
+    {
+        return $this->teams->contains($team);
+    }
+
     // temporary solution for twig templates!!!
     // TODO: save current team to session
     public function team() {

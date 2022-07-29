@@ -47,7 +47,7 @@ class Team
     private $activ;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="team")
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="teams")
      */
     private $members;
 
@@ -353,7 +353,7 @@ class Team
     {
         if (!$this->members->contains($member)) {
             $this->members[] = $member;
-            $member->setTeam($this);
+            $member->addTeam($this);
         }
 
         return $this;
@@ -364,9 +364,7 @@ class Team
         if ($this->members->contains($member)) {
             $this->members->removeElement($member);
             // set the owning side to null (unless already changed)
-            if ($member->getTeam() === $this) {
-                $member->setTeam(null);
-            }
+            $member->removeTeam($this);
         }
 
         return $this;

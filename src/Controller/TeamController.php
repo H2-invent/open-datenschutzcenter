@@ -258,8 +258,8 @@ class TeamController extends AbstractController
                 foreach ($lines as $line) {
                     $newMember = trim($line);
                     $user = $inviteService->newUser($newMember);
-                    if ($user->getTeam() === null) {
-                        $user->setTeam($team);
+                    if (!$user->hasTeam($team)) {
+                        $user->addTeam($team);
                         $em->persist($user);
                     }
                 }
@@ -307,8 +307,8 @@ class TeamController extends AbstractController
 
                     switch ($request->get('type')) {
                         case 'odc':
-                            if ($user->getTeam() === null) {
-                                $user->setTeam($team);
+                            if (!$user->hasTeam($team)) {
+                                $user->addTeam($team);
                                 $em->persist($user);
                                 $target = $this->generateUrl('team_mitglieder');
                                 break;
@@ -353,8 +353,8 @@ class TeamController extends AbstractController
                 $target = $this->generateUrl('akademie_admin') . '#user';
                 break;
             case 'odc':
-                if ($this->getUser() !== $user && $user->getTeam() === $this->getUser()->getTeam()) {
-                    $user->setTeam(null);
+                if ($this->getUser() !== $user && $user->hasTeam($team)) {
+                    $user->removeTeam($team);
                     $user->setAdminUser(null);
                     $target = $this->generateUrl('team_mitglieder');
                 }
@@ -385,7 +385,7 @@ class TeamController extends AbstractController
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('id' => $request->get('id')));
 
         // Only other users and admins of the same Team can promote users
-        if ($this->getUser() !== $user && $user->getTeam() === $team) {
+        if ($this->getUser() !== $user && $user->hasTeam($team)) {
             if ($user->getAdminUser() === null) {
                 $user->setAdminUser($team);
             } else {
@@ -455,7 +455,7 @@ class TeamController extends AbstractController
         if ($team->getDsbUser() === $user) {
             $snack = 'Sie können sich nicht selbst aus dem Team entfernen und wurden daher nur als externer DSB entfernt.';
             if ($this->getUser() !== $team->getDsbUser()) {
-                $user->setTeam(null);
+                $user->removeTeam($team);
                 $user->setAdminUser(null);
                 $user->setAkademieUser(null);
                 $snack = 'Sie haben den externen DSB aus Ihrem Team entfernt';

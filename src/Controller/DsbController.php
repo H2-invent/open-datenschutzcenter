@@ -33,7 +33,7 @@ class DsbController extends AbstractController
 
         if (in_array($team, $this->getUser()->getTeamDsb()->toarray())) {
             $user = $this->getUser();
-            $user->setTeam($team);
+            $user->addTeam($team);
             $user->setAdminUser($team);
             $user->setAkademieUser($team);
             $em = $this->getDoctrine()->getManager();
