@@ -21,20 +21,22 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class FormsService
 {
-    private $em;
-    private $formBuilder;
+    private EntityManagerInterface $em;
+    private FormFactoryInterface $formBuilder;
+    private CurrentTeamService $currentTeamService;
 
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder)
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder, CurrentTeamService $currentTeamService)
     {
         $this->em = $entityManager;
         $this->formBuilder = $formBuilder;
+        $this->currentTeamService = $currentTeamService;
     }
 
     function newForm(User $user)
     {
         $form = new Forms();
         $form->setStatus(0);
-        $form->setTeam($user->getTeams()->get(0));
+        $form->setTeam($this->currentTeamService->getTeamFromSession($user));
         $form->setActiv(true);
         $form->setCreatedAt(new \DateTime());
         $form->setUser($user);

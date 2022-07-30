@@ -20,12 +20,12 @@ class InviteService
 {
 
 
-    private $em;
-    private $translator;
-    private $router;
-    private $mailer;
-    private $parameterBag;
-    private $twig;
+    private EntityManagerInterface $em;
+    private TranslatorInterface $translator;
+    private UrlGeneratorInterface $router;
+    private MailerService $mailer;
+    private ParameterBagInterface $parameterBag;
+    private Environment $twig;
 
     public function __construct(Environment $environment, ParameterBagInterface $parameterBag, MailerService $mailerService, EntityManagerInterface $entityManager, TranslatorInterface $translator, UrlGeneratorInterface $urlGenerator)
     {
@@ -70,14 +70,14 @@ class InviteService
     public function connectUserWithEmail(User $userfromregisterId, User $user)
     {
         if ($user !== $userfromregisterId) {
-            if (!$user->getTeams()) {
-                $user->setTeams($userfromregisterId->getTeams());
+            foreach ($userfromregisterId->getTeams() as $team) {
+                $user->addTeam($team);
             }
             if (!$user->getAkademieUser()) {
                 $user->setAkademieUser($userfromregisterId->getAkademieUser());
             }
-            foreach ($user->getTeamDsb() as $data) {
-                $user->addTeamDsb($data);
+            foreach ($userfromregisterId->getTeamDsb() as $team) {
+                $user->addTeamDsb($team);
             }
             $this->em->remove($userfromregisterId);
         }

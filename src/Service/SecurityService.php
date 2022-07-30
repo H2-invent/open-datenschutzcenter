@@ -76,7 +76,7 @@ class SecurityService
         }
 
         //Sicherheitsfunktion, dass Admin Team zu Team passt
-        if ($user->getTeam() !== $user->getAdminUser()) {
+        if (!$user->hasTeam($user->getAdminUser())) {
             $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer Admin Team passt nicht zu Team'];
             $this->logger->error($message['typ'], $message);
             return false;

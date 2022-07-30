@@ -13,25 +13,22 @@ use App\Entity\AkademieBuchungen;
 use App\Entity\AkademieKurse;
 use App\Entity\Team;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Twig\Environment;
 
 
 class AkademieService
 {
-    private $em;
-    private $mailer;
-    private $twig;
-    private $parameterbag;
-    private $notificationService;
+    private EntityManagerInterface $em;
+    private Environment $twig;
+    private NotificationService $notificationService;
+    private CurrentTeamService $currentTeamService;
 
-    public function __construct(Environment $engine, EntityManagerInterface $entityManager, MailerService $mailerService, ParameterBagInterface $parameterBag, NotificationService $notificationService)
+    public function __construct(Environment $engine, EntityManagerInterface $entityManager, NotificationService $notificationService, CurrentTeamService $currentTeamService)
     {
         $this->em = $entityManager;
-        $this->mailer = $mailerService;
         $this->twig = $engine;
-        $this->parameterbag = $parameterBag;
         $this->notificationService = $notificationService;
+        $this->currentTeamService = $currentTeamService;
     }
 
     function addUser(AkademieKurse $kurs, $daten)
@@ -49,7 +46,8 @@ class AkademieService
             $this->em->persist($buchung);
             $this->em->flush();
             if ($daten['invite'] === true) {
-                $content = $this->twig->render('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $user->getTeam()]);
+                $team = $this->currentTeamService->getTeamFromSession($user);
+                $content = $this->twig->render('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $team]);
                 $buchung->setInvitation(true);
                 $this->notificationService->sendNotificationAkademie($buchung, $content);
             }

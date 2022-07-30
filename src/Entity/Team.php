@@ -319,7 +319,7 @@ class Team
 
     public function getDisplayName(): ?string
     {
-        return $this->displayName;
+        return $this->displayName ? : $this->name;
     }
 
     public function setDisplayName(string $displayName): self

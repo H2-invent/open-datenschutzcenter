@@ -14,25 +14,24 @@ use App\Entity\ClientRequest;
 use App\Form\Type\ClientRequestType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
 
 class ClientRequestService
 {
-    private $em;
-    private $formBuilder;
-    private $router;
-    private $notificationService;
-    private $twig;
+    private EntityManagerInterface $em;
+    private FormFactoryInterface $formBuilder;
+    private NotificationService $notificationService;
+    private Environment $twig;
+    private CurrentTeamService $currentTeamService;
 
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder, RouterInterface $router, NotificationService $notificationService, Environment $engine)
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder, NotificationService $notificationService, Environment $engine, CurrentTeamService $currentTeamService)
     {
         $this->em = $entityManager;
         $this->formBuilder = $formBuilder;
-        $this->router = $router;
         $this->notificationService = $notificationService;
         $this->twig = $engine;
+        $this->currentTeamService = $currentTeamService;
     }
 
     function userValid(ClientRequest $clientRequest, $user)
@@ -49,7 +48,8 @@ class ClientRequestService
                     $comment = 'Der Nutzer wurde als validiert markiert.';
                 }
 
-                $this->newComment($clientRequest, $comment, $user->getTeam()->getName() . ' > ' . $user->getUsername(), 1);
+                $team = $this->currentTeamService->getTeamFromSession($user);
+                $this->newComment($clientRequest, $comment, $team->getDisplayName() . ' > ' . $user->getUsername(), 1);
 
                 $this->em->persist($clientRequest);
                 $this->em->flush();
@@ -113,7 +113,8 @@ class ClientRequestService
                     $comment = 'Diese Anfrage wurde wieder geöffnet.';
                 }
 
-                $this->newComment($clientRequest, $comment, $user->getTeam()->getName() . ' > ' . $user->getUsername(), 1);
+                $team = $this->currentTeamService->getTeamFromSession($user);
+                $this->newComment($clientRequest, $comment, $team->getDisplayName() . ' > ' . $user->getUsername(), 1);
 
                 $this->em->persist($clientRequest);
                 $this->em->flush();

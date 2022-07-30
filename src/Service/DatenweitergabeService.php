@@ -24,19 +24,21 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class DatenweitergabeService
 {
-    private $em;
-    private $formBuilder;
+    private EntityManagerInterface $em;
+    private FormFactoryInterface $formBuilder;
+    private CurrentTeamService $currentTeamService;
 
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder)
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder, CurrentTeamService $currentTeamService)
     {
         $this->em = $entityManager;
         $this->formBuilder = $formBuilder;
+        $this->currentTeamService = $currentTeamService;
     }
 
     function newDatenweitergabe(User $user, $type, $prefix)
     {
         $daten = new Datenweitergabe();
-        $daten->setTeam($user->getTeams()->get(0));
+        $daten->setTeam($this->currentTeamService->getTeamFromSession($user));
         $daten->setNummer($prefix . hexdec(uniqid()));
         $daten->setActiv(true);
         $daten->setCreatedAt(new \DateTime());
