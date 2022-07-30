@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Vorfall;
 use App\Service\ApproveService;
 use App\Service\AssignService;
+use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use App\Service\VorfallService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,9 +24,9 @@ class VorfallController extends AbstractController
     /**
      * @Route("/vorfall", name="vorfall")
      */
-    public function index(SecurityService $securityService)
+    public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -35,15 +36,16 @@ class VorfallController extends AbstractController
 
         return $this->render('vorfall/index.html.twig', [
             'vorfall' => $vorfall,
+            'currentTeam' => $team,
         ]);
     }
 
     /**
      * @Route("/vorfall/new", name="vorfall_new")
      */
-    public function addVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService)
+    public function addVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -76,9 +78,9 @@ class VorfallController extends AbstractController
     /**
      * @Route("/vorfall/edit", name="vorfall_edit")
      */
-    public function EditVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService, AssignService $assignService)
+    public function EditVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $vorgang = $this->getDoctrine()->getRepository(Vorfall::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vorgang, $team) === false) {

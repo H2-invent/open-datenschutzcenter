@@ -31,17 +31,15 @@
 
                 <select id="nodeFilterSelect" class="selectpicker" data-live-search="true"
                         data-width="auto">
-                    <!-- TODO: Make select work properly for multiple teams -->
+                    <!-- TODO: Make select work for multiple teams -->
                     {% for team in app.user.teams %}
                         <optgroup label="{{ team.displayName ? team.displayName : team.name }}" data-max-options="1">
                             {% if team == currentTeam %}
                                 <option selected value>{{ team.displayName ? team.displayName : team.name }} Alle Abteilungen</option>
-                            {% else %}
-                                <option value>{{ team.displayName ? team.displayName : team.name }} Alle Abteilungen</option>
+                                {% for a in team.abteilungen|filter(a => a.activ) %}
+                                    <option value="ab{{ a.id }}">{{ team.displayName ? team.displayName : team.name }} {{ a.name }}</option>
+                                {% endfor %}
                             {% endif %}
-                            {% for a in team.abteilungen|filter(a => a.activ) %}
-                                <option value="ab{{ a.id }}">{{ team.displayName ? team.displayName : team.name }} {{ a.name }}</option>
-                            {% endfor %}
                         </optgroup>
                     {% endfor %}
                 </select>
@@ -405,7 +403,7 @@
                 return true;
             }
             switch (nodeFilterValue) {
-                    {% for a in app.user.team.abteilungen | filter(a => a.activ) %}
+                    {% for a in currentTeam.abteilungen | filter(a => a.activ) %}
                 case "ab{{ a.id }}":
                     return node.ab{{ a.id }} === "{{ a.id }}";
                     {% endfor %}

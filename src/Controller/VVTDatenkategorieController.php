@@ -38,6 +38,7 @@ class VVTDatenkategorieController extends AbstractController
         }
         return $this->render('vvt_datenkategorie/index.html.twig', [
             'vvtdatenkategories' => $vVTDatenkategorieRepository->findByTeam($team),
+            'currentTeam' => $team,
         ]);
     }
 
@@ -52,7 +53,7 @@ class VVTDatenkategorieController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
         $vVTDatenkategorie = $vVTDatenkategorieService->newVVTDatenkategorie($team, $user);
-        $form = $form = $this->createForm(VVTDatenkategorieType::class, $vVTDatenkategorie);
+        $form = $this->createForm(VVTDatenkategorieType::class, $vVTDatenkategorie);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

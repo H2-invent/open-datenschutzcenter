@@ -10,6 +10,7 @@ use App\Form\Type\ClientRequestInternalType;
 use App\Form\Type\ClientRequestType;
 use App\Form\Type\ClientRequestViewType;
 use App\Service\ClientRequestService;
+use App\Service\CurrentTeamService;
 use App\Service\NotificationService;
 use App\Service\SecurityService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -24,9 +25,9 @@ class ClientRequestController extends AbstractController
     /**
      * @Route("/client-requests", name="client_requests")
      */
-    public function allClientRequests(SecurityService $securityService)
+    public function allClientRequests(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $client = $this->getDoctrine()->getRepository(ClientRequest::class)->findBy(['team' => $team, 'emailValid' => true]);
 
         if ($securityService->teamCheck($team) === false) {
@@ -35,17 +36,17 @@ class ClientRequestController extends AbstractController
 
         return $this->render('client_request/indexInternal.html.twig', [
             'client' => $client,
-            'team' => $team
+            'currentTeam' => $team
         ]);
     }
 
     /**
      * @Route("/client-requests/show", name="client_requests_show")
      */
-    public function showClientRequests(SecurityService $securityService, Request $request)
+    public function showClientRequests(SecurityService $securityService, Request $request, CurrentTeamService $currentTeamService)
     {
 
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
@@ -65,12 +66,12 @@ class ClientRequestController extends AbstractController
     /**
      * @Route("/client-requests/comment", name="client_request_comment")
      */
-    public function clientRequestComment(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService)
+    public function clientRequestComment(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService, CurrentTeamService $currentTeamService)
     {
         $data = $request->get('client_reques_comment');
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('clientRequest'));
 
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
             return $this->redirectToRoute('client_requests');
         }
@@ -134,10 +135,10 @@ class ClientRequestController extends AbstractController
     /**
      * @Route("/client-requests/internalNote", name="client_requests_internal_note")
      */
-    public function internalNoteClientRequests(SecurityService $securityService, Request $request, ValidatorInterface $validator)
+    public function internalNoteClientRequests(SecurityService $securityService, Request $request, ValidatorInterface $validator, CurrentTeamService $currentTeamService)
     {
 
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {

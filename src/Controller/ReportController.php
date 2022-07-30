@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Report;
 use App\Form\Type\ReportType;
+use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\ReportService;
 use App\Service\SecurityService;
@@ -17,9 +18,9 @@ class ReportController extends AbstractController
     /**
      * @Route("/report", name="report")
      */
-    public function index(SecurityService $securityService)
+    public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $report = $this->getDoctrine()->getRepository(Report::class)->findActivByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {
@@ -28,15 +29,16 @@ class ReportController extends AbstractController
 
         return $this->render('report/index.html.twig', [
             'report' => $report,
+            'currentTeam' => $team,
         ]);
     }
 
     /**
      * @Route("/report/new", name="report_new")
      */
-    public function addReport(ValidatorInterface $validator, Request $request, SecurityService $securityService, ReportService $reportService)
+    public function addReport(ValidatorInterface $validator, Request $request, SecurityService $securityService, ReportService $reportService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('report');
         }
@@ -69,9 +71,9 @@ class ReportController extends AbstractController
     /**
      * @Route("/report/edit", name="report_edit")
      */
-    public function editReport(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function editReport(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $report = $this->getDoctrine()->getRepository(Report::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) === false) {
@@ -106,9 +108,9 @@ class ReportController extends AbstractController
     /**
      * @Route("/report/invoice", name="report_invoice")
      */
-    public function invoiceReport(Request $request, SecurityService $securityService, DisableService $disableService)
+    public function invoiceReport(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $report = $this->getDoctrine()->getRepository(Report::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) === true) {

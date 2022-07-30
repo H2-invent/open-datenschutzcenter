@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Policies;
 use App\Service\ApproveService;
 use App\Service\AssignService;
+use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\PoliciesService;
 use App\Service\SecurityService;
@@ -23,9 +24,9 @@ class PoliciesController extends AbstractController
     /**
      * @Route("/policies", name="policies")
      */
-    public function index(SecurityService $securityService)
+    public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -33,16 +34,16 @@ class PoliciesController extends AbstractController
 
         return $this->render('policies/index.html.twig', [
             'data' => $polcies,
-
+            'currentTeam' => $team,
         ]);
     }
 
     /**
      * @Route("/policy/new", name="policy_new")
      */
-    public function addPolicy(ValidatorInterface $validator, Request $request, PoliciesService $policiesService, SecurityService $securityService)
+    public function addPolicy(ValidatorInterface $validator, Request $request, PoliciesService $policiesService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('policies');
@@ -80,9 +81,9 @@ class PoliciesController extends AbstractController
     /**
      * @Route("/policy/edit", name="policy_edit")
      */
-    public function editPolicy(ValidatorInterface $validator, Request $request, PoliciesService $policiesService, SecurityService $securityService, AssignService $assignService)
+    public function editPolicy(ValidatorInterface $validator, Request $request, PoliciesService $policiesService, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($policy, $team) === false) {
@@ -154,12 +155,12 @@ class PoliciesController extends AbstractController
      * @Route("/policy/download/{id}", name="policy_download_file", methods={"GET"})
      * @ParamConverter("policies", options={"mapping"={"id"="id"}})
      */
-    public function downloadArticleReference(FilesystemInterface $policiesFileSystem, Policies $policies, SecurityService $securityService, LoggerInterface $logger)
+    public function downloadArticleReference(FilesystemInterface $policiesFileSystem, Policies $policies, SecurityService $securityService, LoggerInterface $logger, CurrentTeamService $currentTeamService)
     {
 
         $stream = $policiesFileSystem->read($policies->getUpload());
 
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamDataCheck($policies, $team) === false) {
             $message = ['typ' => 'DOWNLOAD', 'error' => true, 'hinweis' => 'Fehlerhafter download. User nicht berechtigt!', 'dokument' => $policies->getUpload(), 'user' => $this->getUser()->getUsername()];
             $logger->error($message['typ'], $message);

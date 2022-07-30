@@ -14,6 +14,7 @@ use App\Entity\AuditTomStatus;
 use App\Entity\AuditTomZiele;
 use App\Form\Type\AuditTomType;
 use App\Service\AssignService;
+use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,9 +26,9 @@ class AuditTomController extends AbstractController
     /**
      * @Route("/audit-tom", name="audit_tom")
      */
-    public function index(SecurityService $securityService)
+    public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {
@@ -36,15 +37,16 @@ class AuditTomController extends AbstractController
 
         return $this->render('audit_tom/index.html.twig', [
             'audit' => $audit,
+            'currentTeam' => $team,
         ]);
     }
 
     /**
      * @Route("/audit-tom/new", name="audit_tom_new")
      */
-    public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('audit_tom');
@@ -88,9 +90,9 @@ class AuditTomController extends AbstractController
     /**
      * @Route("/audit-tom/edit", name="audit_tom_edit")
      */
-    public function EditAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, AssignService $assignService)
+    public function EditAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->find($request->get('tom'));
 
         if ($securityService->teamDataCheck($audit, $team) === false) {
@@ -103,7 +105,7 @@ class AuditTomController extends AbstractController
         $ziele = $this->getDoctrine()->getRepository(AuditTomZiele::class)->findByTeam($team);
 
 
-        $allAudits = array_reverse($this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($this->getUser()->getTeams()->get(0)));
+        $allAudits = array_reverse($this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team));
 
         $mykey = 0;
         foreach ($allAudits as $key=>$item) {
@@ -160,9 +162,9 @@ class AuditTomController extends AbstractController
     /**
      * @Route("/audit-tom/clone", name="audit_tom_clone")
      */
-    public function CloneAuditTom(Request $request, SecurityService $securityService)
+    public function CloneAuditTom(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('audit_tom');
         }

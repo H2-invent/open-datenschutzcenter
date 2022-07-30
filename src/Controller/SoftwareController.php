@@ -6,6 +6,7 @@ use App\Entity\Software;
 use App\Entity\SoftwareConfig;
 use App\Service\ApproveService;
 use App\Service\AssignService;
+use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use App\Service\SoftwareService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -20,10 +21,10 @@ class SoftwareController extends AbstractController
     /**
      * @Route("/software", name="software")
      */
-    public function index(SecurityService $securityService, Request $request)
+    public function index(SecurityService $securityService, Request $request, CurrentTeamService $currentTeamService)
     {
         //Request: snack: Snack Notice
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -33,16 +34,16 @@ class SoftwareController extends AbstractController
             'data' => $software,
             'today' => new \DateTime(),
             'snack' => $request->get('snack'),
-
+            'currentTeam' => $team,
         ]);
     }
 
     /**
      * @Route("/software/new", name="software_new")
      */
-    public function addSoftware(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService)
+    public function addSoftware(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('software');
@@ -78,10 +79,10 @@ class SoftwareController extends AbstractController
     /**
      * @Route("/software/edit", name="software_edit")
      */
-    public function editSoftware(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService, AssignService $assignService)
+    public function editSoftware(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
         //Request: id: SoftwareID, snack:Snack Notice
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $software = $this->getDoctrine()->getRepository(Software::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) === false) {
@@ -128,10 +129,10 @@ class SoftwareController extends AbstractController
     /**
      * @Route("/software/config", name="software_config_new")
      */
-    public function addConfig(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService)
+    public function addConfig(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         //Requests: id: SoftwareID, config: ConfigID
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $software = $this->getDoctrine()->getRepository(Software::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) === false) {
@@ -179,7 +180,7 @@ class SoftwareController extends AbstractController
     /**
      * @Route("/software/config/delete", name="software_config_delete")
      */
-    public function deleteConfig(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService)
+    public function deleteConfig(Request $request, SecurityService $securityService)
     {
         // Request: config: ConfigID
         $team = $this->getUser()->getAdminUser();
@@ -227,9 +228,9 @@ class SoftwareController extends AbstractController
      * @Route("/software/config/download/{id}", name="software_config_download_file", methods={"GET"})
      * @ParamConverter("softwareConfig", options={"mapping"={"id"="id"}})
      */
-    public function downloadArticleReference(SoftwareConfig $softwareConfig, SecurityService $securityService)
+    public function downloadArticleReference(SoftwareConfig $softwareConfig, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $path = $this->getParameter('kernel.project_dir') . "/data/software/" . $softwareConfig->getUpload();
 
         if ($securityService->teamDataCheck($softwareConfig->getSoftware(), $team) === false) {

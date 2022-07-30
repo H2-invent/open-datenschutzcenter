@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Forms;
 use App\Service\ApproveService;
 use App\Service\AssignService;
+use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\FormsService;
 use App\Service\SecurityService;
@@ -23,9 +24,9 @@ class FormsController extends AbstractController
     /**
      * @Route("/forms", name="forms")
      */
-    public function indexForms(SecurityService $securityService)
+    public function indexForms(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -34,15 +35,16 @@ class FormsController extends AbstractController
         return $this->render('forms/index.html.twig', [
             'table' => $daten,
             'titel' => 'Formulare',
+            'currentTeam' => $team,
         ]);
     }
 
     /**
      * @Route("/forms/new", name="forms_new")
      */
-    public function addForms(ValidatorInterface $validator, Request $request, FormsService $formsService, SecurityService $securityService)
+    public function addForms(ValidatorInterface $validator, Request $request, FormsService $formsService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -76,9 +78,9 @@ class FormsController extends AbstractController
     /**
      * @Route("/forms/edit", name="forms_edit")
      */
-    public function EditFormulare(ValidatorInterface $validator, Request $request, SecurityService $securityService, FormsService $formsService, AssignService $assignService)
+    public function EditFormulare(ValidatorInterface $validator, Request $request, SecurityService $securityService, FormsService $formsService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $forms = $this->getDoctrine()->getRepository(Forms::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($forms, $team) === false) {
@@ -155,12 +157,12 @@ class FormsController extends AbstractController
      * @Route("/forms/download/{id}", name="forms_download_file", methods={"GET"})
      * @ParamConverter("forms", options={"mapping"={"id"="id"}})
      */
-    public function downloadArticleReference(FilesystemInterface $formsFileSystem, Forms $forms, SecurityService $securityService, LoggerInterface $logger)
+    public function downloadArticleReference(FilesystemInterface $formsFileSystem, Forms $forms, SecurityService $securityService, LoggerInterface $logger, CurrentTeamService $currentTeamService)
     {
 
         $stream = $formsFileSystem->read($forms->getUpload());
 
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamDataCheck($forms, $team) === false) {
             $message = ['typ' => 'DOWNLOAD', 'error' => true, 'hinweis' => 'Fehlerhafter download. User nicht berechtigt!', 'dokument' => $forms->getUpload(), 'user' => $this->getUser()->getUsername()];
             $logger->error($message['typ'], $message);

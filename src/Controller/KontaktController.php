@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Kontakte;
 use App\Form\Type\KontaktType;
 use App\Service\ApproveService;
+use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,9 +24,9 @@ class KontaktController extends AbstractController
     /**
      * @Route("/kontakt", name="kontakt")
      */
-    public function index(SecurityService $securityService)
+    public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -34,16 +35,17 @@ class KontaktController extends AbstractController
 
         return $this->render('kontakt/index.html.twig', [
             'kontakte' => $kontakte,
-            'title' => 'Kontakte'
+            'title' => 'Kontakte',
+            'currentTeam' => $team,
         ]);
     }
 
     /**
      * @Route("/kontakt/neu", name="kontakt_new")
      */
-    public function addKontakt(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function addKontakt(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }

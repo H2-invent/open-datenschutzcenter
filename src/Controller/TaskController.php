@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Form\Type\TasksType;
 use App\Service\AssignService;
+use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
 use App\Service\TaskService;
@@ -18,9 +19,9 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks", name="tasks")
      */
-    public function index(SecurityService $securityService, Request $request)
+    public function index(SecurityService $securityService, Request $request, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($request->get('all')) {
             $tasks = $this->getDoctrine()->getRepository(Task::class)->findActivByTeam($team);
             $all = true;
@@ -36,16 +37,17 @@ class TaskController extends AbstractController
 
         return $this->render('task/index.html.twig', [
             'task' => $tasks,
-            'all' => $all
+            'all' => $all,
+            'currentTeam' => $team,
         ]);
     }
 
     /**
      * @Route("/task/new", name="task_new")
      */
-    public function addTask(ValidatorInterface $validator, Request $request, SecurityService $securityService, TaskService $taskService)
+    public function addTask(ValidatorInterface $validator, Request $request, SecurityService $securityService, TaskService $taskService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('tasks');
         }
@@ -78,9 +80,9 @@ class TaskController extends AbstractController
     /**
      * @Route("/task/edit", name="task_edit")
      */
-    public function EditTask(ValidatorInterface $validator, Request $request, SecurityService $securityService, AssignService $assignService)
+    public function EditTask(ValidatorInterface $validator, Request $request, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeams()->get(0);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $task = $this->getDoctrine()->getRepository(Task::class)->find($request->get('id'));
 
         if ($securityService->teamDataCheck($task, $team) === false) {
@@ -118,7 +120,7 @@ class TaskController extends AbstractController
     /**
      * @Route("/task/done", name="task_done")
      */
-    public function done(Request $request, SecurityService $securityService, DisableService $disableService)
+    public function done(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
         $task = $this->getDoctrine()->getRepository(Task::class)->find($request->get('id'));
@@ -139,7 +141,7 @@ class TaskController extends AbstractController
     /**
      * @Route("/task/disable", name="task_disable")
      */
-    public function disable(Request $request, SecurityService $securityService, DisableService $disableService)
+    public function disable(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAdminUser();
         $task = $this->getDoctrine()->getRepository(Task::class)->find($request->get('id'));

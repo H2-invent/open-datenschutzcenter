@@ -27,6 +27,7 @@ use App\Entity\VVT;
 use App\Entity\Loeschkonzept;
 use App\Entity\VVTDatenkategorie;
 use App\Form\Type\ReportExportType;
+use App\Service\CurrentTeamService;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
@@ -41,26 +42,31 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht", name="bericht")
      */
-    public function bericht(Request $request)
+    public function bericht(Request $request, CurrentTeamService $currentTeamService)
     {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+
         // Center Team authentication
-        if ($this->getUser()->getTeam() === null) {
+        if (!$team) {
             return $this->redirectToRoute('dashboard');
         }
 
-        return $this->render('bericht/index.html.twig', ['snack' => $request->get('snack')]);
+        return $this->render('bericht/index.html.twig', [
+            'snack' => $request->get('snack'),
+            'currentTeam' => $team,
+        ]);
     }
 
     /**
      * @Route("/bericht/vvt", name="bericht_vvt")
      */
-    public function berichtVvt(DompdfWrapper $wrapper, Request $request)
+    public function berichtVvt(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
         ini_set('max_execution_time', '900');
         ini_set('memory_limit', '512M');
 
         $req = $request->get('id');
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $doc = 'Verzeichnis der Verarbeitungstätigkeiten';
 
         if ($req) {

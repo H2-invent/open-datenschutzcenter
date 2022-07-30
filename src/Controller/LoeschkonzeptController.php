@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Loeschkonzept;
 use App\Form\Type\LoeschkonzeptType;
 use App\Service\ApproveService;
+use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
 use App\Service\LoeschkonzeptService;
@@ -32,14 +33,14 @@ class LoeschkonzeptController extends AbstractController
     /**
      * @Route("/", name="app_loeschkonzept_index", methods={"GET"})
      */
-    public function index(VVTDatenkategorieRepository $vvtDatenkategorieRepository, LoeschkonzeptRepository $loeschkonzeptRepository, SecurityService $securityService): Response
+    public function index(VVTDatenkategorieRepository $vvtDatenkategorieRepository, LoeschkonzeptRepository $loeschkonzeptRepository, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $loeschkonzepte = $this->getDoctrine()->getRepository(Loeschkonzept::class)->findByTeam($team);
+        $loeschkonzepte = $loeschkonzeptRepository->findByTeam($team);
 
         # remove all kategories from loeschkonzepte
         foreach ($loeschkonzepte as $loeschkonzept) {
@@ -60,16 +61,17 @@ class LoeschkonzeptController extends AbstractController
         
         return $this->render('loeschkonzept/index.html.twig', [
             'loeschkonzepte' => $loeschkonzepte,
+            'currentTeam' => $team,
         ]);
     }
 
     /**
      * @Route("/new", name="app_loeschkonzept_new", methods={"GET", "POST"})
      */
-    public function new (Request $request, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, SecurityService $securityService, LoeschkonzeptService $loeschkonzeptService): Response
+    public function new (Request $request, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, SecurityService $securityService, LoeschkonzeptService $loeschkonzeptService, CurrentTeamService $currentTeamService): Response
     {
         $user = $this->getUser();
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($user);
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -110,9 +112,9 @@ class LoeschkonzeptController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_loeschkonzept_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Loeschkonzept $loeschkonzept, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, VVTDatenkategorieRepository $VvtDatenkategorieRepository, LoeschkonzeptService $loeschkonzeptService, SecurityService $securityService): Response
+    public function edit(Request $request, Loeschkonzept $loeschkonzept, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, VVTDatenkategorieRepository $VvtDatenkategorieRepository, LoeschkonzeptService $loeschkonzeptService, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('app_loeschkonzept_index');
         }
