@@ -19,11 +19,15 @@ final class Version20210207170739 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE vvtstatus ADD team_id INT DEFAULT NULL, ADD activ TINYINT(1) NOT NULL');
-        $this->addSql('UPDATE vvtstatus SET activ = true');
-        $this->addSql('ALTER TABLE vvtstatus ADD CONSTRAINT FK_DD6A0661296CD8AE FOREIGN KEY (team_id) REFERENCES team (id)');
-        $this->addSql('CREATE INDEX IDX_DD6A0661296CD8AE ON vvtstatus (team_id)');
+        if(!$schema->getTable('vvtstatus')->hasColumn('team_id')){
+            $this->addSql('ALTER TABLE vvtstatus ADD team_id INT DEFAULT NULL');
+            $this->addSql('ALTER TABLE vvtstatus ADD CONSTRAINT FK_DD6A0661296CD8AE FOREIGN KEY (team_id) REFERENCES team (id)');
+            $this->addSql('CREATE INDEX IDX_DD6A0661296CD8AE ON vvtstatus (team_id)');
+        }
+        if(!$schema->getTable('vvtstatus')->hasColumn('activ')){
+            $this->addSql('ALTER TABLE vvtstatus ADD activ TINYINT(1) NOT NULL');
+            $this->addSql('UPDATE vvtstatus SET activ = true');
+        }
     }
 
     public function down(Schema $schema): void
