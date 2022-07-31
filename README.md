@@ -66,7 +66,7 @@ php bin/console app:migrate:defaultTeam
 ````
 
 # Kooperation
-In Kooperation mit der Professur "Datenschutz und Compliance" des Forschungsinstituts Cyber Defence (CODE) der Bundeswehr Unvisersität in München wurde das Open Datenschutzcenter im Rahmen der Masterarbeit von Herrn Juister um die Funktion zum Dokumentieren von Löschkonzepten ergänzt.
+In Kooperation mit der Professur "Datenschutz und Compliance" des Forschungsinstituts Cyber Defence (CODE) der Bundeswehr Universität in München wurde das Open Datenschutzcenter im Rahmen der Masterarbeit von Herrn Juister um die Funktion zum Dokumentieren von Löschkonzepten ergänzt.
 
 # Lizenz
 Die aktuelle Version von Open Datenschutzcenter wird unter der AGPL-3.0 License bereitgestellt. Weitere Informationen finden Sie in der LICENSE Datei in diesem Repo.
