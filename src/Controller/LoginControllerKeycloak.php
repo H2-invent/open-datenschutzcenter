@@ -18,9 +18,6 @@ class LoginControllerKeycloak extends AbstractController
       return $clientRegistry->getClient('keycloak_main')->redirect(['email']);
     }
 
-    /**
-     * @Route("/login/keycloak_login/check", name="connect_keycloak_check")
-     */
     public function check(ClientRegistry $clientRegistry, Request $request)
     {
 
