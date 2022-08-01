@@ -104,12 +104,12 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/audit", name="bericht_audit")
      */
-    public function berichtAudit(DompdfWrapper $wrapper, Request $request)
+    public function berichtAudit(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
         $req = $request->get('id');
 
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($req) {
             $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findBy(array('id' => $req));
@@ -134,7 +134,7 @@ class BerichtController extends AbstractController
         $html = $this->renderView('bericht/audit.html.twig', [
             'daten' => $audit,
             'titel' => 'Bericht zu Auditfragen',
-            'team' => $this->getUser()->getTeam(),
+            'team' => $team,
             'all' => $request->get('all'),
         ]);
 
@@ -146,11 +146,11 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/tom", name="bericht_tom")
      */
-    public function berichtTom(DompdfWrapper $wrapper, Request $request)
+    public function berichtTom(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
         $req = $request->get('id');
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($req) {
             $tom = $this->getDoctrine()->getRepository(Tom::class)->findBy(array('id' => $req));
@@ -182,10 +182,10 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/global_tom", name="bericht_global_tom")
      */
-    public function berichtGlobalTom(DompdfWrapper $wrapper)
+    public function berichtGlobalTom(DompdfWrapper $wrapper, CurrentTeamService $currentTeamService)
     {
 
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
 
@@ -213,12 +213,12 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/weitergabe", name="bericht_weitergabe")
      */
-    public function berichtWeitergabe(DompdfWrapper $wrapper, Request $request)
+    public function berichtWeitergabe(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
         $req = $request->get('id');
 
-        $team = $this->getUser()->getTeam();
+        $team =  $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($req) {
             $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('id' => $req));
@@ -239,7 +239,7 @@ class BerichtController extends AbstractController
         $html = $this->renderView('bericht/daten.html.twig', [
             'daten' => $daten,
             'titel' => 'Bericht zur Datenweitergabe',
-            'team' => $this->getUser()->getTeam(),
+            'team' => $team,
             'all' => $request->get('all'),
         ]);
 
@@ -271,12 +271,12 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/vorfall", name="bericht_vorfall")
      */
-    public function berichtVorfall(DompdfWrapper $wrapper, Request $request)
+    public function berichtVorfall(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
         $req = $request->get('id');
 
-        $team = $this->getUser()->getTeam();
+        $team =  $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($req) {
             $daten = $this->getDoctrine()->getRepository(Vorfall::class)->findBy(array('id' => $req));
@@ -297,7 +297,7 @@ class BerichtController extends AbstractController
         $html = $this->renderView('bericht/vorfall.html.twig', [
             'daten' => $daten,
             'titel' => 'Bericht zu Datenvorfall',
-            'team' => $this->getUser()->getTeam(),
+            'team' => $team,
             'all' => $request->get('all'),
         ]);
 
@@ -309,12 +309,12 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/policy", name="bericht_policy")
      */
-    public function berichtPolicy(DompdfWrapper $wrapper, Request $request)
+    public function berichtPolicy(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
         $req = $request->get('id');
 
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($req) {
             $policies = $this->getDoctrine()->getRepository(Policies::class)->findBy(array('id' => $req));
@@ -335,7 +335,7 @@ class BerichtController extends AbstractController
         $html = $this->renderView('bericht/policy.html.twig', [
             'daten' => $policies,
             'titel' => 'Bericht zu Datenschutzrichtlinien',
-            'team' => $this->getUser()->getTeam(),
+            'team' => $team,
             'all' => $request->get('all'),
         ]);
 
@@ -347,12 +347,12 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/software", name="bericht_software")
      */
-    public function berichtSoftware(DompdfWrapper $wrapper, Request $request)
+    public function berichtSoftware(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
         $req = $request->get('id');
 
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($req) {
             $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('id' => $req));
@@ -372,7 +372,7 @@ class BerichtController extends AbstractController
         $html = $this->renderView('bericht/software.html.twig', [
             'daten' => $software,
             'titel' => 'Bericht zu verwendeter Software und Konfiguration',
-            'team' => $this->getUser()->getTeam(),
+            'team' => $team,
             'all' => $request->get('all'),
         ]);
 
@@ -384,10 +384,10 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/backupconcept", name="bericht_backupconcept")
      */
-    public function backupSoftware(DompdfWrapper $wrapper, Request $request)
+    public function backupSoftware(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($team);
@@ -406,7 +406,7 @@ class BerichtController extends AbstractController
             'daten' => $software,
             'vvt' => $vvt,
             'titel' => 'Archivierungskonzept',
-            'team' => $this->getUser()->getTeam(),
+            'team' => $team,
             'all' => $request->get('all'),
         ]);
 
@@ -418,10 +418,10 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/revoceryconcept", name="bericht_recoveryconcept")
      */
-    public function recoverySoftware(DompdfWrapper $wrapper, Request $request)
+    public function recoverySoftware(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
 
         if (count($software) < 1) {
@@ -437,7 +437,7 @@ class BerichtController extends AbstractController
         $html = $this->renderView('bericht/recovery.html.twig', [
             'daten' => $software,
             'titel' => 'Recoverykonzept und Widerherstellungskonzept',
-            'team' => $this->getUser()->getTeam(),
+            'team' => $team,
             'all' => $request->get('all'),
         ]);
 
@@ -449,11 +449,11 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/request", name="bericht_request")
      */
-    public function berichtRequest(DompdfWrapper $wrapper, Request $request)
+    public function berichtRequest(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
         $req = $request->get('id');
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($req) {
             $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findBy(array('id' => $req));
@@ -476,7 +476,7 @@ class BerichtController extends AbstractController
         $html = $this->renderView('bericht/request.html.twig', [
             'daten' => $clientRequest,
             'titel' => $title,
-            'team' => $this->getUser()->getTeam(),
+            'team' => $team,
             'all' => $request->get('all'),
         ]);
 
@@ -489,9 +489,9 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/reports", name="bericht_reports")
      */
-    public function berichtReports(Request $request)
+    public function berichtReports(Request $request, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $users = $team->getMembers();
 
         $members = array();
@@ -609,13 +609,12 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/loeschkonzept", name="bericht_loeschkonzept")
      */
-    public function berichtLoeschkonzept(DompdfWrapper $wrapper, Request $request)
+    public function berichtLoeschkonzept(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
         ini_set('max_execution_time', '900');
         ini_set('memory_limit', '512M');
 
-        $req = $request->get('id');
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $doc = 'Löschkonzepte';
 
 
@@ -648,9 +647,9 @@ class BerichtController extends AbstractController
     /**
      * @Route("/bericht/reports/generate", name="bericht_reports_generate")
      */
-    public function berichtGernateReports(Request $request)
+    public function berichtGernateReports(Request $request, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         $data = $request->get('report_export');
         $qb = $this->getDoctrine()->getRepository(Report::class)->createQueryBuilder('s');
