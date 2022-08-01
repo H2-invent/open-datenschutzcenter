@@ -36,7 +36,7 @@ class Team
     private $name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $displayName;
 
@@ -322,7 +322,7 @@ class Team
         return $this->displayName ? : $this->name;
     }
 
-    public function setDisplayName(string $displayName): self
+    public function setDisplayName(?string $displayName): self
     {
         $this->displayName = $displayName;
 

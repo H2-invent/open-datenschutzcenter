@@ -31,7 +31,7 @@
 </style>
 <body>
 <header>
-    {% if daten[0].nummer is defined %}{{ daten[0].nummer }} - {% endif %}{{ team.name }}
+    {% if daten[0].nummer is defined %}{{ daten[0].nummer }} - {% endif %}{{ team.displayName }}
 </header>
 
 <main>
@@ -39,7 +39,7 @@
         <h1 style="margin-top: 200px">{{ titel }}</h1>
         <h3 style="margin-top: 50px">Verantwortliche Stelle:</h3>
         <h4>
-            {{ team.name }}<br>
+            {{ team.displayName }}<br>
             {{ team.strasse }}<br>
             {{ team. plz }} {{ team.stadt }}
         </h4>

@@ -2,14 +2,14 @@
     {% if app.user.teams|length > 1 and currentTeam is defined %}
         <li class="nav-item dropdown team-select mr-2">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ currentTeam.displayName ? currentTeam.displayName : currentTeam.name }}
+                {{ currentTeam.displayName }}
             </a>
             <div class="dropdown-menu p-0" aria-labelledby="navbarDropdownMenuLink">
                 {% for team in app.user.teams %}
                     {% if currentTeam == team %}
-                        <a class="dropdown-item" disabled>{{ team.displayName ? team.displayName : team.name }}</a>
+                        <a class="dropdown-item" disabled>{{ team.displayName }}</a>
                     {% else %}
-                        <a class="dropdown-item" href="{{ path('team_switch',{'team':team}) }}">{{ team.displayName ? team.displayName : team.name }}</a>
+                        <a class="dropdown-item" href="{{ path('team_switch',{'team':team}) }}">{{ team.displayName }}</a>
                     {% endif %}
                 {% endfor %}
             </div>

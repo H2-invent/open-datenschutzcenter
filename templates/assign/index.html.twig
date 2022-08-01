@@ -68,7 +68,7 @@
                                     <img style="width: 21px" src="{{ asset('images/task.png') }}">
                                 </div>
                                 <div class="col-xl-6 col-md-7">
-                                    {{ a.team.name }}: {{ a.title }}
+                                    {{ a.team.displayName }}: {{ a.title }}
                                 </div>
                                 <div class="col-xl-3 col-md-5">
                                     {{ a.createdAt|date('d.m.Y') }}
@@ -88,7 +88,7 @@
                                         <img style="width: 30px" src="{{ asset('images/pruefung.png') }}">
                                     </div>
                                     <div class="col-md-7">
-                                        {{ a.team.name }}: {{ a.frage }}
+                                        {{ a.team.displayName }}: {{ a.frage }}
                                     </div>
                                     <div class="col-md-4">
                                         {{ a.status.name }}
@@ -109,7 +109,7 @@
                                         <img style="width: 30px" src="{{ asset('images/prozess.png') }}">
                                     </div>
                                     <div class="col-md-7">
-                                        {{ a.team.name }}: {{ a.name }}
+                                        {{ a.team.displayName }}: {{ a.name }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.status.name }}
@@ -133,7 +133,7 @@
                                         <img style="width: 30px" src="{{ asset('images/dsta.png') }}">
                                     </div>
                                     <div class="col-md-7">
-                                        {{ a.team.name }}: {{ a.beschreibung }}
+                                        {{ a.team.displayName }}: {{ a.beschreibung }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.vvt.name }}
@@ -157,7 +157,7 @@
                                         <img style="width: 30px" src="{{ asset('images/data.png') }}">
                                     </div>
                                     <div class="col-md-9">
-                                        {{ a.team.name }}: {{ a.gegenstand }}
+                                        {{ a.team.displayName }}: {{ a.gegenstand }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.createdAt|date('d.m.Y') }}
@@ -178,7 +178,7 @@
                                         <img style="width: 30px" src="{{ asset('images/information.png') }}">
                                     </div>
                                     <div class="col-md-9">
-                                        {{ a.team.name }}: {{ a.title }}
+                                        {{ a.team.displayName }}: {{ a.title }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.createdAt|date('d.m.Y') }}
@@ -199,7 +199,7 @@
                                         <img style="width: 30px" src="{{ asset('images/contract.png') }}">
                                     </div>
                                     <div class="col-md-9">
-                                        {{ a.team.name }}: {{ a.title }}
+                                        {{ a.team.displayName }}: {{ a.title }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.createdAt|date('d.m.Y') }}
@@ -221,7 +221,7 @@
                                         <img style="width: 30px" src="{{ asset('images/monitor.png') }}">
                                     </div>
                                     <div class="col-md-5">
-                                        {{ a.team.name }}: {{ a.name }}
+                                        {{ a.team.displayName }}: {{ a.name }}
                                     </div>
                                     <div class="col-md-4">
                                         Konfigurationen: {{ a.config|length }}
