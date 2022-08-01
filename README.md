@@ -65,6 +65,9 @@ Danach werden alle Audit Ziele vom Default Team 1 auf null umgestellt.
 php bin/console app:migrate:defaultTeam
 ````
 
+# Kooperation
+In Kooperation mit der [Professur "Datenschutz und Compliance"](https://www.unibw.de/datcom) des Forschungsinstituts Cyber Defence (CODE) der [Universität der Bundeswehr München](https://www.unibw.de/home) wurde das Open Datenschutzcenter im Rahmen der Masterarbeit von Herrn Juister um die Funktion zum Dokumentieren von Löschkonzepten ergänzt.
+
 # Lizenz
 Die aktuelle Version von Open Datenschutzcenter wird unter der AGPL-3.0 License bereitgestellt. Weitere Informationen finden Sie in der LICENSE Datei in diesem Repo.
 Copyright (c) 2020 H2 invent
