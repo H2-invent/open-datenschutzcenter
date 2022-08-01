@@ -153,7 +153,7 @@ class TeamController extends AbstractController
 
         $data = $teamService->delete($request->get('type'), $request->get('id'));
 
-        if ($data->getTeam() == $this->getUser()->getTeam()) {
+        if ($this->getUser()->hasTeam($data->getTeam())) {
             $data->setActiv(false);
         }
 
@@ -220,7 +220,7 @@ class TeamController extends AbstractController
         }
 
         $abteilung = $this->getDoctrine()->getRepository(AuditTomAbteilung::class)->findOneBy(array('id' => $request->get('id')));
-        if ($abteilung->getTeam() == $this->getUser()->getTeam()) {
+        if ($this->getUser()->hasTeam($abteilung->getTeam())) {
             $abteilung->setActiv(false);
         }
 

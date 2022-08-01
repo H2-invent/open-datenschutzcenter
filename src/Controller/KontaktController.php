@@ -79,9 +79,9 @@ class KontaktController extends AbstractController
     /**
      * @Route("/kontakt/edit", name="kontakt_edit")
      */
-    public function editKontakt(ValidatorInterface $validator, Request $request, SecurityService $securityService)
+    public function editKontakt(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         $kontakt = $this->getDoctrine()->getRepository(Kontakte::class)->find($request->get('id'));
         if ($securityService->teamDataCheck($kontakt, $team) === false) {
             return $this->redirectToRoute('kurse');
