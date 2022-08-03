@@ -44,9 +44,9 @@ class TeamService
 
         $id = 1;
         $data1 = $this->em->getRepository(VVTPersonen::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Personengruppen');
-        $data[$id]['titleNew'] = $this->translator->trans('Neues Personengruppe hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Personengruppe bearbeiten');
+        $data[$id]['title'] = $this->translator->trans('groupsOfPeople');
+        $data[$id]['titleNew'] = $this->translator->trans('addGroupOfPeople');
+        $data[$id]['titleEdit'] = $this->translator->trans('editGroupOfPeople');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         $data[$id]['type'] = $id;
         foreach ($data1 as $item) {
@@ -64,9 +64,9 @@ class TeamService
 
         $id = 3;
         $data1 = $this->em->getRepository(VVTRisiken::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Risiken der Verarbeitung');
-        $data[$id]['titleNew'] = $this->translator->trans('Neues Risiko hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Risiko bearbeiten');
+        $data[$id]['title'] = $this->translator->trans('processingRisks');
+        $data[$id]['titleNew'] = $this->translator->trans('newRisk');
+        $data[$id]['titleEdit'] = $this->translator->trans('editRisk');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
             if ($item->getTeam() === $team || $item->getTeam() === null) {
@@ -83,9 +83,9 @@ class TeamService
 
         $id = 4;
         $data1 = $this->em->getRepository(VVTGrundlage::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Gesetzliche Grundlagen für die Verarbeitungen');
-        $data[$id]['titleNew'] = $this->translator->trans('Gesetzliche Grundlage hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Gesetzliche Grundlage bearbeiten');
+        $data[$id]['title'] = $this->translator->trans('legalBases');
+        $data[$id]['titleNew'] = $this->translator->trans('addLegalBasis');
+        $data[$id]['titleEdit'] = $this->translator->trans('editLegalBasis');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
             if ($item->getTeam() === $team || $item->getTeam() === null) {
@@ -102,9 +102,9 @@ class TeamService
 
         $id = 5;
         $data1 = $this->em->getRepository(Produkte::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Produkte /Projekte');
-        $data[$id]['titleNew'] = $this->translator->trans('Produkt /Projekt hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Produkt /Projekt bearbeiten');
+        $data[$id]['title'] = $this->translator->trans('products');
+        $data[$id]['titleNew'] = $this->translator->trans('addProduct');
+        $data[$id]['titleEdit'] = $this->translator->trans('editProduct');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
             if ($item->getTeam() === $team || $item->getTeam() === null) {
@@ -122,9 +122,9 @@ class TeamService
 
         $id = 6;
         $data1 = $this->em->getRepository(VVTStatus::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('VVT Status');
-        $data[$id]['titleNew'] = $this->translator->trans('VVT Status hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('VVT Status bearbeiten');
+        $data[$id]['title'] = $this->translator->trans('processingStatuses');
+        $data[$id]['titleNew'] = $this->translator->trans('addProcessingStatus');
+        $data[$id]['titleEdit'] = $this->translator->trans('editProcessingStatus');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
             if ($item->getTeam() === $team || $item->getTeam() === null) {
@@ -141,9 +141,9 @@ class TeamService
 
         $id = 11;
         $data1 = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Grundlage für Datenweitergaben');
-        $data[$id]['titleNew'] = $this->translator->trans('Grundlage hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Grundlage bearbeiten');
+        $data[$id]['title'] = $this->translator->trans('dataTransferBases');
+        $data[$id]['titleNew'] = $this->translator->trans('addDataTransferBasis');
+        $data[$id]['titleEdit'] = $this->translator->trans('editDataTransferBasis');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
             if ($item->getTeam() === $team || $item->getTeam() === null) {
@@ -160,9 +160,9 @@ class TeamService
 
         $id = 12;
         $data1 = $this->em->getRepository(DatenweitergabeStand::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Stände in Datenweitergaben');
-        $data[$id]['titleNew'] = $this->translator->trans('Stand hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Stand bearbeiten');
+        $data[$id]['title'] = $this->translator->trans('dataTransferStatuses');
+        $data[$id]['titleNew'] = $this->translator->trans('addDataTransferStatus');
+        $data[$id]['titleEdit'] = $this->translator->trans('editDataTransferStatus');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
             if ($item->getTeam() === $team || $item->getTeam() === null) {
@@ -180,9 +180,9 @@ class TeamService
 
         $id = 21;
         $data1 = $this->em->getRepository(AuditTomZiele::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Schutzziele für Audits');
-        $data[$id]['titleNew'] = $this->translator->trans('Schutzziel hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Schutzziel bearbeiten');
+        $data[$id]['title'] = $this->translator->trans('auditGoals');
+        $data[$id]['titleNew'] = $this->translator->trans('addAuditGoal');
+        $data[$id]['titleEdit'] = $this->translator->trans('editAuditGoal');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
             if ($item->getTeam() === $team || $item->getTeam() === null) {

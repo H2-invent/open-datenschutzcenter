@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block CTA %}
+    <h4 class="h4-responsive ml-4 mb-0 d-none d-md-block">
+        {{ 'adminArea'|trans }}
+        {% if currentTeam is defined %}{{ currentTeam.displayName }}{% endif %}
+    </h4>
+{% endblock %}
+
 {% block title %}{{ title }}{% endblock %}
 {% block body %}
     <div class="container">

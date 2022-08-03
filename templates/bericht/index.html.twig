@@ -106,7 +106,7 @@
                 </a>
             </div>
 
-            {% if app.user.adminUser %}
+            {% if currentTeam in app.user.adminRoles %}
                 <div class="col-lg-3 mt-2">
                     <h4>Akademie</h4>
                     <a class="btn btn-block bg-akademie mb-1" href="{{ path('bericht_akademie') }}">

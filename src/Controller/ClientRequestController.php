@@ -84,52 +84,60 @@ class ClientRequestController extends AbstractController
     /**
      * @Route("/client-requests/userValidate", name="client_valid_user")
      */
-    public function validateUserRequest(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService)
+    public function validateUserRequest(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService, CurrentTeamService $currentTeamService)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
 
-        $team = $this->getUser()->getAdminUser();
-        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
-            return $this->redirectToRoute('client_requests');
+        if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
+            $clientRequestService->userValid($clientRequest, $user);
+            return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
         }
 
-        $clientRequestService->userValid($clientRequest, $this->getUser());
-        return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
+        // if security check fails
+        return $this->redirectToRoute('client_requests');
     }
 
     /**
      * @Route("/client-requests/close", name="client_request_close")
      */
-    public function closeRequest(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService)
+    public function closeRequest(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService, CurrentTeamService $currentTeamService)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
 
-        $team = $this->getUser()->getAdminUser();
-        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
-            return $this->redirectToRoute('client_requests');
+        if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
+            $clientRequestService->closeRequest($clientRequest, $this->getUser());
+
+            return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
         }
-        $clientRequestService->closeRequest($clientRequest, $this->getUser());
 
-        return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
+        // if security check fails
+        return $this->redirectToRoute('client_requests');
     }
 
     /**
      * @Route("/client-requests/internal", name="client_request_make_internal")
      */
-    public function makeInternalRequest(TranslatorInterface $translator, SecurityService $securityService, Request $request, ClientRequestService $clientRequestService)
+    public function makeInternalRequest(TranslatorInterface $translator, SecurityService $securityService, Request $request, ClientRequestService $clientRequestService, CurrentTeamService $currentTeamService)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
 
-        $team = $this->getUser()->getAdminUser();
-        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
-            return $this->redirectToRoute('client_requests');
+        if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
+            if ($clientRequestService->interalRequest($clientRequest)) {
+                $snack = $translator->trans('Änderung gespeichert.');
+            } else {
+                $snack = $translator->trans('Fehler. Bitte noch einmal versuchen');
+            }
+            return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => $snack]);
         }
-        if ($clientRequestService->interalRequest($clientRequest)) {
-            $snack = $translator->trans('Änderung gespeichert.');
-        } else {
-            $snack = $translator->trans('Fehler. Bitte noch einmal versuchen');
-        }
-        return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => $snack]);
+
+        // if security check fails
+        return $this->redirectToRoute('client_requests');
     }
 
     /**
@@ -166,39 +174,42 @@ class ClientRequestController extends AbstractController
     /**
      * @Route("/client-requests/edit", name="client_requests_edit")
      */
-    public function editClientRequests(SecurityService $securityService, Request $request, ValidatorInterface $validator, ClientRequestService $clientRequestService, TranslatorInterface $translator)
+    public function editClientRequests(SecurityService $securityService, Request $request, ValidatorInterface $validator, ClientRequestService $clientRequestService, TranslatorInterface $translator, CurrentTeamService $currentTeamService)
     {
-
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
-        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
-            return $this->redirectToRoute('client_requests');
-        }
-        $content = 'Anfrage wurde geändert || Alte Nachricht: ' . $clientRequest->getTitle() . '| Email: ' . $clientRequest->getEmail() . '| Name: ' . $clientRequest->getName() . '| Grund: ' . $clientRequest->getItemString() . '| Beschreibung: ' . $clientRequest->getDescription() . '| Zusätzliche Angaben: ' . $clientRequest->getFirstname() . ' ' . $clientRequest->getLastname() . ', Geburtstag: ' . $clientRequest->getBirthday()->format('d.m.Y') . ', Adresse: ' . $clientRequest->getStreet() . ' ' . $clientRequest->getCity();
 
-        $form = $this->createForm(ClientRequestType::class, $clientRequest);
-        $form->remove('password');
-        $form->handleRequest($request);
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $clientRequest = $form->getData();
-            $errors = $validator->validate($clientRequest);
-            if (count($errors) == 0) {
-                $em->persist($clientRequest);
-                $em->flush();
+        if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
+            $content = 'Anfrage wurde geändert || Alte Nachricht: ' . $clientRequest->getTitle() . '| Email: ' . $clientRequest->getEmail() . '| Name: ' . $clientRequest->getName() . '| Grund: ' . $clientRequest->getItemString() . '| Beschreibung: ' . $clientRequest->getDescription() . '| Zusätzliche Angaben: ' . $clientRequest->getFirstname() . ' ' . $clientRequest->getLastname() . ', Geburtstag: ' . $clientRequest->getBirthday()->format('d.m.Y') . ', Adresse: ' . $clientRequest->getStreet() . ' ' . $clientRequest->getCity();
 
-                $clientRequestService->newComment($clientRequest, $content, $team->getDisplayName() . ' > ' . $this->getUser()->getUsername(), 1);
+            $form = $this->createForm(ClientRequestType::class, $clientRequest);
+            $form->remove('password');
+            $form->handleRequest($request);
+            $errors = array();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $clientRequest = $form->getData();
+                $errors = $validator->validate($clientRequest);
+                if (count($errors) == 0) {
+                    $em->persist($clientRequest);
+                    $em->flush();
 
-                $snack = $translator->trans('Änderung gespeichert.');
-                return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => $snack]);
+                    $clientRequestService->newComment($clientRequest, $content, $team->getDisplayName() . ' > ' . $this->getUser()->getUsername(), 1);
+
+                    $snack = $translator->trans('Änderung gespeichert.');
+                    return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => $snack]);
+                }
             }
+            return $this->render('client_request/internalEdit.html.twig', [
+                'data' => $clientRequest,
+                'team' => $team,
+                'form' => $form->createView()
+            ]);
         }
-        return $this->render('client_request/internalEdit.html.twig', [
-            'data' => $clientRequest,
-            'team' => $team,
-            'form' => $form->createView()
-        ]);
+
+        // if security check fails
+        return $this->redirectToRoute('client_requests');
     }
 
 

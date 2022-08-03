@@ -121,16 +121,18 @@ class VorfallController extends AbstractController
     /**
      * @Route("/vorfall/approve", name="vorfall_approve")
      */
-    public function approve(Request $request, SecurityService $securityService, ApproveService $approveService)
+    public function approve(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $vorfall = $this->getDoctrine()->getRepository(Vorfall::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($vorfall, $team) === false) {
-            return $this->redirectToRoute('vvt');
+        if ($securityService->teamDataCheck($vorfall, $team) && $securityService->adminCheck($user, $team)) {
+            $approve = $approveService->approve($vorfall, $user);
+            return $this->redirectToRoute('vorfall_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
         }
-        $approve = $approveService->approve($vorfall, $this->getUser());
 
-        return $this->redirectToRoute('vorfall_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+        // if security check fails
+        return $this->redirectToRoute('vvt');
     }
 }

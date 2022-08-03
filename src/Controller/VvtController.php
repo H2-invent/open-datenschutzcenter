@@ -337,13 +337,14 @@ class VvtController extends AbstractController
     /**
      * @Route("/vvt/disable", name="vvt_disable")
      */
-    public function disableVvt(Request $request, SecurityService $securityService, DisableService $disableService)
+    public function disableVvt(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($vvt, $team) === true && !$vvt->getApproved()) {
-            $disableService->disable($vvt, $this->getUser());
+        if ($securityService->teamDataCheck($vvt, $team) && $securityService->adminCheck($user, $team) && !$vvt->getApproved()) {
+            $disableService->disable($vvt, $user);
         }
 
         return $this->redirectToRoute('vvt');

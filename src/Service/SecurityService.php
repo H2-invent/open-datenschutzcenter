@@ -10,6 +10,8 @@ namespace App\Service;
 
 
 use Psr\Log\LoggerInterface;
+use App\Entity\User;
+use App\Entity\Team;
 
 class SecurityService
 {
@@ -62,25 +64,27 @@ class SecurityService
     {
         //Sicherheitsfunktion, dass ein Team vorhanden ist
         if ($team === null) {
-            $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer keinem Team zugewiesen'];
+            $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer*in ist keinem Team zugewiesen'];
             $this->logger->error($message['typ'], $message);
             return false;
         }
         return true;
     }
 
-    function adminCheck($user, $team)
+    function adminCheck(User $user, Team $team)
     {
         if (!$this->teamCheck($team)) {
             return false;
         }
 
-        //Sicherheitsfunktion, dass Admin Team zu Team passt
-        if (!$user->hasTeam($user->getAdminUser())) {
-            $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer Admin Team passt nicht zu Team'];
-            $this->logger->error($message['typ'], $message);
-            return false;
+        // Falls Nutzer*in im Team ist UND Adminrechte für dieses Team hat
+        if ($user->hasTeam($team) && $user->hasAdminRole($team)) {
+            return true;
         }
-        return true;
+
+        // Sonst
+        $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer*in ist nicht Admin dieses Teams'];
+        $this->logger->error($message['typ'], $message);
+        return false;
     }
 }

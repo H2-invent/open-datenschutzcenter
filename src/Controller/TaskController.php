@@ -120,12 +120,13 @@ class TaskController extends AbstractController
     /**
      * @Route("/task/done", name="task_done")
      */
-    public function done(Request $request, SecurityService $securityService)
+    public function done(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $task = $this->getDoctrine()->getRepository(Task::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($task, $team) === true) {
+        if ($securityService->teamDataCheck($task, $team) && $securityService->adminCheck($user, $team)) {
             if ($task->getActiv() === 1) {
                 $task->setDone(1);
                 $task->setDoneDate(new \DateTime());
@@ -141,12 +142,13 @@ class TaskController extends AbstractController
     /**
      * @Route("/task/disable", name="task_disable")
      */
-    public function disable(Request $request, SecurityService $securityService)
+    public function disable(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $task = $this->getDoctrine()->getRepository(Task::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($task, $team) === true) {
+        if ($securityService->teamDataCheck($task, $team) && $securityService->adminCheck($user, $team)) {
             if ($task->getActiv() === 1) {
                 $task->setActiv(2);
             } else {

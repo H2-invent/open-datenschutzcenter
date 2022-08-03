@@ -18,3 +18,6 @@ externalLinkHelp: Hier können Sie eine externe Seite in den ODC einbinden, z.B.
 jitsiLink: Externer Link zur internen Jitsi Installation
 jitsiLinkHelp: Hier können Sie Ihre eigene oder eine externe Jitsi Installation in den ODC einbinden. Jitsi Meet ist eine datenschutzfreundliche Alternative für zoom und Microsoft Teams.
 save: Speichern
+
+# admin - departments
+newDepartment: Neue Abteilung hinzufügen

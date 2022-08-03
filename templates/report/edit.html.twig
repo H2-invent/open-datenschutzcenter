@@ -8,7 +8,7 @@
            class="btn btn-primary btn-sm">{% trans %}Akitivität abgerechnet{% endtrans %}</a>
     {% endif %}
 
-    {% if app.user.adminUser == report.team %}
+    {% if report.team in app.user.adminRoles %}
         <a href="{{ path('report_delete', {'id':report.id}) }}"
            class="btn btn-primary btn-sm">{% trans %}Akitivität löschen{% endtrans %}</a>
     {% endif %}

@@ -1,3 +1,8 @@
+# global
+edit: edit
+delete: delete
+
+# no team
 noTeam: No Team
 noTeamHelp: You are not a member of a team.<br>Get in touch with your administrator or the support team of H2 invent.
 profile: Profile
@@ -6,5 +11,55 @@ email: Email
 editProfile: Edit profile
 changePassword: Change password
 logout: Logout
-flowChart: Data flow diagram
+
+# dashboard
 privacycenter: Privacy Center
+flowChart: Data flow diagram
+
+# admin area
+adminArea: Admin Area
+
+# admin - members
+addUser: Add user
+remove: Remove
+removeAdmin: Remove admin
+addAdmin: Add admin
+openInvitations: Open invitations
+memberHint1: Members can be added as privacy coordinators (ordinary users) or as admins. Coordinators can create, edit, assign and export elements. Admins can add new members, approve elements and manage the academy.
+memberHint2: If user groups are managed via keycloak, members must be added or removed there. Otherwise the group membership will be overwritten the next time a user logs in.
+
+# admin - custom
+select: Select
+groupsOfPeople: Groups of People
+addGroupOfPeople: Add new group
+editGroupOfPeople: Edit group
+processingRisks: Processing risks
+newRisk: Add new risk
+editRisk: Edit risk
+legalBases: Legal Bases for Processing
+addLegalBasis: Add legal basis
+editLegalBasis: Edit legal basis
+products: Products/Projects
+addProduct: Add product/project
+editProduct: Edit product/project
+processingStatuses: Processing Statuses
+addProcessingStatus: Add status
+editProcessingStatus: Edit status
+dataTransferBases: Bases for Data Transfer
+addDataTransferBasis: Add basis
+editDataTransferBasis: Edit basis
+dataTransferStatuses: Data transfer statuses
+addDataTransferStatus: Add status
+editDataTransferStatus: Edit status
+auditGoals: Audit goals
+addAuditGoal: Add goal
+editAuditGoal: Edit goal
+default: Default
+noEntry: No entry
+
+# admin - academy
+privacyCourses: Privacy protection courses
+academyUsers: Academy users
+addAcademyUser: Add user
+confirmAction: Do you really want to execute this action?
+addCourse: Add new course

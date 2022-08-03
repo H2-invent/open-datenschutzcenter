@@ -10,11 +10,11 @@
         Letzer Login: {{ user.lastLogin|date('d.m.Y H:i') }} Uhr
     </p>
 
-    {% if user.team %}
+    {% if currentTeam is defined %}
         <p>
-            Team: {% if user.team %}{{ user.team.displayName }}{% endif %}<br>
-            Akademie: {% if user.akademieuser %}{{ user.akademieuser.name }}{% endif %}<br>
-            Team: {% if user.adminUser %}{{ user.adminUser.name }}{% endif %}
+            Team: {% if currentTeam %}{{ currentTeam.displayName }}<br>{% endif %}
+            Akademie: {% if user.akademieuser %}{{ user.akademieuser.name }}<br>{% endif %}
+            Team: {% if currentTeam in user.adminRoles %}{{ currentTeam.displayName }}{% endif %}
         </p>
     {% endif %}
 </div>

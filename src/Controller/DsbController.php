@@ -34,10 +34,11 @@ class DsbController extends AbstractController
         if (in_array($team, $this->getUser()->getTeamDsb()->toarray())) {
             $user = $this->getUser();
             $user->addTeam($team);
-            $user->setAdminUser($team);
+            $team->addAdmin($user);
             $user->setAkademieUser($team);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
+            $em->persist($team);
             $em->flush();
             return $this->redirectToRoute('dashboard', ['snack' => 'Team gewächselt']);
         }

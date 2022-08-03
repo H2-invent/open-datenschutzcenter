@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Upload;
 use App\Form\Type\UploadTyp;
+use App\Service\CurrentTeamService;
 use App\Service\ParserService;
 use App\Service\SecurityService;
 use League\Flysystem\FilesystemInterface;
@@ -16,9 +17,10 @@ class UploadController extends AbstractController
     /**
      * @Route("/upload", name="upload_new")
      */
-    public function index(Request $request, FilesystemInterface $internFileSystem, ParserService $parserService, SecurityService $securityService)
+    public function index(Request $request, FilesystemInterface $internFileSystem, ParserService $parserService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getCurrentAdminTeam($user);
         // Admin Route only
         if (!$securityService->adminCheck($this->getUser(), $team)) {
             return $this->redirectToRoute('dashboard');

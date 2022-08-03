@@ -237,47 +237,49 @@ class DatenweitergabeController extends AbstractController
     /**
      * @Route("/datenweitergabe/approve", name="datenweitergabe_approve")
      */
-    public function approveDatenweitergabe(Request $request, SecurityService $securityService, ApproveService $approveService)
+    public function approveDatenweitergabe(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($daten, $team) === false) {
-            if ($daten->getArt() === 1) {
-                return $this->redirectToRoute('datenweitergabe');
-            }
-            return $this->redirectToRoute('auftragsverarbeitung');
-        }
-        $approve = $approveService->approve($daten, $this->getUser());
+        if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team)) {
+            $approve = $approveService->approve($daten, $this->getUser());
+            if ($approve['clone'] === true) {
+                $newDaten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($approve['data']);
+                $em = $this->getDoctrine()->getManager();
 
-        if ($approve['clone'] === true) {
-            $newDaten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($approve['data']);
-            $em = $this->getDoctrine()->getManager();
-
-            foreach ($newDaten->getVerfahren() as $item) {
-                $item->addDatenweitergaben($newDaten);
-                $em->persist($item);
+                foreach ($newDaten->getVerfahren() as $item) {
+                    $item->addDatenweitergaben($newDaten);
+                    $em->persist($item);
+                }
+                foreach ($newDaten->getSoftware() as $item) {
+                    $item->addDatenweitergabe($newDaten);
+                    $em->persist($item);
+                }
+                $em->flush();
             }
-            foreach ($newDaten->getSoftware() as $item) {
-                $item->addDatenweitergabe($newDaten);
-                $em->persist($item);
-            }
-            $em->flush();
+            return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
         }
 
-        return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+        // if security check fails
+        if ($daten->getArt() === 1) {
+            return $this->redirectToRoute('datenweitergabe');
+        }
+        return $this->redirectToRoute('auftragsverarbeitung');
     }
 
     /**
      * @Route("/datenweitergabe/disable", name="datenweitergabe_disable")
      */
-    public function disableDatenweitergabe(Request $request, SecurityService $securityService, DisableService $disableService)
+    public function disableDatenweitergabe(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($daten, $team) === true && !$daten->getApproved()) {
-            $disableService->disable($daten, $this->getUser());
+        if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team) && !$daten->getApproved()) {
+            $disableService->disable($daten, $user);
         }
 
         if ($daten->getArt() === 1) {

@@ -158,29 +158,32 @@ class TomController extends AbstractController
     /**
      * @Route("/tom/approve", name="tom_approve")
      */
-    public function approve(Request $request, SecurityService $securityService, ApproveService $approveService)
+    public function approve(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $tom = $this->getDoctrine()->getRepository(Tom::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($tom, $team) === false) {
-            return $this->redirectToRoute('tom');
+        if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
+            $approve = $approveService->approve($tom, $user);
+            return $this->redirectToRoute('tom_edit', ['tom' => $approve['data'], 'snack' => $approve['snack']]);
         }
-        $approve = $approveService->approve($tom, $this->getUser());
 
-        return $this->redirectToRoute('tom_edit', ['tom' => $approve['data'], 'snack' => $approve['snack']]);
+        // if security check fails
+        return $this->redirectToRoute('tom');
     }
 
     /**
      * @Route("/tom/disable", name="tom_disable")
      */
-    public function disable(Request $request, SecurityService $securityService, DisableService $disableService)
+    public function disable(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $tom = $this->getDoctrine()->getRepository(Tom::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($tom, $team) === true) {
-            $disableService->disable($tom, $this->getUser());
+        if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
+            $disableService->disable($tom, $user);
         }
 
         return $this->redirectToRoute('tom');

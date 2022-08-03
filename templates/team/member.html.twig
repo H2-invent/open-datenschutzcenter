@@ -1,51 +1,71 @@
-{% extends 'base.html.twig' %}
+{% extends 'team/index.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
 {% block body %}
-
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
         <a href="{{ path('team_mitglieder_create', {'title':'Mitglied hinzufügen', 'type':'odc'}) }}"
-           class="btn btn-primary btn-sm loadContent">Benutzer hinzufügen</a>
-        <a href="{{ path('akademie_admin') }}#user"
-           class="btn btn-cyan btn-sm">Akademiebenutzer</a>
+           class="btn btn-primary btn-sm loadContent">{% trans %}addUser{% endtrans %}</a>
+        <a href="{{ path('akademie_admin') }}#user" class="btn btn-cyan btn-sm">{% trans %}academyUser{% endtrans %}</a>
         <div class="card card-body">
-
+            <!-- TODO: If user groups are managed via keycloak, hide functionality for adding and removing users as this will be overwritten the next time the user logs in -->
             <ul class="list-group">
-                {% for d in data.members|filter(d => d.keycloakId) %}
-                    <li class="list-group-item">{{ d.firstname }} {{ d.lastname }} ({{ d.email }})
+                {% for member in data.members|filter(member => member.keycloakId) %}
+                    <li class="list-group-item">
+                        {{ member.firstname }} {{ member.lastname }} ({{ member.email }})
                         <div class="small">
-                            {% if data in d.teamDsb %}<span
-                                    class="badge-primary p-1 mt-sm-1 rounded">Ext. DSB</span>{% endif %} {% if d.adminUser == data %}
-                                <span class="badge-success p-1 rounded">Admin</span>{% endif %} {% if d.akademieUser == data %}
-                                <span class="badge-warning p-1 rounded">Akademie</span>{% endif %} {% if d.team == data %}
-                                <span class="badge-info p-1 rounded">Koordinator</span>{% endif %}
+                            {% if data in member.teamDsb %}
+                                <span class="badge-primary p-1 mt-sm-1 rounded">Ext. DSB</span>
+                            {% endif %}
+                            {% if data in member.adminRoles %}
+                                <span class="badge-success p-1 rounded">Admin</span>
+                            {% endif %}
+                            {% if member.akademieUser == data %}
+                                <span class="badge-warning p-1 rounded">Akademie</span>
+                            {% endif %}
+                            {% if data in member.teams %}
+                                <span class="badge-info p-1 rounded">Koordinator</span>
+                            {% endif %}
                         </div>
-                        <a class="btn btn-sm btn-info float-md-right"
-                           href="{{ path('team_mitglieder_admin', {'id':d.id}) }}">{% if d.adminUser %}{% trans %}Admin entfernen{% endtrans %}{% else %}{% trans %}Admin ernennen{% endtrans %}{% endif %}</a>
+                        {% if data in member.adminRoles %}
+                            <a class="btn btn-sm btn-info float-md-right" href="{{ path('team_mitglieder_admin', {'id':member.id}) }}">
+                                {% trans %}removeAdmin{% endtrans %}
+                            </a>
+                        {% else %}
+                            <a class="btn btn-sm btn-success float-md-right" href="{{ path('team_mitglieder_admin', {'id':member.id}) }}">
+                                {% trans %}addAdmin{% endtrans %}
+                            </a>
+                        {% endif %}
                         <a class="btn btn-sm btn-danger float-md-right"
-                           href="{{ path('team_mitglieder_remove',{'id':d.id,'type':'odc'}) }}">{% trans %}Entfernen{% endtrans %}</a>
+                           href="{{ path('team_mitglieder_remove',{'id':member.id,'type':'odc'}) }}">{% trans %}remove{% endtrans %}</a>
                     </li>
                 {% endfor %}
                 </ul>
 
-                <h5 class="h5-responsive mt-3">{% trans %}Offene Einladungen{% endtrans %}</h5>
+                <h5 class="h5-responsive mt-3">{% trans %}openInvitations{% endtrans %}</h5>
             <ul class="list-group">
-                {% for d in data.members |filter(d => d.registerId) %}
-                    <li class="list-group-item">{{ d.email }}
-                        <a class="btn btn-sm btn-info float-md-right"
-                           href="{{ path('team_mitglieder_admin',{'id':d.id}) }}">{% if d.adminUser %}{% trans %}Admin entfernen{% endtrans %}{% else %}{% trans %}Admin ernennen{% endtrans %}{% endif %}</a>
+                {% for member in data.members |filter(member => member.registerId) %}
+                    <li class="list-group-item">
+                        {{ member.email }}
+                        {% if data in member.adminRoles %}
+                            <a class="btn btn-sm btn-info float-md-right" href="{{ path('team_mitglieder_admin', {'id':member.id}) }}">
+                                {% trans %}removeAdmin{% endtrans %}
+                            </a>
+                        {% else %}
+                            <a class="btn btn-sm btn-success float-md-right" href="{{ path('team_mitglieder_admin', {'id':member.id}) }}">
+                                {% trans %}addAdmin{% endtrans %}
+                            </a>
+                        {% endif %}
                         <a class="btn btn-sm btn-danger float-md-right"
-                           href="{{ path('team_mitglieder_remove',{'id':d.id}) }}">{% trans %}Einladung entfernen{% endtrans %}</a>
+                           href="{{ path('team_mitglieder_remove',{'id':member.id,'type':'odc'}) }}">{% trans %}remove{% endtrans %}</a>
                     </li>
                 {% endfor %}
             </ul>
-            <p class="note-info m-1 text-center">
-                {% trans %}Mitarbeitende können als Datenschutzkoordinatoren (Kein Admin) oder als DSB und Geschäftsführung (Admin) hinzugefügt werden. Datenschutzkoordinatoren können Elemente erstellen, bearbeiten, zuweisen und exportieren. Admins können neue Mitglieder hinzufügen, Elemente freigeben und die Akademie verwalten.{% endtrans %}
+            <p class="note-info mt-4 p-2 text-center">
+                {% trans %}memberHint1{% endtrans %}
+            </p>
+            <p class="note-info p-2 text-center">
+                {% trans %}memberHint2{% endtrans %}
             </p>
         </div>
     </div>
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

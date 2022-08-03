@@ -1,8 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'team/index.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
 {% block body %}
-
 
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
@@ -10,11 +8,11 @@
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#courses" role="tab"
                    aria-controls="home"
-                   aria-selected="true">{% trans %}Datenschutzkurse{% endtrans %}</a>
+                   aria-selected="true">{% trans %}privacyCourses{% endtrans %}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#user" role="tab" aria-controls="profile"
-                   aria-selected="false">{% trans %}Akademiemitglieder{% endtrans %}</a>
+                   aria-selected="false">{% trans %}academyUsers{% endtrans %}</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -26,12 +24,15 @@
 
                 <div class="card card-body">
                     <a href="{{ path('team_mitglieder_create', {'title':'Mitarbeitende zur Akademie hinzufügen', 'type':'academy'}) }}"
-                       class="btn btn-primary btn-sm loadContent">Mitglied hinzufügen</a>
+                       class="btn btn-primary btn-sm loadContent">{% trans %}addUser{% endtrans %}</a>
                     <ul class="list-group">
                         {% for d in data %}
-                            <li class="list-group-item">{{ d.email }}<a class="btn btn-sm btn-danger float-md-right"
-                                                                        onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen?{% endtrans %}')"
-                                                                        href="{{ path('team_mitglieder_remove',{'id':d.id, 'type':'academy'}) }}">Entfernen</a>
+                            <li class="list-group-item">{{ d.email }}
+                                <a class="btn btn-sm btn-danger float-md-right"
+                                    onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
+                                    href="{{ path('team_mitglieder_remove',{'id':d.id, 'type':'academy'}) }}">
+                                    Entfernen
+                                </a>
                             </li>
                         {% endfor %}
                     </ul>

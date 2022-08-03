@@ -1,6 +1,5 @@
-{% extends 'base.html.twig' %}
+{% extends 'team/index.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
 {% block body %}
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
@@ -15,7 +14,7 @@
                     </div>
                     <div class="col-md-6">
                         <a href="{{ path('team_dsb_remove', {'id':data.id}) }}" class="btn btn-sm btn-danger"
-                           onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen? Der DSB wird daraufhin als Admin, Koordinator und Akademiebenutzer entfernt.{% endtrans %}')">Entfernen</a>
+                           onClick="return confirm('{% trans %}confirmAction Der DSB wird daraufhin als Admin, Koordinator und Akademiebenutzer entfernt.{% endtrans %}')">Entfernen</a>
                     </div>
                 </div>
             {% else %}
@@ -31,7 +30,4 @@
         </div>
     </div>
     {{ include('base/__snack.html.twig') }}
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

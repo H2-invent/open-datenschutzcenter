@@ -158,17 +158,15 @@ class LoeschkonzeptController extends AbstractController
     /**
      * @Route("/{id}", name="app_loeschkonzept_delete", methods={"POST"})
      */
-    public function delete(Request $request, Loeschkonzept $loeschkonzept, LoeschkonzeptRepository $loeschkonzeptRepository, VVTDatenkategorieRepository $VvtDatenkategorieRepository, EntityManagerInterface $entityManager, SecurityService $securityService, DisableService $disableService): Response
+    public function delete(Loeschkonzept $loeschkonzept, EntityManagerInterface $entityManager, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
     {
-        $team = $this->getUser()->getAdminUser();
-        if ($securityService->teamCheck($team) === true) 
-        {
-    
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+        if ($securityService->teamCheck($team) && $securityService->adminCheck($user, $team)) {
             $loeschkonzept->setActiv(false);
             $entityManager->persist($loeschkonzept);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('app_loeschkonzept_index', [], Response::HTTP_SEE_OTHER);
     }
 }

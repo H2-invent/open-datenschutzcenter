@@ -5,11 +5,11 @@
         <a href="{{ path('task_edit', {'id':task.id,'edit':1}) }}"
            class="btn btn-outline-elegant btn-sm">{% trans %}Aufgabe bearbeiten{% endtrans %}</a>
     {% endif %}
-    <a onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen?{% endtrans %}')"
+    <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
        href='{{ path('task_disable',{'id':task.id}) }}' type='button'
        class='btn btn-danger ml-1 btn-sm'>{% if task.activ == 1 %}{% trans %}Löschen{% endtrans %}{% else %}{% trans %}Widerherstellen{% endtrans %}{% endif %}</a>
     {% if task.activ and not task.done %}
-        <a onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen?{% endtrans %}')"
+        <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
            href='{{ path('task_done',{'id':task.id}) }}' type='button'
            class='btn btn-success ml-1 btn-sm'>{% trans %}Abschließen{% endtrans %}</a>
     {% endif %}

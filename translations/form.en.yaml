@@ -1,3 +1,4 @@
+# create team
 teamName: Team descriptor
 teamNameHelp: If a Keycloak group should be connected to this team, the team descriptor must be identical to the group name. For Keycloak to pass the group membership, the client must have a mapper named 'groups' with the option 'full group path' set to false.
 displayName: Display name (if different from team descriptor)
@@ -18,3 +19,6 @@ externalLinkHelp: Here you can incorporate an external page in the ODC, such as 
 jitsiLink: External link to Jitsi installation
 jitsiLinkHelp: Here you can incorporate a Jitsi installation in the ODC. Jitsi Meet is a privacy friendly alternative to Zoom and Microsoft Teams.
 save: Save
+
+# admin - departments
+newDepartment: Add new department

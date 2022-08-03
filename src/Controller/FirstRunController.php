@@ -19,7 +19,7 @@ class FirstRunController extends AbstractController
     {
         $teams = $this->getDoctrine()->getRepository(Team::class)->findAll();
         if (sizeof($teams) !== 0){
-            return $this->redirectToRoute('no_team');
+            return $this->redirectToRoute('dashboard');
         }
 
         $nteam = new Team();
@@ -37,7 +37,7 @@ class FirstRunController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $user = $this->getUser();
                 $user->addTeam($nteam);
-                $user->setAdminUser($nTeam);
+                $nteam->addAdmin($user);
                 $em->persist($nTeam);
                 $em->persist($user);
                 $em->flush();

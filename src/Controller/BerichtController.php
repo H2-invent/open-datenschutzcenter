@@ -253,10 +253,10 @@ class BerichtController extends AbstractController
      */
     public function berichtAkademie()
     {
-
-        $team = $this->getUser()->getAkademieUser();
+        $user = $this->getUser();
+        $team = $user->getAkademieUser();
         // Admin Team authentication
-        if ($this->getUser()->getAdminUser() !== $team) {
+        if (!$user->hasAdminRole($team)) {
             return $this->redirectToRoute('dashboard');
         }
 

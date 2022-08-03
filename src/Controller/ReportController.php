@@ -128,12 +128,13 @@ class ReportController extends AbstractController
     /**
      * @Route("/report/delete", name="report_delete")
      */
-    public function deleteReport(Request $request, SecurityService $securityService, DisableService $disableService)
+    public function deleteReport(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $report = $this->getDoctrine()->getRepository(Report::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($report, $team) === true) {
+        if ($securityService->teamDataCheck($report, $team) && $securityService->adminCheck($user, $team)) {
             $report->setActiv(2);
             $em = $this->getDoctrine()->getManager();
             $em->persist($report);

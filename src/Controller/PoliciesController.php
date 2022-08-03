@@ -123,28 +123,31 @@ class PoliciesController extends AbstractController
     /**
      * @Route("/policy/approve", name="policy_approve")
      */
-    public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService)
+    public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($policy, $team) === false) {
-            return $this->redirectToRoute('policies');
+        if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team)) {
+            $approve = $approveService->approve($policy, $user);
+            return $this->redirectToRoute('policy_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
         }
-        $approve = $approveService->approve($policy, $this->getUser());
 
-        return $this->redirectToRoute('policy_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+        // if security check fails
+        return $this->redirectToRoute('policies');
     }
 
     /**
      * @Route("/policy/disable", name="policy_disable")
      */
-    public function disable(Request $request, SecurityService $securityService, DisableService $disableService)
+    public function disable(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($policy, $team) === true && !$policy->getApproved()) {
+        if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team) && !$policy->getApproved()) {
             $disableService->disable($policy, $this->getUser());
         }
 

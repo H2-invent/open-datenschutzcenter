@@ -123,31 +123,32 @@ class FormsController extends AbstractController
     /**
      * @Route("/forms/approve", name="forms_approve")
      */
-    public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService)
+    public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $forms = $this->getDoctrine()->getRepository(Forms::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($forms, $team) === false) {
-            return $this->redirectToRoute('forms');
+        if ($securityService->teamDataCheck($forms, $team) && $securityService->adminCheck($user, $team)) {
+            $approve = $approveService->approve($forms, $user);
+            return $this->redirectToRoute('forms_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
         }
 
-        $approve = $approveService->approve($forms, $this->getUser());
-
-        return $this->redirectToRoute('forms_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
-
+        // if security check fails
+        return $this->redirectToRoute('forms');
     }
 
     /**
      * @Route("/forms/disable", name="forms_disable")
      */
-    public function disable(Request $request, SecurityService $securityService, DisableService $disableService)
+    public function disable(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $forms = $this->getDoctrine()->getRepository(Forms::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($forms, $team) === true && !$forms->getApproved()) {
-            $disableService->disable($forms, $this->getUser());
+        if ($securityService->teamDataCheck($forms, $team) && $securityService->adminCheck($user, $team) && !$forms->getApproved()) {
+            $disableService->disable($forms, $user);
         }
 
         return $this->redirectToRoute('forms');

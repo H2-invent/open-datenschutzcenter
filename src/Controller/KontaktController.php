@@ -113,29 +113,32 @@ class KontaktController extends AbstractController
     /**
      * @Route("/kontakt/approve", name="kontakt_approve")
      */
-    public function approve(Request $request, SecurityService $securityService, ApproveService $approveService)
+    public function approve(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $kontakt = $this->getDoctrine()->getRepository(Kontakte::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($kontakt, $team) === false) {
-            return $this->redirectToRoute('kontakt');
+        if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team)) {
+            $approve = $approveService->approve($kontakt, $user);
+            return $this->redirectToRoute('kontakt_edit', ['id' => $kontakt->getId(), 'snack' => $approve['snack']]);
         }
-        $approve = $approveService->approve($kontakt, $this->getUser());
 
-        return $this->redirectToRoute('kontakt_edit', ['id' => $kontakt->getId(), 'snack' => $approve['snack']]);
+        // if security check fails
+        return $this->redirectToRoute('kontakt');
     }
 
     /**
      * @Route("/kontakt/disable", name="kontakt_disable")
      */
-    public function disable(Request $request, SecurityService $securityService, DisableService $disableService)
+    public function disable(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $kontakt = $this->getDoctrine()->getRepository(Kontakte::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($kontakt, $team) === true && !$kontakt->getApproved()) {
-            $disableService->disable($kontakt, $this->getUser());
+        if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team) && !$kontakt->getApproved()) {
+            $disableService->disable($kontakt, $user);
         }
 
         return $this->redirectToRoute('kontakt');

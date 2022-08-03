@@ -34,4 +34,20 @@ class CurrentTeamService
 
         return $teams->get(0) ;
     }
+
+    /**
+     * return team in session if user is admin, otherwise return team for which user is admin
+     */
+    public function getCurrentAdminTeam(User $user) {
+        $team = $this->getTeamFromSession($user);
+        if ($user->hasAdminRole($team)) {
+            return $team;
+        }
+
+        $team = $user->getAdminRoles() ? $user->getAdminRoles()->get(0) : null;
+        if ($team) {
+            $this->switchToTeam($team->getName());
+        }
+        return $team;
+    }
 }

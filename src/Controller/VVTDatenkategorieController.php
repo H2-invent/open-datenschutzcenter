@@ -121,9 +121,9 @@ class VVTDatenkategorieController extends AbstractController
     /**
      * @Route("/{id}", name="app_vvtdatenkategorie_delete", methods={"POST"})
      */
-    public function delete(Request $request, VVTDatenkategorie $vVTDatenkategorie, EntityManagerInterface $entityManager, SecurityService $securityService): Response
+    public function delete(Request $request, VVTDatenkategorie $vVTDatenkategorie, EntityManagerInterface $entityManager, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
     {
-        $team = $this->getUser()->getAdminUser();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === true) 
         {
             if ($this->isCsrfTokenValid('delete'.$vVTDatenkategorie->getId(), $request->request->get('_token'))) {

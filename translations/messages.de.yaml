@@ -1,10 +1,67 @@
+# global
+edit: Bearbeiten
+delete: Löschen
+
+# no team
 noTeam: Kein Team vorhanden
 noTeamHelp: Für Ihren Benutzer ist kein Team vorhanden.<br>Fragen Sie Ihrem Administrator oder beim Support der H2 invent nach.
+
+# profile
 profile: Profil
 name: Name
 email: E-Mail
 editProfile: Profil bearbeiten
 changePassword: Passwort ändern
 logout: Logout
-flowChart: Datenflussplan
+
+# dashboard
 privacycenter: Datenschutzcenter
+flowChart: Datenflussplan
+
+# admin
+adminArea: Adminbereich
+
+# admin - members
+addUser: Benutzer hinzufügen
+remove: Entfernen
+removeAdmin: Admin entfernen
+addAdmin: Admin hinzufügen
+openInvitations: Offene Einladungen
+memberHint1: Mitarbeitende können als Datenschutzkoordinator*innen (normale Mitglieder) oder als Admin hinzugefügt werden. Datenschutzkoordinator*innen können Elemente erstellen, bearbeiten, zuweisen und exportieren. Admins können neue Mitglieder hinzufügen, Elemente freigeben und die Akademie verwalten.
+memberHint2: Falls Benutzergruppen über Keycloak verwaltet werden, müssen Mitglieder dort hinzugefügt oder entfernt werden. Andernfalls wird die Gruppenzugehörigkeit beim nächsten Login überschrieben.
+
+# admin - custom
+select: Auswählen
+groupsOfPeople: Personengruppen
+addGroupOfPeople: Neue Personengruppe hinzufügen
+editGroupOfPeople: Personengruppe bearbeiten
+processingRisks: Risiken der Verarbeitung
+newRisk: Neues Risiko hinzufügen
+editRisk: Risiko bearbeiten
+legalBasis: Gesetzliche Grundlagen für die Verarbeitungen
+addLegalBasis: Gesetzliche Grundlage hinzufügen
+editLegalBasis: Gesetzliche Grundlage bearbeiten
+products: Produkte/Projekte
+addProduct: Produkt/Projekt hinzufügen
+editProduct: Produkt/Projekt bearbeiten
+processingStatuses: VVT Status
+addProcessingStatus: VVT Status hinzufügen
+editProcessingStatus: VVT Status bearbeiten
+dataTransferBasis: Grundlage für Datenweitergaben
+addDataTransferBasis: Grundlage hinzufügen
+editDataTransferBasis: Grundlage bearbeiten
+dataTransferStatuses: Stände in Datenweitergaben
+addDataTransferStatus: Stand hinzufügen
+editDataTransferStatus: Stand bearbeiten
+auditGoals: Schutzziele für Audits
+addAuditGoal: Schutzziel hinzufügen
+editAuditGoal: Schutzziel bearbeiten
+default: Default
+noEntry: Kein Eintrag vorhanden
+
+# academy
+privacyCourses: Datenschutzkurse
+academyUsers: Akademiemitglieder
+addAcademyUser: Mitglied hinzufügen
+confirmAction: Möchten Sie diese Aktion wirklich durchführen?
+addCourse: Kurs anlegen

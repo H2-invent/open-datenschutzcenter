@@ -61,9 +61,9 @@ class User extends BaseUser
     private $akademieUser;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="admins")
+     * @ORM\ManyToMany(targetEntity=Team::class, mappedBy="admins")
      */
-    private $adminUser;
+    private $adminRoles;
 
     /**
      * @ORM\OneToMany(targetEntity=VVT::class, mappedBy="userContract")
@@ -422,16 +422,21 @@ class User extends BaseUser
         return $this;
     }
 
-    public function getAdminUser(): ?Team
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getAdminRoles(): Collection
     {
-        return $this->adminUser;
+        return $this->adminRoles;
     }
 
-    public function setAdminUser(?Team $adminUser): self
+    public function hasAdminRole(Team $team = null): bool
     {
-        $this->adminUser = $adminUser;
-
-        return $this;
+        if ($team) {
+            return $this->adminRoles->contains($team);
+        }
+        return count($this->adminRoles) > 0;
     }
 
     /**

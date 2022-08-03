@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block CTA %}
-    {% if app.user.adminUser == data.team %}
+    {% if data.team in app.user.adminRoles %}
         <a href="{{ path('client_valid_user',{'id':data.id}) }}"
            class="btn btn-sm btn-success">{{ data.validUser?'Nutzervalidierung rückgängig':'Nutzer ist verifiziert' }}</a>
         <a href="{{ path('client_request_close',{'id':data.id}) }}"

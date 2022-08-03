@@ -136,7 +136,8 @@ class Team
     private $akademieUsers;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="adminUser")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="adminRoles")
+     * @ORM\JoinTable(name="team_admin")
      */
     private $admins;
 
@@ -151,7 +152,7 @@ class Team
     private $vorfalls;
 
     /**
-     * @ORM\OneToMany(targetEntity=Produkte::class, mappedBy="team")
+     * @ORM\OneToMany(targetEntity=Produkte::class, mappedBy="team")mappedby
      */
     private $produktes;
 
@@ -723,7 +724,6 @@ class Team
     {
         if (!$this->admins->contains($admin)) {
             $this->admins[] = $admin;
-            $admin->setAdminUser($this);
         }
 
         return $this;
@@ -733,10 +733,6 @@ class Team
     {
         if ($this->admins->contains($admin)) {
             $this->admins->removeElement($admin);
-            // set the owning side to null (unless already changed)
-            if ($admin->getAdminUser() === $this) {
-                $admin->setAdminUser(null);
-            }
         }
 
         return $this;

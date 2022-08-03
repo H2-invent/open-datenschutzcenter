@@ -180,48 +180,52 @@ class SoftwareController extends AbstractController
     /**
      * @Route("/software/config/delete", name="software_config_delete")
      */
-    public function deleteConfig(Request $request, SecurityService $securityService)
+    public function deleteConfig(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         // Request: config: ConfigID
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $config = $this->getDoctrine()->getRepository(SoftwareConfig::class)->find($request->get('config'));
 
-        if ($securityService->teamDataCheck($config->getSoftware(), $team) === false) {
-            return $this->redirectToRoute('software');
+        if ($securityService->teamDataCheck($config->getSoftware(), $team) && $securityService->adminCheck($user, $team)) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($config);
+            $em->flush();
+            return $this->redirectToRoute('software_edit', ['id' => $config->getSoftware()->getId(), 'snack' => 'Konfiguration gelöscht']);
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($config);
-        $em->flush();
-        return $this->redirectToRoute('software_edit', ['id' => $config->getSoftware()->getId(), 'snack' => 'Konfiguration gelöscht']);
+        // if security check fails
+        return $this->redirectToRoute('software');
     }
 
     /**
      * @Route("/software/approve", name="software_approve")
      */
-    public function approveSoftware(Request $request, SecurityService $securityService, ApproveService $approveService)
+    public function approveSoftware(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
-        $team = $this->getUser()->getAdminUser();
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         $software = $this->getDoctrine()->getRepository(Software::class)->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($software, $team) === false) {
-            return $this->redirectToRoute('policies');
-        }
-        $approve = $approveService->approve($software, $this->getUser());
+        if ($securityService->teamDataCheck($software, $team) && $securityService->adminCheck($user, $team)) {
+            $approve = $approveService->approve($software, $user);
 
-        if ($approve['clone'] === true) {
-            $newSoftware = $this->getDoctrine()->getRepository(Software::class)->find($approve['data']);
-            $em = $this->getDoctrine()->getManager();
-            foreach ($software->getConfig() as $config) {
-                $newConfig = clone $config;
-                $newConfig->setSoftware($newSoftware);
+            if ($approve['clone'] === true) {
+                $newSoftware = $this->getDoctrine()->getRepository(Software::class)->find($approve['data']);
+                $em = $this->getDoctrine()->getManager();
+                foreach ($software->getConfig() as $config) {
+                    $newConfig = clone $config;
+                    $newConfig->setSoftware($newSoftware);
 
-                $em->persist($newConfig);
+                    $em->persist($newConfig);
+                }
+                $em->persist($newSoftware);
+                $em->flush();
             }
-            $em->persist($newSoftware);
-            $em->flush();
+            return $this->redirectToRoute('software_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
         }
-        return $this->redirectToRoute('software_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+
+        return $this->redirectToRoute('policies');
     }
 
     /**
