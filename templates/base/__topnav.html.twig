@@ -9,7 +9,7 @@
                     {% if currentTeam == team %}
                         <a class="dropdown-item" disabled>{{ team.displayName }}</a>
                     {% else %}
-                        <a class="dropdown-item" href="{{ path('team_switch',{'team':team}) }}">{{ team.displayName }}</a>
+                        <a class="dropdown-item" href="{{ path('team_switch',{'team':team.name}) }}">{{ team.displayName }}</a>
                     {% endif %}
                 {% endfor %}
             </div>
