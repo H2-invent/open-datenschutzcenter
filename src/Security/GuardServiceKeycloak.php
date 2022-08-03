@@ -60,10 +60,6 @@ class GuardServiceKeycloak extends SocialAuthenticator
         $id = $keycloakUser->getId();
         $firstName = $keycloakUser->toArray()['given_name'];
         $lastName = $keycloakUser->toArray()['family_name'];
-        $teams = null;
-        if (isset($keycloakUser->toArray()['groups'])) {
-            $teams = $this->getTeamsFromKeycloakGroups($keycloakUser->toArray()['groups']);
-        }
 
         // 1) the user has logged in with keycloak before
         $existingUser = $this->em->getRepository(User::class)->findOneBy(array('keycloakId' => $id));
@@ -73,7 +69,10 @@ class GuardServiceKeycloak extends SocialAuthenticator
             $existingUser->setFirstName($firstName);
             $existingUser->setLastName($lastName);
             $existingUser->setUsername($email);
-            $existingUser->setTeams($teams);
+            if (isset($keycloakUser->toArray()['groups'])) {
+                $teams = $this->getTeamsFromKeycloakGroups($keycloakUser->toArray()['groups']);
+                $existingUser->setTeams($teams);
+            }
             $this->em->persist($existingUser);
             $this->em->flush();
             return $existingUser;
@@ -89,7 +88,10 @@ class GuardServiceKeycloak extends SocialAuthenticator
             $existingUser->setFirstName($firstName);
             $existingUser->setLastName($lastName);
             $existingUser->setUsername($email);
-            $existingUser->setTeams($teams);
+            if (isset($keycloakUser->toArray()['groups'])) {
+                $teams = $this->getTeamsFromKeycloakGroups($keycloakUser->toArray()['groups']);
+                $existingUser->setTeams($teams);
+            }
             $this->em->persist($existingUser);
             $this->em->flush();
             return $existingUser;
@@ -105,8 +107,11 @@ class GuardServiceKeycloak extends SocialAuthenticator
             ->setCreatedAt(new \DateTime())
             ->setLastLogin(new \DateTime())
             ->setKeycloakId($id)
-            ->setUsername($email)
-            ->setTeams($teams);
+            ->setUsername($email);
+        if (isset($keycloakUser->toArray()['groups'])) {
+            $teams = $this->getTeamsFromKeycloakGroups($keycloakUser->toArray()['groups']);
+            $newUser->setTeams($teams);
+        }
         $this->em->persist($newUser);
         $this->em->flush();
         return $newUser;
