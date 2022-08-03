@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\UserBase as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Service\CurrentTeamService;
 
 /**
  * @ORM\Entity
@@ -216,9 +215,7 @@ class User extends BaseUser
      */
     private $vVTDatenkategories;
 
-    private $userService;
-
-    public function __construct(CurrentTeamService $userService)
+    public function __construct()
     {
         $this->datenweitergabes = new ArrayCollection();
         $this->vVTs = new ArrayCollection();
@@ -246,7 +243,6 @@ class User extends BaseUser
         $this->teamDsb = new ArrayCollection();
         $this->loeschkonzepts = new ArrayCollection();
         $this->vVTDatenkategories = new ArrayCollection();
-        $this->userService = $userService;
     }
 
     /**
