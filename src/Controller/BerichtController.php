@@ -390,7 +390,7 @@ class BerichtController extends AbstractController
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($team);
+        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActiveByTeam($team);
 
         if (count($software) < 1) {
             return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);

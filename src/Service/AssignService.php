@@ -176,28 +176,27 @@ class AssignService
     function assignDsfa($request, VVTDsfa $dsfa)
     {
         try {
-
-            if ($dsfa->getAssignedUser() == null) {
-                $data = $request->get('assign');
-                $user = $this->em->getRepository(User::class)->find($data['user']);
-                $team = $dsfa->getVvt()->getTeam();
-                if ($user && $user->hasTeam($team)) {
-                    $dsfa->setAssignedUser($user);
-                    $content = $this->twig->render('email/assignementDsfa.html.twig', [
-                        'assign' => $dsfa->getVvt()->getName(),
-                        'data' => $dsfa,
-                        'team' => $team,
-                    ]);
-                    $this->notificationService->sendNotificationAssign($content, $user);
-                }
-            } else {
-                $dsfa->setAssignedUser(null);
+            $data = $request->get('assign');
+            $user = $this->em->getRepository(User::class)->find($data['user']);
+            $team = $dsfa->getVvt()->getTeam();
+            if ($user && $user->hasTeam($team)) {
+                $dsfa->setAssignedUser($user);
+                $user->addAssignedDsfa($dsfa);
+                var_dump('foo');
+                $content = $this->twig->render('email/assignementDsfa.html.twig', [
+                    'assign' => $dsfa->getVvt()->getName(),
+                    'data' => $dsfa,
+                    'team' => $team,
+                ]);
+                $this->notificationService->sendNotificationAssign($content, $user);
             }
             $this->em->persist($dsfa);
+            $this->em->persist($dsfa);
             $this->em->flush();
-
             return true;
         } catch (\Exception $exception) {
+            var_dump($exception);
+            die();
             return false;
         }
     }

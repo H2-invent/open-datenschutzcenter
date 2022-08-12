@@ -23,7 +23,7 @@ class TaskController extends AbstractController
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($request->get('all')) {
-            $tasks = $this->getDoctrine()->getRepository(Task::class)->findActivByTeam($team);
+            $tasks = $this->getDoctrine()->getRepository(Task::class)->findActiveByTeam($team);
             $all = true;
         } else {
             $tasks = $this->getDoctrine()->getRepository(Task::class)->findBy(['team' => $team, 'activ' => true, 'done' => false]);

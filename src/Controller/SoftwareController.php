@@ -28,7 +28,7 @@ class SoftwareController extends AbstractController
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $software = $this->getDoctrine()->getRepository(Software::class)->findActivByTeam($team);
+        $software = $this->getDoctrine()->getRepository(Software::class)->findActiveByTeam($team);
 
         return $this->render('software/index.html.twig', [
             'data' => $software,

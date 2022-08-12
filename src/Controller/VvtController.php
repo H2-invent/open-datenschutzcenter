@@ -34,7 +34,7 @@ class VvtController extends AbstractController
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($team);
+        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActiveByTeam($team);
 
         return $this->render('vvt/index.html.twig', [
             'vvt' => $vvt,

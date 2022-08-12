@@ -19,36 +19,7 @@ class VVTDsfaRepository extends ServiceEntityRepository
         parent::__construct($registry, VVTDsfa::class);
     }
 
-    // /**
-    //  * @return VVTDsfa[] Returns an array of VVTDsfa objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?VVTDsfa
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findActivByTeam($value)
+    public function findActiveByTeam($value)
     {
         return $this->createQueryBuilder('a')
             ->innerJoin('a.vvt', 'v')
@@ -59,5 +30,17 @@ class VVTDsfaRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function findActiveByTeamAndUser($team, $user)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->andWhere('a.assignedUser = :user')
+            ->andWhere('a.activ = 1')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+
+        return $query;
     }
 }

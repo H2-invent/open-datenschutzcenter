@@ -60,13 +60,13 @@ class DashboardController extends AbstractController
         $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($currentTeam);
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $currentTeam, 'activ' => true, 'art' => 1));
         $av = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $currentTeam, 'activ' => true, 'art' => 2));
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($currentTeam);
-        $vvtDsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->findActivByTeam($currentTeam);
-        $kontakte = $this->getDoctrine()->getRepository(Kontakte::class)->findActivByTeam($currentTeam);
-        $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($currentTeam);
+        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActiveByTeam($currentTeam);
+        $vvtDsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->findActiveByTeam($currentTeam);
+        $kontakte = $this->getDoctrine()->getRepository(Kontakte::class)->findActiveByTeam($currentTeam);
+        $tom = $this->getDoctrine()->getRepository(Tom::class)->findActiveByTeam($currentTeam);
         $forms = $this->getDoctrine()->getRepository(Forms::class)->findPublicByTeam($currentTeam);
         $policies = $this->getDoctrine()->getRepository(Policies::class)->findPublicByTeam($currentTeam);
-        $software = $this->getDoctrine()->getRepository(Software::class)->findActivByTeam($currentTeam);
+        $software = $this->getDoctrine()->getRepository(Software::class)->findActiveByTeam($currentTeam);
         $tasks = $this->getDoctrine()->getRepository(Task::class)->findBy(['team' => $currentTeam, 'activ' => true, 'done' => false]);
         $loeschkonzepte = $this->getDoctrine()->getRepository(Loeschkonzept::class)->findByTeam($currentTeam);
         $vvtdatenkategorien = $this->getDoctrine()->getRepository(VVTDatenkategorie::class)->findByTeam($currentTeam);
@@ -103,7 +103,7 @@ class DashboardController extends AbstractController
         $assignAudit = $this->getUser()->getAssignedAudits()->toarray();
         $assignDsfa = $this->getUser()->getAssignedDsfa()->toarray();
         $assignDatenweitergabe = $this->getUser()->getAssignedDatenweitergaben()->toarray();
-        $assignTasks = $this->getDoctrine()->getRepository(Task::class)->findActivByUser($this->getUser());
+        $assignTasks = $this->getDoctrine()->getRepository(Task::class)->findActiveByUser($this->getUser());
 
         $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findActivBuchungenByUser($this->getUser());
 

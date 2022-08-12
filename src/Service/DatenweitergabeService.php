@@ -60,8 +60,8 @@ class DatenweitergabeService
 
     function createForm(Datenweitergabe $datenweitergabe, Team $team)
     {
-        $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActivByTeam($team);
-        $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActivByTeam($team);
+        $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeam($team);
+        $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeam($team);
         $verfahren = $this->em->getRepository(VVT::class)->findBy(array('team' => $team, 'activ' => true));
         $software = $this->em->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true));
 

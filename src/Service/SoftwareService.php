@@ -56,7 +56,7 @@ class SoftwareService
 
     function createForm(Software $software, Team $team)
     {
-        $processes = $this->em->getRepository(VVT::class)->findActivByTeam($team);
+        $processes = $this->em->getRepository(VVT::class)->findActiveByTeam($team);
         $data = $this->em->getRepository(Datenweitergabe::class)->findBy(['team' => $team, 'activ' => true, 'art' => 1]);
 
         $form = $this->formBuilder->create(SoftwareType::class, $software, ['processes' => $processes, 'datenweitergabe' => $data]);

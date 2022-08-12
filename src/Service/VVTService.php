@@ -63,7 +63,7 @@ class VVTService
 
     function createForm(VVT $VVT, Team $team)
     {
-        $status = $this->em->getRepository(VVTStatus::class)->findActivByTeam($team);
+        $status = $this->em->getRepository(VVTStatus::class)->findActiveByTeam($team);
         $personen = $this->em->getRepository(VVTPersonen::class)->findByTeam($team);
         $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
         $risiken = $this->em->getRepository(VVTRisiken::class)->findByTeam($team);
@@ -71,8 +71,8 @@ class VVTService
         $daten = $this->em->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true));
         $tom = $this->em->getRepository(Tom::class)->findBy(array('team' => $team, 'activ' => true));
         $abteilung = $this->em->getRepository(AuditTomAbteilung::class)->findBy(array('team' => $team, 'activ' => true));
-        $produkte = $this->em->getRepository(Produkte::class)->findActivByTeam($team);
-        $software = $this->em->getRepository(Software::class)->findActivByTeam($team);
+        $produkte = $this->em->getRepository(Produkte::class)->findActiveByTeam($team);
+        $software = $this->em->getRepository(Software::class)->findActiveByTeam($team);
 
         $form = $this->formBuilder->create(VVTType::class, $VVT, [
             'personen' => $personen,

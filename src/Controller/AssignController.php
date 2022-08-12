@@ -11,47 +11,72 @@ use App\Entity\Task;
 use App\Entity\Vorfall;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
+use App\Repository\AuditTomRepository;
+use App\Repository\DatenweitergabeRepository;
+use App\Repository\FormsRepository;
+use App\Repository\PoliciesRepository;
+use App\Repository\SoftwareRepository;
+use App\Repository\TaskRepository;
+use App\Repository\VVTDsfaRepository;
+use App\Repository\VVTRepository;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AssignController extends AbstractController
 {
     /**
      * @Route("/assign", name="assign")
+     * @param CurrentTeamService $currentTeamService
+     * @param TaskRepository $taskRepository
+     * @return Response
      */
-    public function index(Request $request, AssignService $assignService, CurrentTeamService $currentTeamService)
+    public function index(CurrentTeamService        $currentTeamService,
+                          DatenweitergabeRepository $transferRepository,
+                          VVTRepository             $processingRepository,
+                          AuditTomRepository        $auditRepository,
+                          VVTDsfaRepository         $impactAssessmentRepository,
+                          FormsRepository           $formRepository,
+                          PoliciesRepository        $policyRepository,
+                          SoftwareRepository        $softwareRepository,
+                          TaskRepository            $taskRepository
+    ): Response
     {
-        $currentTeam = $currentTeamService->getTeamFromSession($this->getUser());
-        $assignDatenweitergabe = $this->getUser()->getAssignedDatenweitergaben()->toarray();
-        $assignVvt = $this->getUser()->getAssignedVvts()->toarray();
-        $assignAudit = $this->getUser()->getAssignedAudits()->toarray();
-        $assignDsfa = $this->getUser()->getAssignedDsfa()->toarray();
-        $assignForms = $this->getUser()->getAssignedForms()->toarray();
-        $assignPolicies = $this->getUser()->getAssignedPolicies()->toarray();
-        $assignSoftware = $this->getUser()->getAssignedSoftware()->toarray();
-        $assignTasks = $this->getDoctrine()->getRepository(Task::class)->findActivByUser($this->getUser());
+        $user = $this->getUser();
+        $currentTeam = $currentTeamService->getTeamFromSession($user);
+        $assignedDataTransfers = $transferRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedProcessings = $processingRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedAudits = $auditRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignImpactAssessments = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedForms = $formRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedPolicies = $policyRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedSoftware = $softwareRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedTasks = $taskRepository->findActiveByTeamAndUser($currentTeam, $user);
 
         return $this->render('assign/index.html.twig', [
             'currentTeam' => $currentTeam,
-            'assignDaten' => $assignDatenweitergabe,
-            'assignVvt' => $assignVvt,
-            'assignAudit' => $assignAudit,
-            'assignDsfa' => $assignDsfa,
-            'assignForms' => $assignForms,
-            'assignPolicies' => $assignPolicies,
-            'assignSoftware' => $assignSoftware,
-            'assignTasks' => $assignTasks
+            'dataTransfers' => $assignedDataTransfers,
+            'processings' => $assignedProcessings,
+            'audits' => $assignedAudits,
+            'impactAssessments' => $assignImpactAssessments,
+            'forms' => $assignedForms,
+            'policies' => $assignedPolicies,
+            'software' => $assignedSoftware,
+            'tasks' => $assignedTasks
         ]);
     }
 
     /**
      * @Route("/assign/vvt", name="assign_vvt")
      */
-    public function assignVvt(Request $request, AssignService $assignService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function assignVvt(Request $request,
+                              AssignService $assignService,
+                              SecurityService $securityService,
+                              CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
@@ -96,16 +121,21 @@ class AssignController extends AbstractController
     /**
      * @Route("/assign/dsfa", name="assign_dsfa")
      */
-    public function assignDsfa(Request $request, AssignService $assignService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function assignDsfa(Request            $request,
+                               AssignService      $assignService,
+                               SecurityService    $securityService,
+                               CurrentTeamService $currentTeamService,
+                               VVTDsfaRepository  $impactAssessmentRepository
+    )
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());;
-        $dsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->find($request->get('id'));
-        if ($securityService->teamDataCheck($dsfa->getVvt(), $team) === false) {
-            return $this->redirectToRoute('vvt');
+        $impactAssessment = $impactAssessmentRepository->find($request->get('id'));
+        if ($securityService->teamDataCheck($impactAssessment->getVvt(), $team)) {
+            $assignService->assignDsfa($request, $impactAssessment);
+            return $this->redirect($request->headers->get('referer'));
         }
 
-        $assignService->assignDsfa($request, $dsfa);
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirectToRoute('vvt');
     }
 
     /**

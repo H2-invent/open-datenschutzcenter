@@ -21,7 +21,7 @@ class ReportController extends AbstractController
     public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $report = $this->getDoctrine()->getRepository(Report::class)->findActivByTeam($team);
+        $report = $this->getDoctrine()->getRepository(Report::class)->findActiveByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');

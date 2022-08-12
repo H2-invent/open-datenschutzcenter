@@ -19,36 +19,7 @@ class DatenweitergabeRepository extends ServiceEntityRepository
         parent::__construct($registry, Datenweitergabe::class);
     }
 
-    // /**
-    //  * @return Datenweitergabe[] Returns an array of Datenweitergabe objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Datenweitergabe
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findActivByTeam($value)
+    public function findActiveByTeam($value)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.team = :val')
@@ -57,5 +28,18 @@ class DatenweitergabeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function findActiveByTeamAndUser($team, $user)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team = :team')
+            ->andWhere('a.assignedUser = :user')
+            ->andWhere('a.activ = 1')
+            ->setParameter('team', $team)
+            ->setParameter('user', $user)
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }

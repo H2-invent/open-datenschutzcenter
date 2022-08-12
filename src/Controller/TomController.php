@@ -28,7 +28,7 @@ class TomController extends AbstractController
     public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($team);
+        $tom = $this->getDoctrine()->getRepository(Tom::class)->findActiveByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');

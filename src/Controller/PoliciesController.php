@@ -30,7 +30,7 @@ class PoliciesController extends AbstractController
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $polcies = $this->getDoctrine()->getRepository(Policies::class)->findActivByTeam($team);
+        $polcies = $this->getDoctrine()->getRepository(Policies::class)->findActiveByTeam($team);
 
         return $this->render('policies/index.html.twig', [
             'data' => $polcies,
