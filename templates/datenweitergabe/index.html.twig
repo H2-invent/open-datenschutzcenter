@@ -2,7 +2,7 @@
 
 {% block CTA %}
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('datenweitergabe_new') }}">
-        <span>Datenweitergabe anlegen</span>
+        <span>{% trans %}newDataTransfer{% endtrans %}</span>
     </a>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-elegant btn-sm" data-toggle="modal" data-target="#centralModalMd">
@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block body %}
-    {{ include('datenweitergabe/__indexTabel.html.twig') }}
+    {{ include('datenweitergabe/__indexTable.html.twig') }}
 
     <!-- Central Modal Medium -->
     <div class="modal fade" id="centralModalMd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -23,19 +23,17 @@
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title w-100" id="myModalLabel">Erklärung: Datenweitergabe</h4>
+                    <h4 class="modal-title w-100" id="myModalLabel">{% trans %}dataTransferInfoTitle{% endtrans %}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    {% trans %}
-                        Die Verarbeitung von Daten im Auftrag kommt in nahezu jedem Unternehmen vor. Sei es durch die Nutzung eines externen Rechenzentrums, die Nutzung einer Dienstleistung, die als sog. Software-as-a-Service (SaaS) erbracht wird, Cloud Computing oder bestimmte Wartungen von IT-Systemen durch technische Dienstleister. In diesen Fällen liegt in der Regel eine Datenweitergabe vor. Und da gilt es besondere Maßnahmen zu treffen, um die Vorgaben der Datenschutz-Grundverordnung (DSGVO) einzuhalten.
-                    {% endtrans %}
+                    {% trans %}dataTransferInfoText{% endtrans %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm"
-                            data-dismiss="modal">{% trans %}Schließen{% endtrans %}</button>
+                            data-dismiss="modal">{% trans %}close{% endtrans %}</button>
                 </div>
             </div>
         </div>

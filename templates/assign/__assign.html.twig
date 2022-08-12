@@ -1,7 +1,7 @@
 {% if data.assignedUser is null %}
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#assignModal">
-        Zuweisen
+        {% trans %}assign{% endtrans %}
     </button>
 
     <!-- Modal -->
@@ -31,7 +31,7 @@
         </div>
     </div>
 {% else %}
-    <h4>{% trans %}Zugewiesen an:{% endtrans %} </h4>
+    <h4>{% trans %}assignedTo:{% endtrans %} </h4>
     <span class="small">{{ data.assignedUser.email }}</span>  <a class="btn btn-danger btn-sm rounded-circle"
                                                                  title="Zuweisung entfernen"
                                                                  href="{{ path(path,{'id':data.id}) }}">X</a>

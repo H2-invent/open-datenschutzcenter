@@ -26,7 +26,7 @@ class LoeschkonzeptType extends AbstractType
             ->add('vvtdatenkategories', EntityType::class, [
                 'class' => VVTDatenkategorie::class,
                 'choices' => $options['vvtdatenkategories'],
-                'label' => 'Datenkategorien',
+                'label' => 'dataCategories',
                 'multiple' => true, 
                 'required' => false,
                 'translation_domain' => 'form',
@@ -37,35 +37,35 @@ class LoeschkonzeptType extends AbstractType
             ])
             
             ->add('standartlf', TextareaType::class, [
-                'label' => 'Standard Löschfrist',
+                'label' => 'standardDeleteDeadline',
                 'required' => true,
                 'translation_domain' => 'form',
-                'help' => 'Hier wird die Löschfrist eingetragen, die unternehmensintern für die ausgewählten Datenkategorien festgelegt wurde. Sie kann kürzer sein, als es das Gesetz fordert, darf die gesetzlichen Frist aber nicht überschreiten. Gibt es eine gesetzliche Mindest-Speicherdauer, darf die Standard Löschfrsit diese nicht unterschreiten. Existiert keine gesetzliche Vorgabe wird unternehmensintern eine Löschfrist festgelegt. Diese Löschfrist wird auch an anderen Stellen angezeigt.'
+                'help' => 'standardDeleteDeadline'
             ])
             ->add('loeschfrist', TextareaType::class, [
-                'label' => 'gesetzliche Löschfrist',
+                'label' => 'legalDeleteDeadline',
                 'required' => false,
                 'translation_domain' => 'form',
-                'help' => 'Sollte es eine gesetzliche Grundlage zur maximalen oder minimalen Speicherdauer geben, ist diese maximale oder minimale Löschfrist hier einzutragen.'
+                'help' => 'legalDeleteDeadlineHelp'
                 ])
             ->add('speicherorte', TextareaType::class, [
-                'label' => 'Speicherorte',
+                'label' => 'dataStorageLocations',
                 'required' => true,
                 'translation_domain' => 'form',
-                'help' => 'Hier sind alle Orte, an denen Daten der betroffenen Kategorien gespeichert sind, anzugeben. Auch Auftragsverarbeiter können hier als Speicherort mit eingetragen werden.'
+                'help' => 'dataStorageLocationsHelp'
                 ])
             ->add('loeschbeauftragter', TextareaType::class, [
-                'label' => 'Löschbeauftragter',
+                'label' => 'deleteOfficial',
                 'required' => true,
                 'translation_domain' => 'form',
-                'help' => 'Hier kann eine Löschbeauftragter namentlich benannt oder eine Gruppe/Abteilung als Verantwortlicher eingetragen werden'
+                'help' => 'deleteOfficialHelp'
                 ])
             ->add('beschreibung', TextareaType::class, [
                 'attr' => ['rows' => 10],
-                'label' => 'Beschreibung',
+                'label' => 'deleteDescription',
                 'required' => false,
                 'translation_domain' => 'form',
-                'help' => 'Die Beschreibung soll zur Dokumentation von Löschabläufen, Frist-Begründungen, Ausnahmen, Spezialfällen und weiteren Informationsdokumentationen dienen.'
+                'help' => 'deleteDescriptionHelp'
                 ])
         ;
     }

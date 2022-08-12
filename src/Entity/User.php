@@ -643,6 +643,7 @@ class User extends BaseUser
         return $this;
     }
 
+
     public function removeAssignedDatenweitergaben(Datenweitergabe $assignedDatenweitergaben): self
     {
         if ($this->assignedDatenweitergaben->contains($assignedDatenweitergaben)) {
@@ -1093,6 +1094,11 @@ class User extends BaseUser
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
     }
 
     public function setUsername(?string $username): self

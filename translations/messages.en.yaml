@@ -1,12 +1,28 @@
 # global
-edit: edit
-delete: delete
+assignedTo: Assigned to
+title: Title
+description: Description
+overview: Overview
+name: Name
+fileNumber: File nmber
+time: Time
+yes: Yes
+no: No
+
+#actions
+edit: Edit
+delete: Delete
+approve: Approve
+rescindApproval: Revoke approval
+restore: Restore
+assign: Assigne
 
 # no team
 noTeam: No Team
 noTeamHelp: You are not a member of a team.<br>Get in touch with your administrator or the support team of H2 invent.
+
+# profile
 profile: Profile
-name: Name
 email: Email
 editProfile: Edit profile
 changePassword: Change password
@@ -14,7 +30,171 @@ logout: Logout
 
 # dashboard
 privacycenter: Privacy Center
-flowChart: Data flow diagram
+flowChart: Data flow chart
+
+# assignments
+myAssignments: My assignments
+tasks: Tasks
+auditQuestions: Audit questions
+forms: Forms
+software: Software
+policies: Policies
+
+# tasks
+tasksOverview: Task overview
+newTask: New task
+showAllTasks: Show all tasks
+showOpenTasks: Show open tasks
+priority: Priority
+date: Date
+
+# audits
+newAudit: New audit
+cloneDefault: Clone default questions
+allTomAuditQuestions: All TOM audit questions
+question: Question
+department: Department
+status: State
+category: Category
+nothingSelected: Nothing selected
+privacyManagement: Privacy management
+privacyTemplates: Compulsory privacy templates
+instructions: Work instructions
+emergencyPlanAndDocumentation: Emergency plan and documentation
+structuralSafety: Structural safety
+video: Video
+authentications: Authentications
+privileges: Priveleges
+logs: Logs
+backups: Backups
+deletion: Data deletion / destruction
+transfer: Data transfer / transport
+remoteMaintenance: Remote maintenance
+mobileDevices: Mobile Geräte
+wlan: WLAN
+marketing: Marketing
+cloud: Cloud
+archive: Archive
+ITSec: IT Security
+MFC: MFC
+serverRoom: Server room
+clientCapability: Client capability
+compliance: Compliance
+GoBD: GoBD
+other: Other
+
+# data categories
+newDataCategory: New data category
+dataCategoryOverview: Data category overview
+dataCategory: Data category
+dataTypes: Data types
+deleteDeadline: Deletion deadline (deprecated)
+deleteConcept: Deletion concept
+
+# tom
+newTom: New TOM
+tomOverview: Technical and organisational measures
+processingActivities: Processing activities
+dateCreated: Created
+
+# processing activities
+newProcessingActivity:  New processing activity
+processingDirectory: Directory
+type: Type
+processingActivityTypeHelp: AV = order processing, GV = joint control
+basis: Basis
+dataProtectionImpactAssessment: Data protection impact assessment
+dataProtectionImpactAssessmentAvailable: Impact assessment exists
+deleteDeadlineCategory: Category (Deletion deadline)
+product: Product
+assessment: Assessment
+approved: Approved
+
+# delete concepts
+newDeleteConcept: New deletion concept
+deleteConceptOverview: Delete concepts
+dataCategories: Data categories
+standardDeletionDeadline: Standard deletion deadline
+legalDeletionDeadline: Legal deletion deadline
+dataStorageLocations: Storage locations
+deleteOfficial: Responsible party
+
+# policies
+newPolicy: New policy
+internalPolicies: Internal policies and work instructions
+scopes: Scopes
+processings: Processings
+
+# contacts
+company: Company
+location: Location
+function: Function
+client: Client
+contractor: Contractor
+
+# data transfers
+newDataTransfer: New data transfer
+dataTransferInfoTitle: Data transfer info
+dataTransferInfoText: The transfer of data for processing is done in moste companies - for example for the use of external data centers or services (e.g. SaaS), cloud computing or maintenance of IT systems by a service provider. In these cases there is usually a data transfer involved, which means that special measures need to be met to ensure the GDPR isn't violated.
+close: Close
+object: Object
+responsible: Responsible
+contact: Contact
+signDate: Sign date
+consideredPoints: The contract for order processing according to Art. 28 Para. 3 GDPR takes the following points into account
+state: State
+relatedSoftware: Related software
+relatedProcessingActivity: Related processing activity
+contractType: Contract type
+contractUploaded: Order processing contract exists and has been uploaded
+responsibleParty: Responsible party (internal)
+dataTransferObject: Data transfer object
+dataTransferType: Data transfer type
+dataTransferNumber: Data transfer number
+approval: Approval
+
+# order processing
+newOrderProcessing: New order processing
+oderProcessingInfoTitle: Oder processing info
+orderProcessingInfoText: If your organisation processes data for an external person or organisation, this is referred to as "order processing". As a processor, you are not the responsible party, since the responsibility for data processing according to the GDPR lies with the customer. In order for the order processing to be contractually regulated, it is important to conclude an order processing contract with the client.
+
+# software
+newSoftware: New software
+softwareOverview: Software overview
+reference: Reference
+inventory: Inventory
+dataTransfers: Data transfers
+licence: Licence
+expiration: Expiration date
+purchaseDate: Purchase date
+expired: Expired
+softwareApproved: Software and configuration approved
+
+# forms
+newForm: New form
+version: Version
+departments: Departments
+
+# incidents
+newIncident: New incident
+incidentsTitle: Privacy protection incidents according to Art. 33
+facts: Facts
+consequences: Consequences
+measures: Measures
+uid: UID
+stateAgency: State privacy protection authority (LDA)
+affectedPersons: Affected persons
+
+# activities
+newActivity: New activity
+activitiesTitle: Activities
+processor: Processor
+billed: Billed
+minutes: Minutes
+
+# external
+
+externalCheck: I understand that my data will be processed by external services when I access this page.
 
 # admin area
 adminArea: Admin Area
@@ -63,3 +243,8 @@ academyUsers: Academy users
 addAcademyUser: Add user
 confirmAction: Do you really want to execute this action?
 addCourse: Add new course
+userName: User name
+
+# ext team dsb
+confirmRemoveDsb: The DPO will be removed as an admin, coordinator and academy user.
+addExternalDsbInfo: Here you can appoint an external DPO. The external DPO has the ability to move back and forth between teams, each time getting the Data Protection Coordinator, Data Protection Officer, Admin and Academician permissions.

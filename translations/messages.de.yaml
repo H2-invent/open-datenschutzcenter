@@ -1,6 +1,21 @@
 # global
+assignedTo: Zugewiesen an
+title: Titel
+description: Beschreibung
+overview: Übersicht
+name: Name
+fileNumber: Aktenzeichen
+time: Zeit
+yes: Ja
+no: Nein
+
+#actions
 edit: Bearbeiten
 delete: Löschen
+approve: Freigeben
+rescindApproval: Freigabe löschen
+restore: Wiederherstellen
+assign: Zuweisen
 
 # no team
 noTeam: Kein Team vorhanden
@@ -8,7 +23,6 @@ noTeamHelp: Für Ihren Benutzer ist kein Team vorhanden.<br>Fragen Sie Ihrem Adm
 
 # profile
 profile: Profil
-name: Name
 email: E-Mail
 editProfile: Profil bearbeiten
 changePassword: Passwort ändern
@@ -17,6 +31,169 @@ logout: Logout
 # dashboard
 privacycenter: Datenschutzcenter
 flowChart: Datenflussplan
+
+# assignments
+myAssignments: Meine Zuweisungen
+tasks: Aufgaben
+auditQuestions: Auditfragen
+forms: Formulare
+software: Software
+policies: Richtlinien
+
+# tasks
+tasksOverview: Aufgaben Übersicht
+newTask: Neue Aufgabe anlegen
+showAllTasks: Alle Aufgaben anzeigen
+showOpenTasks: Offene Aufgaben anzeigen
+priority: Priorität
+date: Datum
+
+# audits
+newAudit: Neues Audit anlegen
+cloneDefault: Default Fragen Clonen
+allTomAuditQuestions: Alle TOM Auditfragen
+question: Frage
+department: Abteilung
+status: Status
+category: Kategorie
+nothingSelected: nichts Ausgewählt
+privacyManagement: Datenschutzmanagement
+privacyTemplates: Verbindliche Vorlagen Datenschutz
+instructions: Arbeitsanweisungen
+emergencyPlanAndDocumentation: Notfallplanung und Dokumentation
+structuralSafety: Bauliche Sicherheit
+video: Video
+authentications: Authentifizierungen
+privileges: Berechtigungen
+logs: Logs
+backups: Backups
+deletion: Datenvernichtung/ Löschen
+transfer: Übermittlung/ Transport
+remoteMaintenance: Fernwartung
+mobileDevices: Mobile Geräte
+wlan: WLAN
+marketing: Marketing
+cloud: Cloud
+archive: Archiv
+ITSec: IT Sicherheit
+MFC: MFC
+serverRoom: Serverraum
+clientCapability: Mandantenfähigkeit
+compliance: Compliance
+GoBD: GoBD
+other: Sonstiges
+
+# data categories
+newDataCategory: Neue Datenkategorie anlegen
+dataCategoryOverview: Datenkategorien Übersicht
+dataCategory: Datenkategorie
+dataTypes: Datenarten
+deleteDeadline: Löschfrist
+deleteConcept: Löschkonzept
+
+# tom
+newTom: Neue TOM anlegen
+tomOverview: TOM Übersicht
+processingActivities: VVT
+dateCreated: Erstellt am
+
+# processing activities
+newProcessingActivity:  Neue Verarbeitung anlegen
+processingDirectory: Verzeichnis der Verarbeitungen
+type: Typ
+processingActivityTypeHelp: AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung
+basis: Grundlage
+dataProtectionImpactAssessment: Datenschutz-Folgenabschätzung
+dataProtectionImpactAssessmentAvailable: DSFA vorhanden
+deleteDeadlineCategory: Kategorie (Löschfrist)
+product: Produkt
+assessment: Beurteilung
+approved: Freigegeben
+
+# delete concepts
+newDeleteConcept: Neues Löschkonzept anlegen
+deleteConceptOverview: Löschkonzept Übersicht
+dataCategories: Datenkategorien
+standardDeletionDeadline: Standard Löschfrist
+legalDeletionDeadline: Gesetzliche Löschfrist
+dataStorageLocations: Speicherorte
+deleteOfficial: Löschbeauftragte*r
+
+# policies
+newPolicy: Neue Richtlinie anlegen
+internalPolicies: Interne Richtlinien und Arbeitsanweisungen
+scopes: Geltungsbereiche
+processings: Verarbeitungen
+
+# contacts
+company: Firma
+location: Ort
+function: Funktion
+client: Auftraggeber
+contractor: Auftragnehmer
+
+# data transfers
+newDataTransfer: Datenweitergabe anlegen
+dataTransferInfoTitle: Erklärung Datenweitergabe
+dataTransferInfoText: Die Verarbeitung von Daten im Auftrag kommt in nahezu jedem Unternehmen vor. Sei es durch die Nutzung eines externen Rechenzentrums, die Nutzung einer Dienstleistung, die als sog. Software-as-a-Service (SaaS) erbracht wird, Cloud Computing oder bestimmte Wartungen von IT-Systemen durch technische Dienstleister. In diesen Fällen liegt in der Regel eine Datenweitergabe vor. Und da gilt es besondere Maßnahmen zu treffen, um die Vorgaben der Datenschutz-Grundverordnung (DSGVO) einzuhalten.
+close: Schließen
+object: Gegenstand
+responsible: Verantwortlich
+contact: Kontakt
+signDate: Zeichnungsdatum
+consideredPoints: Der Vertrag zur Auftragsverarbeitung nach Art. 28 Abs. 3 DSGVO berücksichtigt folgende Punkte
+state: Stand
+relatedSoftware: Zugehörige Software und verbundene Verarbeitungstätigkeit
+relatedProcessingActivity: Zugehörige Verarbeitungstätigkeit
+contractType: Vertragsform
+contractUploaded: Auftragsverarbeitungsvertrag vorhanden und hochgeladen
+responsibleParty: Verantwortlich für die Datenweitergabe (Intern)
+dataTransferObject: Gegenstand der Datenweitergabe
+dataTransferType: Art der Datenweitergabe
+dataTransferNumber: Nummer der Datenweitergabe
+approval: Freigabe
+
+# order processing
+newOrderProcessing: Auftragsverarbeitung anlegen
+oderProcessingInfoTitle: Erklärung Auftragsverarbeitung
+orderProcessingInfoText: Wenn Sie oder Ihr Unternehmen für eine externe Person oder Unternehmen eine Verarbeitung von Daten durchführt, spricht man von einer sog. "Auftragsverarbeitung". Als Auftragsverarbeiter ist man nicht der Verantwortliche der Verarbeitung, da die Verantwortung der Datenverarbeitung nach der DSGVO weiterhin beim Kunden, dem sog. "Verantwortlichen" ist. Damit die Auftragsverarbeitung dennoch Vertraglich geregelt ist, ist es wichtig einen Auftragsverarbeitervertrag mit dem Kunden abzuschließen.
+
+# software
+newSoftware: Neue Anwendung anlegen
+softwareOverview: Software Inventar
+reference: Aktenzeichen
+inventory: Inventar
+dataTransfers: Datenweitergaben
+licence: Lizenz
+expiration: Ablaufdatum
+purchaseDate: Anschaffung
+expired: Abgelaufen
+softwareApproved: Software und Konfiguration freigegeben
+
+# forms
+newForm: Formular anlegen
+version: Version
+departments: Abteilungen
+
+# incidents
+newIncident: Neuen Vorfall anlegen
+incidentsTitle: Datenschutzvorfälle nach Art. 33
+facts: Fakten
+consequences: Auswirkungen
+measures: Maßnahmen
+uid: UID
+stateAgency: LDA
+affectedPersons: Betroffene
+
+# activities
+newActivity: Neue Aktivität anlegen
+activitiesTitle: Aktivitätenübersicht
+processor: Bearbeiter
+billed: Abgerechnet
+minutes: Minuten
+
+# external
+externalCheck: Ich habe verstanden, dass beim Auftrufen dieser Seite meine Daten von externen Diensten verarbeitet werden.
 
 # admin
 adminArea: Adminbereich
@@ -47,7 +224,7 @@ editProduct: Produkt/Projekt bearbeiten
 processingStatuses: VVT Status
 addProcessingStatus: VVT Status hinzufügen
 editProcessingStatus: VVT Status bearbeiten
-dataTransferBasis: Grundlage für Datenweitergaben
+dataTransferBasis: Grundlage für Datenweitergabe
 addDataTransferBasis: Grundlage hinzufügen
 editDataTransferBasis: Grundlage bearbeiten
 dataTransferStatuses: Stände in Datenweitergaben
@@ -62,6 +239,12 @@ noEntry: Kein Eintrag vorhanden
 # academy
 privacyCourses: Datenschutzkurse
 academyUsers: Akademiemitglieder
+academyUser: Akademiemitglied
 addAcademyUser: Mitglied hinzufügen
 confirmAction: Möchten Sie diese Aktion wirklich durchführen?
 addCourse: Kurs anlegen
+userName: Benutzername
+
+# ext team dsb
+confirmRemoveDsb: Der DSB wird daraufhin als Admin, Koordinator und Akademiebenutzer entfernt.
+addExternalDsbInfo: Hier können Sie einen externen DSB ernennen. Der externe DSB hat die Möglichkeit, zwischen Teams hin und her zu wechseln und dabei jedesmal die die Berechtigung Datenschutzkoordinator, Datenschutzbeauftragter, Admin und Akademiemitglied zu erhalten.

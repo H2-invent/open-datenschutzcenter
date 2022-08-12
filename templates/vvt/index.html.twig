@@ -2,12 +2,12 @@
 
 {% block CTA %}
     <a class="btn btn-indigo ml-1 btn-sm" href="{{ path('vvt_new') }}">
-        <span>Neue Verarbeitung anlegen</span>
+        <span>{% trans %}newProcessingActivity{% endtrans %}</span>
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">Verzeichnis der Verarbeitungen</h2>
+    <h2 class="h2-responsive">processingDirectory</h2>
 
     <div class="card card-body">
         <div class="table-responsive">
@@ -15,15 +15,15 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col" title="AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung">Typ</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Grundlage</th>
-                    <th scope="col" title="Datenschutzfolgenabschätzung">DSFA vorhanden</th>
-                    <th scope="col">Kategorie (Löschfrist)</th>
-                    <th scope="col">Abteilung</th>
-                    <th scope="col">Produkte</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Beurteilung</th>
+                    <th scope="col" title="{% trans %}processingActivityTypeHelp{% endtrans %}">{% trans %}type{% endtrans %}</th>
+                    <th scope="col">{% trans %}name{% endtrans %}</th>
+                    <th scope="col">{% trans %}basis{% endtrans %}</th>
+                    <th scope="col" title="{% trans %}dataProtectionImpactAssessment{% endtrans %}">{% trans %}dataProtectionImpactAssessmentAvailable{% endtrans %}</th>
+                    <th scope="col">{% trans %}deleteDeadlineCategory{% endtrans %}</th>
+                    <th scope="col">{% trans %}department{% endtrans %}</th>
+                    <th scope="col">{% trans %}product{% endtrans %}</th>
+                    <th scope="col">{% trans %}status{% endtrans %}</th>
+                    <th scope="col">{% trans %}assessment{% endtrans %}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,8 +37,12 @@
                         <td>{% for k in v.kategorien %}{{k}}<br>{% endfor %}</td>
                         <td>{% if v.abteilung %}{{ v.abteilung.name }}{% endif %}</td>
                         <td>{% if v.produkt %}{% for p in v.produkt %}{{ p.name }}<br>{% endfor %}{% endif %}</td>
-                        <td>{% if v.approved %}<span
-                                    class="note-success p-1">Freigegeben</span>{% else %}{{ v.status.name }}{% endif %}
+                        <td>
+                            {% if v.approved %}
+                                <span class="note-success p-1">{% trans %}approved{% endtrans %}</span>
+                            {% else %}
+                                {{ v.status.name }}
+                            {% endif %}
                         </td>
                         <td>| E: {{ v.beurteilungEintrittString }}<br>| S: {{ v.beurteilungSchadenString }}</td>
                     </tr>

@@ -108,7 +108,7 @@ class GuardServiceKeycloak extends SocialAuthenticator
             $user->setFirstName($keycloakUser->toArray()['given_name']);
         }
         if (isset($keycloakUser->toArray()['family_name'])) {
-            $user->setFirstName($keycloakUser->toArray()['family_name']);
+            $user->setLastName($keycloakUser->toArray()['family_name']);
         }
         $this->em->persist($user);
         $this->em->flush();
