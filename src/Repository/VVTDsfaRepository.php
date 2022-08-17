@@ -32,12 +32,28 @@ class VVTDsfaRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findActiveAndOpenByTeam($team) {
+        return $this->createQueryBuilder('dsfa')
+            ->innerJoin('dsfa.vvt', 'vvt')
+            ->andWhere('vvt.activ = 1')
+            ->andWhere('dsfa.activ = 1')
+            ->andWhere('dsfa.dsb IS NULL OR dsfa.ergebnis IS NULL')
+            ->andWhere('vvt.team = :team')
+            ->setParameter('team', $team)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findActiveByTeamAndUser($team, $user)
     {
-        $query = $this->createQueryBuilder('a')
-            ->andWhere('a.assignedUser = :user')
-            ->andWhere('a.activ = 1')
+        $query = $this->createQueryBuilder('dsfa')
+            ->innerJoin('dsfa.vvt', 'vvt')
+            ->andWhere('dsfa.assignedUser = :user')
+            ->andWhere('vvt.team = :team')
+            ->andWhere('vvt.activ = 1')
+            ->andWhere('dsfa.activ = 1')
             ->setParameter('user', $user)
+            ->setParameter('team', $team)
             ->getQuery()
             ->getResult();
 

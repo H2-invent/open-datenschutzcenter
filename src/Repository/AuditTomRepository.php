@@ -55,6 +55,18 @@ class AuditTomRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findCriticalByTeam(Team $team)
+    {
+        return $this->createQueryBuilder('audit')
+            ->andWhere('audit.team = :team')
+            ->andWhere('audit.activ = 1')
+            ->andWhere('audit.status = 5 OR audit.status = 6')
+            ->orderBy('audit.createdAt', 'DESC')
+            ->setParameter('team', $team)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findActiveByTeamAndUser($team, $user)
     {
         return $this->createQueryBuilder('a')

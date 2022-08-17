@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Team;
 use App\Entity\VVT;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -29,6 +30,17 @@ class VVTRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function findCriticalByTeam(Team $team) {
+        return $this->createQueryBuilder('vvt')
+            ->andWhere('vvt.team = :team')
+            ->andWhere('vvt.activ = 1')
+            ->andWhere('vvt.status = 3')
+            ->orderBy('vvt.CreatedAt', 'DESC')
+            ->setParameter('team', $team)
+            ->getQuery()
+            ->getResult();
     }
 
     public function findActiveByTeamAndUser($team, $user)

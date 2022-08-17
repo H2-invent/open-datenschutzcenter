@@ -116,7 +116,7 @@ class BerichtController extends AbstractController
         } elseif ($request->get('activ')) {
             $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAuditByTeam($team);
         } elseif ($request->get('open')) {
-            $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findOpenByTeam($team);
+            $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findActiveAndOpenByTeam($team);
         } else {
             $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findBy(array('team' => $team, 'activ' => true));
         }

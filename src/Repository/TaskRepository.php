@@ -43,6 +43,18 @@ class TaskRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findActiveAndOpenByTeam($team)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team = :team')
+            ->andWhere('a.activ = 1')
+            ->andWhere('a.done = false')
+            ->setParameter('team', $team)
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findActiveByUser(User $user)
     {
         return $this->createQueryBuilder('a')
