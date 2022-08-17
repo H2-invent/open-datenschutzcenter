@@ -202,7 +202,7 @@ a:focus {
     left: -250px;
     height: 100vh;
     z-index: 999;
-    background-image: url("/images/navigation.jpg");
+    background-image: url("../../public/images/navigation.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     color: #000000;
