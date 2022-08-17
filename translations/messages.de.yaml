@@ -21,6 +21,14 @@ assign: Zuweisen
 noTeam: Kein Team vorhanden
 noTeamHelp: Für Ihren Benutzer ist kein Team vorhanden.<br>Fragen Sie Ihrem Administrator oder beim Support der H2 invent nach.
 
+# error
+error: Fehler
+oops: Oops!
+error500: 500 - Interner Serverfehler
+unknownError: Unbekannter Fehler
+pageNotFound: Seite nicht gefunden
+toHomepage: Zur Startseite
+
 # profile
 profile: Profil
 email: E-Mail

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Unbekannter {{ 'Fehler'|trans }}</title>
+    <title>{% trans %}unknownError{% endtrans %}</title>
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:200,400,700" rel="stylesheet">
@@ -141,10 +141,10 @@
 <div id="notfound">
     <div class="notfound">
         <div class="notfound-404">
-            <h1>Oops!</h1>
-            <h2>XXX - {{ 'Unbekannter Fehler'|trans }}</h2>
+            <h1>{% trans %}oops{% endtrans %}</h1>
+            <h2>XXX - {% trans %}unknownError{% endtrans %}</h2>
         </div>
-        <a href="{{ path('index') }}">Go TO Homepage</a>
+        <a href="{{ path('index') }}">{% trans %}toHomepage{% endtrans %}</a>
     </div>
 </div>
 

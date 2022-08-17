@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>500 {{ 'Fehler'|trans }}</title>
+    <title>{% trans %}error500{% endtrans %}</title>
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:200,400,700" rel="stylesheet">
@@ -141,10 +141,10 @@
 <div id="notfound">
     <div class="notfound">
         <div class="notfound-404">
-            <h1>Oops!</h1>
-            <h2>500 - {{ 'Interner Serverfehler'|trans }}</h2>
+            <h1>{% trans %}oops{% endtrans %}</h1>
+            <h2>{% trans %}error500{% endtrans %}</h2>
         </div>
-        <a href="{{ path('dashboard') }}">Go TO Homepage</a>
+        <a href="{{ path('dashboard') }}">{% trans %}toHomepage{% endtrans %}</a>
     </div>
 </div>
 
