@@ -79,7 +79,7 @@ class TeamNewCommand extends Command
         $this->em->flush();
         $this->connectService->connectDefault($team,$output);
 
-        $io->success(sprintf('We create a new Team with the name %s', $team->getName()));
+        $io->success(sprintf('We created a new Team with the name %s', $team->getName()));
 
         return Command::SUCCESS;
     }
