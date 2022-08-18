@@ -6,7 +6,7 @@
 
         </div>
         <div class="modal-body">
-            {{ form_start(form, {'attr': {'action': path('team_mitglieder_create', {'type':type}), 'method': 'POST'}}) }}
+            {{ form_start(form, {'attr': {'action': path('team_mitglieder_create', {'type':type, 'id':teamId}), 'method': 'POST'}}) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
         </div>

@@ -37,6 +37,7 @@ changePassword: Passwort ändern
 logout: Logout
 
 # dashboard
+dashboard: Dashboard
 privacycenter: Datenschutzcenter
 flowChart: Datenflussplan
 
@@ -44,9 +45,7 @@ flowChart: Datenflussplan
 myAssignments: Meine Zuweisungen
 tasks: Aufgaben
 auditQuestions: Auditfragen
-forms: Formulare
 software: Software
-policies: Richtlinien
 
 # tasks
 tasksOverview: Aufgaben Übersicht
@@ -55,6 +54,14 @@ showAllTasks: Alle Aufgaben anzeigen
 showOpenTasks: Offene Aufgaben anzeigen
 priority: Priorität
 date: Datum
+
+# academy
+academyCourses: Akademie Kurse
+assigned: Zugewiesen
+startDate: Start
+completed: Abgeschlossen
+noAutomaticResubmission: Automatische Wiedervorlage noch nicht geöffnet
+certificate: Zertifikat
 
 # audits
 newAudit: Neues Audit anlegen
@@ -100,6 +107,7 @@ deleteDeadline: Löschfrist
 deleteConcept: Löschkonzept
 
 # tom
+toms: TOMs
 newTom: Neue TOM anlegen
 tomOverview: TOM Übersicht
 processingActivities: VVT
@@ -119,6 +127,7 @@ assessment: Beurteilung
 approved: Freigegeben
 
 # delete concepts
+deleteConcepts: Löschkonzepte
 newDeleteConcept: Neues Löschkonzept anlegen
 deleteConceptOverview: Löschkonzept Übersicht
 dataCategories: Datenkategorien
@@ -128,12 +137,14 @@ dataStorageLocations: Speicherorte
 deleteOfficial: Löschbeauftragte*r
 
 # policies
+policies: Richtlinien
 newPolicy: Neue Richtlinie anlegen
 internalPolicies: Interne Richtlinien und Arbeitsanweisungen
 scopes: Geltungsbereiche
 processings: Verarbeitungen
 
 # contacts
+contacts: Kontakte
 company: Firma
 location: Ort
 function: Funktion
@@ -162,6 +173,7 @@ dataTransferNumber: Nummer der Datenweitergabe
 approval: Freigabe
 
 # order processing
+orderProcessing: Auftragsverarbeitung
 newOrderProcessing: Auftragsverarbeitung anlegen
 oderProcessingInfoTitle: Erklärung Auftragsverarbeitung
 orderProcessingInfoText: Wenn Sie oder Ihr Unternehmen für eine externe Person oder Unternehmen eine Verarbeitung von Daten durchführt, spricht man von einer sog. "Auftragsverarbeitung". Als Auftragsverarbeiter ist man nicht der Verantwortliche der Verarbeitung, da die Verantwortung der Datenverarbeitung nach der DSGVO weiterhin beim Kunden, dem sog. "Verantwortlichen" ist. Damit die Auftragsverarbeitung dennoch Vertraglich geregelt ist, ist es wichtig einen Auftragsverarbeitervertrag mit dem Kunden abzuschließen.
@@ -179,11 +191,13 @@ expired: Abgelaufen
 softwareApproved: Software und Konfiguration freigegeben
 
 # forms
+forms: Formulare
 newForm: Formular anlegen
 version: Version
 departments: Abteilungen
 
 # incidents
+incidents: Vorfälle
 newIncident: Neuen Vorfall anlegen
 incidentsTitle: Datenschutzvorfälle nach Art. 33
 facts: Fakten
@@ -193,29 +207,34 @@ uid: UID
 stateAgency: LDA
 affectedPersons: Betroffene
 
+# customer questions
+customerQuestions: Kundenanfragen
+
 # activities
+activities: Aktivitäten
 newActivity: Neue Aktivität anlegen
 activitiesTitle: Aktivitätenübersicht
 processor: Bearbeiter
 billed: Abgerechnet
 minutes: Minuten
 
+# reports
+reports: Berichte
+
 # external
+external: Extern
 externalCheck: Ich habe verstanden, dass beim Auftrufen dieser Seite meine Daten von externen Diensten verarbeitet werden.
 
 # admin
+admin: Admin
 adminArea: Adminbereich
 
-# admin - members
-addUser: Benutzer hinzufügen
-remove: Entfernen
-removeAdmin: Admin entfernen
-addAdmin: Admin hinzufügen
-openInvitations: Offene Einladungen
-memberHint1: Mitarbeitende können als Datenschutzkoordinator*innen (normale Mitglieder) oder als Admin hinzugefügt werden. Datenschutzkoordinator*innen können Elemente erstellen, bearbeiten, zuweisen und exportieren. Admins können neue Mitglieder hinzufügen, Elemente freigeben und die Akademie verwalten.
-memberHint2: Falls Benutzergruppen über Keycloak verwaltet werden, müssen Mitglieder dort hinzugefügt oder entfernt werden. Andernfalls wird die Gruppenzugehörigkeit beim nächsten Login überschrieben.
+# admin - data
+teamData: Stammdaten
 
 # admin - custom
+presets: Vorgaben/Einstellungen
+changeFormPresets: Vorgaben für Formulare anpassen
 select: Auswählen
 groupsOfPeople: Personengruppen
 addGroupOfPeople: Neue Personengruppe hinzufügen
@@ -223,7 +242,7 @@ editGroupOfPeople: Personengruppe bearbeiten
 processingRisks: Risiken der Verarbeitung
 newRisk: Neues Risiko hinzufügen
 editRisk: Risiko bearbeiten
-legalBasis: Gesetzliche Grundlagen für die Verarbeitungen
+legalBases: Gesetzliche Grundlagen für die Verarbeitungen
 addLegalBasis: Gesetzliche Grundlage hinzufügen
 editLegalBasis: Gesetzliche Grundlage bearbeiten
 products: Produkte/Projekte
@@ -232,7 +251,7 @@ editProduct: Produkt/Projekt bearbeiten
 processingStatuses: VVT Status
 addProcessingStatus: VVT Status hinzufügen
 editProcessingStatus: VVT Status bearbeiten
-dataTransferBasis: Grundlage für Datenweitergabe
+dataTransferBases: Grundlagen für Datenweitergabe
 addDataTransferBasis: Grundlage hinzufügen
 editDataTransferBasis: Grundlage bearbeiten
 dataTransferStatuses: Stände in Datenweitergaben
@@ -244,7 +263,22 @@ editAuditGoal: Schutzziel bearbeiten
 default: Default
 noEntry: Kein Eintrag vorhanden
 
-# academy
+# admin - members
+users: Benutzer
+coordinator: Koordinator*in
+manageUsers: Benutzer*innen verwalten
+addUser: Benutzer*in hinzufügen
+remove: Entfernen
+extDsb: Ext. DSB
+removeAdmin: Admin entfernen
+addAdmin: Admin hinzufügen
+openInvitations: Offene Einladungen
+memberHint1: Mitarbeitende können als Datenschutzkoordinator*innen (normale Mitglieder) oder als Admin hinzugefügt werden. Datenschutzkoordinator*innen können Elemente erstellen, bearbeiten, zuweisen und exportieren. Admins können neue Mitglieder hinzufügen, Elemente freigeben und die Akademie verwalten.
+memberHint2: Falls Benutzergruppen über Keycloak verwaltet werden, müssen Mitglieder dort hinzugefügt oder entfernt werden. Andernfalls wird die Gruppenzugehörigkeit beim nächsten Login überschrieben.
+
+# admin - academy
+manageAcademy: Akademie verwalten
+academy: Akademie
 privacyCourses: Datenschutzkurse
 academyUsers: Akademiemitglieder
 academyUser: Akademiemitglied
@@ -253,6 +287,23 @@ confirmAction: Möchten Sie diese Aktion wirklich durchführen?
 addCourse: Kurs anlegen
 userName: Benutzername
 
+# admin - import
+import: Import
+
+# admin - manage teams
+manageTeams: Teams verwalten
+displayName: Anzeigename
+memberCount: Anzahl Mitglieder
+admins: Admins
+newTeam: Team erstellen
+manageTeamData: Stammdaten bearbeiten
+manageTeamMembers: Mitglieder bearbeiten
+
 # ext team dsb
+externalDsb: Externer DSB
+manageExternalDsb: Externen DSB verwalten
+dsbAdded: Ein neuer DSB wurde hinzugefügt.
 confirmRemoveDsb: Der DSB wird daraufhin als Admin, Koordinator und Akademiebenutzer entfernt.
 addExternalDsbInfo: Hier können Sie einen externen DSB ernennen. Der externe DSB hat die Möglichkeit, zwischen Teams hin und her zu wechseln und dabei jedesmal die die Berechtigung Datenschutzkoordinator, Datenschutzbeauftragter, Admin und Akademiemitglied zu erhalten.
+cannotRemoveSelfExtDsb: Sie können sich nicht selbst aus dem Team entfernen und wurden daher nur als externer DSB entfernt.
+extDsbRemoved: Sie haben den externen DSB aus Ihrem Team entfernt.

@@ -40,7 +40,7 @@ class AkademieBuchungen
     private $abgeschlossen;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="buchungen")
+     * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

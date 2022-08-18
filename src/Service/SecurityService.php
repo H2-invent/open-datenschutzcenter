@@ -71,19 +71,46 @@ class SecurityService
         return true;
     }
 
-    function adminCheck(User $user, Team $team)
+    /**
+     * @param User $user
+     * @param Team $team
+     * @return bool
+     */
+    function adminCheck(User $user, Team $team) : bool
     {
         if (!$this->teamCheck($team)) {
             return false;
         }
 
-        // Falls Nutzer*in im Team ist UND Adminrechte für dieses Team hat
+        // If user is super admin
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            return true;
+        }
+
+        // If user is in team AND has admin rights for this team
         if ($user->hasTeam($team) && $user->hasAdminRole($team)) {
             return true;
         }
 
-        // Sonst
+        // Else
         $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer*in ist nicht Admin dieses Teams'];
+        $this->logger->error($message['typ'], $message);
+        return false;
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    function superAdminCheck(User $user) : bool
+    {
+        // If user is super admin
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            return true;
+        }
+
+        // else
+        $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer*in ist nicht berechtigt, Teams zu verwalten'];
         $this->logger->error($message['typ'], $message);
         return false;
     }

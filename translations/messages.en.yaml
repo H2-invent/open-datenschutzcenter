@@ -37,6 +37,7 @@ changePassword: Change password
 logout: Logout
 
 # dashboard
+dashboard: Dashboard
 privacycenter: Privacy Center
 flowChart: Data flow chart
 
@@ -44,9 +45,7 @@ flowChart: Data flow chart
 myAssignments: My assignments
 tasks: Tasks
 auditQuestions: Audit questions
-forms: Forms
 software: Software
-policies: Policies
 
 # tasks
 tasksOverview: Task overview
@@ -55,6 +54,14 @@ showAllTasks: Show all tasks
 showOpenTasks: Show open tasks
 priority: Priority
 date: Date
+
+# academy
+academyCourses: Academy courses
+assigned: Assigned
+startDate: Start date
+completed: Completed
+noAutomaticResubmission: Automatic resubmission not opened yet
+certificate: Zertifikat
 
 # audits
 newAudit: New audit
@@ -100,6 +107,7 @@ deleteDeadline: Deletion deadline (deprecated)
 deleteConcept: Deletion concept
 
 # tom
+toms: TOMs
 newTom: New TOM
 tomOverview: Technical and organisational measures
 processingActivities: Processing activities
@@ -119,6 +127,7 @@ assessment: Assessment
 approved: Approved
 
 # delete concepts
+deleteConcepts: Löschkonzepte
 newDeleteConcept: New deletion concept
 deleteConceptOverview: Delete concepts
 dataCategories: Data categories
@@ -128,12 +137,14 @@ dataStorageLocations: Storage locations
 deleteOfficial: Responsible party
 
 # policies
+policies: Policies
 newPolicy: New policy
 internalPolicies: Internal policies and work instructions
 scopes: Scopes
 processings: Processings
 
 # contacts
+contacts: Kontakte
 company: Company
 location: Location
 function: Function
@@ -162,6 +173,7 @@ dataTransferNumber: Data transfer number
 approval: Approval
 
 # order processing
+orderProcessing: Order processing
 newOrderProcessing: New order processing
 oderProcessingInfoTitle: Oder processing info
 orderProcessingInfoText: If your organisation processes data for an external person or organisation, this is referred to as "order processing". As a processor, you are not the responsible party, since the responsibility for data processing according to the GDPR lies with the customer. In order for the order processing to be contractually regulated, it is important to conclude an order processing contract with the client.
@@ -179,11 +191,13 @@ expired: Expired
 softwareApproved: Software and configuration approved
 
 # forms
+forms: Formulare
 newForm: New form
 version: Version
 departments: Departments
 
 # incidents
+incidents: Vorfälle
 newIncident: New incident
 incidentsTitle: Privacy protection incidents according to Art. 33
 facts: Facts
@@ -193,30 +207,34 @@ uid: UID
 stateAgency: State privacy protection authority (LDA)
 affectedPersons: Affected persons
 
+# customer questions
+customerQuestions: Kundenfragen
+
 # activities
+activities: Aktivitäten
 newActivity: New activity
 activitiesTitle: Activities
 processor: Processor
 billed: Billed
 minutes: Minutes
 
-# external
+# reports
+reports: Berichte
 
+# external
+external: Extern
 externalCheck: I understand that my data will be processed by external services when I access this page.
 
 # admin area
+admin: Admin
 adminArea: Admin Area
 
-# admin - members
-addUser: Add user
-remove: Remove
-removeAdmin: Remove admin
-addAdmin: Add admin
-openInvitations: Open invitations
-memberHint1: Members can be added as privacy coordinators (ordinary users) or as admins. Coordinators can create, edit, assign and export elements. Admins can add new members, approve elements and manage the academy.
-memberHint2: If user groups are managed via keycloak, members must be added or removed there. Otherwise the group membership will be overwritten the next time a user logs in.
+# admin - data
+teamData: Stammdaten
 
 # admin - custom
+presets: Presets
+changeFormPresets: Change Form Presets
 select: Select
 groupsOfPeople: Groups of People
 addGroupOfPeople: Add new group
@@ -245,7 +263,23 @@ editAuditGoal: Edit goal
 default: Default
 noEntry: No entry
 
+# admin - members
+user: Benutzer
+coordinator: Coordinator
+manageUsers: Benutzer*innen verwalten
+addUser: Add user
+remove: Remove
+extDsb: Ext. DPO
+removeAdmin: Remove admin
+addAdmin: Add admin
+openInvitations: Open invitations
+memberHint1: Members can be added as privacy coordinators (ordinary users) or as admins. Coordinators can create, edit, assign and export elements. Admins can add new members, approve elements and manage the academy.
+memberHint2: If user groups are managed via keycloak, members must be added or removed there. Otherwise the group membership will be overwritten the next time a user logs in.
+
+
 # admin - academy
+manageAcademy: Manage academy
+academy: Academy
 privacyCourses: Privacy protection courses
 academyUsers: Academy users
 addAcademyUser: Add user
@@ -253,6 +287,23 @@ confirmAction: Do you really want to execute this action?
 addCourse: Add new course
 userName: User name
 
+# admin - import
+import: Import
+
+# admin - manage teams
+manageTeams: Manage teams
+displayName: Display name
+memberCount: Members
+admins: Admins
+newTeam: New team
+manageTeamData: Edit team
+manageTeamMembers: Edit members
+
 # ext team dsb
+externalDsb: External DPO
+manageExternalDsb: Manage external DPO
+dsbAdded: A new DPO was added.
 confirmRemoveDsb: The DPO will be removed as an admin, coordinator and academy user.
 addExternalDsbInfo: Here you can appoint an external DPO. The external DPO has the ability to move back and forth between teams, each time getting the Data Protection Coordinator, Data Protection Officer, Admin and Academician permissions.
+cannotRemoveSelfExtDsb: Sie können sich nicht selbst aus dem Team entfernen und wurden daher nur als externer DSB entfernt.
+extDsbRemoved: You have removed the external DPO from your team.

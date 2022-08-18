@@ -9,12 +9,14 @@
             {% if data %}
                 <div class="row">
                     <div class="col-md-6">
-                        {{ 'Email'|trans }}: {{ data.email }}<br>
-                        {{ 'Benutzername'|trans }}: {{ data.username }}
+                        {{ 'email'|trans }}: {{ data.email }}<br>
+                        {{ 'userName'|trans }}: {{ data.username }}
                     </div>
                     <div class="col-md-6">
                         <a href="{{ path('team_dsb_remove', {'id':data.id}) }}" class="btn btn-sm btn-danger"
-                           onClick="return confirm('{% trans %}confirmAction Der DSB wird daraufhin als Admin, Koordinator und Akademiebenutzer entfernt.{% endtrans %}')">Entfernen</a>
+                           onClick="return confirm('{% trans %}confirmRemoveDsb{% endtrans %}')">
+                                {% trans %}remove{% endtrans %}
+                        </a>
                     </div>
                 </div>
             {% else %}
@@ -22,7 +24,7 @@
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
                 <p class="alert-danger mt-5 text-center">
-                    {% trans %}Hier können Sie einen externen DSB ernennen. Der externe DSB hat die Möglichkeit, zwischen Teams hin und her zu wechseln und dabei jedesmal die die Berechtigung Datenschutzkoordinator, Datenschutzbeauftragter, Admin und Akademiemitglied zu erhalten.{% endtrans %}
+                    {% trans %}addExternalDsbInfo{% endtrans %}
                 </p>
             {% endif %}
 

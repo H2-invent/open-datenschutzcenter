@@ -3,7 +3,7 @@
 {% block body %}
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
-        <a href="{{ path('team_mitglieder_create', {'title':'Mitglied hinzufügen', 'type':'odc'}) }}"
+        <a href="{{ path('team_mitglieder_create', {'title':'Mitglied hinzufügen', 'type':'odc', 'id':data.id}) }}"
            class="btn btn-primary btn-sm loadContent">{% trans %}addUser{% endtrans %}</a>
         <a href="{{ path('akademie_admin') }}#user" class="btn btn-cyan btn-sm">{% trans %}academyUser{% endtrans %}</a>
         <div class="card card-body">
@@ -14,29 +14,29 @@
                         {{ member.firstname }} {{ member.lastname }} ({{ member.email }})
                         <div class="small">
                             {% if data in member.teamDsb %}
-                                <span class="badge-primary p-1 mt-sm-1 rounded">Ext. DSB</span>
+                                <span class="badge-primary p-1 mt-sm-1 rounded">{% trans %}extDsb{% endtrans %}</span>
                             {% endif %}
                             {% if data in member.adminRoles %}
-                                <span class="badge-success p-1 rounded">Admin</span>
+                                <span class="badge-success p-1 rounded">{% trans %}admin{% endtrans %}</span>
                             {% endif %}
                             {% if member.akademieUser == data %}
-                                <span class="badge-warning p-1 rounded">Akademie</span>
+                                <span class="badge-warning p-1 rounded">{% trans %}academy{% endtrans %}</span>
                             {% endif %}
                             {% if data in member.teams %}
-                                <span class="badge-info p-1 rounded">Koordinator</span>
+                                <span class="badge-info p-1 rounded">{% trans %}coordinator{% endtrans %}</span>
                             {% endif %}
                         </div>
                         {% if data in member.adminRoles %}
-                            <a class="btn btn-sm btn-info float-md-right" href="{{ path('team_mitglieder_admin', {'id':member.id}) }}">
+                            <a class="btn btn-sm btn-info float-md-right" href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':data.id}) }}">
                                 {% trans %}removeAdmin{% endtrans %}
                             </a>
                         {% else %}
-                            <a class="btn btn-sm btn-success float-md-right" href="{{ path('team_mitglieder_admin', {'id':member.id}) }}">
+                            <a class="btn btn-sm btn-success float-md-right" href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':data.id}) }}">
                                 {% trans %}addAdmin{% endtrans %}
                             </a>
                         {% endif %}
                         <a class="btn btn-sm btn-danger float-md-right"
-                           href="{{ path('team_mitglieder_remove',{'id':member.id,'type':'odc'}) }}">{% trans %}remove{% endtrans %}</a>
+                           href="{{ path('team_mitglieder_remove',{'memberId':member.id, 'teamId':data.id, 'type':'odc'}) }}">{% trans %}remove{% endtrans %}</a>
                     </li>
                 {% endfor %}
                 </ul>

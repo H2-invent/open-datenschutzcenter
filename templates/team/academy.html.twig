@@ -30,8 +30,8 @@
                             <li class="list-group-item">{{ d.email }}
                                 <a class="btn btn-sm btn-danger float-md-right"
                                     onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
-                                    href="{{ path('team_mitglieder_remove',{'id':d.id, 'type':'academy'}) }}">
-                                    Entfernen
+                                    href="{{ path('team_mitglieder_remove',{'memberId':d.id, 'teamId':team.id, 'type':'academy'}) }}">
+                                    {% trans %}remove{% endtrans %}
                                 </a>
                             </li>
                         {% endfor %}

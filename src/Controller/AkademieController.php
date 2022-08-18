@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\AkademieBuchungen;
+use App\Repository\AkademieBuchungenRepository;
 use App\Service\SecurityService;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +15,7 @@ class AkademieController extends AbstractController
     /**
      * @Route("/akademie", name="akademie")
      */
-    public function index(SecurityService $securityService)
+    public function index(SecurityService $securityService, AkademieBuchungenRepository $bookingRepository)
     {
         $team = $this->getUser()->getAkademieUser();
 
@@ -22,11 +23,11 @@ class AkademieController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findMyBuchungenByUser($this->getUser());
+        $bookings = $bookingRepository->findMyBuchungenByUser($this->getUser());
         return $this->render('akademie/index.html.twig', [
-            'buchungen' => $buchungen,
-
-            'today' => $today = new \DateTime(),
+            'buchungen' => $bookings,
+            'currentTeam' => $team,
+            'today' => new \DateTime(),
         ]);
     }
 

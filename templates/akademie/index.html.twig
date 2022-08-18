@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}Akademie Kurse{% endtrans %}</h2>
+    <h2 class="h2-responsive">{% trans %}academyCourses{% endtrans %}</h2>
     <div class="card card-body">
         <div class="table-responsive">
             <table id="data-table" class="table display table-striped">
@@ -11,7 +11,7 @@
                     <th scope="col">{% trans %}title{% endtrans %}</th>
                     <th scope="col">{% trans %}assigned{% endtrans %}</th>
                     <th scope="col">{% trans %}startDate{% endtrans %}</th>
-                    <th scope="col">{% trans %}Abgeschlossen{% endtrans %}</th>
+                    <th scope="col">{% trans %}completed{% endtrans %}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -21,7 +21,7 @@
                         <th scope="row">{{ b.id }}</th>
                         <th>
                             {% if b.zugewiesen > today %}
-                                {% trans %}Automatische Wiedervorlage noch nicht geöffnet{% endtrans %}
+                                {% trans %}noAutomaticResubmission{% endtrans %}
                             {% else %}
                                 {{ b.kurs.title }} (id: {{ b.kurs.id }})
                             {% endif %}
@@ -31,7 +31,7 @@
                         <td>
                             {% if b.abgeschlossen %}
                                 <a href="{{ path('akademie_kurs_zertifikat', {'buchung':b.id}) }}" class="btn btn-sm bg-akademie">
-                                    {% trans %}Zertifikat{% endtrans %}
+                                    {% trans %}certificate{% endtrans %}
                                 </a>
                             {% else %}
                                 {% trans %}no{% endtrans %}

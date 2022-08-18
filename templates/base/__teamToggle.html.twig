@@ -4,7 +4,7 @@
     {% set teams = app.user.teams %}
 {% endif %}
 
-{% if teams|length > 1 and currentTeam is defined %}
+{% if teams|length > 1 and currentTeam is defined and currentTeam %}
     <li class="nav-item dropdown team-select mr-2">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{ currentTeam.displayName }}

@@ -5,13 +5,13 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Titel</th>
-                <th scope="col">Status</th>
-                <th scope="col">Version</th>
-                <th scope="col">Beschreibung</th>
-                <th scope="col">Produkte</th>
-                <th scope="col">Abteilungen</th>
-                <th scope="col">Datum</th>
+                <th scope="col">{% trans %}title{% endtrans %}</th>
+                <th scope="col">{% trans %}status{% endtrans %}</th>
+                <th scope="col">{% trans %}version{% endtrans %}</th>
+                <th scope="col">{% trans %}description{% endtrans %}</th>
+                <th scope="col">{% trans %}products{% endtrans %}</th>
+                <th scope="col">{% trans %}departments{% endtrans %}</th>
+                <th scope="col">{% trans %}date{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -19,7 +19,13 @@
                 <tr class="clickable-row" data-href='{{ path('forms_edit',{'id':t.id}) }}'>
                     <th scope="row">{{ t.id }}</th>
                     <td>{{ t.title }}</td>
-                    <td>{% if t.approved %}Freigegeben{% else %}{{ t.statusString }}{% endif %}</td>
+                    <td>
+                        {% if t.approved %}
+                            {% trans %}approved{% endtrans %}
+                        {% else %}
+                            {{ t.statusString }}
+                        {% endif %}
+                    </td>
                     <td>{{ t.version }}</td>
                     <td>{{ t.description }}</td>
                     <td>{% if t.products %}{% for de in t.products %}{{ de.name }}<br>{% endfor %}{% endif %}</td>

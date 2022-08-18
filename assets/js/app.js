@@ -50,8 +50,18 @@ $(document).ready(function () {
     $('#data-table').DataTable({
         dom: 'Bfrtip',
         buttons: [
-            'csv', 'excel'
-
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(.hide-in-export)'
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(.hide-in-export)'
+                }
+            }
         ]
     });
 
