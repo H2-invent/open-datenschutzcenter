@@ -12,7 +12,7 @@
                 <thead>
                 <tr>
                     <th scope="col">{% trans %}name{% endtrans %}</th>
-                    <th scope="col">{% trans %}displayName{% endtrans %}</th>
+                    <th scope="col">{% trans %}name{% endtrans %}</th>
                     <th scope="col">{% trans %}memberCount{% endtrans %}</th>
                     <th scope="col">{% trans %}admins{% endtrans %}</th>
                     <th class="hide-in-export"></th>
@@ -22,7 +22,7 @@
                 {% for t in teams %}
                     <tr>
                         <td>{{ t.name }}</td>
-                        <td>{{ t.displayName }}</td>
+                        <td>{{ t.name }}</td>
                         <td>{{ t.members | length }}</td>
                         <td>
                             {% for a in t.admins %}

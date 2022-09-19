@@ -433,7 +433,7 @@ class User extends BaseUser
 
     public function hasAdminRole(Team $team = null): bool
     {
-        if ($team) {
+        if ($team && $this->adminRoles) {
             return $this->adminRoles->contains($team);
         }
         return count($this->adminRoles) > 0;

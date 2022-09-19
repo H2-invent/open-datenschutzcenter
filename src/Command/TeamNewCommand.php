@@ -42,8 +42,8 @@ class TeamNewCommand extends Command
         $name = $helper->ask($input, $output, $question);
         $team->setName($name);
         $question = new Question('Display name (if different from team name): ', '');
-        $displayName = $helper->ask($input, $output, $question);
-        $team->setDisplayName($displayName);
+        $keycloakGroup = $helper->ask($input, $output, $question);
+        $team->setKeycloakGroup($keycloakGroup);
         $question = new Question('Street: ', '');
         $street = $helper->ask($input, $output, $question);
         $team->setStrasse($street);

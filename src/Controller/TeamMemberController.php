@@ -19,6 +19,7 @@ use App\Form\Type\NewMemberType;
 use App\Form\Type\NewType;
 use App\Form\Type\TeamType;
 use App\Repository\AkademieKurseRepository;
+use App\Repository\SettingsRepository;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
 use App\Service\InviteService;
@@ -43,6 +44,7 @@ class TeamMemberController extends AbstractController
      * @param EntityManagerInterface $em
      * @param TranslatorInterface $translator
      * @param TeamRepository $teamRepository
+     * @param SettingsRepository $settingsRepository
      * @param SecurityService $securityService
      * @param CurrentTeamService $currentTeamService
      * @return Response
@@ -52,6 +54,7 @@ class TeamMemberController extends AbstractController
                                   EntityManagerInterface $em,
                                   TranslatorInterface $translator,
                                   TeamRepository $teamRepository,
+                                  SettingsRepository $settingsRepository,
                                   SecurityService $securityService,
                                   CurrentTeamService $currentTeamService
     ) : Response
@@ -59,12 +62,21 @@ class TeamMemberController extends AbstractController
         $user = $this->getUser();
         $teamId = $request->get('id');
         $currentTeam = null;
+        $settings = $settingsRepository->findOne();
 
         if ($teamId) {
             $team = $teamRepository->find($teamId);
         } else {
             $team = $currentTeamService->getCurrentAdminTeam($user);
             $currentTeam = $team;
+        }
+
+        $temp = array_merge($team->getMembers()->toArray(), $team->getAdmins()->toArray());
+        $members = [];
+        foreach($temp as $member) {
+            if (!in_array($member, $members)) {
+                $members[] = $member;
+            }
         }
 
         if ($securityService->adminCheck($user, $team) === false) {
@@ -100,7 +112,9 @@ class TeamMemberController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => $translator->trans('manageUsers'),
-            'data' => $team,
+            'team' => $team,
+            'members' => $members,
+            'useKeycloakGroups' => $settings->getUseKeycloakGroups(),
         ]);
     }
 
@@ -125,6 +139,7 @@ class TeamMemberController extends AbstractController
         $user = $this->getUser();
         $teamId = $request->get('id');
         $team = $teamId ? $teamRepository->find($teamId) : $currentTeamService->getCurrentAdminTeam($user);
+        $target = $this->generateUrl('team_mitglieder');
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -144,6 +159,12 @@ class TeamMemberController extends AbstractController
                     $user = $inviteService->newUser($newMember);
 
                     switch ($request->get('type')) {
+                        case 'admin':
+                            if (!$user->hasAdminRole($team)) {
+                                $team->addAdmin($user);
+                                $em->persist($team);
+                            }
+                            break;
                         case 'academy':
                             if ($user->getAkademieUser() === null) {
                                 $user->setAkademieUser($team);
@@ -158,8 +179,6 @@ class TeamMemberController extends AbstractController
                             }
                             if ($teamId) {
                                 $target = $this->generateUrl('team_mitglieder', ['id' => $teamId]);
-                            } else {
-                                $target = $this->generateUrl('team_mitglieder');
                             }
                     }
                 }

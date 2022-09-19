@@ -87,8 +87,8 @@ class SecurityService
             return true;
         }
 
-        // If user is in team AND has admin rights for this team
-        if ($user->hasTeam($team) && $user->hasAdminRole($team)) {
+        // If user has admin rights for this team
+        if ($user->hasAdminRole($team)) {
             return true;
         }
 

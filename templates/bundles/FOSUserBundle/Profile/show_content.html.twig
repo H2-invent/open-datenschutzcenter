@@ -12,9 +12,9 @@
 
     {% if currentTeam is defined %}
         <p>
-            Team: {% if currentTeam %}{{ currentTeam.displayName }}<br>{% endif %}
+            Team: {% if currentTeam %}{{ currentTeam.name }}<br>{% endif %}
             Akademie: {% if user.akademieuser %}{{ user.akademieuser.name }}<br>{% endif %}
-            Team: {% if currentTeam in user.adminRoles %}{{ currentTeam.displayName }}{% endif %}
+            Team: {% if currentTeam in user.adminRoles %}{{ currentTeam.name }}{% endif %}
         </p>
     {% endif %}
 </div>

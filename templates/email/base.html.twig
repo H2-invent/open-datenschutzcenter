@@ -50,7 +50,7 @@
                     <a href="{{ dataPrivacy }}">Datenschutzhinweis</a><br>
                     {% if team is defined and team is not null %}
                         {% trans %}Diese Mail wurde Ihnen gesendet im Auftrag von:{% endtrans %}<br>
-                        {{ team.displayName }} - {{ team.strasse }}, {{ team.plz }} {{ team.stadt }}
+                        {{ team.name }} - {{ team.strasse }}, {{ team.plz }} {{ team.stadt }}
                     {% endif %}
                 </p>
 

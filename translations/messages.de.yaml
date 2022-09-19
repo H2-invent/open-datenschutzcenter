@@ -63,6 +63,9 @@ completed: Abgeschlossen
 noAutomaticResubmission: Automatische Wiedervorlage noch nicht geöffnet
 certificate: Zertifikat
 
+# elements
+elements: Datenschutzelemente
+
 # audits
 newAudit: Neues Audit anlegen
 cloneDefault: Default Fragen Clonen
@@ -228,6 +231,8 @@ externalCheck: Ich habe verstanden, dass beim Auftrufen dieser Seite meine Daten
 # admin
 admin: Admin
 adminArea: Adminbereich
+teamAdminArea: Team Adminbereich
+superAdminArea: ODC Adminbereich
 
 # admin - data
 teamData: Stammdaten
@@ -264,8 +269,8 @@ default: Default
 noEntry: Kein Eintrag vorhanden
 
 # admin - members
-users: Benutzer
-coordinator: Koordinator*in
+users: Benutzer*innen
+coordinator: Mitglied
 manageUsers: Benutzer*innen verwalten
 addUser: Benutzer*in hinzufügen
 remove: Entfernen
@@ -273,8 +278,8 @@ extDsb: Ext. DSB
 removeAdmin: Admin entfernen
 addAdmin: Admin hinzufügen
 openInvitations: Offene Einladungen
-memberHint1: Mitarbeitende können als Datenschutzkoordinator*innen (normale Mitglieder) oder als Admin hinzugefügt werden. Datenschutzkoordinator*innen können Elemente erstellen, bearbeiten, zuweisen und exportieren. Admins können neue Mitglieder hinzufügen, Elemente freigeben und die Akademie verwalten.
-memberHint2: Falls Benutzergruppen über Keycloak verwaltet werden, müssen Mitglieder dort hinzugefügt oder entfernt werden. Andernfalls wird die Gruppenzugehörigkeit beim nächsten Login überschrieben.
+manageMembersHintOdc: Mitarbeitende können als normale Mitglieder oder als Admin hinzugefügt werden. Mitglieder können Elemente erstellen, bearbeiten, zuweisen und exportieren. Admins können neue Mitglieder hinzufügen, Elemente freigeben und die Akademie verwalten.
+manageMembersHintKeycloak: In diesem ODC wird die Teamzugehörigkeit über Keycloakgruppen verwaltet. Ändert sich die Mitgliedschaft eines Nutzers im Keycloak, wird diese beim nächsten Login im ODC aktualisiert.
 
 # admin - academy
 manageAcademy: Akademie verwalten
@@ -289,6 +294,9 @@ userName: Benutzername
 
 # admin - import
 import: Import
+
+# admin - manage odc
+manageOdc: ODC Einstellungen
 
 # admin - manage teams
 manageTeams: Teams verwalten

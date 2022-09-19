@@ -7,14 +7,14 @@
 {% if teams|length > 1 and currentTeam is defined and currentTeam %}
     <li class="nav-item dropdown team-select mr-2">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ currentTeam.displayName }}
+            {{ currentTeam.name }}
         </a>
         <div class="dropdown-menu p-0" aria-labelledby="navbarDropdownMenuLink">
             {% for team in teams %}
                 {% if currentTeam == team %}
-                    <a class="dropdown-item" disabled>{{ team.displayName }}</a>
+                    <a class="dropdown-item" disabled>{{ team.name }}</a>
                 {% else %}
-                    <a class="dropdown-item" href="{{ path('team_switch',{'team':team.name}) }}">{{ team.displayName }}</a>
+                    <a class="dropdown-item" href="{{ path('team_switch',{'team':team.name}) }}">{{ team.name }}</a>
                 {% endif %}
             {% endfor %}
         </div>

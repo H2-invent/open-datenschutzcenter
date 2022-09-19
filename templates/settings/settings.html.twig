@@ -7,20 +7,18 @@
     </h4>
 {% endblock %}
 
-{% block title %}{{ title }}{% endblock %}
 {% block body %}
-    <div class="container">
-        <h2 class="h2-responsive">{{ title }}</h2>
+    <h2 class="h2-responsive">{% trans %}manageOdc{% endtrans %}</h2>
 
-        <div class="card card-body ">
-            <div>
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
-            </div>
+    <div class="card card-body ">
+        <div>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}
+
 
 {% block javascript %}
 {% endblock %}

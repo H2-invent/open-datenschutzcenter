@@ -9,6 +9,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Team;
+use App\Repository\SettingsRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -18,12 +19,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TeamType extends AbstractType
 {
+    private $settings;
+
+    public function __construct(SettingsRepository $settingsRepository)
+    {
+        $this->settings = $settingsRepository->findOne();
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
+        $builder->add('name', TextType::class, ['label' => 'teamName', 'required' => true, 'translation_domain' => 'form']);
+
+        if ($this->settings->getUseKeycloakGroups()) {
+            $builder->add('keycloakGroup', TextType::class, ['label' => 'keycloakGroup', 'help' => 'keycloakGroupHelp', 'required' => false, 'translation_domain' => 'form']);
+        }
+
         $builder
-            ->add('name', TextType::class, ['label' => 'teamName', 'required' => true, 'translation_domain' => 'form', 'help' => 'teamNameHelp'])
-            ->add('displayName', TextType::class, ['label' => 'displayName', 'required' => false, 'translation_domain' => 'form'])
             ->add('strasse', TextType::class, ['label' => 'street', 'required' => true, 'translation_domain' => 'form'])
             ->add('plz', TextType::class, ['label' => 'postcode', 'required' => true, 'translation_domain' => 'form'])
             ->add('stadt', TextType::class, ['label' => 'city', 'required' => true, 'translation_domain' => 'form'])

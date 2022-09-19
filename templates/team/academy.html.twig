@@ -23,8 +23,8 @@
             <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="profile-tab">
 
                 <div class="card card-body">
-                    <a href="{{ path('team_mitglieder_create', {'title':'Mitarbeitende zur Akademie hinzufügen', 'type':'academy'}) }}"
-                       class="btn btn-primary btn-sm loadContent">{% trans %}addUser{% endtrans %}</a>
+                    <a href="{{ path('team_mitglieder_create', {'title':'Akademiemitglied hinzufügen', 'type':'academy'}) }}"
+                       class="btn btn-primary btn-sm loadContent">{% trans %}addAcademyUser{% endtrans %}</a>
                     <ul class="list-group">
                         {% for d in data %}
                             <li class="list-group-item">{{ d.email }}

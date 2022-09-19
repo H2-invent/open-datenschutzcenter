@@ -49,7 +49,7 @@ class ClientRequestService
                 }
 
                 $team = $this->currentTeamService->getTeamFromSession($user);
-                $this->newComment($clientRequest, $comment, $team->getDisplayName() . ' > ' . $user->getUsername(), 1);
+                $this->newComment($clientRequest, $comment, $team->getKeycloakGroup() . ' > ' . $user->getUsername(), 1);
 
                 $this->em->persist($clientRequest);
                 $this->em->flush();
@@ -114,7 +114,7 @@ class ClientRequestService
                 }
 
                 $team = $this->currentTeamService->getTeamFromSession($user);
-                $this->newComment($clientRequest, $comment, $team->getDisplayName() . ' > ' . $user->getUsername(), 1);
+                $this->newComment($clientRequest, $comment, $team->getKeycloakGroup() . ' > ' . $user->getUsername(), 1);
 
                 $this->em->persist($clientRequest);
                 $this->em->flush();

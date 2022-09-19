@@ -57,7 +57,7 @@
                                     <img style="width: 21px" src="{{ asset('images/task.png') }}">
                                 </div>
                                 <div class="col-xl-6 col-md-7">
-                                    {{ a.team.displayName }}: {{ a.title }}
+                                    {{ a.team.name }}: {{ a.title }}
                                 </div>
                                 <div class="col-xl-3 col-md-5">
                                     {{ a.createdAt|date('d.m.Y') }}
@@ -96,7 +96,7 @@
                                         <img style="width: 21px" src="{{ asset('images/pruefung.png') }}">
                                     </div>
                                     <div class="col-lg-6 col-md-6">
-                                        {{ a.team.displayName }}: {{ a.frage }}
+                                        {{ a.team.name }}: {{ a.frage }}
                                     </div>
                                     <div class="col-lg-5 col-md-6">
                                         {{ a.status.name }}
@@ -117,7 +117,7 @@
                                         <img style="width: 21px" src="{{ asset('images/prozess.png') }}">
                                     </div>
                                     <div class="col-xl-5 col-md-7">
-                                        {{ a.team.displayName }}: {{ a.name }}
+                                        {{ a.team.name }}: {{ a.name }}
                                     </div>
                                     <div class="col-xl-3 d-none d-xl-block">
                                         {{ a.status.name }}
@@ -141,7 +141,7 @@
                                         <img style="width: 21px" src="{{ asset('images/dsta.png') }}">
                                     </div>
                                     <div class="col-xl-6 col-md-6">
-                                        {{ a.vvt.team.displayName }}: {{ a.beschreibung }}
+                                        {{ a.vvt.team.name }}: {{ a.beschreibung }}
                                     </div>
                                     <div class="col-xl-3 col-md-6">
                                         {{ a.createdAt|date('d.m.Y') }}
@@ -162,7 +162,7 @@
                                         <img style="width: 21px" src="{{ asset('images/data.png') }}">
                                     </div>
                                     <div class="col-xl-6 col-md-6">
-                                        {{ a.team.displayName }}: {{ a.gegenstand }}
+                                        {{ a.team.name }}: {{ a.gegenstand }}
                                     </div>
                                     <div class="col-xl-3 col-md-6">
                                         {{ a.createdAt|date('d.m.Y') }}

@@ -66,8 +66,6 @@ class TeamController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $goal = new AuditTomZiele();
-        $goal->setTeam($team);
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
 

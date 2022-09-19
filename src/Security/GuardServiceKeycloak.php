@@ -3,6 +3,7 @@
 
 namespace App\Security;
 
+use App\Entity\Settings;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Repository\TeamRepository;
@@ -79,17 +80,25 @@ class GuardServiceKeycloak extends SocialAuthenticator
     }
 
     /**
-     * @return Team[]
+     * @param $user
+     * @param $keycloakUser
      */
-    private function getTeamsFromKeycloakGroups(?array $groups) : array {
-        $teams = [];
-        foreach ($groups as $group) {
-            $team = $this->teamRepository->findOneBy(array('name' => $group));
-            if ($team) {
-                $teams[] = $team;
+    private function getTeamsFromKeycloakGroups($user, $keycloakUser)
+    {
+        $settings = $this->em->getRepository(Settings::class)->findOne();
+
+        if (isset($keycloakUser->toArray()['groups']) && $settings->getUseKeycloakGroups()) {
+            $teams = [];
+            $groups = $keycloakUser->toArray()['groups'];
+
+            foreach ($groups as $group) {
+                $team = $this->teamRepository->findOneBy(array('keycloakGroup' => $group));
+                if ($team) {
+                    $teams[] = $team;
+                }
             }
+            $user->setTeams($teams);
         }
-        return $teams;
     }
 
     private function persistUser($user, $keycloakUser) {
@@ -100,10 +109,7 @@ class GuardServiceKeycloak extends SocialAuthenticator
         $user->setEmail($email);
         $user->setUsername($email);
         $user->setKeycloakId($id);
-        if (isset($keycloakUser->toArray()['groups'])) {
-            $teams = $this->getTeamsFromKeycloakGroups($keycloakUser->toArray()['groups']);
-            $user->setTeams($teams);
-        }
+        $this->getTeamsFromKeycloakGroups($user, $keycloakUser);
         if (isset($keycloakUser->toArray()['given_name'])) {
             $user->setFirstName($keycloakUser->toArray()['given_name']);
         }

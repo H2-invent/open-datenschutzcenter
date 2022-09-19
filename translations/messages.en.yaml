@@ -63,6 +63,9 @@ completed: Completed
 noAutomaticResubmission: Automatic resubmission not opened yet
 certificate: Zertifikat
 
+# elements
+elements: Datenschutzelemente
+
 # audits
 newAudit: New audit
 cloneDefault: Clone default questions
@@ -227,7 +230,9 @@ externalCheck: I understand that my data will be processed by external services 
 
 # admin area
 admin: Admin
-adminArea: Admin Area
+adminArea: Adminbereich
+teamAdminArea: Team Admin Area
+superAdminArea: ODC Admin Area
 
 # admin - data
 teamData: Stammdaten
@@ -264,9 +269,9 @@ default: Default
 noEntry: No entry
 
 # admin - members
-user: Benutzer
-coordinator: Coordinator
-manageUsers: Benutzer*innen verwalten
+user: Members
+coordinator: Member
+manageUsers: Manage members
 addUser: Add user
 remove: Remove
 extDsb: Ext. DPO
@@ -275,7 +280,6 @@ addAdmin: Add admin
 openInvitations: Open invitations
 memberHint1: Members can be added as privacy coordinators (ordinary users) or as admins. Coordinators can create, edit, assign and export elements. Admins can add new members, approve elements and manage the academy.
 memberHint2: If user groups are managed via keycloak, members must be added or removed there. Otherwise the group membership will be overwritten the next time a user logs in.
-
 
 # admin - academy
 manageAcademy: Manage academy
@@ -289,6 +293,9 @@ userName: User name
 
 # admin - import
 import: Import
+
+# admin - manage odc
+manageOdc: Manage ODC
 
 # admin - manage teams
 manageTeams: Manage teams

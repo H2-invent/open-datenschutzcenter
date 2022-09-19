@@ -38,7 +38,7 @@ class Team
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $displayName;
+    private $keycloakGroup;
 
     /**
      * @ORM\Column(type="boolean")
@@ -318,14 +318,14 @@ class Team
         return $this;
     }
 
-    public function getDisplayName(): ?string
+    public function getKeycloakGroup(): ?string
     {
-        return $this->displayName ? : $this->name;
+        return $this->keycloakGroup ? : $this->name;
     }
 
-    public function setDisplayName(?string $displayName): self
+    public function setKeycloakGroup(?string $keycloakGroup): self
     {
-        $this->displayName = $displayName;
+        $this->keycloakGroup = $keycloakGroup;
 
         return $this;
     }

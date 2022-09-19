@@ -34,9 +34,9 @@ class TeamListCommand extends Command
     {
         $teams = $this->em->getRepository(Team::class)->findAll();
         foreach ($teams as $team) {
-            $teamInfo = $team->getDisplayName();
-            if ($team->getDisplayName() != $team->getName()) {
-                $teamInfo .= ' (' . $team->getName() . ')';
+            $teamInfo = $team->getName();
+            if ($team->getKeycloakGroup()) {
+                $teamInfo .= ' (' . $team->getKeycloakGroup() . ')';
             }
             $output->writeln($teamInfo);
         }

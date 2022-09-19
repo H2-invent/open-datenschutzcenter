@@ -15,6 +15,10 @@ assign: Zuweisen
 send: Senden
 appoint: Ernennen
 
+# settings
+useKeycloakGroups: Keycloak Gruppen verwenden
+useKeycloakGroupsHelp: Wenn diese Option aktiviert ist, erfolgt die Teamzuweisung im Keycloak und nicht im ODC. Damit das richtig funktioniert, muss im Keycloak Client ein Mapper namens 'groups' existieren, bei dem die Option 'Full group path' deaktiviert ist.
+
 # status
 status: Status
 created: Angelegt
@@ -24,9 +28,9 @@ submitted: Zur Freigabe vorgelegt
 outdated: Veraltet
 
 # team
-teamName: Teambezeichnung
-teamNameHelp: Falls eine Keycloak Gruppe mit dem Team verknupft werden soll, muss die Teambezeichnung identisch zum Gruppennamen sein. Damit Keycloak die Gruppen übergibt, muss für den Client ein Mapper namens 'groups' existieren bei dem die Option 'Full group path' deaktiviert ist.
-displayName: Anzeigename (falls abweichend von der Teambezeichnung)
+teamName: Teamname
+keycloakGroup: Keycloak Gruppe (falls abweichend vom Teamnamen)
+keycloakGroupHelp: Die Teamzuweisung erfolgt in diesem ODC über Keycloak Gruppen. Falls das Team im ODC einen anderen Bezeichner hat als in Keycloak, muss hier der Name der Keycloak Gruppe eingetragen werden. Damit Keycloak die Gruppen übergibt, muss für den Keycloak Client ein Mapper namens 'groups' existieren, bei dem die Option 'Full group path' deaktiviert ist.
 dsb: Datenschutzbeauftragte*r
 ceo: Geschäftsführung
 industry: Branche
@@ -254,6 +258,11 @@ handlingOfDataAfterProcessing: Umgang mit personenbezogenen Daten nach Beendigun
 resources: Zurverfügungstellung von Informationen und Ermöglichung von Überprüfungen
 dutyToInform: Hinweispflicht
 dataTransferDocument: Dokument zur Datenweitergabe hochladen
+
+# new member
+newMemberEmail: E-Mail Adresse von neuem Teammitglied eingeben
+newMemberEmailHelp: Es können mehrere Mitglieder auf einmal hinzugefügt werden. Jede E-Mail Adresse muss in eine neue Zeile schreiben. Wenn die E-Mail Adresse im diesem Datenschutzcenter noch nicht vorhanden ist, wird ein neues Konto angelegt und der Empfänger wird per E-Mail darüber informiert.
+addMembers: Mitglied(er) Hinzufügen
 
 # form
 relatedDepartments: Zugeordnete Abteilungen

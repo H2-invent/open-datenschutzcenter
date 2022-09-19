@@ -15,6 +15,10 @@ assign: Assign
 send: Send
 appoint: Appoint
 
+# settings
+useKeycloakGroups: Use Keycloak groups
+useKeycloakGroupsHelp: If this option is activated, users will be mapped to teams in Keycloak rather than in the ODC. For this to work properly, the Keycloak client must have a mapper named 'groups' with the option 'full group path' set to false.
+
 # status
 status: Status
 created: Created
@@ -254,6 +258,11 @@ handlingOfDataAfterProcessing: Handling of personal data after completion of ord
 resources: Providing resources and facilitating audits
 dutyToInform: Duty to inform
 dataTransferDocument: Upload document
+
+# new member
+newMemberEmail: Enter e-mail address of new team member
+newMemberEmailHelp: You can add several members at once. Each e-mail address must be entered in a new line. If the e-mail address doesn't exist in this data center yet, a new account will be created.
+addMembers: Add member(s)
 
 # form
 relatedDepartments: Related departments
