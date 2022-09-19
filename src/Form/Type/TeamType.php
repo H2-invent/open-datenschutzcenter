@@ -31,7 +31,7 @@ class TeamType extends AbstractType
 
         $builder->add('name', TextType::class, ['label' => 'teamName', 'required' => true, 'translation_domain' => 'form']);
 
-        if ($this->settings->getUseKeycloakGroups()) {
+        if ($this->settings && $this->settings->getUseKeycloakGroups()) {
             $builder->add('keycloakGroup', TextType::class, ['label' => 'keycloakGroup', 'help' => 'keycloakGroupHelp', 'required' => false, 'translation_domain' => 'form']);
         }
 

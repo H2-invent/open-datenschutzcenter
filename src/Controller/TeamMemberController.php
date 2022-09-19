@@ -63,6 +63,7 @@ class TeamMemberController extends AbstractController
         $teamId = $request->get('id');
         $currentTeam = null;
         $settings = $settingsRepository->findOne();
+        $useKeycloakGroups = $settings ? $settings->getUseKeycloakGroups() : false;
 
         if ($teamId) {
             $team = $teamRepository->find($teamId);
@@ -114,7 +115,7 @@ class TeamMemberController extends AbstractController
             'title' => $translator->trans('manageUsers'),
             'team' => $team,
             'members' => $members,
-            'useKeycloakGroups' => $settings->getUseKeycloakGroups(),
+            'useKeycloakGroups' => $useKeycloakGroups,
         ]);
     }
 
