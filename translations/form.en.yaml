@@ -331,3 +331,8 @@ newDepartment: Add new department
 # admin - dpo
 dpoEmail: Email address of DPO
 dpoEmailHelp: If this email address doesn't exist yet, a new account will be created and the user will be informed via email. If users are managed via Keycloak user groups, add the user there, instead.
+
+# admin - delete team
+confirmTeamName: Confirm team name
+confirmTeamNameHelp: Enter the name of the team you want to delete. This helps to avoid accidentally deleting the wrong team.
+deleteTeam: Delete team

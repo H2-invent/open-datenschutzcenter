@@ -9,13 +9,16 @@
 namespace App\Controller;
 
 use App\Entity\AuditTomAbteilung;
-use App\Entity\AuditTomZiele;
 use App\Entity\Team;
+use App\Entity\User;
 use App\Form\Type\AbteilungType;
+use App\Form\Type\DeleteTeamType;
 use App\Form\Type\NewType;
 use App\Form\Type\TeamType;
 use App\Repository\AuditTomAbteilungRepository;
+use App\Repository\SettingsRepository;
 use App\Repository\TeamRepository;;
+
 use App\Service\SecurityService;
 use App\Service\TeamService;
 use App\Service\CurrentTeamService;
@@ -99,10 +102,13 @@ class TeamController extends AbstractController
      * @return Response
      */
     public function manage(SecurityService $securityService,
+                           SettingsRepository $settingsRepository,
                            TeamRepository  $teamRepository
     ) : Response
     {
         $user = $this->getUser();
+        $settings = $settingsRepository->findOne();
+        $useKeycloakGroups = $settings ? $settings->getUseKeycloakGroups() : false;
 
         if (!$securityService->superAdminCheck($user)) {
             return $this->redirectToRoute('dashboard');
@@ -111,7 +117,8 @@ class TeamController extends AbstractController
         $teams = $teamRepository->findAll();
 
         return $this->render('team/manage.html.twig', [
-            'teams' => $teams
+            'teams' => $teams,
+            'useKeycloakGroups' => $useKeycloakGroups,
         ]);
     }
 
@@ -147,7 +154,7 @@ class TeamController extends AbstractController
                 $em->persist($nTeam);
                 $em->persist($user);
                 $em->flush();
-                return $this->redirectToRoute('dashboard');
+                return $this->redirectToRoute('manage_teams');
             }
         }
 
@@ -157,6 +164,60 @@ class TeamController extends AbstractController
             'errors' => $errors,
             'title' => $translator->trans('newTeam')
         ]);
+    }
+
+
+    /**
+     * @Route("/manage_teams/delete", name="team_delete")
+     * @param Request $request
+     * @param SecurityService $securityService
+     * @param EntityManagerInterface $em
+     * @param TeamRepository $teamRepository
+     * @param CurrentTeamService $currentTeamService
+     * @return Response
+     */
+    public function teamDelete(Request $request,
+                               SecurityService $securityService,
+                               EntityManagerInterface $em,
+                               TeamRepository $teamRepository,
+                               CurrentTeamService $currentTeamService
+    ) : Response
+    {
+        $user = $this->getUser();
+        $teamId = $request->get('id');
+        $team = $teamId ? $teamRepository->find($teamId) : $currentTeamService->getCurrentAdminTeam($user);
+
+        if ($securityService->superAdminCheck($user) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        if ($team->getDeleteBlockers()) {
+            return $this->render('team/modalViewDeleteBlockers.html.twig', [
+                'team' => $team,
+                'type' => $request->get('type')
+            ]);
+        }
+
+        else {
+            $data = array();
+            $form = $this->createForm(DeleteTeamType::class, $data);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                if ($data['teamName'] === $team->getName()) {
+                    $em->remove($team);
+                    $em->flush();
+                }
+                return $this->redirectToRoute('manage_teams');
+            }
+
+            return $this->render('team/modalViewDelete.html.twig', [
+                'form' => $form->createView(),
+                'team' => $team,
+                'type' => $request->get('type')
+            ]);
+        }
     }
 
     /**

@@ -182,7 +182,6 @@ class AssignService
             if ($user && $user->hasTeam($team)) {
                 $dsfa->setAssignedUser($user);
                 $user->addAssignedDsfa($dsfa);
-                var_dump('foo');
                 $content = $this->twig->render('email/assignementDsfa.html.twig', [
                     'assign' => $dsfa->getVvt()->getName(),
                     'data' => $dsfa,

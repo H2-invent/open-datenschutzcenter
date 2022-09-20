@@ -299,12 +299,13 @@ manageOdc: Manage ODC
 
 # admin - manage teams
 manageTeams: Manage teams
-displayName: Display name
+keycloakGroup: Keycloak group
 memberCount: Members
 admins: Admins
 newTeam: New team
 manageTeamData: Edit team
 manageTeamMembers: Edit members
+deleteTeam: Delete teamName
 
 # ext team dsb
 externalDsb: External DPO

@@ -331,3 +331,8 @@ newDepartment: Neue Abteilung hinzufügen
 # admin - dpo
 dpoEmail: E-Mail Adresse des DSB angeben
 dpoEmailHelp: Wenn die E-Mail Adresse im diesem Datenschutzcenter noch nicht vorhanden ist, wird ein neues Konto angelegt und der Empfänger wird per E-Mail darüber informiert. Falls Keycloak Gruppen verwendet werden, fügen Sie den Nutzer stattdessen dort hinzu.
+
+# admin - delete team
+confirmTeamName: Teamname bestätigen
+confirmTeamNameHelp: Gib den Namen des zu löschenden Teams ein. Dies dient dazu, Fehler zu vermeiden.
+deleteTeam: Team endgültig löschen

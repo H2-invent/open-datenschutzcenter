@@ -67,6 +67,7 @@ certificate: Zertifikat
 elements: Datenschutzelemente
 
 # audits
+audits: Audits
 newAudit: Neues Audit anlegen
 cloneDefault: Default Fragen Clonen
 allTomAuditQuestions: Alle TOM Auditfragen
@@ -212,6 +213,7 @@ affectedPersons: Betroffene
 
 # customer questions
 customerQuestions: Kundenanfragen
+clientRequests: Kundenanfragen
 
 # activities
 activities: Aktivitäten
@@ -300,12 +302,14 @@ manageOdc: ODC Einstellungen
 
 # admin - manage teams
 manageTeams: Teams verwalten
-displayName: Anzeigename
+keycloakGroup: Keycloak Gruppe
 memberCount: Anzahl Mitglieder
 admins: Admins
 newTeam: Team erstellen
 manageTeamData: Stammdaten bearbeiten
 manageTeamMembers: Mitglieder bearbeiten
+deleteTeam: teamName löschen
+teamDeletionBlocked: 'Diese Gruppe kann erst gelöscht werden, wenn folgende Elemente entfernt wurden:'
 
 # ext team dsb
 externalDsb: Externer DSB

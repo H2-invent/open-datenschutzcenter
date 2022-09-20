@@ -12,7 +12,9 @@
                 <thead>
                 <tr>
                     <th scope="col">{% trans %}name{% endtrans %}</th>
-                    <th scope="col">{% trans %}name{% endtrans %}</th>
+                    {% if useKeycloakGroups %}
+                        <th scope="col">{% trans %}keycloakGroup{% endtrans %}</th>
+                    {% endif %}
                     <th scope="col">{% trans %}memberCount{% endtrans %}</th>
                     <th scope="col">{% trans %}admins{% endtrans %}</th>
                     <th class="hide-in-export"></th>
@@ -22,7 +24,9 @@
                 {% for t in teams %}
                     <tr>
                         <td>{{ t.name }}</td>
-                        <td>{{ t.name }}</td>
+                        {% if useKeycloakGroups %}
+                            <td>{{ t.keycloakGroup }}</td>
+                        {% endif %}
                         <td>{{ t.members | length }}</td>
                         <td>
                             {% for a in t.admins %}
@@ -36,6 +40,8 @@
                             <a class="btn btn-green btn-sm" href='{{ path('team_mitglieder',{'id':t.id}) }}'>
                                 {% trans %}manageTeamMembers{% endtrans %}
                             </a>
+                            <a href="{{ path('team_delete', {'id':t.id}) }}"
+                               class="btn btn-danger btn-sm loadContent">{% trans %}delete{% endtrans %}</a>
                         </td>
                     </tr>
                 {% endfor %}

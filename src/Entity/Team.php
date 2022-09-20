@@ -1340,4 +1340,38 @@ class Team
 
         return $this;
     }
+
+    /**
+     * returns list of elements that prevent team deletion
+     * @return array
+     */
+    public function getDeleteBlockers(): array
+    {
+        $blockers = [];
+        if (count($this->ziele)) $blockers[] = 'auditGoals';
+        if (count($this->abteilungen)) $blockers[] = 'departments';
+        if (count($this->auditToms)) $blockers[] = 'audits';
+        if (count($this->kontakte)) $blockers[] = 'contacts';
+        if (count($this->vvts)) $blockers[] = 'processingActivities';
+        if (count($this->datenweitergaben)) $blockers[] = 'dataTransfers';
+        if (count($this->kurse)) $blockers[] = 'academyCourses';
+        if (count($this->akademieUsers)) $blockers[] = 'academyUsers';
+        if (count($this->toms)) $blockers[] = 'toms';
+        if (count($this->vorfalls)) $blockers[] = 'incidents';
+        if (count($this->produktes)) $blockers[] = 'products';
+        if (count($this->forms)) $blockers[] = 'forms';
+        if (count($this->policies)) $blockers[] = 'policies';
+        if (count($this->software)) $blockers[] = 'software';
+        if (count($this->tasks)) $blockers[] = 'tasks';
+        if (count($this->clientRequests)) $blockers[] = 'clientRequests';
+        if (count($this->reports)) $blockers[] = 'reports';
+        if (count($this->vVTDatenkategories)) $blockers[] = 'dataCategories';
+        if (count($this->vVTPersonens)) $blockers[] = 'groupsOfPeople';
+        if (count($this->vVTRisikens)) $blockers[] = 'processingRisks';
+        if (count($this->vVTGrundlages)) $blockers[] = 'dataTransferBases';
+        if (count($this->vVTStatuses)) $blockers[] = 'processingStatuses';
+        if (count($this->datenweitergabeStands)) $blockers[] = 'dataTransferStatuses';
+        if (count($this->loeschkonzepts)) $blockers[] = 'deleteConcepts';
+        return $blockers;
+    }
 }

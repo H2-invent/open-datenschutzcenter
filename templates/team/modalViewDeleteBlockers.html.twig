@@ -1,0 +1,16 @@
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+        <div class="modal-header  red white-text">
+            <h5 class="modal-title">{{ "deleteTeam" | trans({teamName: team.name}) }}</h5>
+        </div>
+        <div class="modal-body">
+            <p>{% trans %}teamDeletionBlocked{% endtrans %}</p>
+            <ul>
+                {% for blocker in team.deleteBlockers %}
+                    <li>{{ blocker | trans }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
