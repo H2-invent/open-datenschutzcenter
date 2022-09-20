@@ -44,8 +44,7 @@ class SettingsController extends AbstractController
             $settings = new Settings();
         }
 
-
-        $form = $this->createForm(SettingsType::class);
+        $form = $this->createForm(SettingsType::class, $settings);
         $form->handleRequest($request);
 
         $errors = array();

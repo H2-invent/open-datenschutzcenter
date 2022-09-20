@@ -88,16 +88,18 @@ class GuardServiceKeycloak extends SocialAuthenticator
         $settings = $this->em->getRepository(Settings::class)->findOne();
 
         if (isset($keycloakUser->toArray()['groups']) && $settings && $settings->getUseKeycloakGroups()) {
-            $teams = [];
+            $userTeams = [];
             $groups = $keycloakUser->toArray()['groups'];
+            $teams = $this->teamRepository->findAll();
 
-            foreach ($groups as $group) {
-                $team = $this->teamRepository->findOneBy(array('keycloakGroup' => $group));
-                if ($team) {
-                    $teams[] = $team;
+            foreach ($groups as $keycloakGroup) {
+                foreach($teams as $team) {
+                    if ($team->getKeycloakGroup() === $keycloakGroup) {
+                        $userTeams[] = $team;
+                    }
                 }
             }
-            $user->setTeams($teams);
+            $user->setTeams($userTeams);
         }
     }
 
