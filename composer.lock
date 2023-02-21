@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de4495b37f8369a8e30d981ad74423c9",
+    "content-hash": "1f272563fee86b0f2f295582bdc65df3",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -4571,20 +4571,20 @@
         },
         {
             "name": "stevenmaguire/oauth2-keycloak",
-            "version": "2.2.2",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stevenmaguire/oauth2-keycloak.git",
-                "reference": "2860f173f5fed16fff69326b92090fe145da6121"
+                "reference": "34e4824f5fa26aa8e90f1258859c75570c12d27a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stevenmaguire/oauth2-keycloak/zipball/2860f173f5fed16fff69326b92090fe145da6121",
-                "reference": "2860f173f5fed16fff69326b92090fe145da6121",
+                "url": "https://api.github.com/repos/stevenmaguire/oauth2-keycloak/zipball/34e4824f5fa26aa8e90f1258859c75570c12d27a",
+                "reference": "34e4824f5fa26aa8e90f1258859c75570c12d27a",
                 "shasum": ""
             },
             "require": {
-                "firebase/php-jwt": "^4.0",
+                "firebase/php-jwt": "~4.0|~5.0",
                 "league/oauth2-client": "^2.0"
             },
             "require-dev": {
@@ -4625,9 +4625,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stevenmaguire/oauth2-keycloak/issues",
-                "source": "https://github.com/stevenmaguire/oauth2-keycloak/tree/2.2.2"
+                "source": "https://github.com/stevenmaguire/oauth2-keycloak/tree/3.2.0"
             },
-            "time": "2021-06-21T10:16:52+00:00"
+            "time": "2022-12-16T12:46:38+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -12939,5 +12939,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
