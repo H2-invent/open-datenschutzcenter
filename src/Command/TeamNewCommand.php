@@ -26,7 +26,7 @@ class TeamNewCommand extends Command
             ->setDescription(self::$defaultDescription);
     }
 
-    public function __construct(string $name = null, EntityManagerInterface $entityManager, ConnectDefaultToTeamsService $connectDefaultToTeamsService)
+    public function __construct(EntityManagerInterface $entityManager, ConnectDefaultToTeamsService $connectDefaultToTeamsService, string $name = null)
     {
         parent::__construct($name);
         $this->em = $entityManager;
@@ -77,7 +77,7 @@ class TeamNewCommand extends Command
         $team->setActiv(true);
         $this->em->persist($team);
         $this->em->flush();
-        $this->connectService->connectDefault($team,$output);
+        $this->connectService->connectDefault($team, $output);
 
         $io->success(sprintf('We created a new Team with the name %s', $team->getName()));
 
