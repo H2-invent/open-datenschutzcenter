@@ -54,7 +54,7 @@ class DatenweitergabeController extends AbstractController
         $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
             'table' => $daten,
-            'titel' => 'Verarbeitungen nach DSGVO Art. 30(2)',
+            'titel' => 'Verarbeitungstätigkeiten nach DSGVO Art. 30(2)',
             'currentTeam' => $team,
         ]);
     }

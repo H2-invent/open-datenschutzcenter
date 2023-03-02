@@ -118,10 +118,10 @@ processingActivities: VVT
 dateCreated: Erstellt am
 
 # processing activities
-newProcessingActivity:  Neue Verarbeitung anlegen
+newprocedure:  Neue Verarbeitung anlegen
 processingDirectory: Verzeichnis der Verarbeitungen
 type: Typ
-processingActivityTypeHelp: AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung
+procedureTypeHelp: AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung
 basis: Grundlage
 dataProtectionImpactAssessment: Datenschutz-Folgenabschätzung
 dataProtectionImpactAssessmentAvailable: DSFA vorhanden
@@ -165,9 +165,9 @@ responsible: Verantwortlich
 contact: Kontakt
 signDate: Zeichnungsdatum
 consideredPoints: Der Vertrag zur Auftragsverarbeitung nach Art. 28 Abs. 3 DSGVO berücksichtigt folgende Punkte
-state: Stand
+state: Status
 relatedSoftware: Zugehörige Software und verbundene Verarbeitungstätigkeit
-relatedProcessingActivity: Zugehörige Verarbeitungstätigkeit
+relatedprocedure: Zugehörige Verarbeitungstätigkeit
 contractType: Vertragsform
 contractUploaded: Auftragsverarbeitungsvertrag vorhanden und hochgeladen
 responsibleParty: Verantwortlich für die Datenweitergabe (Intern)
@@ -223,6 +223,46 @@ processor: Bearbeiter
 billed: Abgerechnet
 minutes: Minuten
 
+# assistant
+assistant: VVT-Assistent
+assistantInfo: Es sind eine Reihe von Elementen notwendig, um neue VVTs zu erstellen. Der Assistent hilft dabei, diese auszuwählen und anzulegen.
+assistantStart: Assistent Starten
+assistantFinished: Der Assistent ist fertig und alle Elemente wurden erfolgreich angelegt. Du kannst ihn neu starten, um weitere Verarbeitungstätigkeiten zu dokumentieren.
+assistantAborted: Der Assistent wurde abgebrochen. Bereits angelegte Elemente wurden gespeichert.
+contactSource: Eingangskontakt
+contactDest: Ausgangskontakt
+contactSourceInfo: Wo kommen die Daten für die Auftragsverarbeitung her?
+contactDestInfo: Wo werden die Daten bei der Datenweitergabe hingeschickt?
+contactSelectLabel: Kontakt wählen
+createNewContact: Neuen Kontakt anlegen
+createNewDataTransfer: Neue Datenweitergabe anlegen
+createNewOrderProcessing: Neue Auftragsverarbeitung anlegen
+createNewProcedure: Neue Verarbeitungstätigkeit anlegen
+createNewSoftware: Neue Software anlegen
+orderProcessingInfo: Was wird mit den Daten gemacht?
+softwareProcessingProcedure: Software für die Auftragsverarbeitung
+softwareProcessingProcedureInfo: Wird bei der zur Auftragsvearbeitung zugehörigen Verarbeitungstätigkeit Software verwendet? Wenn keine Software verwendet wird oder eine bereits vorhandene Verarbeitungstätigkeit verwendet werden soll, kann dieser Schritt übersprungen werden.
+softwareTransferProcedure: Software für die Datenweitergabe
+softwareTransferProcedureInfo: Wird bei der zur Datenweitergabe zugehörigen Verarbeitungstätigkeit Software verwendet? Wenn keine Software verwendet wird oder eine bereits vorhandene Verarbeitungstätigkeit verwendet werden soll, kann dieser Schritt übersprungen werden.
+softwareTransfer: Software für die Datenweitergabe
+softwareTransferInfo: Wird für die Datenweitergabe selbst Software verwendet? Wenn keine Software verwendet wird, kann dieser Schritt übersprungen werden.
+softwareSelectLabel: Software wählen
+processingProcedure: Verarbeitungstätigkeit für Auftragsverarbeitung
+processingProcedureInfo: Einer Auftragsverarbeitung muss mindestens eine Verarbeitungstätigkeit zugeordnet sein
+transferProcedure: Verarbeitungstätigkeit für Datenweitergabe
+transferProcedureInfo: Einer Datenweitergabe muss mindestens eine Verarbeitungstätigkeit zugeordnet sein
+procedureSelectLabel: Verarbeitungstätigkeit wählen
+dataTansfer: Datenweitergabe
+dataTansferInfo: Was wird mit den Daten gemacht?
+stepError: Dieser Schritt existiert nicht
+step: Schritt
+new: Neu
+save: Speichern
+back: Zurück
+skip: Überspringen
+cancel: Vorgang abbrechen
+keep: Behalten
+
 # reports
 reports: Berichte
 
@@ -261,9 +301,9 @@ editProcessingStatus: VVT Status bearbeiten
 dataTransferBases: Grundlagen für Datenweitergabe
 addDataTransferBasis: Grundlage hinzufügen
 editDataTransferBasis: Grundlage bearbeiten
-dataTransferStatuses: Stände in Datenweitergaben
-addDataTransferStatus: Stand hinzufügen
-editDataTransferStatus: Stand bearbeiten
+dataTransferStatuses: Status in Datenweitergaben
+addDataTransferStatus: Status hinzufügen
+editDataTransferStatus: Status bearbeiten
 auditGoals: Schutzziele für Audits
 addAuditGoal: Schutzziel hinzufügen
 editAuditGoal: Schutzziel bearbeiten

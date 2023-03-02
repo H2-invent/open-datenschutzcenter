@@ -308,4 +308,9 @@ class Kontakte
 
         return $this;
     }
+
+    public function getName(): string
+    {
+        return $this->firma ?: $this->getVorname() . $this->getNachname();
+    }
 }

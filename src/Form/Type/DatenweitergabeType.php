@@ -66,7 +66,7 @@ class DatenweitergabeType extends AbstractType
                 'choice_label' => 'name',
                 'class' => VVT::class,
                 'choices' => $options['verfahren'],
-                'label' => 'relatedProcessingActivity',
+                'label' => 'relatedprocedure',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => false,
@@ -74,7 +74,7 @@ class DatenweitergabeType extends AbstractType
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
                 ],
-                'help' => 'relatedProcessingActivityHelp'
+                'help' => 'relatedprocedureHelp'
             ])
             ->add('stand', EntityType::class, [
                 'choice_label' => 'name',

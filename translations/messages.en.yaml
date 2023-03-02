@@ -117,10 +117,10 @@ processingActivities: Processing activities
 dateCreated: Created
 
 # processing activities
-newProcessingActivity:  New processing activity
+newprocedure:  New processing activity
 processingDirectory: Directory
 type: Type
-processingActivityTypeHelp: AV = order processing, GV = joint control
+procedureTypeHelp: AV = order processing, GV = joint control
 basis: Basis
 dataProtectionImpactAssessment: Data protection impact assessment
 dataProtectionImpactAssessmentAvailable: Impact assessment exists
@@ -166,7 +166,7 @@ signDate: Sign date
 consideredPoints: The contract for order processing according to Art. 28 Para. 3 GDPR takes the following points into account
 state: State
 relatedSoftware: Related software
-relatedProcessingActivity: Related processing activity
+relatedprocedure: Related processing activity
 contractType: Contract type
 contractUploaded: Order processing contract exists and has been uploaded
 responsibleParty: Responsible party (internal)
