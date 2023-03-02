@@ -71,6 +71,9 @@
                     </li>
                 </ul>
             </li>
+            <li class="{{ app.request.attributes.get('_route') == 'assistant' ? 'active' }}">
+                <a href="{{ path('assistant') }}">{% trans %}assistant{% endtrans %}</a>
+            </li>
             <li class="{{ app.request.attributes.get('_route') == 'bericht' ? 'active' }}">
                 <a href="{{ path('bericht') }}">{% trans %}reports{% endtrans %}</a>
             </li>

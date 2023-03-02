@@ -30,8 +30,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DatenweitergabeController extends AbstractController
 {
-
-
     public function __construct(
         private readonly TranslatorInterface $translator,
         private EntityManagerInterface       $em,
