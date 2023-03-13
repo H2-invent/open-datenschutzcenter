@@ -36,7 +36,7 @@
                         <a class="btn btn-sm btn-info float-md-right"
                            href="{{ path('team_mitglieder_admin',{'id':d.id}) }}">{% if d.adminUser %}{% trans %}Admin entfernen{% endtrans %}{% else %}{% trans %}Admin ernennen{% endtrans %}{% endif %}</a>
                         <a class="btn btn-sm btn-danger float-md-right"
-                           href="{{ path('team_mitglieder_remove',{'id':d.id}) }}">{% trans %}Einladung entfernen{% endtrans %}</a>
+                           href="{{ path('team_mitglieder_remove',{'id':d.id,'type':'odc'}) }}">{% trans %}Einladung entfernen{% endtrans %}</a>
                     </li>
                 {% endfor %}
             </ul>
