@@ -40,51 +40,41 @@ class Policies
     private $previous;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $scope;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToMany(targetEntity: VVT::class, inversedBy: 'policies')]
+    #[Assert\NotBlank]
     private $processes;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToMany(targetEntity: VVTPersonen::class)]
+    #[Assert\NotBlank]
     private $people;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToMany(targetEntity: VVTDatenkategorie::class)]
+    #[Assert\NotBlank]
     private $categories;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $risk;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $foundation;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'policiesResponsible')]
     #[ORM\JoinColumn(nullable: false)]
     private $person;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $protection;
 
     /**
@@ -111,10 +101,8 @@ class Policies
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedPolicies')]
     private $assignedUser;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $title;
 
     #[ORM\Column(type: 'text', nullable: true)]

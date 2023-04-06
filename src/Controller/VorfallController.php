@@ -21,9 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class VorfallController extends AbstractController
 {
-    /**
-     * @Route("/vorfall", name="vorfall")
-     */
+    #[Route(path: '/vorfall', name: 'vorfall')]
     public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -40,9 +38,7 @@ class VorfallController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/vorfall/new", name="vorfall_new")
-     */
+    #[Route(path: '/vorfall/new', name: 'vorfall_new')]
     public function addVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -75,9 +71,7 @@ class VorfallController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/vorfall/edit", name="vorfall_edit")
-     */
+    #[Route(path: '/vorfall/edit', name: 'vorfall_edit')]
     public function EditVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -118,9 +112,7 @@ class VorfallController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/vorfall/approve", name="vorfall_approve")
-     */
+    #[Route(path: '/vorfall/approve', name: 'vorfall_approve')]
     public function approve(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();

@@ -16,9 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class KursController extends AbstractController
 {
-    /**
-     * @Route("/kurs/new", name="akademie_kurs_new")
-     */
+    #[Route(path: '/kurs/new', name: 'akademie_kurs_new')]
     public function addKurs(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -58,9 +56,7 @@ class KursController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/kurs/edit", name="akademie_kurs_edit")
-     */
+    #[Route(path: '/kurs/edit', name: 'akademie_kurs_edit')]
     public function editKurs(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -99,9 +95,7 @@ class KursController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/kurs/anmelden", name="kurs_anmelden")
-     */
+    #[Route(path: '/kurs/anmelden', name: 'kurs_anmelden')]
     public function kursAnmelden(Request $request, SecurityService $securityService, AkademieService $akademieService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -128,9 +122,7 @@ class KursController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/kurs/deaktivieren", name="kurs_deaktivieren")
-     */
+    #[Route(path: '/kurs/deaktivieren', name: 'kurs_deaktivieren')]
     public function kursDeaktivieren(Request $request, SecurityService $securityService, AkademieService $akademieService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();

@@ -17,24 +17,22 @@ class ClientRequest
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $uuid;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $title;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $description;
 
     #[ORM\Column(type: 'integer')]
@@ -43,17 +41,15 @@ class ClientRequest
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @Assert\Email()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\Email]
     private $email;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $name;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'clientRequests')]
@@ -65,16 +61,12 @@ class ClientRequest
     #[ORM\Column(type: 'boolean')]
     private $emailValid;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $token;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
     private $activ;
 
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'clientRequests')]
@@ -105,10 +97,8 @@ class ClientRequest
     #[ORM\Column(type: 'text', nullable: true)]
     private $pgp;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $password;
 
     #[ORM\Column(type: 'boolean')]

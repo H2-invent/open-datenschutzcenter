@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SettingsController extends AbstractController
 {
     /**
-     * @Route("/manage_settings", name="manage_settings")
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em
      * @param Request $request
@@ -25,6 +24,7 @@ class SettingsController extends AbstractController
      * @param SecurityService $securityService
      * @return Response
      */
+    #[Route(path: '/manage_settings', name: 'manage_settings')]
     public function manage(ValidatorInterface $validator,
                            EntityManagerInterface $em,
                            Request $request,

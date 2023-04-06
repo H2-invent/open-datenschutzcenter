@@ -18,50 +18,42 @@ class AuditTom
     private $id;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $frage;
 
     /**
      * @Encrypted()
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $bemerkung;
 
     /**
      * @Encrypted()
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $empfehlung;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToMany(targetEntity: AuditTomZiele::class)]
+    #[Assert\NotBlank]
     private $ziele;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'auditToms')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $team;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToMany(targetEntity: AuditTomAbteilung::class)]
+    #[Assert\NotBlank]
     private $abteilung;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToOne(targetEntity: AuditTomStatus::class, inversedBy: 'auditToms')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Assert\NotBlank]
     private $status;
 
     #[ORM\Column(type: 'boolean')]
@@ -70,17 +62,15 @@ class AuditTom
     #[ORM\OneToOne(targetEntity: AuditTom::class, cascade: ['persist', 'remove'])]
     private $previous;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
     private $createdAt;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $nummer;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'auditToms')]
@@ -97,10 +87,10 @@ class AuditTom
     private $tomZiel;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $kategorie;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedAudits')]

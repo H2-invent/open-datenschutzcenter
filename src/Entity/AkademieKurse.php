@@ -19,22 +19,16 @@ class AkademieKurse
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $video;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $title;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $beschreibung;
 
     #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'kurse')]

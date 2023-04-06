@@ -27,9 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DatenweitergabeController extends AbstractController
 {
-    /**
-     * @Route("/datenweitergabe", name="datenweitergabe")
-     */
+    #[Route(path: '/datenweitergabe', name: 'datenweitergabe')]
     public function indexDatenweitergabe(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -45,9 +43,7 @@ class DatenweitergabeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/auftragsverarbeitung", name="auftragsverarbeitung")
-     */
+    #[Route(path: '/auftragsverarbeitung', name: 'auftragsverarbeitung')]
     public function indexAuftragsverarbeitung(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -63,9 +59,7 @@ class DatenweitergabeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/datenweitergabe/new", name="datenweitergabe_new")
-     */
+    #[Route(path: '/datenweitergabe/new', name: 'datenweitergabe_new')]
     public function addDatenweitergabe(ValidatorInterface $validator, Request $request, DatenweitergabeService $datenweitergabeService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         set_time_limit(600);
@@ -105,9 +99,7 @@ class DatenweitergabeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/auftragsverarbeitung/new", name="auftragsverarbeitung_new")
-     */
+    #[Route(path: '/auftragsverarbeitung/new', name: 'auftragsverarbeitung_new')]
     public function addAuftragsverarbeitung(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService,  CurrentTeamService $currentTeamService)
     {
         set_time_limit(600);
@@ -147,9 +139,7 @@ class DatenweitergabeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/datenweitergabe/edit", name="datenweitergabe_edit")
-     */
+    #[Route(path: '/datenweitergabe/edit', name: 'datenweitergabe_edit')]
     public function EditDatenweitergabe(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService, AssignService $assignService,  CurrentTeamService $currentTeamService)
     {
         set_time_limit(600);
@@ -206,10 +196,8 @@ class DatenweitergabeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/datenweitergabe/download/{id}", name="datenweitergabe_download_file", methods={"GET"})
-     * @ParamConverter("datenweitergabe", options={"mapping"={"id"="id"}})
-     */
+    #[Route(path: '/datenweitergabe/download/{id}', name: 'datenweitergabe_download_file', methods: ['GET'])]
+    #[ParamConverter('datenweitergabe', options: ['mapping' => ['id' => 'id']])]
     public function downloadArticleReference(FilesystemInterface $datenFileSystem, Datenweitergabe $datenweitergabe, SecurityService $securityService, LoggerInterface $logger, CurrentTeamService $currentTeamService)
     {
         $stream = $datenFileSystem->read($datenweitergabe->getUpload());
@@ -234,9 +222,7 @@ class DatenweitergabeController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Route("/datenweitergabe/approve", name="datenweitergabe_approve")
-     */
+    #[Route(path: '/datenweitergabe/approve', name: 'datenweitergabe_approve')]
     public function approveDatenweitergabe(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -269,9 +255,7 @@ class DatenweitergabeController extends AbstractController
         return $this->redirectToRoute('auftragsverarbeitung');
     }
 
-    /**
-     * @Route("/datenweitergabe/disable", name="datenweitergabe_disable")
-     */
+    #[Route(path: '/datenweitergabe/disable', name: 'datenweitergabe_disable')]
     public function disableDatenweitergabe(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();

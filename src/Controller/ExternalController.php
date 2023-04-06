@@ -9,9 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExternalController extends AbstractController
 {
-    /**
-     * @Route("/external", name="external")
-     */
+    #[Route(path: '/external', name: 'external')]
     public function index(SecurityService $securityService,  CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());

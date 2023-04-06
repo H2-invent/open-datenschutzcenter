@@ -22,10 +22,10 @@ class ClientComment
     private $name;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $comment;
 
     #[ORM\Column(type: 'datetime')]

@@ -38,7 +38,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TeamMemberController extends AbstractController
 {
     /**
-     * @Route("/team_mitglieder", name="team_mitglieder")
      * @param Request $request
      * @param InviteService $inviteService
      * @param EntityManagerInterface $em
@@ -49,6 +48,7 @@ class TeamMemberController extends AbstractController
      * @param CurrentTeamService $currentTeamService
      * @return Response
      */
+    #[Route(path: '/team_mitglieder', name: 'team_mitglieder')]
     public function mitgliederAdd(Request $request,
                                   InviteService $inviteService,
                                   EntityManagerInterface $em,
@@ -120,7 +120,6 @@ class TeamMemberController extends AbstractController
     }
 
     /**
-     * @Route("/team_mitglieder/create", name="team_mitglieder_create")
      * @param Request $request
      * @param SecurityService $securityService
      * @param InviteService $inviteService
@@ -129,6 +128,7 @@ class TeamMemberController extends AbstractController
      * @param CurrentTeamService $currentTeamService
      * @return Response
      */
+    #[Route(path: '/team_mitglieder/create', name: 'team_mitglieder_create')]
     public function teamMemberCreate(Request $request,
                                      SecurityService $securityService,
                                      InviteService $inviteService,
@@ -197,7 +197,6 @@ class TeamMemberController extends AbstractController
     }
 
     /**
-     * @Route("/team_mitglieder/remove", name="team_mitglieder_remove")
      * @param Request $request
      * @param SecurityService $securityService
      * @param TeamRepository $teamRepository
@@ -206,6 +205,7 @@ class TeamMemberController extends AbstractController
      * @param CurrentTeamService $currentTeamService
      * @return Response
      */
+    #[Route(path: '/team_mitglieder/remove', name: 'team_mitglieder_remove')]
     public function mitgliederRemove(Request $request,
                                      SecurityService $securityService,
                                      TeamRepository $teamRepository,
@@ -248,7 +248,6 @@ class TeamMemberController extends AbstractController
     }
 
     /**
-     * @Route("/team_mitglieder/admin", name="team_mitglieder_admin")
      * @param Request $request
      * @param SecurityService $securityService
      * @param UserRepository $userRepository
@@ -257,6 +256,7 @@ class TeamMemberController extends AbstractController
      * @param CurrentTeamService $currentTeamService
      * @return Response
      */
+    #[Route(path: '/team_mitglieder/admin', name: 'team_mitglieder_admin')]
     public function adminToggle(Request $request,
                                 SecurityService $securityService,
                                 UserRepository $userRepository,
@@ -294,13 +294,13 @@ class TeamMemberController extends AbstractController
     }
 
     /**
-     * @Route("/akademie/admin", name="akademie_admin")
      * @param SecurityService $securityService
      * @param CurrentTeamService $currentTeamService
      * @param AkademieKurseRepository $academyCourseRepository
      * @param TranslatorInterface $translator
      * @return Response
      */
+    #[Route(path: '/akademie/admin', name: 'akademie_admin')]
     public function academyAdmin(SecurityService $securityService,
                                  CurrentTeamService $currentTeamService,
                                  AkademieKurseRepository $academyCourseRepository,
@@ -326,7 +326,6 @@ class TeamMemberController extends AbstractController
     }
 
     /**
-     * @Route("/ext_team_dsb", name="team_dsb")
      * @param Request $request
      * @param InviteService $inviteService
      * @param SecurityService $securityService
@@ -336,6 +335,7 @@ class TeamMemberController extends AbstractController
      * @param CurrentTeamService $currentTeamService
      * @return Response
      */
+    #[Route(path: '/ext_team_dsb', name: 'team_dsb')]
     public function dsbAdd(Request $request,
                            InviteService $inviteService,
                            SecurityService $securityService,
@@ -384,7 +384,6 @@ class TeamMemberController extends AbstractController
     }
 
     /**
-     * @Route("/team_dsb/remove", name="team_dsb_remove")
      * @param Request $request
      * @param SecurityService $securityService
      * @param UserRepository $userRepository
@@ -393,6 +392,7 @@ class TeamMemberController extends AbstractController
      * @param CurrentTeamService $currentTeamService
      * @return Response
      */
+    #[Route(path: '/team_dsb/remove', name: 'team_dsb_remove')]
     public function dsbRemove(Request $request,
                               SecurityService $securityService,
                               UserRepository $userRepository,

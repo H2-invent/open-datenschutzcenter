@@ -51,7 +51,6 @@ use App\Service\CurrentTeamService;
 class DashboardController extends AbstractController
 {
     /**
-     * @Route("/", name="dashboard")
      * @param Request $request
      * @param CurrentTeamService $currentTeamService
      * @param TeamRepository $teamRepository
@@ -70,6 +69,7 @@ class DashboardController extends AbstractController
      * @param TaskRepository $taskRepository
      * @return Response
      */
+    #[Route(path: '/', name: 'dashboard')]
     public function dashboard(Request                     $request,
                               CurrentTeamService          $currentTeamService,
                               TeamRepository              $teamRepository,
@@ -160,9 +160,7 @@ class DashboardController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/no_team", name="no_team")
-     */
+    #[Route(path: '/no_team', name: 'no_team')]
     public function noTeam()
     {
         if ($this->getUser()) {

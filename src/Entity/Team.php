@@ -16,10 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity("slug")
- */
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
+#[UniqueEntity('slug')]
 class Team
 {
     #[ORM\Id]
@@ -27,19 +25,15 @@ class Team
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text', unique: true)]
+    #[Assert\NotBlank]
     private $name;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $keycloakGroup;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'boolean')]
+    #[Assert\NotBlank]
     private $activ;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams')]
@@ -63,22 +57,16 @@ class Team
     #[ORM\OneToMany(targetEntity: Datenweitergabe::class, mappedBy: 'team')]
     private $datenweitergaben;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $strasse;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $plz;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $stadt;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -90,10 +78,8 @@ class Team
     #[ORM\Column(type: 'text', nullable: true)]
     private $dsb;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $ceo;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -135,9 +121,9 @@ class Team
 
     /**
      * @Encrypted()
-     * @Assert\Url()
      */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Url]
     private $externalLink;
 
     /**

@@ -35,7 +35,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TeamController extends AbstractController
 {
     /**
-     * @Route("/team_edit", name="team_edit")
      * @param ValidatorInterface $validator
      * @param Request $request
      * @param EntityManagerInterface $em
@@ -45,6 +44,7 @@ class TeamController extends AbstractController
      * @param TeamRepository $teamRepository
      * @return Response
      */
+    #[Route(path: '/team_edit', name: 'team_edit')]
     public function edit(ValidatorInterface $validator,
                           Request $request,
                           EntityManagerInterface $em,
@@ -96,11 +96,11 @@ class TeamController extends AbstractController
     }
 
     /**
-     * @Route("/manage_teams", name="manage_teams")
      * @param SecurityService $securityService
      * @param TeamRepository $teamRepository
      * @return Response
      */
+    #[Route(path: '/manage_teams', name: 'manage_teams')]
     public function manage(SecurityService $securityService,
                            SettingsRepository $settingsRepository,
                            TeamRepository  $teamRepository
@@ -123,13 +123,13 @@ class TeamController extends AbstractController
     }
 
     /**
-     * @Route("/team_create", name="team_create")
      * @param ValidatorInterface $validator
      * @param EntityManagerInterface $em
      * @param Request $request
      * @param TranslatorInterface $translator
      * @return Response
      */
+    #[Route(path: '/team_create', name: 'team_create')]
     public function create(ValidatorInterface $validator,
                            EntityManagerInterface $em,
                            Request $request,
@@ -168,7 +168,6 @@ class TeamController extends AbstractController
 
 
     /**
-     * @Route("/manage_teams/delete", name="team_delete")
      * @param Request $request
      * @param SecurityService $securityService
      * @param EntityManagerInterface $em
@@ -176,6 +175,7 @@ class TeamController extends AbstractController
      * @param CurrentTeamService $currentTeamService
      * @return Response
      */
+    #[Route(path: '/manage_teams/delete', name: 'team_delete')]
     public function teamDelete(Request $request,
                                SecurityService $securityService,
                                EntityManagerInterface $em,
@@ -221,13 +221,13 @@ class TeamController extends AbstractController
     }
 
     /**
-     * @Route("/team_custom", name="team_custom")
      * @param SecurityService $securityService
      * @param TeamService $teamService
      * @param CurrentTeamService $currentTeamService
      * @param TranslatorInterface $translator
      * @return Response
      */
+    #[Route(path: '/team_custom', name: 'team_custom')]
     public function customShow(SecurityService $securityService,
                                TeamService $teamService,
                                CurrentTeamService $currentTeamService,
@@ -253,7 +253,6 @@ class TeamController extends AbstractController
     }
 
     /**
-     * @Route("/team_custom/create", name="team_custom_create")
      * @param Request $request
      * @param SecurityService $securityService
      * @param EntityManagerInterface $em
@@ -262,6 +261,7 @@ class TeamController extends AbstractController
      * @param CurrentTeamService $currentTeamService
      * @return Response
      */
+    #[Route(path: '/team_custom/create', name: 'team_custom_create')]
     public function customCreate(Request $request,
                                  SecurityService $securityService,
                                  EntityManagerInterface $em,
@@ -304,7 +304,6 @@ class TeamController extends AbstractController
 
 
     /**
-     * @Route("/team_custom/deaktivieren", name="team_custom_deativate")
      * @param Request $request
      * @param SecurityService $securityService
      * @param EntityManagerInterface $em
@@ -312,6 +311,7 @@ class TeamController extends AbstractController
      * @param CurrentTeamService $currentTeamService
      * @return Response
      */
+    #[Route(path: '/team_custom/deaktivieren', name: 'team_custom_deativate')]
     public function customDeactivate(Request $request,
                                      SecurityService $securityService,
                                      EntityManagerInterface $em,
@@ -339,7 +339,6 @@ class TeamController extends AbstractController
 
 
     /**
-     * @Route("/team_abteilungen", name="team_abteilungen")
      * @param ValidatorInterface $validator
      * @param Request $request
      * @param EntityManagerInterface $em
@@ -349,6 +348,7 @@ class TeamController extends AbstractController
      * @param TranslatorInterface $translator
      * @return Response
      */
+    #[Route(path: '/team_abteilungen', name: 'team_abteilungen')]
     public function abteilungenAdd(ValidatorInterface $validator,
                                    Request $request,
                                    EntityManagerInterface $em,
@@ -400,7 +400,6 @@ class TeamController extends AbstractController
     }
 
     /**
-     * @Route("/team_abteilungen/deaktivieren", name="team_abteilungen_deativate")
      * @param Request $request
      * @param SecurityService $securityService
      * @param EntityManagerInterface $em
@@ -408,6 +407,7 @@ class TeamController extends AbstractController
      * @param AuditTomAbteilungRepository $departmentRepository
      * @return Response
      */
+    #[Route(path: '/team_abteilungen/deaktivieren', name: 'team_abteilungen_deativate')]
     public function abteilungenRemove(Request $request,
                                       SecurityService $securityService,
                                       EntityManagerInterface $em,
@@ -433,11 +433,11 @@ class TeamController extends AbstractController
     }
 
     /**
-     * @Route("/team/switch", name="team_switch")
      * @param Request $request
      * @param CurrentTeamService $userService
      * @return RedirectResponse
      */
+    #[Route(path: '/team/switch', name: 'team_switch')]
     public function switchTeam(Request $request, CurrentTeamService $userService) : RedirectResponse
     {
         $team = $request->get('team');

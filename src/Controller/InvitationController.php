@@ -11,10 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class InvitationController extends AbstractController
 {
-    /**
-     * @Route("/login/invitationAccept/{id}", name="invitation_accept")
-     * @ParamConverter("user", class="App\Entity\User",options={"mapping": {"id": "registerId"}})
-     */
+    #[Route(path: '/login/invitationAccept/{id}', name: 'invitation_accept')]
+    #[ParamConverter('user', class: 'App\Entity\User', options: ['mapping' => ['id' => 'registerId']])]
     public function index(InviteService $inviteService, User $user): Response
     {
 

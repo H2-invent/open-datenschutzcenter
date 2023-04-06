@@ -16,10 +16,8 @@ class Kontakte
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank]
     private $firma;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -28,28 +26,20 @@ class Kontakte
     #[ORM\Column(type: 'text', nullable: true)]
     private $vorname;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank]
     private $nachname;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $strase;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $plz;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $ort;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -61,23 +51,17 @@ class Kontakte
     #[ORM\Column(type: 'text', nullable: true)]
     private $bemerkung;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
     private $art;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'kontakte')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $team;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
     private $activ;
 
     #[ORM\Column(type: 'text', nullable: true)]

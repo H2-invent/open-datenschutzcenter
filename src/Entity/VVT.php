@@ -24,19 +24,17 @@ class VVT
     private $id;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $name;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $verantwortlich;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $zweck;
 
     #[ORM\Column(type: 'boolean')]
@@ -45,28 +43,20 @@ class VVT
     #[ORM\Column(type: 'boolean')]
     private $auftragsverarbeitung = false;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank]
     private $speicherung;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToMany(targetEntity: VVTGrundlage::class)]
+    #[Assert\NotBlank]
     private $grundlage;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToMany(targetEntity: VVTPersonen::class)]
+    #[Assert\NotBlank]
     private $personengruppen;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToMany(targetEntity: VVTDatenkategorie::class, cascade: ['persist', 'remove'])]
+    #[Assert\NotBlank]
     private $kategorien;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -82,40 +72,32 @@ class VVT
     #[ORM\Column(type: 'text', nullable: true)]
     private $tom;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToMany(targetEntity: VVTRisiken::class)]
+    #[Assert\NotBlank]
     private $risiko;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $nummer;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToOne(targetEntity: VVTStatus::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $status;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'vvts')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $team;
 
     #[ORM\Column(type: 'integer')]
     private $activ;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
     private $CreatedAt;
 
     #[ORM\OneToOne(targetEntity: VVT::class, cascade: ['persist', 'remove'])]
@@ -140,16 +122,12 @@ class VVT
     #[ORM\Column(type: 'text', nullable: true)]
     private $dsb;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
     private $beurteilungEintritt;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
     private $beurteilungSchaden;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'myVvts')]
