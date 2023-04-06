@@ -15,228 +15,184 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=VVTRepository::class)
- */
+#[ORM\Entity(repositoryClass: VVTRepository::class)]
 class VVT
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $name;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $verantwortlich;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $zweck;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $jointControl = false;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $auftragsverarbeitung = false;
 
     /**
-     * @ORM\Column(type="text",nullable=true)
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $speicherung;
 
     /**
-     * @ORM\ManyToMany(targetEntity=VVTGrundlage::class)
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToMany(targetEntity: VVTGrundlage::class)]
     private $grundlage;
 
     /**
-     * @ORM\ManyToMany(targetEntity=VVTPersonen::class)
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToMany(targetEntity: VVTPersonen::class)]
     private $personengruppen;
 
     /**
-     * @ORM\ManyToMany(targetEntity=VVTDatenkategorie::class, cascade={"persist", "remove"})
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToMany(targetEntity: VVTDatenkategorie::class, cascade: ['persist', 'remove'])]
     private $kategorien;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $weitergabe;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $eu = false;
 
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $tom;
 
     /**
-     * @ORM\ManyToMany(targetEntity=VVTRisiken::class)
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToMany(targetEntity: VVTRisiken::class)]
     private $risiko;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $nummer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=VVTStatus::class)
-     * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToOne(targetEntity: VVTStatus::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="vvts")
-     * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'vvts')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $activ;
 
     /**
-     * @ORM\Column(type="datetime")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'datetime')]
     private $CreatedAt;
 
-    /**
-     * @ORM\OneToOne(targetEntity=VVT::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: VVT::class, cascade: ['persist', 'remove'])]
     private $previous;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTDsfa::class, mappedBy="vvt")
-     */
+    #[ORM\OneToMany(targetEntity: VVTDsfa::class, mappedBy: 'vvt')]
     private $dsfa;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="vVTs")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'vVTs')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $informationspflicht;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $dsb;
 
     /**
-     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'integer')]
     private $beurteilungEintritt;
 
     /**
-     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'integer')]
     private $beurteilungSchaden;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="myVvts")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'myVvts')]
+    #[ORM\JoinColumn(nullable: false)]
     private $userContract;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Datenweitergabe::class, inversedBy="verfahren")
-     */
+    #[ORM\ManyToMany(targetEntity: Datenweitergabe::class, inversedBy: 'verfahren')]
     private $datenweitergaben;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Tom::class, inversedBy="vvts")
-     */
+    #[ORM\ManyToOne(targetEntity: Tom::class, inversedBy: 'vvts')]
     private $tomLink;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=AuditTomAbteilung::class, inversedBy="vVTs")
-     */
+    #[ORM\ManyToOne(targetEntity: AuditTomAbteilung::class, inversedBy: 'vVTs')]
     private $abteilung;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Produkte::class, inversedBy="Vvts")
-     */
+    #[ORM\ManyToMany(targetEntity: Produkte::class, inversedBy: 'Vvts')]
     private $produkt;
 
     private $beurteilungEintrittString;
     private $beurteilungSchadenString;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedVvts")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedVvts')]
     private $assignedUser;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Policies::class, mappedBy="processes")
-     */
+    #[ORM\ManyToMany(targetEntity: Policies::class, mappedBy: 'processes')]
     private $policies;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Software::class, mappedBy="vvts")
-     */
+    #[ORM\ManyToMany(targetEntity: Software::class, mappedBy: 'vvts')]
     private $software;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $approved;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $approvedBy;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $source;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted() 
-    */
+     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $loeschfrist;
 
     public function __construct()

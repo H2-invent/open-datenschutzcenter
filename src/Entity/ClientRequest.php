@@ -9,160 +9,124 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=ClientRequestRepository::class)
- */
+#[ORM\Entity(repositoryClass: ClientRequestRepository::class)]
 class ClientRequest
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $uuid;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $title;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $description;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $item;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\Email()
      */
+    #[ORM\Column(type: 'text')]
     private $email;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="clientRequests")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'clientRequests')]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedRequests")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedRequests')]
     private $assignedUser;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $emailValid;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $token;
 
     /**
-     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'integer')]
     private $activ;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="clientRequests")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'clientRequests')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ClientComment::class, mappedBy="clientRequest")
-     */
+    #[ORM\OneToMany(targetEntity: ClientComment::class, mappedBy: 'clientRequest')]
     private $clientComments;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $validUser;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $userValidBy;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $gdpr;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $notes;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $pgp;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $password;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $open;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $firstname;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $lastname;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $street;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $city;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
     private $birthday;
 
     public function __construct()

@@ -8,110 +8,88 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=KontakteRepository::class)
- */
+#[ORM\Entity(repositoryClass: KontakteRepository::class)]
 class Kontakte
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $firma;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $anrede;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $vorname;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $nachname;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $strase;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $plz;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $ort;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $email;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $telefon;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $bemerkung;
 
     /**
-     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'integer')]
     private $art;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="kontakte")
-     * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'kontakte')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
     /**
-     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'integer')]
     private $activ;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $nummer;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Datenweitergabe::class, mappedBy="kontakt")
-     */
+    #[ORM\OneToMany(targetEntity: Datenweitergabe::class, mappedBy: 'kontakt')]
     private $datenweitergaben;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $approved;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $approvedBy;
 
     public function __construct()

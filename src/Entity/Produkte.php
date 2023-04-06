@@ -7,37 +7,25 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ProdukteRepository::class)
- */
+#[ORM\Entity(repositoryClass: ProdukteRepository::class)]
 class Produkte
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $name;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="produktes")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'produktes')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=VVT::class, mappedBy="produkt")
-     */
+    #[ORM\ManyToMany(targetEntity: VVT::class, mappedBy: 'produkt')]
     private $Vvts;
 
     public function __construct()

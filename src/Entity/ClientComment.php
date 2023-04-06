@@ -7,45 +7,35 @@ use App\Repository\ClientCommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=ClientCommentRepository::class)
- */
+#[ORM\Entity(repositoryClass: ClientCommentRepository::class)]
 class ClientComment
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $name;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $comment;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $internal;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=ClientRequest::class, inversedBy="clientComments")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: ClientRequest::class, inversedBy: 'clientComments')]
+    #[ORM\JoinColumn(nullable: false)]
     private $clientRequest;
 
     public function getId(): ?int
