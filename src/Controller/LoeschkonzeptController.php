@@ -25,14 +25,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 
-/**
- * @Route("/loeschkonzept")
- */
+#[Route(path: '/loeschkonzept')]
 class LoeschkonzeptController extends AbstractController
 {
-    /**
-     * @Route("/", name="app_loeschkonzept_index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'app_loeschkonzept_index', methods: ['GET'])]
     public function index(VVTDatenkategorieRepository $vvtDatenkategorieRepository, LoeschkonzeptRepository $loeschkonzeptRepository, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -65,9 +61,7 @@ class LoeschkonzeptController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="app_loeschkonzept_new", methods={"GET", "POST"})
-     */
+    #[Route(path: '/new', name: 'app_loeschkonzept_new', methods: ['GET', 'POST'])]
     public function new (Request $request, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, SecurityService $securityService, LoeschkonzeptService $loeschkonzeptService, CurrentTeamService $currentTeamService): Response
     {
         $user = $this->getUser();
@@ -99,9 +93,7 @@ class LoeschkonzeptController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="app_loeschkonzept_show", methods={"GET"})
-     */
+    #[Route(path: '/{id}', name: 'app_loeschkonzept_show', methods: ['GET'])]
     public function show(Loeschkonzept $loeschkonzept): Response
     {
         return $this->render('loeschkonzept/show.html.twig', [
@@ -109,9 +101,7 @@ class LoeschkonzeptController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="app_loeschkonzept_edit", methods={"GET", "POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'app_loeschkonzept_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Loeschkonzept $loeschkonzept, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, VVTDatenkategorieRepository $VvtDatenkategorieRepository, LoeschkonzeptService $loeschkonzeptService, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -155,9 +145,7 @@ class LoeschkonzeptController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="app_loeschkonzept_delete", methods={"POST"})
-     */
+    #[Route(path: '/{id}', name: 'app_loeschkonzept_delete', methods: ['POST'])]
     public function delete(Loeschkonzept $loeschkonzept, EntityManagerInterface $entityManager, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
     {
         $user = $this->getUser();

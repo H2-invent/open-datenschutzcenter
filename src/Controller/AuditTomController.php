@@ -23,9 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AuditTomController extends AbstractController
 {
-    /**
-     * @Route("/audit-tom", name="audit_tom")
-     */
+    #[Route(path: '/audit-tom', name: 'audit_tom')]
     public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -41,9 +39,7 @@ class AuditTomController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/audit-tom/new", name="audit_tom_new")
-     */
+    #[Route(path: '/audit-tom/new', name: 'audit_tom_new')]
     public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -87,9 +83,7 @@ class AuditTomController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/audit-tom/edit", name="audit_tom_edit")
-     */
+    #[Route(path: '/audit-tom/edit', name: 'audit_tom_edit')]
     public function EditAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -159,9 +153,7 @@ class AuditTomController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/audit-tom/clone", name="audit_tom_clone")
-     */
+    #[Route(path: '/audit-tom/clone', name: 'audit_tom_clone')]
     public function CloneAuditTom(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());

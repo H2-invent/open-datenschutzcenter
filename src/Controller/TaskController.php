@@ -16,9 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TaskController extends AbstractController
 {
-    /**
-     * @Route("/tasks", name="tasks")
-     */
+    #[Route(path: '/tasks', name: 'tasks')]
     public function index(SecurityService $securityService, Request $request, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -42,9 +40,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/task/new", name="task_new")
-     */
+    #[Route(path: '/task/new', name: 'task_new')]
     public function addTask(ValidatorInterface $validator, Request $request, SecurityService $securityService, TaskService $taskService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -77,9 +73,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/task/edit", name="task_edit")
-     */
+    #[Route(path: '/task/edit', name: 'task_edit')]
     public function EditTask(ValidatorInterface $validator, Request $request, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -117,9 +111,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/task/done", name="task_done")
-     */
+    #[Route(path: '/task/done', name: 'task_done')]
     public function done(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -139,9 +131,7 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('tasks');
     }
 
-    /**
-     * @Route("/task/disable", name="task_disable")
-     */
+    #[Route(path: '/task/disable', name: 'task_disable')]
     public function disable(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();

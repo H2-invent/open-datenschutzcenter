@@ -22,25 +22,19 @@ class Loeschkonzept
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text', length: 255)]
+    #[Assert\NotBlank]
     private $standartlf;
 
     #[ORM\Column(type: 'text', length: 255, nullable: true)]
     private $loeschfrist;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text', length: 511)]
+    #[Assert\NotBlank]
     private $speicherorte;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text', length: 255)]
+    #[Assert\NotBlank]
     private $loeschbeauftragter;
 
     #[ORM\Column(type: 'text', length: 1023, nullable: true)]

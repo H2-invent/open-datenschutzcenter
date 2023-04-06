@@ -12,9 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CronController extends AbstractController
 {
-    /**
-     * @Route("/cron/akademie_update", name="cron_akademie")
-     */
+    #[Route(path: '/cron/akademie_update', name: 'cron_akademie')]
     public function updateCronAkademie(NotificationService $notificationService, Request $request, LoggerInterface $logger)
     {
         $today = new \DateTime();

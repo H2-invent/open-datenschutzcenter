@@ -22,19 +22,15 @@ class VVTDatenkategorie
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $name;
 
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'vVTDatenkategories')]
     private $team;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $datenarten;
 
     #[ORM\Column(type: 'boolean')]

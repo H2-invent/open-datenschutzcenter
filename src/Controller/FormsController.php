@@ -21,9 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FormsController extends AbstractController
 {
-    /**
-     * @Route("/forms", name="forms")
-     */
+    #[Route(path: '/forms', name: 'forms')]
     public function indexForms(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -39,9 +37,7 @@ class FormsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/forms/new", name="forms_new")
-     */
+    #[Route(path: '/forms/new', name: 'forms_new')]
     public function addForms(ValidatorInterface $validator, Request $request, FormsService $formsService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -75,9 +71,7 @@ class FormsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/forms/edit", name="forms_edit")
-     */
+    #[Route(path: '/forms/edit', name: 'forms_edit')]
     public function EditFormulare(ValidatorInterface $validator, Request $request, SecurityService $securityService, FormsService $formsService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -120,9 +114,7 @@ class FormsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/forms/approve", name="forms_approve")
-     */
+    #[Route(path: '/forms/approve', name: 'forms_approve')]
     public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -138,9 +130,7 @@ class FormsController extends AbstractController
         return $this->redirectToRoute('forms');
     }
 
-    /**
-     * @Route("/forms/disable", name="forms_disable")
-     */
+    #[Route(path: '/forms/disable', name: 'forms_disable')]
     public function disable(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -154,10 +144,8 @@ class FormsController extends AbstractController
         return $this->redirectToRoute('forms');
     }
 
-    /**
-     * @Route("/forms/download/{id}", name="forms_download_file", methods={"GET"})
-     * @ParamConverter("forms", options={"mapping"={"id"="id"}})
-     */
+    #[Route(path: '/forms/download/{id}', name: 'forms_download_file', methods: ['GET'])]
+    #[ParamConverter('forms', options: ['mapping' => ['id' => 'id']])]
     public function downloadArticleReference(FilesystemInterface $formsFileSystem, Forms $forms, SecurityService $securityService, LoggerInterface $logger, CurrentTeamService $currentTeamService)
     {
 

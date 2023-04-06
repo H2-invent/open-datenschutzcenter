@@ -18,23 +18,21 @@ class Software
     private $id;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $name;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $build;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank]
     private $purchase;
 
     #[ORM\ManyToMany(targetEntity: VVT::class, inversedBy: 'software')]
@@ -53,10 +51,10 @@ class Software
     private $licenseExpiration;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $description;
 
     #[ORM\Column(type: 'integer', nullable: true)]

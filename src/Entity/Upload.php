@@ -25,12 +25,10 @@ class Upload
     private $file;
 
     /**
-     * @Assert\File(
-     *  maxSize="2M",
-     *  mimeTypes={"text/plain"})
      * @Vich\UploadableField(mapping="profil_picture", fileNameProperty="file")
      * @var File
      */
+    #[Assert\File(maxSize: '2M', mimeTypes: ['text/plain'])]
     private $fileFile;
 
 

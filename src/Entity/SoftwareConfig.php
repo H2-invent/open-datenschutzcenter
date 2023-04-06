@@ -22,16 +22,16 @@ class SoftwareConfig
 
     /**
      * @Encrypted()
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $name;
 
     /**
      * @Encrypted()
-     * @Assert\NotBlank()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $config;
 
     #[ORM\Column(type: 'boolean')]
@@ -51,15 +51,11 @@ class SoftwareConfig
     private $upload;
 
     /**
-     * @Assert\File(
-     *     maxSize = "600k",
-     *     mimeTypes = {"image/jpg", "image/jpeg", "image/gif", "image/png"},
-     *     mimeTypesMessage = "Please upload a valid JP, JPEG, GIF or PNG"
-     * )
      *
      * @Vich\UploadableField(mapping="software", fileNameProperty="upload")
      * @var File
      */
+    #[Assert\File(maxSize: '600k', mimeTypes: ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'], mimeTypesMessage: 'Please upload a valid JP, JPEG, GIF or PNG')]
     private $uploadFile;
 
 

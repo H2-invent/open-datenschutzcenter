@@ -12,9 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AkademieController extends AbstractController
 {
-    /**
-     * @Route("/akademie", name="akademie")
-     */
+    #[Route(path: '/akademie', name: 'akademie')]
     public function index(SecurityService $securityService, AkademieBuchungenRepository $bookingRepository)
     {
         $team = $this->getUser()->getAkademieUser();
@@ -31,9 +29,7 @@ class AkademieController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/akademie/kurs", name="akademie_kurs")
-     */
+    #[Route(path: '/akademie/kurs', name: 'akademie_kurs')]
     public function akademieKurs(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAkademieUser();
@@ -65,9 +61,7 @@ class AkademieController extends AbstractController
 
     }
 
-    /**
-     * @Route("/akademie/kurs/finish", name="akademie_kurs_finish")
-     */
+    #[Route(path: '/akademie/kurs/finish', name: 'akademie_kurs_finish')]
     public function akademieKursFinish(Request $request, SecurityService $securityService)
     {
         $team = $this->getUser()->getAkademieUser();
@@ -101,9 +95,7 @@ class AkademieController extends AbstractController
         return $this->redirectToRoute('akademie');
     }
 
-    /**
-     * @Route("/akademie/kurs/zertifikat", name="akademie_kurs_zertifikat")
-     */
+    #[Route(path: '/akademie/kurs/zertifikat', name: 'akademie_kurs_zertifikat')]
     public function akademieKursZertifikat(DompdfWrapper $wrapper, Request $request)
     {
         $buchung = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->find($request->get('buchung'));

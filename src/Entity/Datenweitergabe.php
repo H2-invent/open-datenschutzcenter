@@ -23,40 +23,36 @@ class Datenweitergabe
     private $id;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $gegenstand;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $verantwortlich;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToOne(targetEntity: Kontakte::class, inversedBy: 'datenweitergaben')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $kontakt;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $vertragsform;
 
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'date', nullable: true)]
+    #[Assert\NotBlank]
     private $zeichnungsdatum;
 
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'datenweitergaben')]
@@ -70,30 +66,24 @@ class Datenweitergabe
     private $previous;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $nummer;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToOne(targetEntity: DatenweitergabeStand::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $stand;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToOne(targetEntity: DatenweitergabeGrundlagen::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $grundlage;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
     private $art;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'datenweitergabes')]

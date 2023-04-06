@@ -16,38 +16,38 @@ class VVTDsfa
     private $id;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $beschreibung;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $notwendigkeit;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $risiko;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $abhilfe;
 
     /**
-     * @Assert\NotBlank()
      * @Encrypted()
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $standpunkt;
 
     /**
@@ -71,11 +71,9 @@ class VVTDsfa
     #[ORM\Column(type: 'datetime')]
     private $CreatedAt;
 
-    /**
-     * @Assert\NotBlank()
-     */
     #[ORM\ManyToOne(targetEntity: VVT::class, inversedBy: 'dsfa')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $vvt;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'vVTDsfas')]

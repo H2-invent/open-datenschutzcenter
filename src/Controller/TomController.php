@@ -22,9 +22,7 @@ use App\Service\CurrentTeamService;
 
 class TomController extends AbstractController
 {
-    /**
-     * @Route("/tom", name="tom")
-     */
+    #[Route(path: '/tom', name: 'tom')]
     public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -40,9 +38,7 @@ class TomController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tom/new", name="tom_new")
-     */
+    #[Route(path: '/tom/new', name: 'tom_new')]
     public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -77,9 +73,7 @@ class TomController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tom/edit", name="tom_edit")
-     */
+    #[Route(path: '/tom/edit', name: 'tom_edit')]
     public function EditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -121,9 +115,7 @@ class TomController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/tom/clone", name="tom_clone")
-     */
+    #[Route(path: '/tom/clone', name: 'tom_clone')]
     public function cloneTom(Request $request, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -155,9 +147,7 @@ class TomController extends AbstractController
 
     }
 
-    /**
-     * @Route("/tom/approve", name="tom_approve")
-     */
+    #[Route(path: '/tom/approve', name: 'tom_approve')]
     public function approve(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -173,9 +163,7 @@ class TomController extends AbstractController
         return $this->redirectToRoute('tom');
     }
 
-    /**
-     * @Route("/tom/disable", name="tom_disable")
-     */
+    #[Route(path: '/tom/disable', name: 'tom_disable')]
     public function disable(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();

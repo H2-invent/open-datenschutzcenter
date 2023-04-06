@@ -18,12 +18,8 @@ class User extends BaseUser
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @Assert\NotBlank(message="fos_user.password.blank", groups={"Registration", "ResetPassword", "ChangePassword"})
-     * @Assert\Length(min=8,
-     *     minMessage="fos_user.password.short",
-     *     groups={"Registration", "Profile", "ResetPassword", "ChangePassword"})
-     */
+    #[Assert\NotBlank(message: 'fos_user.password.blank', groups: ['Registration', 'ResetPassword', 'ChangePassword'])]
+    #[Assert\Length(min: 8, minMessage: 'fos_user.password.short', groups: ['Registration', 'Profile', 'ResetPassword', 'ChangePassword'])]
     protected $plainPassword;
 
     #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'members')]

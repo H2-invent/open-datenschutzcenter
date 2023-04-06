@@ -22,9 +22,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ClientRequestController extends AbstractController
 {
-    /**
-     * @Route("/client-requests", name="client_requests")
-     */
+    #[Route(path: '/client-requests', name: 'client_requests')]
     public function allClientRequests(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -40,9 +38,7 @@ class ClientRequestController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/client-requests/show", name="client_requests_show")
-     */
+    #[Route(path: '/client-requests/show', name: 'client_requests_show')]
     public function showClientRequests(SecurityService $securityService, Request $request, CurrentTeamService $currentTeamService)
     {
 
@@ -63,9 +59,7 @@ class ClientRequestController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/client-requests/comment", name="client_request_comment")
-     */
+    #[Route(path: '/client-requests/comment', name: 'client_request_comment')]
     public function clientRequestComment(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService, CurrentTeamService $currentTeamService)
     {
         $data = $request->get('client_reques_comment');
@@ -81,9 +75,7 @@ class ClientRequestController extends AbstractController
         return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
     }
 
-    /**
-     * @Route("/client-requests/userValidate", name="client_valid_user")
-     */
+    #[Route(path: '/client-requests/userValidate', name: 'client_valid_user')]
     public function validateUserRequest(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService, CurrentTeamService $currentTeamService)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
@@ -99,9 +91,7 @@ class ClientRequestController extends AbstractController
         return $this->redirectToRoute('client_requests');
     }
 
-    /**
-     * @Route("/client-requests/close", name="client_request_close")
-     */
+    #[Route(path: '/client-requests/close', name: 'client_request_close')]
     public function closeRequest(SecurityService $securityService, Request $request, ClientRequestService $clientRequestService, CurrentTeamService $currentTeamService)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
@@ -118,9 +108,7 @@ class ClientRequestController extends AbstractController
         return $this->redirectToRoute('client_requests');
     }
 
-    /**
-     * @Route("/client-requests/internal", name="client_request_make_internal")
-     */
+    #[Route(path: '/client-requests/internal', name: 'client_request_make_internal')]
     public function makeInternalRequest(TranslatorInterface $translator, SecurityService $securityService, Request $request, ClientRequestService $clientRequestService, CurrentTeamService $currentTeamService)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->find($request->get('id'));
@@ -140,9 +128,7 @@ class ClientRequestController extends AbstractController
         return $this->redirectToRoute('client_requests');
     }
 
-    /**
-     * @Route("/client-requests/internalNote", name="client_requests_internal_note")
-     */
+    #[Route(path: '/client-requests/internalNote', name: 'client_requests_internal_note')]
     public function internalNoteClientRequests(SecurityService $securityService, Request $request, ValidatorInterface $validator, CurrentTeamService $currentTeamService)
     {
 
@@ -171,9 +157,7 @@ class ClientRequestController extends AbstractController
     }
 
 
-    /**
-     * @Route("/client-requests/edit", name="client_requests_edit")
-     */
+    #[Route(path: '/client-requests/edit', name: 'client_requests_edit')]
     public function editClientRequests(SecurityService $securityService, Request $request, ValidatorInterface $validator, ClientRequestService $clientRequestService, TranslatorInterface $translator, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -213,10 +197,8 @@ class ClientRequestController extends AbstractController
     }
 
 
-    /**
-     * @Route("/client/{slug}", name="client_index")
-     * @ParamConverter("team", options={"mapping": {"slug": "slug"}})
-     */
+    #[Route(path: '/client/{slug}', name: 'client_index')]
+    #[ParamConverter('team', options: ['mapping' => ['slug' => 'slug']])]
     public function index(Team $team, Request $request, TranslatorInterface $translator)
     {
         $form = $this->createForm(ClientRequestViewType::class);
@@ -241,10 +223,8 @@ class ClientRequestController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/client/{slug}/new", name="client_new")
-     * @ParamConverter("team", options={"mapping": {"slug": "slug"}})
-     */
+    #[Route(path: '/client/{slug}/new', name: 'client_new')]
+    #[ParamConverter('team', options: ['mapping' => ['slug' => 'slug']])]
     public function newRequest(Request $request, ValidatorInterface $validator, Team $team, ClientRequestService $clientRequestService, NotificationService $notificationService)
     {
         $form = $clientRequestService->newRequest($team);
@@ -284,10 +264,8 @@ class ClientRequestController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/client/{slug}/show", name="client_show")
-     * @ParamConverter("team", options={"mapping": {"slug": "slug"}})
-     */
+    #[Route(path: '/client/{slug}/show', name: 'client_show')]
+    #[ParamConverter('team', options: ['mapping' => ['slug' => 'slug']])]
     public function showRequest(Request $request, Team $team, TranslatorInterface $translator)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findOneBy(['token' => $request->get('token'), 'open' => true]);
@@ -304,10 +282,8 @@ class ClientRequestController extends AbstractController
         return $this->redirectToRoute('client_index', ['slug' => $team->getSlug(), 'snack' => $snack]);
     }
 
-    /**
-     * @Route("/client/{slug}/comment", name="client_comment")
-     * @ParamConverter("team", options={"mapping": {"slug": "slug"}})
-     */
+    #[Route(path: '/client/{slug}/comment', name: 'client_comment')]
+    #[ParamConverter('team', options: ['mapping' => ['slug' => 'slug']])]
     public function clientComment(Request $request, Team $team, ClientRequestService $clientRequestService, TranslatorInterface $translator)
     {
         $data = $request->get('client_reques_comment');
@@ -320,10 +296,8 @@ class ClientRequestController extends AbstractController
         return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken(), 'snack' => $snack]);
     }
 
-    /**
-     * @Route("/client/{slug}/verify", name="client_valid")
-     * @ParamConverter("team", options={"mapping": {"slug": "slug"}})
-     */
+    #[Route(path: '/client/{slug}/verify', name: 'client_valid')]
+    #[ParamConverter('team', options: ['mapping' => ['slug' => 'slug']])]
     public function validateRequest(Request $request, Team $team, NotificationService $notificationService, ClientRequestService $clientRequestService, TranslatorInterface $translator)
     {
         $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findOneBy(['uuid' => $request->get('token')]);

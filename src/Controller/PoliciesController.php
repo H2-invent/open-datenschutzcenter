@@ -21,9 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PoliciesController extends AbstractController
 {
-    /**
-     * @Route("/policies", name="policies")
-     */
+    #[Route(path: '/policies', name: 'policies')]
     public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -38,9 +36,7 @@ class PoliciesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/policy/new", name="policy_new")
-     */
+    #[Route(path: '/policy/new', name: 'policy_new')]
     public function addPolicy(ValidatorInterface $validator, Request $request, PoliciesService $policiesService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -78,9 +74,7 @@ class PoliciesController extends AbstractController
     }
 
 
-    /**
-     * @Route("/policy/edit", name="policy_edit")
-     */
+    #[Route(path: '/policy/edit', name: 'policy_edit')]
     public function editPolicy(ValidatorInterface $validator, Request $request, PoliciesService $policiesService, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -120,9 +114,7 @@ class PoliciesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/policy/approve", name="policy_approve")
-     */
+    #[Route(path: '/policy/approve', name: 'policy_approve')]
     public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -138,9 +130,7 @@ class PoliciesController extends AbstractController
         return $this->redirectToRoute('policies');
     }
 
-    /**
-     * @Route("/policy/disable", name="policy_disable")
-     */
+    #[Route(path: '/policy/disable', name: 'policy_disable')]
     public function disable(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -154,10 +144,8 @@ class PoliciesController extends AbstractController
         return $this->redirectToRoute('policies');
     }
 
-    /**
-     * @Route("/policy/download/{id}", name="policy_download_file", methods={"GET"})
-     * @ParamConverter("policies", options={"mapping"={"id"="id"}})
-     */
+    #[Route(path: '/policy/download/{id}', name: 'policy_download_file', methods: ['GET'])]
+    #[ParamConverter('policies', options: ['mapping' => ['id' => 'id']])]
     public function downloadArticleReference(FilesystemInterface $policiesFileSystem, Policies $policies, SecurityService $securityService, LoggerInterface $logger, CurrentTeamService $currentTeamService)
     {
 
