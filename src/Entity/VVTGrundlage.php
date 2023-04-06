@@ -5,31 +5,21 @@ namespace App\Entity;
 use App\Repository\VVTGrundlageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=VVTGrundlageRepository::class)
- */
+#[ORM\Entity(repositoryClass: VVTGrundlageRepository::class)]
 class VVTGrundlage
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $name;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="vVTGrundlages")
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'vVTGrundlages')]
     private $team;
 
     public function getId(): ?int

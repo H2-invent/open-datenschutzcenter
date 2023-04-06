@@ -17,251 +17,175 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=TeamRepository::class)
  * @UniqueEntity("slug")
  */
+#[ORM\Entity(repositoryClass: TeamRepository::class)]
 class Team
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="text", unique=true)
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text', unique: true)]
     private $name;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $keycloakGroup;
 
     /**
-     * @ORM\Column(type="boolean")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="teams")
-     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams')]
     private $members;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AuditTomZiele::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: AuditTomZiele::class, mappedBy: 'team')]
     private $ziele;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AuditTomAbteilung::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: AuditTomAbteilung::class, mappedBy: 'team')]
     private $abteilungen;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AuditTom::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: AuditTom::class, mappedBy: 'team')]
     private $auditToms;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Kontakte::class, mappedBy="team", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Kontakte::class, mappedBy: 'team', orphanRemoval: true)]
     private $kontakte;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVT::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: VVT::class, mappedBy: 'team')]
     private $vvts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Datenweitergabe::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: Datenweitergabe::class, mappedBy: 'team')]
     private $datenweitergaben;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $strasse;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $plz;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $stadt;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $email;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $telefon;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $dsb;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $ceo;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $clonedAt;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=AkademieKurse::class, mappedBy="team")
-     */
+    #[ORM\ManyToMany(targetEntity: AkademieKurse::class, mappedBy: 'team')]
     private $kurse;
 
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="akademieUser")
-     */
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'akademieUser')]
     private $akademieUsers;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="adminRoles")
-     * @ORM\JoinTable(name="team_admin")
-     */
+    #[ORM\JoinTable(name: 'team_admin')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'adminRoles')]
     private $admins;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Tom::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: Tom::class, mappedBy: 'team')]
     private $toms;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Vorfall::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: Vorfall::class, mappedBy: 'team')]
     private $vorfalls;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Produkte::class, mappedBy="team")mappedby
-     */
+    #[ORM\OneToMany(targetEntity: Produkte::class, mappedBy: 'team')]
     private $produktes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Forms::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: Forms::class, mappedBy: 'team')]
     private $forms;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Policies::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: Policies::class, mappedBy: 'team')]
     private $policies;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $signature;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Software::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: Software::class, mappedBy: 'team')]
     private $software;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'team')]
     private $tasks;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      * @Assert\Url()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $externalLink;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $video;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ClientRequest::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: ClientRequest::class, mappedBy: 'team')]
     private $clientRequests;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $slug;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="teamDsb")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'teamDsb')]
     private $dsbUser;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: Report::class, mappedBy: 'team')]
     private $reports;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTDatenkategorie::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: VVTDatenkategorie::class, mappedBy: 'team')]
     private $vVTDatenkategories;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTPersonen::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: VVTPersonen::class, mappedBy: 'team')]
     private $vVTPersonens;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTRisiken::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: VVTRisiken::class, mappedBy: 'team')]
     private $vVTRisikens;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTGrundlage::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: VVTGrundlage::class, mappedBy: 'team')]
     private $vVTGrundlages;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $industry;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $specialty;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTStatus::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: VVTStatus::class, mappedBy: 'team')]
     private $vVTStatuses;
 
-    /**
-     * @ORM\OneToMany(targetEntity=DatenweitergabeGrundlagen::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: DatenweitergabeGrundlagen::class, mappedBy: 'team')]
     private $datenweitergabeGrundlagens;
 
-    /**
-     * @ORM\OneToMany(targetEntity=DatenweitergabeStand::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: DatenweitergabeStand::class, mappedBy: 'team')]
     private $datenweitergabeStands;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Loeschkonzept::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: Loeschkonzept::class, mappedBy: 'team')]
     private $loeschkonzepts;
 
     public function __construct()

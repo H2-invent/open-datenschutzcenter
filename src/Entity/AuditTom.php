@@ -9,115 +9,101 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=AuditTomRepository::class)
- */
+#[ORM\Entity(repositoryClass: AuditTomRepository::class)]
 class AuditTom
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $frage;
 
     /**
-     * @ORM\Column(type="text")
      * @Encrypted()
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $bemerkung;
 
     /**
-     * @ORM\Column(type="text")
      * @Encrypted()
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
     private $empfehlung;
 
     /**
-     * @ORM\ManyToMany(targetEntity=AuditTomZiele::class)
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToMany(targetEntity: AuditTomZiele::class)]
     private $ziele;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="auditToms")
-     * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'auditToms')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
     /**
-     * @ORM\ManyToMany(targetEntity=AuditTomAbteilung::class)
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToMany(targetEntity: AuditTomAbteilung::class)]
     private $abteilung;
 
     /**
-     * @ORM\ManyToOne(targetEntity=AuditTomStatus::class, inversedBy="auditToms")
-     * @ORM\JoinColumn(nullable=true)
      * @Assert\NotBlank()
      */
+    #[ORM\ManyToOne(targetEntity: AuditTomStatus::class, inversedBy: 'auditToms')]
+    #[ORM\JoinColumn(nullable: true)]
     private $status;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
-    /**
-     * @ORM\OneToOne(targetEntity=AuditTom::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: AuditTom::class, cascade: ['persist', 'remove'])]
     private $previous;
 
     /**
-     * @ORM\Column(type="datetime")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $nummer;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="auditToms")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'auditToms')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $tomAttribut;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $tomZiel;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $kategorie;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedAudits")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedAudits')]
     private $assignedUser;
 
     public function __construct()

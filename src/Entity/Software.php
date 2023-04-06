@@ -9,153 +9,113 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=SoftwareRepository::class)
- */
+#[ORM\Entity(repositoryClass: SoftwareRepository::class)]
 class Software
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $name;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $build;
 
     /**
-     * @ORM\Column(type="date")
      * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'date')]
     private $purchase;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=VVT::class, inversedBy="software")
-     */
+    #[ORM\ManyToMany(targetEntity: VVT::class, inversedBy: 'software')]
     private $vvts;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $license;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
     private $licenseExpiration;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $description;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $status;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="software")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'software')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="software")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'software')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Software::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Software::class, cascade: ['persist', 'remove'])]
     private $previous;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedSoftware")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedSoftware')]
     private $assignedUser;
 
-    /**
-     * @ORM\OneToMany(targetEntity=SoftwareConfig::class, mappedBy="software")
-     */
+    #[ORM\OneToMany(targetEntity: SoftwareConfig::class, mappedBy: 'software')]
     private $config;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $location;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $nummer;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Datenweitergabe::class, inversedBy="software")
-     */
+    #[ORM\ManyToMany(targetEntity: Datenweitergabe::class, inversedBy: 'software')]
     private $datenweitergabe;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $reference;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $approved;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $approvedBy;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $archiving;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $recovery;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $permissions;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $licenseType;
 
     public function __construct()
