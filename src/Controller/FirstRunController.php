@@ -13,9 +13,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FirstRunController extends AbstractController
 {
-    /**
-     * @Route("/first/run", name="first_run")
-     */
+    #[Route(path: '/first/run', name: 'first_run')]
     public function index(TeamRepository $teamRepository): Response
     {
         $teams = $teamRepository->findAll();

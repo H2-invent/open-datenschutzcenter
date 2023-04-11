@@ -18,9 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SoftwareController extends AbstractController
 {
-    /**
-     * @Route("/software", name="software")
-     */
+    #[Route(path: '/software', name: 'software')]
     public function index(SecurityService $securityService, Request $request, CurrentTeamService $currentTeamService)
     {
         //Request: snack: Snack Notice
@@ -38,9 +36,7 @@ class SoftwareController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/software/new", name="software_new")
-     */
+    #[Route(path: '/software/new', name: 'software_new')]
     public function addSoftware(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -76,9 +72,7 @@ class SoftwareController extends AbstractController
     }
 
 
-    /**
-     * @Route("/software/edit", name="software_edit")
-     */
+    #[Route(path: '/software/edit', name: 'software_edit')]
     public function editSoftware(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
         //Request: id: SoftwareID, snack:Snack Notice
@@ -126,9 +120,7 @@ class SoftwareController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/software/config", name="software_config_new")
-     */
+    #[Route(path: '/software/config', name: 'software_config_new')]
     public function addConfig(ValidatorInterface $validator, Request $request, SoftwareService $softwareService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         //Requests: id: SoftwareID, config: ConfigID
@@ -177,9 +169,7 @@ class SoftwareController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/software/config/delete", name="software_config_delete")
-     */
+    #[Route(path: '/software/config/delete', name: 'software_config_delete')]
     public function deleteConfig(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         // Request: config: ConfigID
@@ -198,9 +188,7 @@ class SoftwareController extends AbstractController
         return $this->redirectToRoute('software');
     }
 
-    /**
-     * @Route("/software/approve", name="software_approve")
-     */
+    #[Route(path: '/software/approve', name: 'software_approve')]
     public function approveSoftware(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -228,10 +216,8 @@ class SoftwareController extends AbstractController
         return $this->redirectToRoute('policies');
     }
 
-    /**
-     * @Route("/software/config/download/{id}", name="software_config_download_file", methods={"GET"})
-     * @ParamConverter("softwareConfig", options={"mapping"={"id"="id"}})
-     */
+    #[Route(path: '/software/config/download/{id}', name: 'software_config_download_file', methods: ['GET'])]
+    #[ParamConverter('softwareConfig', options: ['mapping' => ['id' => 'id']])]
     public function downloadArticleReference(SoftwareConfig $softwareConfig, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());

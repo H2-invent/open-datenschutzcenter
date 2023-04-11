@@ -39,9 +39,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BerichtController extends AbstractController
 {
-    /**
-     * @Route("/bericht", name="bericht")
-     */
+    #[Route(path: '/bericht', name: 'bericht')]
     public function bericht(Request $request, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -57,9 +55,7 @@ class BerichtController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/bericht/vvt", name="bericht_vvt")
-     */
+    #[Route(path: '/bericht/vvt', name: 'bericht_vvt')]
     public function berichtVvt(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
         ini_set('max_execution_time', '900');
@@ -101,9 +97,7 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    /**
-     * @Route("/bericht/audit", name="bericht_audit")
-     */
+    #[Route(path: '/bericht/audit', name: 'bericht_audit')]
     public function berichtAudit(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
@@ -143,9 +137,7 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    /**
-     * @Route("/bericht/tom", name="bericht_tom")
-     */
+    #[Route(path: '/bericht/tom', name: 'bericht_tom')]
     public function berichtTom(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
@@ -179,9 +171,7 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    /**
-     * @Route("/bericht/global_tom", name="bericht_global_tom")
-     */
+    #[Route(path: '/bericht/global_tom', name: 'bericht_global_tom')]
     public function berichtGlobalTom(DompdfWrapper $wrapper, CurrentTeamService $currentTeamService)
     {
 
@@ -210,9 +200,7 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    /**
-     * @Route("/bericht/weitergabe", name="bericht_weitergabe")
-     */
+    #[Route(path: '/bericht/weitergabe', name: 'bericht_weitergabe')]
     public function berichtWeitergabe(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
@@ -248,9 +236,7 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    /**
-     * @Route("/bericht/akademie", name="bericht_akademie")
-     */
+    #[Route(path: '/bericht/akademie', name: 'bericht_akademie')]
     public function berichtAkademie()
     {
         $user = $this->getUser();
@@ -268,9 +254,7 @@ class BerichtController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/bericht/vorfall", name="bericht_vorfall")
-     */
+    #[Route(path: '/bericht/vorfall', name: 'bericht_vorfall')]
     public function berichtVorfall(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
@@ -306,9 +290,7 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    /**
-     * @Route("/bericht/policy", name="bericht_policy")
-     */
+    #[Route(path: '/bericht/policy', name: 'bericht_policy')]
     public function berichtPolicy(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
@@ -344,9 +326,7 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    /**
-     * @Route("/bericht/software", name="bericht_software")
-     */
+    #[Route(path: '/bericht/software', name: 'bericht_software')]
     public function berichtSoftware(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
@@ -381,9 +361,7 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    /**
-     * @Route("/bericht/backupconcept", name="bericht_backupconcept")
-     */
+    #[Route(path: '/bericht/backupconcept', name: 'bericht_backupconcept')]
     public function backupSoftware(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
@@ -415,9 +393,7 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    /**
-     * @Route("/bericht/revoceryconcept", name="bericht_recoveryconcept")
-     */
+    #[Route(path: '/bericht/revoceryconcept', name: 'bericht_recoveryconcept')]
     public function recoverySoftware(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
@@ -446,9 +422,7 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    /**
-     * @Route("/bericht/request", name="bericht_request")
-     */
+    #[Route(path: '/bericht/request', name: 'bericht_request')]
     public function berichtRequest(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
 
@@ -486,9 +460,7 @@ class BerichtController extends AbstractController
     }
 
 
-    /**
-     * @Route("/bericht/reports", name="bericht_reports")
-     */
+    #[Route(path: '/bericht/reports', name: 'bericht_reports')]
     public function berichtReports(Request $request, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -606,9 +578,7 @@ class BerichtController extends AbstractController
         return $this->render('bericht/modalView.html.twig', array('form' => $form->createView(), 'title' => $title, 'members' => $users));
     }
 
-    /**
-     * @Route("/bericht/loeschkonzept", name="bericht_loeschkonzept")
-     */
+    #[Route(path: '/bericht/loeschkonzept', name: 'bericht_loeschkonzept')]
     public function berichtLoeschkonzept(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
     {
         ini_set('max_execution_time', '900');
@@ -644,9 +614,7 @@ class BerichtController extends AbstractController
     }
 
 
-    /**
-     * @Route("/bericht/reports/generate", name="bericht_reports_generate")
-     */
+    #[Route(path: '/bericht/reports/generate', name: 'bericht_reports_generate')]
     public function berichtGernateReports(Request $request, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());

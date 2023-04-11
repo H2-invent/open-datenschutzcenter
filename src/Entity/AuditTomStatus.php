@@ -7,31 +7,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=AuditTomStatusRepository::class)
- */
+#[ORM\Entity(repositoryClass: AuditTomStatusRepository::class)]
 class AuditTomStatus
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $name;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $color;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AuditTom::class, mappedBy="status")
-     */
+    #[ORM\OneToMany(targetEntity: AuditTom::class, mappedBy: 'status')]
     private $auditToms;
 
     public function __construct()

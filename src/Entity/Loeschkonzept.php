@@ -14,86 +14,56 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=LoeschkonzeptRepository::class)
- */
+#[ORM\Entity(repositoryClass: LoeschkonzeptRepository::class)]
 class Loeschkonzept
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text", length=255)
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text', length: 255)]
+    #[Assert\NotBlank]
     private $standartlf;
 
-    /**
-     * @ORM\Column(type="text", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'text', length: 255, nullable: true)]
     private $loeschfrist;
 
-    /**
-     * @ORM\Column(type="text", length=511)
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text', length: 511)]
+    #[Assert\NotBlank]
     private $speicherorte;
 
-    /**
-     * @ORM\Column(type="text", length=255)
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text', length: 255)]
+    #[Assert\NotBlank]
     private $loeschbeauftragter;
 
-    /**
-     * @ORM\Column(type="text", length=1023, nullable=true)
-     */
+    #[ORM\Column(type: 'text', length: 1023, nullable: true)]
     private $beschreibung;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="loeschkonzepts")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'loeschkonzepts')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Loeschkonzept::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Loeschkonzept::class, cascade: ['persist', 'remove'])]
     private $previous;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
+    #[ORM\Column(type: 'datetime_immutable')]
     private $CreateAt;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="loeschkonzepts")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'loeschkonzepts')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=VVTDatenkategorie::class, inversedBy="loeschkonzept")
-     */
+    #[ORM\ManyToMany(targetEntity: VVTDatenkategorie::class, inversedBy: 'loeschkonzept')]
     private $vvtdatenkategories;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Loeschkonzept::class, inversedBy="parentOf")
-     */
+    #[ORM\ManyToOne(targetEntity: Loeschkonzept::class, inversedBy: 'parentOf')]
     private $cloneOf;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Loeschkonzept::class, mappedBy="cloneOf")
-     */
+    #[ORM\OneToMany(targetEntity: Loeschkonzept::class, mappedBy: 'cloneOf')]
     private $parentOf;
 
     public function __construct()

@@ -21,9 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class KontaktController extends AbstractController
 {
-    /**
-     * @Route("/kontakt", name="kontakt")
-     */
+    #[Route(path: '/kontakt', name: 'kontakt')]
     public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -40,9 +38,7 @@ class KontaktController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/kontakt/neu", name="kontakt_new")
-     */
+    #[Route(path: '/kontakt/neu', name: 'kontakt_new')]
     public function addKontakt(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -76,9 +72,7 @@ class KontaktController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/kontakt/edit", name="kontakt_edit")
-     */
+    #[Route(path: '/kontakt/edit', name: 'kontakt_edit')]
     public function editKontakt(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -110,9 +104,7 @@ class KontaktController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/kontakt/approve", name="kontakt_approve")
-     */
+    #[Route(path: '/kontakt/approve', name: 'kontakt_approve')]
     public function approve(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -128,9 +120,7 @@ class KontaktController extends AbstractController
         return $this->redirectToRoute('kontakt');
     }
 
-    /**
-     * @Route("/kontakt/disable", name="kontakt_disable")
-     */
+    #[Route(path: '/kontakt/disable', name: 'kontakt_disable')]
     public function disable(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();

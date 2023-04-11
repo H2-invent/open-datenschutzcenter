@@ -8,112 +8,80 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=VorfallRepository::class)
- */
+#[ORM\Entity(repositoryClass: VorfallRepository::class)]
 class Vorfall
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="text")
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $fakten;
 
     /**
-     * @ORM\Column(type="text")
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $auswirkung;
 
     /**
-     * @ORM\Column(type="text")
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $massnahmen;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $datum;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $gemeldet;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="vorfalls")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'vorfalls')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="vorfalls")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'vorfalls')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Vorfall::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Vorfall::class, cascade: ['persist', 'remove'])]
     private $previous;
 
     /**
-     * @ORM\Column(type="text")
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $nummer;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $betroffeneGemeldet;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $auftraggeberGemeldet;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=VVTPersonen::class)
-     */
+    #[ORM\ManyToMany(targetEntity: VVTPersonen::class)]
     private $personen;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=VVTDatenkategorie::class)
-     */
+    #[ORM\ManyToMany(targetEntity: VVTDatenkategorie::class)]
     private $daten;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $approved;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $approvedBy;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedVorfalls")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedVorfalls')]
     private $assignedUser;
 
     public function __construct()

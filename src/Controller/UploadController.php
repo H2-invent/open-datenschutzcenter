@@ -14,9 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UploadController extends AbstractController
 {
-    /**
-     * @Route("/upload", name="upload_new")
-     */
+    #[Route(path: '/upload', name: 'upload_new')]
     public function index(Request $request, FilesystemInterface $internFileSystem, ParserService $parserService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
@@ -77,17 +75,13 @@ class UploadController extends AbstractController
         return $this->render('upload/new.html.twig', array('form' => $form->createView()));
     }
 
-    /**
-     * @Route("/upload/success", name="upload_success")
-     */
+    #[Route(path: '/upload/success', name: 'upload_success')]
     public function success(Request $request)
     {
         return $this->render('upload/success.html.twig');
     }
 
-    /**
-     * @Route("/upload/fail", name="upload_fail")
-     */
+    #[Route(path: '/upload/fail', name: 'upload_fail')]
     public function fail(Request $request)
     {
         return $this->render('upload/fail.html.twig',array('message'=>$request->get('message')));

@@ -5,31 +5,21 @@ namespace App\Entity;
 use App\Repository\DatenweitergabeGrundlagenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=DatenweitergabeGrundlagenRepository::class)
- */
+#[ORM\Entity(repositoryClass: DatenweitergabeGrundlagenRepository::class)]
 class DatenweitergabeGrundlagen
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="datenweitergabeGrundlagens")
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'datenweitergabeGrundlagens')]
     private $team;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ = true;
 
     public function getId(): ?int

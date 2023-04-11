@@ -9,9 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DsbController extends AbstractController
 {
-    /**
-     * @Route("/ext-dsb", name="dsb")
-     */
+    #[Route(path: '/ext-dsb', name: 'dsb')]
     public function index()
     {
         $dsbTeams = $this->getUser()->getTeamDsb();
@@ -24,9 +22,7 @@ class DsbController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/ext-dsb/change", name="dsb_change")
-     */
+    #[Route(path: '/ext-dsb/change', name: 'dsb_change')]
     public function change(Request $request)
     {
         $team = $this->getDoctrine()->getRepository(Team::class)->find($request->get('id'));

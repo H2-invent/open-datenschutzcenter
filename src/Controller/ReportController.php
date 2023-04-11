@@ -15,9 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ReportController extends AbstractController
 {
-    /**
-     * @Route("/report", name="report")
-     */
+    #[Route(path: '/report', name: 'report')]
     public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -33,9 +31,7 @@ class ReportController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/report/new", name="report_new")
-     */
+    #[Route(path: '/report/new', name: 'report_new')]
     public function addReport(ValidatorInterface $validator, Request $request, SecurityService $securityService, ReportService $reportService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -68,9 +64,7 @@ class ReportController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/report/edit", name="report_edit")
-     */
+    #[Route(path: '/report/edit', name: 'report_edit')]
     public function editReport(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -105,9 +99,7 @@ class ReportController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/report/invoice", name="report_invoice")
-     */
+    #[Route(path: '/report/invoice', name: 'report_invoice')]
     public function invoiceReport(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -125,9 +117,7 @@ class ReportController extends AbstractController
         return $this->redirectToRoute('report');
     }
 
-    /**
-     * @Route("/report/delete", name="report_delete")
-     */
+    #[Route(path: '/report/delete', name: 'report_delete')]
     public function deleteReport(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();

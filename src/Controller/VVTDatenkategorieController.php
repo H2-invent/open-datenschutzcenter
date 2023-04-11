@@ -22,14 +22,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * @Route("/vvtdatenkategorie")
- */
+#[Route(path: '/vvtdatenkategorie')]
 class VVTDatenkategorieController extends AbstractController
 {
-    /**
-     * @Route("/", name="app_vvtdatenkategorie_index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'app_vvtdatenkategorie_index', methods: ['GET'])]
     public function index(VVTDatenkategorieRepository $vVTDatenkategorieRepository, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -42,9 +38,7 @@ class VVTDatenkategorieController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="app_vvtdatenkategorie_new", methods={"GET", "POST"})
-     */
+    #[Route(path: '/new', name: 'app_vvtdatenkategorie_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SecurityService $securityService, VVTDatenkategorieService $vVTDatenkategorieService, CurrentTeamService $currentTeamService): Response
     {
         $user = $this->getUser();
@@ -69,9 +63,7 @@ class VVTDatenkategorieController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="app_vvtdatenkategorie_show", methods={"GET"})
-     */
+    #[Route(path: '/{id}', name: 'app_vvtdatenkategorie_show', methods: ['GET'])]
     public function show(VVTDatenkategorie $vVTDatenkategorie): Response
     {
         
@@ -80,9 +72,7 @@ class VVTDatenkategorieController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="app_vvtdatenkategorie_edit", methods={"GET", "POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'app_vvtdatenkategorie_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, VVTDatenkategorie $vVTDatenkategorie, EntityManagerInterface $entityManager, SecurityService $securityService, VVTDatenkategorieService $vVTDatenkategorieService, CurrentTeamService $currentTeamService): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -118,9 +108,7 @@ class VVTDatenkategorieController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="app_vvtdatenkategorie_delete", methods={"POST"})
-     */
+    #[Route(path: '/{id}', name: 'app_vvtdatenkategorie_delete', methods: ['POST'])]
     public function delete(Request $request, VVTDatenkategorie $vVTDatenkategorie, EntityManagerInterface $entityManager, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());

@@ -5,36 +5,24 @@ namespace App\Entity;
 use App\Repository\DatenweitergabeStandRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=DatenweitergabeStandRepository::class)
- */
+#[ORM\Entity(repositoryClass: DatenweitergabeStandRepository::class)]
 class DatenweitergabeStand
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $name;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $network;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="datenweitergabeStands")
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'datenweitergabeStands')]
     private $team;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
     public function getId(): ?int

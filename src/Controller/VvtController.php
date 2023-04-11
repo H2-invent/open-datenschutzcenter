@@ -25,9 +25,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class VvtController extends AbstractController
 {
-    /**
-     * @Route("/vvt", name="vvt")
-     */
+    #[Route(path: '/vvt', name: 'vvt')]
     public function index(SecurityService $securityService, Request $request, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -43,9 +41,7 @@ class VvtController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/vvt/new", name="vvt_new")
-     */
+    #[Route(path: '/vvt/new', name: 'vvt_new')]
     public function addVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, VVTDatenkategorieService $VVTDatenkategorieService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -89,9 +85,7 @@ class VvtController extends AbstractController
     }
 
 
-    /**
-     * @Route("/vvt/edit", name="vvt_edit")
-     */
+    #[Route(path: '/vvt/edit', name: 'vvt_edit')]
     public function editVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService, VVTDatenkategorieService $VVTDatenkategorieService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -164,9 +158,7 @@ class VvtController extends AbstractController
     }
 
 
-    /**
-     * @Route("/vvt/dsfa/new", name="vvt_dsfa_new")
-     */
+    #[Route(path: '/vvt/dsfa/new', name: 'vvt_dsfa_new')]
     public function newVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -201,9 +193,7 @@ class VvtController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/vvt/dsfa/edit", name="vvt_dsfa_edit")
-     */
+    #[Route(path: '/vvt/dsfa/edit', name: 'vvt_dsfa_edit')]
     public function editVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -245,9 +235,7 @@ class VvtController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/vvt/approve", name="vvt_approve")
-     */
+    #[Route(path: '/vvt/approve', name: 'vvt_approve')]
     public function approveVvt(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -285,9 +273,7 @@ class VvtController extends AbstractController
 
     }
 
-    /**
-     * @Route("/vvt/clone", name="vvt_clone")
-     */
+    #[Route(path: '/vvt/clone', name: 'vvt_clone')]
     public function cloneVvt(Request $request, SecurityService $securityService, VVTService $VVTService, ValidatorInterface $validator, CurrentTeamService $currentTeamService)
     {
         $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
@@ -334,9 +320,7 @@ class VvtController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/vvt/disable", name="vvt_disable")
-     */
+    #[Route(path: '/vvt/disable', name: 'vvt_disable')]
     public function disableVvt(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();

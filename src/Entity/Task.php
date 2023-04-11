@@ -6,78 +6,54 @@ use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=TaskRepository::class)
- */
+#[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $activ;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tasks")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tasks')]
     private $assignedUser;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
-     * @ORM\Column(type="text")
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $task;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $done;
 
     /**
-     * @ORM\Column(type="text")
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
     private $title;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="tasks")
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'tasks')]
     private $team;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $user;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
     private $endDate;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $prio;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
     private $doneDate;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $updatedBy;
 
     public function getId(): ?int
