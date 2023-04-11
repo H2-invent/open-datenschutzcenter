@@ -15,7 +15,7 @@ class LoginControllerKeycloak extends AbstractController
      */
     public function index(ClientRegistry $clientRegistry): Response
     {
-      return $clientRegistry->getClient('keycloak_main')->redirect(['email']);
+      return $clientRegistry->getClient('keycloak_main')->redirect(['email','openid','profile']);
     }
 
     public function check(ClientRegistry $clientRegistry, Request $request)
