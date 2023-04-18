@@ -14,3 +14,8 @@ department: Abteilung
 status: Status
 category: Kategorie
 auditGoals: Schutzziele für Audits
+annotation: Bemerkung
+suggestion: Empfehlung
+tomCategory: TOM Kategorie/Zuordnung
+tomAttribute: TOM Attribut
+safetyGoal: Schutzziele
