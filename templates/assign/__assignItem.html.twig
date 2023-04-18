@@ -1,3 +1,5 @@
+{% trans_defaul_domain 'assign' %}
+
 <a href="
 {% if a.name is defined %}
     {{ path('vvt_edit',{'id':a.id}) }}
@@ -40,7 +42,7 @@
                 {% endif %}
             </div>
             <div class="col-md-3">
-                Erstellt am: {{ a.createdAt|date('d.m.Y') }}
+                {% trans from 'general' %}createdAt{% endtrans %}: {{ a.createdAt|date('d.m.Y') }}
             </div>
             <div class="col-md-2">
                 {% if a.nummer is defined %}
