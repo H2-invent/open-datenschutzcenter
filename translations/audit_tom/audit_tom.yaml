@@ -1,0 +1,16 @@
+nextQuestion: Zur nächsten Frage
+pdf:
+  create: PDF erstellen
+  createWithHistory: PDF mit Historie erstellen
+createdBy: Erstellt von
+history: Historie
+dsgvoDisclaimer: Default Fragen stehen Ihnen als SQL Bundle kostenpflichtig zur Verfügung.
+
+newAudit: Neues Audit anlegen
+cloneDefault: Default Fragen Clonen
+allTomAuditQuestions: Alle TOM Auditfragen
+question: Frage
+department: Abteilung
+status: Status
+category: Kategorie
+auditGoals: Schutzziele für Audits

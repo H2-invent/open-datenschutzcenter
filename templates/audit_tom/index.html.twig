@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'audit_tom' %}
 
 {% block CTA %}
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('audit_tom_new') }}">
         <span>{% trans %}newAudit{% endtrans %}</span>
     </a>
     <a class="btn btn-indigo ml-1 btn-sm" href="{{ path('audit_tom_clone') }}"
-       title="Default Fragen stehen Ihnen als SQL Bundle kostenpflichtig zur Verfügung.">
+       title="{{ dsgvoDislaimer|trans }}">
         <span>{% trans %}cloneDefault{% endtrans %}</span>
     </a>
 {% endblock %}
