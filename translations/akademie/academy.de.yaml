@@ -1,0 +1,19 @@
+academyCourses: Akademie Kurse
+assigned: Zugewiesen
+startDate: Start
+completed: Abgeschlossen
+noAutomaticResubmission: Automatische Wiedervorlage noch nicht geöffnet
+certificate: Zertifikat
+video:
+  uninterruptible: Dieses Video kann nicht gestoppt werden. Am Ende des Videos können Sie den Kurs als abgeschlossen markieren.
+  browserError: Ihr Browser kann dieses Video nicht wiedergeben.
+  vimeo: Dieses Video wird von Vimeo gestreamt.
+  start: Video starten
+  pause: Video pausieren
+lesson:
+  finish: Kurs abschließen
+  disclaimer:
+    finish: Sie haben diesen Kurs komplett angeschaut. Klicken Sie auf den Button "Kurs abschließen" um Ihren Abschluss an Ihren Datenschutzbeauftragen zu melden.
+    repeat: Nach Anschluss des Kurses können Sie das Video erneut, diesmal mit Pausieren und Vorspulen, anschauen.
+vimeo:
+  disclaimer: 'Wichtig bei Vimeo: Denken Sie an den Auftragsverarbeitungsvertrag zwischen Ihrer Organisation und Vimeo.'

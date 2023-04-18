@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'academy' %}
 
 {% block body %}
     <h2 class="h2-responsive">{% trans %}academyCourses{% endtrans %}</h2>
@@ -8,7 +9,7 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">{% trans %}title{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general'%}title{% endtrans %}</th>
                     <th scope="col">{% trans %}assigned{% endtrans %}</th>
                     <th scope="col">{% trans %}startDate{% endtrans %}</th>
                     <th scope="col">{% trans %}completed{% endtrans %}</th>
@@ -34,7 +35,7 @@
                                     {% trans %}certificate{% endtrans %}
                                 </a>
                             {% else %}
-                                {% trans %}no{% endtrans %}
+                                {% trans from 'general' %}no{% endtrans %}
                             {% endif %}
                         </td>
                     </tr>

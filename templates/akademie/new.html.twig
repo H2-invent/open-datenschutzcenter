@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'academy' %}
 
 {% block body %}
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
         <div class="card card-body">
-
             {{ form_start(form) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
             <p class="alert-warning">
-                Wichtig bei Vimeo: Denken Sie an den Auftragsverarbeitungsvertrag zwischen Ihrer Organisation und Vimeo.
+                {% trans %}vimeo.disclaimer{% endtrans %}
             </p>
         </div>
     </div>
