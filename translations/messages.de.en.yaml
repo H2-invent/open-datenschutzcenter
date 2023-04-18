@@ -1,287 +1,287 @@
 #global
-assignedTo: Zugewiesen an
-title: Titel
-description: Beschreibung
-overview: Übersicht
+assignedTo: Assigned to
+title: Title
+description: Description
+overview: Overview
 name: Name
-fileNumber: Aktenzeichen
-time: Zeit
+fileNumber: File nmber
+time: Time
 yes: Ja
 no: Nein
 #actions
-edit: Bearbeiten
-delete: Löschen
-approve: Freigeben
-rescindApproval: Freigabe löschen
-restore: Wiederherstellen
-assign: Zuweisen
+edit: Edit
+delete: Delete
+approve: Approve
+rescindApproval: Revoke approval
+restore: Restore
+assign: Assigne
 #no team
-noTeam: Kein Team vorhanden
-noTeamHelp: Für Ihren Benutzer ist kein Team vorhanden.<br>Fragen Sie Ihrem Administrator oder beim Support der H2 invent nach.
+noTeam: No Team
+noTeamHelp: You are not a member of a team.<br>Get in touch with your administrator or the support team of H2 invent.
 #error
-error: Fehler
+error: Error
 oops: Oops!
-error500: 500 - Interner Serverfehler
-unknownError: Unbekannter Fehler
-pageNotFound: Seite nicht gefunden
-toHomepage: Zur Startseite
+error500: 500 Internal error
+unknownError: Unknown error
+pageNotFound: Page not found
+toHomepage: Go to homepate
 #profile
-profile: Profil
-email: E-Mail
-editProfile: Profil bearbeiten
-changePassword: Passwort ändern
+profile: Profile
+email: Email
+editProfile: Edit profile
+changePassword: Change password
 logout: Logout
 #dashboard
 dashboard: Dashboard
-privacycenter: Datenschutzcenter
-flowChart: Datenflussplan
+privacycenter: Privacy Center
+flowChart: Data flow chart
 #assignments
-myAssignments: Meine Zuweisungen
-tasks: Aufgaben
-auditQuestions: Auditfragen
+myAssignments: My assignments
+tasks: Tasks
+auditQuestions: Audit questions
 software: Software
 #tasks
-tasksOverview: Aufgaben Übersicht
-newTask: Neue Aufgabe anlegen
-showAllTasks: Alle Aufgaben anzeigen
-showOpenTasks: Offene Aufgaben anzeigen
-priority: Priorität
-date: Datum
+tasksOverview: Task overview
+newTask: New task
+showAllTasks: Show all tasks
+showOpenTasks: Show open tasks
+priority: Priority
+date: Date
 #academy
-academyCourses: Akademie Kurse
-assigned: Zugewiesen
-startDate: Start
-completed: Abgeschlossen
-noAutomaticResubmission: Automatische Wiedervorlage noch nicht geöffnet
+academyCourses: Academy courses
+assigned: Assigned
+startDate: Start date
+completed: Completed
+noAutomaticResubmission: Automatic resubmission not opened yet
 certificate: Zertifikat
 #elements
 elements: Datenschutzelemente
 #audits
 audits: Audits
-newAudit: Neues Audit anlegen
-cloneDefault: Default Fragen Clonen
-allTomAuditQuestions: Alle TOM Auditfragen
-question: Frage
-department: Abteilung
-status: Status
-category: Kategorie
-nothingSelected: nichts Ausgewählt
-privacyManagement: Datenschutzmanagement
-privacyTemplates: Verbindliche Vorlagen Datenschutz
-instructions: Arbeitsanweisungen
-emergencyPlanAndDocumentation: Notfallplanung und Dokumentation
-structuralSafety: Bauliche Sicherheit
+newAudit: New audit
+cloneDefault: Clone default questions
+allTomAuditQuestions: All TOM audit questions
+question: Question
+department: Department
+status: State
+category: Category
+nothingSelected: Nothing selected
+privacyManagement: Privacy management
+privacyTemplates: Compulsory privacy templates
+instructions: Work instructions
+emergencyPlanAndDocumentation: Emergency plan and documentation
+structuralSafety: Structural safety
 video: Video
-authentications: Authentifizierungen
-privileges: Berechtigungen
+authentications: Authentications
+privileges: Priveleges
 logs: Logs
 backups: Backups
-deletion: Datenvernichtung/ Löschen
-transfer: Übermittlung/ Transport
-remoteMaintenance: Fernwartung
+deletion: Data deletion / destruction
+transfer: Data transfer / transport
+remoteMaintenance: Remote maintenance
 mobileDevices: Mobile Geräte
 wlan: WLAN
 marketing: Marketing
 cloud: Cloud
-archive: Archiv
-ITSec: IT Sicherheit
+archive: Archive
+ITSec: IT Security
 MFC: MFC
-serverRoom: Serverraum
-clientCapability: Mandantenfähigkeit
+serverRoom: Server room
+clientCapability: Client capability
 compliance: Compliance
 GoBD: GoBD
-other: Sonstiges
+other: Other
 #data categories
-newDataCategory: Neue Datenkategorie anlegen
-dataCategoryOverview: Datenkategorien Übersicht
-dataCategory: Datenkategorie
-dataTypes: Datenarten
-deleteDeadline: Löschfrist
-deleteConcept: Löschkonzept
+newDataCategory: New data category
+dataCategoryOverview: Data category overview
+dataCategory: Data category
+dataTypes: Data types
+deleteDeadline: Deletion deadline (deprecated)
+deleteConcept: Deletion concept
 #tom
 toms: TOMs
-newTom: Neue TOM anlegen
-tomOverview: TOM Übersicht
-processingActivities: VVT
-dateCreated: Erstellt am
+newTom: New TOM
+tomOverview: Technical and organisational measures
+processingActivities: Processing activities
+dateCreated: Created
 #processing activities
-newProcessingActivity: Neue Verarbeitung anlegen
-processingDirectory: Verzeichnis der Verarbeitungen
-type: Typ
-processingActivityTypeHelp: AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung
-basis: Grundlage
-dataProtectionImpactAssessment: Datenschutz-Folgenabschätzung
-dataProtectionImpactAssessmentAvailable: DSFA vorhanden
-deleteDeadlineCategory: Kategorie (Löschfrist)
-product: Produkt
-assessment: Beurteilung
-approved: Freigegeben
+newProcessingActivity: New processing activity
+processingDirectory: Directory
+type: Type
+processingActivityTypeHelp: AV = order processing, GV = joint control
+basis: Basis
+dataProtectionImpactAssessment: Data protection impact assessment
+dataProtectionImpactAssessmentAvailable: Impact assessment exists
+deleteDeadlineCategory: Category (Deletion deadline)
+product: Product
+assessment: Assessment
+approved: Approved
 #delete concepts
 deleteConcepts: Löschkonzepte
-newDeleteConcept: Neues Löschkonzept anlegen
-deleteConceptOverview: Löschkonzept Übersicht
-dataCategories: Datenkategorien
-standardDeletionDeadline: Standard Löschfrist
-legalDeletionDeadline: Gesetzliche Löschfrist
-dataStorageLocations: Speicherorte
-deleteOfficial: Löschbeauftragte*r
+newDeleteConcept: New deletion concept
+deleteConceptOverview: Delete concepts
+dataCategories: Data categories
+standardDeletionDeadline: Standard deletion deadline
+legalDeletionDeadline: Legal deletion deadline
+dataStorageLocations: Storage locations
+deleteOfficial: Responsible party
 #policies
-policies: Richtlinien
-newPolicy: Neue Richtlinie anlegen
-internalPolicies: Interne Richtlinien und Arbeitsanweisungen
-scopes: Geltungsbereiche
-processings: Verarbeitungen
+policies: Policies
+newPolicy: New policy
+internalPolicies: Internal policies and work instructions
+scopes: Scopes
+processings: Processings
 #contacts
 contacts: Kontakte
-company: Firma
-location: Ort
-function: Funktion
-client: Auftraggeber
-contractor: Auftragnehmer
+company: Company
+location: Location
+function: Function
+client: Client
+contractor: Contractor
 #data transfers
-newDataTransfer: Datenweitergabe anlegen
-dataTransferInfoTitle: Erklärung Datenweitergabe
-dataTransferInfoText: Die Verarbeitung von Daten im Auftrag kommt in nahezu jedem Unternehmen vor. Sei es durch die Nutzung eines externen Rechenzentrums, die Nutzung einer Dienstleistung, die als sog. Software-as-a-Service (SaaS) erbracht wird, Cloud Computing oder bestimmte Wartungen von IT-Systemen durch technische Dienstleister. In diesen Fällen liegt in der Regel eine Datenweitergabe vor. Und da gilt es besondere Maßnahmen zu treffen, um die Vorgaben der Datenschutz-Grundverordnung (DSGVO) einzuhalten.
-close: Schließen
-object: Gegenstand
-responsible: Verantwortlich
-contact: Kontakt
-signDate: Zeichnungsdatum
-consideredPoints: Der Vertrag zur Auftragsverarbeitung nach Art. 28 Abs. 3 DSGVO berücksichtigt folgende Punkte
-state: Stand
-relatedSoftware: Zugehörige Software und verbundene Verarbeitungstätigkeit
-relatedProcessingActivity: Zugehörige Verarbeitungstätigkeit
-contractType: Vertragsform
-contractUploaded: Auftragsverarbeitungsvertrag vorhanden und hochgeladen
-responsibleParty: Verantwortlich für die Datenweitergabe (Intern)
-dataTransferObject: Gegenstand der Datenweitergabe
-dataTransferType: Art der Datenweitergabe
-dataTransferNumber: Nummer der Datenweitergabe
-approval: Freigabe
+newDataTransfer: New data transfer
+dataTransferInfoTitle: Data transfer info
+dataTransferInfoText: The transfer of data for processing is done in moste companies - for example for the use of external data centers or services (e.g. SaaS), cloud computing or maintenance of IT systems by a service provider. In these cases there is usually a data transfer involved, which means that special measures need to be met to ensure the GDPR isn't violated.
+close: Close
+object: Object
+responsible: Responsible
+contact: Contact
+signDate: Sign date
+consideredPoints: The contract for order processing according to Art. 28 Para. 3 GDPR takes the following points into account
+state: State
+relatedSoftware: Related software
+relatedProcessingActivity: Related processing activity
+contractType: Contract type
+contractUploaded: Order processing contract exists and has been uploaded
+responsibleParty: Responsible party (internal)
+dataTransferObject: Data transfer object
+dataTransferType: Data transfer type
+dataTransferNumber: Data transfer number
+approval: Approval
 #order processing
-orderProcessing: Auftragsverarbeitung
-newOrderProcessing: Auftragsverarbeitung anlegen
-oderProcessingInfoTitle: Erklärung Auftragsverarbeitung
-orderProcessingInfoText: Wenn Sie oder Ihr Unternehmen für eine externe Person oder Unternehmen eine Verarbeitung von Daten durchführt, spricht man von einer sog. "Auftragsverarbeitung". Als Auftragsverarbeiter ist man nicht der Verantwortliche der Verarbeitung, da die Verantwortung der Datenverarbeitung nach der DSGVO weiterhin beim Kunden, dem sog. "Verantwortlichen" ist. Damit die Auftragsverarbeitung dennoch Vertraglich geregelt ist, ist es wichtig einen Auftragsverarbeitervertrag mit dem Kunden abzuschließen.
+orderProcessing: Order processing
+newOrderProcessing: New order processing
+oderProcessingInfoTitle: Oder processing info
+orderProcessingInfoText: If your organisation processes data for an external person or organisation, this is referred to as "order processing". As a processor, you are not the responsible party, since the responsibility for data processing according to the GDPR lies with the customer. In order for the order processing to be contractually regulated, it is important to conclude an order processing contract with the client.
 #software
-newSoftware: Neue Anwendung anlegen
-softwareOverview: Software Inventar
-reference: Aktenzeichen
-inventory: Inventar
-dataTransfers: Datenweitergaben
-licence: Lizenz
-expiration: Ablaufdatum
-purchaseDate: Anschaffung
-expired: Abgelaufen
-softwareApproved: Software und Konfiguration freigegeben
+newSoftware: New software
+softwareOverview: Software overview
+reference: Reference
+inventory: Inventory
+dataTransfers: Data transfers
+licence: Licence
+expiration: Expiration date
+purchaseDate: Purchase date
+expired: Expired
+softwareApproved: Software and configuration approved
 #forms
 forms: Formulare
-newForm: Formular anlegen
+newForm: New form
 version: Version
-departments: Abteilungen
+departments: Departments
 #incidents
 incidents: Vorfälle
-newIncident: Neuen Vorfall anlegen
-incidentsTitle: Datenschutzvorfälle nach Art. 33
-facts: Fakten
-consequences: Auswirkungen
-measures: Maßnahmen
+newIncident: New incident
+incidentsTitle: Privacy protection incidents according to Art. 33
+facts: Facts
+consequences: Consequences
+measures: Measures
 uid: UID
-stateAgency: LDA
-affectedPersons: Betroffene
+stateAgency: State privacy protection authority (LDA)
+affectedPersons: Affected persons
 #customer questions
-customerQuestions: Kundenanfragen
+customerQuestions: Kundenfragen
 clientRequests: Kundenanfragen
 #activities
 activities: Aktivitäten
-newActivity: Neue Aktivität anlegen
-activitiesTitle: Aktivitätenübersicht
-processor: Bearbeiter
-billed: Abgerechnet
-minutes: Minuten
+newActivity: New activity
+activitiesTitle: Activities
+processor: Processor
+billed: Billed
+minutes: Minutes
 #reports
 reports: Berichte
 #external
 external: Extern
-externalCheck: Ich habe verstanden, dass beim Auftrufen dieser Seite meine Daten von externen Diensten verarbeitet werden.
+externalCheck: I understand that my data will be processed by external services when I access this page.
 #admin
 admin: Admin
 adminArea: Adminbereich
-teamAdminArea: Team Adminbereich
-superAdminArea: ODC Adminbereich
+teamAdminArea: Team Admin Area
+superAdminArea: ODC Admin Area
 #admin - data
 teamData: Stammdaten
 #admin - custom
-presets: Vorgaben/Einstellungen
-changeFormPresets: Vorgaben für Formulare anpassen
-select: Auswählen
-groupsOfPeople: Personengruppen
-addGroupOfPeople: Neue Personengruppe hinzufügen
-editGroupOfPeople: Personengruppe bearbeiten
-processingRisks: Risiken der Verarbeitung
-newRisk: Neues Risiko hinzufügen
-editRisk: Risiko bearbeiten
-legalBases: Gesetzliche Grundlagen für die Verarbeitungen
-addLegalBasis: Gesetzliche Grundlage hinzufügen
-editLegalBasis: Gesetzliche Grundlage bearbeiten
-products: Produkte/Projekte
-addProduct: Produkt/Projekt hinzufügen
-editProduct: Produkt/Projekt bearbeiten
-processingStatuses: VVT Status
-addProcessingStatus: VVT Status hinzufügen
-editProcessingStatus: VVT Status bearbeiten
-dataTransferBases: Grundlagen für Datenweitergabe
-addDataTransferBasis: Grundlage hinzufügen
-editDataTransferBasis: Grundlage bearbeiten
-dataTransferStatuses: Stände in Datenweitergaben
-addDataTransferStatus: Stand hinzufügen
-editDataTransferStatus: Stand bearbeiten
-auditGoals: Schutzziele für Audits
-addAuditGoal: Schutzziel hinzufügen
-editAuditGoal: Schutzziel bearbeiten
+presets: Presets
+changeFormPresets: Change Form Presets
+select: Select
+groupsOfPeople: Groups of People
+addGroupOfPeople: Add new group
+editGroupOfPeople: Edit group
+processingRisks: Processing risks
+newRisk: Add new risk
+editRisk: Edit risk
+legalBases: Legal Bases for Processing
+addLegalBasis: Add legal basis
+editLegalBasis: Edit legal basis
+products: Products/Projects
+addProduct: Add product/project
+editProduct: Edit product/project
+processingStatuses: Processing Statuses
+addProcessingStatus: Add status
+editProcessingStatus: Edit status
+dataTransferBases: Bases for Data Transfer
+addDataTransferBasis: Add basis
+editDataTransferBasis: Edit basis
+dataTransferStatuses: Data transfer statuses
+addDataTransferStatus: Add status
+editDataTransferStatus: Edit status
+auditGoals: Audit goals
+addAuditGoal: Add goal
+editAuditGoal: Edit goal
 default: Default
-noEntry: Kein Eintrag vorhanden
+noEntry: No entry
 #admin - members
 users: Benutzer*innen
-coordinator: Mitglied
-manageUsers: Benutzer*innen verwalten
-addUser: Benutzer*in hinzufügen
-remove: Entfernen
-extDsb: Ext. DSB
-removeAdmin: Admin entfernen
-addAdmin: Admin hinzufügen
-openInvitations: Offene Einladungen
+coordinator: Member
+manageUsers: Manage members
+addUser: Add user
+remove: Remove
+extDsb: Ext. DPO
+removeAdmin: Remove admin
+addAdmin: Add admin
+openInvitations: Open invitations
 manageMembersHintOdc: Mitarbeitende können als normale Mitglieder oder als Admin hinzugefügt werden. Mitglieder können Elemente erstellen, bearbeiten, zuweisen und exportieren. Admins können neue Mitglieder hinzufügen, Elemente freigeben und die Akademie verwalten.
 manageMembersHintKeycloak: In diesem ODC wird die Teamzugehörigkeit über Keycloakgruppen verwaltet. Ändert sich die Mitgliedschaft eines Nutzers im Keycloak, wird diese beim nächsten Login im ODC aktualisiert.
 #admin - academy
-manageAcademy: Akademie verwalten
-academy: Akademie
-privacyCourses: Datenschutzkurse
-academyUsers: Akademiemitglieder
+manageAcademy: Manage academy
+academy: Academy
+privacyCourses: Privacy protection courses
+academyUsers: Academy users
 academyUser: Akademiemitglied
-addAcademyUser: Mitglied hinzufügen
-confirmAction: Möchten Sie diese Aktion wirklich durchführen?
-addCourse: Kurs anlegen
-userName: Benutzername
+addAcademyUser: Add user
+confirmAction: Do you really want to execute this action?
+addCourse: Add new course
+userName: User name
 #admin - import
 import: Import
 #admin - manage odc
-manageOdc: ODC Einstellungen
+manageOdc: Manage ODC
 #admin - manage teams
-manageTeams: Teams verwalten
-keycloakGroup: Keycloak Gruppe
-memberCount: Anzahl Mitglieder
+manageTeams: Manage teams
+keycloakGroup: Keycloak group
+memberCount: Members
 admins: Admins
-newTeam: Team erstellen
-manageTeamData: Stammdaten bearbeiten
-manageTeamMembers: Mitglieder bearbeiten
-deleteTeam: teamName löschen
+newTeam: New team
+manageTeamData: Edit team
+manageTeamMembers: Edit members
+deleteTeam: Delete teamName
 teamDeletionBlocked: 'Diese Gruppe kann erst gelöscht werden, wenn folgende Elemente entfernt wurden:'
 #ext team dsb
-externalDsb: Externer DSB
-manageExternalDsb: Externen DSB verwalten
-dsbAdded: Ein neuer DSB wurde hinzugefügt.
-confirmRemoveDsb: Der DSB wird daraufhin als Admin, Koordinator und Akademiebenutzer entfernt.
-addExternalDsbInfo: Hier können Sie einen externen DSB ernennen. Der externe DSB hat die Möglichkeit, zwischen Teams hin und her zu wechseln und dabei jedesmal die die Berechtigung Datenschutzkoordinator, Datenschutzbeauftragter, Admin und Akademiemitglied zu erhalten.
+externalDsb: External DPO
+manageExternalDsb: Manage external DPO
+dsbAdded: A new DPO was added.
+confirmRemoveDsb: The DPO will be removed as an admin, coordinator and academy user.
+addExternalDsbInfo: Here you can appoint an external DPO. The external DPO has the ability to move back and forth between teams, each time getting the Data Protection Coordinator, Data Protection Officer, Admin and Academician permissions.
 cannotRemoveSelfExtDsb: Sie können sich nicht selbst aus dem Team entfernen und wurden daher nur als externer DSB entfernt.
-extDsbRemoved: Sie haben den externen DSB aus Ihrem Team entfernt.
+extDsbRemoved: You have removed the external DPO from your team.
