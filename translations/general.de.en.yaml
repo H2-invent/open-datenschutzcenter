@@ -1,0 +1,36 @@
+assignedTo: Zugewiesen an
+title: Titel
+description: Beschreibung
+overview: Übersicht
+name: Name
+fileNumber: Aktenzeichen
+time: Zeit
+yes: Ja
+no: Nein
+createdAt: Erstellt am
+number: Nummer
+uuid: UID
+regard: Betreff
+date: Datum
+email: Email
+reason: Grund
+state: Status
+backwards: Zurück
+edit: Bearbeiten
+archive: Archivieren
+restore: Wiederherstellen
+pdf:
+  create: PDF erstellen
+  createWithHistory: PDF mit Historie erstellen
+additionalInformation: Weitere Angaben
+address: Adresse
+birthday: Geburtstag
+comments: Kommentare
+object: Gegenstand
+responsible: Verantwortlich
+approved: Freigegeben
+contact: Kontakt
+subscriptionDate: Zeichnungsdatum
+assign: Zuweisen
+close: Schließen
+history: Historie
