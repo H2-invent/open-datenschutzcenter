@@ -1,48 +1,48 @@
-confirmAction: Möchten Sie diese Aktion wirklich durchführen?
-approve: Freigeben
-rescindApproval: Freigabe löschen
+confirmAction: Do you really want to execute this action?
+approve: Approve
+rescindApproval: Revoke approval
 approvedBy: Freigegeben von
-delete: Löschen
-restore: Wiederherstellen
+delete: Delete
+restore: Restore
 imprint: Impressum
 dataPrivacy: Datenschutzhinweis
 bugReport: Fehler melden
 salutation: Made with ❤ by H2 invent
-dataPrivacyCenter: Datenschutzcenter
-profile: Profil
+dataPrivacyCenter: Privacy Center
+profile: Profile
 name: Name
-email: E-Mail
-editProfile: Profil bearbeiten
-changePassword: Passwort ändern
+email: Email
+editProfile: Edit profile
+changePassword: Change password
 logout: Logout
-externalDsb: Externer DSB
+externalDsb: External DPO
 dashboard: Dashboard
-myAssignments: Meine Zuweisungen
-tasks: Aufgaben
+myAssignments: My assignments
+tasks: Tasks
 elements: Datenschutzelemente
-auditQuestions: Auditfragen
-dataCategories: Datenkategorien
+auditQuestions: Audit questions
+dataCategories: Data categories
 toms: TOMs
-processings: Verarbeitungen
+processings: Processings
 deleteConcepts: Löschkonzepte
-policies: Richtlinien
+policies: Policies
 contacts: Kontakte
-dataTransfers: Datenweitergaben
-orderProcessing: Auftragsverarbeitung
+dataTransfers: Data transfers
+orderProcessing: Order processing
 software: Software
 forms: Formulare
 incidents: Vorfälle
-customerQuestions: Kundenanfragen
+customerQuestions: Kundenfragen
 activities: Aktivitäten
 reports: Berichte
 external: Extern
-academy: Akademie
+academy: Academy
 teamData: Stammdaten
-presets: Vorgaben/Einstellungen
-departments: Abteilungen
+presets: Presets
+departments: Departments
 users: Benutzer*innen
 import: Import
-manageOdc: ODC Einstellungen
-manageTeams: Teams verwalten
-teamAdminArea: Team Adminbereich
-superAdminArea: ODC Adminbereich
+manageOdc: Manage ODC
+manageTeams: Manage teams
+teamAdminArea: Team Admin Area
+superAdminArea: ODC Admin Area
