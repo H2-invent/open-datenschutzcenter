@@ -1,0 +1,287 @@
+#global
+assignedTo: Zugewiesen an
+title: Titel
+description: Beschreibung
+overview: Übersicht
+name: Name
+fileNumber: Aktenzeichen
+time: Zeit
+yes: Ja
+no: Nein
+#actions
+edit: Bearbeiten
+delete: Löschen
+approve: Freigeben
+rescindApproval: Freigabe löschen
+restore: Wiederherstellen
+assign: Zuweisen
+#no team
+noTeam: Kein Team vorhanden
+noTeamHelp: Für Ihren Benutzer ist kein Team vorhanden.<br>Fragen Sie Ihrem Administrator oder beim Support der H2 invent nach.
+#error
+error: Fehler
+oops: Oops!
+error500: 500 - Interner Serverfehler
+unknownError: Unbekannter Fehler
+pageNotFound: Seite nicht gefunden
+toHomepage: Zur Startseite
+#profile
+profile: Profil
+email: E-Mail
+editProfile: Profil bearbeiten
+changePassword: Passwort ändern
+logout: Logout
+#dashboard
+dashboard: Dashboard
+privacycenter: Datenschutzcenter
+flowChart: Datenflussplan
+#assignments
+myAssignments: Meine Zuweisungen
+tasks: Aufgaben
+auditQuestions: Auditfragen
+software: Software
+#tasks
+tasksOverview: Aufgaben Übersicht
+newTask: Neue Aufgabe anlegen
+showAllTasks: Alle Aufgaben anzeigen
+showOpenTasks: Offene Aufgaben anzeigen
+priority: Priorität
+date: Datum
+#academy
+academyCourses: Akademie Kurse
+assigned: Zugewiesen
+startDate: Start
+completed: Abgeschlossen
+noAutomaticResubmission: Automatische Wiedervorlage noch nicht geöffnet
+certificate: Zertifikat
+#elements
+elements: Datenschutzelemente
+#audits
+audits: Audits
+newAudit: Neues Audit anlegen
+cloneDefault: Default Fragen Clonen
+allTomAuditQuestions: Alle TOM Auditfragen
+question: Frage
+department: Abteilung
+status: Status
+category: Kategorie
+nothingSelected: nichts Ausgewählt
+privacyManagement: Datenschutzmanagement
+privacyTemplates: Verbindliche Vorlagen Datenschutz
+instructions: Arbeitsanweisungen
+emergencyPlanAndDocumentation: Notfallplanung und Dokumentation
+structuralSafety: Bauliche Sicherheit
+video: Video
+authentications: Authentifizierungen
+privileges: Berechtigungen
+logs: Logs
+backups: Backups
+deletion: Datenvernichtung/ Löschen
+transfer: Übermittlung/ Transport
+remoteMaintenance: Fernwartung
+mobileDevices: Mobile Geräte
+wlan: WLAN
+marketing: Marketing
+cloud: Cloud
+archive: Archiv
+ITSec: IT Sicherheit
+MFC: MFC
+serverRoom: Serverraum
+clientCapability: Mandantenfähigkeit
+compliance: Compliance
+GoBD: GoBD
+other: Sonstiges
+#data categories
+newDataCategory: Neue Datenkategorie anlegen
+dataCategoryOverview: Datenkategorien Übersicht
+dataCategory: Datenkategorie
+dataTypes: Datenarten
+deleteDeadline: Löschfrist
+deleteConcept: Löschkonzept
+#tom
+toms: TOMs
+newTom: Neue TOM anlegen
+tomOverview: TOM Übersicht
+processingActivities: VVT
+dateCreated: Erstellt am
+#processing activities
+newProcessingActivity: Neue Verarbeitung anlegen
+processingDirectory: Verzeichnis der Verarbeitungen
+type: Typ
+processingActivityTypeHelp: AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung
+basis: Grundlage
+dataProtectionImpactAssessment: Datenschutz-Folgenabschätzung
+dataProtectionImpactAssessmentAvailable: DSFA vorhanden
+deleteDeadlineCategory: Kategorie (Löschfrist)
+product: Produkt
+assessment: Beurteilung
+approved: Freigegeben
+#delete concepts
+deleteConcepts: Löschkonzepte
+newDeleteConcept: Neues Löschkonzept anlegen
+deleteConceptOverview: Löschkonzept Übersicht
+dataCategories: Datenkategorien
+standardDeletionDeadline: Standard Löschfrist
+legalDeletionDeadline: Gesetzliche Löschfrist
+dataStorageLocations: Speicherorte
+deleteOfficial: Löschbeauftragte*r
+#policies
+policies: Richtlinien
+newPolicy: Neue Richtlinie anlegen
+internalPolicies: Interne Richtlinien und Arbeitsanweisungen
+scopes: Geltungsbereiche
+processings: Verarbeitungen
+#contacts
+contacts: Kontakte
+company: Firma
+location: Ort
+function: Funktion
+client: Auftraggeber
+contractor: Auftragnehmer
+#data transfers
+newDataTransfer: Datenweitergabe anlegen
+dataTransferInfoTitle: Erklärung Datenweitergabe
+dataTransferInfoText: Die Verarbeitung von Daten im Auftrag kommt in nahezu jedem Unternehmen vor. Sei es durch die Nutzung eines externen Rechenzentrums, die Nutzung einer Dienstleistung, die als sog. Software-as-a-Service (SaaS) erbracht wird, Cloud Computing oder bestimmte Wartungen von IT-Systemen durch technische Dienstleister. In diesen Fällen liegt in der Regel eine Datenweitergabe vor. Und da gilt es besondere Maßnahmen zu treffen, um die Vorgaben der Datenschutz-Grundverordnung (DSGVO) einzuhalten.
+close: Schließen
+object: Gegenstand
+responsible: Verantwortlich
+contact: Kontakt
+signDate: Zeichnungsdatum
+consideredPoints: Der Vertrag zur Auftragsverarbeitung nach Art. 28 Abs. 3 DSGVO berücksichtigt folgende Punkte
+state: Stand
+relatedSoftware: Zugehörige Software und verbundene Verarbeitungstätigkeit
+relatedProcessingActivity: Zugehörige Verarbeitungstätigkeit
+contractType: Vertragsform
+contractUploaded: Auftragsverarbeitungsvertrag vorhanden und hochgeladen
+responsibleParty: Verantwortlich für die Datenweitergabe (Intern)
+dataTransferObject: Gegenstand der Datenweitergabe
+dataTransferType: Art der Datenweitergabe
+dataTransferNumber: Nummer der Datenweitergabe
+approval: Freigabe
+#order processing
+orderProcessing: Auftragsverarbeitung
+newOrderProcessing: Auftragsverarbeitung anlegen
+oderProcessingInfoTitle: Erklärung Auftragsverarbeitung
+orderProcessingInfoText: Wenn Sie oder Ihr Unternehmen für eine externe Person oder Unternehmen eine Verarbeitung von Daten durchführt, spricht man von einer sog. "Auftragsverarbeitung". Als Auftragsverarbeiter ist man nicht der Verantwortliche der Verarbeitung, da die Verantwortung der Datenverarbeitung nach der DSGVO weiterhin beim Kunden, dem sog. "Verantwortlichen" ist. Damit die Auftragsverarbeitung dennoch Vertraglich geregelt ist, ist es wichtig einen Auftragsverarbeitervertrag mit dem Kunden abzuschließen.
+#software
+newSoftware: Neue Anwendung anlegen
+softwareOverview: Software Inventar
+reference: Aktenzeichen
+inventory: Inventar
+dataTransfers: Datenweitergaben
+licence: Lizenz
+expiration: Ablaufdatum
+purchaseDate: Anschaffung
+expired: Abgelaufen
+softwareApproved: Software und Konfiguration freigegeben
+#forms
+forms: Formulare
+newForm: Formular anlegen
+version: Version
+departments: Abteilungen
+#incidents
+incidents: Vorfälle
+newIncident: Neuen Vorfall anlegen
+incidentsTitle: Datenschutzvorfälle nach Art. 33
+facts: Fakten
+consequences: Auswirkungen
+measures: Maßnahmen
+uid: UID
+stateAgency: LDA
+affectedPersons: Betroffene
+#customer questions
+customerQuestions: Kundenanfragen
+clientRequests: Kundenanfragen
+#activities
+activities: Aktivitäten
+newActivity: Neue Aktivität anlegen
+activitiesTitle: Aktivitätenübersicht
+processor: Bearbeiter
+billed: Abgerechnet
+minutes: Minuten
+#reports
+reports: Berichte
+#external
+external: Extern
+externalCheck: Ich habe verstanden, dass beim Auftrufen dieser Seite meine Daten von externen Diensten verarbeitet werden.
+#admin
+admin: Admin
+adminArea: Adminbereich
+teamAdminArea: Team Adminbereich
+superAdminArea: ODC Adminbereich
+#admin - data
+teamData: Stammdaten
+#admin - custom
+presets: Vorgaben/Einstellungen
+changeFormPresets: Vorgaben für Formulare anpassen
+select: Auswählen
+groupsOfPeople: Personengruppen
+addGroupOfPeople: Neue Personengruppe hinzufügen
+editGroupOfPeople: Personengruppe bearbeiten
+processingRisks: Risiken der Verarbeitung
+newRisk: Neues Risiko hinzufügen
+editRisk: Risiko bearbeiten
+legalBases: Gesetzliche Grundlagen für die Verarbeitungen
+addLegalBasis: Gesetzliche Grundlage hinzufügen
+editLegalBasis: Gesetzliche Grundlage bearbeiten
+products: Produkte/Projekte
+addProduct: Produkt/Projekt hinzufügen
+editProduct: Produkt/Projekt bearbeiten
+processingStatuses: VVT Status
+addProcessingStatus: VVT Status hinzufügen
+editProcessingStatus: VVT Status bearbeiten
+dataTransferBases: Grundlagen für Datenweitergabe
+addDataTransferBasis: Grundlage hinzufügen
+editDataTransferBasis: Grundlage bearbeiten
+dataTransferStatuses: Stände in Datenweitergaben
+addDataTransferStatus: Stand hinzufügen
+editDataTransferStatus: Stand bearbeiten
+auditGoals: Schutzziele für Audits
+addAuditGoal: Schutzziel hinzufügen
+editAuditGoal: Schutzziel bearbeiten
+default: Default
+noEntry: Kein Eintrag vorhanden
+#admin - members
+users: Benutzer*innen
+coordinator: Mitglied
+manageUsers: Benutzer*innen verwalten
+addUser: Benutzer*in hinzufügen
+remove: Entfernen
+extDsb: Ext. DSB
+removeAdmin: Admin entfernen
+addAdmin: Admin hinzufügen
+openInvitations: Offene Einladungen
+manageMembersHintOdc: Mitarbeitende können als normale Mitglieder oder als Admin hinzugefügt werden. Mitglieder können Elemente erstellen, bearbeiten, zuweisen und exportieren. Admins können neue Mitglieder hinzufügen, Elemente freigeben und die Akademie verwalten.
+manageMembersHintKeycloak: In diesem ODC wird die Teamzugehörigkeit über Keycloakgruppen verwaltet. Ändert sich die Mitgliedschaft eines Nutzers im Keycloak, wird diese beim nächsten Login im ODC aktualisiert.
+#admin - academy
+manageAcademy: Akademie verwalten
+academy: Akademie
+privacyCourses: Datenschutzkurse
+academyUsers: Akademiemitglieder
+academyUser: Akademiemitglied
+addAcademyUser: Mitglied hinzufügen
+confirmAction: Möchten Sie diese Aktion wirklich durchführen?
+addCourse: Kurs anlegen
+userName: Benutzername
+#admin - import
+import: Import
+#admin - manage odc
+manageOdc: ODC Einstellungen
+#admin - manage teams
+manageTeams: Teams verwalten
+keycloakGroup: Keycloak Gruppe
+memberCount: Anzahl Mitglieder
+admins: Admins
+newTeam: Team erstellen
+manageTeamData: Stammdaten bearbeiten
+manageTeamMembers: Mitglieder bearbeiten
+deleteTeam: teamName löschen
+teamDeletionBlocked: 'Diese Gruppe kann erst gelöscht werden, wenn folgende Elemente entfernt wurden:'
+#ext team dsb
+externalDsb: Externer DSB
+manageExternalDsb: Externen DSB verwalten
+dsbAdded: Ein neuer DSB wurde hinzugefügt.
+confirmRemoveDsb: Der DSB wird daraufhin als Admin, Koordinator und Akademiebenutzer entfernt.
+addExternalDsbInfo: Hier können Sie einen externen DSB ernennen. Der externe DSB hat die Möglichkeit, zwischen Teams hin und her zu wechseln und dabei jedesmal die die Berechtigung Datenschutzkoordinator, Datenschutzbeauftragter, Admin und Akademiemitglied zu erhalten.
+cannotRemoveSelfExtDsb: Sie können sich nicht selbst aus dem Team entfernen und wurden daher nur als externer DSB entfernt.
+extDsbRemoved: Sie haben den externen DSB aus Ihrem Team entfernt.
