@@ -79,7 +79,7 @@ backups: Backups
 deletion: Data deletion / destruction
 transfer: Data transfer / transport
 remoteMaintenance: Remote maintenance
-mobileDevices: Mobile Geräte
+mobileDevices: Mobile devices
 wlan: WLAN
 marketing: Marketing
 cloud: Cloud
@@ -191,7 +191,7 @@ stateAgency: State privacy protection authority (LDA)
 affectedPersons: Affected persons
 #customer questions
 customerQuestions: Kundenfragen
-clientRequests: Kundenanfragen
+clientRequests: Kundenfragen
 #activities
 activities: Aktivitäten
 newActivity: New activity
