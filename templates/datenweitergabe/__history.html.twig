@@ -1,6 +1,7 @@
+{% trans_default_domain 'dataweitergabe' %}
 <a href="{{ path('datenweitergabe_edit',{'id':p.id}) }}">{{ p.createdAt|date('d.m.Y H:i') }} -- {{ p.nummer }}
     -- {{ p.stand.name }} -- {{ p.gegenstand }}
-    -- {{ p.user.email }} {{ p.approved?'(Diese Version war freigegeben)' }}</a>
+    -- {{ p.user.email }} {% trans %}{{ p.approved? 'versionApproved'}}{% endtrans %}</a>
 {% if p.previous %}
     {{ include('datenweitergabe/__history.html.twig', {'p':p.previous}) }}
 {% endif %}

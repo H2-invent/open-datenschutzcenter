@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
-
+{% trans_default_domain 'dataweitergabe' %}
 {% block CTA %}
     {% if daten.activ %}
         <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_weitergabe', {'id':daten.id}) }}">
-            <span>PDF erstellen</span>
+            <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
         </a>
         <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_weitergabe', {'id':daten.id, 'all':1}) }}">
-            <span>PDF mit Historie erstellen</span>
+            <span>{% trans from 'general' %}pdf.createWithHistory{% endtrans %}</span>
         </a>
         {{ include('base/__approveBtn.html.twig',{'data':daten,'dataLink':'datenweitergabe_approve'}) }}
         {{ include('base/__disableBtn.html.twig',{'data':daten,'dataLink':'datenweitergabe_disable'}) }}
@@ -27,10 +27,10 @@
     <div class="card card-body">
         {{ include('datenweitergabe/__form.html.twig') }}
     </div>
-    <p>Erstellt von: {{ daten.user.email }}</p>
+    <p>{% trans from 'general' %}createdAt{% endtrans %}: {{ daten.user.email }}</p>
     {% if daten.previous %}
         <div class="card card-body mt-2">
-            <h2>Historie</h2>
+            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
             {{ include('datenweitergabe/__history.html.twig', {'p':daten.previous}) }}
         </div>
     {% endif %}

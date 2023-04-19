@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
-
+{% trans_default_domain 'dataweitergabe' %}
 {% block CTA %}
     <a class="btn btn-primary btn-sm ml-1" href="{{ path('auftragsverarbeitung_new') }}">
-        <span>Auftragsverarbeitung anlegen</span>
+        <span>{% trans %}requestProcessing.create{% endtrans %}</span>
     </a>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-elegant btn-sm" data-toggle="modal" data-target="#centralModalMd">
-        Info
+        {% trans %}info{% endtrans %}
     </button>
 {% endblock %}
 
@@ -23,19 +23,17 @@
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title w-100" id="myModalLabel">Erklärung: Auftragsverarbeitung</h4>
+                    <h4 class="modal-title w-100" id="myModalLabel">{% trans %}requestProcessing.explanation{% endtrans %}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    {% trans %}
-                        Wenn Sie oder Ihr Unternehmen für eine externe Person oder Unternehmen eine Verarbeitung von Daten durchführt, spricht man von einer sog. "Auftragsverarbeitung". Als Auftragsverarbeiter ist man nicht der Verantwortliche der Verarbeitung, da die Verantwortung der Datenverarbeitung nach der DSGVO weiterhin beim Kunden, dem sog. "Verantwortlichen" ist. Damit die Auftragsverarbeitung dennoch Vertraglich geregelt ist, ist es wichtig einen Auftragsverarbeitervertrag mit dem Kunden abzuschließen.
-                    {% endtrans %}
+                    {% trans %}requestProcessing.contract{% endtrans %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm"
-                            data-dismiss="modal">{% trans %}Schließen{% endtrans %}</button>
+                            data-dismiss="modal">{% trans from 'general' %}close{% endtrans %}</button>
                 </div>
             </div>
         </div>

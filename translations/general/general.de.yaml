@@ -21,9 +21,16 @@ archive: Archivieren
 restore: Wiederherstellen
 pdf:
   create: PDF erstellen
+  createWithHistory: PDF mit Historie erstellen
 additionalInformation: Weitere Angaben
 address: Adresse
 birthday: Geburtstag
 comments: Kommentare
-
+object: Gegenstand
+responsible: Verantwortlich
+approved: Freigegeben
+contact: Kontakt
+subscriptionDate: Zeichnungsdatum
 assign: Zuweisen
+close: Schließen
+history: Historie
