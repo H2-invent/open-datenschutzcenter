@@ -9,5 +9,21 @@ yes: Ja
 no: Nein
 createdAt: Erstellt am
 number: Nummer
+uuid: UID
+regard: Betreff
+date: Datum
+email: Email
+reason: Grund
+state: Status
+backwards: Zurück
+edit: Bearbeiten
+archive: Archivieren
+restore: Wiederherstellen
+pdf:
+  create: PDF erstellen
+additionalInformation: Weitere Angaben
+address: Adresse
+birthday: Geburtstag
+comments: Kommentare
 
 assign: Zuweisen

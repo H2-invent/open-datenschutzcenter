@@ -1,22 +1,23 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'client_request' %}
 
 {% block CTA %}
     {% if data.team in app.user.adminRoles %}
         <a href="{{ path('client_valid_user',{'id':data.id}) }}"
-           class="btn btn-sm btn-success">{{ data.validUser?'Nutzervalidierung rückgängig':'Nutzer ist verifiziert' }}</a>
+           class="btn btn-sm btn-success">{% trans %}user.{{ data.validUser?'undoValidation':'validate' }}{% endtrans %}</a>
         <a href="{{ path('client_request_close',{'id':data.id}) }}"
-           class="btn btn-sm btn-danger">{{ data.activ?'Archivieren':'Wiederherstellen' }}</a>
+           class="btn btn-sm btn-danger">{% trans from 'general' %}{{ data.activ?'archive':'restore' }}{% endtrans %}</a>
         {% if not data.activ %}
             <a href="{{ path('client_request_make_internal',{'id':data.id}) }}"
-               class="btn btn-sm btn-danger">{{ data.open?'Intern schalten':'Öffentlich schalten' }}</a>
+               class="btn btn-sm btn-danger">{% trans %}request.publish.{{ data.open?'private':'public' }}</a>
         {% endif %}
         <a href="{{ path('client_requests_edit',{'id':data.id}) }}"
-           class="btn btn-sm btn-primary">Bearbeiten</a>
+           class="btn btn-sm btn-primary">{% trans from 'general' %}edit{% endtrans %}</a>
     {% endif %}
     <a href="{{ path('client_requests_internal_note',{'id':data.id}) }}"
-       class="btn btn-sm btn-primary">Interne Bemerkung bearbeiten</a>
+       class="btn btn-sm btn-primary">{% trans %}editInternalAnnotation{% endtrans %}</a>
     <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_request', {'id':data.id}) }}">
-        <span>PDF erstellen</span>
+        <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
     </a>
 {% endblock %}
 
@@ -25,42 +26,42 @@
         <h1 class="h1-responsive text-center">{{ data.title }}</h1>
         {% if not data.activ %}
             <div class="note-info text-center">
-                {% trans %}Diese Anfrage ist geschlossen.{% endtrans %}
+                {% trans %}request.closed{% endtrans %}
             </div>
         {% endif %}
         {% if not data.open %}
             <div class="note-warning text-center mt-2">
-                {% trans %}Diese Anfrage ist intern geschalten.{% endtrans %}
+                {% trans %}request.internal{% endtrans %}
             </div>
         {% endif %}
         {% if data.pgp %}
             <div class="note-success text-center mt-2">
-                {% trans %}Alle Emails werden mit OpenPGP verschlüsselt verschickt. 🔒 {% endtrans %}
+                {% trans %}openPGP.disclaimer{% endtrans %}
             </div>
         {% endif %}
         <p>
-            {% trans %}Ticket ID{% endtrans %}: {{ data.uuid }}<br>
-            {% trans %}Email Adresse{% endtrans %}
+            {% trans %}issueId{% endtrans %}: {{ data.uuid }}<br>
+            {% trans from 'general' %}email{% endtrans %}
             : {{ data.email }} {% if data.pgp %}🔒 {% endif %}{% if data.emailValid %}✅{% endif %}<br>
-            {% trans %}Name{% endtrans %}
+            {% trans from 'general' %}name{% endtrans %}
             : {{ data.name }} {% if data.validUser %}✅ by {{ data.userValidBy.username }}{% endif %}<br>
-            {% trans %}Erstellt am{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
-            {% trans %}Grund der Anfrage{% endtrans %}: {{ data.itemstring }}
+            {% trans from 'general' %}createdAt{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
+            {% trans %}request.reason{% endtrans %}: {{ data.itemstring }}
         </p>
 
         <p>
-            <i>{% trans %}Weitere Angaben{% endtrans %}</i><br>
-            {% trans %}Name{% endtrans %}: {{ data.firstname }} {{ data.lastname }}<br>
-            {% trans %}Adresse{% endtrans %}: {{ data.street }}, {{ data.city }}<br>
-            {% if data.birthday %}{% trans %}Geburtstag{% endtrans %}: {{ data.birthday|date('d.m.Y') }}<br>{% endif %}
+            <i>{% trans from 'general' %}additionalInformation{% endtrans %}</i><br>
+            {% trans from 'general' %}name{% endtrans %}: {{ data.firstname }} {{ data.lastname }}<br>
+            {% trans from 'general' %}address{% endtrans %}: {{ data.street }}, {{ data.city }}<br>
+            {% if data.birthday %}{% trans from 'general' %}birthday{% endtrans %}: {{ data.birthday|date('d.m.Y') }}<br>{% endif %}
         </p>
         <div>
-            <b>{% trans %}Beschreibung{% endtrans %}:</b><br>
+            <b>{% trans from 'general' %}description{% endtrans %}:</b><br>
             {{ data.description|nl2br }}
         </div>
         <hr>
         <div>
-            <b>{% trans %}Interne Bemerkungen{% endtrans %}:</b><br>
+            <b>{% trans %}internalAnnotation{% endtrans %}:</b><br>
             {{ data.notes|raw }}
         </div>
     </div>
@@ -74,7 +75,7 @@
                 </div>
             {% else %}
                 <div class="note-info text-center mt-2">
-                    {% trans %}Diese Anfrage ist geschlossen.{% endtrans %}
+                    {% trans %}request.closed{% endtrans %}
                 </div>
             {% endif %}
         </div>

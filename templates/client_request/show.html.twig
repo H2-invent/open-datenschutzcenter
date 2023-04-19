@@ -1,53 +1,50 @@
 {% extends 'client_request/base.html.twig' %}
+{% trans_default_domain 'client_request' %}
 
-{% block title %}Hello ClientRequestController!{% endblock %}
+{% block title %}{% trans %}greeting{% endtrans %}{% endblock %}
 
 {% block content %}
     <div>
-        <a href="{{ path('client_index', {'slug':team.slug}) }}" class="btn btn-primary btn-sm">Zurück zum Portal</a>
+        <a href="{{ path('client_index', {'slug':team.slug}) }}" class="btn btn-primary btn-sm">{% trans %}backToPortal{% endtrans %}</a>
         <div class="card card-body">
             <h1 class="h1-responsive text-center">{{ data.title }}</h1>
             {% if not data.activ %}
                 <div class="note-info text-center">
-                    {% trans %}Diese Anfrage ist geschlossen.{% endtrans %}
+                    {% trans %}request.closed{% endtrans %}
                 </div>
             {% endif %}
             {% if not data.emailValid %}
                 <div class="note-warning text-center mt-2">
-                    {% trans %}ACHTUNG!<br>
-                        Bevor wir die Anfrage weiter bearbeiten können, müssen Sie die Email Adresse verifizieren. Wir haben
-                        gerade eine Email mit einem Link an Ihre Email Adresse geschickt. Klicken Sie auf den Link oder
-                        kopieren diesen in eine Browser und bestätigen Sie Ihre Email Adresse.{% endtrans %}
+                    {% trans | raw %}emailVerificationDisclaimer{% endtrans %}
                 </div>
             {% endif %}
             {% if not data.validUser %}
                 <div class="note-danger text-center mt-2">
-                    {% trans %}WICHTIG!<br>
-                        Zum aktuellen Zeitpunkt konnten wir Ihre Identidät noch nicht verifizieren. Für uns ist der Datenschutz sehr wichtig. Je nach Grund der Anfrage werden wir Sie bitten weitere Informationen zu Ihrer Person zu liefern, damit wir Ihre Identidät zweifelsfrei feststellen können.{% endtrans %}
+                    {% trans %}cannotVerify{% endtrans %}
                 </div>
             {% endif %}
             {% if data.pgp %}
                 <div class="note-success text-center">
-                    {% trans %}Alle Emails werden mit OpenPGP verschlüsselt verschickt. 🔒{% endtrans %}
+                    {% trans %}openPGP.disclaimer{% endtrans %}
                 </div>
             {% endif %}
             <p class="mt-3">
-                {% trans %}Ticket ID{% endtrans %}: {{ data.uuid }}<br>
-                {% trans %}Email Adresse{% endtrans %}
+                {% trans %}issueId{% endtrans %}: {{ data.uuid }}<br>
+                {% trans from 'general' %}email{% endtrans %}
                 : {{ data.email }} {% if data.pgp %}🔒 {% endif %}{% if data.emailValid %}✅{% endif %}<br>
-                {% trans %}Name{% endtrans %}: {{ data.name }} {% if data.validUser %}✅{% endif %}<br>
-                {% trans %}Erstellt am{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
-                {% trans %}Grund{% endtrans %}: {{ data.itemstring }}
+                {% trans from 'general' %}name{% endtrans %}: {{ data.name }} {% if data.validUser %}✅{% endif %}<br>
+                {% trans from 'general' %}createdAt{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
+                {% trans from 'general' %}reason{% endtrans %}: {{ data.itemstring }}
             </p>
             <p>
-                <i>{% trans %}Weitere Angaben{% endtrans %}</i><br>
-                {% trans %}Name{% endtrans %}: {{ data.firstname }} {{ data.lastname }}<br>
-                {% trans %}Adresse{% endtrans %}: {{ data.street }}, {{ data.city }}<br>
-                {% if data.birthday %}{% trans %}Geburtstag{% endtrans %}: {{ data.birthday|date('d.m.Y') }}
+                <i>{% trans %}additionalInformation{% endtrans %}</i><br>
+                {% trans from 'general' %}name{% endtrans %}: {{ data.firstname }} {{ data.lastname }}<br>
+                {% trans from 'general' %}address{% endtrans %}: {{ data.street }}, {{ data.city }}<br>
+                {% if data.birthday %}{% trans from 'general' %}birthday{% endtrans %}: {{ data.birthday|date('d.m.Y') }}
                     <br>{% endif %}
             </p>
             <p>
-                {% trans %}Beschreibung{% endtrans %}:<br> {{ data.description|nl2br }}
+                {% trans from 'general' %}description{% endtrans %}:<br> {{ data.description|nl2br }}
             </p>
         </div>
     </div>
@@ -61,14 +58,14 @@
                 </div>
             {% else %}
                 <div class="note-info text-center mt-2">
-                    {% trans %}Diese Anfrage ist geschlossen.{% endtrans %}
+                    {% trans %}request.closed{% endtrans %}
                 </div>
             {% endif %}
         </div>
         <div class="col-md-6 mb-4">
             <div class="card card-body mt-2">
                 <h2 class="h2-responsive">
-                    {{ 'Kommentare'|trans }}
+                    {% trans from 'general' %}comments{% endtrans %}
                 </h2>
             </div>
             {% for c in data.clientComments|sort((b, a) => a.createdAt <=> b.createdAt) %}
