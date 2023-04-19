@@ -1,8 +1,9 @@
+{% trans_default_domain 'dashboard' %}
 <!--Card-->
 <div class="card">
     <!-- Card header -->
     <div class="card-header text-center">
-        Meine Zuweisungen
+        {% trans %}myAssignment{% endtrans %}
     </div>
     <!--Card content-->
     <div class="card-body">
@@ -12,38 +13,38 @@
                    aria-controls="home"
                    aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/task.png') }}">
                     <span
-                            class="d-none d-xl-block">Aufgaben</span></a>
+                            class="d-none d-xl-block">{% trans %}tasks{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="home-tab" data-toggle="tab" href="#akademie" role="tab"
                    aria-controls="home"
                    aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/online-learning.png') }}">
                     <span
-                            class="d-none d-xl-block">Akademie</span></a>
+                            class="d-none d-xl-block">{% trans %}academy{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="home-tab" data-toggle="tab" href="#audit" role="tab"
                    aria-controls="home"
                    aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/pruefung.png') }}"> <span
-                            class="d-none d-xl-block">Audit</span></a>
+                            class="d-none d-xl-block">{% trans %}audit{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
                    aria-controls="profile"
                    aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/prozess.png') }}"> <span
-                            class="d-none d-xl-block">VVT</span></a>
+                            class="d-none d-xl-block">{% trans %}vvt{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
                    aria-controls="contact"
                    aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/dsta.png') }}"> <span
-                            class="d-none d-xl-block">DSFA</span></a>
+                            class="d-none d-xl-block">{% trans %}dsfa{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#daten" role="tab"
                    aria-controls="contact"
                    aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/data.png') }}"> <span
-                            class="d-none d-xl-block">DW</span></a>
+                            class="d-none d-xl-block">{% trans %}dw{% endtrans %}</span></a>
             </li>
         </ul>
 
@@ -174,8 +175,7 @@
                 {% endfor %}
             </div>
         </div>
-        <a class="btn btn-primary btn-block mt-3" href="{{ path('assign') }}">Alle Zuweisungen
-            anzeigen</a>
+        <a class="btn btn-primary btn-block mt-3" href="{{ path('assign') }}">{% trans %}showAllAsignments{% endtrans %}</a>
 
     </div>
 

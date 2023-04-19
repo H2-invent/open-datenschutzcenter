@@ -1,16 +1,16 @@
 {% extends 'client_request/base.html.twig' %}
-
+{% trans_default_domain 'dashboard' %}
 
 {% block content %}
 
     <div class="card text-center mt-5">
         <div class="card-header">
-            <h2 class="h2-responsive">{{ 'noTeam'|trans }}</h2>
+            <h2 class="h2-responsive">{% trans %}noTeam{% endtrans %}</h2>
         </div>
         <div class="card-body ">
             <p>{% trans %}noTeamHelp{% endtrans %}</p>
-            <a class="btn btn-elegant" href="mailto:{{ supportMail }}">Support anfragen</a>
-            <a class="btn btn-secondary" href="{{ path('logout_keycloak') }}">Logout</a>
+            <a class="btn btn-elegant" href="mailto:{{ supportMail }}">{% trans %}supportRequest{% endtrans %}</a>
+            <a class="btn btn-secondary" href="{{ path('logout_keycloak') }}">{% trans %}logout{% endtrans %}</a>
         </div>
     </div>
 
