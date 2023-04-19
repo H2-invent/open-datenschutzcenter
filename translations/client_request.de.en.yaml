@@ -15,7 +15,7 @@ user:
 openPGP:
   disclaimer: Alle Emails werden mit OpenPGP verschlüsselt verschickt. 🔒
 editInternalAnnotation: Interne Bemerkung bearbeiten
-internalAnnotation: Interne Bemerkungen
+internalAnnotation: Internal comment
 request:
   internal: Diese Anfrage ist intern geschaltet.
   find: Suchen Sie nach Ihrer bestehenden Anfrage.
@@ -33,6 +33,6 @@ request:
 emailVerificationDisclaimer: 'ACHTUNG!<br> Bevor wir die Anfrage weiter bearbeiten können, müssen Sie die Email Adresse verifizieren. Wir haben gerade eine Email mit einem Link an Ihre Email Adresse geschickt. Klicken Sie auf den Link oder kopieren diesen in eine Browser und bestätigen Sie Ihre Email Adresse.'
 cannotVerify: 'WICHTIG!<br> Zum aktuellen Zeitpunkt konnten wir Ihre Identidät noch nicht verifizieren. Für uns ist der Datenschutz sehr wichtig. Je nach Grund der Anfrage werden wir Sie bitten weitere Informationen zu Ihrer Person zu liefern, damit wir Ihre Identidät zweifelsfrei feststellen können.'
 issueId: Ticket ID
-dataPrivacyCenter: Datenschutzcenter
+dataPrivacyCenter: Privacy Center
 backToPortal: Zurück zum Portal
 askForVerification: Für eine schnelle und unkomplizierte Identifikation, möchten wir Sie  darum bitten, uns folgende Daten zur Verifikation mitzuteilen
