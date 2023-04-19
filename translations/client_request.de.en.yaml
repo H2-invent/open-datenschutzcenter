@@ -1,0 +1,38 @@
+dataPrivacyDisclaimer: Datenschutzhinweis
+poweredBy: Powered by Open Datenschutzcenter
+salutation: Made with ❤ by H2 invent
+greeting: Hello ClientRequestController!
+customerPortalOf: Kundenportal von
+customerPortal: Kundenportal
+fillInForm: Tragen Sie alle Daten in das Formular ein.
+confirmEmail: Bestätigen Sie Ihre Email Adresse.
+identify: Führen Sie die Identifikation ihrer Person nach den Vorgaben von %teamName% durch.
+encryptedConnection: Kommunizieren Sie mit %teamName% über eine verschlüsselte Verbindung.
+gdpr: '<h3 class="h3-responsive mt-3">Ihre Rechte nach der DSGVO</h3> <p class="small"> Werden personenbezogene Daten von Ihnen verarbeitet, sind Sie Betroffener i.S.d. DSGVO und es stehen Ihnen die nachfolgenden Rechte gegenüber %teamName% (Im Weiteren uns oder wir) als dem Verantwortlichen zu. </p> <p class="small"> a) Rechte nach Artikel 15 ff. DSGVO<br> Die betroffene Person hat das Recht, von dem Verantwortlichen eine Bestätigung darüber zu verlangen, ob sie betreffende personenbezogene Daten verarbeitet werden; ist dies der Fall, so hat sie ein <b>Recht auf Auskunft</b> über diese personenbezogenen Daten und auf die in Artikel 15 DSGVO im einzelnen aufgeführten Informationen. Unter bestimmten gesetzlichen Voraussetzungen haben Sie das <b>Recht auf Berichtigung</b> nach Artikel 16 DSGVO, das <b>Recht auf Einschränkung der Verarbeitung</b> nach Artikel 18 DSGVO und das <b>Recht auf Löschung („Recht auf Vergessenwerden“)</b> nach Artikel 17 DSGVO. Für das Recht auf Auskunft und Löschung gelten ergänzend die §§ 34, 35 BDSG. Zudem haben Sie das <b>Recht auf Herausgabe der von Ihnen bereitgestellten Daten</b> in einem strukturierten, gängigen und maschinenlesbaren Format (Recht auf Datenübertragbarkeit) nach Artikel 20 DSGVO, sofern die Verarbeitung mithilfe automatisierter Verfahren erfolgt und auf einer Einwilligung nach Art. 6 Abs. 1 lit. a) oder Art. 9 Abs. 2 lit. a) oder auf einem Vertrag gem. Art. 6 Abs. 1 lit. b) DSGVO beruht. </p> <p class="small"> b) Widerruf einer Einwilligung nach Art. 7 Abs. 3 DSGVO<br> Beruht die Verarbeitung auf einer Einwilligung können Sie die Einwilligung in die Verarbeitung personenbezogener Daten jederzeit uns gegenüber widerrufen. Bitte beachten Sie, dass der Widerruf erst für die Zukunft wirkt. Verarbeitungen, die vor dem Widerruf erfolgt sind, sind davon nicht betroffen. </p> <p class="small"> c) Beschwerderecht<br> Sie haben die Möglichkeit, sich mit einer <b>Beschwerde an uns</b> oder an eine Datenschutzaufsichtsbehörde zu wenden (Artikel 77 DSGVO). </p> <p class="small"> d) Widerspruchsrecht nach Artikel 21 DSGVO<br> Zusätzlich zu den vorgenannten Rechten, steht Ihnen ein Widerspruchsrecht wie folgt zu:<br> <b>Einzelfallbezogenes Widerspruchsrecht</b><br> Sie haben das Recht aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit gegen die Verarbeitung Sie betreffender personenbezogener Daten, die aufgrund von Artikel 6 Abs. 1 S. 1 lit. e) DSGVO (Datenverarbeitung im öffentlichen Interesse) und Artikel 6 Abs. 1 S.1 lit. f) DSGVO (Datenverarbeitung auf der Grundlage einer Interessenabwägung) erfolgt, Widerspruch einzulegen; dies gilt auch für ein auf diese Bestimmung gestütztes Proﬁling im Sinne von Artikel 4 Nr. 4 DSGVO. Legen Sie Widerspruch ein, werden wir Ihre personenbezogenen Daten nicht mehr verarbeiten, es sei denn, wir können zwingende schutzwürdige Gründe für die Verarbeitung nachweisen, die Ihre Interessen, Rechte und Freiheiten überwiegen oder die Verarbeitung dient der Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen. </p>'
+user:
+  validated: Nutzer ist verifiziert
+  undoValidation: Nutzervalidierung rückgängig
+openPGP:
+  disclaimer: Alle Emails werden mit OpenPGP verschlüsselt verschickt. 🔒
+editInternalAnnotation: Interne Bemerkung bearbeiten
+internalAnnotation: Interne Bemerkungen
+request:
+  internal: Diese Anfrage ist intern geschaltet.
+  find: Suchen Sie nach Ihrer bestehenden Anfrage.
+  response: Erhalten Sie die Antwort auf Ihre Anfrage.
+  all: Alle Anfragen
+  closed: Diese Anfrage ist geschlossen.
+  publish:
+    private: Intern schalten
+    public: Öffentlich schalten
+  create:
+    disclaimer: Hier können Sie eine neue Anfrage einreichen und Ihre Rechte nach der DSGVO geltend machen.
+    link: Neue Anfrage erstellen
+  reason: Grund der Anfrage
+  additionalInformation: Weitere Angaben zur Anfrage
+emailVerificationDisclaimer: 'ACHTUNG!<br> Bevor wir die Anfrage weiter bearbeiten können, müssen Sie die Email Adresse verifizieren. Wir haben gerade eine Email mit einem Link an Ihre Email Adresse geschickt. Klicken Sie auf den Link oder kopieren diesen in eine Browser und bestätigen Sie Ihre Email Adresse.'
+cannotVerify: 'WICHTIG!<br> Zum aktuellen Zeitpunkt konnten wir Ihre Identidät noch nicht verifizieren. Für uns ist der Datenschutz sehr wichtig. Je nach Grund der Anfrage werden wir Sie bitten weitere Informationen zu Ihrer Person zu liefern, damit wir Ihre Identidät zweifelsfrei feststellen können.'
+issueId: Ticket ID
+dataPrivacyCenter: Datenschutzcenter
+backToPortal: Zurück zum Portal
+askForVerification: Für eine schnelle und unkomplizierte Identifikation, möchten wir Sie  darum bitten, uns folgende Daten zur Verifikation mitzuteilen
