@@ -1,3 +1,3 @@
 files:
-  - source: /translations/*.de.yaml
+  - source: /translations/*/*.de.yaml
     translation: /translations/%file_name%.%two_letters_code%.yaml
