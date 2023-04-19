@@ -1,24 +1,24 @@
-assignedTo: Zugewiesen an
-title: Titel
-description: Beschreibung
-overview: Übersicht
+assignedTo: Assigned to
+title: Title
+description: Description
+overview: Overview
 name: Name
-fileNumber: Aktenzeichen
-time: Zeit
+fileNumber: Reference / file number
+time: Time
 yes: Ja
 no: Nein
-createdAt: Erstellt am
-number: Nummer
+createdAt: Created
+number: Number
 uuid: UID
 regard: Betreff
-date: Datum
+date: Date
 email: Email
 reason: Grund
 state: Status
 backwards: Zurück
-edit: Bearbeiten
+edit: Edit
 archive: Archivieren
-restore: Wiederherstellen
+restore: Restore
 pdf:
   create: PDF erstellen
   createWithHistory: PDF mit Historie erstellen
@@ -26,11 +26,11 @@ additionalInformation: Weitere Angaben
 address: Adresse
 birthday: Geburtstag
 comments: Kommentare
-object: Gegenstand
-responsible: Verantwortlich
-approved: Freigegeben
-contact: Kontakt
-subscriptionDate: Zeichnungsdatum
-assign: Zuweisen
-close: Schließen
+object: Object
+responsible: Responsible
+approved: Approved
+contact: Contact
+subscriptionDate: Sign date
+assign: Assign
+close: Close
 history: Historie
