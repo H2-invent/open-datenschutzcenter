@@ -1,8 +1,8 @@
-academyCourses: Akademie Kurse
-assigned: Zugewiesen
-startDate: Start
-completed: Abgeschlossen
-noAutomaticResubmission: Automatische Wiedervorlage noch nicht geöffnet
+academyCourses: Academy courses
+assigned: Assigned
+startDate: Start date
+completed: Completed
+noAutomaticResubmission: Automatic resubmission not opened yet
 certificate: Zertifikat
 video:
   uninterruptible: Dieses Video kann nicht gestoppt werden. Am Ende des Videos können Sie den Kurs als abgeschlossen markieren.
