@@ -1,38 +1,25 @@
--- Ein neuer Kommentar zu Ihrer Anfrage --
-
-Neue Anfrage {{ data.title }}
-
-Hallo {{ data.name }}!
-Bevor wir Ihre Anfrage weiter bearbeiten können, müssen Sie Ihre Email Adresse bestätigen. Klicken Sie dazu auf
-den Link in dieser Email.
-Um Sie während der Bearbeitung der Anfrage kontaktieren zu dürfen, benötigen wir eine Bestätigung, dass Sie der
-Inhaber der angegebenen Email-Adresse sind und dass Sie mit dem Empfang von Emails einverstanden sind.
-
-Die erhobenen Daten dienen nur zur Bearbeitung der Anfrage und der Dokumentation Ihrer Zustimmung. Eine andere
-Verarbeitung oder Weitergabe an Dritte erfolgt nicht.
-
-Sie können die Einwilligung zur Speicherung der Daten jederzeit widerrufen. Mit dem Widerruf sind jedoch nicht
-mehr in der Lage, die Anfrage weiter zu bearbeiten, da wir Sie nicht mehr kontaktieren dürfen und Ihre Idendität
-nicht weiter verifizieren können.
-
-Anfrage: {{ data.title }}
-Ticket ID: {{ data.uuid }}
-
-{{ absolute_url(path('client_valid', {'slug':data.team.slug, 'token':data.uuid})) }}
-Klicken Sie hier um Ihre Adresse zu bestätigen
-
-Sie erhalten diese E-Mail, weil Sie eine Anfrage über den Datenschutzcenter {{ data.team.name }} gestellt haben.
-
-
-Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei dem
-Datenschutzbeauftragten.
-{{ data.team.name }}
-E-Mail: {{ data.team.email }}
-Telefon: {{ data.team.telefon }}
-
-
+{% trans_default_domain 'email' %}
+{% trans %}subject.notificationComment{% endtrans %}
+{% trans with {
+    '%title%': data.title,
+    '%name%': data.name,
+    '%uuid%': data.uuid,
+    '%path%': absolute_url(path('client_valid', {'slug':data.team.slug, 'token':data.uuid})),
+    '%teamName%': data.team.name
+} %}
+    body.notificationVerifyEncrypt
+{% endtrans %}
+{% trans with {
+    '%teamName%': data.team.name,
+    '%teamEmail%': data.team.email,
+    '%teamPhone%': data.team.telefon
+} %}
+    salutation.signature.plain
+{% endtrans %}
 {{ data.team.signature }}
-
-Diese Mail wurde Ihnen gesendet im Auftrag von: {{ data.team.name }}
-
-Datenschutzhinweis unter {{ dataPrivacy }}
+{% trans with {
+    '%teamName%': data.team.name,
+    '%dataPrivacy%': dataPrivacy
+} %}
+    footer.sendBy
+{% endtrans %}

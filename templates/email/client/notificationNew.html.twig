@@ -1,33 +1,22 @@
 {% extends 'email/base.html.twig' %}
+{% trans_default_domain 'email' %}
 {% block header %}
-    -- Neue Kundenanfrage --
+    {% trans %}subject.newCustomerRequest{% endtrans %}
 {% endblock %}
-
 {% block content %}
-    <b>
-        Hallo!
-    </b>
-    <p>
-        Im Datenschutzcenter ist eine neue Kundeanfrage bezüglich {{ data.itemString }} eingegangen.
-    </p>
-    <p>
-        Anfrage: {{ title }}
-    </p>
-    <spacer size="16"></spacer>
-    <p>
-        <a href="{{ absolute_url(path('client_requests_show', {'id':data.id})) }}">Klicken Sie hier um
-            die Anfrage anzuzeigen</a>
-    </p>
-    <spacer size="16"></spacer>
-    <p>
-        Sie erhalten diese E-Mail, weil Sie Mitglied des Adminteams {{ data.team.name }} sind.
-    </p>
-    <spacer size="16"></spacer>
-    <p>
-        Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei Ihrem
-        Datenschutzbeauftragten, den Datenschutzkoordinatoren.<br>
-        E-Mail: {{ data.team.email }}<br>
-        Telefon: {{ data.team.telefon }}
-    </p>
-
+    {% trans with {
+        '%subject%': data.itemString,
+        '%title%': title,
+        '%path%': absolute_url(path('client_requests_show', {'id':data.id})),
+        '%teamName%': data.team.name
+    } | raw %}
+        body.notificationNew
+    {% endtrans %}
+    {% trans with {
+        '%teamName%': data.team.name
+        '%teamEmail%': data.team.email
+        '%teamPhone%': data.team.telefon
+    } | raw %}
+        salutation.signature.html
+    {% endtrans %}
 {% endblock %}

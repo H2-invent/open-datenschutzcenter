@@ -1,20 +1,12 @@
 {% extends 'email/base.html.twig' %}
+{% trans_default_domain 'email' %}
 {% block header %}
-    Open-Datenschutz Center
+    {% trans %}subject.passwordResetHtml{% endtrans %}
 {% endblock %}
 {% block content %}
-    <h4 class="text-center">
-        -- Einladung zum Datenschutz Center Team --
-    </h4>
-    <b>
-        Hallo!
-    </b>
-    <p>
-        Sie wurden gerade von einem Administrator zu einem Datenschutz Team auf Ihrem Datenschutz Center hinzugefügt.
-    </p>
+    {% trans|raw %}body.passwordResetHtml{% endtrans %}
     <button style="color: #00e676"><a href="{{ link }}">{{ link }}</a></button>
 
     <br><br>
-    Mit freundlichen Grüßen<br>
-    Ihr Datenschutz Center
+    {% trans|raw %}salutation.kindRegards{% endtrans %}
 {% endblock %}
