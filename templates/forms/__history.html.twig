@@ -1,5 +1,6 @@
+{% trans_default_domain 'forms' %}
 <a href="{{ path('forms_edit',{'id':p.id}) }}">id: {{ p.id }} -- {{ p.createdAt|date('d.m.Y H:i') }}
-    -- {{ p.user.email }} -- Version: {{ p.version }} {{ p.approved?'(Diese Version war freigegeben)' }}</a>
+    -- {{ p.user.email }} -- {% trans %}version{% endtrans %}: {{ p.version }} {% trans %}{{ p.approved?'approved' }}{% endtrans %}</a>
 {% if p.previous %}
     {{ include('forms/__history.html.twig', {'p':p.previous}) }}
 {% endif %}

@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% trans_default_domain 'forms' %}
 {% block CTA %}
     {{ include('base/__approveBtn.html.twig',{'data':daten,'dataLink':'forms_approve'}) }}
     {{ include('base/__disableBtn.html.twig',{'data':daten,'dataLink':'forms_disable'}) }}
@@ -19,10 +19,10 @@
     <div class="card card-body">
         {{ include('forms/__form.html.twig') }}
     </div>
-    <p>Erstellt von: {{ daten.user.email }}</p>
+    <p>{% trans from 'general' %}createBy{% endtrans %}: {{ daten.user.email }}</p>
     {% if daten.previous %}
         <div class="card card-body mt-2">
-            <h2>Historie</h2>
+            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
             {{ include('forms/__history.html.twig', {'p':daten.previous}) }}
         </div>
     {% endif %}
