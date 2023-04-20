@@ -8,6 +8,7 @@ time: Time
 yes: Ja
 no: Nein
 createdAt: Created
+createdBy: Erstellt von
 number: Number
 uuid: UID
 regard: Betreff
@@ -34,3 +35,6 @@ subscriptionDate: Sign date
 assign: Assign
 close: Close
 history: Historie
+version: Version
+products: Products/Projects
+departments: Departments
