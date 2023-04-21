@@ -1,3 +1,4 @@
+{% trans_default_domain 'kurs' %}
 <div class="card card-body">
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('akademie_kurs_new') }}">
         <span>{% trans %}addCourse{% endtrans %}</span>
@@ -7,9 +8,9 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Titel</th>
-                <th scope="col">Erstellt/Update am</th>
-                <th scope="col">Aktionen</th>
+                <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
+                <th scope="col">{% trans %}createdUpdatedAt{% endtrans %}</th>
+                <th scope="col">{% trans %}actions{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -19,11 +20,11 @@
                     <td>{{ t.title }}</td>
                     <td>{{ t.createdAt|date('d.m.Y') }}</td>
                     <td>
-                        <a href="{{ path('kurs_anmelden',{'id':t.id}) }}" class="btn btn-sm btn-success">Anmelden</a>
+                        <a href="{{ path('kurs_anmelden',{'id':t.id}) }}" class="btn btn-sm btn-success">{% trans from 'general' %}login{% endtrans %}</a>
                         {% if app.user == t.user %}<a href="{{ path('akademie_kurs_edit',{'id':t.id}) }}"
-                                                      class="btn btn-sm btn-info">Bearbeiten</a>{% endif %}
+                                                      class="btn btn-sm btn-info">{% trans from 'general' %}edit{% endtrans %}</a>{% endif %}
                         <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
-                           href="{{ path('kurs_deaktivieren',{'id':t.id}) }}" class="btn btn-sm btn-danger">Löschen</a>
+                           href="{{ path('kurs_deaktivieren',{'id':t.id}) }}" class="btn btn-sm btn-danger">{% trans from 'general' %}delete{% endtrans %}</a>
                     </td>
                 </tr>
             {% endfor %}
