@@ -1,3 +1,4 @@
+{% trans_default_domain 'tom' %}
 {{ form_start(form) }}
 <div {% if not activ or tom.approved %}class="disabled"{% endif %}>
     <div class="mb-4 row">
@@ -20,7 +21,7 @@
         </div>
     </div>
 
-    <h3>A. Pseudonymisierung Verschlüsselung (Art. 32 Abs. 1 lit. a) DSGVO)</h3>
+    <h3>{% trans %}lawParagraph.pseudo{% endtrans %}</h3>
     <div class="mb-4 row">
         <div class="col-md-3">
             {{ form_label(form.tomPseudo) }}
@@ -30,7 +31,7 @@
         </div>
     </div>
 
-    <h3>B. Vertraulichkeit (Art. 32 Abs. 1 lit. b) DSGVO) </h3>
+    <h3>{% trans %}lawParagraph.confidentiality{% endtrans %}</h3>
     <div class="mb-4 row">
         <div class="col-md-3">
             {{ form_label(form.tomZutrittskontrolle) }}
@@ -85,7 +86,7 @@
         </div>
     </div>
 
-    <h3>C. Integrität (Art. 32 Abs. 1 lit. c) DSGVO) </h3>
+    <h3>{% trans %}lawParagraph.integrity{% endtrans %}</h3>
     <div class="mb-4 row">
         <div class="col-md-3">
             {{ form_label(form.tomDatenintegritaet) }}
@@ -140,7 +141,7 @@
         </div>
     </div>
 
-    <h3>D. Verfügbarkeit und Belastbarkeit (Art. 32 Abs. 1 lit. c) DSGVO) </h3>
+    <h3>{% trans %}lawParagraph.availability</h3>
     <div class="mb-4 row">
         <div class="col-md-3">
             {{ form_label(form.tomVerfuegbarkeitskontrolle) }}
@@ -159,7 +160,7 @@
         </div>
     </div>
 
-    <h3>E. Verfahren zur regelmässigen Überprüfung, Bewertung und Evaluierung (Art. 32 Abs. 1 lit. c) DSGVO)</h3>
+    <h3>{% trans %}lawParagraph.evaluation{% endtrans %}</h3>
     <div class="mb-4 row">
         <div class="col-md-3">
             {{ form_label(form.tomAudit) }}

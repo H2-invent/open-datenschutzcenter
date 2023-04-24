@@ -1,4 +1,5 @@
-<a href="{{ path('tom_edit',{'tom':p.id}) }}"><span>{{ p.createdAt|date('d.m.Y H:i') }} -- {{ p.titel }}-- {{ p.user.email }}  {{ p.approved?'(Diese Version war freigegeben)' }} </span></a>
+{% trans_default_domain 'tom' %}
+<a href="{{ path('tom_edit',{'tom':p.id}) }}"><span>{{ p.createdAt|date('d.m.Y H:i') }} -- {{ p.titel }}-- {{ p.user.email }}  {% trans from 'general' %}{{ p.approved?'versionApproved' }}{% endtrans %} </span></a>
 {% if p.previous %}
     {{ include('tom/__history.html.twig', {'p':p.previous}) }}
 {% endif %}
