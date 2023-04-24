@@ -1,28 +1,29 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'software' %}
 
 {% block CTA %}
     <a class="btn btn-indigo ml-1 btn-sm" href="{{ path('software_new') }}">
-        <span>{% trans %}newSoftware{% endtrans %}</span>
+        <span>{% trans %}config.create{% endtrans %}</span>
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}softwareOverview{% endtrans %}</h2>
+    <h2 class="h2-responsive">{% trans %}software.inventory{% endtrans %}</h2>
 
     <div class="card card-body">
         <div class="table-responsive">
             <table id="data-table" class="table display table-striped ">
                 <thead>
                 <tr>
-                    <th scope="col">{% trans %}name{% endtrans %}</th>
-                    <th scope="col">{% trans %}reference{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}name{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}fileNumber{% endtrans %}</th>
                     <th scope="col">{% trans %}inventory{% endtrans %}</th>
-                    <th scope="col">{% trans %}processings{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}processings{% endtrans %}</th>
                     <th scope="col">{% trans %}dataTransfers{% endtrans %}</th>
                     <th scope="col">{% trans %}purchaseDate{% endtrans %}</th>
                     <th scope="col">{% trans %}licence{% endtrans %}</th>
-                    <th scope="col">{% trans %}expiration{% endtrans %}</th>
-                    <th scope="col">{% trans %}status{% endtrans %}</th>
+                    <th scope="col">{% trans %}expiration.date{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}status{% endtrans %}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -36,11 +37,11 @@
                         </td>
                         <td>{{ d.purchase|date('d.m.Y') }}</td>
                         <td>{{ d.licenseTypeString }}</td>
-                        <td>{% if d.licenseExpiration %}{{ d.licenseExpiration|date('d.m.Y') }}{% else %}Ohne Ablaufdatum{% endif %}</td>
+                        <td>{% if d.licenseExpiration %}{{ d.licenseExpiration|date('d.m.Y') }}{% else %}{% trans %}expiration.without{% endtrans %}{% endif %}</td>
                         <td>{% if d.licenseExpiration < date() and d.licenseExpiration is not null %}
-                                <span class="bg-danger p-1 text-uppercase">{% trans %}expired{% endtrans %}</span>
+                                <span class="bg-danger p-1 text-uppercase">{% trans %}expiration.expired{% endtrans %}</span>
                             {% elseif d.approved %}
-                                {% trans %}softwareApproved{% endtrans %}
+                                {% trans %}software.approved{% endtrans %}
                             {% elseif d.status == 60 %}
                                 <span class="bg-info p-1">{{ d.statusString }}</span>
                             {% else %}

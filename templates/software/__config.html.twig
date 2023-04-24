@@ -1,8 +1,10 @@
-<a class="btn btn-primary btn-sm" href="{{ path('software_config_new',{'id':software.id}) }}">Neue
-    Konfiguration hinzufügen</a>
+{% trans_default_domain 'software' %}
+<a class="btn btn-primary btn-sm" href="{{ path('software_config_new',{'id':software.id}) }}">
+    {% trans %}config.create{% endtrans %}
+</a>
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-elegant btn-sm" data-toggle="modal" data-target="#centralModalMd">
-    Info
+    {% trans from 'general' %}info{% endtrans %}
 </button>
 {% for c in software.config %}
     {% if not c.activ %}
@@ -19,7 +21,7 @@
             {% if software.team in app.user.adminRoles %}
                 <div class="col-xl-2">
                     <a href="{{ path('software_config_delete',{'config':c.id}) }}"
-                       class="btn btn-danger btn-block mb-2">Konfiguration löschen
+                       class="btn btn-danger btn-block mb-2">{% trans %}config.delete{% endtrans %}
                     </a>
                 </div>
             {% endif %}
@@ -33,7 +35,7 @@
                     {{ c.config|raw }}
                 </div>
                 <div class="col-md-4">
-                    Erstellt: {{ c.createdAt|date('d.m.Y') }}
+                    {% trans from 'general' %}createdAt{% endtrans %}: {{ c.createdAt|date('d.m.Y') }}
                 </div>
             </a>
         </div>
@@ -47,22 +49,17 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title w-100" id="myModalLabel">Erklärung: Konfiguration</h4>
+                <h4 class="modal-title w-100" id="myModalLabel">{% trans %}config.explanation{% endtrans %}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                {% trans %}
-                    In den Konfigurationen kann die IT Abteilung datenschutz- und informationssicherheitsrelevante Konfigurationen
-                    dokumentieren, das ist sozusagen ein IT Handbuch mit allen wichtigen Konfigurationen. Mit den Konfigurationen können
-                    die technischen und organisatorischen Maßnahmen technisch untermauert und dokumentiert werden.
-                    Die Konfiguration kann z.B. die Firewall oder der Antivirus auf einem Server sein, die Firewall des Unternehmens,…
-                {% endtrans %}
+                {% trans %}config.disclaimer{% endtrans %}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm"
-                        data-dismiss="modal">{% trans %}Schließen{% endtrans %}</button>
+                        data-dismiss="modal">{% trans from 'general' %}close{% endtrans %}</button>
             </div>
         </div>
     </div>

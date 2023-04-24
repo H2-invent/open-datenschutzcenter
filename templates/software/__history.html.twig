@@ -1,4 +1,5 @@
-<a href="{{ path('software_edit',{'id':p.id}) }}"><span>{{ p.createdAt|date('d.m.Y') }} -- {{ p.statusString }} -- {{ p.user.email }}  {{ p.approved?'(Diese Version war freigegeben)' }} </span></a>
+{% trans_default_domain 'software' %}
+<a href="{{ path('software_edit',{'id':p.id}) }}"><span>{{ p.createdAt|date('d.m.Y') }} -- {{ p.statusString }} -- {{ p.user.email }}  {% trans %}{{ p.approved?'versionApproved' }}{% endtrans%} </span></a>
 {% if p.previous %}
     {{ include('software/__history.html.twig', {'p':p.previous}) }}
 {% endif %}

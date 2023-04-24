@@ -1,0 +1,26 @@
+config:
+  attached: Angefügte Konfigurationen
+  create: Neue Konfiguration hinzufügen
+  delete: Konfiguration löschen
+  explanation: "Erklärung: Konfiguration"
+  disclaimer: "
+    In den Konfigurationen kann die IT Abteilung datenschutz- und informationssicherheitsrelevante Konfigurationen
+    dokumentieren, das ist sozusagen ein IT Handbuch mit allen wichtigen Konfigurationen. Mit den Konfigurationen können
+    die technischen und organisatorischen Maßnahmen technisch untermauert und dokumentiert werden.
+    Die Konfiguration kann z.B. die Firewall oder der Antivirus auf einem Server sein, die Firewall des Unternehmens,…"
+
+dataSharing: Datenweitergabe
+versionApproved: (Diese Version war freigegeben)
+software:
+  inventory: Software Inventar
+  approved: Software und Konfiguration freigegeben
+  baseData: Stammdaten zu der Software
+  back: Zurück zur Software
+inventory: Inventar
+dataTransfers: Datenweitergaben
+purchaseDate: Anschaffung
+licence: Lizenz
+expiration:
+  date: Ablaufdatum
+  without: Ohne Ablaufdatum
+  expired: Abgelaufen
