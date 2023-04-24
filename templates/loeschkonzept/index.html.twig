@@ -1,26 +1,27 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'leoschkonzept' %}
 
 {% block CTA %}
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_loeschkonzept_new') }}">
-        <span>{% trans %}newDeleteConcept{% endtrans %}</span>
+        <span>{% trans %}deletionConcept.new{% endtrans %}</span>
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}deleteConceptOverview{% endtrans %}</h2>
+    <h2 class="h2-responsive">{% trans %}deletionConcept.overview{% endtrans %}</h2>
     <div class="card card-body">
         <div class="table-responsive">
             <table id="data-table" class="table display table-striped">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">{% trans %}dataCategories{% endtrans %}</th>
-                    <th scope="col">{% trans %}dataTypes{% endtrans %}</th>
-                    <th scope="col">{% trans %}standardDeletionDeadline{% endtrans %}</th>
-                    <th scope="col">{% trans %}legalDeletionDeadline{% endtrans %}</th>
-                    <th scope="col">{% trans %}dataStorageLocations{% endtrans %}</th>
-                    <th scope="col">{% trans %}deleteOfficial{% endtrans %}</th>
-                    <th scope="col">{% trans %}overiew{% endtrans %}</th>
+                    <th scope="col">{% trans %}data.categories{% endtrans %}</th>
+                    <th scope="col">{% trans %}data.types{% endtrans %}</th>
+                    <th scope="col">{% trans %}deletionConcept.deadline.standard{% endtrans %}</th>
+                    <th scope="col">{% trans %}deletionConcept.deadline.legal{% endtrans %}</th>
+                    <th scope="col">{% trans %}data.storageLocations{% endtrans %}</th>
+                    <th scope="col">{% trans %}deletionConcept.official{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}overview{% endtrans %}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,7 +35,7 @@
                         <td>{{ l.speicherorte }}</td>
                         <td>{{ l.loeschbeauftragter }}</td>
                         <td>
-                    <a href="{{ path('app_loeschkonzept_show', {'id': l.id}) }}">anzeigen</a>
+                    <a href="{{ path('app_loeschkonzept_show', {'id': l.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
                 </td>
                     </tr>
                 {% endfor %}
