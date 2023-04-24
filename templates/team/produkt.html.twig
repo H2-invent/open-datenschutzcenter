@@ -1,7 +1,8 @@
 {% extends 'team/index.html.twig' %}
+{% trans_default_domain 'team' %}
 
 {% block body %}
-    <h2 class="h2-responsive">Produkte</h2>
+    <h2 class="h2-responsive">{% trans %}products{% endtrans %}</h2>
 
     <div class="card card-body ">
         <div class="row">
@@ -10,9 +11,9 @@
                     {% for d in data %}
                         <li class="list-group-item">{{ d.name }}
                             <a href="{{ path('team_produkt', {'id':d.id}) }}"
-                               class="btn btn-sm btn-info float-md-right">Bearbeiten</a>
+                               class="btn btn-sm btn-info float-md-right">{% trans from 'general' %}edit{% endtrans %}</a>
                             <a href="{{ path('team_produkt_deativate', {'id':d.id}) }}"
-                               class="btn btn-sm btn-danger float-md-right">Löschen</a>
+                               class="btn btn-sm btn-danger float-md-right">{% trans from 'general' %}delete{% endtrans %}</a>
                         </li>
                     {% endfor %}
                 </ul>

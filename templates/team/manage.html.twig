@@ -1,9 +1,10 @@
 {% extends 'team/index.html.twig' %}
+{% trans_default_domain 'team' %}
 
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}manageTeams{% endtrans %}</h2>
+    <h2 class="h2-responsive">{% trans %}team.manage{% endtrans %}</h2>
     <a href="{{ path('team_create')}}" class="btn btn-primary btn-sm">
-        {% trans %}newTeam{% endtrans %}
+        {% trans %}team.manage{% endtrans %}
     </a>
 
     <div class="card card-body ">
@@ -11,7 +12,7 @@
             <table id="data-table" class="table display table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">{% trans %}name{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}name{% endtrans %}</th>
                     {% if useKeycloakGroups %}
                         <th scope="col">{% trans %}keycloakGroup{% endtrans %}</th>
                     {% endif %}
@@ -35,13 +36,13 @@
                         </td>
                         <td class="text-right hide-in-export">
                             <a class="btn btn-primary btn-sm" href='{{ path('team_edit',{'id':t.id}) }}'>
-                                {% trans %}manageTeamData{% endtrans %}
+                                {% trans %}team.manageData{% endtrans %}
                             </a>
                             <a class="btn btn-green btn-sm" href='{{ path('team_mitglieder',{'id':t.id}) }}'>
-                                {% trans %}manageTeamMembers{% endtrans %}
+                                {% trans %}team.manageMembers{% endtrans %}
                             </a>
                             <a href="{{ path('team_delete', {'id':t.id}) }}"
-                               class="btn btn-danger btn-sm loadContent">{% trans %}delete{% endtrans %}</a>
+                               class="btn btn-danger btn-sm loadContent">{% trans from 'general' %}delete{% endtrans %}</a>
                         </td>
                     </tr>
                 {% endfor %}

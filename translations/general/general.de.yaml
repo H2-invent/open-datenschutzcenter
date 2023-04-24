@@ -8,6 +8,7 @@ backwards: Zurück
 birthday: Geburtstag
 close: Schließen
 comments: Kommentare
+confirmAction: Möchten Sie diese Aktion wirklich durchführen?
 contact: Kontakt
 createdAt: Erstellt am
 createdBy: Erstellt von
@@ -36,6 +37,7 @@ processings: Verarbeitungen
 products: Produkte/Projekte
 reason: Grund
 regard: Betreff
+remove: Entfernen
 responsible: Verantwortlich
 restore: Wiederherstellen
 show: anzeigen
@@ -45,6 +47,7 @@ subscriptionDate: Zeichnungsdatum
 time: Zeit
 times: Zeiten
 title: Titel
+username: Benutzername
 uuid: UID
 version: Version
 versionApproved: (Diese Version war freigegeben)
