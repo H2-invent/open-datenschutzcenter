@@ -1,0 +1,10 @@
+lawParagraph:
+  pseudo: A. Pseudonymisierung Verschlüsselung (Art. 32 Abs. 1 lit. a) DSGVO)
+  confidentiality: B. Vertraulichkeit (Art. 32 Abs. 1 lit. b) DSGVO)
+  integrity: C. Integrität (Art. 32 Abs. 1 lit. c) DSGVO)
+  availability: D. Verfügbarkeit und Belastbarkeit (Art. 32 Abs. 1 lit. c) DSGVO)
+  evaluation: E. Verfahren zur regelmässigen Überprüfung, Bewertung und Evaluierung (Art. 32 Abs. 1 lit. c) DSGVO)
+tom:
+  create: New TOM
+  overview: Technical and organisational measures
+processingActivities: Processing activities
