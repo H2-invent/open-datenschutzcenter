@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'settings' %}
 
 {% block CTA %}
     <h4 class="h4-responsive ml-4 mb-0 d-none d-md-block">
-        {{ 'adminArea'|trans }}
+        {% trans %}adminArea{% endtrans %}
         {% if currentTeam is defined and currentTeam %}{{ currentTeam.name }}{% endif %}
     </h4>
 {% endblock %}
