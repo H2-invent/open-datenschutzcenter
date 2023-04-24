@@ -1,0 +1,16 @@
+confirmAction: Möchten Sie diese Aktion wirklich durchführen?
+deletionConcept:
+  official: Löschbeauftragte*r
+  word: Löschkonzept
+  create: Neues Löschkonzept erstellen
+  edit: Löschkonzept bearbeiten
+  new: Neues Löschkonzept anlegen
+  overview: Löschkonzept Übersicht
+  deadline:
+    standard: Standard Löschfrist
+    legal: Gesetzliche Löschfrist
+data:
+  categories: Datenkategorien
+  dataTypes: Datenarten
+  storageLocations: Speicherorte
+deleteOfficial: Löschbeauftragte*r
