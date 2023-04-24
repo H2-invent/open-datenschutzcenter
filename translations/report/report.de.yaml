@@ -1,0 +1,16 @@
+additionalOptions: Weitere Optionen
+clock: Uhr
+billedTime: Abgerechnete Zeit
+minutes: Minuten
+alreadyBilled: Bereits abgerechnet
+billed: Abgerechnet
+worker: Bearbeiter
+
+work:
+  billed: Aktivität abgerechnet
+  edit: Aktivität bearbeiten
+  delete: Aktivität löschen
+  onSight: Vor Ort Aktivität
+  present: Im Tätigkeitsbereich darstellen
+  create: Neue Aktivität anlegen
+  overview: Aktivitätenübersicht
