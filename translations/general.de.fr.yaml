@@ -1,42 +1,54 @@
+additionalInformation: Weitere Angaben
+address: Adresse
+approved: Freigegeben
+archive: Archivieren
+assign: Zuweisen
 assignedTo: Zugewiesen an
-title: Titel
-description: Beschreibung
-overview: Übersicht
-name: Name
-fileNumber: Aktenzeichen
-time: Zeit
-yes: Ja
-no: Nein
+backwards: Zurück
+birthday: Geburtstag
+close: Schließen
+comments: Kommentare
+confirmAction: Möchten Sie diese Aktion wirklich durchführen?
+contact: Kontakt
 createdAt: Erstellt am
 createdBy: Erstellt von
-number: Nummer
-uuid: UID
-regard: Betreff
 date: Datum
-email: Email
-reason: Grund
-state: Status
-backwards: Zurück
+delete: Löschen
+departments: Abteilungen
+description: Beschreibung
 edit: Bearbeiten
-archive: Archivieren
-restore: Wiederherstellen
+editedBy: Bearbeitet von
+editor: Bearbeiter
+email: Email
+end: Ende
+fileNumber: Aktenzeichen
+history: Historie
+info: Info
+login: Anmelden
+name: Name
+no: Nein
+number: Nummer
+object: Gegenstand
+overview: Übersicht
 pdf:
   create: PDF erstellen
   createWithHistory: PDF mit Historie erstellen
-additionalInformation: Weitere Angaben
-address: Adresse
-birthday: Geburtstag
-comments: Kommentare
-object: Gegenstand
-responsible: Verantwortlich
-approved: Freigegeben
-contact: Kontakt
-subscriptionDate: Zeichnungsdatum
-assign: Zuweisen
-close: Schließen
-history: Historie
-version: Version
+processings: Verarbeitungen
 products: Produkte/Projekte
-departments: Abteilungen
-login: Anmelden
-delete: Löschen
+reason: Grund
+regard: Betreff
+remove: Entfernen
+responsible: Verantwortlich
+restore: Wiederherstellen
+show: anzeigen
+start: Start
+state: Status
+subscriptionDate: Zeichnungsdatum
+time: Zeit
+times: Zeiten
+title: Titel
+username: Benutzername
+uuid: UID
+version: Version
+versionApproved: (Diese Version war freigegeben)
+yes: Ja
