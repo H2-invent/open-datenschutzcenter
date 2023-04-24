@@ -1,0 +1,16 @@
+confirmAction: Do you really want to execute this action?
+deletionConcept:
+  official: Deletion official
+  word: Deletion concept
+  create: Neues Löschkonzept erstellen
+  edit: Löschkonzept bearbeiten
+  new: New deletion concept
+  overview: Delete concepts
+  deadline:
+    standard: Standard storage period
+    legal: Legal deletion deadline
+data:
+  categories: Data categories
+  dataTypes: Data types
+  storageLocations: Storage locations
+deleteOfficial: Deletion official
