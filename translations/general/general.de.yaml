@@ -16,6 +16,7 @@ delete: Löschen
 departments: Abteilungen
 description: Beschreibung
 edit: Bearbeiten
+editedBy: Bearbeitet von
 editor: Bearbeiter
 email: Email
 end: Ende
@@ -46,4 +47,5 @@ times: Zeiten
 title: Titel
 uuid: UID
 version: Version
+versionApproved: (Diese Version war freigegeben)
 yes: Ja
