@@ -1,6 +1,6 @@
-<h2 style="page-break-before: always;">{% if not d.activ %}{{ d.approved?'Freigegebene':'' }} Historie: {% endif %}{{ d.nummer }}
-    : {{ d.name }}
-    (id:{{ d.id }})</h2>
+{% trans_default_domain 'software' %}
+<h2 style="page-break-before: always;">{% if not d.activ %}{% trans from 'bericht' %}{{ d.approved?'approved':'' }}{% endtrans %}{% trans from 'general' %}history{% endtrans %}: {% endif %}{{ d.nummer }}: {{ d.name }}
+    ({% trans from 'general' %}id{% endtrans %}:{{ d.id }})</h2>
 <style>
     th, td {
         padding: 5px;
@@ -11,31 +11,31 @@
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Name der Software
+            {% trans from 'bericht' %}softwareName{% endtrans %}
         </td>
         <td><a href="{{ absolute_url(path('software_edit', {'id':d.id})) }}">{{ d.name }}</a></td>
     </tr>
     <tr>
         <td>
-            Aktenzeichen
+            {% trans from 'general' %}fileNumber{% endtrans %}
         </td>
         <td>{{ d.reference }}</td>
     </tr>
     <tr>
         <td>
-            Inventarnummer
+            {% trans from 'bericht' %}inventoryNumber{% endtrans %}
         </td>
         <td>{{ d.nummer }}</td>
     </tr>
     <tr>
         <td>
-            Status
+            {% trans from 'general' %}state{% endtrans %}
         </td>
         <td>
             {% if d.licenseExpiration < date() and d.licenseExpiration is not null %}
-                ABGELAUFEN
+                {% trans from 'bericht' %}expired{% endtrans %}
             {% elseif d.approved %}
-                Software und Konfiguration freigegeben
+                {% trans from 'bericht' %}publishSoftwareAndConfig{% endtrans %}
             {% else %}
                 {{ d.statusString }}
             {% endif %}
@@ -43,73 +43,73 @@
     </tr>
     <tr>
         <td>
-            Anschaffungsdatum
+            {% trans %}purchaseDate{% endtrans %}
         </td>
         <td>{{ d.purchase|date('d.m.Y') }}</td>
     </tr>
     <tr>
         <td>
-            Beschreibung der Software
+            {% trans %}software.description{% endtrans %}
         </td>
         <td>{{ d.description|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            Lizenz Typ
+            {% trans %}licence.type{% endtrans %}
         </td>
         <td>{{ d.LicenseTypeString }}</td>
     </tr>
     <tr>
         <td>
-            Lizenz
+            {% trans %}licence.word{% endtrans %}
         </td>
         <td>{{ d.license|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            Lizenz Ablaufdatum
+            {% trans %}licence.expirationDate{% endtrans %}
         </td>
         <td>{% if d.licenseExpiration %}{{ d.licenseExpiration|date('d.m.Y') }}{% endif %}</td>
     </tr>
 
     <tr>
         <td>
-            Standort/Lokation der Software
+            {% trans %}software.location{% endtrans %}
         </td>
         <td>{{ d.location }}</td>
     </tr>
     <tr>
         <td>
-            Archivierungskonzept
+            {% trans from 'bericht' %}archiveConcept{% endtrans %}
         </td>
         <td>{{ d.archiving|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            Widerherstellungskonzept
+            {% trans from 'bericht' %}restorationConcept{% endtrans %}
         </td>
         <td>{{ d.recovery|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            Berechtigungskonzept
+            {% trans %}permissionConcept{% endtrans %}
         </td>
         <td>{{ d.permissions|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            Verbundene Verarbeitungen
+            {% trans %}connected.processing{% endtrans %}
         </td>
         <td>{% for data in d.vvts | filter(data => data.activ) %}{{ data.name }}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Verbundene Datenweitergaben
+            {% trans %}connected.dataTransfer{% endtrans %}
         </td>
         <td>{% for data in d.datenweitergabe | filter(data => data.activ) %}{{ data.gegenstand }}<br>{% endfor %}</td>
     </tr>
 </table>
-<h4>Konfiguration</h4>
+<h4>{% trans %}config.word{% endtrans %}</h4>
 <table style="width: 100%">
     {% for c in d.config | filter(c => c.activ) %}
         <tr>
@@ -121,8 +121,9 @@
                     {{ c.config|raw }}
                 </p>
                 {% if c.upload %}
-                    <a href="{{ absolute_url(path('software_config_new',{'id':d.id, 'config':c.id})) }}">Bild
-                        anzeigen</a>
+                    <a href="{{ absolute_url(path('software_config_new',{'id':d.id, 'config':c.id})) }}">
+                        {% trans %}showImage{% endtrans %}
+                    </a>
                 {% endif %}
             </td>
         </tr>

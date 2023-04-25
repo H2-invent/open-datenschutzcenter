@@ -1,6 +1,6 @@
+{% trans_default_domin 'bericht' %}
 <footer>
-    Erstellt am: {{ "now"|date("d.m.Y H:i") }} mit <strong><a href="https://h2-invent.com/software/odc">Open-Datenschutz
-            Center</a></strong><br>
-    <small>Open-Datenschutz Center ist die Open Source Lösung um Datenschutzdokumente schnell, einfach und sicher zu
-        erstellen</small>
+    {% trans from 'general' %}createdAt{% endtrans %}: {{ "now"|date("d.m.Y H:i") }} {% trans %}with{% endtrans%}
+    <strong><a href="https://h2-invent.com/software/odc">{% trans %}openDataPrivacyCenter.word{% endtrans %}</a></strong><br>
+    <small>{% trans %}openDataPrivacyCenter.disclaimer{% endtrans %}</small>
 </footer>

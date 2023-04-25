@@ -1,7 +1,17 @@
 downloadAttachment: Anhang herunterladen
 versionApproved: (Diese Version war freigegeben)
 policies:
+  approvedBy: Richtlinie freigegeben von
   new: Neue Richtlinie anlegen
   internal: Interne Richtlinien und Arbeitsanweisungen
-
+  dataPrivacyBy: Interne Datenschutzrichtlinie von
 scopes: Geltungsbereiche
+reference: Referenz
+risks: Risiken
+referring: Bezug zu Gesetzen, Verordnungen und Standards
+protectiveMeasure: Zu ergreifende Schutzmaßnahmen
+responsibleForProtectiveMeasure: Verantwortlichkeiten für die Schutzmaßnahmen
+clue: Hinweis
+affected:
+  processes: Betroffene Arbeitsvorgänge und Fachverfahren
+  people: Betroffene Personen und Datenkategorien

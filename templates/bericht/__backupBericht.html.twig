@@ -1,5 +1,6 @@
-<h2>{% if not d.activ %}Historie: {% endif %}{{ d.nummer }}: {{ d.name }}
-    (id:{{ d.id }})</h2>
+{% trans_default_domin 'bericht' %}
+<h2>{% if not d.activ %}{% trans from 'general' %}history{% endtrans %}: {% endif %}{{ d.nummer }}: {{ d.name }}
+    ({% trans from 'general' %}id{% endtrans %}:{{ d.id }})</h2>
 <style>
     th, td {
         padding: 5px;
@@ -10,31 +11,31 @@
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Name der Software
+            {% trans %}softwareName{% endtrans %}
         </td>
         <td><a href="{{ absolute_url(path('software_edit', {'id':d.id})) }}">{{ d.name }}</a></td>
     </tr>
     <tr>
         <td>
-            Aktenzeichen
+            {% trans from 'general' %}fileNumber{% endtrans %}
         </td>
         <td>{{ d.reference }}</td>
     </tr>
     <tr>
         <td>
-            Inventarnummer
+            {% trans %}inventoryNumber{% endtrans %}
         </td>
         <td>{{ d.nummer }}</td>
     </tr>
     <tr>
         <td>
-            Status
+            {% trans from 'general' %}state{% endtrans %}
         </td>
         <td>
             {% if d.licenseExpiration < date() and d.licenseExpiration is not null %}
-                ABGELAUFEN
+                {% trans %}expired{% endtrans %}
             {% elseif d.approved %}
-                Software und Konfiguration freigegeben
+                {% trans %}publishSoftwareAndConfig{% endtrans %}
             {% else %}
                 {{ d.statusString }}
             {% endif %}
@@ -42,7 +43,7 @@
     </tr>
     <tr>
         <td>
-            Archivierungskonzept
+            {% trans %}archiveConcept{% endtrans %}
         </td>
         <td>{{ d.archiving|nl2br }}</td>
     </tr>

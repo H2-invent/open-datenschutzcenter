@@ -1,5 +1,6 @@
-<h2>{% if not d.activ %}Historie: {% endif %}{{ d.nummer }}: {{ d.name }}
-    (id:{{ d.id }})</h2>
+{% trans_default_domin 'bericht' %}
+<h2>{% if not d.activ %}{% trans from 'general' %}history{% endtrans %}: {% endif %}{{ d.nummer }}: {{ d.name }}
+    ({% trans from 'general' %}id{% endtrans %}:{{ d.id }})</h2>
 <style>
     th, td {
         padding: 5px;
@@ -10,19 +11,19 @@
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Verarbeitung
+            {% trans from 'general' %}processing{% endtrans %}
         </td>
         <td><a href="{{ absolute_url(path('vvt_edit', {'id':d.id})) }}">{{ d.name }}</a></td>
     </tr>
     <tr>
         <td>
-            Nummer
+            {% trans from 'general' %}number{% endtrans %}
         </td>
         <td>{{ d.nummer }}</td>
     </tr>
     <tr>
         <td>
-            Archivierungskonzept
+            {% trans %}archiveConcept{% endtrans %}
         </td>
         <td>
             {% for s in d.software %}

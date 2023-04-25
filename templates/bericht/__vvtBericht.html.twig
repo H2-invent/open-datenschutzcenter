@@ -1,4 +1,5 @@
-<h2 style="page-break-before: always;">{% if not d.activ %}{{ d.approved?'Freigegebene':'' }} Historie: {% endif %} {{ d.name }}</h2>
+{% trans_default_domain 'vvt' %}
+<h2 style="page-break-before: always;">{% if not d.activ %}{% trans from 'bericht' %}{{ d.approved?'approved':'' }}{% endtrans%} {% trans from 'general' %}history{% endtrans %}: {% endif %} {{ d.name }}</h2>
 <style>
     th, td {
         padding: 5px;
@@ -6,101 +7,101 @@
         width: 50%;
     }
 </style>
-<h4>Verarbeitungsverzeichnis {{ d.nummer }} (id:{{ d.id }})</h4>
+<h4>{% trans %}processingDirectory{% endtrans%} {{ d.nummer }} ({% trans from 'general' %}id{% endtrans %}:{{ d.id }})</h4>
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Nummer
+            {% trans from 'general' %}number{% endtrans %}
         </td>
         <td><a href="{{ absolute_url(path('vvt_edit', {'id':d.id})) }}">{{ d.nummer }}</a></td>
     </tr>
     <tr>
         <td>
-            Status
+            {% trans from 'general' %}state{% endtrans %}
         </td>
-        <td>{% if d.approved %}Verfahren freigegeben von {{ d.approvedBy.username }}{% else %}{{ d.status.name }}{% endif %}</td>
+        <td>{% if d.approved %}{% trans %}processing.approvedBy{% endtrans%} {{ d.approvedBy.username }}{% else %}{{ d.status.name }}{% endif %}</td>
     </tr>
     <tr>
         <td>
-            Verantworliche Person für die Verarbeitung (intern)
+            {% trans %}processing.responsible.internal{% endtrans %}
         </td>
         <td>{{ d.userContract.username }} ({{ d.userContract.email }})</td>
     </tr>
     <tr>
         <td>
-            Verantworliche Person für die Verarbeitung (weitere)
+            {% trans %}processing.responsible.additional{% endtrans %}
         </td>
         <td>{{ d.verantwortlich|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            Zweck der Verarbeitung
+            {% trans %}processing.reason{% endtrans %}
         </td>
         <td>{{ d.zweck|raw }}</td>
     </tr>
     <tr>
         <td>
-            Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Rechtsgrundlage)
+            {% trans %}processing.describeReason{% endtrans %}
         </td>
         <td>{% for g in d.grundlage %}{{ g.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Die Daten welcher Personen werden verarbeitet?
+            {% trans %}processing.target.person{% endtrans %}
         </td>
         <td>{% for p in d.personengruppen %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Welche Datenkategorien (Löschfristen) werden verarbeitet?
+            {% trans %}processing.target.dataCategory{% endtrans %}
         </td>
         <td>{% for k in d.kategorien %}{{ k }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Die Daten werden an folgenden Stellen gespeichert.
+            {% trans %}processing.target.saveDirectory{% endtrans %}
         </td>
         <td>{{ d.speicherung|raw }}</td>
     </tr>
     <tr>
         <td>
-            An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben.
+            {% trans %}dataTransferTo{% endtrans %}
         </td>
         <td>{{ d.weitergabe|raw }}</td>
     </tr>
     <tr>
         <td>
-            Handelt es sich bei der Verarbeitung um ein Joint Control Verarbeitung?
+            {% trans %}processing.jointControl{% endtrans %}
         </td>
-        <td>{{ d.jointControl?'Ja':'Nein' }}</td>
+        <td>{% trans from 'general' %}{{ d.jointControl?'yes':'no' }}{% endtrans %}</td>
     </tr>
     <tr>
         <td>
-            Handelt es sich bei der Verarbeitung um ein Auftragsverarbeitung?
+            {% trans %}processing.requestProcessing{% endtrans %}
         </td>
-        <td>{{ d.auftragsverarbeitung?'Ja':'Nein' }}</td>
+        <td>{% trans from 'general' %}{{ d.auftragsverarbeitung?'yes':'no' }}{% endtrans %}</td>
     </tr>
     <tr>
         <td>
-            Zugehörige Datenweitergaben
+            {% trans %}connected.dataTransfer{% endtrans %}
         </td>
         <td>{% for dd in d.datenweitergaben %}{% if dd.activ and dd.art == 1 %}{{ dd.gegenstand }}
                 <br>{% endif %}{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Zugehörige Auftragsdatenverarbeitungen
+            {% trans %}connected.requestDataProcessing{% endtrans %}
         </td>
         <td>{% for dd in d.datenweitergaben %}{% if dd.activ and dd.art == 2 %}{{ dd.gegenstand }}
                 <br>{% endif %}{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Verwendete Software<br> und verbundene Datenweitergaben
+            {% trans | raw %}usedSoftware{% endtrans %}
         </td>
         <td>{% for dd in d.software | filter(dd => dd.activ) %}
                 <a
-                href="{{ absolute_url(path('software_edit',{'id':dd.id})) }}">{{ dd.name }}</a>{% if dd.approved %} {% trans %}Freigegeben{% endtrans %}{% endif %}
+                href="{{ absolute_url(path('software_edit',{'id':dd.id})) }}">{{ dd.name }}</a>{% if dd.approved %} {% trans from 'general' %}approved{% endtrans %}{% endif %}
                 <ul>
                     {% for d in dd.datenweitergabe | filter(d => d.activ) %}
                         <li>{{ d.gegenstand }}</li>
@@ -111,76 +112,76 @@
     </tr>
     <tr>
         <td>
-            Werden Daten außerhalb der EU verarbeitet?
+            {% trans %}processing.outsideEU{% endtrans %}
         </td>
-        <td>{{ d.eu?'Ja':'Nein' }}</td>
+        <td>{% trans from 'general' %}{{ d.eu?'yes':'no' }}{% endtrans %}</td>
     </tr>
     <tr>
         <td>
-            Welche technischen und organisatorischen Maßnahmen werden umgesetzt?
+            {% trans %}measuresTaken{% endtrans %}
         </td>
         <td>{% if d.tomLink %}{{ d.tomLink.titel }}
-                <br>{{ d.tomLink.beschreibung }}{% else %}Keine Zuordnung zu einer bestehenden digitalen TOM vorgenommen.{% endif %}
+                <br>{{ d.tomLink.beschreibung }}{% else %}{% trans %}tom.noLink{% endtrans %}{% endif %}
         </td>
     </tr>
     <tr>
         <td>
-            Weitere Hinweise zur TOM
+            {% trans %}tom.additionalInfo{% endtrans %}
         </td>
         <td>{{ d.tom|raw }}</td>
     </tr>
     <tr>
         <td>
-            Mögliche Risko-Quellen
+            {% trans %}risk.source{% endtrans %}
         </td>
         <td>{% for p in d.risiko %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Risikoabschätzung
+            {% trans %}risk.evaluation{% endtrans %}
         </td>
         <td>
-            Eintrittswahrscheinlichkeit: {{ d.beurteilungEintrittString }}<br>
-            Schadenspotenzial: {{ d.beurteilungSchadenString }}<br>
+            {% trans %}risk.probability{% endtrans %}: {{ d.beurteilungEintrittString }}<br>
+            {% trans %}risk.damagePotential{% endtrans %}: {{ d.beurteilungSchadenString }}<br>
         </td>
     </tr>
     <tr>
         <td>
-            Datenerhebung
+            {% trans %}dataCollection{% endtrans %}
         </td>
         <td>{{ d.source|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            Informationspflicht
+            {% trans %}dutyToInform{% endtrans %}
         </td>
         <td>{{ d.informationspflicht|raw }}</td>
     </tr>
     <tr>
         <td>
-            Vorhandene interne Richtlinien
+            {% trans %}existingInternalRegulations{% endtrans %}
         </td>
         <td>{% for p in d.policies | filter(p => p.activ) %}- <a
-                    href="{{ absolute_url(path('policy_edit',{'id':p.id})) }}">{{ p.title }}</a>{% if p.approved %} {% trans %}Freigegeben{% endtrans %}{% endif %}
+                    href="{{ absolute_url(path('policy_edit',{'id':p.id})) }}">{{ p.title }}</a>{% if p.approved %} {% trans from 'general' %}approved{% endtrans %}{% endif %}
             <br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Alte Löschfrist (auf Verarbeitung bezogen)
+            {% trans %}oldDeletionDeadline{% endtrans %}
         </td>
         <td>{{ d.loeschfrist|raw }}</td>
     </tr>
     <tr>
         <td>
-            Beurteilung und Kommentar des Datenschutzbeauftragten
+            {% trans %}dataPrivacyResponsibleComment{% endtrans %}
         </td>
         <td>{{ d.dsb|raw }}</td>
     </tr>
     <tr>
         <td>
-            Datenschutzfolgeabschätzung notwendig und vorhanden
+            {% trans %}dataPrivacyFollowUpEstimation.exists{% endtrans %}
         </td>
-        <td>{{ d.activDsfa?'Ja':'Nein' }}</td>
+        <td>{% trans from 'general' %}{{ d.activDsfa?'yes':'no' }}{% endtrans %}</td>
     </tr>
 
 </table>
