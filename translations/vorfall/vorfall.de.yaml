@@ -1,0 +1,14 @@
+incident:
+  assign: Vorfall zuweisen
+  report: Meldungen
+  reported: Gemeldet
+  create: Neuen Vorfall anlegen
+  title: Datenschutzvorfälle nach Art. 33
+
+uid: UID
+facts: Fakten
+consequences: Auswirkungen
+measures: Maßnahmen
+stateAgency: LDA
+affectedPersons: Betroffene
+client: Auftraggeber

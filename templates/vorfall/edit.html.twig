@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'vorfall' %}
 
 {% block CTA %}
     {% if vorfall.activ %}
         <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_vorfall', {'id':vorfall.id}) }}">
-            <span>PDF erstellen</span>
+            <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
         </a>
         <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_vorfall', {'id':vorfall.id, 'all':1}) }}">
-            <span>PDF mit Historie erstellen</span>
+            <span>{% trans from 'general' %}pdf.createWithHistory{% endtrans %}</span>
         </a>
         {{ include('base/__approveBtn.html.twig',{'data':vorfall,'dataLink':'vorfall_approve'}) }}
     {% endif %}
@@ -14,16 +15,16 @@
 
 {% block body %}
 
-    <h2 class="h2-responsive">{{ title }} (Nummer: {{ vorfall.id }})</h2>
+    <h2 class="h2-responsive">{{ title }} ({% trans from 'general' %}number{% endtrans %}: {{ vorfall.id }})</h2>
     {{ include('base/__approvedBy.html.twig', {'data':vorfall}) }}
 
     <div class="card card-body">
         {{ include('vorfall/__form.html.twig') }}
     </div>
-    <p>Erstellt von: {{ vorfall.user.email }}</p>
+    <p>{% trans from 'general' %}createdAt{% endtrans %}: {{ vorfall.user.email }}</p>
     {% if vorfall.previous %}
         <div class="card card-body mt-2">
-            <h2>Historie</h2>
+            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
             {{ include('vorfall/__history.html.twig', {'p':vorfall.previous}) }}
         </div>
     {% endif %}

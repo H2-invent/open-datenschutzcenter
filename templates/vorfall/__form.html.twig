@@ -1,6 +1,7 @@
+{% trans_default_domain 'vorfall' %}
 <div class="row">
     <div class="col-md-3">
-        <p>Vorfall zuweisen</p>
+        <p>{% trans %}incident.assign{% endtrans %}</p>
     </div>
     <div class="col-md-9">
         {% if assignForm is defined %}{{ include('assign/__assign.html.twig',{'data':vorfall,'path':'assign_vorfall'}) }}{% endif %}
@@ -56,7 +57,7 @@
             {{ form_widget(form.daten) }}
         </div>
     </div>
-    <h3 class="h3-responsive mt-4">Meldungen</h3>
+    <h3 class="h3-responsive mt-4">{% trans %}incident.report{% endtrans %}</h3>
     <div class="row mt-4">
         <div class="col-md-3">
             {{ form_label(form.gemeldet) }}
