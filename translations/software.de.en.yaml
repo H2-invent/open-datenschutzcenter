@@ -1,4 +1,5 @@
 config:
+  word: Konfiguration
   attached: Angefügte Konfigurationen
   create: Neue Konfiguration hinzufügen
   delete: Konfiguration löschen
@@ -11,11 +12,21 @@ software:
   approved: Software and configuration approved
   baseData: Stammdaten zu der Software
   back: Zurück zur Software
+  description: Software description
+  location: Standort/Lokation der Software
 inventory: Inventory
 dataTransfers: Data transfers
-purchaseDate: Purchase date
-licence: Licence
+purchaseDate: Anschaffungsdatum
+licence:
+  word: Licence
+  type: Licence type
+  expirationDate: Lizenz Ablaufdatum
 expiration:
   date: Expiration date
   without: Ohne Ablaufdatum
   expired: Expired
+permissionConcept: Privilege policy
+connected:
+  processing: Verbundene Verarbeitung
+  dataTransfer: Verbundene Datenweitergabe
+showImage: Bild anzeigen
