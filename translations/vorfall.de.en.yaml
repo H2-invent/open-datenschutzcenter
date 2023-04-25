@@ -1,0 +1,13 @@
+incident:
+  assign: Vorfall zuweisen
+  report: Meldungen
+  reported: Gemeldet
+  create: New incident
+  title: Privacy protection incidents according to Art. 33
+uid: UID
+facts: Facts
+consequences: Consequences
+measures: Measures
+stateAgency: State privacy protection authority (LDA)
+affectedPersons: Affected persons
+client: Client
