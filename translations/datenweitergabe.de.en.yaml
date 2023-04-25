@@ -1,14 +1,43 @@
 requestProcessing:
+  contractExists: Order processing contract exists and has been uploaded
+  word: Auftragsdatenverarbeitung
   create: New order processing
   noSoftware: Einer Auftragsverarbeitung kann keine Software zugewiesen werden.
   disclaimer: The contract for order processing according to Art. 28 Para. 3 GDPR takes the following points into account
   explanation: 'Erklärung: Auftragsverarbeitung'
   contract: If your organisation processes data for an external person or organisation, this is referred to as "order processing". As a processor, you are not the responsible party, since the responsibility for data processing according to the GDPR lies with the customer. In order for the order processing to be contractually regulated, it is important to conclude an order processing contract with the client.
+  report:
+    contract: The contract for order processing according to Art. 28 Para. 3 GDPR takes the following points into account
+    items: Gegenstand und Dauer der Verarbeitung, Art und Zweck der Verarbeitung<br><br>
+    people: Die Kategorien betroffener Personen<br><br>
+    data: Die Art der personenbezogenen Daten <br><br>
+    documentation: Verarbeitung auf dokumentierte Weisung des Verantwortlichen<br><br>
+    trust: Vertraulichkeitsverpflichtung<br><br>
+    tom: Ergreifen erforderlicher technischer und organisatorischer Maßnahmen<br><br>
+    subcontractor: Inanspruchnahme von Unterauftragnehmern nach Art. Art. 28 Abs. 2 und Abs. 4 DSGVO<br><br>
+    support: Unterstützung des Verantwortlichen bei der Beantwortung von Betroffenen anfragen<br><br>
+    support3236: Unterstützung des Verantwortlichen bei den Pflichten nach Art. 32 – 36 DSGVO<br><br>
+    ending: Umgang mit personenbezogenen Daten nach Beendigung der Auftragsverarbeitung<br><br>
+    audit: Zurverfügungstellung von Informationen und Ermöglichung von Überprüfungen<br><br>
+    notes: Hinweispflicht<br>
 avvDownload: AVV herunterladen
 versionApproved: (Diese Version war freigegeben)
+contractType: contract type
+associatedProcessing: Associated processing activity
+associatedSoftware: Related software
 dataTransfer:
+  basics: Grundlage für die Datenweitergabe
+  type: Data transfer type
+  count: Number
   create: New data transfer
+  object: Data transfer object
+  word: Datenweitergabe
+  responsible: Responsible party (internal)
   info:
     title: Data transfer info
     text: The transfer of data for processing is done in moste companies - for example for the use of external data centers or services (e.g. SaaS), cloud computing or maintenance of IT systems by a service provider. In these cases there is usually a data transfer involved, which means that special measures need to be met to ensure the GDPR isn't violated.
 info: Info
+approved: Freigegebene
+approval: Approval
+approvedBy: Freigegeben von
+state: State
