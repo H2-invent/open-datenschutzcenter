@@ -1,0 +1,24 @@
+archiveConcept: Archivierungskonzept
+softwareName: Software name
+inventoryNumber: Inventarnummer
+expired: ABGELAUFEN
+publishSoftwareAndConfig: Software and configuration approved
+with: mit
+openDataPrivacyCenter:
+  word: Open-DatenschutzCenter
+  disclaimer: Open-Datenschutz Center ist die Open Source Lösung um Datenschutzdokumente schnell, einfach und sicher zu erstellen
+tableOfContents: Inhaltsverzeichnis
+approved: Freigegebene
+archiving: Archivierung
+restorationConcept: Wiederherstellungskonzept
+reasonForRequest: Grund der Anfrage
+pgpKey:
+  exists: PGP Schlüssel vorhanden
+active: Aktiv
+openToCustomer: Für Kunde offen
+internalNotice: Interne Notizen
+validateIdentity: Identität bestätigt
+at: bei
+protocol: Protokoll
+billedTime: Abgerechnete Zeit
+minutes: Minutes
