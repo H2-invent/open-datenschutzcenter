@@ -2,12 +2,25 @@ incident:
   assign: Vorfall zuweisen
   report: Meldungen
   reported: Gemeldet
+  reportedToStateAgency: Datenschutzvorfall gemeldet and Landesdatenschutzbehörde
+  reportedToAffectedPerson: Datenschutzvorfall gemeldet an betroffene Person
+  reportedToAffectedClient: Datenschutzvorfall gemeldet an Auftraggeber
   create: Neuen Vorfall anlegen
   title: Datenschutzvorfälle nach Art. 33
+  date: Datum des Datenschutzvorfalls
+  uuid: Uid des Datenschutzvorfalls
+  approvedBy: Vorfall freigegeben von
+  factsAndDescription: Fakten und Beschreibung des Datenschutzvorfalls
+  effects: Auswirkungen des Datenschutzvorfalls auf die Daten der betroffenen Personen
+approval: Freigabe
 uid: UID
 facts: Fakten
 consequences: Auswirkungen
 measures: Maßnahmen
+measuresTaken: Getroffene Maßnahmen
 stateAgency: LDA
-affectedPersons: Betroffene
+affected:
+  word: Betroffene
+  personCategory: Betroffene Personenkategorien
+  dataCategory: Betroffene Datenkategorien
 client: Auftraggeber
