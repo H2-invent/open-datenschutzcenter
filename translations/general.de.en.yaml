@@ -35,6 +35,7 @@ overview: Overview
 pdf:
   create: PDF erstellen
   createWithHistory: PDF mit Historie erstellen
+processing: Verarbeitung
 processings: Processings
 product: Product
 products: Products/Projects
