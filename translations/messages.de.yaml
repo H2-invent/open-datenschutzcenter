@@ -122,7 +122,7 @@ newProcessingActivity:  Neue Verarbeitung anlegen
 processingDirectory: Verzeichnis der Verarbeitungen
 type: Typ
 processingActivityTypeHelp: AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung
-basis: Grundlage
+
 dataProtectionImpactAssessment: Datenschutz-Folgenabschätzung
 dataProtectionImpactAssessmentAvailable: DSFA vorhanden
 deleteDeadlineCategory: Kategorie (Löschfrist)

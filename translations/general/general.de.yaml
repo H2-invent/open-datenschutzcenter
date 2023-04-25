@@ -5,6 +5,7 @@ archive: Archivieren
 assign: Zuweisen
 assignedTo: Zugewiesen an
 backwards: Zurück
+basic: Grundlage
 birthday: Geburtstag
 close: Schließen
 comments: Kommentare
@@ -23,6 +24,7 @@ email: Email
 end: Ende
 fileNumber: Aktenzeichen
 history: Historie
+id: ID
 info: Info
 login: Anmelden
 name: Name
@@ -34,6 +36,7 @@ pdf:
   create: PDF erstellen
   createWithHistory: PDF mit Historie erstellen
 processings: Verarbeitungen
+product: Produkt
 products: Produkte/Projekte
 reason: Grund
 regard: Betreff
@@ -47,6 +50,8 @@ subscriptionDate: Zeichnungsdatum
 time: Zeit
 times: Zeiten
 title: Titel
+to: zu
+type: Typ
 username: Benutzername
 uuid: UID
 version: Version
