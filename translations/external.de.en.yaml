@@ -1,8 +1,8 @@
 externalResource: Externe Ressource
 externalCheck: Ich habe verstanden, dass beim Aufrufen dieser Seite meine Daten von externen Diensten verarbeitet werden.
 videoConference:
-  about: Videokonferenz über %video%
-  disclaimer: ' Es handelt sich bei dieser Jitsi Instanz um eine Installation auf %video%. Durch das Nutzen dieser Instanz werden personenbezogene Daten an diesen Server übertragen.'
+  about: 'Videokonferenz über {video}'
+  disclaimer: ' Es handelt sich bei dieser Jitsi Instanz um eine Installation auf {video}. Durch das Nutzen dieser Instanz werden personenbezogene Daten an diesen Server übertragen.'
 to:
   videoConference: Zur Videokonferenz
   document: Zum Dokument
