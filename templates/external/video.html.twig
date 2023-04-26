@@ -6,9 +6,9 @@
 
 {% block body %}
     <div class="card card-body">
-        <h2 class="h2-responsive">{% trans with {'%video%': team.video} %}videoConference.about{% endtrans %}</h2>
+        <h2 class="h2-responsive">{% trans with {'{video}': team.video} %}videoConference.about{% endtrans %}</h2>
         <div id="meet"></div>
-        <p class="note-info text-center">{% trans with {'%video%': team.video} %}videoConference.disclaimer{% endtrans %}</p>
+        <p class="note-info text-center">{% trans with {'{video}': team.video} %}videoConference.disclaimer{% endtrans %}</p>
     </div>
 {% endblock %}
 

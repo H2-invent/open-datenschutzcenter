@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% trans_default_domain policies %}
+{% trans_default_domain 'policies' %}
 
 {% block CTA %}
     <a class="btn btn-indigo ml-1 btn-sm" href="{{ path('policy_new') }}">
@@ -19,7 +19,7 @@
                     <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
                     <th scope="col">{% trans %}scopes{% endtrans %}</th>
                     <th scope="col">{% trans from 'general' %}processings{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}status{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
                 </tr>
                 </thead>
                 <tbody>

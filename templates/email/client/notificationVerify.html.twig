@@ -5,18 +5,18 @@
 {% endblock %}
 {% block content %}
     {% trans with {
-        '%name%': data.name,
-        '%title%': title,
-        '%uuid%': data.uuid,
-        '%path%': absolute_url(path('client_valid', {'slug':team.slug, 'token':data.uuid})),
-        '%teamName%': team.name
+        '{name}': data.name,
+        '{title}': title,
+        '{uuid}': data.uuid,
+        '{path}': absolute_url(path('client_valid', {'slug':team.slug, 'token':data.uuid})),
+        '{teamName}': team.name
     } | raw %}
         body.notificationVerify
     {% endtrans %}
     {% trans with {
-        '%teamName%': data.team.name,
-        '%teamEmail%': data.team.email,
-        '%teamPhone%': data.team.telefon
+        '{teamName}': data.team.name,
+        '{teamEmail}': data.team.email,
+        '{teamPhone}': data.team.telefon
     } | raw %}
         salutation.signature.html
     {% endtrans %}

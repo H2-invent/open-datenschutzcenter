@@ -19,7 +19,7 @@
     <div class="card card-body">
         {{ include('forms/__form.html.twig') }}
     </div>
-    <p>{% trans from 'general' %}createBy{% endtrans %}: {{ daten.user.email }}</p>
+    <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ daten.user.email }}</p>
     {% if daten.previous %}
         <div class="card card-body mt-2">
             <h2>{% trans from 'general' %}history{% endtrans %}</h2>

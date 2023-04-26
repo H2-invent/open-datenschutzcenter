@@ -11,10 +11,10 @@
                 <h4>{% trans %}vvt{% endtrans %}</h4>
 
                 <a class="btn bg-vvt btn-block mb-1" href="{{ path('bericht_vvt') }}">
-                    <span>{% trans with {'%target%': 'VVTs'} %}pdf.create{% endtrans %}</span>
+                    <span>{% trans with {'{target}': 'VVTs'} %}pdf.create{% endtrans %}</span>
                 </a>
                 <a class="btn bg-vvt btn-block" href="{{ path('bericht_vvt', {'all':1}) }}">
-                    <span>{% trans with {'%target%': 'VVTs'} %}pdf.createWithHistory{% endtrans %}</span>
+                    <span>{% trans with {'{target}': 'VVTs'} %}pdf.createWithHistory{% endtrans %}</span>
                 </a>
             </div>
 
@@ -22,10 +22,10 @@
             <div class="col-lg-3 mt-2">
                 <h4>{% trans %}dw{% endtrans %}</h4>
                 <a class="btn bg-daten btn-block mb-1" href="{{ path('bericht_weitergabe', {'art':1}) }}">
-                    <span>{% trans with {'%target%': 'DWs'} %}pdf.create{% endtrans %}</span>
+                    <span>{% trans with {'{target}': 'DWs'} %}pdf.create{% endtrans %}</span>
                 </a>
                 <a class="btn bg-daten btn-block" href="{{ path('bericht_weitergabe', {'all':1, 'art':1}) }}">
-                    <span>{% trans with {'%target%': 'DWs'} %}pdf.createWithHistory{% endtrans %}</span>
+                    <span>{% trans with {'{target}': 'DWs'} %}pdf.createWithHistory{% endtrans %}</span>
                 </a>
             </div>
 
@@ -33,10 +33,10 @@
             <div class="col-lg-3 mt-2">
                 <h4>{% trans %}avv{% endtrans %}</h4>
                 <a class="btn bg-av btn-block mb-1" href="{{ path('bericht_weitergabe', {'art':2}) }}">
-                    <span>{% trans with {'%target%': 'AVVs'} %}pdf.create{% endtrans %}</span>
+                    <span>{% trans with {'{target}': 'AVVs'} %}pdf.create{% endtrans %}</span>
                 </a>
                 <a class="btn bg-av btn-block" href="{{ path('bericht_weitergabe', {'all':1, 'art':2}) }}">
-                    <span>{% trans with {'%target%': 'AVVs'} %}pdf.createWithHistory{% endtrans %}</span>
+                    <span>{% trans with {'{target}': 'AVVs'} %}pdf.createWithHistory{% endtrans %}</span>
                 </a>
             </div>
 
@@ -45,19 +45,19 @@
                 <h4>{% trans %}auditQuestions.word{% endtrans %}</h4>
                 <a class="btn bg-audit btn-block mb-1" href="{{ path('bericht_audit') }}"
                    title="{% trans %}auditQuestions.exportCurrent{% endtrans %}">
-                    <span>{% trans with {'%target%': 'Audit-Fragen'} %}pdf.create{% endtrans %}</span>
+                    <span>{% trans with {'{target}': 'Audit-Fragen'} %}pdf.create{% endtrans %}</span>
                 </a>
                 <a class="btn bg-audit btn-block mb-1" href="{{ path('bericht_audit', {'all':1}) }}"
-                   title="{% trans %}auditQuestions.exportCurrentWithRevision{% endtrans %}">
-                    <span>{% trans with {'%target%': 'Audit-Fragen'} %}pdf.createWithHistory{% endtrans %}</span>
+                   title="{% trans %}auditQuestions.exportCurrentWithRevisions{% endtrans %}">
+                    <span>{% trans with {'{target}': 'Audit-Fragen'} %}pdf.createWithHistory{% endtrans %}</span>
                 </a>
                 <a class="btn bg-audit btn-block mb-1" href="{{ path('bericht_audit', {'activ':1}) }}"
-                   title="{% trans %}auditQuestion.exportRelevant.title{% endtrans %}">
-                    <span>{% trans %}auditQuestion.exportRelevant.all{% endtrans %}</span>
+                   title="{% trans %}auditQuestions.exportRelevant.title{% endtrans %}">
+                    <span>{% trans %}auditQuestions.exportRelevant.all{% endtrans %}</span>
                 </a>
                 <a class="btn bg-audit btn-block mb-1" href="{{ path('bericht_audit', {'open':1}) }}"
-                   title="{% trans %}auditQuestion.exportUnedited.title{% endtrans %}">
-                    <span>{% trans %}auditQuestion.exportUnedited.all{% endtrans %}</span>
+                   title="{% trans %}auditQuestions.exportUnedited.title{% endtrans %}">
+                    <span>{% trans %}auditQuestions.exportUnedited.all{% endtrans %}</span>
                 </a>
             </div>
 
@@ -140,10 +140,10 @@
                 <h4>{% trans %}deletionConcept{% endtrans %}</h4>
 
                 <a class="btn btn-block orange mb-1" href="{{ path('bericht_loeschkonzept') }}">
-                    <span>{% trans with {'%target%': 'deletionConcept'} %}pdf.create{% endtrans %}</span>
+                    <span>{% trans with {'{target}': 'deletionConcept'} %}pdf.create{% endtrans %}</span>
                 </a>
                 <a class="btn btn-block orange mb-1" href="{{ path('bericht_loeschkonzept', {'all':1}) }}">
-                    <span>{% trans with {'%target%': 'deletionConcept'} %}pdf.createWithHistory{% endtrans %}</span>
+                    <span>{% trans with {'{target}': 'deletionConcept'} %}pdf.createWithHistory{% endtrans %}</span>
                 </a>
             </div>
         </div>

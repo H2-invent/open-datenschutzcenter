@@ -3,7 +3,7 @@
     <div class="modal-content">
 
         <div class="modal-header  red white-text">
-            <h5 class="modal-title">{% trans with {'%teamname%': team.name} %}team.delete{% endtrans %}</h5>
+            <h5 class="modal-title">{% trans with {'{teamName}': team.name} %}team.delete{% endtrans %}</h5>
         </div>
         <div class="modal-body">
             <p>{% trans %}team.deletionBlocked{% endtrans %}</p>

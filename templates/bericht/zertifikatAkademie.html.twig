@@ -58,16 +58,16 @@
 
             <p style="text-align: center">
                 {% trans with {
-                    '%username%': user.username,
-                    '%email%': user.email,
-                    '%lessonTitle%': daten.kurs.title,
-                    '%finishedAt%': daten.ende|date('d.m.Y')
+                    '{username}': user.username,
+                    '{email}': user.email,
+                    '{lessonTitle}': daten.kurs.title,
+                    '{finishedAt}': daten.ende|date('d.m.Y')
                 } %}
                     certification.text
                 {% endtrans %}
             </p>
             <p style="text-align: center">
-                {% trans with {'%billingId%': daten.buchungsID} |raw %}certification.disclaimer{% endtrans %}
+                {% trans with {'{billingId}': daten.buchungsID} |raw %}certification.disclaimer{% endtrans %}
             </p>
         </div>
 

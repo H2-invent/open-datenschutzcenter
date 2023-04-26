@@ -1,25 +1,25 @@
 {% trans_default_domain 'email' %}
 {% trans %}subject.notificationComment{% endtrans %}
 {% trans with {
-    '%title%': data.title,
-    '%name%': data.name,
-    '%uuid%': data.uuid,
-    '%path%': absolute_url(path('client_valid', {'slug':data.team.slug, 'token':data.uuid})),
-    '%teamName%': data.team.name
+    '{title}': data.title,
+    '{name}': data.name,
+    '{uuid}': data.uuid,
+    '{path}': absolute_url(path('client_valid', {'slug':data.team.slug, 'token':data.uuid})),
+    '{teamName}': data.team.name
 } %}
     body.notificationVerifyEncrypt
 {% endtrans %}
 {% trans with {
-    '%teamName%': data.team.name,
-    '%teamEmail%': data.team.email,
-    '%teamPhone%': data.team.telefon
+    '{teamName}': data.team.name,
+    '{teamEmail}': data.team.email,
+    '{teamPhone}': data.team.telefon
 } %}
     salutation.signature.plain
 {% endtrans %}
 {{ data.team.signature }}
 {% trans with {
-    '%teamName%': data.team.name,
-    '%dataPrivacy%': dataPrivacy
+    '{teamName}': data.team.name,
+    '{dataPrivacy}': dataPrivacy
 } %}
     footer.sendBy
 {% endtrans %}

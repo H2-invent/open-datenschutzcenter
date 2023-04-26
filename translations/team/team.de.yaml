@@ -15,7 +15,7 @@ admin:
 user:
   create: Benutzer*in hinzufügen
 team:
-  delete: %teamname% löschen
+  delete: '{teamName} löschen'
   manage: Teams verwalten
   create: Team erstellen
   manageData: Stammdaten bearbeiten

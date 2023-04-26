@@ -5,17 +5,17 @@
 {% endblock %}
 {% block content %}
     {% trans with {
-        '%subject%': data.itemString,
-        '%title%': title,
-        '%path%': absolute_url(path('client_requests_show', {'id':data.id})),
-        '%teamName%': data.team.name
+        '{subject}': data.itemString,
+        '{title}': title,
+        '{path}': absolute_url(path('client_requests_show', {'id':data.id})),
+        '{teamName}': data.team.name
     } | raw %}
         body.notificationNew
     {% endtrans %}
     {% trans with {
-        '%teamName%': data.team.name
-        '%teamEmail%': data.team.email
-        '%teamPhone%': data.team.telefon
+        '{teamName}': data.team.name
+        '{teamEmail}': data.team.email
+        '{teamPhone}': data.team.telefon
     } | raw %}
         salutation.signature.html
     {% endtrans %}

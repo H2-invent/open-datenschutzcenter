@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% trans_default_domain 'leoschkonzept' %}
+{% trans_default_domain 'loeschkonzept' %}
 
 {% block CTA %}
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_loeschkonzept_new') }}">
@@ -16,7 +16,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">{% trans %}data.categories{% endtrans %}</th>
-                    <th scope="col">{% trans %}data.types{% endtrans %}</th>
+                    <th scope="col">{% trans %}data.dataTypes{% endtrans %}</th>
                     <th scope="col">{% trans %}deletionConcept.deadline.standard{% endtrans %}</th>
                     <th scope="col">{% trans %}deletionConcept.deadline.legal{% endtrans %}</th>
                     <th scope="col">{% trans %}data.storageLocations{% endtrans %}</th>

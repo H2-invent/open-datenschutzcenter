@@ -6,17 +6,17 @@
 
 {% block content %}
     {% trans with {
-        '%title%': title,
-        '%dataTitle%': data.title,
-        '%path%': absolute_url(path('client_index', {'slug':team.slug})),
-        '%teamName%': data.team.name
+        '{title}': title,
+        '{dataTitle}': data.title,
+        '{path}': absolute_url(path('client_index', {'slug':team.slug})),
+        '{teamName}': data.team.name
     } | raw %}
         body.notificationComment
     {% endtrans %}
     {% trans with {
-        '%teamName%': data.team.name,
-        '%teamEmail%': data.team.email,
-        '%teamPhone%': data.team.telefon
+        '{teamName}': data.team.name,
+        '{teamEmail}': data.team.email,
+        '{teamPhone}': data.team.telefon
     } | raw %}
         salutation.signature.html
     {% endtrans %}

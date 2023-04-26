@@ -6,12 +6,12 @@ customerPortalOf: Kundenportal von
 customerPortal: Kundenportal
 fillInForm: Tragen Sie alle Daten in das Formular ein.
 confirmEmail: Bestätigen Sie Ihre Email Adresse.
-identify: Führen Sie die Identifikation ihrer Person nach den Vorgaben von %teamName% durch.
-encryptedConnection: Kommunizieren Sie mit %teamName% über eine verschlüsselte Verbindung.
+identify: 'Führen Sie die Identifikation ihrer Person nach den Vorgaben von {teamName} durch.'
+encryptedConnection: 'Kommunizieren Sie mit {teamName} über eine verschlüsselte Verbindung.'
 gdpr:  '<h3 class="h3-responsive mt-3">Ihre Rechte nach der DSGVO</h3>
         <p class="small">
         Werden personenbezogene Daten von Ihnen verarbeitet, sind Sie Betroffener i.S.d. DSGVO und es stehen Ihnen
-        die nachfolgenden Rechte gegenüber %teamName% (Im Weiteren uns oder wir) als dem Verantwortlichen zu.
+        die nachfolgenden Rechte gegenüber {teamName} (Im Weiteren uns oder wir) als dem Verantwortlichen zu.
         </p>
         <p class="small">
         a) Rechte nach Artikel 15 ff. DSGVO<br>
