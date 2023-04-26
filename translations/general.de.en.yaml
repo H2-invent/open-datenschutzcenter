@@ -1,3 +1,4 @@
+abort: Abbrechen
 additionalInformation: Weitere Angaben
 address: Adresse
 approved: Approved
@@ -35,6 +36,7 @@ overview: Overview
 pdf:
   create: PDF erstellen
   createWithHistory: PDF mit Historie erstellen
+phone: Tel.
 processing: Verarbeitung
 processings: Processings
 product: Product
