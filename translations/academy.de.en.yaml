@@ -24,5 +24,5 @@ vimeo:
   disclaimer: 'Wichtig bei Vimeo: Denken Sie an den Auftragsverarbeitungsvertrag zwischen Ihrer Organisation und Vimeo.'
 certification:
   title: Zertifikat für den Abschluss einen Datenschutzkurses von der Open-Datenschutz Akademie
-  disclaimer: ' Dieses Zertifikat wurde automatisch erstellt.<br> Die Gültigkeit kann über die Buchungs ID: -- %billingId% -- überprüft werden.'
-  text: Hiermit bestätigen wir, dass %username% (%email%) den Kurs "%lessonTitle%" am %finishedAt% erfolgreich abgeschlossen hat.
+  disclaimer: ' Dieses Zertifikat wurde automatisch erstellt.<br> Die Gültigkeit kann über die Buchungs ID: -- {billingId} -- überprüft werden.'
+  text: 'Hiermit bestätigen wir, dass {username} ({email}) den Kurs "{lessonTitle}" am {finishedAt} erfolgreich abgeschlossen hat.'
