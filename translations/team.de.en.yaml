@@ -15,7 +15,7 @@ admin:
 user:
   create: Add user
 team:
-  delete: '%teamname% löschen'
+  delete: '{teamName} löschen'
   manage: Manage teams
   create: New team
   manageData: Edit team
