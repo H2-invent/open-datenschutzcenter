@@ -1,3 +1,4 @@
+{% trans_default_domain 'vvt' %}
 <h2 style="page-break-before: always;"></h2>
 <style>
     th, td {
@@ -6,65 +7,65 @@
         width: 50%;
     }
 </style>
-<h4>Verarbeitungsverzeichnis {{ d.name }}</h4>
+<h4>{% trans %}processingDirectory{% endtrans %} {{ d.name }}</h4>
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Bezeichnung der Verarbeitung
+            {% trans %}processing.name{% endtrans %}
         </td>
         <td>{{ d.name }}</td>
     </tr>
     <tr>
         <td>
-            Zweck der Verarbeitung
+            {% trans %}processing.reason{% endtrans %}
         </td>
         <td>{{ d.zweck|raw }}</td>
     </tr>
     <tr>
         <td>
-            Rechtsgrundlage für die Verarbeitung
+            {% trans %}processing.legalBasis{% endtrans %}
         </td>
         <td>{% for g in d.grundlage %}{{ g.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Die Daten welcher Personen werden verarbeitet?
+            {% trans %}processing.target.person{% endtrans %}
         </td>
         <td>{% for p in d.personengruppen %}{{ p.name }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Verarbeitet Datenkategorien (Löschfristen)
+            {% trans %}processing.target.dataCategory{% endtrans %}
         </td>
         <td>{% for k in d.kategorien %}{{ k }}{% if not loop.last %},{% endif %}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Die Daten werden an folgenden Stellen gespeichert/abgelegt.
+            {% trans %}processing.target.saveDirectory{% endtrans %}
         </td>
         <td>{{ d.speicherung|raw }}</td>
     </tr>
     <tr>
         <td>
-            An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben
+            {% trans %}dataTransferTo{% endtrans %}
         </td>
         <td>{{ d.weitergabe|raw }}</td>
     </tr>
     <tr>
         <td>
-            Werden Daten außerhalb der EU verarbeitet?
+            {% trans %}processing.outsideEU{% endtrans %}
         </td>
-        <td>{{ d.eu?'Ja':'Nein' }}</td>
+        <td>{% trans from 'general' %}{{ d.eu?'yes':'no' }}{% endtrans %}</td>
     </tr>
     <tr>
         <td>
-            Welche technischen und organisatorischen Maßnahmen werden umgesetzt?
+            {% trans %}measuresTaken{% endtrans %}
         </td>
-        <td>{% if d.tomLink %}{{ d.tomLink.titel }}{% else %}Keine Zuordnung zu einer bestehenden digitalen TOM vorgenommen.{% endif %}</td>
+        <td>{% if d.tomLink %}{{ d.tomLink.titel }}{% else %}{% trans %}tom.noLink{% endtrans %}{% endif %}</td>
     </tr>
     <tr>
         <td>
-            Weitere Hinweise zur TOM
+            {% trans %}tom.additionalInfo{% endtrans %}
         </td>
         <td>{{ d.tom|raw }}</td>
     </tr>
