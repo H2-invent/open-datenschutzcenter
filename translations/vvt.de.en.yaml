@@ -29,6 +29,7 @@ dataProtectionImpactAssessment:
   show: Datenschutzfolgeabschätzung anzeigen
   create: Datenschutzfolgeabschätzung anlegen
 processing:
+  name: Bezeichnung der verarbeitung
   outsideEU: Werden Daten außerhalb der EU verarbeitet?
   jointControl: Handelt es sich bei der Verarbeitung um ein Joint Control Verarbeitung?
   create: New processing activity
@@ -43,6 +44,7 @@ processing:
   requestProcessing: Handelt es sich bei der Verarbeitung um ein Auftragsverarbeitung?
   prerequisite: Notwendigkeit der Datenverarbeitung
   risk: Risiko der Datenverarbeitung
+  legalBasis: Rechtsgrundlage für die Verarbeitung
   responsible:
     word: Verantwortliche Person für die Verarbeitung
     internal: Verantwortliche Person für die Verarbeitung (intern)
