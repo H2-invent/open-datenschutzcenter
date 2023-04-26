@@ -46,8 +46,8 @@ auditQuestions:
     all: Exportieren Sie Ihre aktuelle und unbearbetieten Auditfragen
     title: Alle unbearbeiteten Auditfragen exportieren
 pdf:
-  create: PDF von allen %target%s erstellen
-  createWithHistory: PDF von allen %target%s inkl. Historie erstellen
+  create: 'PDF von allen {target} erstellen'
+  createWithHistory: 'PDF von allen {target} inkl. Historie erstellen'
 tom:
   word: TOM
   create:
