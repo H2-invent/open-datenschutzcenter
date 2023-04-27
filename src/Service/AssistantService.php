@@ -23,49 +23,22 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AssistantService
 {
-    /**
-     * @var RequestStack
-     */
     private RequestStack $requestStack;
 
-    /**
-     * @var DatenweitergabeService
-     */
-    private DatenweitergabeService $datenweitergabeService;
+    private DatenweitergabeService $dataTransferService;
 
-    /**
-     * @var SoftwareService
-     */
     private SoftwareService $softwareService;
 
-    /**
-     * @var VVTService
-     */
     private VVTService $vvtService;
 
-    /**
-     * @var KontakteRepository
-     */
     private KontakteRepository $contactRepository;
 
-    /**
-     * @var SoftwareRepository
-     */
     private SoftwareRepository $softwareRepository;
 
-    /**
-     * @var VVTRepository
-     */
     private VVTRepository $vvtRepository;
 
-    /**
-     * @var TranslatorInterface
-     */
     private TranslatorInterface $translator;
 
-    /**
-     * @var FormFactoryInterface
-     */
     private FormFactoryInterface $formBuilder;
 
     // TODO: Move to separate config file
@@ -146,7 +119,7 @@ class AssistantService
     ];
 
     public function __construct(RequestStack $requestStack,
-                                DatenweitergabeService $datenweitergabeService,
+                                DatenweitergabeService $dataTransferService,
                                 SoftwareService $softwareService,
                                 VVTService $vvtService,
                                 KontakteRepository $contactRepository,
@@ -157,7 +130,7 @@ class AssistantService
     )
     {
         $this->requestStack = $requestStack;
-        $this->datenweitergabeService = $datenweitergabeService;
+        $this->dataTransferService = $dataTransferService;
         $this->softwareService = $softwareService;
         $this->vvtService = $vvtService;
         $this->contactRepository = $contactRepository;
@@ -167,30 +140,18 @@ class AssistantService
         $this->formBuilder = $formBuilder;
     }
 
-    /**
-     * @param string $id
-     * @param int $step
-     */
     public function setPropertyForStep(string $id, int $step) {
         $session = $this->requestStack->getSession();
         $property = AssistantService::$STEPS[$step]['key'];
         $session->set($property, $id);
     }
 
-    /**
-     * @param int $step
-     * @return string
-     */
     public function getPropertyForStep(int $step): ?string {
         $session = $this->requestStack->getSession();
         $property = AssistantService::$STEPS[$step]['key'];
         return $session->get($property);
     }
 
-    /**
-     * @param int $step
-     * @return string
-     */
     public function getTitleForStep(int $step): ?string {
         $steps =  AssistantService::$STEPS;
         if (array_key_exists($step, $steps) && array_key_exists('title', $steps[$step])) {
@@ -199,10 +160,6 @@ class AssistantService
         return null;
     }
 
-    /**
-     * @param int $step
-     * @return string
-     */
     public function getInfoForStep(int $step): ?string {
         $steps =  AssistantService::$STEPS;
         if (array_key_exists($step, $steps) && array_key_exists('info', $steps[$step])) {
@@ -211,10 +168,6 @@ class AssistantService
         return null;
     }
 
-    /**
-     * @param int $step
-     * @return string
-     */
     public function getNewTitleForStep(int $step): ?string {
         $steps =  AssistantService::$STEPS;
         if (array_key_exists($step, $steps) && array_key_exists('newTitle', $steps[$step])) {
@@ -223,10 +176,6 @@ class AssistantService
         return null;
     }
 
-    /**
-     * @param int $step
-     * @return string
-     */
     public function getElementTypeForStep(int $step): ?string {
         $steps =  AssistantService::$STEPS;
         if (array_key_exists($step, $steps) && array_key_exists('type', $steps[$step])) {
@@ -235,10 +184,6 @@ class AssistantService
         return null;
     }
 
-    /**
-     * @param int $step
-     * @return Kontakte|null
-     */
     public function getContactForStep(int $step): ?Kontakte {
         $steps =  AssistantService::$STEPS;
         if (array_key_exists($step, $steps) && array_key_exists('contact', $steps[$step])) {
@@ -249,10 +194,6 @@ class AssistantService
         return null;
     }
 
-    /**
-     * @param int $step
-     * @return VVT|null
-     */
     public function getProcedureForStep(int $step): ?VVT {
         $steps =  AssistantService::$STEPS;
         if (array_key_exists($step, $steps) && array_key_exists('vvt', $steps[$step])) {
@@ -263,10 +204,6 @@ class AssistantService
         return null;
     }
 
-    /**
-     * @param int $step
-     * @return Software|null
-     */
     public function getSoftwareForStep(int $step): ?Software {
         $steps =  AssistantService::$STEPS;
         if (array_key_exists($step, $steps) && array_key_exists('software', $steps[$step])) {
@@ -277,10 +214,6 @@ class AssistantService
         return null;
     }
 
-    /**
-     * @param int $step
-     * @return bool
-     */
     public function getSkipForStep(int $step): ?bool {
         $steps =  AssistantService::$STEPS;
         if (array_key_exists($step, $steps) && array_key_exists('skip', $steps[$step])) {
@@ -289,24 +222,15 @@ class AssistantService
         return false;
     }
 
-    /**
-     * @return int
-     */
     public function getStepCount(): int {
         return count(AssistantService::$STEPS);
     }
 
-    /**
-     * @param int $step
-     */
     public function setStep(int $step) {
         $session = $this->requestStack->getSession();
         $session->set('step', $step);
     }
 
-    /**
-     * @return int
-     */
     public function getStep(): int {
         $session = $this->requestStack->getSession();
         $id = $session->get('step');
@@ -322,12 +246,6 @@ class AssistantService
         }
     }
 
-    /**
-     * @param int $step
-     * @param User $user
-     * @param Team $team
-     * @return Software|Datenweitergabe|Kontakte|VVT|null
-     */
     public function createElementForStep(int $step, User $user, Team $team)
     {
         $item = null;
@@ -342,9 +260,9 @@ class AssistantService
                 return $item;
             case DatenweitergabeType::class:
                 if (AssistantService::$STEPS[$step]['title'] === 'orderProcessing') {
-                    $item = $this->datenweitergabeService->newDatenweitergabe($user, 2, 'AVV-');
+                    $item = $this->dataTransferService->newDatenweitergabe($user, 2, 'AVV-');
                 } else {
-                    $item = $this->datenweitergabeService->newDatenweitergabe($user, 1, 'DW-');
+                    $item = $this->dataTransferService->newDatenweitergabe($user, 1, 'DW-');
                 }
                 $this->addDependenciesToDatenweitergabe($item, $step);
                 return $item;
@@ -355,11 +273,6 @@ class AssistantService
         return $item;
     }
 
-    /**
-     * @param int $step
-     * @param Team $team
-     * @return array
-     */
     public function getSelectDataForStep(int $step, Team $team):array
     {
         $select = [];
@@ -386,17 +299,11 @@ class AssistantService
         return $select;
     }
 
-    /**
-     * @param $type
-     * @param $newItem
-     * @param Team $team
-     * @return FormInterface
-     */
     public function createForm($type, $newItem, Team $team)
     {
         switch ($type) {
             case DatenweitergabeType::class:
-                return $this->datenweitergabeService->createForm($newItem, $team);
+                return $this->dataTransferService->createForm($newItem, $team);
             case VVTType::class:
                 return $this->vvtService->createForm($newItem, $team);
             default:
@@ -404,10 +311,6 @@ class AssistantService
         }
     }
 
-    /**
-     * @param Datenweitergabe $item
-     * @param $step
-     */
     private function addDependenciesToDatenweitergabe(Datenweitergabe $item, $step) {
         $contact = $this->getContactForStep($step);
         $item->setKontakt($contact);
@@ -419,10 +322,6 @@ class AssistantService
         $item->addVerfahren($procedure);
     }
 
-    /**
-     * @param VVT $item
-     * @param $step
-     */
     private function addDependenciesToProcedure(VVT $procedure, $step) {
         $software = $this->getSoftwareForStep($step);
         if ($software) {
