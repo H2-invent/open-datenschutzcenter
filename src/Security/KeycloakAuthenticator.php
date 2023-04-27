@@ -8,6 +8,7 @@ use App\Entity\FosUser;
 use App\Entity\MyUser;
 use App\Entity\Settings;
 use App\Entity\User;
+use App\Repository\TeamRepository;
 use App\Service\IndexUserService;
 use App\Service\ThemeService;
 use App\Service\UserCreatorService;
@@ -44,6 +45,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
     private $userManager;
     private $paramterBag;
 
+    private $teamRepository;
 
     private $logger;
 
@@ -53,7 +55,8 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         TokenStorageInterface  $tokenStorage,
         ClientRegistry         $clientRegistry,
         EntityManagerInterface $em,
-        RouterInterface        $router,)
+        RouterInterface        $router,
+        TeamRepository         $teamRepository)
     {
         $this->clientRegistry = $clientRegistry;
         $this->em = $em;
@@ -61,6 +64,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         $this->tokenStorage = $tokenStorage;
         $this->paramterBag = $parameterBag;
         $this->logger = $logger;
+        $this->teamRepository = $teamRepository;
     }
 
     public function supports(Request $request): bool
