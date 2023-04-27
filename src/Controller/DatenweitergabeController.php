@@ -9,12 +9,14 @@
 namespace App\Controller;
 
 use App\Entity\Datenweitergabe;
+use App\Repository\DatenweitergabeRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
 use App\Service\DatenweitergabeService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -28,14 +30,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DatenweitergabeController extends AbstractController
 {
     #[Route(path: '/datenweitergabe', name: 'datenweitergabe')]
-    public function indexDatenweitergabe(SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function indexDatenweitergabe(DatenweitergabeRepository $repository,
+                                         SecurityService $securityService,
+                                         CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => 1));
+        $daten = $repository->findBy(array('team' => $team, 'activ' => true, 'art' => 1));
         return $this->render('datenweitergabe/index.html.twig', [
             'table' => $daten,
             'titel' => 'Alle Datenweitergaben nach DSGVO Art. 30(1)',
@@ -44,14 +48,16 @@ class DatenweitergabeController extends AbstractController
     }
 
     #[Route(path: '/auftragsverarbeitung', name: 'auftragsverarbeitung')]
-    public function indexAuftragsverarbeitung(SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function indexAuftragsverarbeitung(DatenweitergabeRepository $repository,
+                                              SecurityService $securityService,
+                                              CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
+        $daten = $repository->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
             'table' => $daten,
             'titel' => 'Verarbeitungstätigkeiten nach DSGVO Art. 30(2)',
@@ -60,7 +66,12 @@ class DatenweitergabeController extends AbstractController
     }
 
     #[Route(path: '/datenweitergabe/new', name: 'datenweitergabe_new')]
-    public function addDatenweitergabe(ValidatorInterface $validator, Request $request, DatenweitergabeService $datenweitergabeService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function addDatenweitergabe(ValidatorInterface $validator,
+                                       Request $request,
+                                       EntityManagerInterface $entityManager,
+                                       DatenweitergabeService $datenweitergabeService,
+                                       SecurityService $securityService,
+                                       CurrentTeamService $currentTeamService)
     {
         set_time_limit(600);
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -75,17 +86,16 @@ class DatenweitergabeController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $daten = $form->getData();
             foreach ($daten->getVerfahren() as $item) {
                 $item->addDatenweitergaben($daten);
-                $em->persist($item);
+                $entityManager->persist($item);
             }
             $errors = $validator->validate($daten);
             if (count($errors) == 0) {
 
-                $em->persist($daten);
-                $em->flush();
+                $entityManager->persist($daten);
+                $entityManager->flush();
                 return $this->redirectToRoute('datenweitergabe');
             }
         }
@@ -100,7 +110,12 @@ class DatenweitergabeController extends AbstractController
     }
 
     #[Route(path: '/auftragsverarbeitung/new', name: 'auftragsverarbeitung_new')]
-    public function addAuftragsverarbeitung(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService,  CurrentTeamService $currentTeamService)
+    public function addAuftragsverarbeitung(ValidatorInterface $validator,
+                                            EntityManagerInterface $entityManager,
+                                            DatenweitergabeService $datenweitergabeService,
+                                            Request $request,
+                                            SecurityService $securityService,
+                                            CurrentTeamService $currentTeamService)
     {
         set_time_limit(600);
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -115,17 +130,16 @@ class DatenweitergabeController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $daten = $form->getData();
             foreach ($daten->getVerfahren() as $item) {
                 $item->addDatenweitergaben($daten);
-                $em->persist($item);
+                $entityManager->persist($item);
             }
 
             $errors = $validator->validate($daten);
             if (count($errors) == 0) {
-                $em->persist($daten);
-                $em->flush();
+                $entityManager->persist($daten);
+                $entityManager->flush();
                 return $this->redirectToRoute('auftragsverarbeitung');
             }
         }
@@ -140,11 +154,18 @@ class DatenweitergabeController extends AbstractController
     }
 
     #[Route(path: '/datenweitergabe/edit', name: 'datenweitergabe_edit')]
-    public function EditDatenweitergabe(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService, AssignService $assignService,  CurrentTeamService $currentTeamService)
+    public function EditDatenweitergabe(ValidatorInterface $validator,
+                                        Request $request,
+                                        EntityManagerInterface $entityManager,
+                                        DatenweitergabeRepository $repository,
+                                        SecurityService $securityService,
+                                        DatenweitergabeService $datenweitergabeService,
+                                        AssignService $assignService,
+                                        CurrentTeamService $currentTeamService)
     {
         set_time_limit(600);
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+        $daten = $repository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) === false) {
             if ($daten->getArt() === 1) {
@@ -161,26 +182,24 @@ class DatenweitergabeController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid() && $daten->getActiv() && !$daten->getApproved()) {
-
-            $em = $this->getDoctrine()->getManager();
             $daten->setActiv(false);
             $newDaten = $form->getData();
 
             foreach ($newDaten->getVerfahren() as $item) {
                 $item->addDatenweitergaben($newDaten);
-                $em->persist($item);
+                $entityManager->persist($item);
             }
             foreach ($newDaten->getSoftware() as $item) {
                 $item->addDatenweitergabe($newDaten);
-                $em->persist($item);
+                $entityManager->persist($item);
             }
 
             $errors = $validator->validate($newDaten);
             if (count($errors) == 0) {
 
-                $em->persist($newDaten);
-                $em->persist($daten);
-                $em->flush();
+                $entityManager->persist($newDaten);
+                $entityManager->persist($daten);
+                $entityManager->flush();
                 return $this->redirectToRoute('datenweitergabe_edit', array('id' => $newDaten->getId(), 'snack' => 'Erfolgreich gespeichert'));
             }
         }
@@ -223,27 +242,31 @@ class DatenweitergabeController extends AbstractController
     }
 
     #[Route(path: '/datenweitergabe/approve', name: 'datenweitergabe_approve')]
-    public function approveDatenweitergabe(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
+    public function approveDatenweitergabe(Request $request,
+                                           EntityManagerInterface $entityManager,
+                                           DatenweitergabeRepository $repository,
+                                           SecurityService $securityService,
+                                           ApproveService $approveService,
+                                           CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+        $daten = $repository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($daten, $this->getUser());
             if ($approve['clone'] === true) {
-                $newDaten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($approve['data']);
-                $em = $this->getDoctrine()->getManager();
+                $newDaten = $repository->find($approve['data']);
 
                 foreach ($newDaten->getVerfahren() as $item) {
                     $item->addDatenweitergaben($newDaten);
-                    $em->persist($item);
+                    $entityManager->persist($item);
                 }
                 foreach ($newDaten->getSoftware() as $item) {
                     $item->addDatenweitergabe($newDaten);
-                    $em->persist($item);
+                    $entityManager->persist($item);
                 }
-                $em->flush();
+                $entityManager->flush();
             }
             return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
         }
@@ -256,11 +279,15 @@ class DatenweitergabeController extends AbstractController
     }
 
     #[Route(path: '/datenweitergabe/disable', name: 'datenweitergabe_disable')]
-    public function disableDatenweitergabe(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
+    public function disableDatenweitergabe(Request $request,
+                                           SecurityService $securityService,
+                                           DisableService $disableService,
+                                           DatenweitergabeRepository $repository,
+                                           CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+        $daten = $repository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team) && !$daten->getApproved()) {
             $disableService->disable($daten, $user);

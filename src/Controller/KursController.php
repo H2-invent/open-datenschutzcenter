@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\AkademieKurse;
 use App\Form\Type\KursAnmeldungType;
 use App\Form\Type\KursType;
+use App\Repository\AkademieKurseRepository;
 use App\Service\AkademieService;
 use App\Service\CurrentTeamService;
 use App\Service\NotificationService;
 use App\Service\SecurityService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +19,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class KursController extends AbstractController
 {
     #[Route(path: '/kurs/new', name: 'akademie_kurs_new')]
-    public function addKurs(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function addKurs(ValidatorInterface $validator,
+                            Request $request,
+                            EntityManagerInterface $entityManager,
+                            SecurityService $securityService,
+                            CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
         $team = $currentTeamService->getCurrentAdminTeam($user);
@@ -41,9 +47,8 @@ class KursController extends AbstractController
             $daten = $form->getData();
             $errors = $validator->validate($daten);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($daten);
-                $em->flush();
+                $entityManager->persist($daten);
+                $entityManager->flush();
                 return $this->redirectToRoute('kurs_anmelden', ['id' => $daten->getId()]);
             }
         }
@@ -57,11 +62,16 @@ class KursController extends AbstractController
     }
 
     #[Route(path: '/kurs/edit', name: 'akademie_kurs_edit')]
-    public function editKurs(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function editKurs(ValidatorInterface $validator,
+                             EntityManagerInterface $entityManager,
+                             AkademieKurseRepository $courseRepository,
+                             Request $request,
+                             SecurityService $securityService,
+                             CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
+        $kurs = $courseRepository->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
             return $this->redirectToRoute('akademie_admin');
@@ -82,9 +92,8 @@ class KursController extends AbstractController
             $daten = $form->getData();
             $errors = $validator->validate($daten);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($daten);
-                $em->flush();
+                $entityManager->persist($daten);
+                $entityManager->flush();
                 return $this->redirectToRoute('kurs_anmelden', ['id' => $daten->getId()]);
             }
         }
@@ -96,11 +105,15 @@ class KursController extends AbstractController
     }
 
     #[Route(path: '/kurs/anmelden', name: 'kurs_anmelden')]
-    public function kursAnmelden(Request $request, SecurityService $securityService, AkademieService $akademieService, CurrentTeamService $currentTeamService)
+    public function kursAnmelden(Request $request,
+                                 AkademieKurseRepository $courseRepository,
+                                 SecurityService $securityService,
+                                 AkademieService $academyService,
+                                 CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
+        $kurs = $courseRepository->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
             return $this->redirectToRoute('akademie_admin');
@@ -113,7 +126,7 @@ class KursController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $daten = $form->getData();
-            $akademieService->addUser($kurs, $daten);
+            $academyService->addUser($kurs, $daten);
             return $this->redirectToRoute('akademie_admin');
         }
         return $this->render('akademie/new.html.twig', [
@@ -123,17 +136,21 @@ class KursController extends AbstractController
     }
 
     #[Route(path: '/kurs/deaktivieren', name: 'kurs_deaktivieren')]
-    public function kursDeaktivieren(Request $request, SecurityService $securityService, AkademieService $akademieService, CurrentTeamService $currentTeamService)
+    public function kursDeaktivieren(Request $request,
+                                     AkademieKurseRepository $courseRepository,
+                                     SecurityService $securityService,
+                                     AkademieService $academyService, CurrentTeamService
+                                     $currentTeamService)
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $kurs = $this->getDoctrine()->getRepository(AkademieKurse::class)->find($request->get('id'));
+        $kurs = $courseRepository->find($request->get('id'));
 
         if (!$securityService->teamArrayDataCheck($kurs, $team)) {
             return $this->redirectToRoute('akademie_admin');
         }
 
-        $akademieService->removeKurs($team, $kurs);
+        $academyService->removeKurs($team, $kurs);
 
         return $this->redirectToRoute('akademie_admin');
     }

@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\AkademieBuchungen;
+use App\Repository\AkademieBuchungenRepository;
 use App\Service\NotificationService;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,7 +15,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class CronController extends AbstractController
 {
     #[Route(path: '/cron/akademie_update', name: 'cron_akademie')]
-    public function updateCronAkademie(NotificationService $notificationService, Request $request, LoggerInterface $logger)
+    public function updateCronAkademie(NotificationService $notificationService,
+                                       EntityManagerInterface $entityManager,
+                                       AkademieBuchungenRepository $bookingRepository,
+                                       Request $request,
+                                       LoggerInterface $logger)
     {
         $today = new \DateTime();
 
@@ -29,26 +35,24 @@ class CronController extends AbstractController
             return new JsonResponse($message);
         }
 
-        $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findOffenByDate($today);
-
-        $em = $this->getDoctrine()->getManager();
+        $bookings = $bookingRepository->findOffenByDate($today);
         $countNeu = 0;
         $countWdh = 0;
 
         // TODO: How should users with multiple teams be handled?
-        foreach ($buchungen as $buchung) {
-            if (!$buchung->getInvitation()) {
-                $content = $this->renderView('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()->get(0)]);
-                $buchung->setInvitation(true);
-                $em->persist($buchung);
+        foreach ($bookings as $booking) {
+            if (!$booking->getInvitation()) {
+                $content = $this->renderView('email/neuerKurs.html.twig', ['buchung' => $booking, 'team' => $booking->getUser()->getTeams()->get(0)]);
+                $booking->setInvitation(true);
+                $entityManager->persist($booking);
                 ++$countNeu;
             } else {
-                $content = $this->renderView('email/errinnerungKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()->get(0)]);
+                $content = $this->renderView('email/errinnerungKurs.html.twig', ['buchung' => $booking, 'team' => $booking->getUser()->getTeams()->get(0)]);
                 ++$countWdh;
             }
-            $notificationService->sendNotificationAkademie($buchung, $content);
+            $notificationService->sendNotificationAkademie($booking, $content);
         }
-        $em->flush();
+        $entityManager->flush();
         $message = ['error' => false, 'hinweis' => 'Email mit Benachrichtigung zu offenen Kursen in der Akademie verschickt', 'neu' => $countNeu, 'wdh' => $countWdh];
 
         $logger->info($message['hinweis'], $message);

@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Report;
 use App\Form\Type\ReportType;
+use App\Repository\ReportRepository;
 use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\ReportService;
 use App\Service\SecurityService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,10 +18,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ReportController extends AbstractController
 {
     #[Route(path: '/report', name: 'report')]
-    public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function index(SecurityService $securityService,
+                          ReportRepository $reportRepository,
+                          CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $report = $this->getDoctrine()->getRepository(Report::class)->findActiveByTeam($team);
+        $report = $reportRepository->findActiveByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -32,7 +36,12 @@ class ReportController extends AbstractController
     }
 
     #[Route(path: '/report/new', name: 'report_new')]
-    public function addReport(ValidatorInterface $validator, Request $request, SecurityService $securityService, ReportService $reportService, CurrentTeamService $currentTeamService)
+    public function addReport(ValidatorInterface $validator,
+                              Request $request,
+                              EntityManagerInterface $entityManager,
+                              SecurityService $securityService,
+                              ReportService $reportService,
+                              CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
@@ -49,9 +58,8 @@ class ReportController extends AbstractController
             $data = $form->getData();
             $errors = $validator->validate($data);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($data);
-                $em->flush();
+                $entityManager->persist($data);
+                $entityManager->flush();
                 return $this->redirectToRoute('report');
             }
         }
@@ -65,10 +73,15 @@ class ReportController extends AbstractController
     }
 
     #[Route(path: '/report/edit', name: 'report_edit')]
-    public function editReport(ValidatorInterface $validator, Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function editReport(ValidatorInterface $validator,
+                               Request $request,
+                               EntityManagerInterface $entityManager,
+                               ReportRepository $reportRepository,
+                               SecurityService $securityService,
+                               CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $report = $this->getDoctrine()->getRepository(Report::class)->find($request->get('id'));
+        $report = $reportRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) === false) {
             return $this->redirectToRoute('report');
@@ -82,9 +95,8 @@ class ReportController extends AbstractController
             $data = $form->getData();
             $errors = $validator->validate($data);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($data);
-                $em->flush();
+                $entityManager->persist($data);
+                $entityManager->flush();
                 return $this->redirectToRoute('report_edit', ['id' => $data->getId(), 'snack' => 'Erfolgreich gepeichert']);
             }
         }
@@ -100,35 +112,41 @@ class ReportController extends AbstractController
     }
 
     #[Route(path: '/report/invoice', name: 'report_invoice')]
-    public function invoiceReport(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function invoiceReport(Request $request,
+                                  EntityManagerInterface $entityManager,
+                                  ReportRepository $reportRepository,
+                                  SecurityService $securityService,
+                                  CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $report = $this->getDoctrine()->getRepository(Report::class)->find($request->get('id'));
+        $report = $reportRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) === true) {
             if ($report->getUser() === $this->getUser()) {
                 $report->setInvoice(1);
             }
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($report);
-            $em->flush();
+            $entityManager->persist($report);
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('report');
     }
 
     #[Route(path: '/report/delete', name: 'report_delete')]
-    public function deleteReport(Request $request, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function deleteReport(Request $request,
+                                 EntityManagerInterface $entityManager,
+                                 ReportRepository $reportRepository,
+                                 SecurityService $securityService,
+                                 CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $report = $this->getDoctrine()->getRepository(Report::class)->find($request->get('id'));
+        $report = $reportRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) && $securityService->adminCheck($user, $team)) {
             $report->setActiv(2);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($report);
-            $em->flush();
+            $entityManager->persist($report);
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('report');

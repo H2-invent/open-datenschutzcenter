@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\AkademieBuchungen;
 use App\Repository\AkademieBuchungenRepository;
 use App\Service\SecurityService;
+use Doctrine\ORM\EntityManagerInterface;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,12 +31,15 @@ class AkademieController extends AbstractController
     }
 
     #[Route(path: '/akademie/kurs', name: 'akademie_kurs')]
-    public function akademieKurs(Request $request, SecurityService $securityService)
+    public function akademieKurs(Request $request,
+                                 AkademieBuchungenRepository $bookingRepository,
+                                 EntityManagerInterface $entityManager,
+                                 SecurityService $securityService)
     {
         $team = $this->getUser()->getAkademieUser();
 
         $today = new \DateTime();
-        $buchung = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findOneBy(array('id' => $request->get('kurs')));
+        $buchung = $bookingRepository->findOneBy(array('id' => $request->get('kurs')));
 
         if (!$securityService->teamCheck($team) || $buchung->getUser() !== $this->getUser()) {
             return $this->redirectToRoute('akademie');
@@ -47,9 +51,8 @@ class AkademieController extends AbstractController
             }
             $buchung->setFinishedID(md5(uniqid()));
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($buchung);
-            $em->flush();
+            $entityManager->persist($buchung);
+            $entityManager->flush();
 
             return $this->render('akademie/kurs.html.twig', [
                 'kurs' => $buchung->getKurs(),
@@ -62,12 +65,15 @@ class AkademieController extends AbstractController
     }
 
     #[Route(path: '/akademie/kurs/finish', name: 'akademie_kurs_finish')]
-    public function akademieKursFinish(Request $request, SecurityService $securityService)
+    public function akademieKursFinish(Request $request,
+                                       AkademieBuchungenRepository $bookingRepository,
+                                       EntityManagerInterface $entityManager,
+                                       SecurityService $securityService)
     {
         $team = $this->getUser()->getAkademieUser();
 
         $today = new \DateTime();
-        $buchung = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findOneBy(array('finishedID' => $request->get('id')));
+        $buchung = $bookingRepository->findOneBy(array('finishedID' => $request->get('id')));
 
         if (!$securityService->teamCheck($team) || $buchung->getUser() !== $this->getUser()) {
             return $this->redirectToRoute('akademie');
@@ -79,8 +85,7 @@ class AkademieController extends AbstractController
         $buchung->setFinishedID(null);
         $buchung->setBuchungsID(uniqid());
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($buchung);
+        $entityManager->persist($buchung);
         if ($buchung->getVorlage()) {
             $vorlage = $today->modify($buchung->getVorlage());
             $newBuchung->setZugewiesen($vorlage);
@@ -88,17 +93,19 @@ class AkademieController extends AbstractController
             $newBuchung->setFinishedID(null);
             $newBuchung->setInvitation(false);
             $newBuchung->setStart(null);
-            $em->persist($newBuchung);
+            $entityManager->persist($newBuchung);
         }
-        $em->flush();
+        $entityManager->flush();
 
         return $this->redirectToRoute('akademie');
     }
 
     #[Route(path: '/akademie/kurs/zertifikat', name: 'akademie_kurs_zertifikat')]
-    public function akademieKursZertifikat(DompdfWrapper $wrapper, Request $request)
+    public function akademieKursZertifikat(DompdfWrapper $wrapper,
+                                           AkademieBuchungenRepository $bookingRepository,
+                                           Request $request)
     {
-        $buchung = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->find($request->get('buchung'));
+        $buchung = $bookingRepository->find($request->get('buchung'));
 
         if ($buchung->getUser() !== $this->getUser()) {
             return $this->redirectToRoute('akademie');

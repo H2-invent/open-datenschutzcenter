@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Forms;
+use App\Repository\FormsRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\FormsService;
 use App\Service\SecurityService;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -22,43 +24,48 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class FormsController extends AbstractController
 {
     #[Route(path: '/forms', name: 'forms')]
-    public function indexForms(SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function indexForms(SecurityService $securityService,
+                               FormsRepository $formRepository,
+                               CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $this->getDoctrine()->getRepository(Forms::class)->findBy(array('team' => $team, 'activ' => true));
+        $data = $formRepository->findBy(array('team' => $team, 'activ' => true));
         return $this->render('forms/index.html.twig', [
-            'table' => $daten,
+            'table' => $data,
             'titel' => 'Formulare',
             'currentTeam' => $team,
         ]);
     }
 
     #[Route(path: '/forms/new', name: 'forms_new')]
-    public function addForms(ValidatorInterface $validator, Request $request, FormsService $formsService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function addForms(ValidatorInterface $validator,
+                             Request $request,
+                             EntityManagerInterface $entityManager,
+                             FormsService $formsService,
+                             SecurityService $securityService,
+                             CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $formsService->newForm($this->getUser());
+        $data = $formsService->newForm($this->getUser());
 
-        $form = $formsService->createForm($daten, $team);
+        $form = $formsService->createForm($data, $team);
         $form->handleRequest($request);
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $daten = $form->getData();
-            $errors = $validator->validate($daten);
+            $data = $form->getData();
+            $errors = $validator->validate($data);
             if (count($errors) == 0) {
-
-                $em->persist($daten);
-                $em->flush();
+                $entityManager->persist($data);
+                $entityManager->flush();
                 return $this->redirectToRoute('forms');
             }
         }
@@ -66,16 +73,23 @@ class FormsController extends AbstractController
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'Formular erstellen/hochladen',
-            'daten' => $daten,
-            'activ' => $daten->getActiv()
+            'daten' => $data,
+            'activ' => $data->getActiv()
         ]);
     }
 
     #[Route(path: '/forms/edit', name: 'forms_edit')]
-    public function EditFormulare(ValidatorInterface $validator, Request $request, SecurityService $securityService, FormsService $formsService, AssignService $assignService, CurrentTeamService $currentTeamService)
+    public function EditFormulare(ValidatorInterface $validator,
+                                  Request $request,
+                                  EntityManagerInterface $entityManager,
+                                  FormsRepository $formRepository,
+                                  SecurityService $securityService,
+                                  FormsService $formsService,
+                                  AssignService $assignService,
+                                  CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $forms = $this->getDoctrine()->getRepository(Forms::class)->find($request->get('id'));
+        $forms = $formRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($forms, $team) === false) {
             return $this->redirectToRoute('forms');
@@ -88,8 +102,6 @@ class FormsController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid() && $forms->getActiv() && !$forms->getApproved()) {
-
-            $em = $this->getDoctrine()->getManager();
             $forms->setActiv(false);
             $forms->setStatus(4);
             $newForms = $form->getData();
@@ -97,9 +109,9 @@ class FormsController extends AbstractController
             $errors = $validator->validate($newForms);
             if (count($errors) == 0) {
 
-                $em->persist($newForms);
-                $em->persist($forms);
-                $em->flush();
+                $entityManager->persist($newForms);
+                $entityManager->persist($forms);
+                $entityManager->flush();
                 return $this->redirectToRoute('forms_edit', array('id' => $newForms->getId(), 'snack' => 'Erfolgreich gespeichert'));
             }
         }
@@ -115,11 +127,15 @@ class FormsController extends AbstractController
     }
 
     #[Route(path: '/forms/approve', name: 'forms_approve')]
-    public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
+    public function approvePolicy(Request $request,
+                                  FormsRepository $formRepository,
+                                  SecurityService $securityService,
+                                  ApproveService $approveService,
+                                  CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $forms = $this->getDoctrine()->getRepository(Forms::class)->find($request->get('id'));
+        $forms = $formRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($forms, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($forms, $user);
@@ -131,11 +147,15 @@ class FormsController extends AbstractController
     }
 
     #[Route(path: '/forms/disable', name: 'forms_disable')]
-    public function disable(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
+    public function disable(Request $request,
+                            FormsRepository $formRepository,
+                            SecurityService $securityService,
+                            DisableService $disableService,
+                            CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $forms = $this->getDoctrine()->getRepository(Forms::class)->find($request->get('id'));
+        $forms = $formRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($forms, $team) && $securityService->adminCheck($user, $team) && !$forms->getApproved()) {
             $disableService->disable($forms, $user);
@@ -146,7 +166,11 @@ class FormsController extends AbstractController
 
     #[Route(path: '/forms/download/{id}', name: 'forms_download_file', methods: ['GET'])]
     #[ParamConverter('forms', options: ['mapping' => ['id' => 'id']])]
-    public function downloadArticleReference(FilesystemInterface $formsFileSystem, Forms $forms, SecurityService $securityService, LoggerInterface $logger, CurrentTeamService $currentTeamService)
+    public function downloadArticleReference(FilesystemInterface $formsFileSystem,
+                                             Forms $forms,
+                                             SecurityService $securityService,
+                                             LoggerInterface $logger,
+                                             CurrentTeamService $currentTeamService)
     {
 
         $stream = $formsFileSystem->read($forms->getUpload());

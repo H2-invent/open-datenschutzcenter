@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Team;
+use App\Repository\TeamRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,19 +25,20 @@ class DsbController extends AbstractController
     }
 
     #[Route(path: '/ext-dsb/change', name: 'dsb_change')]
-    public function change(Request $request)
+    public function change(Request $request,
+                           TeamRepository $teamRepository,
+                           EntityManagerInterface $entityManager)
     {
-        $team = $this->getDoctrine()->getRepository(Team::class)->find($request->get('id'));
+        $team = $teamRepository->find($request->get('id'));
 
         if (in_array($team, $this->getUser()->getTeamDsb()->toarray())) {
             $user = $this->getUser();
             $user->addTeam($team);
             $team->addAdmin($user);
             $user->setAkademieUser($team);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->persist($team);
-            $em->flush();
+            $entityManager->persist($user);
+            $entityManager->persist($team);
+            $entityManager->flush();
             return $this->redirectToRoute('dashboard', ['snack' => 'Team gewächselt']);
         }
         return $this->redirectToRoute('dashboard', ['snack' => 'DSB passt nicht zu diesem Team. Benutzer kann das Team nicht wechseln.']);

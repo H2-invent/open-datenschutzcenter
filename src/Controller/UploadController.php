@@ -7,6 +7,7 @@ use App\Form\Type\UploadTyp;
 use App\Service\CurrentTeamService;
 use App\Service\ParserService;
 use App\Service\SecurityService;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class UploadController extends AbstractController
 {
     #[Route(path: '/upload', name: 'upload_new')]
-    public function index(Request $request, FilesystemInterface $internFileSystem, ParserService $parserService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function index(Request $request,
+                          EntityManagerInterface $entityManager,
+                          FilesystemInterface $internFileSystem,
+                          ParserService $parserService,
+                          SecurityService $securityService,
+                          CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
         $team = $currentTeamService->getCurrentAdminTeam($user);
@@ -29,18 +35,17 @@ class UploadController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $upload->setUpdatedAt(new \DateTime());
             $upload->setUId('Not completed');
             $upload->setAmount(0);
             $upload = $form->getData();
-            $em->persist($upload);
+            $entityManager->persist($upload);
             if (!preg_match('/odif$/', $upload->getFile())) {
                 return $this->redirectToRoute('upload_fail', array('message' => '
                 Der Dateityp ist fehlerhaft. Die Datei muss mit .odif enden.'));
             }
 
-            $em->flush();
+            $entityManager->flush();
             $stream = $internFileSystem->read($upload->getFile());
             $data = json_decode($stream);
             $verify = $parserService->verify($data);

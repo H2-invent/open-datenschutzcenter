@@ -17,6 +17,7 @@ use App\Repository\FormsRepository;
 use App\Repository\PoliciesRepository;
 use App\Repository\SoftwareRepository;
 use App\Repository\TaskRepository;
+use App\Repository\VorfallRepository;
 use App\Repository\VVTDsfaRepository;
 use App\Repository\VVTRepository;
 use App\Service\AssignService;
@@ -72,12 +73,13 @@ class AssignController extends AbstractController
 
     #[Route(path: '/assign/vvt', name: 'assign_vvt')]
     public function assignVvt(Request $request,
+                              VVTRepository $vvtRepository,
                               AssignService $assignService,
                               SecurityService $securityService,
                               CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
+        $vvt = $vvtRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
         }
@@ -87,10 +89,14 @@ class AssignController extends AbstractController
     }
 
     #[Route(path: '/assign/audit', name: 'assign_audit')]
-    public function assignAudit(Request $request, AssignService $assignService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function assignAudit(Request $request,
+                                AuditTomRepository $auditTomRepository,
+                                AssignService $assignService,
+                                SecurityService $securityService,
+                                CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $audit = $this->getDoctrine()->getRepository(AuditTom::class)->find($request->get('id'));
+        $audit = $auditTomRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($audit, $team) === false) {
             return $this->redirectToRoute('audit_tom');
         }
@@ -100,10 +106,14 @@ class AssignController extends AbstractController
     }
 
     #[Route(path: '/assign/daten', name: 'assign_datenweitergabe')]
-    public function assignDatenweitergabe(Request $request, AssignService $assignService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function assignDatenweitergabe(Request $request,
+                                          DatenweitergabeRepository $transferRepository,
+                                          AssignService $assignService,
+                                          SecurityService $securityService,
+                                          CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+        $daten = $transferRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($daten, $team) === false) {
             return $this->redirectToRoute('datenweitergabe');
         }
@@ -131,10 +141,14 @@ class AssignController extends AbstractController
     }
 
     #[Route(path: '/assign/form', name: 'assign_form')]
-    public function assignForm(Request $request, AssignService $assignService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function assignForm(Request $request,
+                               FormsRepository $formRepository,
+                               AssignService $assignService,
+                               SecurityService $securityService,
+                               CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $form = $this->getDoctrine()->getRepository(Forms::class)->find($request->get('id'));
+        $form = $formRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($form, $team) === false) {
             return $this->redirectToRoute('forms');
         }
@@ -144,10 +158,14 @@ class AssignController extends AbstractController
     }
 
     #[Route(path: '/assign/policy', name: 'assign_policy')]
-    public function assignPolicy(Request $request, AssignService $assignService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function assignPolicy(Request $request,
+                                 PoliciesRepository $policyRepository,
+                                 AssignService $assignService,
+                                 SecurityService $securityService,
+                                 CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
+        $policy = $policyRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($policy, $team) === false) {
             return $this->redirectToRoute('policies');
         }
@@ -157,10 +175,14 @@ class AssignController extends AbstractController
     }
 
     #[Route(path: '/assign/software', name: 'assign_software')]
-    public function assignSoftware(Request $request, AssignService $assignService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function assignSoftware(Request $request,
+                                   SoftwareRepository $softwareRepository,
+                                   AssignService $assignService,
+                                   SecurityService $securityService,
+                                   CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $software = $this->getDoctrine()->getRepository(Software::class)->find($request->get('id'));
+        $software = $softwareRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($software, $team) === false) {
             return $this->redirectToRoute('software');
         }
@@ -170,10 +192,14 @@ class AssignController extends AbstractController
     }
 
     #[Route(path: '/assign/vorfall', name: 'assign_vorfall')]
-    public function assignVorfall(Request $request, AssignService $assignService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function assignVorfall(Request $request,
+                                  VorfallRepository $incidentRepository,
+                                  AssignService $assignService,
+                                  SecurityService $securityService,
+                                  CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $vorfall = $this->getDoctrine()->getRepository(Vorfall::class)->find($request->get('id'));
+        $vorfall = $incidentRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($vorfall, $team) === false) {
             return $this->redirectToRoute('vorfall');
         }
@@ -183,10 +209,14 @@ class AssignController extends AbstractController
     }
 
     #[Route(path: '/assign/task', name: 'assign_task')]
-    public function assignTask(Request $request, AssignService $assignService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function assignTask(Request $request,
+                               TaskRepository $taskRepository,
+                               AssignService $assignService,
+                               SecurityService $securityService,
+                               CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $task = $this->getDoctrine()->getRepository(Task::class)->find($request->get('id'));
+        $task = $taskRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($task, $team) === false) {
             return $this->redirectToRoute('tasks');
         }

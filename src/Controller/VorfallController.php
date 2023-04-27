@@ -9,11 +9,13 @@
 namespace App\Controller;
 
 use App\Entity\Vorfall;
+use App\Repository\VorfallRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use App\Service\VorfallService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +24,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class VorfallController extends AbstractController
 {
     #[Route(path: '/vorfall', name: 'vorfall')]
-    public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function index(SecurityService $securityService,
+                          VorfallRepository $incidentRepository,
+                          CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
@@ -30,7 +34,7 @@ class VorfallController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $vorfall = $this->getDoctrine()->getRepository(Vorfall::class)->findAllByTeam($team);
+        $vorfall = $incidentRepository->findAllByTeam($team);
 
         return $this->render('vorfall/index.html.twig', [
             'vorfall' => $vorfall,
@@ -39,16 +43,21 @@ class VorfallController extends AbstractController
     }
 
     #[Route(path: '/vorfall/new', name: 'vorfall_new')]
-    public function addVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService, CurrentTeamService $currentTeamService)
+    public function addVorfall(ValidatorInterface $validator,
+                               Request $request,
+                               EntityManagerInterface $entityManager,
+                               SecurityService $securityService,
+                               VorfallService $incidentService,
+                               CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $vorfall = $vorfallService->newVorfall($team, $this->getUser());
+        $vorfall = $incidentService->newVorfall($team, $this->getUser());
 
-        $form = $vorfallService->createForm($vorfall, $team);
+        $form = $incidentService->createForm($vorfall, $team);
         $form->handleRequest($request);
 
         $errors = array();
@@ -56,9 +65,8 @@ class VorfallController extends AbstractController
             $data = $form->getData();
             $errors = $validator->validate($data);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($data);
-                $em->flush();
+                $entityManager->persist($data);
+                $entityManager->flush();
                 return $this->redirectToRoute('vorfall');
             }
         }
@@ -72,18 +80,25 @@ class VorfallController extends AbstractController
     }
 
     #[Route(path: '/vorfall/edit', name: 'vorfall_edit')]
-    public function EditVorfall(ValidatorInterface $validator, Request $request, SecurityService $securityService, VorfallService $vorfallService, AssignService $assignService, CurrentTeamService $currentTeamService)
+    public function EditVorfall(ValidatorInterface $validator,
+                                Request $request,
+                                EntityManagerInterface $entityManager,
+                                VorfallRepository $incidentRepository,
+                                SecurityService $securityService,
+                                VorfallService $incidentService,
+                                AssignService $assignService,
+                                CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $vorgang = $this->getDoctrine()->getRepository(Vorfall::class)->find($request->get('id'));
+        $vorgang = $incidentRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vorgang, $team) === false) {
             return $this->redirectToRoute('vorfall');
         }
 
-        $newVorgang = $vorfallService->cloneVorfall($vorgang, $this->getUser());
+        $newVorgang = $incidentService->cloneVorfall($vorgang, $this->getUser());
 
-        $form = $vorfallService->createForm($newVorgang, $team);
+        $form = $incidentService->createForm($newVorgang, $team);
         $form->handleRequest($request);
         $assign = $assignService->createForm($vorgang, $team);
         $errors = array();
@@ -93,11 +108,9 @@ class VorfallController extends AbstractController
             $newVorgang = $form->getData();
             $errors = $validator->validate($newVorgang);
             if (count($errors) == 0) {
-
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($newVorgang);
-                $em->persist($vorgang);
-                $em->flush();
+                $entityManager->persist($newVorgang);
+                $entityManager->persist($vorgang);
+                $entityManager->flush();
                 return $this->redirectToRoute('vorfall_edit', ['id' => $newVorgang->getId(), 'snack' => 'Erfolgreich gespeichert']);
             }
         }
@@ -113,11 +126,15 @@ class VorfallController extends AbstractController
     }
 
     #[Route(path: '/vorfall/approve', name: 'vorfall_approve')]
-    public function approve(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
+    public function approve(Request $request,
+                            VorfallRepository $incidentRepository,
+                            SecurityService $securityService,
+                            ApproveService $approveService,
+                            CurrentTeamService $currentTeamService)
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $vorfall = $this->getDoctrine()->getRepository(Vorfall::class)->find($request->get('id'));
+        $vorfall = $incidentRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vorfall, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($vorfall, $user);
