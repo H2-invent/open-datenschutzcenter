@@ -17,9 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AssistantController extends AbstractController
 {
-    /**
-     * @Route("/assistant", name="assistant")
-     */
+    #[Route('/assistant', name: 'assistant')]
     public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -33,9 +31,7 @@ class AssistantController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/assistant/step/{step}", name="assistant_step")
-     */
+    #[Route('/assistant/step/{step}', name: 'assistant_step')]
     public function step(int $step,
                          Request $request,
                          SecurityService $securityService,
@@ -81,9 +77,7 @@ class AssistantController extends AbstractController
         return $this->redirectToRoute('assistant');
     }
 
-    /**
-     * @Route("/assistant/cancel", name="assistant_cancel")
-     */
+    #[Route('/assistant/cancel', name: 'assistant_cancel')]
     public function cancel(AssistantService $assistantService) : Response
     {
         $assistantService->clear();
@@ -143,9 +137,7 @@ class AssistantController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/assistant/contact/select", name="assistant_contact_select")
-     */
+    #[Route('/assistant/contact/select', name: 'assistant_contact_select')]
     public function selectContact(Request $request,
                                   SecurityService $securityService,
                                   CurrentTeamService $currentTeamService,
