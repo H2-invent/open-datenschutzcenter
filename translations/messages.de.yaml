@@ -252,8 +252,8 @@ processingProcedureInfo: Einer Auftragsverarbeitung muss mindestens eine Verarbe
 transferProcedure: Verarbeitungstätigkeit für Datenweitergabe
 transferProcedureInfo: Einer Datenweitergabe muss mindestens eine Verarbeitungstätigkeit zugeordnet sein
 procedureSelectLabel: Verarbeitungstätigkeit wählen
-dataTansfer: Datenweitergabe
-dataTansferInfo: Was wird mit den Daten gemacht?
+dataTransfer: Datenweitergabe
+dataTransferInfo: Was wird mit den Daten gemacht?
 stepError: Dieser Schritt existiert nicht
 step: Schritt
 new: Neu
