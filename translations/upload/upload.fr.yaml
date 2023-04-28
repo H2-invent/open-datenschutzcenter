@@ -1,0 +1,5 @@
+import:
+  word: Import
+  failure: Der Import war nicht erfolgreich
+  success: Der Import war erfolgreich
+  warning: " <p> Es können nur .odif Dateien mit einer gültigen Signatur des ODC Betreibers hochgeladen werden. Durch das Signieren der Dateien wird sichergestellt, dass die Dateien korrekt aufgebaut sind, die Richtigen Daten enthalten und keine Fehler in der Datenbank produzieren. </p> <p> Der Inhalt der odif Dateien muss mit einem Private.PEM RSA Key Signiert werden. Der Algorithmus zum Signieren der Datei ist nicht im ODC enthalten. </p> <p> Wir empfehlen vor jedem Import eine Sicherung der Datenbank durchzuführen, um mögliche Änderungen rückgängig machen zu können. </p>"
