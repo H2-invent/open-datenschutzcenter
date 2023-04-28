@@ -4,6 +4,7 @@ subject:
   notificationComment: '-- Ein neuer Kommentar zu Ihrer Anfrage --'
   newCustomerRequest: '-- Neue Kundenanfrage --'
   verifyEmail: '-- Bestätigen Sie Ihre Email Adresse --'
+  invite: Einladung zum ODC
 body:
   passwordReset: ' Passwort neu setzen <h3> Hallo! </h3> Sie wurden gerade von einem Administrator zu einem Datenschutz Team auf Ihrem Datenschutz Center hinzugefügt. Um ihr Passwort nun festzulegen klicken Sie den nachfolgenden Link.'
   passwordResetHtml: ' <h4 class="text-center"> -- Einladung zum Datenschutz Center Team -- </h4> <b> Hallo! </b> <p> Sie wurden gerade von einem Administrator zu einem Datenschutz Team auf Ihrem Datenschutz Center hinzugefügt. </p>'
@@ -19,4 +20,5 @@ salutation:
     plain: ' Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei dem Datenschutzbeauftragten. {teamName} E-Mail: {teamEmail} Telefon: {teamPhone}'
     html: ' <p> Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei dem Datenschutzbeauftragten.<br> {teamName}<br> E-Mail: {teamEmail}<br> Telefon: {teamPhone} </p>'
 footer:
+  standard: 'Diese Mail wurde Ihnen gesendet im Auftrag von:'
   sendBy: ' Diese Mail wurde Ihnen gesendet im Auftrag von: {teamName} Datenschutzhinweis unter {dataPrivacy}'
