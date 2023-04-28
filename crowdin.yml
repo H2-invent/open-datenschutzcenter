@@ -1,4 +1,4 @@
 files:
   - source: /translations/*/*.de.yaml
-    translation: /%original_path%/%file_name%.%two_letters_code%.yaml
+    translation: /%original_path%/%file_name%.%locale%.yaml
     translation_replace: {"de.": ""}
