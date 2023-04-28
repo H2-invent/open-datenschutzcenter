@@ -245,7 +245,7 @@ class TeamMemberController extends AbstractController
             'adminArea' => true,
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => $this->translator->trans(id: 'team.manageUsers', domain: 'team'),
+            'title' => $this->translator->trans(id: 'team.manageMembers', domain: 'team'),
             'team' => $team,
             'members' => $members,
             'useKeycloakGroups' => $useKeycloakGroups,

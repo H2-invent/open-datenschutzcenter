@@ -3,12 +3,12 @@
 
 {% block body_text %}
     {% autoescape false %}
-        {% trans|raw %}body.passwordReset{% endtrans %}
+        {% trans %}body.passwordReset{% endtrans %}
 
         {{ link }}
 
 
-        {% trans|raw %}salutation{% endtrans %}
+        {% trans %}salutation{% endtrans %}
     {% endautoescape %}
 
 {% endblock %}

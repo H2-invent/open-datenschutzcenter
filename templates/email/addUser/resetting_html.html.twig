@@ -4,9 +4,9 @@
     {% trans %}subject.passwordResetHtml{% endtrans %}
 {% endblock %}
 {% block content %}
-    {% trans|raw %}body.passwordResetHtml{% endtrans %}
+    {% trans %}body.passwordResetHtml{% endtrans %}
     <button style="color: #00e676"><a href="{{ link }}">{{ link }}</a></button>
 
     <br><br>
-    {% trans|raw %}salutation.kindRegards{% endtrans %}
+    {% trans %}salutation.kindRegards{% endtrans %}
 {% endblock %}

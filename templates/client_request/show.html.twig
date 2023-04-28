@@ -15,7 +15,7 @@
             {% endif %}
             {% if not data.emailValid %}
                 <div class="note-warning text-center mt-2">
-                    {% trans | raw %}emailVerificationDisclaimer{% endtrans %}
+                    {% trans %}emailVerificationDisclaimer{% endtrans %}
                 </div>
             {% endif %}
             {% if not data.validUser %}
@@ -37,7 +37,7 @@
                 {% trans from 'general' %}reason{% endtrans %}: {{ data.itemstring }}
             </p>
             <p>
-                <i>{% trans %}additionalInformation{% endtrans %}</i><br>
+                <i>{% trans from 'general' %}additionalInformation{% endtrans %}</i><br>
                 {% trans from 'general' %}name{% endtrans %}: {{ data.firstname }} {{ data.lastname }}<br>
                 {% trans from 'general' %}address{% endtrans %}: {{ data.street }}, {{ data.city }}<br>
                 {% if data.birthday %}{% trans from 'general' %}birthday{% endtrans %}: {{ data.birthday|date('d.m.Y') }}

@@ -238,7 +238,7 @@ class TeamController extends AbstractController
         return $this->render('team/custom.html.twig', [
             'currentTeam' => $team,
             'adminArea' => true,
-            'title' => $this->translator->trans(id: 'changeFormPresets', domain: 'team'),
+            'title' => $this->translator->trans(id: 'customFormPresents', domain: 'team'),
             'data' => $data,
             'edit' => false
         ]);

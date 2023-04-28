@@ -41,10 +41,10 @@
                         {% trans %}confirmEmail{% endtrans%}
                     </li>
                     <li>
-                        {% trans with {'{teamName}': {{ team.name }}} %}identify{% endtrans%}
+                        {% trans with {'{teamName}': team.name} %}identify{% endtrans%}
                     </li>
                     <li>
-                        {% trans with {'{teamName}': {{ team.name }}} %}encryptedConnection{% endtrans%}
+                        {% trans with {'{teamName}': team.name} %}encryptedConnection{% endtrans%}
                     </li>
                     <li>
                         {% trans %}request.response{% endtrans%}
@@ -62,7 +62,7 @@
                 {{ form_end(form) }}
             </div>
         </div>
-        {% trans with {'{teamName}': {{ team.name }}} | raw %}gdpr{% endtrans %}
+        {% trans with {'{teamName}': team.name} | raw %}gdpr{% endtrans %}
     </div>
     {{ include('base/__snack.html.twig') }}
 {% endblock %}

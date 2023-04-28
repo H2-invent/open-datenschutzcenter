@@ -3,10 +3,10 @@
 
 {% block CTA %}
     {% if currentTeam.slug %}
-        <a class="btn btn-primary ml-1 btn-sm" href="{{ path('client_new',{'slug':team.slug}) }}">
+        <a class="btn btn-primary ml-1 btn-sm" href="{{ path('client_new',{'slug':currentTeam.slug}) }}">
             <span>{% trans %}request.create.link{% endtrans %}</span>
         </a>
-        <a class="btn btn-secondary ml-1 btn-sm" target="_blank" href="{{ path('client_index',{'slug':team.slug}) }}">
+        <a class="btn btn-secondary ml-1 btn-sm" target="_blank" href="{{ path('client_index',{'slug':currentTeam.slug}) }}">
             <span>{% trans %}customerPortal{% endtrans %}</span>
         </a>
     {% endif %}

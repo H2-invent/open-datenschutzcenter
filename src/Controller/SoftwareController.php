@@ -232,7 +232,7 @@ class SoftwareController extends AbstractController
     {
         //Request: id: SoftwareID, snack:Snack Notice
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $software = $softwareRepository > find($request->get('id'));
+        $software = $softwareRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) === false) {
             return $this->redirectToRoute('software');

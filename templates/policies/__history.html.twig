@@ -1,5 +1,5 @@
 {% trans_default_domain 'policies' %}
-<a href="{{ path('policy_edit',{'id':p.id}) }}"><span>{{ p.createdAt|date('d.m.Y') }} -- {{ p.statusString }} -- {{ p.user.email }}  {% trans %}{{ p.approved?'versionApproved' }}{% endtrans %} </span></a>
+<a href="{{ path('policy_edit',{'id':p.id}) }}"><span>{{ p.createdAt|date('d.m.Y') }} -- {{ p.statusString }} -- {{ p.user.email }}  {{ p.approved?'approved' | trans }} </span></a>
 {% if p.previous %}
     {{ include('policies/__history.html.twig', {'p':p.previous}) }}
 {% endif %}

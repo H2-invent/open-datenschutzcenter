@@ -46,19 +46,19 @@
                 {% trans %}alreadyBilled{% endtrans %}:
             </div>
             <div class="col-md-6">
-                {% trans from 'general' %}{{ report.invoice?'yes':'no' }}{% endtrans %}
+                {{ report.invoice?'yes':'no' | trans([],'general') }}
             </div>
             <div class="col-md-6">
                 {% trans %}work.present{% endtrans %}:
             </div>
             <div class="col-md-6">
-                {% trans from 'general' %}{{ report.inReport?'yes':'no' }}{% endtrans %}
+                {{ report.inReport?'yes':'no' | trans([],'general') }}
             </div>
             <div class="col-md-6">
                 {% trans %}work.onSight{% endtrans %}:
             </div>
             <div class="col-md-6">
-                {% trans from 'general' %}{{ report.onsite?'yes':'no' }}{% endtrans %}
+                {{ report.onsite?'yes':'no' | trans([],'general') }}
             </div>
         </div>
     </div>

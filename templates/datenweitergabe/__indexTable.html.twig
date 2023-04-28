@@ -23,7 +23,7 @@
                     <td>{{ t.verantwortlich }}</td>
                     <td>{{ t.kontakt.firma }} (id:{{ t.kontakt.id }})</td>
                     <td>{{ t.zeichnungsdatum|date('Y.m.d') }}</td>
-                    <td>{% trans from 'general' %}{{ t.approved?'yes':'no' }}{% endtrans %}</td>
+                    <td>{{ t.approved?'yes':'no' | trans( [], 'general') }}</td>
                 </tr>
             {% endfor %}
             </tbody>

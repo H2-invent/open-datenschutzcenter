@@ -4,12 +4,12 @@
 {% block CTA %}
     {% if data.team in app.user.adminRoles %}
         <a href="{{ path('client_valid_user',{'id':data.id}) }}"
-           class="btn btn-sm btn-success">{% trans %}user.{{ data.validUser?'undoValidation':'validate' }}{% endtrans %}</a>
+           class="btn btn-sm btn-success">{{ (data.validUser?'user.undoValidation':'user.validate') |trans }}</a>
         <a href="{{ path('client_request_close',{'id':data.id}) }}"
-           class="btn btn-sm btn-danger">{% trans from 'general' %}{{ data.activ?'archive':'restore' }}{% endtrans %}</a>
+           class="btn btn-sm btn-danger">{{ data.activ?'archive':'restore' |trans([], 'general') }}</a>
         {% if not data.activ %}
             <a href="{{ path('client_request_make_internal',{'id':data.id}) }}"
-               class="btn btn-sm btn-danger">{% trans %}request.publish.{{ data.open?'private':'public' }}</a>
+               class="btn btn-sm btn-danger">{{ (data.open?'request.publish.private':'request.publish.public') |trans }}</a>
         {% endif %}
         <a href="{{ path('client_requests_edit',{'id':data.id}) }}"
            class="btn btn-sm btn-primary">{% trans from 'general' %}edit{% endtrans %}</a>

@@ -80,7 +80,7 @@ class SoftwareType extends AbstractType
                 'choices' => [
                     'created' => 0,
                     'inProgress' => 10,
-                    'innReview' => 20,
+                    'inReview' => 20,
                     'submitted' => 30,
                     'inactive' => 60,],
                 'label' => 'status',

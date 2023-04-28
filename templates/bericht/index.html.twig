@@ -140,10 +140,10 @@
                 <h4>{% trans %}deletionConcept{% endtrans %}</h4>
 
                 <a class="btn btn-block orange mb-1" href="{{ path('bericht_loeschkonzept') }}">
-                    <span>{% trans with {'{target}': 'deletionConcept'} %}pdf.create{% endtrans %}</span>
+                    <span>{% trans with {'{target}': 'deletionConcept'|trans} %}pdf.create{% endtrans %}</span>
                 </a>
                 <a class="btn btn-block orange mb-1" href="{{ path('bericht_loeschkonzept', {'all':1}) }}">
-                    <span>{% trans with {'{target}': 'deletionConcept'} %}pdf.createWithHistory{% endtrans %}</span>
+                    <span>{% trans with {'{target}': 'deletionConcept'|trans} %}pdf.createWithHistory{% endtrans %}</span>
                 </a>
             </div>
         </div>
