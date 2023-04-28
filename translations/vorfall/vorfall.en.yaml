@@ -1,0 +1,29 @@
+incident:
+  register: Datenschutzvorfall eintragen
+  assign: Vorfall zuweisen
+  report: Meldungen
+  reported: Gemeldet
+  edit: Datenschutzvorfall bearbeiten
+  reportedToStateAgency: Datenschutzvorfall gemeldet and Landesdatenschutzbehörde
+  reportedToAffectedPerson: Datenschutzvorfall gemeldet an betroffene Person
+  reportedToAffectedClient: Datenschutzvorfall gemeldet an Auftraggeber
+  create: New incident
+  title: Privacy protection incidents according to Art. 33
+  date: Datum des Datenschutzvorfalls
+  uuid: Uid des Datenschutzvorfalls
+  approvedBy: Vorfall freigegeben von
+  factsAndDescription: Fakten und Beschreibung des Datenschutzvorfalls
+  effects: Auswirkungen des Datenschutzvorfalls auf die Daten der betroffenen Personen
+approval: Approval
+uid: UID
+facts: Facts
+consequences: Consequences
+measures: Measures
+measuresTaken: Implemented measures
+stateAgency: State privacy protection authority (LDA)
+affected:
+  word: Affected persons
+  personCategory: Betroffene Personenkategorien
+  dataCategory: Affected data categories
+client: Client
+guideline: Richtlinie
