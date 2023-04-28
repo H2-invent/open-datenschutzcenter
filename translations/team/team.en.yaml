@@ -1,0 +1,44 @@
+dataPrivacyLessons: Privacy protection courses
+keycloakGroup: Keycloak group
+select: Select
+default: Default
+noEntry: No entry
+removeDsb: The DPO will be removed as an admin, coordinator and academy user.
+addExternalDsbInfo: Here you can appoint an external DPO. The external DPO has the ability to move back and forth between teams, each time getting the Data Protection Coordinator, Data Protection Officer, Admin and Academician permissions.
+adminArea: Adminbereich
+memberCount: Members
+admins: Administratoren
+admin:
+  create: Add admin
+  word: Admin
+  remove: Remove admin
+user:
+  create: Add user
+team:
+  data: Stammdaten
+  delete: '{teamName} löschen'
+  manage: Manage teams
+  create: New team
+  manageData: Edit team
+  manageMembers: Edit members
+  deletionBlocked: 'Diese Gruppe kann erst gelöscht werden, wenn folgende Elemente entfernt wurden:'
+academy:
+  word: Academy
+  users: Academy users
+  addUser: Add user
+  manage: Manage academy
+extDsb: Ext. DPO
+coordinator: Member
+openInvitations: Open invitations
+products: Produkte
+members:
+  manageHint:
+    odc: Mitarbeitende können als normale Mitglieder oder als Admin hinzugefügt werden. Mitglieder können Elemente erstellen, bearbeiten, zuweisen und exportieren. Admins können neue Mitglieder hinzufügen, Elemente freigeben und die Akademie verwalten.
+    keycloak: In diesem ODC wird die Teamzugehörigkeit über Keycloakgruppen verwaltet. Ändert sich die Mitgliedschaft eines Nutzers im Keycloak, wird diese beim nächsten Login im ODC aktualisiert.
+customFormPresents: Change Form Presets
+dsb:
+  error:
+    selfRemove: Sie können sich nicht selbst aus dem Team entfernen und wurden daher nur als externer DSB entfernt.
+  manage: Manage external DPO
+  added: A new DPO was added.
+  removed: You have removed the external DPO from your team.
