@@ -1,7 +1,9 @@
 incident:
+  register: Datenschutzvorfall eintragen
   assign: Vorfall zuweisen
   report: Meldungen
   reported: Gemeldet
+  edit: Datenschutzvorfall bearbeiten
   reportedToStateAgency: Datenschutzvorfall gemeldet and Landesdatenschutzbehörde
   reportedToAffectedPerson: Datenschutzvorfall gemeldet an betroffene Person
   reportedToAffectedClient: Datenschutzvorfall gemeldet an Auftraggeber
@@ -24,3 +26,4 @@ affected:
   personCategory: Betroffene Personenkategorien
   dataCategory: Affected data categories
 client: Client
+guideline: Richtlinie
