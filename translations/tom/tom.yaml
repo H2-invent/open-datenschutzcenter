@@ -1,0 +1,62 @@
+lawParagraph:
+  pseudo:
+    title: A. Pseudonymisierung Verschlüsselung (Art. 32 Abs. 1 lit. a) DSGVO)
+  confidentiality:
+    title: B. Vertraulichkeit (Art. 32 Abs. 1 lit. b) DSGVO)
+  entryControl:
+    title: 1. Zutrittskontrolle
+    excerpt: Gewährleistung, dass der Zutritt zu den Betriebsarealen und deren Bereichen nur berechtigten Personen möglich sind
+  entranceControl:
+    title: 2. Zugangskontrolle
+    excerpt: ' Gewährleistung, dass nur Mitarbeiter der verantwortlichen Stelle oder Arbeitskräfte, die im Rahmen einer Auftragsverarbeitung verpflichtet sind, in den hierfür vorgesehenen Aufgabenbereich dürfen und mit Benutzeridentifikation entsprechende Daten verarbeiten'
+  accessControl:
+    title: 3. Zugriffskontrolle
+    excerpt: ' Gewährleistung, dass die zur Benutzung eines automatisierten Verarbeitungssystems Berechtigten ausschließlich zu den von ihrer Zugangsberechtigung umfassten personenbezogenen Daten Zugriff haben'
+  userControl:
+    title: 4. Benutzerkontrolle
+    excerpt: ' Gewährleistung der Verhinderung der Nutzung automatisierter Verarbeitungssysteme mit Hilfe von Einrichtungen zur Datenübertragung durch Unbefugte'
+  saveControl:
+    title: 5. Speicherkontrolle
+    excerpt: ' Verhinderung der unbefugten Eingabe von personenbezogenen Daten sowie der unbefugten Kenntnisnahme, Veränderung und Löschung von gespeicherten personenbezogenen Daten'
+  separability:
+    title: 6. Trennbarkeit
+    excerpt: Gewährleistung, dass zu unterschiedlichen Zwecken erhobene personenbezogene Daten getrennt verarbeitet werden
+  integrity:
+    title: C. Integrität (Art. 32 Abs. 1 lit. c) DSGVO)
+  dataIntegrity:
+    title: 7. Datenintegrität
+    excerpt: Gewährleistung, dass gespeicherte personenbezogene Daten nicht durch Fehlfunktionen des Systems beschädigt werden können
+  transportControl:
+    title: 8. Transportkontrolle
+    excerpt: ' Gewährleistung, dass bei der Übermittlung personenbezogener Daten sowie beim Transport von Datenträgern die Vertraulichkeit und Integrität der Daten geschützt werden'
+  transmissionControl:
+    title: 9. Übertragungskontrolle
+    excerpt: ' Gewährleistung, dass überprüft und festgestellt werden kann, an welche Stellen personenbezogene Daten mithilfe von Einrichtungen zur Datenübertragung übermittelt oder zur Verfügung gestellt wurden oder werden können.'
+  inputControl:
+    title: 10. Eingabekontrolle
+    excerpt: ' Gewährleistung, dass nachträglich überprüft und festgestellt werden kann, welche personenbezogenen Daten zu welcher Zeit und von wem in automatisierte Verarbeitungssysteme eingegeben oder verändert worden sind'
+  reliability:
+    title: 11. Zuverlässigkeit
+    excerpt: Gewährleistung, dass alle Funktionen des Systems zur Verfügung stehen und auftretende Fehlfunktionen gemeldet werden
+  requestControl:
+    title: 12. Auftragskontrolle
+    excerpt: ' Gewährleistung, dass personenbezogene Daten, die im Auftrag verarbeitet werden, nur entsprechend den Weisungen des Auftraggebers verarbeitet werden können'
+  availability:
+    title: D. Verfügbarkeit und Belastbarkeit (Art. 32 Abs. 1 lit. c) DSGVO)
+  availabilityControl:
+    title: 13. Verfügbarkeitskontrolle
+    excerpt: Gewährleistung, dass personenbezogene Daten gegen Zerstörung oder Verlust geschützt sind
+  recoverability:
+    title: 14. Wiederherstellbarkeit
+    excerpt: Gewährleistung, dass eingesetzte Systeme im Störungsfall wiederhergestellt werden können
+  evaluation:
+    title: E. Verfahren zur regelmässigen Überprüfung, Bewertung und Evaluierung (Art. 32 Abs. 1 lit. c) DSGVO)
+  technicalAndOrganizationalMeasures:
+    title: Technisch und organisatorische Massnahmen nach Art. 32 DSGVO, § 62 BDSG
+    excerpt: ' Im Folgenden werden die technischen und organisatorischen Maßnahmen zur Gewährleistung von Datenschutz und Datensicherheit festgelegt, die der Auftragnehmer mindestens einzurichten und laufend aufrecht zu erhalten hat.'
+tom:
+  edit: TOM bearbeiten
+  create: Neue TOM anlegen
+  overview: TOM Übersicht
+processingActivities: VVT
+measuresTaken: Getroffene Maßnahmen
