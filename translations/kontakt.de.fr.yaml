@@ -4,3 +4,5 @@ location: Ort
 function: Funktion
 client: Auftraggeber
 contractor: Auftragnehmer
+contact:
+  create: Kontakt erstellen
