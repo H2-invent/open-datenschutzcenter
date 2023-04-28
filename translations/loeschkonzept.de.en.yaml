@@ -2,10 +2,12 @@ confirmAction: Do you really want to execute this action?
 deletionConcept:
   official: Deletion official
   word: Deletion concept
+  plural: Löschkonzepte
   create: Neues Löschkonzept erstellen
   edit: Löschkonzept bearbeiten
   new: New deletion concept
   overview: Delete concepts
+  directoryOf: Verzeichnis der Löschkonzepte von
   deadline:
     standard: Standard storage period
     legal: Legal deletion deadline
