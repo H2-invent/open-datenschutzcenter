@@ -24,6 +24,7 @@ use App\Entity\VVTPersonen;
 use App\Entity\VVTRisiken;
 use App\Entity\VVTStatus;
 use App\Form\Type\VVTType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -39,16 +40,16 @@ class VVTService
         $this->formBuilder = $formBuilder;
     }
 
-    function newVvt(Team $team, User $user)
+    function cloneDsfa(VVTDsfa $dsfa, User $user)
     {
-        $vvt = new VVT();
-        $vvt->setTeam($team);
-        $vvt->setNummer('VVT-' . hexdec(uniqid()));
-        $vvt->setCreatedAt(new \DateTime());
-        $vvt->setActiv(true);
-        $vvt->setUser($user);
+        $newDsfa = clone $dsfa;
+        $newDsfa->setPrevious($dsfa);
+        $newDsfa->setVvt($dsfa->getVvt());
+        $newDsfa->setActiv(true);
+        $newDsfa->setCreatedAt(new DateTime());
+        $newDsfa->setUser($user);
 
-        return $vvt;
+        return $newDsfa;
     }
 
     function cloneVvt(VVT $vvt, User $user)
@@ -57,7 +58,7 @@ class VVTService
         $newVvt->setPrevious($vvt);
         $newVvt->setActiv(true);
         $newVvt->setUser($user);
-        $newVvt->setCreatedAt(new \DateTime());
+        $newVvt->setCreatedAt(new DateTime());
         return $newVvt;
     }
 
@@ -95,22 +96,22 @@ class VVTService
     {
         $dsfa = new VVTDsfa();
         $dsfa->setVvt($vvt);
-        $dsfa->setCreatedAt(new \DateTime());
+        $dsfa->setCreatedAt(new DateTime());
         $dsfa->setActiv(true);
         $dsfa->setUser($user);
 
         return $dsfa;
     }
 
-    function cloneDsfa(VVTDsfa $dsfa, User $user)
+    function newVvt(Team $team, User $user)
     {
-        $newDsfa = clone $dsfa;
-        $newDsfa->setPrevious($dsfa);
-        $newDsfa->setVvt($dsfa->getVvt());
-        $newDsfa->setActiv(true);
-        $newDsfa->setCreatedAt(new \DateTime());
-        $newDsfa->setUser($user);
+        $vvt = new VVT();
+        $vvt->setTeam($team);
+        $vvt->setNummer('VVT-' . hexdec(uniqid()));
+        $vvt->setCreatedAt(new DateTime());
+        $vvt->setActiv(true);
+        $vvt->setUser($user);
 
-        return $newDsfa;
+        return $vvt;
     }
 }

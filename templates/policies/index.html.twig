@@ -1,24 +1,25 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'policies' %}
 
 {% block CTA %}
     <a class="btn btn-indigo ml-1 btn-sm" href="{{ path('policy_new') }}">
-        <span>{% trans %}newPolicy{% endtrans %}</span>
+        <span>{% trans %}policies.new{% endtrans %}</span>
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}internalPolicies{% endtrans %}</h2>
+    <h2 class="h2-responsive">{% trans %}policies.internal{% endtrans %}</h2>
 
     <div class="card card-body">
         <div class="table-responsive">
             <table id="data-table" class="table display table-striped ">
                 <thead>
                 <tr>
-                    <th scope="col">{% trans %}fileNumber{% endtrans %}</th>
-                    <th scope="col">{% trans %}description{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}fileNumber{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
                     <th scope="col">{% trans %}scopes{% endtrans %}</th>
-                    <th scope="col">{% trans %}processings{% endtrans %}</th>
-                    <th scope="col">{% trans %}status{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}processings{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -29,7 +30,7 @@
                         <td>{{ d.scope|raw }}</td>
                         <td>{% for p in d.processes | filter(p => p.activ) %}{{ p.name }}<br>{% endfor %}</td>
                         <td>{% if d.approved %}<span
-                                    class="note-success p-1">{% trans %}approved{% endtrans %}</span>{% else %}{{ d.statusString }}{% endif %}
+                                    class="note-success p-1">{% trans from 'general' %}approved{% endtrans %}</span>{% else %}{{ d.statusString }}{% endif %}
                         </td>
                     </tr>
                 {% endfor %}

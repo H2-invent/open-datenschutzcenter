@@ -1,0 +1,30 @@
+academyCourses: Akademie Kurse
+assigned: Zugewiesen
+startDate: Start Datum
+endDate: End Datum
+billingId: Buchungs-ID
+completed: Abgeschlossen
+noAutomaticResubmission: Automatische Wiedervorlage noch nicht geöffnet
+certificate: Zertifikat
+followUp: Wiedervorlage
+video:
+  uninterruptible: Dieses Video kann nicht gestoppt werden. Am Ende des Videos können Sie den Kurs als abgeschlossen markieren.
+  browserError: Ihr Browser kann dieses Video nicht wiedergeben.
+  vimeo: Dieses Video wird von Vimeo gestreamt.
+  start: Video starten
+  pause: Video pausieren
+lesson:
+  word: Kurs
+  overview: Übersicht über alle Akademiebuchungen
+  finish: Kurs abschließen
+  disclaimer:
+    finish: Sie haben diesen Kurs komplett angeschaut. Klicken Sie auf den Button "Kurs abschließen" um Ihren Abschluss an Ihren Datenschutzbeauftragen zu melden.
+    repeat: Nach Anschluss des Kurses können Sie das Video erneut, diesmal mit Pausieren und Vorspulen, anschauen.
+vimeo:
+  disclaimer: 'Wichtig bei Vimeo: Denken Sie an den Auftragsverarbeitungsvertrag zwischen Ihrer Organisation und Vimeo.'
+certification:
+  title: Zertifikat für den Abschluss einen Datenschutzkurses von der Open-Datenschutz Akademie
+  disclaimer: '
+    Dieses Zertifikat wurde automatisch erstellt.<br>
+    Die Gültigkeit kann über die Buchungs ID: -- {billingId} -- überprüft werden.'
+  text: 'Hiermit bestätigen wir, dass {username} ({email}) den Kurs "{lessonTitle}" am {finishedAt} erfolgreich abgeschlossen hat.'

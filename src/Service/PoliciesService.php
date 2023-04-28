@@ -16,6 +16,7 @@ use App\Entity\VVT;
 use App\Entity\VVTDatenkategorie;
 use App\Entity\VVTPersonen;
 use App\Form\Type\PolicyType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -31,17 +32,6 @@ class PoliciesService
         $this->formBuilder = $formBuilder;
     }
 
-    function newPolicy(Team $team, User $user)
-    {
-        $vvt = new Policies();
-        $vvt->setTeam($team);
-        $vvt->setCreatedAt(new \DateTime());
-        $vvt->setActiv(true);
-        $vvt->setUser($user);
-
-        return $vvt;
-    }
-
     function clonePolicy(Policies $policy, User $user)
     {
         $newPolicy = clone $policy;
@@ -50,7 +40,7 @@ class PoliciesService
         $newPolicy->setApprovedBy(null);
         $newPolicy->setActiv(true);
         $newPolicy->setUser($user);
-        $newPolicy->setCreatedAt(new \DateTime());
+        $newPolicy->setCreatedAt(new DateTime());
         return $newPolicy;
     }
 
@@ -63,5 +53,16 @@ class PoliciesService
         $form = $this->formBuilder->create(PolicyType::class, $policies, ['personen' => $personen, 'kategorien' => $kategorien, 'user' => $team->getMembers(), 'processes' => $processes]);
 
         return $form;
+    }
+
+    function newPolicy(Team $team, User $user)
+    {
+        $vvt = new Policies();
+        $vvt->setTeam($team);
+        $vvt->setCreatedAt(new DateTime());
+        $vvt->setActiv(true);
+        $vvt->setUser($user);
+
+        return $vvt;
     }
 }

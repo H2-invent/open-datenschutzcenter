@@ -1,3 +1,5 @@
+{% trans_default_domain 'base' %}
+
 {% if data.team in app.user.adminRoles and not data.approved and not data.activ == 0 %}
     <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
        href='{{ path(dataLink,{'id':data.id}) }}' type='button'

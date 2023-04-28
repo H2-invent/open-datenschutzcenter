@@ -6,7 +6,7 @@
  * Time: 09:15
  */
 
- /**
+/**
  * Modified by
  * User: Jan Juister
  * Date: 13.05.2022
@@ -14,20 +14,6 @@
 
 namespace App\Controller;
 
-use App\Entity\AkademieBuchungen;
-use App\Entity\AuditTom;
-use App\Entity\Datenweitergabe;
-use App\Entity\Forms;
-use App\Entity\Kontakte;
-use App\Entity\Policies;
-use App\Entity\Software;
-use App\Entity\Task;
-use App\Entity\Team;
-use App\Entity\Tom;
-use App\Entity\VVT;
-use App\Entity\VVTDsfa;
-use App\Entity\Loeschkonzept;
-use App\Entity\VVTDatenkategorie;
 use App\Repository\AkademieBuchungenRepository;
 use App\Repository\AuditTomRepository;
 use App\Repository\DatenweitergabeRepository;
@@ -42,33 +28,14 @@ use App\Repository\TomRepository;
 use App\Repository\VVTDatenkategorieRepository;
 use App\Repository\VVTDsfaRepository;
 use App\Repository\VVTRepository;
+use App\Service\CurrentTeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\CurrentTeamService;
 
 class DashboardController extends AbstractController
 {
-    /**
-     * @param Request $request
-     * @param CurrentTeamService $currentTeamService
-     * @param TeamRepository $teamRepository
-     * @param DatenweitergabeRepository $transferRepository
-     * @param VVTRepository $processingActivityRepository
-     * @param AuditTomRepository $auditRepository
-     * @param VVTDsfaRepository $impactAssessmentRepository
-     * @param FormsRepository $formRepository
-     * @param PoliciesRepository $policyRepository
-     * @param SoftwareRepository $softwareRepository
-     * @param KontakteRepository $contactRepository
-     * @param TomRepository $tomRepository
-     * @param LoeschkonzeptRepository $deletionConceptRepository
-     * @param VVTDatenkategorieRepository $dataCategoryRepository
-     * @param AkademieBuchungenRepository $bookingRepository
-     * @param TaskRepository $taskRepository
-     * @return Response
-     */
     #[Route(path: '/', name: 'dashboard')]
     public function dashboard(Request                     $request,
                               CurrentTeamService          $currentTeamService,
@@ -86,11 +53,11 @@ class DashboardController extends AbstractController
                               VVTDatenkategorieRepository $dataCategoryRepository,
                               AkademieBuchungenRepository $bookingRepository,
                               TaskRepository              $taskRepository
-    ) : Response
+    ): Response
     {
         // if no teams exist, redirect to first_run
         $allTeams = $teamRepository->findAll();
-        if (sizeof($allTeams) === 0){
+        if (sizeof($allTeams) === 0) {
             return $this->redirectToRoute('first_run');
         }
 
@@ -154,14 +121,14 @@ class DashboardController extends AbstractController
             'tasks' => $tasks,
             'snack' => $request->get('snack'),
             'loeschkonzepte' => $loeschkonzepte,
-            'vvtdatenkategorien' => $vvtdatenkategorien, 
-            
+            'vvtdatenkategorien' => $vvtdatenkategorien,
+
 
         ]);
     }
 
     #[Route(path: '/no_team', name: 'no_team')]
-    public function noTeam()
+    public function noTeam(): Response
     {
         if ($this->getUser()) {
             if (count($this->getUser()->getTeams())) {

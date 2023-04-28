@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'software' %}
 
 {% block CTA %}
     {% if software.activ %}
         <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_software', {'id':software.id}) }}">
-            <span>PDF erstellen</span>
+            <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
         </a>
         <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_software', {'id':software.id, 'all':1}) }}">
-            <span>PDF mit Historie erstellen</span>
+            <span>{% trans from 'general' %}pdf.createWithHistory{% endtrans %}</span>
         </a>
         {{ include('base/__approveBtn.html.twig',{'data':software,'dataLink':'software_approve'}) }}
     {% endif %}
@@ -31,7 +32,7 @@
                     <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
                             data-target="#collapseOne"
                             aria-expanded="false" aria-controls="collapseOne">
-                        <h4 class="h4-responsive">Stammdaten zu der Software</h4>
+                        <h4 class="h4-responsive">{% trans %}software.baseData{% endtrans %}</h4>
                     </button>
                 </h5>
             </div>
@@ -39,7 +40,7 @@
                  data-parent="#accordionExample">
                 <div class="card-body {% if not activ or software.approved %}disabled{% endif %}">
                     {{ include('software/__form.html.twig') }}
-                    <p>Erstellt von: {{ software.user.email }}</p>
+                    <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ software.user.email }}</p>
                 </div>
             </div>
         </div>
@@ -48,7 +49,7 @@
                 <h5 class="mb-0">
                     <button class="btn btn-link " type="button" data-toggle="collapse"
                             data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                        <h4 class="h4-responsive">Angefügte Konfigurationen</h4>
+                        <h4 class="h4-responsive">{% trans %}config.attached{% endtrans %}</h4>
                     </button>
                 </h5>
             </div>
@@ -62,7 +63,7 @@
 
     {% if software.previous %}
         <div class="card card-body mt-2">
-            <h2>Historie</h2>
+            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
             {{ include('software/__history.html.twig', {'p':software.previous}) }}
         </div>
     {% endif %}

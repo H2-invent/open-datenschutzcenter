@@ -1,4 +1,5 @@
 {{ form_start(form) }}
+{% trans_default_domain 'audit_tom' %}
 <div class="row">
     <div class="col-md-8">
         <div {% if not activ %}class="disabled"{% endif %}>
@@ -26,7 +27,7 @@
             {{ form_widget(form.save, { 'disabled':'disabled' }) }}
         {% endif %}
         {% if nextAudit is defined %}
-            <a class="btn btn-info" href="{{ path('audit_tom_edit',{'tom':nextAudit.id}) }}">Zur nächsten Frage</a>
+            <a class="btn btn-info" href="{{ path('audit_tom_edit',{'tom':nextAudit.id}) }}">{% trans %}nextQuestion{% endtrans %}</a>
         {% endif %}
     </div>
     <div class="col-md-4 {% if not activ %}disabled{% endif %}">

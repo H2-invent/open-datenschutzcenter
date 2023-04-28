@@ -14,14 +14,11 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class LoginController extends AbstractController
 {
-    #[Route(path: '/login/auth0_login', name: 'login_auth0')]
-    public function index(ClientRegistry $clientRegistry): Response
-    {
-        return $clientRegistry->getClient('auth0_main')->redirect(['user']);
-    }
-
     #[Route(path: '/login/auth0_login/check', name: 'connect_auth0_check')]
-    public function check(ClientRegistry $clientRegistry, Request $request)
+    public function check(
+        ClientRegistry $clientRegistry,
+        Request        $request,
+    )
     {
         // ** if you want to *authenticate* the user, then
         // leave this method blank and create a Guard authenticator
@@ -45,10 +42,16 @@ class LoginController extends AbstractController
         }
     }
 
-    #[Route(path: '/logout_keycloak', name: 'logout_keycloak')]
-    public function logout(ClientRegistry $clientRegistry,
-                           Request        $request,
+    #[Route(path: '/login/auth0_login', name: 'login_auth0')]
+    public function index(ClientRegistry $clientRegistry): Response
+    {
+        return $clientRegistry->getClient('auth0_main')->redirect(['user']);
+    }
 
+    #[Route(path: '/logout_keycloak', name: 'logout_keycloak')]
+    public function logout(
+        ClientRegistry $clientRegistry,
+        Request        $request,
     )
     {
         $provider = new Keycloak([
@@ -59,7 +62,7 @@ class LoginController extends AbstractController
         ]);
 
 
-        $redirectUri = $this->generateUrl('app_logout', array(),UrlGenerator::ABSOLUTE_URL);
+        $redirectUri = $this->generateUrl('app_logout', array(), UrlGenerator::ABSOLUTE_URL);
         $options = array(
             'id_token_hint' => $request->getSession()->get('id_token'),
             'post_logout_redirect_uri' => $redirectUri,

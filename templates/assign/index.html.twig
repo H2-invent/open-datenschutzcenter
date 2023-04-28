@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'assign' %}
 
 {% block CTA %}
 {% endblock %}
@@ -24,7 +25,7 @@
                 <a class="nav-link text-center" id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
                    aria-controls="profile"
                    aria-selected="false"><img style="width: 30px" src="{{ asset('images/prozess.png') }}"> <span
-                            class="d-none d-sm-block">{% trans %}processings{% endtrans %}</span></a>
+                            class="d-none d-sm-block">{% trans %}processing{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
@@ -224,7 +225,7 @@
                                         {{ a.team.name }}: {{ a.name }}
                                     </div>
                                     <div class="col-md-4">
-                                        Konfigurationen: {{ a.config|length }}
+                                        {% trans %}configurations{% endtrans %}: {{ a.config|length }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.createdAt|date('d.m.Y') }}

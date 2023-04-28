@@ -5,12 +5,16 @@ namespace App\Controller;
 use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ExternalController extends AbstractController
 {
     #[Route(path: '/external', name: 'external')]
-    public function index(SecurityService $securityService,  CurrentTeamService $currentTeamService)
+    public function index(
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
@@ -19,7 +23,7 @@ class ExternalController extends AbstractController
 
         return $this->render('external/index.html.twig', [
             'team' => $team,
-            'hash' => hash('md5', $team->getName()),
+            'hash' => md5($team->getName()),
         ]);
     }
 }

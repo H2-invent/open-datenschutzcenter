@@ -13,3 +13,10 @@ when@prod:
     path: /login/keycloak_login/check
     controller: App\Controller\LoginControllerKeycloak::check
     schemes:    [https]
+
+controllers:
+  resource: '../src/Controller/'
+  type: annotation
+  prefix:
+    de: ''
+    en: '/en'

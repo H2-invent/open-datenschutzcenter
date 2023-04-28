@@ -1,4 +1,5 @@
 {% extends 'team/index.html.twig' %}
+{% trans_default_domain 'team' %}
 
 {% block body %}
     <div class="container">
@@ -27,10 +28,10 @@
                                     <li class="list-group-item {% if d.default %}disabled{% endif %}">
                                         {{ d.name }}{% if not d.default %}
                                         <a href="{{ d.edit }}" class="btn btn-sm btn-info float-md-right loadContent">
-                                            {% trans %}edit{% endtrans %}
+                                            {% trans from 'general' %}edit{% endtrans %}
                                         </a>
                                         <a href="{{ d.deactivate }}" class="btn btn-sm btn-danger float-md-right">
-                                            {% trans %}delete{% endtrans %}
+                                            {% trans from 'general' %}delete{% endtrans %}
                                         </a>
                                         {% else %} ({% trans %}default{% endtrans %}){% endif %}
                                     </li>

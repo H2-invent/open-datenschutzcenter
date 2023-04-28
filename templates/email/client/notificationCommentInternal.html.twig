@@ -1,36 +1,22 @@
 {% extends 'email/base.html.twig' %}
+{% trans_default_domain 'email' %}
 {% block header %}
-    -- Ein neuer Kommentar zu einer bestehenden Anfrage --
+    {% trans %}subject.notificationComment{% endtrans %}
 {% endblock %}
-
 {% block content %}
-    <h4 class="text-center">
-        {{ title }}
-    </h4>
-    <b>
-        Hallo!
-    </b>
-    <p>
-        Es ist ein neuer Kommentar zu {{ data.title }} vorhanden.
-    </p>
-    <p>
-        Anfrage: {{ title }}
-    </p>
-    <spacer size="16"></spacer>
-    <p>
-        <a href="{{ absolute_url(path('client_requests_show', {'id':data.id})) }}">Klicken Sie hier um
-            die Anfrage anzuzeigen</a>
-    </p>
-    <spacer size="16"></spacer>
-    <p>
-        Sie erhalten diese E-Mail, weil Sie Mitglied des Adminteams {{ data.team.name }} sind.
-    </p>
-    <spacer size="16"></spacer>
-    <p>
-        Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei Ihrem
-        Datenschutzbeauftragten, den Datenschutzkoordinatoren.<br>
-        E-Mail: {{ data.team.email }}<br>
-        Telefon: {{ data.team.telefon }}
-    </p>
-
+    {% trans with {
+        '{title}': title,
+        '{dataTitle}': data.title,
+        '{path}': absolute_url(path('client_requests_show', {'id':data.id})),
+        '{teamName}': data.team.name
+    } | raw %}
+        body.notificationCommentInternal
+    {% endtrans %}
+    {% trans with {
+        '{teamName}': data.team.name,
+        '{teamEmail}': data.team.email,
+        '{teamPhone}': data.team.telefon
+    } | raw %}
+        salutation.signature.html
+    {% endtrans %}
 {% endblock %}

@@ -9,74 +9,21 @@
 namespace App\Service;
 
 
-use Psr\Log\LoggerInterface;
-use App\Entity\User;
 use App\Entity\Team;
+use App\Entity\User;
+use Psr\Log\LoggerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityService
 {
     private $logger;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, private TranslatorInterface $translator)
     {
         $this->logger = $logger;
     }
 
-    function teamArrayDataCheck($data, $team)
-    {
-        //Sicherheitsfunktion, dass ein Team vorhanden ist
-        if ($team === null) {
-            $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer keinem Team zugewiesen'];
-            $this->logger->error($message['typ'], $message);
-            return false;
-        }
-
-        //Sicherheitsfunktion, dass nur eigene Daten bearbeitet werden können
-        if (!in_array($team, $data->getTeam()->toarray())) {
-            $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer nicht in Array von Teams', 'user' => $this->getUser()->getUsername()];
-            $this->logger->error($message['typ'], $message);
-            return false;
-        }
-
-        return true;
-    }
-
-    function teamDataCheck($data, $team)
-    {
-        //Sicherheitsfunktion, dass ein Team vorhanden ist
-        if ($team === null) {
-            $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer keinem Team zugewiesen'];
-            $this->logger->error($message['typ'], $message);
-            return false;
-        }
-
-        //Sicherheitsfunktion, dass nur eigene Daten bearbeitet werden können
-        if ($team !== $data->getTeam()) {
-            $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer nicht in Team und nicht berechtigt', 'team' => $team->getName()];
-            $this->logger->error($message['typ'], $message);
-            return false;
-        }
-
-        return true;
-    }
-
-    function teamCheck($team)
-    {
-        //Sicherheitsfunktion, dass ein Team vorhanden ist
-        if ($team === null) {
-            $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer*in ist keinem Team zugewiesen'];
-            $this->logger->error($message['typ'], $message);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @param User $user
-     * @param Team $team
-     * @return bool
-     */
-    function adminCheck(User $user, Team $team) : bool
+    public function adminCheck(User $user, Team $team): bool
     {
         if (!$this->teamCheck($team)) {
             return false;
@@ -93,16 +40,16 @@ class SecurityService
         }
 
         // Else
-        $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer*in ist nicht Admin dieses Teams'];
+        $message = [
+            'typ' => 'LOGIN',
+            'error' => true,
+            'hinweis' => $this->translator->trans(id: 'error.userIsNotTeamAdministrator', domain: 'general'),
+        ];
         $this->logger->error($message['typ'], $message);
         return false;
     }
 
-    /**
-     * @param User $user
-     * @return bool
-     */
-    function superAdminCheck(User $user) : bool
+    public function superAdminCheck(User $user): bool
     {
         // If user is super admin
         if (in_array('ROLE_ADMIN', $user->getRoles())) {
@@ -110,8 +57,82 @@ class SecurityService
         }
 
         // else
-        $message = ['typ' => 'LOGIN', 'error' => true, 'hinweis' => 'Benutzer*in ist nicht berechtigt, Teams zu verwalten'];
+        $message = [
+            'typ' => 'LOGIN',
+            'error' => true,
+            'hinweis' => $this->translator->trans(id: 'error.userNotAuthorizedToManageTeam', domain: 'general'),
+        ];
         $this->logger->error($message['typ'], $message);
         return false;
+    }
+
+    public function teamArrayDataCheck($data, $team): bool
+    {
+        //Sicherheitsfunktion, dass ein Team vorhanden ist
+        if ($team === null) {
+            $message = [
+                'typ' => 'LOGIN',
+                'error' => true,
+                'hinweis' => $this->translator->trans(id: 'error.userWithoutTeam', domain: 'general'),
+            ];
+            $this->logger->error($message['typ'], $message);
+            return false;
+        }
+
+        //Sicherheitsfunktion, dass nur eigene Daten bearbeitet werden können
+        if (!in_array($team, $data->getTeam()->toarray())) {
+            $message = [
+                'typ' => 'LOGIN',
+                'error' => true,
+                'hinweis' => $this->translator->trans(id: 'error.userNotFoundInArray', domain: 'general'),
+                'user' => $this->getUser()->getUsername()];
+            $this->logger->error($message['typ'], $message);
+            return false;
+        }
+
+        return true;
+    }
+
+    public function teamCheck($team): bool
+    {
+        //Sicherheitsfunktion, dass ein Team vorhanden ist
+        if ($team === null) {
+            $message = [
+                'typ' => 'LOGIN',
+                'error' => true,
+                'hinweis' => $this->translator->trans(id: 'error.userWithoutTeam', domain: 'general'),
+            ];
+            $this->logger->error($message['typ'], $message);
+            return false;
+        }
+        return true;
+    }
+
+    public function teamDataCheck($data, $team): bool
+    {
+        //Sicherheitsfunktion, dass ein Team vorhanden ist
+        if ($team === null) {
+            $message = [
+                'typ' => 'LOGIN',
+                'error' => true,
+                'hinweis' => $this->translator->trans(id: 'error.userWithoutTeam', domain: 'general'),
+            ];
+            $this->logger->error($message['typ'], $message);
+            return false;
+        }
+
+        //Sicherheitsfunktion, dass nur eigene Daten bearbeitet werden können
+        if ($team !== $data->getTeam()) {
+            $message = [
+                'typ' => 'LOGIN',
+                'error' => true,
+                'hinweis' => $this->translator->trans(id: 'error.userNotInTeamAccessDenied', domain: 'general'),
+                'team' => $team->getName(),
+            ];
+            $this->logger->error($message['typ'], $message);
+            return false;
+        }
+
+        return true;
     }
 }

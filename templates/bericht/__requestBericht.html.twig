@@ -1,4 +1,5 @@
-<h2 style="page-break-before: always;">{{ d.title }} (UId:{{ d.uuid }})</h2>
+{% trans_default_domain 'bericht' %}
+<h2 style="page-break-before: always;">{{ d.title }} ({% trans from 'general' %}uuid{% endtrans %}:{{ d.uuid }})</h2>
 <style>
     th, td {
         padding: 5px;
@@ -9,75 +10,76 @@
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Name
+            {% trans from 'general' %}name{% endtrans %}:
         </td>
         <td>{{ d.name }}</td>
     </tr>
     <tr>
         <td>
-            Grund der Anfrage
+            {% trans %}reasonForRequest{% endtrans %}
         </td>
         <td>{{ d.itemString }}</td>
     </tr>
     <tr>
         <td>
-            Email
+            {% trans from 'general' %}email{% endtrans %}
         </td>
         <td>{{ d.email }}</td>
     </tr>
     <tr>
         <td>
-            PGP Schlüssel vorhanden
+            {% trans %}pgpKey.exists{% endtrans %}
         </td>
-        <td>{{ d.pgp?'Ja':'Nein' }}</td>
+        <td>{{ d.pgp?'yes':'no' |trans([], 'general') }}</td>
     </tr>
     <tr>
         <td>
-            Status
+            {% trans from 'general' %}state{% endtrans %}
         </td>
         <td>
-            Aktiv: {{ d.activ?'Ja':'Nein' }}<br>
-            Für Kunde offen: {{ d.open?'Ja':'Nein' }}
-
+            {% trans %}active{% endtrans %}: {{ d.activ?'yes':'no' |trans([], 'general') }}<br>
+            {% trans %}openToCustomer{% endtrans %}: {{ d.open?'yes':'no' |trans([], 'general') }}
         </td>
     </tr>
     <tr>
         <td>
-            Erstellt am
+            {% trans from 'general' %}createdAt{% endtrans %}
         </td>
         <td>{{ d.createdAt|date('d.m.Y H:i') }}</td>
     </tr>
     <tr>
         <td>
-            Beschreibung
+            {% trans from 'general' %}description{% endtrans %}
         </td>
         <td>{{ d.description|raw }}</td>
     </tr>
     <tr>
         <td>
-            Interne Notizen
+            {% trans %}internalNotice{% endtrans %}
         </td>
         <td>{{ d.notes|raw }}</td>
     </tr>
     <tr>
         <td>
-            Identität bestätigt
+            {% trans %}validateIdentity{% endtrans %}
         </td>
-        <td>{{ d.validUser?'Ja':'Nein' }} {% if d.validuser %}{{ 'bei'|trans }} {{ d.userValidBy.email }}{% endif %}</td>
+        <td>
+            {{ d.validUser |trans([], 'general') }} {% if d.validuser %}{% trans %}at{% endtrans %} {{ d.userValidBy.email }}{% endif %}
+        </td>
     </tr>
     <tr>
         <td>
-            Weitere Angaben
+            {% trans from 'general' %}additionalInformation{% endtrans %}
         </td>
         <td>
-            Name: {{ d.firstname }} {{ d.lastname }}<br>
-            Adresse: {{ d.street }}, {{ d.city }}<br>
-            Geburtstag: {% if d.birthday %}{{ d.birthday|date('d.m.Y') }}{% endif %}
+            {% trans from 'general' %}name{% endtrans %}: {{ d.firstname }} {{ d.lastname }}<br>
+            {% trans from 'general' %}address{% endtrans %}: {{ d.street }}, {{ d.city }}<br>
+            {% trans from 'general' %}birthday{% endtrans %}: {% if d.birthday %}{{ d.birthday|date('d.m.Y') }}{% endif %}
         </td>
     </tr>
 </table>
 <h3>
-    Protokoll
+    {% trans %}protocol{% endtrans %}
 </h3>
 <table style="table-layout:fixed; width: 100%">
     {% for c in d.clientComments|reverse %}

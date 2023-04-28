@@ -1,23 +1,24 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'report' %}
 
 {% block CTA %}
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('report_new') }}">
-        <span>{% trans %}newActivity{% endtrans %}</span>
+        <span>{% trans %}work.create{% endtrans %}</span>
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}activitiesTitle{% endtrans %}</h2>
+    <h2 class="h2-responsive">{% trans %}work.overview{% endtrans %}</h2>
     <div class="card card-body">
         <div class="table-responsive">
             <table id="data-table" class="table display table-striped">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">{% trans %}processor{% endtrans %}</th>
-                    <th scope="col">{% trans %}description{% endtrans %}</th>
-                    <th scope="col">{% trans %}date{% endtrans %}</th>
-                    <th scope="col">{% trans %}time{% endtrans %}</th>
+                    <th scope="col">{% trans %}worker{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}date{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}time{% endtrans %}</th>
                     <th scope="col">{% trans %}billed{% endtrans %}</th>
                 </tr>
                 </thead>
@@ -32,9 +33,9 @@
                         <td>{{ t.calcTime }} {% trans %}minutes{% endtrans %}</td>
                         <td>
                             {% if t.invoice %}
-                                {% trans %}yes{% endtrans %}
+                                {% trans from 'general' %}yes{% endtrans %}
                             {% else %}
-                                {% trans %}no{% endtrans %}
+                                {% trans from 'general' %}no{% endtrans %}
                             {% endif %}
                         </td>
                     </tr>

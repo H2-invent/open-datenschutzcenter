@@ -12,18 +12,18 @@ namespace App\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class CronService
 {
-    private $em;
-    private $logger;
-
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder, LoggerInterface $logger)
+    public function __construct(
+        private EntityManagerInterface $em,
+        FormFactoryInterface           $formBuilder,
+        private LoggerInterface        $logger,
+        private TranslatorInterface    $translator,
+    )
     {
-        $this->em = $entityManager;
-        $this->logger = $logger;
-
     }
 
     function check($request)
@@ -31,12 +31,22 @@ class CronService
         $message = false;
 
         if ($request->get('token') !== $this->getParameter('cronToken')) {
-            $message = ['error' => true, 'hinweis' => 'Token fehlerhaft', 'token' => $request->get('token'), 'ip' => $request->getClientIp()];
+            $message =
+                [
+                    'error' => true,
+                    'hinweis' => $this->translator->trans(id: 'cron.token.invalid', domain: 'service'),
+                    'token' => $request->get('token'),
+                    'ip' => $request->getClientIp(),
+                ];
             $this->logger->error($message['hinweis'], $message);
         }
 
         if ($this->getParameter('cronIPAdress') !== $request->getClientIp()) {
-            $message = ['error' => true, 'hinweis' => 'IP Adresse fuer Cron Jobs nicht zugelassen', 'ip' => $request->getClientIp()];
+            $message = [
+                'error' => true,
+                'hinweis' => $this->translator->trans(id: 'cron.ip.unauthorized', domain: 'service'),
+                'ip' => $request->getClientIp(),
+            ];
             $this->logger->error($message['hinweis'], $message);
         }
 

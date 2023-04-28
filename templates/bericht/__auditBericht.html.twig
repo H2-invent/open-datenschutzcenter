@@ -1,4 +1,5 @@
-<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %}{{ d.frage }} (id:{{ d.id }})</h2>
+{% trans_default_domain 'audit_tom' %}
+<h2 style="page-break-before: always;">{% if not d.activ %}{% trans %}history{% endtrans %}: {% endif %}{{ d.frage }} (id:{{ d.id }})</h2>
 <style>
     th, td {
         padding: 5px;
@@ -9,61 +10,61 @@
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Status
+            {% trans %}status{% endtrans %}
         </td>
         <td style="background-color: {{ d.status.color }}">{{ d.status.name }}</td>
     </tr>
     <tr>
         <td>
-            Nummer
+            {% trans from 'general' %}number{% endtrans %}
         </td>
         <td><a href="{{ absolute_url(path('audit_tom_edit', {'tom':d.id})) }}">{{ d.nummer }}</a></td>
     </tr>
     <tr>
         <td>
-            Fragestellung
+            {% trans %}question{% endtrans %}
         </td>
         <td>{{ d.frage }}</td>
     </tr>
     <tr>
         <td>
-            Kategorie
+            {% trans %}category{% endtrans %}
         </td>
         <td>{{ d.kategorie }}</td>
     </tr>
     <tr>
         <td>
-            Bemerkung
+            {% trans %}annotation{% endtrans %}
         </td>
         <td>{{ d.bemerkung }}</td>
     </tr>
     <tr>
         <td>
-            Empfehlung
+            {% trans %}suggestion{% endtrans %}
         </td>
         <td>{{ d.empfehlung }}</td>
     </tr>
     <tr>
         <td>
-            Schutzziele
+           {% trans %}safetyGoal{% endtrans %}
         </td>
         <td>{% for p in d.ziele %}{{ p.name }},<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Abteilung
+            {% trans %}department{% endtrans %}
         </td>
         <td>{% for p in d.abteilung %}{{ p.name }},<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            TOM Kategorie/Zuordnung
+            {% trans %}tomCategory{% endtrans %}
         </td>
         <td>{{ d.tomZiel }}</td>
     </tr>
     <tr>
         <td>
-            TOM Attribut
+            {% trans %}tomAttribute{% endtrans %}
         </td>
         <td>{{ d.tomAttribut }}</td>
     </tr>

@@ -1,26 +1,27 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'vorfall' %}
 
 {% block CTA %}
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('vorfall_new') }}">
-        <span>{% trans %}newIncident{% endtrans %}</span>
+        <span>{% trans %}incident.create{% endtrans %}</span>
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}incidentsTitle{% endtrans %}</h2>
+    <h2 class="h2-responsive">{% trans %}incident.title{% endtrans %}</h2>
 
     <div class="card card-body">
         <div class="table-responsive">
             <table id="data-table" class="table display table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">{% trans %}date{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}date{% endtrans %}</th>
                     <th scope="col">{% trans %}uid{% endtrans %}</th>
                     <th scope="col">{% trans %}facts{% endtrans %}</th>
                     <th scope="col">{% trans %}consequences{% endtrans %}</th>
                     <th scope="col">{% trans %}measures{% endtrans %}</th>
                     <th scope="col">{% trans %}stateAgency{% endtrans %}</th>
-                    <th scope="col">{% trans %}affectedPersons{% endtrans %}</th>
+                    <th scope="col">{% trans %}affected.word{% endtrans %}</th>
                     <th scope="col">{% trans %}client{% endtrans %}</th>
                 </tr>
                 </thead>
@@ -32,9 +33,9 @@
                         <td>{{ a.fakten }}</td>
                         <td>{{ a.auswirkung }}</td>
                         <td>{{ a.massnahmen }}</td>
-                        <td>{{ a.gemeldet? 'Ja':'Nein' }}</td>
-                        <td>{{ a.betroffeneGemeldet? 'Ja':'Nein' }}</td>
-                        <td>{{ a.auftraggeberGemeldet? 'Ja':'Nein' }}</td>
+                        <td>{{ a.gemeldet ? 'yes':'no' |trans([], 'general') }}</td>
+                        <td>{{ a.betroffeneGemeldet ? 'yes':'no' |trans ([], 'general') }}</td>
+                        <td>{{ a.auftraggeberGemeldet ? 'yes':'no' |trans ([], 'general') }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% trans_default_domain 'forms' %}
 {% block CTA %}
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('forms_new') }}">
         <span>{% trans %}newForm{% endtrans %}</span>

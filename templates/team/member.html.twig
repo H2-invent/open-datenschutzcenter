@@ -1,16 +1,17 @@
 {% extends 'team/index.html.twig' %}
+{% trans_default_domain 'team' %}
 
 {% block body %}
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
         {% if useKeycloakGroups %}
             <a href="{{ path('team_mitglieder_create', {'title':'Admin hinzufügen', 'type':'admin', 'id':team.id}) }}"
-               class="btn btn-primary btn-sm loadContent">{% trans %}addAdmin{% endtrans %}</a>
+               class="btn btn-primary btn-sm loadContent">{% trans %}admin.create{% endtrans %}</a>
         {% else %}
             <a href="{{ path('team_mitglieder_create', {'title':'Mitglied hinzufügen', 'type':'odc', 'id':team.id}) }}"
-               class="btn btn-primary btn-sm loadContent">{% trans %}addUser{% endtrans %}</a>
+               class="btn btn-primary btn-sm loadContent">{% trans %}user.create{% endtrans %}</a>
         {% endif %}
-        <a href="{{ path('akademie_admin') }}#user" class="btn btn-cyan btn-sm">{% trans %}academyUsers{% endtrans %}</a>
+        <a href="{{ path('akademie_admin') }}#user" class="btn btn-cyan btn-sm">{% trans %}academy.users{% endtrans %}</a>
         <div class="card card-body">
             <ul class="list-group">
                 {% for member in members|filter(member => member.email) %}
@@ -28,10 +29,10 @@
                                         <span class="badge-primary p-1 mt-sm-1 rounded">{% trans %}extDsb{% endtrans %}</span>
                                     {% endif %}
                                     {% if team in member.adminRoles %}
-                                        <span class="badge-success p-1 rounded">{% trans %}admin{% endtrans %}</span>
+                                        <span class="badge-success p-1 rounded">{% trans %}admin.word{% endtrans %}</span>
                                     {% endif %}
                                     {% if member.akademieUser == team %}
-                                        <span class="badge-warning p-1 rounded">{% trans %}academy{% endtrans %}</span>
+                                        <span class="badge-warning p-1 rounded">{% trans %}academy.word{% endtrans %}</span>
                                     {% endif %}
                                     {% if team in member.teams %}
                                         <span class="badge-info p-1 rounded">{% trans %}coordinator{% endtrans %}</span>
@@ -41,17 +42,17 @@
                             <div class="col-lg-4">
                                 {% if team in member.adminRoles %}
                                     <a class="btn btn-sm btn-info float-md-right" href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':team.id}) }}">
-                                        {% trans %}removeAdmin{% endtrans %}
+                                        {% trans %}admin.remove{% endtrans %}
                                     </a>
                                 {% else %}
                                     <a class="btn btn-sm btn-success float-md-right" href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':team.id}) }}">
-                                        {% trans %}addAdmin{% endtrans %}
+                                        {% trans %}admin.create{% endtrans %}
                                     </a>
                                 {% endif %}
                                 {# Hide this button if keycloak groups are used #}
                                 {% if not useKeycloakGroups %}
                                     <a class="btn btn-sm btn-danger float-md-right"
-                                       href="{{ path('team_mitglieder_remove',{'memberId':member.id, 'teamId':team.id, 'type':'odc'}) }}">{% trans %}remove{% endtrans %}</a>
+                                       href="{{ path('team_mitglieder_remove',{'memberId':member.id, 'teamId':team.id, 'type':'odc'}) }}">{% trans from 'general' %}remove{% endtrans %}</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -68,26 +69,27 @@
                             {{ member.email }}
                             {% if team in member.adminRoles %}
                                 <a class="btn btn-sm btn-info float-md-right" href="{{ path('team_mitglieder_admin', {'id':member.id}) }}">
-                                    {% trans %}removeAdmin{% endtrans %}
+                                    {% trans %}admin.remove{% endtrans %}
                                 </a>
                             {% else %}
                                 <a class="btn btn-sm btn-success float-md-right" href="{{ path('team_mitglieder_admin', {'id':member.id}) }}">
-                                    {% trans %}addAdmin{% endtrans %}
+                                    {% trans %}admin.create{% endtrans %}
                                 </a>
                             {% endif %}
-                            <a class="btn btn-sm btn-danger float-md-right"
-                               href="{{ path('team_mitglieder_remove',{'id':member.id,'type':'odc'}) }}">{% trans %}remove{% endtrans %}</a>
+                            <a class="btn btn-sm btn-danger float-md-right" href="{{ path('team_mitglieder_remove',{'id':member.id,'type':'odc'}) }}">
+                                {% trans from 'general' %}remove{% endtrans %}
+                            </a>
                         </li>
                     {% endfor %}
                 </ul>
             {% endif %}
             {% if useKeycloakGroups %}
                 <p class="note-info mt-4 p-2 text-center">
-                    {% trans %}manageMembersHintKeycloak{% endtrans %}
+                    {% trans %}members.manageHint.keycloak{% endtrans %}
                 </p>
                 {% else %}
                     <p class="note-info mt-4 p-2 text-center">
-                        {% trans %}manageMembersHintOdc{% endtrans %}
+                        {% trans %}members.manageHint.odc{% endtrans %}
                     </p>
             {% endif %}
         </div>

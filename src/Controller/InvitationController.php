@@ -15,8 +15,8 @@ class InvitationController extends AbstractController
     #[ParamConverter('user', class: 'App\Entity\User', options: ['mapping' => ['id' => 'registerId']])]
     public function index(InviteService $inviteService, User $user): Response
     {
-
         $inviteService->connectUserWithEmail($user, $this->getUser());
+
         return $this->redirectToRoute('dashboard');
     }
 }

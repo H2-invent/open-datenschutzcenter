@@ -1,3 +1,4 @@
+{% trans_default_domain 'datenweitergabe' %}
 <h2 class="h2-responsive">{{ titel }}</h2>
 <div class="card card-body">
     <div class="table-responsive">
@@ -5,12 +6,12 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Aktenzeichen</th>
-                <th scope="col">Gegenstand</th>
-                <th scope="col">Verantwortlich</th>
-                <th scope="col">Kontakt</th>
-                <th scope="col">Zeichnungsdatum</th>
-                <th scope="col">Freigegeben</th>
+                <th scope="col">{% trans from 'general' %}fileNumber{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}object{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}responsible{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}contact{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}subscriptionDate{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}approved{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -22,7 +23,7 @@
                     <td>{{ t.verantwortlich }}</td>
                     <td>{{ t.kontakt.firma }} (id:{{ t.kontakt.id }})</td>
                     <td>{{ t.zeichnungsdatum|date('Y.m.d') }}</td>
-                    <td>{{ t.approved?'Ja':'Nein' }}</td>
+                    <td>{{ t.approved?'yes':'no' | trans( [], 'general') }}</td>
                 </tr>
             {% endfor %}
             </tbody>

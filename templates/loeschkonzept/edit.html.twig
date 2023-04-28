@@ -1,15 +1,16 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'loeschkonzept' %}
 
 {% block CTA %}
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_loeschkonzept_index') }}">
-        <span>Zurück</span>
+        <span>{% trans from 'general' %}backwards{% endtrans %}</span>
     </a>
     {{ include('loeschkonzept/_delete_form.html.twig') }}
 
 {% endblock %}
 
 {% block body %}
-    <h1>Löschkonzept bearbeiten</h1>
+    <h1>{% trans %}deletionConcept.edit</h1>
 
     
     {{ include('loeschkonzept/_form.html.twig', {'button_label': 'Update'}) }}

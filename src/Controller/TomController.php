@@ -5,41 +5,44 @@
  * Date: 15.05.2020
  * Time: 09:15
  */
+
 namespace App\Controller;
 
-use App\Entity\AuditTom;
-use App\Entity\Tom;
 use App\Form\Type\TomType;
+use App\Repository\AuditTomRepository;
+use App\Repository\TomRepository;
 use App\Service\ApproveService;
+use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
 use App\Service\TomService;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use App\Service\CurrentTeamService;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TomController extends AbstractController
 {
-    #[Route(path: '/tom', name: 'tom')]
-    public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
+
+
+    public function __construct(private readonly TranslatorInterface $translator,
+                                private EntityManagerInterface       $em,
+    )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $tom = $this->getDoctrine()->getRepository(Tom::class)->findActiveByTeam($team);
-
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        return $this->render('tom/index.html.twig', [
-            'tom' => $tom,
-            'currentTeam' => $team
-        ]);
     }
 
     #[Route(path: '/tom/new', name: 'tom_new')]
-    public function addAuditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService, CurrentTeamService $currentTeamService)
+    public function addAuditTom(
+        ValidatorInterface $validator,
+        Request            $request,
+        SecurityService    $securityService,
+        TomService         $tomService,
+        CurrentTeamService $currentTeamService,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
@@ -56,9 +59,8 @@ class TomController extends AbstractController
             $data = $form->getData();
             $errors = $validator->validate($data);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($data);
-                $em->flush();
+                $this->em->persist($data);
+                $this->em->flush();
                 return $this->redirectToRoute('tom');
             }
         }
@@ -66,93 +68,25 @@ class TomController extends AbstractController
             'currentTeam' => $team,
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'TOM erstellen',
+            'title' => $this->translator->trans(id: 'tom.create', domain: 'tom'),
             'tom' => $tom,
             'activ' => $tom->getActiv(),
             'activTitel' => true
         ]);
     }
 
-    #[Route(path: '/tom/edit', name: 'tom_edit')]
-    public function EditTom(ValidatorInterface $validator, Request $request, SecurityService $securityService, TomService $tomService, CurrentTeamService $currentTeamService)
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $tom = $this->getDoctrine()->getRepository(Tom::class)->find($request->get('tom'));
-
-        if ($securityService->teamDataCheck($tom, $team) === false) {
-            return $this->redirectToRoute('tom');
-        }
-
-        $newTom = $tomService->cloneTom($tom, $this->getUser());
-
-        $form = $this->createForm(TomType::class, $newTom);
-        $form->remove('titel');
-        $form->handleRequest($request);
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === 1 && !$tom->getApproved()) {
-
-            $tom->setActiv(false);
-            $newTom = $form->getData();
-            $errors = $validator->validate($newTom);
-            if (count($errors) == 0) {
-
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($newTom);
-                $em->persist($tom);
-                $em->flush();
-                return $this->redirectToRoute('tom_edit', ['tom' => $newTom->getId(), 'snack' => 'Erfolgreich gepeichert']);
-            }
-        }
-        return $this->render('tom/edit.html.twig', [
-            'form' => $form->createView(),
-            'errors' => $errors,
-            'title' => 'TOM bearbeiten',
-            'tom' => $tom,
-            'activ' => $tom->getActiv(),
-            'activTitel' => false,
-            'snack' => $request->get('snack'),
-            'currentTeam' => $team
-        ]);
-    }
-
-    #[Route(path: '/tom/clone', name: 'tom_clone')]
-    public function cloneTom(Request $request, CurrentTeamService $currentTeamService)
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        if ($team === null) {
-            return $this->redirectToRoute('dashboard');
-        }
-        $today = new \DateTime();
-        $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam(1);
-
-        $em = $this->getDoctrine()->getManager();
-
-        foreach ($audit as $data) {
-            if ($data->getCreatedAt() > $team->getClonedAt()) {
-                $newAudit = clone $data;
-                $newAudit->setTeam($team);
-                $newAudit->setCreatedAt($today);
-                $em->persist($newAudit);
-            }
-
-        }
-
-        //set ClonedAt Date to be able to update later newer versions
-        $team->setclonedAt($today);
-
-        $em->persist($team);
-        $em->flush();
-
-        return $this->redirectToRoute('audit_tom');
-
-    }
-
     #[Route(path: '/tom/approve', name: 'tom_approve')]
-    public function approve(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
+    public function approve(
+        Request            $request,
+        SecurityService    $securityService,
+        ApproveService     $approveService,
+        CurrentTeamService $currentTeamService,
+        TomRepository      $tomRepository,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $tom = $this->getDoctrine()->getRepository(Tom::class)->find($request->get('id'));
+        $tom = $tomRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($tom, $user);
@@ -163,17 +97,130 @@ class TomController extends AbstractController
         return $this->redirectToRoute('tom');
     }
 
+    #[Route(path: '/tom/clone', name: 'tom_clone')]
+    public function cloneTom(
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        AuditTomRepository $auditTomRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        if ($team === null) {
+            return $this->redirectToRoute('dashboard');
+        }
+        $today = new DateTime();
+        $audit = $auditTomRepository->findAllByTeam(1);
+
+        foreach ($audit as $data) {
+            if ($data->getCreatedAt() > $team->getClonedAt()) {
+                $newAudit = clone $data;
+                $newAudit->setTeam($team);
+                $newAudit->setCreatedAt($today);
+                $this->em->persist($newAudit);
+            }
+
+        }
+
+        //set ClonedAt Date to be able to update later newer versions
+        $team->setclonedAt($today);
+
+        $this->em->persist($team);
+        $this->em->flush();
+
+        return $this->redirectToRoute('audit_tom');
+
+    }
+
     #[Route(path: '/tom/disable', name: 'tom_disable')]
-    public function disable(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
+    public function disable(
+        Request            $request,
+        SecurityService    $securityService,
+        DisableService     $disableService,
+        CurrentTeamService $currentTeamService,
+        TomRepository      $tomRepository,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $tom = $this->getDoctrine()->getRepository(Tom::class)->find($request->get('id'));
+        $tom = $tomRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
             $disableService->disable($tom, $user);
         }
 
         return $this->redirectToRoute('tom');
+    }
+
+    #[Route(path: '/tom/edit', name: 'tom_edit')]
+    public function editTom(
+        ValidatorInterface $validator,
+        Request            $request,
+        SecurityService    $securityService,
+        TomService         $tomService,
+        CurrentTeamService $currentTeamService,
+        TomRepository      $tomRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $tom = $tomRepository->find($request->get('tom'));
+
+        if ($securityService->teamDataCheck($tom, $team) === false) {
+            return $this->redirectToRoute('tom');
+        }
+
+        $newTom = $tomService->cloneTom($tom, $this->getUser());
+
+        $form = $this->createForm(TomType::class, $newTom);
+        $form->remove('titel');
+        $form->handleRequest($request);
+        $errors = [];
+        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === 1 && !$tom->getApproved()) {
+
+            $tom->setActiv(false);
+            $newTom = $form->getData();
+            $errors = $validator->validate($newTom);
+            if (count($errors) == 0) {
+                $this->em->persist($newTom);
+                $this->em->persist($tom);
+                $this->em->flush();
+                return $this->redirectToRoute(
+                    'tom_edit',
+                    [
+                        'tom' => $newTom->getId(),
+                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
+                    ],
+                );
+            }
+        }
+        return $this->render('tom/edit.html.twig', [
+            'form' => $form->createView(),
+            'errors' => $errors,
+            'title' => $this->translator->trans(id: 'tom.edit', domain: 'tom'),
+            'tom' => $tom,
+            'activ' => $tom->getActiv(),
+            'activTitel' => false,
+            'snack' => $request->get('snack'),
+            'currentTeam' => $team
+        ]);
+    }
+
+    #[Route(path: '/tom', name: 'tom')]
+    public function index(
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        TomRepository      $tomRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $tom = $tomRepository->findActiveByTeam($team);
+
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        return $this->render('tom/index.html.twig', [
+            'tom' => $tom,
+            'currentTeam' => $team
+        ]);
     }
 }

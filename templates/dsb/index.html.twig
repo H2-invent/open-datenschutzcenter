@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
-
+{% trans_default_domain 'dsb' %}
 {% block body %}
     <div class="container">
-        <h2 class="h2-responsive">DSB Teams</h2>
+        <h2 class="h2-responsive">{% trans %}dsbTeams{% endtrans %}</h2>
 
         <div class="card card-body">
             {% for t in teams %}
@@ -12,10 +12,10 @@
                     </div>
                     <div class="col-md-3">
                         {% if app.user.team == t %}<span
-                                class="badge-success z-depth-1 pl-1 pr-1">Aktuelles Team</span>{% endif %}
+                                class="badge-success z-depth-1 pl-1 pr-1">{% trans %}currentTeam{% endtrans %}</span>{% endif %}
                     </div>
                     <div class="col-md-3 mt-2 mt-md-0">
-                        <a href="{{ path('dsb_change', {'id':t.id}) }}" class="btn btn-sm btn-elegant m-0">Wechseln</a>
+                        <a href="{{ path('dsb_change', {'id':t.id}) }}" class="btn btn-sm btn-elegant m-0">{% trans %}change{% endtrans %}</a>
                     </div>
                 </div>
                 <hr>

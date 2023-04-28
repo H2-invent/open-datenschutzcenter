@@ -299,6 +299,7 @@ expirationDate: Lizenzablaufsdatum
 purchaseDate: Kaufdatum / Anschaffungsdatum
 relatedProcesses: Mit dieser Software verbundene Verarbeitungen
 relatedDataTransfers: Mit dieser Software verbundene Datenweitergaben
+version: Version
 
 # incident
 incidentFacts: Fakten zum Datenschutzvorfall

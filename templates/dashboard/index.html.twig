@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'dashboard' %}
 
 {% block title %}{{ currentTeam.name }}{% endblock %}
 
 {% block CTA %}
-    <h4 class="h4-responsive ml-4 mb-0 d-none d-md-block">{{ 'privacycenter'|trans }} {{ currentTeam.name }}</h4>
+    <h4 class="h4-responsive ml-4 mb-0 d-none d-md-block">{% trans %}privacyCenter{% endtrans %} {{ currentTeam.name }}</h4>
 {% endblock %}
 {% block body %}
     <div class="row wow fadeIn mt-5">
@@ -35,7 +36,7 @@
                     {% for team in app.user.teams %}
                         <optgroup label="{{ team.name }}" data-max-options="1">
                             {% if team == currentTeam %}
-                                <option selected value>{{ team.name }} Alle Abteilungen</option>
+                                <option selected value>{{ team.name }}{% trans %}departments.all{% endtrans %}</option>
                                 {% for a in team.abteilungen|filter(a => a.activ) %}
                                     <option value="ab{{ a.id }}">{{ team.name }} {{ a.name }}</option>
                                 {% endfor %}
@@ -109,7 +110,7 @@
                 {% endif %}
                 title
         :
-        '{% if n.approved %}Freigegeben von {{ n.approvedBy.username }}<br>{% endif %}Status: {{ n.status.name }}<br>{{ n.name }}',
+        '{% if n.approved %}{% trans %}approvedBy{% endtrans%} {{ n.approvedBy.username }}<br>{% endif %}{% trans from 'general' %}state{% endtrans %}: {{ n.status.name }}<br>{{ n.name }}',
             label
         :
         '{% if n.approved %}✔ {% endif %}{{ n.name|slice(0,28) }}',
@@ -140,10 +141,10 @@
                     {% endfor %}
                 title
         :
-            '{% if s.licenseExpiration < date() and s.licenseExpiration is not null %}LIZENZ ABGELAUFEN <br>{% endif %}{% if s.approved %}Freigegeben von {{ s.approvedBy.username }}<br>{% endif %}{% if s.licenseExpiration %}Lizenz: {{ s.licenseExpiration|date('d.m.Y') }}<br>{% endif %}{{ s.name }}',
+            '{% if s.licenseExpiration < date() and s.licenseExpiration is not null %}{% trans %}licenseExpired{% endtrans %} <br>{% endif %}{% if s.approved %}{% trans %}approvedBy{% endtrans %} {{ s.approvedBy.username }}<br>{% endif %}{% if s.licenseExpiration %}{% trans %}license{% endtrans %}: {{ s.licenseExpiration|date('d.m.Y') }}<br>{% endif %}{{ s.name }}',
                 label
         :
-            '{% if s.licenseExpiration < date() and s.licenseExpiration is not null %}ABGELAUFEN \n{% endif %}{% if s.approved %}✔ {% endif %}Software \n{{ s.name|slice(0,28) }}',
+            '{% if s.licenseExpiration < date() and s.licenseExpiration is not null %}{% trans %}expired{% endtrans %} \n{% endif %}{% if s.approved %}✔ {% endif %}{% trans %}software{% endtrans %} \n{{ s.name|slice(0,28) }}',
                 color
         :
             '#2E9AFE',
@@ -183,7 +184,7 @@
                     {% endfor %}
                 label
         :
-            '{% if n.approved %}✔ {% endif %}DW \n{{ n.gegenstand }}',
+            '{% if n.approved %}✔ {% endif %}{% trans %}dw{% endtrans %} \n{{ n.gegenstand }}',
                 color
         :
             '#6f42c1',
@@ -223,7 +224,7 @@
                     {% endfor %}
                 label
         :
-            '{% if n.approved %}✔ {% endif %}AV \n{{ n.gegenstand }}',
+            '{% if n.approved %}✔ {% endif %}{% trans %}av{% endtrans %} \n{{ n.gegenstand }}',
                 color
         :
             '#7e57c2',
@@ -253,7 +254,7 @@
                     {% endfor %}
                 label
         :
-            '{% if n.approved %}✔ {% endif %}TOM \n{{ n.titel }}',
+            '{% if n.approved %}✔ {% endif %}{% trans %}tom{% endtrans %} \n{{ n.titel }}',
                 color
         :
             '#0e4377',
@@ -279,7 +280,7 @@
             id: 'pol{{ n.id }}',
                 label
         :
-            '{% if n.approved %}✔ {% endif %}Richtlinie \n{{ n.title }}',
+            '{% if n.approved %}✔ {% endif %}{% trans %}guideline{% endtrans %} \n{{ n.title }}',
                 color
         :
             '#4b515d',
@@ -312,7 +313,7 @@
             id: 'kon{{ n.id }}',
                 label
         :
-            '{% if n.approved %}✔ {% endif %}KONTAKT \n{{ n.firma }}',
+            '{% if n.approved %}✔ {% endif %}{% trans %}contact{% endtrans %} \n{{ n.firma }}',
                 color
         :
             '#6a1b9a',

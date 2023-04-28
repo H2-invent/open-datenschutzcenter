@@ -1,15 +1,16 @@
 {% extends 'client_request/base.html.twig' %}
+{% trans_default_domain 'client_request' %}
 
 {% block title %}
-    <title>{% trans %}Datenschutzcenter Kundenportal{% endtrans %}</title>
+    <title>{% trans %}dataPrivacyCenter{% endtrans%} {% trans %}customerPortal{% endtrans %}</title>
 {% endblock %}
 
 {% block content %}
     <div>
         <a href="{{ path('client_index', {'slug':team.slug}) }}"
-           class="btn btn-primary btn-sm">{% trans %}Zurück zum Portal{% endtrans %}</a>
+           class="btn btn-primary btn-sm">{% trans %}backToPortal{% endtrans %}</a>
         <div class="card card-body">
-            <h1 class="h1-responsive text-center">{% trans %}Neue Anfrage stellen{% endtrans %}</h1>
+            <h1 class="h1-responsive text-center">{% trans %}request.create.link{% endtrans %}</h1>
             {{ form_start(form) }}
             {{ form_row(form.title) }}
             {{ form_row(form.item) }}
@@ -22,12 +23,12 @@
 
             <div class="card mb-3">
                 <div class="card-header">
-                    <h4 class="h4-responsive">{% trans %}Weitere Angaben zur Anfrage{% endtrans %}</h4>
+                    <h4 class="h4-responsive">{% trans %}request.additionalInformation{% endtrans %}</h4>
                 </div>
 
                 <div class="card-body">
                     <p>
-                        {% trans %}Für eine schnelle und unkomplizierte Identifikation, möchten wir Sie  darum bitten, uns folgende Daten zur Verifikation mitzuteilen:{% endtrans %}
+                        {% trans %}askForVerification{% endtrans %}:
                     </p>
                     {{ form_row(form.firstname) }}
                     {{ form_row(form.lastname) }}

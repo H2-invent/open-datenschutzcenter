@@ -1,11 +1,12 @@
+{% trans_default_domain 'team' %}
 <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
         <div class="modal-header  red white-text">
-            <h5 class="modal-title">{{ "deleteTeam" | trans({teamName: team.name}) }}</h5>
+            <h5 class="modal-title">{% trans with {'{teamName}': team.name} %}team.delete{% endtrans %}</h5>
         </div>
         <div class="modal-body">
-            <p>{% trans %}teamDeletionBlocked{% endtrans %}</p>
+            <p>{% trans %}team.deletionBlocked{% endtrans %}</p>
             <ul>
                 {% for blocker in team.deleteBlockers %}
                     <li>{{ blocker | trans }}</li>

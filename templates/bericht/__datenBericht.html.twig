@@ -1,6 +1,7 @@
-<h2 style="page-break-before: always;">{% if not d.activ %}{{ d.approved?'Freigegebene':'' }} Historie: {% endif %}{{ d.reference }}
-    : {{ d.gegenstand }}
-    (id:{{ d.id }})</h2>
+{% trans_default_domain 'datenweitergabe' %}
+<h2 style="page-break-before: always;">
+    {% if not d.activ %}{{ d.approved?'approved':'' |trans([], 'general') }} {% trans from 'general' %}history{% endtrans %}: {% endif %}{{ d.reference }}: {{ d.gegenstand }}({% trans from 'general' %}id{% endtrans %}:{{ d.id }})
+</h2>
 <style>
     th, td {
         padding: 5px;
@@ -11,73 +12,77 @@
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Nummer der Datenweitergabe
+            {% trans %}dataTransfer.count{% endtrans %}
         </td>
         <td>{{ d.nummer }}</td>
     </tr>
     <tr>
         <td>
-            Art der Datenweitergabe
+            {% trans %}dataTransfer.type{% endtrans %}
         </td>
-        <td>{% if d.art == 1 %}Datenweitergabe{% elseif d.art == 2 %}Auftragsdatenverarbeitung{% endif %}</td>
+        <td>{% if d.art == 1 %}
+                {% trans %}dataTransfer.word{% endtrans %}
+            {% elseif d.art == 2 %}
+                {% trans %}requestProcessing.word{% endtrans %}
+            {% endif %}</td>
     </tr>
     <tr>
         <td>
-            Freigabe
+            {% trans %}approval{% endtrans %}
         </td>
-        <td>{% if d.approved %}Freigegeben von {{ d.approvedBy.username }}{% endif %}</td>
+        <td>{% if d.approved %}{% trans %}approvedBy{% endtrans%} {{ d.approvedBy.username }}{% endif %}</td>
     </tr>
     <tr>
         <td>
-            Aktenzeichen
+            {% trans from 'general' %}fileNumber{% endtrans %}
         </td>
         <td>{{ d.reference }}</td>
     </tr>
     <tr>
         <td>
-            Zeichnungsdatum
+            {% trans from 'general' %}subscriptionDate{% endtrans %}
         </td>
         <td>{{ d.zeichnungsdatum|date('d.m.Y') }}</td>
     </tr>
     <tr>
         <td>
-            Gegenstand der Datenweitergabe
+            {% trans %}dataTransfer.object{% endtrans%}
         </td>
         <td>{{ d.gegenstand }}</td>
     </tr>
     <tr>
         <td>
-            Verantwortlich für die Datenweitergabe (Intern)
+            {% trans %}dataTransfer.responsible{% endtrans%}
         </td>
         <td>{{ d.verantwortlich }}</td>
     </tr>
     <tr>
         <td>
-            Vertragsform
+            {% trans %}contractType{% endtrans %}
         </td>
         <td>{{ d.vertragsform }}</td>
     </tr>
     <tr>
         <td>
-            Auftragsverarbeitungsvertrag vorhanden und hochgeladen
+            {% trans %}requestProcessing.contractExists{% endtrans %}
         </td>
-        <td>{% if d.upload %}Ja{% else %}Nein{% endif %}</td>
+        <td>{% if d.upload %}{% trans from 'general' %}yes{% endtrans %}{% else %}{% trans from 'general' %}no{% endtrans %}{% endif %}</td>
     </tr>
     <tr>
         <td>
-            Kontakt
+            {% trans from 'general' %}contact{% endtrans %}
         </td>
         <td>{{ d.kontakt.firma }} - {{ d.kontakt.nachname }}</td>
     </tr>
     <tr>
         <td>
-            Zugehörige Verarbeitungstätigkeit
+            {% trans %}associatedProcessing{% endtrans %}
         </td>
         <td>{% for p in d.verfahren | filter(p => p.activ) %}{{ p.name }},<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Zugehörige Software und verbundene Verarbeitungstätigkeit
+            {% trans %}associatedSoftware{% endtrans %}
         </td>
         <td>
             {% for p in d.software | filter(p => p.activ) %}
@@ -92,35 +97,33 @@
     </tr>
     <tr>
         <td>
-            Grundlage für die Datenweitergabe
+            {% trans %}dataTransfer.basics{% endtrans %}
         </td>
         <td>{{ d.grundlage.name }}</td>
     </tr>
     <tr>
         <td>
-            Stand
+            {% trans %}state{% endtrans %}
         </td>
         <td>{{ d.stand.name }}</td>
     </tr>
     <tr>
         <td>
-            Der Vertrag zur Auftragsverarbeitung nach Art. 28 Abs. 3 DSGVO berücksichtigt folgende Punkte
+            {% trans %}requestProcessing.report.contract{% endtrans %}
         </td>
         <td>
-            {{ d.checkItems ? 'Gegenstand und Dauer der Verarbeitung, Art und Zweck der Verarbeitung<br><br>' }}
-            {{ d.checkPeople ? 'Die Kategorien betroffener Personen<br><br>' }}
-            {{ d.checkData ? 'Die Art der per-sonenbezogenen Daten <br><br>' }}
-            {{ d.checkDocumentation ? 'Verarbeitung auf dokumentierte Weisung des Verantwortlichen<br><br>' }}
-            {{ d.checkTrust ? 'Vertraulichkeitsverpflichtung<br><br>' }}
-            {{ d.checkTom ? 'Ergreifen erforderlicher technischer und organisatorischer Maßnahmen<br><br>' }}
-            {{ d.checkSubcontractor ? 'Inanspruchnahme von Unterauftragnehmern nach Art. Art. 28 Abs. 2 und Abs. 4 DSGVO<br><br>' }}
-            {{ d.checkSupport ? 'Unterstützung des Verantwortlichen bei der Beantwortung von Betroffenenanfragen<br><br>' }}
-            {{ d.checkSupport3236 ? 'Unterstützung des Verantwortlichen bei den Pflichten nach Art. 32 – 36 DSGVO<br><br>' }}
-            {{ d.checkEnding ? 'Umgang mit personenbezogenen Daten nach Beendigung der Auftragsverarbeitung<br><br>' }}
-            {{ d.checkAudit ? 'Zurverfügungstellung von Informationen und Ermöglichung von Überprüfungen<br><br>' }}
-            {{ d.checkNotes ? 'Hinweispflicht<br>' }}
-
-
+            {{ d.checkItems ? 'requestProcessing.report.items' |trans }}
+            {{ d.checkPeople ? 'requestProcessing.report.people' |trans }}
+            {{ d.checkData ? 'requestProcessing.report.data' |trans }}
+            {{ d.checkDocumentation ? 'requestProcessing.report.documentation' |trans }}
+            {{ d.checkTrust ? 'requestProcessing.report.trust' |trans }}
+            {{ d.checkTom ? 'requestProcessing.report.tom' |trans }}
+            {{ d.checkSubcontractor ? 'requestProcessing.report.subcontractor' |trans }}
+            {{ d.checkSupport ? 'requestProcessing.report.support' |trans }}
+            {{ d.checkSupport3236 ? 'requestProcessing.report.support3236' |trans }}
+            {{ d.checkEnding ? 'requestProcessing.report.ending' |trans }}
+            {{ d.checkAudit ? 'requestProcessing.report.audit' |trans }}
+            {{ d.checkNotes ? 'requestProcessing.report.notes' |trans }}
         </td>
     </tr>
 
