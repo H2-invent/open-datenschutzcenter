@@ -1,3 +1,8 @@
 dsbTeams: DSB Teams
 currentTeam: Aktuelles Team
-change: Wecheln
+change: Wechseln
+team:
+  change:
+    successful: Team gewechselt
+    error: DSB passt nicht zu diesem Team. Benutzer kann das Team nicht wechseln.
+
