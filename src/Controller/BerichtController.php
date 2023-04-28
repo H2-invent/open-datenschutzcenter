@@ -6,7 +6,7 @@
  * Time: 09:15
  */
 
- /**
+/**
  * Modified by
  * User: Jan Juister
  * Date: 13.05.2022
@@ -14,33 +14,45 @@
 
 namespace App\Controller;
 
-use App\Entity\AkademieBuchungen;
-use App\Entity\AuditTom;
-use App\Entity\ClientRequest;
-use App\Entity\Datenweitergabe;
-use App\Entity\Policies;
-use App\Entity\Report;
-use App\Entity\Software;
-use App\Entity\Tom;
-use App\Entity\Vorfall;
-use App\Entity\VVT;
-use App\Entity\Loeschkonzept;
-use App\Entity\VVTDatenkategorie;
 use App\Form\Type\ReportExportType;
+use App\Repository\AkademieBuchungenRepository;
+use App\Repository\AuditTomRepository;
+use App\Repository\ClientRequestRepository;
+use App\Repository\DatenweitergabeRepository;
+use App\Repository\LoeschkonzeptRepository;
+use App\Repository\PoliciesRepository;
+use App\Repository\ReportRepository;
+use App\Repository\SoftwareRepository;
+use App\Repository\TomRepository;
+use App\Repository\VorfallRepository;
+use App\Repository\VVTRepository;
 use App\Service\CurrentTeamService;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route(path: '/bericht', name: 'bericht')]
 class BerichtController extends AbstractController
 {
-    #[Route(path: '/bericht', name: 'bericht')]
-    public function bericht(Request $request, CurrentTeamService $currentTeamService)
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    )
+    {
+    }
+
+    #[Route(path: '', name: '')]
+    public function report(
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
@@ -55,27 +67,32 @@ class BerichtController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/bericht/vvt', name: 'bericht_vvt')]
-    public function berichtVvt(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/vvt', name: '_vvt')]
+    public function reportVvt(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        VVTRepository      $vvtRepository,
+    )
     {
         ini_set('max_execution_time', '900');
         ini_set('memory_limit', '512M');
 
         $req = $request->get('id');
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $doc = 'Verzeichnis der Verarbeitungstätigkeiten';
+        $doc = $this->translator->trans(id: 'processing.directory', domain: 'vvt');
 
         if ($req) {
-            $vvt = $this->getDoctrine()->getRepository(VVT::class)->findBy(array('id' => $req));
-            $title = 'Export der Verarbeitungstätigkeit ' . $vvt[0]->getName();
+            $vvt = $vvtRepository->findBy(array('id' => $req));
+            $title = $this->translator->trans(id: 'processing.export', domain: 'vvt') . $vvt[0]->getName();
             $doc = $vvt[0]->getName();
         } else {
-            $vvt = $this->getDoctrine()->getRepository(VVT::class)->findBy(array('team' => $team, 'activ' => true));
-            $title = 'Verzeichnis der Verarbeitungstätigkeiten von ' . $team->getName();
+            $vvt = $vvtRepository->findBy(array('team' => $team, 'activ' => true));
+            $title = $this->translator->trans(id: 'processing.directoryOf', domain: 'vvt') . $team->getName();
         }
 
         if (count($vvt) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -97,8 +114,13 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    #[Route(path: '/bericht/audit', name: 'bericht_audit')]
-    public function berichtAudit(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/audit', name: '_audit')]
+    public function reportAudit(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        AuditTomRepository $auditTomRepository,
+    )
     {
 
         $req = $request->get('id');
@@ -106,17 +128,17 @@ class BerichtController extends AbstractController
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($req) {
-            $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findBy(array('id' => $req));
+            $audit = $auditTomRepository->findBy(array('id' => $req));
         } elseif ($request->get('activ')) {
-            $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAuditByTeam($team);
+            $audit = $auditTomRepository->findAuditByTeam($team);
         } elseif ($request->get('open')) {
-            $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findActiveAndOpenByTeam($team);
+            $audit = $auditTomRepository->findActiveAndOpenByTeam($team);
         } else {
-            $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findBy(array('team' => $team, 'activ' => true));
+            $audit = $auditTomRepository->findBy(array('team' => $team, 'activ' => true));
         }
 
         if (count($audit) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -127,31 +149,36 @@ class BerichtController extends AbstractController
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/audit.html.twig', [
             'daten' => $audit,
-            'titel' => 'Bericht zu Auditfragen',
+            'titel' => $this->translator->trans(id: 'report.about.auditQuestion', domain: 'bericht'),
             'team' => $team,
             'all' => $request->get('all'),
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Auditfragen.pdf");
+        $response = $wrapper->getStreamResponse($html, $this->translator->trans(id: 'auditQuestion.word', domain: 'audit_tom') . '.pdf');
         $response->send();
     }
 
-    #[Route(path: '/bericht/tom', name: 'bericht_tom')]
-    public function berichtTom(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/tom', name: '_tom')]
+    public function reportTom(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        TomRepository      $tomRepository,
+    )
     {
 
         $req = $request->get('id');
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($req) {
-            $tom = $this->getDoctrine()->getRepository(Tom::class)->findBy(array('id' => $req));
+            $tom = $tomRepository->findBy(array('id' => $req));
         } else {
-            $tom = $this->getDoctrine()->getRepository(Tom::class)->findBy(array('team' => $team, 'activ' => true));
+            $tom = $tomRepository->findBy(array('team' => $team, 'activ' => true));
         }
 
         if (count($tom) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -162,25 +189,29 @@ class BerichtController extends AbstractController
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/berichtTom.html.twig', [
             'datenAll' => $tom,
-            'titel' => 'TOM',
+            'titel' => $this->translator->trans(id: 'tom.word', domain: 'bericht'),
             'team' => $team,
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Technische-und-organisatorische-Massnahmen.pdf");
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans(id: 'technicalAndOrganizationMeasures', domain: 'audit_tom') . '.pdf');
         $response->send();
     }
 
-    #[Route(path: '/bericht/global_tom', name: 'bericht_global_tom')]
-    public function berichtGlobalTom(DompdfWrapper $wrapper, CurrentTeamService $currentTeamService)
+    #[Route(path: '/global_tom', name: '_global_tom')]
+    public function reportGlobalTom(
+        DompdfWrapper      $wrapper,
+        CurrentTeamService $currentTeamService,
+        AuditTomRepository $auditTomRepository,
+    )
     {
-
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-
-        $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
+        $audit = $auditTomRepository->findAllByTeam($team);
 
         if (count($audit) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -191,31 +222,41 @@ class BerichtController extends AbstractController
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/berichtGlobalTom.html.twig', [
             'daten' => $audit,
-            'titel' => 'Allgemeine TOM',
+            'titel' => $this->translator->trans(id: 'tom.general', domain: 'bericht'),
             'team' => $team,
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Globale_TOM.pdf");
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans(id: 'tom.global', domain: 'bericht') . '.pdf',
+        );
         $response->send();
     }
 
-    #[Route(path: '/bericht/weitergabe', name: 'bericht_weitergabe')]
-    public function berichtWeitergabe(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/weitergabe', name: '_weitergabe')]
+    public function reportDataTransfer(
+        DompdfWrapper             $wrapper,
+        Request                   $request,
+        CurrentTeamService        $currentTeamService,
+        DatenweitergabeRepository $dataTransferRepository,
+    )
     {
+        $id = $request->get('id');
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
-        $req = $request->get('id');
-
-        $team =  $currentTeamService->getTeamFromSession($this->getUser());
-
-        if ($req) {
-            $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('id' => $req));
+        if ($id) {
+            $daten = $dataTransferRepository->find($id);
         } else {
-            $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => $request->get('art')));
+            $daten = $dataTransferRepository->findBy([
+                'team' => $team,
+                'activ' => true,
+                'art' => $request->get('art')
+            ]);
         }
 
         if (count($daten) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -226,18 +267,23 @@ class BerichtController extends AbstractController
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/daten.html.twig', [
             'daten' => $daten,
-            'titel' => 'Bericht zur Datenweitergabe',
+            'titel' => $this->translator->trans(id: 'report.about.dataTransfer', domain: 'bericht'),
             'team' => $team,
             'all' => $request->get('all'),
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Datenweitergabe.pdf");
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans(id: 'dataTransfer.word', domain: 'datenweitergabe') . '.pdf',
+        );
         $response->send();
     }
 
-    #[Route(path: '/bericht/akademie', name: 'bericht_akademie')]
-    public function berichtAkademie()
+    #[Route(path: '/akademie', name: '_akademie')]
+    public function reportAcademy(
+        AkademieBuchungenRepository $academyBillingRepository,
+    ): Response
     {
         $user = $this->getUser();
         $team = $user->getAkademieUser();
@@ -246,7 +292,7 @@ class BerichtController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findBerichtByTeam($team);
+        $daten = $academyBillingRepository->findBerichtByTeam($team);
 
         return $this->render('bericht/akademie.html.twig', [
             'daten' => $daten,
@@ -254,22 +300,26 @@ class BerichtController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/bericht/vorfall', name: 'bericht_vorfall')]
-    public function berichtVorfall(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/vorfall', name: '_vorfall')]
+    public function reportIncident(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        VorfallRepository  $vorfallRepository,
+    )
     {
+        $id = $request->get('id');
 
-        $req = $request->get('id');
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
-        $team =  $currentTeamService->getTeamFromSession($this->getUser());
-
-        if ($req) {
-            $daten = $this->getDoctrine()->getRepository(Vorfall::class)->findBy(array('id' => $req));
+        if ($id) {
+            $daten = $vorfallRepository->find($id);
         } else {
-            $daten = $this->getDoctrine()->getRepository(Vorfall::class)->findBy(array('team' => $team, 'activ' => true), ['datum' => 'DESC']);
+            $daten = $vorfallRepository->findBy(['team' => $team, 'activ' => true], ['datum' => 'DESC']);
         }
 
         if (count($daten) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -280,32 +330,38 @@ class BerichtController extends AbstractController
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/vorfall.html.twig', [
             'daten' => $daten,
-            'titel' => 'Bericht zu Datenvorfall',
+            'titel' => $this->translator->trans(id: 'report.about.dataIncident', domain: 'bericht'),
             'team' => $team,
             'all' => $request->get('all'),
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Datenschutzvorfall.pdf");
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans(id: 'dataProtection.incident', domain: 'bericht') . '.pdf',
+        );
         $response->send();
     }
 
-    #[Route(path: '/bericht/policy', name: 'bericht_policy')]
-    public function berichtPolicy(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/policy', name: '_policy')]
+    public function reportPolicy(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        PoliciesRepository $policiesRepository,
+    )
     {
-
-        $req = $request->get('id');
-
+        $id = $request->get('id');
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
-        if ($req) {
-            $policies = $this->getDoctrine()->getRepository(Policies::class)->findBy(array('id' => $req));
+        if ($id) {
+            $policies = $policiesRepository->find($id);
         } else {
-            $policies = $this->getDoctrine()->getRepository(Policies::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+            $policies = $policiesRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
         }
 
         if (count($policies) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -316,32 +372,38 @@ class BerichtController extends AbstractController
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/policy.html.twig', [
             'daten' => $policies,
-            'titel' => 'Bericht zu Datenschutzrichtlinien',
+            'titel' => $this->translator->trans(id: 'report.about.dataProtectionGuidelines', domain: 'bericht'),
             'team' => $team,
             'all' => $request->get('all'),
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Richtlinie.pdf");
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans(id: 'guideline', domain: 'vorfall') . '.pdf',
+        );
         $response->send();
     }
 
-    #[Route(path: '/bericht/software', name: 'bericht_software')]
-    public function berichtSoftware(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/software', name: '_software')]
+    public function reportSoftware(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        SoftwareRepository $softwareRepository,
+    )
     {
-
-        $req = $request->get('id');
-
+        $id = $request->get('id');
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
-        if ($req) {
-            $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('id' => $req));
+        if ($id) {
+            $software = $softwareRepository->find($id);
         } else {
-            $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+            $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
         }
 
         if (count($software) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -351,27 +413,35 @@ class BerichtController extends AbstractController
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/software.html.twig', [
             'daten' => $software,
-            'titel' => 'Bericht zu verwendeter Software und Konfiguration',
+            'titel' => $this->translator->trans(id: 'report.about.software', domain: 'bericht'),
             'team' => $team,
             'all' => $request->get('all'),
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Softwarekonfiguration.pdf");
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans('softwareConfig', domain: 'software') . '.pdf',
+        );
         $response->send();
     }
 
-    #[Route(path: '/bericht/backupconcept', name: 'bericht_backupconcept')]
-    public function backupSoftware(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/backupconcept', name: '_backupconcept')]
+    public function backupSoftware(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        SoftwareRepository $softwareRepository,
+        VVTRepository      $vvtRepository,
+    )
     {
-
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
-        $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActiveByTeam($team);
+        $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
+        $vvt = $vvtRepository->findActiveByTeam($team);
 
         if (count($software) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -383,25 +453,32 @@ class BerichtController extends AbstractController
         $html = $this->renderView('bericht/backup.html.twig', [
             'daten' => $software,
             'vvt' => $vvt,
-            'titel' => 'Archivierungskonzept',
+            'titel' => $this->translator->trans(id: 'archiveConcept.word', domain: 'bericht'),
             'team' => $team,
             'all' => $request->get('all'),
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Archivierungskonzept.pdf");
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans(id: 'archiveConcept.word', domain: 'bericht') . '.pdf'
+        );
         $response->send();
     }
 
-    #[Route(path: '/bericht/revoceryconcept', name: 'bericht_recoveryconcept')]
-    public function recoverySoftware(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/revoceryconcept', name: '_recoveryconcept')]
+    public function recoverySoftware(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        SoftwareRepository $softwareRepository,
+    )
     {
-
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $software = $this->getDoctrine()->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
+        $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
 
         if (count($software) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -412,33 +489,41 @@ class BerichtController extends AbstractController
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/recovery.html.twig', [
             'daten' => $software,
-            'titel' => 'Recoverykonzept und Widerherstellungskonzept',
+            'titel' => $this->translator->trans(id: 'report.about.recoveryConcept', domain: 'bericht'),
             'team' => $team,
             'all' => $request->get('all'),
         ]);
 
         //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, "Recoverykonzept.pdf");
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans(id: 'recoveryConcept', domain: 'bericht')
+        );
         $response->send();
     }
 
-    #[Route(path: '/bericht/request', name: 'bericht_request')]
-    public function berichtRequest(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/request', name: '_request')]
+    public function reportRequest(
+        DompdfWrapper           $wrapper,
+        Request                 $request,
+        CurrentTeamService      $currentTeamService,
+        ClientRequestRepository $clientRequestRepository,
+    )
     {
 
-        $req = $request->get('id');
+        $id = $request->get('id');
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
-        if ($req) {
-            $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findBy(array('id' => $req));
-            $title = 'Bericht zur Kundenanfrage und Datenauskunft von ' . $clientRequest[0]->getName();
+        if ($id) {
+            $clientRequest = $clientRequestRepository->find($id);
+            $title = $this->translator->trans(id: 'report.about.clientRequestBy', domain: 'bericht') . ' ' . $clientRequest->getName();
         } else {
-            $clientRequest = $this->getDoctrine()->getRepository(ClientRequest::class)->findBy(array('team' => $team, 'activ' => true), ['createdAt' => 'DESC']);
-            $title = 'Bericht zur Kundenanfrage und Datenauskunft';
+            $clientRequest = $clientRequestRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
+            $title = $this->translator->trans(id: 'report.about.clientRequest', domain: 'bericht');
         }
 
         if (count($clientRequest) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -460,13 +545,17 @@ class BerichtController extends AbstractController
     }
 
 
-    #[Route(path: '/bericht/reports', name: 'bericht_reports')]
-    public function berichtReports(Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/reports', name: '_reports')]
+    public function reports(
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        ReportRepository   $reportRepository,
+    )
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         $users = $team->getMembers();
 
-        $members = array();
+        $members = [];
         foreach ($users as $item) {
             $members[$item->getEmail()] = $item->getId();
         }
@@ -474,12 +563,12 @@ class BerichtController extends AbstractController
         $form = $this->createForm(ReportExportType::class, ['action' => $this->generateUrl('bericht_reports'), 'method' => 'GET']);
         $form->handleRequest($request);
 
-        $title = 'Tätigkeitsbericht erstellen';
+        $title = $this->translator->trans(id: 'report.about.workReport', domain: 'bericht');
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $data = $form->getData();
-            $qb = $this->getDoctrine()->getRepository(Report::class)->createQueryBuilder('s');
+            $qb = $reportRepository->createQueryBuilder('s');
             $qb->andWhere(
                 $qb->expr()->between('s.date', ':von', ':bis')
             )
@@ -500,7 +589,7 @@ class BerichtController extends AbstractController
             $report = $qb->getQuery()->getResult();
 
             if (count($report) < 1) {
-                return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+                return $this->redirectNoReport();
             }
 
             // Center Team authentication
@@ -511,10 +600,10 @@ class BerichtController extends AbstractController
 
             // Create a new Word document
             $phpWord = new PhpWord();
-            $phpWord->addTitleStyle(1, array('bold' => true), array('spaceAfter' => 240));
-            $phpWord->addTitleStyle(2, array('bold' => true), array('spaceBefore' => 300));
-            $header = array('size' => 34, 'bold' => true);
-            $secHeader = array('size' => 13, 'bold' => true);
+            $phpWord->addTitleStyle(1, ['bold' => true], ['spaceAfter' => 240]);
+            $phpWord->addTitleStyle(2, ['bold' => true], ['spaceBefore' => 300]);
+            $header = ['size' => 34, 'bold' => true];
+            $secHeader = ['size' => 13, 'bold' => true];
 
             $title = $data['title'];
 
@@ -528,27 +617,27 @@ class BerichtController extends AbstractController
 
                 $table = $section->addTable();
                 $table->addRow();
-                $table->addCell(100 * 50)->addText('Datum');
+                $table->addCell(100 * 50)->addText($this->translator->trans(id: 'date', domain: 'general'));
                 $table->addCell(100 * 50)->addText($item->getDate()->format('d.m.Y'));
 
                 $table->addRow();
-                $table->addCell()->addText('Startzeit');
+                $table->addCell()->addText($this->translator->trans(id: 'startTime', domain: 'general'));
                 $table->addCell()->addText($item->getStart()->format('H:i'));
 
                 $table->addRow();
-                $table->addCell()->addText('Endzeit');
+                $table->addCell()->addText($this->translator->trans(id: 'endTime', domain: 'general'));
                 $table->addCell()->addText($item->getEnd()->format('H:i'));
 
                 $table->addRow();
-                $table->addCell()->addText('Bearbeiter');
+                $table->addCell()->addText($this->translator->trans(id: 'worker', domain: 'report'));
                 $table->addCell()->addText($item->getUser()->getEmail());
 
                 $table->addRow();
-                $table->addCell()->addText('Vor Ort');
-                $table->addCell()->addText($item->getOnSite() ? 'Ja' : 'Nein');
+                $table->addCell()->addText($this->translator->trans(id: 'work.onSight', domain: 'report'));
+                $table->addCell()->addText($this->translator->trans(id: ($item->getOnSite() ? 'yes' : 'no'), domain: 'general'));
 
                 $table->addRow();
-                $table->addCell()->addText('Beschreibung');
+                $table->addCell()->addText($this->translator->trans(id: 'description', domain: 'general'));
                 $table->addCell()->addText($item->getDescription());
             }
 
@@ -578,21 +667,26 @@ class BerichtController extends AbstractController
         return $this->render('bericht/modalView.html.twig', array('form' => $form->createView(), 'title' => $title, 'members' => $users));
     }
 
-    #[Route(path: '/bericht/loeschkonzept', name: 'bericht_loeschkonzept')]
-    public function berichtLoeschkonzept(DompdfWrapper $wrapper, Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/loeschkonzept', name: '_loeschkonzept')]
+    public function reportDeletionConcept(
+        DompdfWrapper           $wrapper,
+        Request                 $request,
+        CurrentTeamService      $currentTeamService,
+        LoeschkonzeptRepository $deletionConceptRepository,
+    )
     {
         ini_set('max_execution_time', '900');
         ini_set('memory_limit', '512M');
 
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $doc = 'Löschkonzepte';
+        $doc = $this->translator->trans(id: 'deletionConcept.plural', domain: 'loeschkonzept');
 
 
-        $loeschkonzept = $this->getDoctrine()->getRepository(Loeschkonzept::class)->findByTeam($team);
-        $title = 'Verzeichnis der Löschkonzepte von ' . $team->getName();
+        $loeschkonzept = $deletionConceptRepository->findByTeam($team);
+        $title = $this->translator->trans(id: 'deletionConcept.directoryOf') . ' ' . $team->getName();
 
         if (count($loeschkonzept) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -614,13 +708,17 @@ class BerichtController extends AbstractController
     }
 
 
-    #[Route(path: '/bericht/reports/generate', name: 'bericht_reports_generate')]
-    public function berichtGernateReports(Request $request, CurrentTeamService $currentTeamService)
+    #[Route(path: '/reports/generate', name: '_reports_generate')]
+    public function reportGenerateReports(
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        ReportRepository   $reportRepository,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         $data = $request->get('report_export');
-        $qb = $this->getDoctrine()->getRepository(Report::class)->createQueryBuilder('s');
+        $qb = $reportRepository->createQueryBuilder('s');
         $qb->andWhere(
             $qb->expr()->between('s.date', ':von', ':bis')
         )
@@ -641,7 +739,7 @@ class BerichtController extends AbstractController
         $report = $qb->getQuery()->getResult();
 
         if (count($report) < 1) {
-            return $this->redirectToRoute('bericht', ['snack' => 'Keine Berichte vorhanden']);
+            return $this->redirectNoReport();
         }
 
         // Center Team authentication
@@ -652,10 +750,10 @@ class BerichtController extends AbstractController
 
         // Create a new Word document
         $phpWord = new PhpWord();
-        $phpWord->addTitleStyle(1, array('bold' => true), array('spaceAfter' => 240));
-        $phpWord->addTitleStyle(2, array('bold' => true), array('spaceBefore' => 300));
-        $header = array('size' => 34, 'bold' => true);
-        $secHeader = array('size' => 13, 'bold' => true);
+        $phpWord->addTitleStyle(1, ['bold' => true], ['spaceAfter' => 240]);
+        $phpWord->addTitleStyle(2, ['bold' => true], ['spaceBefore' => 300]);
+        $header = ['size' => 34, 'bold' => true];
+        $secHeader = ['size' => 13, 'bold' => true];
 
         $title = $data['title'];
 
@@ -669,27 +767,28 @@ class BerichtController extends AbstractController
 
             $table = $section->addTable();
             $table->addRow();
-            $table->addCell(100 * 50)->addText('Datum');
+            $table->addCell(100 * 50)->addText($this->translator->trans(id: 'date', domain: 'general'));
             $table->addCell(100 * 50)->addText($item->getDate()->format('d.m.Y'));
 
             $table->addRow();
-            $table->addCell()->addText('Startzeit');
+            $table->addCell()->addText($this->translator->trans(id: 'startTime', domain: 'general'));
             $table->addCell()->addText($item->getStart()->format('H:i'));
 
             $table->addRow();
-            $table->addCell()->addText('Endzeit');
-            $table->addCell()->addText($item->getStart()->format('H:i'));
+            $table->addCell()->addText($this->translator->trans(id: 'endTime', domain: 'general'));
+            $table->addCell()->addText($item->getEnd()->format('H:i'));
 
             $table->addRow();
-            $table->addCell()->addText('Bearbeiter');
+            $table->addCell()->addText($this->translator->trans(id: 'worker', domain: 'report'));
             $table->addCell()->addText($item->getUser()->getEmail());
 
             $table->addRow();
-            $table->addCell()->addText('Vor Ort');
-            $table->addCell()->addText($item->getOnSite() ? 'Ja' : 'Nein');
+            $table->addCell()->addText($this->translator->trans(id: 'work.onSight', domain: 'report'));
+            $table->addCell()->addText($this->translator->trans(id: ($item->getOnSite() ? 'yes' : 'no'), domain: 'general'));
 
-            $section->addText('Beschreibung', $secHeader);
-            $section->addText($item->getDescription());
+            $table->addRow();
+            $table->addCell()->addText($this->translator->trans(id: 'description', domain: 'general'));
+            $table->addCell()->addText($item->getDescription());
         }
 
         $section->addHeader()->addText($title);
@@ -713,5 +812,15 @@ class BerichtController extends AbstractController
         );
 
         return $response;
+    }
+
+    private function redirectNoReport(): RedirectResponse
+    {
+        return $this->redirectToRoute(
+            'bericht',
+            [
+                'snack' => $this->translator->trans(id: 'report.notAvailable', domain: 'bericht')
+            ]
+        );
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 //use App\Entity\Settings;
@@ -16,21 +17,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SettingsController extends AbstractController
 {
-    /**
-     * @param ValidatorInterface $validator
-     * @param EntityManagerInterface $em
-     * @param Request $request
-     * @param SettingsRepository $settingsRepository
-     * @param SecurityService $securityService
-     * @return Response
-     */
     #[Route(path: '/manage_settings', name: 'manage_settings')]
-    public function manage(ValidatorInterface $validator,
-                           EntityManagerInterface $em,
-                           Request $request,
-                           SettingsRepository $settingsRepository,
-                           SecurityService $securityService
-    ) : Response
+    public function manage(
+        ValidatorInterface     $validator,
+        EntityManagerInterface $em,
+        Request                $request,
+        SettingsRepository     $settingsRepository,
+        SecurityService        $securityService
+    ): Response
     {
         $user = $this->getUser();
 

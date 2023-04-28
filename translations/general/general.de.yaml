@@ -18,11 +18,24 @@ date: Datum
 delete: Löschen
 departments: Abteilungen
 description: Beschreibung
+download:
+  successful: Download erfolgreich
 edit: Bearbeiten
 editedBy: Bearbeitet von
 editor: Bearbeiter
 email: Email
 end: Ende
+endTime: Endzeit
+error:
+  signature: Die Signatur ist ungültig. Bitte kontaktieren Sie die Personen, die Ihnen die Datei überlassen hat.
+  file: '
+    Die Datei ist fehlerhaft und kann nicht eingelesen werden. 
+    Es können jedoch bereits Daten in Ihren Datenstamm eingetragen worden sein. 
+    Bitte kontaktieren Sie die Personen, die Ihnen die Datei überlassen hat.'
+  retry: Fehler. Bitte noch einmal versuchen
+  unauthorizedDownload: Fehlerhafter download. User nicht berechtigt!
+  dataType:
+    notOdif: Der Dateityp ist fehlerhaft. Die Datei muss mit .odif enden.
 fileNumber: Aktenzeichen
 history: Historie
 id: ID
@@ -36,6 +49,7 @@ overview: Übersicht
 pdf:
   create: PDF erstellen
   createWithHistory: PDF mit Historie erstellen
+  generatedSuccessful: PDF wurde erfolgreich erstellt!
 phone: Tel.
 processing: Verarbeitung
 processings: Verarbeitungen
@@ -46,8 +60,13 @@ regard: Betreff
 remove: Entfernen
 responsible: Verantwortlich
 restore: Wiederherstellen
+save:
+  comment: Kommentar gespeichert
+  changesSuccessful: Änderung gespeichert
+  successful: Erfolgreich gespeichert
 show: anzeigen
 start: Start
+startTime: Startzeit
 state: Status
 subscriptionDate: Zeichnungsdatum
 time: Zeit

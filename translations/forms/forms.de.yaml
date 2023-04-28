@@ -4,3 +4,9 @@ approved: (Diese Version war freigegeben)
 newForm: Formular anlegen
 taskProcessing:
   create: Auftragsverarbeitung anlegen
+form:
+  edit: Formular bearbeiten
+  create: Formular erstellen/hochladen
+  word: Formulare
+user:
+  unauthorized: Fehlerhafter download. User nicht berechtigt!

@@ -25,6 +25,7 @@ probability:
 dsfa:
   show: DSFA anzeigen
   create: DSFA anlegen
+  created: DSFA angelegt
   exists: DSFA vorhanden
 dutyToInform: Informationspflicht
 pdf:
@@ -38,11 +39,15 @@ dataProtectionImpactAssessment:
   show: Datenschutzfolgeabschätzung anzeigen
   create: Datenschutzfolgeabschätzung anlegen
 processing:
+  edit: Verarbeitung bearbeiten
+  track: Verarbeitung erfassen
+  export: Export der Verarbeitungstätigkeit
   name: Bezeichnung der verarbeitung
   outsideEU: Werden Daten außerhalb der EU verarbeitet?
   jointControl: Handelt es sich bei der Verarbeitung um ein Joint Control Verarbeitung?
   create: Neue Verarbeitung anlegen
   directory: Verzeichnis der Verarbeitungen
+  directoryOf: Verzeichnis fer Verarbeitungen von
   directoryNumber: Nummer des Verarbeitungsverzeichnisses
   typeHelp: AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung
   back: Zurück zur Verarbeitung
@@ -82,6 +87,8 @@ dataCollection: Datenerhebung
 existingInternalRegulations: Vorhandene interne Richtlinien
 dataPrivacyResponsibleComment: Beurteilung und Kommentar des Datenschutzbeauftragten
 dataPrivacyFollowUpEstimation:
+  create: Datenschutzfolgeabschätzung erstellen
+  edit: Datenschutzfolgeabschätzung bearbeiten
   result: Ergebnis der Datenschutzfolgeabschätzung
   exists: Datenschutzfolgeabschätzung notwendig und vorhanden
   about: Datenschutzfolgeabschätzung zu

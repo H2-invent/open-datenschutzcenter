@@ -9,27 +9,28 @@
 namespace App\Controller;
 
 use App\Entity\Loeschkonzept;
-use App\Form\Type\LoeschkonzeptType;
-use App\Service\ApproveService;
-use App\Service\CurrentTeamService;
-use App\Service\DisableService;
-use App\Service\SecurityService;
-use App\Service\LoeschkonzeptService;
 use App\Repository\LoeschkonzeptRepository;
 use App\Repository\VVTDatenkategorieRepository;
+use App\Service\CurrentTeamService;
+use App\Service\LoeschkonzeptService;
+use App\Service\SecurityService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 
 
 #[Route(path: '/loeschkonzept')]
 class LoeschkonzeptController extends AbstractController
 {
     #[Route(path: '/', name: 'app_loeschkonzept_index', methods: ['GET'])]
-    public function index(VVTDatenkategorieRepository $vvtDatenkategorieRepository, LoeschkonzeptRepository $loeschkonzeptRepository, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
+    public function index(
+        VVTDatenkategorieRepository $vvtDatenkategorieRepository,
+        LoeschkonzeptRepository     $loeschkonzeptRepository,
+        SecurityService             $securityService,
+        CurrentTeamService          $currentTeamService,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
@@ -45,16 +46,16 @@ class LoeschkonzeptController extends AbstractController
                 $loeschkonzept->removeVvtdatenkategory($datenkategorie);
             }
         }
-        
+
         # add datenkategory to loeschkonzept if it is the newest relation
         $vvtDatenkategories = $vvtDatenkategorieRepository->findByTeam($team);
         foreach ($vvtDatenkategories as $vvtDatenkategorie) {
             $loeschkonzept = $vvtDatenkategorie->getLoeschkonzept()->last();
-            if ($loeschkonzept != false){
+            if ($loeschkonzept != false) {
                 $loeschkonzept->addVvtdatenkategory($vvtDatenkategorie);
             }
         }
-        
+
         return $this->render('loeschkonzept/index.html.twig', [
             'loeschkonzepte' => $loeschkonzepte,
             'currentTeam' => $team,
@@ -62,7 +63,14 @@ class LoeschkonzeptController extends AbstractController
     }
 
     #[Route(path: '/new', name: 'app_loeschkonzept_new', methods: ['GET', 'POST'])]
-    public function new (Request $request, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, SecurityService $securityService, LoeschkonzeptService $loeschkonzeptService, CurrentTeamService $currentTeamService): Response
+    public function new(
+        Request                 $request,
+        LoeschkonzeptRepository $loeschkonzeptRepository,
+        EntityManagerInterface  $entityManager,
+        SecurityService         $securityService,
+        LoeschkonzeptService    $loeschkonzeptService,
+        CurrentTeamService      $currentTeamService,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
@@ -80,7 +88,7 @@ class LoeschkonzeptController extends AbstractController
                 $datenkategory->addLoeschkonzept($loeschkonzept);
 
                 $entityManager->persist($datenkategory);
-            }          
+            }
 
             $entityManager->flush();
 
@@ -102,7 +110,16 @@ class LoeschkonzeptController extends AbstractController
     }
 
     #[Route(path: '/{id}/edit', name: 'app_loeschkonzept_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Loeschkonzept $loeschkonzept, LoeschkonzeptRepository $loeschkonzeptRepository, EntityManagerInterface $entityManager, VVTDatenkategorieRepository $VvtDatenkategorieRepository, LoeschkonzeptService $loeschkonzeptService, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
+    public function edit(
+        Request                     $request,
+        Loeschkonzept               $loeschkonzept,
+        LoeschkonzeptRepository     $loeschkonzeptRepository,
+        EntityManagerInterface      $entityManager,
+        VVTDatenkategorieRepository $VvtDatenkategorieRepository,
+        LoeschkonzeptService        $loeschkonzeptService,
+        SecurityService             $securityService,
+        CurrentTeamService          $currentTeamService,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
@@ -116,9 +133,9 @@ class LoeschkonzeptController extends AbstractController
                 $loeschkonzept->removeVvtdatenkategory($vvtDatenkategorie);
             }
         }
-        
+
         $newloeschkonzept = $loeschkonzeptService->cloneLoeschkonzept($loeschkonzept);
-        foreach ($loeschkonzept->getVvtdatenkategories() as $datenkategorie){
+        foreach ($loeschkonzept->getVvtdatenkategories() as $datenkategorie) {
             $newloeschkonzept->addVvtdatenkategory($datenkategorie);
         }
         $form = $loeschkonzeptService->createForm($newloeschkonzept, $team);
@@ -126,13 +143,13 @@ class LoeschkonzeptController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $loeschkonzeptRepository->add($newloeschkonzept); 
+            $loeschkonzeptRepository->add($newloeschkonzept);
 
             $newloeschkonzept->setActiv(true);
             $loeschkonzept->setActiv(false);
 
             $entityManager->persist($loeschkonzept);
-            $entityManager->persist($newloeschkonzept);         
+            $entityManager->persist($newloeschkonzept);
 
             $entityManager->flush();
 
@@ -146,7 +163,12 @@ class LoeschkonzeptController extends AbstractController
     }
 
     #[Route(path: '/{id}', name: 'app_loeschkonzept_delete', methods: ['POST'])]
-    public function delete(Loeschkonzept $loeschkonzept, EntityManagerInterface $entityManager, SecurityService $securityService, CurrentTeamService $currentTeamService): Response
+    public function delete(
+        Loeschkonzept          $loeschkonzept,
+        EntityManagerInterface $entityManager,
+        SecurityService        $securityService,
+        CurrentTeamService     $currentTeamService,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);

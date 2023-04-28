@@ -8,56 +8,38 @@
 
 namespace App\Controller;
 
-use App\Entity\AkademieKurse;
-use App\Entity\AuditTomAbteilung;
-use App\Entity\AuditTomZiele;
-use App\Entity\Team;
-use App\Entity\User;
-use App\Form\Type\AbteilungType;
 use App\Form\Type\DsbType;
 use App\Form\Type\NewMemberType;
-use App\Form\Type\NewType;
-use App\Form\Type\TeamType;
 use App\Repository\AkademieKurseRepository;
 use App\Repository\SettingsRepository;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
+use App\Service\CurrentTeamService;
 use App\Service\InviteService;
 use App\Service\SecurityService;
-use App\Service\TeamService;
-use App\Service\CurrentTeamService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TeamMemberController extends AbstractController
 {
-    /**
-     * @param Request $request
-     * @param InviteService $inviteService
-     * @param EntityManagerInterface $em
-     * @param TranslatorInterface $translator
-     * @param TeamRepository $teamRepository
-     * @param SettingsRepository $settingsRepository
-     * @param SecurityService $securityService
-     * @param CurrentTeamService $currentTeamService
-     * @return Response
-     */
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
+
     #[Route(path: '/team_mitglieder', name: 'team_mitglieder')]
-    public function mitgliederAdd(Request $request,
-                                  InviteService $inviteService,
-                                  EntityManagerInterface $em,
-                                  TranslatorInterface $translator,
-                                  TeamRepository $teamRepository,
-                                  SettingsRepository $settingsRepository,
-                                  SecurityService $securityService,
-                                  CurrentTeamService $currentTeamService
-    ) : Response
+    public function mitgliederAdd(
+        Request                $request,
+        InviteService          $inviteService,
+        EntityManagerInterface $em,
+        TeamRepository         $teamRepository,
+        SettingsRepository     $settingsRepository,
+        SecurityService        $securityService,
+        CurrentTeamService     $currentTeamService,
+    ): Response
     {
         $user = $this->getUser();
         $teamId = $request->get('id');
@@ -74,7 +56,7 @@ class TeamMemberController extends AbstractController
 
         $temp = array_merge($team->getMembers()->toArray(), $team->getAdmins()->toArray());
         $members = [];
-        foreach($temp as $member) {
+        foreach ($temp as $member) {
             if (!in_array($member, $members)) {
                 $members[] = $member;
             }
@@ -112,30 +94,22 @@ class TeamMemberController extends AbstractController
             'adminArea' => true,
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => $translator->trans('manageUsers'),
+            'title' => $this->translator->trans(id: 'team.manageUsers', domain: 'team'),
             'team' => $team,
             'members' => $members,
             'useKeycloakGroups' => $useKeycloakGroups,
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param SecurityService $securityService
-     * @param InviteService $inviteService
-     * @param EntityManagerInterface $em
-     * @param TeamRepository $teamRepository
-     * @param CurrentTeamService $currentTeamService
-     * @return Response
-     */
     #[Route(path: '/team_mitglieder/create', name: 'team_mitglieder_create')]
-    public function teamMemberCreate(Request $request,
-                                     SecurityService $securityService,
-                                     InviteService $inviteService,
-                                     EntityManagerInterface $em,
-                                     TeamRepository $teamRepository,
-                                     CurrentTeamService $currentTeamService
-    ) : Response
+    public function teamMemberCreate(
+        Request                $request,
+        SecurityService        $securityService,
+        InviteService          $inviteService,
+        EntityManagerInterface $em,
+        TeamRepository         $teamRepository,
+        CurrentTeamService     $currentTeamService,
+    ): Response
     {
         $user = $this->getUser();
         $teamId = $request->get('id');
@@ -196,23 +170,15 @@ class TeamMemberController extends AbstractController
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param SecurityService $securityService
-     * @param TeamRepository $teamRepository
-     * @param UserRepository $userRepository
-     * @param EntityManagerInterface $em
-     * @param CurrentTeamService $currentTeamService
-     * @return Response
-     */
     #[Route(path: '/team_mitglieder/remove', name: 'team_mitglieder_remove')]
-    public function mitgliederRemove(Request $request,
-                                     SecurityService $securityService,
-                                     TeamRepository $teamRepository,
-                                     UserRepository $userRepository,
-                                     EntityManagerInterface $em,
-                                     CurrentTeamService $currentTeamService
-    ) : Response
+    public function mitgliederRemove(
+        Request                $request,
+        SecurityService        $securityService,
+        TeamRepository         $teamRepository,
+        UserRepository         $userRepository,
+        EntityManagerInterface $em,
+        CurrentTeamService     $currentTeamService,
+    ): Response
     {
         $user = $this->getUser();
         $teamId = $request->get('teamId');
@@ -247,23 +213,15 @@ class TeamMemberController extends AbstractController
         return $this->redirect($target);
     }
 
-    /**
-     * @param Request $request
-     * @param SecurityService $securityService
-     * @param UserRepository $userRepository
-     * @param EntityManagerInterface $em
-     * @param TeamRepository $teamRepository
-     * @param CurrentTeamService $currentTeamService
-     * @return Response
-     */
     #[Route(path: '/team_mitglieder/admin', name: 'team_mitglieder_admin')]
-    public function adminToggle(Request $request,
-                                SecurityService $securityService,
-                                UserRepository $userRepository,
-                                EntityManagerInterface $em,
-                                TeamRepository $teamRepository,
-                                CurrentTeamService $currentTeamService
-    ) : Response
+    public function adminToggle(
+        Request                $request,
+        SecurityService        $securityService,
+        UserRepository         $userRepository,
+        EntityManagerInterface $em,
+        TeamRepository         $teamRepository,
+        CurrentTeamService     $currentTeamService,
+    ): Response
     {
         $user = $this->getUser();
         $teamId = $request->get('teamId');
@@ -293,19 +251,12 @@ class TeamMemberController extends AbstractController
         return $this->redirectToRoute('team_mitglieder');
     }
 
-    /**
-     * @param SecurityService $securityService
-     * @param CurrentTeamService $currentTeamService
-     * @param AkademieKurseRepository $academyCourseRepository
-     * @param TranslatorInterface $translator
-     * @return Response
-     */
     #[Route(path: '/akademie/admin', name: 'akademie_admin')]
-    public function academyAdmin(SecurityService $securityService,
-                                 CurrentTeamService $currentTeamService,
-                                 AkademieKurseRepository $academyCourseRepository,
-                                 TranslatorInterface $translator
-    ) : Response
+    public function academyAdmin(
+        SecurityService         $securityService,
+        CurrentTeamService      $currentTeamService,
+        AkademieKurseRepository $academyCourseRepository,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
@@ -318,32 +269,22 @@ class TeamMemberController extends AbstractController
 
         return $this->render('team/academy.html.twig', [
             'currentTeam' => $team,
-            'title' => $translator->trans('manageAcademy'),
+            'title' => $this->translator->trans(id: 'academy.manage', domain: 'team'),
             'team' => $team,
             'data' => $team->getAkademieUsers(),
             'kurse' => $kurse,
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param InviteService $inviteService
-     * @param SecurityService $securityService
-     * @param EntityManagerInterface $em
-     * @param UserRepository $userRepository
-     * @param TranslatorInterface $translator
-     * @param CurrentTeamService $currentTeamService
-     * @return Response
-     */
     #[Route(path: '/ext_team_dsb', name: 'team_dsb')]
-    public function dsbAdd(Request $request,
-                           InviteService $inviteService,
-                           SecurityService $securityService,
-                           EntityManagerInterface $em,
-                           UserRepository $userRepository,
-                           TranslatorInterface $translator,
-                           CurrentTeamService $currentTeamService
-    ) : Response
+    public function dsbAdd(
+        Request                $request,
+        InviteService          $inviteService,
+        SecurityService        $securityService,
+        EntityManagerInterface $em,
+        UserRepository         $userRepository,
+        CurrentTeamService     $currentTeamService,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getCurrentAdminTeam($user);
@@ -370,12 +311,17 @@ class TeamMemberController extends AbstractController
             }
 
             $em->flush();
-            return $this->redirectToRoute('team_dsb', ['snack' => $translator->trans('dsbAdded')]);
+            return $this->redirectToRoute(
+                'team_dsb',
+                [
+                    'snack' => $this->translator->trans(id: 'dsb.added', domain: 'team'),
+                ],
+            );
         }
         return $this->render('team/dsb.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => $translator->trans('manageExternalDsb'),
+            'title' => $this->translator->trans(id: 'dsb.manage', domain: 'team'),
             'data' => $team->getDsbUser(),
             'snack' => $request->get('snack'),
             'currentTeam' => $team,
@@ -383,23 +329,14 @@ class TeamMemberController extends AbstractController
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param SecurityService $securityService
-     * @param UserRepository $userRepository
-     * @param TranslatorInterface $translator
-     * @param EntityManagerInterface $em
-     * @param CurrentTeamService $currentTeamService
-     * @return Response
-     */
     #[Route(path: '/team_dsb/remove', name: 'team_dsb_remove')]
-    public function dsbRemove(Request $request,
-                              SecurityService $securityService,
-                              UserRepository $userRepository,
-                              TranslatorInterface $translator,
-                              EntityManagerInterface $em,
-                              CurrentTeamService $currentTeamService
-    ) : Response
+    public function dsbRemove(
+        Request                $request,
+        SecurityService        $securityService,
+        UserRepository         $userRepository,
+        EntityManagerInterface $em,
+        CurrentTeamService     $currentTeamService,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
@@ -411,12 +348,12 @@ class TeamMemberController extends AbstractController
         $user = $userRepository->findOneBy(array('id' => $request->get('id')));
 
         if ($team->getDsbUser() === $user) {
-            $snack = $translator->trans('cannotRemoveSelfExtDsb');
+            $snack = $this->translator->trans(id: 'dsb.error.selfRemove', domain: 'team');
             if ($this->getUser() !== $team->getDsbUser()) {
                 $user->removeTeam($team);
                 $team->removeAdmin($user);
                 $user->setAkademieUser(null);
-                $snack = $translator->trans('extDsbRemoved');
+                $snack = $this->translator->trans(id: 'dsb.removed', domain: 'team');
             }
             $team->setDsbUser(null);
         }

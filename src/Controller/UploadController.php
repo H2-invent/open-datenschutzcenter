@@ -7,15 +7,32 @@ use App\Form\Type\UploadTyp;
 use App\Service\CurrentTeamService;
 use App\Service\ParserService;
 use App\Service\SecurityService;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UploadController extends AbstractController
 {
+    private EntityManagerInterface $em;
+
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+        $this->em = $this->getDoctrine()->getManager();
+    }
+
     #[Route(path: '/upload', name: 'upload_new')]
-    public function index(Request $request, FilesystemInterface $internFileSystem, ParserService $parserService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function index(
+        Request             $request,
+        FilesystemInterface $internFileSystem,
+        ParserService       $parserService,
+        SecurityService     $securityService,
+        CurrentTeamService  $currentTeamService,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getCurrentAdminTeam($user);
@@ -29,25 +46,32 @@ class UploadController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $upload->setUpdatedAt(new \DateTime());
+            $upload->setUpdatedAt(new DateTime());
             $upload->setUId('Not completed');
             $upload->setAmount(0);
             $upload = $form->getData();
-            $em->persist($upload);
+            $this->em->persist($upload);
             if (!preg_match('/odif$/', $upload->getFile())) {
-                return $this->redirectToRoute('upload_fail', array('message' => '
-                Der Dateityp ist fehlerhaft. Die Datei muss mit .odif enden.'));
+                return $this->redirectToRoute(
+                    'upload_fail',
+                    [
+                        'message' => $this->translator->trans(id: 'error.dataType.notOdif', domain: 'general'),
+                    ],
+                );
             }
 
-            $em->flush();
+            $this->em->flush();
             $stream = $internFileSystem->read($upload->getFile());
             $data = json_decode($stream);
             $verify = $parserService->verify($data);
-            if($verify != 1){
+            if ($verify != 1) {
                 $internFileSystem->delete($upload->getFile());
-                return $this->redirectToRoute('upload_fail',array('message'=>'
-                Die Signatur ist ungültig. Bitte kontaktieren Sie die Personen, die Ihnen die Datei überlassen hat.'));
+                return $this->redirectToRoute(
+                    'upload_fail',
+                    [
+                        'message' => $this->translator->trans(id: 'error.signature', domain: 'general'),
+                    ],
+                );
             }
             $res = false;
             switch ($data->table) {
@@ -66,24 +90,26 @@ class UploadController extends AbstractController
                 return $this->redirectToRoute('upload_success');
             } else {
                 $internFileSystem->delete($upload->getFile());
-                return $this->redirectToRoute('upload_fail',array('message'=>'
-                Die Datei ist fehlerhaft und kann nicht eingelesen werden. 
-                Es können jedoch bereits Daten in Ihren Datenstamm eingetragen worden sein. 
-                Bitte kontaktieren Sie die Personen, die Ihnen die Datei überlassen hat.'));
+                return $this->redirectToRoute(
+                    'upload_fail',
+                    [
+                        'message' => $this->translator->trans(id: 'error.file', domain: 'general'),
+                    ],
+                );
             }
         }
         return $this->render('upload/new.html.twig', array('form' => $form->createView()));
     }
 
     #[Route(path: '/upload/success', name: 'upload_success')]
-    public function success(Request $request)
+    public function success(Request $request): Response
     {
         return $this->render('upload/success.html.twig');
     }
 
     #[Route(path: '/upload/fail', name: 'upload_fail')]
-    public function fail(Request $request)
+    public function fail(Request $request): Response
     {
-        return $this->render('upload/fail.html.twig',array('message'=>$request->get('message')));
+        return $this->render('upload/fail.html.twig', array('message' => $request->get('message')));
     }
 }

@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Policies;
+use App\Repository\PoliciesRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\PoliciesService;
 use App\Service\SecurityService;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -18,17 +20,29 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PoliciesController extends AbstractController
 {
+    private EntityManagerInterface $em;
+
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+        $this->em = $this->getDoctrine()->getManager();
+    }
+
     #[Route(path: '/policies', name: 'policies')]
-    public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function index(
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        PoliciesRepository $policiesRepository,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $polcies = $this->getDoctrine()->getRepository(Policies::class)->findActiveByTeam($team);
+        $polcies = $policiesRepository->findActiveByTeam($team);
 
         return $this->render('policies/index.html.twig', [
             'data' => $polcies,
@@ -37,7 +51,13 @@ class PoliciesController extends AbstractController
     }
 
     #[Route(path: '/policy/new', name: 'policy_new')]
-    public function addPolicy(ValidatorInterface $validator, Request $request, PoliciesService $policiesService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function addPolicy(
+        ValidatorInterface $validator,
+        Request            $request,
+        PoliciesService    $policiesService,
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+    )
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
@@ -55,9 +75,8 @@ class PoliciesController extends AbstractController
             $policy = $form->getData();
             $errors = $validator->validate($policy);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($policy);
-                $em->flush();
+                $this->em->persist($policy);
+                $this->em->flush();
                 return $this->redirectToRoute('policies');
             }
         }
@@ -65,7 +84,7 @@ class PoliciesController extends AbstractController
             'form' => $form->createView(),
             'policy' => $policy,
             'errors' => $errors,
-            'title' => 'Richtlinie & Arbeitsanweisung erstellen',
+            'title' => $this->translator->trans(id: 'policies.create', domain: 'policies'),
             'activNummer' => true,
             'vvt' => $policy,
             'activ' => $policy->getActiv(),
@@ -75,10 +94,18 @@ class PoliciesController extends AbstractController
 
 
     #[Route(path: '/policy/edit', name: 'policy_edit')]
-    public function editPolicy(ValidatorInterface $validator, Request $request, PoliciesService $policiesService, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
+    public function editPolicy(
+        ValidatorInterface $validator,
+        Request            $request,
+        PoliciesService    $policiesService,
+        SecurityService    $securityService,
+        AssignService      $assignService,
+        CurrentTeamService $currentTeamService,
+        PoliciesRepository $policiesRepository,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
+        $policy = $policiesRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($policy, $team) === false) {
             return $this->redirectToRoute('policies');
@@ -90,16 +117,20 @@ class PoliciesController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved()) {
-
-            $em = $this->getDoctrine()->getManager();
             $policy->setActiv(false);
             $newPolicy = $form->getData();
             $errors = $validator->validate($newPolicy);
             if (count($errors) == 0) {
-                $em->persist($newPolicy);
-                $em->persist($policy);
-                $em->flush();
-                return $this->redirectToRoute('policy_edit', ['id' => $newPolicy->getId(), 'snack' => 'Erfolgreich gespeichert']);
+                $this->em->persist($newPolicy);
+                $this->em->persist($policy);
+                $this->em->flush();
+                return $this->redirectToRoute(
+                    'policy_edit',
+                    [
+                        'id' => $newPolicy->getId(),
+                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
+                    ],
+                );
             }
         }
 
@@ -107,7 +138,7 @@ class PoliciesController extends AbstractController
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
             'errors' => $errors,
-            'title' => 'Richtlinie / Arbeitsanweisung bearbeiten',
+            'title' => $this->translator->trans(id: 'policies.edit', domain: 'policies'),
             'policy' => $policy,
             'activ' => $policy->getActiv(),
             'snack' => $request->get('snack')
@@ -115,11 +146,17 @@ class PoliciesController extends AbstractController
     }
 
     #[Route(path: '/policy/approve', name: 'policy_approve')]
-    public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
+    public function approvePolicy(
+        Request            $request,
+        SecurityService    $securityService,
+        ApproveService     $approveService,
+        CurrentTeamService $currentTeamService,
+        PoliciesRepository $policiesRepository,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
+        $policy = $policiesRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($policy, $user);
@@ -131,11 +168,17 @@ class PoliciesController extends AbstractController
     }
 
     #[Route(path: '/policy/disable', name: 'policy_disable')]
-    public function disable(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
+    public function disable(
+        Request            $request,
+        SecurityService    $securityService,
+        DisableService     $disableService,
+        CurrentTeamService $currentTeamService,
+        PoliciesRepository $policiesRepository,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
+        $policy = $policiesRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team) && !$policy->getApproved()) {
             $disableService->disable($policy, $this->getUser());
@@ -146,15 +189,29 @@ class PoliciesController extends AbstractController
 
     #[Route(path: '/policy/download/{id}', name: 'policy_download_file', methods: ['GET'])]
     #[ParamConverter('policies', options: ['mapping' => ['id' => 'id']])]
-    public function downloadArticleReference(FilesystemInterface $policiesFileSystem, Policies $policies, SecurityService $securityService, LoggerInterface $logger, CurrentTeamService $currentTeamService)
+    public function downloadArticleReference(
+        FilesystemInterface $policiesFileSystem,
+        Policies            $policies,
+        SecurityService     $securityService,
+        LoggerInterface     $logger,
+        CurrentTeamService  $currentTeamService,
+    ): Response
     {
 
         $stream = $policiesFileSystem->read($policies->getUpload());
 
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamDataCheck($policies, $team) === false) {
-            $message = ['typ' => 'DOWNLOAD', 'error' => true, 'hinweis' => 'Fehlerhafter download. User nicht berechtigt!', 'dokument' => $policies->getUpload(), 'user' => $this->getUser()->getUsername()];
-            $logger->error($message['typ'], $message);
+            $logger->error(
+                'DOWNLOAD',
+                [
+                    'typ' => 'DOWNLOAD',
+                    'error' => true,
+                    'hinweis' => 'Fehlerhafter download. User nicht berechtigt!',
+                    'dokument' => $policies->getUpload(),
+                    'user' => $this->getUser()->getUsername()
+                ],
+            );
             return $this->redirectToRoute('dashboard');
         }
 
@@ -167,8 +224,16 @@ class PoliciesController extends AbstractController
         );
 
         $response->headers->set('Content-Disposition', $disposition);
-        $message = ['typ' => 'DOWNLOAD', 'error' => false, 'hinweis' => 'Download erfolgreich', 'dokument' => $policies->getUpload(), 'user' => $this->getUser()->getUsername()];
-        $logger->info($message['typ'], $message);
+        $logger->info(
+            'DOWNLOAD',
+            [
+                'typ' => 'DOWNLOAD',
+                'error' => false,
+                'hinweis' => 'Download erfolgreich',
+                'dokument' => $policies->getUpload(),
+                'user' => $this->getUser()->getUsername()
+            ],
+        );
         return $response;
     }
 }

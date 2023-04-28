@@ -8,9 +8,9 @@
 
 namespace App\Controller;
 
-use App\Entity\VVT;
-use App\Entity\VVTDsfa;
 use App\Form\Type\VvtDsfaType;
+use App\Repository\VVTDsfaRepository;
+use App\Repository\VVTRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
@@ -18,21 +18,36 @@ use App\Service\DisableService;
 use App\Service\SecurityService;
 use App\Service\VVTDatenkategorieService;
 use App\Service\VVTService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class VvtController extends AbstractController
 {
+    private EntityManagerInterface $em;
+
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+        $this->em = $this->getDoctrine()->getManager();
+    }
+
     #[Route(path: '/vvt', name: 'vvt')]
-    public function index(SecurityService $securityService, Request $request, CurrentTeamService $currentTeamService)
+    public function index(
+        SecurityService    $securityService,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        VVTRepository      $vvtRepository,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActiveByTeam($team);
+        $vvt = $vvtRepository->findActiveByTeam($team);
 
         return $this->render('vvt/index.html.twig', [
             'vvt' => $vvt,
@@ -42,7 +57,14 @@ class VvtController extends AbstractController
     }
 
     #[Route(path: '/vvt/new', name: 'vvt_new')]
-    public function addVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, VVTDatenkategorieService $VVTDatenkategorieService, CurrentTeamService $currentTeamService)
+    public function addVvt(
+        ValidatorInterface       $validator,
+        Request                  $request,
+        VVTService               $VVTService,
+        SecurityService          $securityService,
+        VVTDatenkategorieService $VVTDatenkategorieService,
+        CurrentTeamService       $currentTeamService,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
@@ -60,23 +82,26 @@ class VvtController extends AbstractController
             $vvt = $form->getData();
             $errors = $validator->validate($vvt);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-
-                foreach ($vvt->getKategorien() as $kategorie){
-                    $tmp= $VVTDatenkategorieService->createChild($kategorie);
+                foreach ($vvt->getKategorien() as $kategorie) {
+                    $tmp = $VVTDatenkategorieService->createChild($kategorie);
                     $vvt->removeKategorien($kategorie);
                     $vvt->addKategorien($tmp);
                 }
 
-                $em->persist($vvt);
-                $em->flush();
-                return $this->redirectToRoute('vvt', ['snack' => 'Erfolgreich angelegt']);
+                $this->em->persist($vvt);
+                $this->em->flush();
+                return $this->redirectToRoute(
+                    'vvt',
+                    [
+                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
+                    ],
+                );
             }
         }
         return $this->render('vvt/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Verarbeitung erfassen',
+            'title' => $this->translator->trans(id: 'processing.track', domain: 'vvt'),
             'activNummer' => true,
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
@@ -86,17 +111,26 @@ class VvtController extends AbstractController
 
 
     #[Route(path: '/vvt/edit', name: 'vvt_edit')]
-    public function editVvt(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService, VVTDatenkategorieService $VVTDatenkategorieService, CurrentTeamService $currentTeamService)
+    public function editVvt(
+        ValidatorInterface       $validator,
+        Request                  $request,
+        VVTService               $VVTService,
+        SecurityService          $securityService,
+        AssignService            $assignService,
+        VVTDatenkategorieService $VVTDatenkategorieService,
+        CurrentTeamService       $currentTeamService,
+        VVTRepository            $vvtRepository,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
+        $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
         }
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
 
-        foreach ($vvt->getKategorien() as $cloneKat){//hier haben wir die geklonten KAtegorien
+        foreach ($vvt->getKategorien() as $cloneKat) {//hier haben wir die geklonten KAtegorien
             $newVvt->addKategorien($VVTDatenkategorieService->findLatestKategorie($cloneKat->getCloneOf()));//wir hängen die neueste gültige Datenkategorie an den VVT clone an.
         }
 
@@ -107,41 +141,45 @@ class VvtController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid() && $vvt->getActiv() && !$vvt->getApproved()) {
-
-            $em = $this->getDoctrine()->getManager();
             $vvt->setActiv(false);
             $newVvt = $form->getData();
 
             $errors = $validator->validate($newVvt);
             if (count($errors) == 0) {
-                foreach ($newVvt->getKategorien() as $kategorie){ // wir haben die fiktiven neuesten Kategories
-                    $tmp= $VVTDatenkategorieService->createChild($kategorie);//wir klonen die kategorie damit diese revisionssicher ist
+                foreach ($newVvt->getKategorien() as $kategorie) { // wir haben die fiktiven neuesten Kategories
+                    $tmp = $VVTDatenkategorieService->createChild($kategorie);//wir klonen die kategorie damit diese revisionssicher ist
                     $newVvt->removeKategorien($kategorie);//wir entferenen die fiktive neues kategorie
                     $newVvt->addKategorien($tmp);//wir fügen die geklonte kategorie an
                 }
-                
+
                 if ($vvt->getActivDsfa()) {
                     $dsfa = $vvt->getActivDsfa();
                     $newDsfa = clone $dsfa;
                     $newDsfa->setVvt($newVvt);
                     $newDsfa->setPrevious(null);
-                    $em->persist($newDsfa);
+                    $this->em->persist($newDsfa);
                 }
 
                 foreach ($vvt->getPolicies() as $item) {
                     $item->addProcess($newVvt);
-                    $em->persist($item);
+                    $this->em->persist($item);
                 }
 
                 foreach ($vvt->getSoftware() as $software) {
                     $software->addVvt($newVvt);
-                    $em->persist($software);
+                    $this->em->persist($software);
                 }
 
-                $em->persist($newVvt);
-                $em->persist($vvt);
-                $em->flush();
-                return $this->redirectToRoute('vvt_edit', ['id' => $newVvt->getId(), 'snack' => 'Erfolgreich gespeichert']);
+                $this->em->persist($newVvt);
+                $this->em->persist($vvt);
+                $this->em->flush();
+                return $this->redirectToRoute(
+                    'vvt_edit',
+                    [
+                        'id' => $newVvt->getId(),
+                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
+                    ],
+                );
             }
         }
 
@@ -149,7 +187,7 @@ class VvtController extends AbstractController
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
             'errors' => $errors,
-            'title' => 'Verarbeitung bearbeiten',
+            'title' => $this->translator->trans(id: 'processing.edit', domain: 'vvt'),
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'activNummer' => false,
@@ -159,10 +197,17 @@ class VvtController extends AbstractController
 
 
     #[Route(path: '/vvt/dsfa/new', name: 'vvt_dsfa_new')]
-    public function newVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function newVvtDsfa(
+        ValidatorInterface $validator,
+        Request            $request,
+        VVTService         $VVTService,
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        VVTRepository      $vvtRepository,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('vvt'));
+        $vvt = $vvtRepository->find($request->get('vvt'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
@@ -178,26 +223,39 @@ class VvtController extends AbstractController
             $dsfa = $form->getData();
             $errors = $validator->validate($dsfa);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($dsfa);
-                $em->flush();
-                return $this->redirectToRoute('vvt_edit', ['id' => $dsfa->getVvt()->getId(), 'snack' => 'DSFA angelegt']);
+                $this->em->persist($dsfa);
+                $this->em->flush();
+                return $this->redirectToRoute(
+                    'vvt_edit',
+                    [
+                        'id' => $dsfa->getVvt()->getId(),
+                        'snack' => $this->translator->trans(id: 'dsfa.created', domain: 'vvt'),
+                    ],
+                );
             }
         }
         return $this->render('vvt/editDsfa.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Datenschutzfolgeabschätzung erstellen',
+            'title' => $this->translator->trans(id: 'dataPrivacyFollowUpEstimation.create', domain: 'vvt'),
             'dsfa' => $dsfa,
             'activ' => $dsfa->getActiv(),
         ]);
     }
 
     #[Route(path: '/vvt/dsfa/edit', name: 'vvt_dsfa_edit')]
-    public function editVvtDsfa(ValidatorInterface $validator, Request $request, VVTService $VVTService, SecurityService $securityService, AssignService $assignService, CurrentTeamService $currentTeamService)
+    public function editVvtDsfa(
+        ValidatorInterface $validator,
+        Request            $request,
+        VVTService         $VVTService,
+        SecurityService    $securityService,
+        AssignService      $assignService,
+        CurrentTeamService $currentTeamService,
+        VVTDsfaRepository  $vvtDsfaRepository,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $dsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->find($request->get('dsfa'));
+        $dsfa = $vvtDsfaRepository->find($request->get('dsfa'));
 
         if ($securityService->teamDataCheck($dsfa->getVvt(), $team) === false) {
             return $this->redirectToRoute('vvt');
@@ -216,11 +274,17 @@ class VvtController extends AbstractController
             $newDsfa = $form->getData();
             $errors = $validator->validate($newDsfa);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($newDsfa);
-                $em->persist($dsfa);
-                $em->flush();
-                return $this->redirectToRoute('vvt_dsfa_edit', ['dsfa' => $newDsfa->getId(), 'snack' => 'Erfolgreich gepeichert']);
+                $this->em->persist($newDsfa);
+                $this->em->persist($dsfa);
+                $this->em->flush();
+
+                return $this->redirectToRoute(
+                    'vvt_dsfa_edit',
+                    [
+                        'dsfa' => $newDsfa->getId(),
+                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
+                    ],
+                );
             }
         }
 
@@ -228,7 +292,7 @@ class VvtController extends AbstractController
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
             'errors' => $errors,
-            'title' => 'Datenschutzfolgeabschätzung bearbeiten',
+            'title' => $this->translator->trans(id: 'dataPrivacyFollowUpEstimation.edit', domain: 'vvt'),
             'dsfa' => $dsfa,
             'activ' => $dsfa->getActiv(),
             'snack' => $request->get('snack')
@@ -236,37 +300,42 @@ class VvtController extends AbstractController
     }
 
     #[Route(path: '/vvt/approve', name: 'vvt_approve')]
-    public function approveVvt(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
+    public function approveVvt(
+        Request            $request,
+        SecurityService    $securityService,
+        ApproveService     $approveService,
+        CurrentTeamService $currentTeamService,
+        VVTRepository      $vvtRepository,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
+        $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
         }
         $approve = $approveService->approve($vvt, $this->getUser());
         if ($approve['clone'] === true) {
-            $newVvt = $this->getDoctrine()->getRepository(VVT::class)->find($approve['data']);
+            $newVvt = $vvtRepository->find($approve['data']);
 
-            $em = $this->getDoctrine()->getManager();
             if ($vvt->getActivDsfa()) {
                 $dsfa = $vvt->getActivDsfa();
                 $newDsfa = clone $dsfa;
                 $newDsfa->setVvt($newVvt);
                 $newDsfa->setPrevious(null);
-                $em->persist($newDsfa);
+                $this->em->persist($newDsfa);
             }
             foreach ($vvt->getPolicies() as $item) {
                 $item->addProcess($newVvt);
-                $em->persist($item);
+                $this->em->persist($item);
             }
             foreach ($vvt->getSoftware() as $software) {
                 $software->addVvt($newVvt);
-                $em->persist($software);
+                $this->em->persist($software);
             }
 
-            $em->persist($newVvt);
-            $em->flush();
+            $this->em->persist($newVvt);
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('vvt_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
@@ -274,9 +343,16 @@ class VvtController extends AbstractController
     }
 
     #[Route(path: '/vvt/clone', name: 'vvt_clone')]
-    public function cloneVvt(Request $request, SecurityService $securityService, VVTService $VVTService, ValidatorInterface $validator, CurrentTeamService $currentTeamService)
+    public function cloneVvt(
+        Request            $request,
+        SecurityService    $securityService,
+        VVTService         $VVTService,
+        ValidatorInterface $validator,
+        CurrentTeamService $currentTeamService,
+        VVTRepository      $vvtRepository,
+    ): Response
     {
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
+        $vvt = $vvtRepository->find($request->get('id'));
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
@@ -303,16 +379,16 @@ class VvtController extends AbstractController
             $vvt = $form->getData();
             $errors = $validator->validate($vvt);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($vvt);
-                $em->flush();
+                $this->em->persist($vvt);
+                $this->em->flush();
+
                 return $this->redirectToRoute('vvt');
             }
         }
         return $this->render('vvt/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Verarbeitung erfassen',
+            'title' => $this->translator->trans(id: 'processing.track', domain: 'vvt'),
             'activNummer' => true,
             'vvt' => $newVvt,
             'activ' => $newVvt->getActiv(),
@@ -321,11 +397,17 @@ class VvtController extends AbstractController
     }
 
     #[Route(path: '/vvt/disable', name: 'vvt_disable')]
-    public function disableVvt(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
+    public function disableVvt(
+        Request            $request,
+        SecurityService    $securityService,
+        DisableService     $disableService,
+        CurrentTeamService $currentTeamService,
+        VVTRepository      $vvtRepository,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->find($request->get('id'));
+        $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) && $securityService->adminCheck($user, $team) && !$vvt->getApproved()) {
             $disableService->disable($vvt, $user);

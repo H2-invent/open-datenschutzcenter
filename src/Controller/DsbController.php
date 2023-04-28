@@ -2,15 +2,25 @@
 
 namespace App\Controller;
 
-use App\Entity\Team;
+use App\Repository\TeamRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DsbController extends AbstractController
 {
+    private EntityManagerInterface $em;
+
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+        $this->em = $this->getDoctrine()->getManager();
+    }
+
     #[Route(path: '/ext-dsb', name: 'dsb')]
-    public function index()
+    public function index(): Response
     {
         $dsbTeams = $this->getUser()->getTeamDsb();
         if (count($dsbTeams) < 1) {
@@ -23,21 +33,33 @@ class DsbController extends AbstractController
     }
 
     #[Route(path: '/ext-dsb/change', name: 'dsb_change')]
-    public function change(Request $request)
+    public function change(
+        Request        $request,
+        TeamRepository $teamRepository,
+    ): Response
     {
-        $team = $this->getDoctrine()->getRepository(Team::class)->find($request->get('id'));
+        $team = $teamRepository->find($request->get('id'));
 
         if (in_array($team, $this->getUser()->getTeamDsb()->toarray())) {
             $user = $this->getUser();
             $user->addTeam($team);
             $team->addAdmin($user);
             $user->setAkademieUser($team);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->persist($team);
-            $em->flush();
-            return $this->redirectToRoute('dashboard', ['snack' => 'Team gewächselt']);
+            $this->em->persist($user);
+            $this->em->persist($team);
+            $this->em->flush();
+            return $this->redirectToRoute(
+                'dashboard',
+                [
+                    'snack' => $this->translator->trans(id: 'team.change.successful', domain: 'dsb'),
+                ],
+            );
         }
-        return $this->redirectToRoute('dashboard', ['snack' => 'DSB passt nicht zu diesem Team. Benutzer kann das Team nicht wechseln.']);
+        return $this->redirectToRoute(
+            'dashboard',
+            [
+                'snack' => $this->translator->trans(id: 'team.change.error', domain: 'dsb'),
+            ],
+        );
     }
 }

@@ -1,8 +1,10 @@
 config:
+  for: Konfiguration für
   word: Konfiguration
   attached: Angefügte Konfigurationen
   create: Neue Konfiguration hinzufügen
   delete: Konfiguration löschen
+  mismatchSoftware: "FEHLER: Die Konfiguration gehört nicht zu der Software"
   explanation: "Erklärung: Konfiguration"
   disclaimer: "
     In den Konfigurationen kann die IT Abteilung datenschutz- und informationssicherheitsrelevante Konfigurationen
@@ -13,6 +15,8 @@ config:
 dataSharing: Datenweitergabe
 versionApproved: (Diese Version war freigegeben)
 software:
+  edit: Software bearbeiten
+  create: Software anlegen
   inventory: Software Inventar
   approved: Software und Konfiguration freigegeben
   baseData: Stammdaten zu der Software
@@ -35,3 +39,4 @@ connected:
   processing: Verbundene Verarbeitung
   dataTransfer: Verbundene Datenweitergabe
 showImage: Bild anzeigen
+softwareConfig: Softwarekonfiguration

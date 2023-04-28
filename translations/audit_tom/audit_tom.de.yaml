@@ -5,7 +5,9 @@ pdf:
 createdBy: Erstellt von
 history: Historie
 dsgvoDisclaimer: Default Fragen stehen Ihnen als SQL Bundle kostenpflichtig zur Verfügung.
-
+auditQuestion:
+  word: Audit-fragen
+  edit: A-Frage bearbeiten
 newAudit: Neues Audit anlegen
 cloneDefault: Default Fragen Clonen
 allTomAuditQuestions: Alle TOM Auditfragen
@@ -19,3 +21,4 @@ suggestion: Empfehlung
 tomCategory: TOM Kategorie/Zuordnung
 tomAttribute: TOM Attribut
 safetyGoal: Schutzziele
+technicalAndOrganizationMeasures: Technische-und-organisatorische-Massnahmen

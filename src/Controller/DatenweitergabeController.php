@@ -9,12 +9,14 @@
 namespace App\Controller;
 
 use App\Entity\Datenweitergabe;
+use App\Repository\DatenweitergabeRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
 use App\Service\DatenweitergabeService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -24,43 +26,67 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DatenweitergabeController extends AbstractController
 {
+    private EntityManagerInterface $em;
+
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    )
+    {
+        $this->em = $this->getDoctrine()->getManager();
+    }
+
     #[Route(path: '/datenweitergabe', name: 'datenweitergabe')]
-    public function indexDatenweitergabe(SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function indexDataTransfer(
+        SecurityService           $securityService,
+        CurrentTeamService        $currentTeamService,
+        DatenweitergabeRepository $dataTransferRepository,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => 1));
+        $daten = $dataTransferRepository->findBy(array('team' => $team, 'activ' => true, 'art' => 1));
         return $this->render('datenweitergabe/index.html.twig', [
             'table' => $daten,
-            'titel' => 'Alle Datenweitergaben nach DSGVO Art. 30(1)',
+            'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
             'currentTeam' => $team,
         ]);
     }
 
     #[Route(path: '/auftragsverarbeitung', name: 'auftragsverarbeitung')]
-    public function indexAuftragsverarbeitung(SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function indexAuftragsverarbeitung(
+        SecurityService           $securityService,
+        CurrentTeamService        $currentTeamService,
+        DatenweitergabeRepository $dataTransferRepository,
+    ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
+        $daten = $dataTransferRepository->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
             'table' => $daten,
-            'titel' => 'Verarbeitungen nach DSGVO Art. 30(2)',
+            'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
             'currentTeam' => $team,
         ]);
     }
 
     #[Route(path: '/datenweitergabe/new', name: 'datenweitergabe_new')]
-    public function addDatenweitergabe(ValidatorInterface $validator, Request $request, DatenweitergabeService $datenweitergabeService, SecurityService $securityService, CurrentTeamService $currentTeamService)
+    public function addDatenweitergabe(
+        ValidatorInterface     $validator,
+        Request                $request,
+        DatenweitergabeService $datenweitergabeService,
+        SecurityService        $securityService,
+        CurrentTeamService     $currentTeamService,
+    ): Response
     {
         set_time_limit(600);
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -75,24 +101,24 @@ class DatenweitergabeController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+
             $daten = $form->getData();
             foreach ($daten->getVerfahren() as $item) {
                 $item->addDatenweitergaben($daten);
-                $em->persist($item);
+                $this->em->persist($item);
             }
             $errors = $validator->validate($daten);
             if (count($errors) == 0) {
 
-                $em->persist($daten);
-                $em->flush();
+                $this->em->persist($daten);
+                $this->em->flush();
                 return $this->redirectToRoute('datenweitergabe');
             }
         }
         return $this->render('datenweitergabe/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Datenweitergabe erstellen',
+            'title' => $this->translator->trans(id: 'dataTransfer.create', domain: 'datenweitergabe'),
             'daten' => $daten,
             'activNummer' => true,
             'activ' => $daten->getActiv()
@@ -100,7 +126,13 @@ class DatenweitergabeController extends AbstractController
     }
 
     #[Route(path: '/auftragsverarbeitung/new', name: 'auftragsverarbeitung_new')]
-    public function addAuftragsverarbeitung(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService,  CurrentTeamService $currentTeamService)
+    public function addAuftragsverarbeitung(
+        ValidatorInterface     $validator,
+        Request                $request,
+        SecurityService        $securityService,
+        DatenweitergabeService $datenweitergabeService,
+        CurrentTeamService     $currentTeamService,
+    ): Response
     {
         set_time_limit(600);
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -115,24 +147,24 @@ class DatenweitergabeController extends AbstractController
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+
             $daten = $form->getData();
             foreach ($daten->getVerfahren() as $item) {
                 $item->addDatenweitergaben($daten);
-                $em->persist($item);
+                $this->em->persist($item);
             }
 
             $errors = $validator->validate($daten);
             if (count($errors) == 0) {
-                $em->persist($daten);
-                $em->flush();
+                $this->em->persist($daten);
+                $this->em->flush();
                 return $this->redirectToRoute('auftragsverarbeitung');
             }
         }
         return $this->render('datenweitergabe/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => 'Auftragsverarbeitung erstellen',
+            'title' => $this->translator->trans(id: 'requestProcessing.create', domain: 'datenweitergabe'),
             'daten' => $daten,
             'activNummer' => true,
             'activ' => $daten->getActiv()
@@ -140,11 +172,19 @@ class DatenweitergabeController extends AbstractController
     }
 
     #[Route(path: '/datenweitergabe/edit', name: 'datenweitergabe_edit')]
-    public function EditDatenweitergabe(ValidatorInterface $validator, Request $request, SecurityService $securityService, DatenweitergabeService $datenweitergabeService, AssignService $assignService,  CurrentTeamService $currentTeamService)
+    public function editDatenweitergabe(
+        ValidatorInterface        $validator,
+        Request                   $request,
+        SecurityService           $securityService,
+        DatenweitergabeService    $datenweitergabeService,
+        AssignService             $assignService,
+        CurrentTeamService        $currentTeamService,
+        DatenweitergabeRepository $dataTransferRepository,
+    ): Response
     {
         set_time_limit(600);
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+        $daten = $dataTransferRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) === false) {
             if ($daten->getArt() === 1) {
@@ -162,33 +202,39 @@ class DatenweitergabeController extends AbstractController
         $errors = array();
         if ($form->isSubmitted() && $form->isValid() && $daten->getActiv() && !$daten->getApproved()) {
 
-            $em = $this->getDoctrine()->getManager();
+
             $daten->setActiv(false);
             $newDaten = $form->getData();
 
             foreach ($newDaten->getVerfahren() as $item) {
                 $item->addDatenweitergaben($newDaten);
-                $em->persist($item);
+                $this->em->persist($item);
             }
             foreach ($newDaten->getSoftware() as $item) {
                 $item->addDatenweitergabe($newDaten);
-                $em->persist($item);
+                $this->em->persist($item);
             }
 
             $errors = $validator->validate($newDaten);
             if (count($errors) == 0) {
 
-                $em->persist($newDaten);
-                $em->persist($daten);
-                $em->flush();
-                return $this->redirectToRoute('datenweitergabe_edit', array('id' => $newDaten->getId(), 'snack' => 'Erfolgreich gespeichert'));
+                $this->em->persist($newDaten);
+                $this->em->persist($daten);
+                $this->em->flush();
+                return $this->redirectToRoute(
+                    'datenweitergabe_edit',
+                    [
+                        'id' => $newDaten->getId(),
+                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
+                    ],
+                );
             }
         }
         return $this->render('datenweitergabe/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
             'errors' => $errors,
-            'title' => 'Datenweitergabe bearbeiten',
+            'title' => $this->translator->trans(id: 'dataTransfer.edit', domain: 'datenweitergabe'),
             'daten' => $daten,
             'activ' => $daten->getActiv(),
             'activNummer' => false,
@@ -198,13 +244,26 @@ class DatenweitergabeController extends AbstractController
 
     #[Route(path: '/datenweitergabe/download/{id}', name: 'datenweitergabe_download_file', methods: ['GET'])]
     #[ParamConverter('datenweitergabe', options: ['mapping' => ['id' => 'id']])]
-    public function downloadArticleReference(FilesystemInterface $datenFileSystem, Datenweitergabe $datenweitergabe, SecurityService $securityService, LoggerInterface $logger, CurrentTeamService $currentTeamService)
+    public function downloadArticleReference(
+        FilesystemInterface $datenFileSystem,
+        Datenweitergabe     $datenweitergabe,
+        SecurityService     $securityService,
+        LoggerInterface     $logger,
+        CurrentTeamService  $currentTeamService,
+    ): Response
     {
         $stream = $datenFileSystem->read($datenweitergabe->getUpload());
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamDataCheck($datenweitergabe, $team) === false) {
-            $message = ['typ' => 'DOWNLOAD', 'error' => true, 'hinweis' => 'Fehlerhafter download. User nicht berechtigt!', 'dokument' => $datenweitergabe->getUpload(), 'user' => $this->getUser()->getUsername()];
-            $logger->error($message['typ'], $message);
+            $logger->error(
+                'DOWNLOAD',
+                [
+                    'typ' => 'DOWNLOAD',
+                    'error' => true,
+                    'hinweis' => 'Fehlerhafter download. User nicht berechtigt!',
+                    'dokument' => $datenweitergabe->getUpload(),
+                    'user' => $this->getUser()->getUsername()
+                ]);
             return $this->redirectToRoute('dashboard');
         }
 
@@ -217,33 +276,47 @@ class DatenweitergabeController extends AbstractController
         );
 
         $response->headers->set('Content-Disposition', $disposition);
-        $message = ['typ' => 'DOWNLOAD', 'error' => false, 'hinweis' => 'Download erfolgreich', 'dokument' => $datenweitergabe->getUpload(), 'user' => $this->getUser()->getUsername()];
-        $logger->info($message['typ'], $message);
+        $logger->info(
+            'DOWNLOAD',
+            [
+                'typ' => 'DOWNLOAD',
+                'error' => false,
+                'hinweis' => 'Download erfolgreich',
+                'dokument' => $datenweitergabe->getUpload(),
+                'user' => $this->getUser()->getUsername()
+            ],
+        );
         return $response;
     }
 
     #[Route(path: '/datenweitergabe/approve', name: 'datenweitergabe_approve')]
-    public function approveDatenweitergabe(Request $request, SecurityService $securityService, ApproveService $approveService, CurrentTeamService $currentTeamService)
+    public function approveDatenweitergabe(
+        Request                   $request,
+        SecurityService           $securityService,
+        ApproveService            $approveService,
+        CurrentTeamService        $currentTeamService,
+        DatenweitergabeRepository $dataTransferRepository,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+        $daten = $dataTransferRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($daten, $this->getUser());
             if ($approve['clone'] === true) {
-                $newDaten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($approve['data']);
-                $em = $this->getDoctrine()->getManager();
+                $newDaten = $dataTransferRepository->find($approve['data']);
+
 
                 foreach ($newDaten->getVerfahren() as $item) {
                     $item->addDatenweitergaben($newDaten);
-                    $em->persist($item);
+                    $this->em->persist($item);
                 }
                 foreach ($newDaten->getSoftware() as $item) {
                     $item->addDatenweitergabe($newDaten);
-                    $em->persist($item);
+                    $this->em->persist($item);
                 }
-                $em->flush();
+                $this->em->flush();
             }
             return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
         }
@@ -256,11 +329,17 @@ class DatenweitergabeController extends AbstractController
     }
 
     #[Route(path: '/datenweitergabe/disable', name: 'datenweitergabe_disable')]
-    public function disableDatenweitergabe(Request $request, SecurityService $securityService, DisableService $disableService, CurrentTeamService $currentTeamService)
+    public function disableDatenweitergabe(
+        Request                   $request,
+        SecurityService           $securityService,
+        DisableService            $disableService,
+        CurrentTeamService        $currentTeamService,
+        DatenweitergabeRepository $dataTransferRepository,
+    ): Response
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->find($request->get('id'));
+        $daten = $dataTransferRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team) && !$daten->getApproved()) {
             $disableService->disable($daten, $user);

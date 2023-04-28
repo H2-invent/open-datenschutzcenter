@@ -1,7 +1,7 @@
 archiveConcept:
   word: Archivierungskonzept
-  software: Archiviungskonzept nach Software
-  processing: Archiviungskonzept nach Verarbeitungen
+  software: Archivierungskonzept nach Software
+  processing: Archivierungskonzept nach Verarbeitungen
 softwareName: Name der Software
 inventoryNumber: Inventarnummer
 expired: ABGELAUFEN
@@ -31,7 +31,18 @@ dataProtectionOfficer: Datenschutzbeauftragter
 representedBy: Vertreten durch
 responsible: Verantwortliche Stelle
 report:
-  create: BerichtErstellen
+  about:
+    auditQuestions: Bericht zu Audit-Fragen
+    dataTransfer: Bericht zur Datenweitergabe
+    dataIncident: Bericht zu Datenvorfall
+    dataProtectionGuidelines: Bericht zu Datenschutzrichtlinien
+    software: Bericht zu verwendeter Software und Konfiguration
+    recoveryConcept: Recovery- und Wiederherstellungskonzept
+    clientRequest: Bericht zur Kundenanfrage und Datenauskunft
+    clientRequestBy: Bericht zur Kundenanfrage und Datenauskunft von
+    workReport: Tätigkeitsbericht erstellen
+  create: Bericht erstellen
+  notAvailable: Keine Berichte vorhanden
 vvt: Verarbeitungstätigkeiten (VVT)
 dw: Datenweitergaben (DW)
 avv: Auftragsverarbeitung (AV)
@@ -43,13 +54,15 @@ auditQuestions:
     all: Alle relevanten Audit-Fragen exportieren
     title: Exportieren Sie Ihre aktuelle und relevanten (nicht unbearbeitet, nicht zutreffend) Audit-Fragen
   exportUnedited:
-    all: Exportieren Sie Ihre aktuelle und unbearbetieten Auditfragen
-    title: Alle unbearbeiteten Auditfragen exportieren
+    all: Exportieren Sie Ihre aktuelle und unbearbeiteten Audit-Fragen
+    title: Alle unbearbeiteten Audit-Fragen exportieren
 pdf:
   create: 'PDF von allen {target} erstellen'
   createWithHistory: 'PDF von allen {target} inkl. Historie erstellen'
 tom:
   word: TOM
+  general: Allgemeine TOM
+  global: Globale_TOM
   create:
     all:
       export: Exportieren Sie Ihre aktuelle technischen und organisatorischen Maßnahmen für alle Verabreitungen
@@ -59,6 +72,7 @@ tom:
       export: Exportieren Sie Ihre aktuelle technischen und organisatorischen Maßnahmen
 dataProtection:
   word: Datenschutzvorfälle
+  incident: Datenschutzvorfall
   create:
     all:
       export: Exportieren Sie alle Datenschutzvorfälle
@@ -80,7 +94,7 @@ software:
       export: Archivierungskonzept exportieren
     recoveryConcept:
       title: Exportieren Sie das Archivierungskonzept von allen Anwendungen
-      export: Recoverykonzept exportieren
+      export: Recovery-Konzept exportieren
 academy:
   word: Akademie
   allDoneBills: Alle bis jetzt abgeschlossenen Buchungen
@@ -91,3 +105,4 @@ customerRequest:
   word: Tätigkeitsbericht
   create: Tätigkeitsbericht erstellen
 deletionConcept: Löschkonzepte
+recoveryConcept: Wiederherstellungskonzept

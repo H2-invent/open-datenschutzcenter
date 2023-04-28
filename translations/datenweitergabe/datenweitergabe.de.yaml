@@ -27,6 +27,7 @@ contractType: Vertragsform
 associatedProcessing: Zugehörige Verarbeitungstätigkeit
 associatedSoftware: Zugehörige Software und verbundene Verarbeitungstätigkeit
 dataTransfer:
+  edit: Datenweitergabe bearbeiten
   basics: Grundlage für die Datenweitergabe
   type: Art der Datenweitergabe
   count: Nummer der Datenweitergabe
@@ -34,6 +35,7 @@ dataTransfer:
   object: Gegenstand der Datenweitergabe
   word: Datenweitergabe
   responsible: Verantwortlich für die Datenweitergabe (Intern)
+  disclaimer: Alle Datenweitergaben nach DSGVO Art. 30(1)
   info:
     title: Erklärung Datenweitergabe
     text: Die Verarbeitung von Daten im Auftrag kommt in nahezu jedem Unternehmen vor. Sei es durch die Nutzung eines externen Rechenzentrums, die Nutzung einer Dienstleistung, die als sog. Software-as-a-Service (SaaS) erbracht wird, Cloud Computing oder bestimmte Wartungen von IT-Systemen durch technische Dienstleister. In diesen Fällen liegt in der Regel eine Datenweitergabe vor. Und da gilt es besondere Maßnahmen zu treffen, um die Vorgaben der Datenschutz-Grundverordnung (DSGVO) einzuhalten.
