@@ -5,6 +5,8 @@ minutes: Minuten
 alreadyBilled: Bereits abgerechnet
 billed: Abgerechnet
 worker: Bearbeiter
+task:
+  create: Aufgabe erstellen
 work:
   billed: Aktivität abgerechnet
   edit: Aktivität bearbeiten
