@@ -1,0 +1,12 @@
+download: herunterladen
+version: Version
+approved: (Diese Version war freigegeben)
+newForm: New form
+taskProcessing:
+  create: New order processing
+form:
+  edit: Formular bearbeiten
+  create: Formular erstellen/hochladen
+  word: Formulare
+user:
+  unauthorized: Fehlerhafter download. User nicht berechtigt!
