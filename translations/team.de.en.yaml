@@ -15,6 +15,7 @@ admin:
 user:
   create: Add user
 team:
+  data: Stammdaten
   delete: '{teamName} löschen'
   manage: Manage teams
   create: New team
@@ -25,6 +26,7 @@ academy:
   word: Academy
   users: Academy users
   addUser: Add user
+  manage: Manage academy
 extDsb: Ext. DPO
 coordinator: Member
 openInvitations: Open invitations
@@ -33,3 +35,10 @@ members:
   manageHint:
     odc: Mitarbeitende können als normale Mitglieder oder als Admin hinzugefügt werden. Mitglieder können Elemente erstellen, bearbeiten, zuweisen und exportieren. Admins können neue Mitglieder hinzufügen, Elemente freigeben und die Akademie verwalten.
     keycloak: In diesem ODC wird die Teamzugehörigkeit über Keycloakgruppen verwaltet. Ändert sich die Mitgliedschaft eines Nutzers im Keycloak, wird diese beim nächsten Login im ODC aktualisiert.
+customFromPresents: Change Form Presets
+dsb:
+  error:
+    selfRemove: Sie können sich nicht selbst aus dem Team entfernen und wurden daher nur als externer DSB entfernt.
+  manage: Manage external DPO
+  added: A new DPO was added.
+  removed: You have removed the external DPO from your team.
