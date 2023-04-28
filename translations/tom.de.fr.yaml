@@ -55,6 +55,7 @@ lawParagraph:
     title: Technisch und organisatorische Massnahmen nach Art. 32 DSGVO, § 62 BDSG
     excerpt: ' Im Folgenden werden die technischen und organisatorischen Maßnahmen zur Gewährleistung von Datenschutz und Datensicherheit festgelegt, die der Auftragnehmer mindestens einzurichten und laufend aufrecht zu erhalten hat.'
 tom:
+  edit: TOM bearbeiten
   create: Neue TOM anlegen
   overview: TOM Übersicht
 processingActivities: VVT
