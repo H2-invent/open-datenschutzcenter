@@ -11,15 +11,16 @@ namespace App\Service;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class DisableService
 {
-    private $em;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(
+        private EntityManagerInterface $em,
+        private TranslatorInterface    $translator,
+    )
     {
-        $this->em = $entityManager;
     }
 
     function disable($data, User $user)
@@ -30,12 +31,12 @@ class DisableService
             $data->setActiv(2);
             $data->setApprovedBy($user);
             $status['status'] = true;
-            $status['snack'] = 'Gelöscht';
+            $status['snack'] = $this->translator->trans(id: 'deleted', domain: 'general');
         } else {
             $data->setActiv(1);
             $data->setApprovedBy($user);
             $status['status'] = true;
-            $status['snack'] = 'Widerhergestellt';
+            $status['snack'] = $this->translator->trans(id: 'restored', domain: 'general');
         }
         $this->em->persist($data);
         $this->em->flush();

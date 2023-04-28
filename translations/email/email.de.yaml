@@ -4,6 +4,7 @@ subject:
   notificationComment: -- Ein neuer Kommentar zu Ihrer Anfrage --
   newCustomerRequest: -- Neue Kundenanfrage --
   verifyEmail: -- Bestätigen Sie Ihre Email Adresse --
+  invite: Einladung zum ODC
 body:
   passwordReset: '
     Passwort neu setzen
@@ -177,6 +178,7 @@ salutation:
     </p>'
 
 footer:
+  standard: 'Diese Mail wurde Ihnen gesendet im Auftrag von:'
   sendBy: '
   Diese Mail wurde Ihnen gesendet im Auftrag von: {teamName}
   Datenschutzhinweis unter {dataPrivacy}'

@@ -8,13 +8,11 @@
 
 namespace App\Service;
 
-
 use App\Entity\AkademieBuchungen;
 use App\Entity\AkademieKurse;
 use App\Entity\Team;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Environment;
-
 
 class AkademieService
 {
@@ -23,7 +21,11 @@ class AkademieService
     private NotificationService $notificationService;
     private CurrentTeamService $currentTeamService;
 
-    public function __construct(Environment $engine, EntityManagerInterface $entityManager, NotificationService $notificationService, CurrentTeamService $currentTeamService)
+    public function __construct(
+        Environment            $engine,
+        EntityManagerInterface $entityManager,
+        NotificationService    $notificationService,
+        CurrentTeamService     $currentTeamService)
     {
         $this->em = $entityManager;
         $this->twig = $engine;
@@ -31,7 +33,7 @@ class AkademieService
         $this->currentTeamService = $currentTeamService;
     }
 
-    function addUser(AkademieKurse $kurs, $daten)
+    public function addUser(AkademieKurse $kurs, $daten): void
     {
 
         $buchung = new AkademieBuchungen();
@@ -57,7 +59,7 @@ class AkademieService
 
     }
 
-    function removeKurs(Team $team, AkademieKurse $kurs)
+    public function removeKurs(Team $team, AkademieKurse $kurs): bool
     {
         $buchungen = $this->em->getRepository(AkademieBuchungen::class)->findBuchungenByTeam($team, $kurs);
 

@@ -63,6 +63,10 @@ gdpr:  '<h3 class="h3-responsive mt-3">Ihre Rechte nach der DSGVO</h3>
         </p>'
 
 user:
+  comment:
+    validation:
+      removed: Die Nutzer-Validierung wurde wieder entfernt.
+      success: Der Nutzer wurde als validiert markiert.
   validated: Nutzer ist verifiziert
   undoValidation: Nutzervalidierung rückgängig
 
@@ -76,7 +80,8 @@ request:
   find: Suchen Sie nach Ihrer bestehenden Anfrage.
   response: Erhalten Sie die Antwort auf Ihre Anfrage.
   all: Alle Anfragen
-  closed: Diese Anfrage ist geschlossen.
+  closed: Diese Anfrage wurde geschlossen.
+  reopened: Diese Anfrage wurde wieder geöffnet.
   publish:
     private: Intern schalten
     public: Öffentlich schalten

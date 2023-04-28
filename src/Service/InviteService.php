@@ -9,42 +9,34 @@
 namespace App\Service;
 
 use App\Entity\User;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-
 class InviteService
 {
-
-
-    private EntityManagerInterface $em;
-    private TranslatorInterface $translator;
-    private UrlGeneratorInterface $router;
-    private MailerService $mailer;
-    private ParameterBagInterface $parameterBag;
-    private Environment $twig;
-
-    public function __construct(Environment $environment, ParameterBagInterface $parameterBag, MailerService $mailerService, EntityManagerInterface $entityManager, TranslatorInterface $translator, UrlGeneratorInterface $urlGenerator)
+    public function __construct(
+        private EntityManagerInterface $em,
+        private TranslatorInterface    $translator,
+        private UrlGeneratorInterface  $router,
+        private MailerService          $mailer,
+        private ParameterBagInterface  $parameterBag,
+        private Environment            $twig,
+    )
     {
-        $this->translator = $translator;
-        $this->em = $entityManager;
-        $this->router = $urlGenerator;
-        $this->mailer = $mailerService;
-        $this->parameterBag = $parameterBag;
-        $this->twig = $environment;
     }
 
-    public function newUser($email)
+    public function newUser($email): User
     {
         $user = $this->em->getRepository(User::class)->findOneBy(array('email' => $email));
         if (!$user) {
             $user = new User();
             $user->setLastName('')
                 ->setFirstName('')
-                ->setCreatedAt(new \DateTime())
+                ->setCreatedAt(new DateTime())
                 ->setRegisterId(md5(uniqid('ksdjhfkhsdkjhjksd', true)))
                 ->setUsername($email)
                 ->setEmail($email)
@@ -62,8 +54,9 @@ class InviteService
             $this->parameterBag->get('defaultEmail'),
             $this->parameterBag->get('defaultEmail'),
             $email,
-            $this->translator->trans('Einladung zum ODC'),
-            $content);
+            $this->translator->trans(id: 'subject.invite', domain: 'email'),
+            $content
+        );
         return $user;
     }
 

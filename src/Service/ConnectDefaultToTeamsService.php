@@ -22,23 +22,21 @@ use Symfony\Component\Console\Output\Output;
 
 class ConnectDefaultToTeamsService
 {
-    private $em;
     private $team;
     private $output;
     private $progress;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $em)
     {
-        $this->em = $entityManager;
     }
 
-    public function connectDefault(Team $team, Output $output = null)
+    public function connectDefault(Team $team, Output $output = null): void
     {
         $this->team = $team;
         $this->output = $output;
-        if ($output){
-        $this->progress = new ProgressBar($this->output, 1);
-        }else{
+        if ($output) {
+            $this->progress = new ProgressBar($this->output, 1);
+        } else {
             $this->progress = null;
         }
         $this->personenGruppen();
@@ -52,7 +50,7 @@ class ConnectDefaultToTeamsService
         $this->finishProgress();
     }
 
-    private function personenGruppen()
+    private function personenGruppen(): void
     {
         $tmp = array();
 
@@ -116,7 +114,7 @@ class ConnectDefaultToTeamsService
     }
 
 
-    private function risikoGruppen()
+    private function risikoGruppen(): void
     {
         $tmp = array();
         $risikoGruppen = $this->em->getRepository(VVTRisiken::class)->findBy(array('team' => null));
@@ -147,7 +145,7 @@ class ConnectDefaultToTeamsService
 
     }
 
-    private function datenGruppen()
+    private function datenGruppen(): void
     {
         $tmp = array();
         $datenkategorie = $this->em->getRepository(VVTDatenkategorie::class)->findBy(array('team' => null));
@@ -206,7 +204,7 @@ class ConnectDefaultToTeamsService
 
     }
 
-    private function gesetzlicheGrundlagen()
+    private function gesetzlicheGrundlagen(): void
     {
         $tmp = array();
         $grundlagen = $this->em->getRepository(VVTGrundlage::class)->findBy(array('team' => null));
@@ -238,7 +236,7 @@ class ConnectDefaultToTeamsService
 
     }
 
-    private function status()
+    private function status(): void
     {
         $tmp = array();
         $status = $this->em->getRepository(VVTStatus::class)->findBy(array('team' => null));
@@ -267,7 +265,7 @@ class ConnectDefaultToTeamsService
 
     }
 
-    private function grundlagenDatenweitergabe()
+    private function grundlagenDatenweitergabe(): void
     {
         $tmp = array();
         $grundlagenDatenweitergabe = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findBy(array('team' => null));
@@ -296,7 +294,7 @@ class ConnectDefaultToTeamsService
 
     }
 
-    private function standDatenweitergabe()
+    private function standDatenweitergabe(): void
     {
         $tmp = array();
         $defaultValue = $this->em->getRepository(DatenweitergabeStand::class)->findBy(array('team' => null));
@@ -324,7 +322,7 @@ class ConnectDefaultToTeamsService
 
     }
 
-    private function schutzZiele()
+    private function schutzZiele(): void
     {
         $tmp = array();
         $defaultValue = $this->em->getRepository(AuditTomZiele::class)->findBy(array('team' => null));
@@ -355,21 +353,23 @@ class ConnectDefaultToTeamsService
 
     }
 
-    private function increaseProgress($steps)
+    private function increaseProgress($steps): void
     {
         if ($this->progress) {
             $this->progress->setMaxSteps($this->progress->getMaxSteps() + $steps);
         }
     }
 
-    private function advanceProgress()
+    private function advanceProgress(): void
     {
         if ($this->progress) {
             $this->progress->advance();
         }
     }
-    private function finishProgress(){
-        if ($this->progress){
+
+    private function finishProgress(): void
+    {
+        if ($this->progress) {
             $this->progress->finish();
         }
     }

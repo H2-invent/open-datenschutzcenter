@@ -16,6 +16,7 @@ createdAt: Erstellt am
 createdBy: Erstellt von
 date: Datum
 delete: Löschen
+deleted: Gelöscht
 departments: Abteilungen
 description: Beschreibung
 download:
@@ -27,6 +28,11 @@ email: Email
 end: Ende
 endTime: Endzeit
 error:
+  userIsNotTeamAdministrator: Benutzer*in ist nicht Admin dieses Teams
+  userWithoutTeam: Benutzer*in keinem Team zugewiesen
+  userNotFoundInArray: Benutzer*in nicht in Array von Teams
+  userNotInTeamAccessDenied: Benutzer*in nicht in Team und nicht berechtigt
+  userNotAuthorizedToManageTeam: Benutzer*in ist nicht berechtigt, Teams zu verwalten
   signature: Die Signatur ist ungültig. Bitte kontaktieren Sie die Personen, die Ihnen die Datei überlassen hat.
   file: '
     Die Datei ist fehlerhaft und kann nicht eingelesen werden. 
@@ -60,6 +66,7 @@ regard: Betreff
 remove: Entfernen
 responsible: Verantwortlich
 restore: Wiederherstellen
+restored: Wiederhergestellt
 save:
   comment: Kommentar gespeichert
   changesSuccessful: Änderung gespeichert

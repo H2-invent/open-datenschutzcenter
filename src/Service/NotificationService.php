@@ -13,6 +13,7 @@ use App\Entity\AkademieBuchungen;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class NotificationService
@@ -22,7 +23,12 @@ class NotificationService
     private $parameterBag;
 
 
-    public function __construct(EntityManagerInterface $entityManager, MailerService $mailerService, ParameterBagInterface $parameterBag)
+    public function __construct(
+        EntityManagerInterface      $entityManager,
+        MailerService               $mailerService,
+        ParameterBagInterface       $parameterBag,
+        private TranslatorInterface $translator,
+    )
     {
         $this->em = $entityManager;
         $this->mailer = $mailerService;
@@ -30,50 +36,50 @@ class NotificationService
     }
 
 
-    function sendNotificationAkademie(AkademieBuchungen $buchung, $content)
+    public function sendNotificationAkademie(AkademieBuchungen $buchung, $content): bool
     {
         $this->mailer->sendEmail(
-            'Akademie Datenschutzcenter',
+            $this->translator->trans(id: 'notification.academy.sender', domain: 'service'),
             $this->parameterBag->get('akademieEmail'),
             $buchung->getUser()->getEmail(),
-            'Ihnen wurde ein neuer Kurs zugewiesen',
+            $this->translator->trans(id: 'notification.academy.lesson.assigned', domain: 'service'),
             $content
         );
 
         return true;
     }
 
-    function sendNotificationAssign($content, User $user)
+    public function sendNotificationAssign($content, User $user): bool
     {
         $this->mailer->sendEmail(
-            'Datenschutzcenter',
+            $this->translator->trans(id: 'notification.odc.sender', domain: 'service'),
             $this->parameterBag->get('defaultEmail'),
             $user->getEmail(),
-            'Ihnen wurde ein Element zum Bearbeiten zugewiesen',
-            $content
+            $this->translator->trans(id: 'notification.odc.element.assign', domain: 'service'),
+            $content,
         );
 
         return true;
     }
 
-    function sendNotificationRequest($content, $email)
+    public function sendNotificationRequest($content, $email): bool
     {
         $this->mailer->sendEmail(
-            'Datenschutzcenter',
+            $this->translator->trans(id: 'notification.odc.sender', domain: 'service'),
             $this->parameterBag->get('defaultEmail'),
             $email,
-            'Es ist eine neue Nachricht für Sie vorhanden',
+            $this->translator->trans(id: 'notification.odc.new.message.available', domain: 'service'),
             $content
         );
 
         return true;
     }
 
-    function sendEncrypt($pgp, $content, $email, $betreff)
+    public function sendEncrypt($pgp, $content, $email, $betreff): bool
     {
         $this->mailer->sendEncrypt(
             $pgp,
-            'Datenschutzcenter',
+            $this->translator->trans(id: 'notification.odc.sender', domain: 'service'),
             $this->parameterBag->get('defaultEmail'),
             $email,
             $betreff,
@@ -83,30 +89,29 @@ class NotificationService
         return true;
     }
 
-    function sendRequestVerify($content, $email)
+    public function sendRequestVerify($content, $email): bool
     {
         $this->mailer->sendEmail(
-            'Datenschutzcenter',
+            $this->translator->trans(id: 'notification.odc.sender', domain: 'service'),
             $this->parameterBag->get('defaultEmail'),
             $email,
-            'Bestätigen Sie Ihre Email Adresse',
+            $this->translator->trans(id: 'notification.odc.email.verify', domain: 'service'),
             $content
         );
 
         return true;
     }
 
-    function sendRequestNew($content, $email)
+    public function sendRequestNew($content, $email): bool
     {
         $this->mailer->sendEmail(
-            'Datenschutzcenter',
+            $this->translator->trans(id: 'notification.odc.sender', domain: 'service'),
             $this->parameterBag->get('defaultEmail'),
             $email,
-            'Neue Kundenanfrage in Datenschutcenter',
+            $this->translator->trans(id: 'notification.odc.new.clientRequest', domain: 'service'),
             $content
         );
 
         return true;
     }
-
 }

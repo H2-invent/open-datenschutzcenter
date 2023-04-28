@@ -8,22 +8,26 @@
 
 namespace App\Service;
 
-
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Form\FormFactoryInterface;
-
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApproveService
 {
     private $em;
 
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder)
+    public function __construct(
+        EntityManagerInterface      $entityManager,
+        FormFactoryInterface        $formBuilder,
+        private TranslatorInterface $translator,
+    )
     {
         $this->em = $entityManager;
     }
 
-    function approve($data, User $user)
+    public function approve($data, User $user): array
     {
         $status = array();
         $status['data'] = $data->getId();
@@ -41,21 +45,21 @@ class ApproveService
                 $this->em->flush();
 
                 $status['status'] = true;
-                $status['snack'] = 'Freigabe entfernt und neue Version angelegt';
+                $status['snack'] = $this->translator->trans(id: 'element.unpublished', domain: 'service');
                 $status['data'] = $newdata->getId();
                 $status['clone'] = true;
             } else {
                 $data->setApproved(true);
                 $data->setApprovedBy($user);
                 $status['status'] = true;
-                $status['snack'] = 'Element freigegeben';
+                $status['snack'] = $this->translator->trans(id: 'element.published', domain: 'service');
                 $this->em->persist($data);
                 $this->em->flush();
             }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $status['status'] = false;
-            $status['snack'] = 'FEHLER: Element konnte nicht freigegeben werden. Versuchen Sie es noch einmal.';
+            $status['snack'] = $this->translator->trans(id: 'element.error');
         }
 
         return $status;

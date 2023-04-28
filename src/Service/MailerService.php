@@ -23,7 +23,6 @@ class MailerService
 
     public function __construct(ParameterBagInterface $parameterBag,  private MailerInterface $mailer)
     {
-
         $this->parameter = $parameterBag;
     }
 
@@ -43,7 +42,7 @@ class MailerService
             );
         foreach ($attachment as $data) {
             $message->attach($data['body'], $data['filename'], $data['type']);
-        };
+        }
         $this->mailer->send($message);
     }
 
