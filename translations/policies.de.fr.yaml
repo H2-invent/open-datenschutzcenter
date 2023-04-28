@@ -1,6 +1,8 @@
 downloadAttachment: Anhang herunterladen
 versionApproved: (Diese Version war freigegeben)
 policies:
+  edit: Richtlinie / Arbeitsanweisung bearbeiten
+  create: Richtlinie & Arbeitsanweisung erstellen
   approvedBy: Richtlinie freigegeben von
   new: Neue Richtlinie anlegen
   internal: Interne Richtlinien und Arbeitsanweisungen
