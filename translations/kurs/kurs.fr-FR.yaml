@@ -1,0 +1,10 @@
+addCourse: Kurs anlegen
+createdUpdatedAt: Erstellt/Upgedatet am
+actions: Aktionen
+confirmAction: Möchten Sie diese Aktion wirklich durchführen?
+lesson:
+  create: Kurs erstellen
+  members:
+    assign: Mitglieder diesem Kurs zuweisen
+processing:
+  create: Verarbeitung erstellen
