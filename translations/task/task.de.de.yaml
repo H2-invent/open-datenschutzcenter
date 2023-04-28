@@ -1,0 +1,13 @@
+priority: Priorität
+deadlineDue: Zu erledigen bis
+finishedAt: Erledigt am
+finish: Abschließen
+confirmAction: Möchten Sie diese Aktion wirklich durchführen?
+task:
+  create: Neue Aufgabe anlegen
+  word: Aufgabe
+  edit: Aufgabe bearbeiten
+  overview: Aufgaben Übersicht
+  show:
+    all: Alle Aufgaben anzeigen
+    open: Offene Aufgaben anzeigen
