@@ -14,12 +14,6 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class LoginController extends AbstractController
 {
-    #[Route(path: '/login/auth0_login', name: 'login_auth0')]
-    public function index(ClientRegistry $clientRegistry): Response
-    {
-        return $clientRegistry->getClient('auth0_main')->redirect(['user']);
-    }
-
     #[Route(path: '/login/auth0_login/check', name: 'connect_auth0_check')]
     public function check(
         ClientRegistry $clientRegistry,
@@ -46,6 +40,12 @@ class LoginController extends AbstractController
             // probably you should return the reason to the user
             die;
         }
+    }
+
+    #[Route(path: '/login/auth0_login', name: 'login_auth0')]
+    public function index(ClientRegistry $clientRegistry): Response
+    {
+        return $clientRegistry->getClient('auth0_main')->redirect(['user']);
     }
 
     #[Route(path: '/logout_keycloak', name: 'logout_keycloak')]

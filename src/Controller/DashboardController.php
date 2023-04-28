@@ -6,7 +6,7 @@
  * Time: 09:15
  */
 
- /**
+/**
  * Modified by
  * User: Jan Juister
  * Date: 13.05.2022
@@ -53,11 +53,11 @@ class DashboardController extends AbstractController
                               VVTDatenkategorieRepository $dataCategoryRepository,
                               AkademieBuchungenRepository $bookingRepository,
                               TaskRepository              $taskRepository
-    ) : Response
+    ): Response
     {
         // if no teams exist, redirect to first_run
         $allTeams = $teamRepository->findAll();
-        if (sizeof($allTeams) === 0){
+        if (sizeof($allTeams) === 0) {
             return $this->redirectToRoute('first_run');
         }
 
@@ -121,8 +121,8 @@ class DashboardController extends AbstractController
             'tasks' => $tasks,
             'snack' => $request->get('snack'),
             'loeschkonzepte' => $loeschkonzepte,
-            'vvtdatenkategorien' => $vvtdatenkategorien, 
-            
+            'vvtdatenkategorien' => $vvtdatenkategorien,
+
 
         ]);
     }

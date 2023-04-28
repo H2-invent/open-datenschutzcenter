@@ -30,187 +30,29 @@ class TeamMemberController extends AbstractController
     {
     }
 
-    #[Route(path: '/team_mitglieder', name: 'team_mitglieder')]
-    public function mitgliederAdd(
-        Request                $request,
-        InviteService          $inviteService,
-        EntityManagerInterface $em,
-        TeamRepository         $teamRepository,
-        SettingsRepository     $settingsRepository,
-        SecurityService        $securityService,
-        CurrentTeamService     $currentTeamService,
+    #[Route(path: '/akademie/admin', name: 'akademie_admin')]
+    public function academyAdmin(
+        SecurityService         $securityService,
+        CurrentTeamService      $currentTeamService,
+        AkademieKurseRepository $academyCourseRepository,
     ): Response
     {
         $user = $this->getUser();
-        $teamId = $request->get('id');
-        $currentTeam = null;
-        $settings = $settingsRepository->findOne();
-        $useKeycloakGroups = $settings ? $settings->getUseKeycloakGroups() : false;
+        $team = $currentTeamService->getTeamFromSession($user);
 
-        if ($teamId) {
-            $team = $teamRepository->find($teamId);
-        } else {
-            $team = $currentTeamService->getCurrentAdminTeam($user);
-            $currentTeam = $team;
-        }
-
-        $temp = array_merge($team->getMembers()->toArray(), $team->getAdmins()->toArray());
-        $members = [];
-        foreach ($temp as $member) {
-            if (!in_array($member, $members)) {
-                $members[] = $member;
-            }
-        }
-
-        if ($securityService->adminCheck($user, $team) === false) {
-            return $this->redirectToRoute('team_abteilungen');
-        }
-
-        $newMember = array();
-        $form = $this->createForm(NewMemberType::class, $newMember);
-        $form->handleRequest($request);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $newMembers = $form->getData();
-            $lines = explode("\n", $newMembers['member']);
-
-            if (!empty($lines)) {
-                foreach ($lines as $line) {
-                    $newMember = trim($line);
-                    $newUser = $inviteService->newUser($newMember);
-                    $newUser->addTeam($team);
-                    $em->persist($newUser);
-                }
-                $em->flush();
-                if ($teamId) {
-                    return $this->redirectToRoute('team_mitglieder', ['id' => $teamId]);
-                }
-                return $this->redirectToRoute('team_mitglieder');
-            }
-        }
-        return $this->render('team/member.html.twig', [
-            'currentTeam' => $currentTeam,
-            'adminArea' => true,
-            'form' => $form->createView(),
-            'errors' => $errors,
-            'title' => $this->translator->trans(id: 'team.manageUsers', domain: 'team'),
-            'team' => $team,
-            'members' => $members,
-            'useKeycloakGroups' => $useKeycloakGroups,
-        ]);
-    }
-
-    #[Route(path: '/team_mitglieder/create', name: 'team_mitglieder_create')]
-    public function teamMemberCreate(
-        Request                $request,
-        SecurityService        $securityService,
-        InviteService          $inviteService,
-        EntityManagerInterface $em,
-        TeamRepository         $teamRepository,
-        CurrentTeamService     $currentTeamService,
-    ): Response
-    {
-        $user = $this->getUser();
-        $teamId = $request->get('id');
-        $team = $teamId ? $teamRepository->find($teamId) : $currentTeamService->getCurrentAdminTeam($user);
-        $target = $this->generateUrl('team_mitglieder');
-
-        if ($securityService->adminCheck($user, $team) === false) {
+        // Admin Route only
+        if (!$securityService->adminCheck($user, $team)) {
             return $this->redirectToRoute('dashboard');
         }
+        $kurse = $academyCourseRepository->findKurseByTeam($team);
 
-        $newMember = array();
-        $form = $this->createForm(NewMemberType::class, $newMember);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $newMembers = $form->getData();
-            $lines = explode("\n", $newMembers['member']);
-
-            if (!empty($lines)) {
-                foreach ($lines as $line) {
-                    $newMember = trim($line);
-                    $user = $inviteService->newUser($newMember);
-
-                    switch ($request->get('type')) {
-                        case 'admin':
-                            if (!$user->hasAdminRole($team)) {
-                                $team->addAdmin($user);
-                                $em->persist($team);
-                            }
-                            break;
-                        case 'academy':
-                            if ($user->getAkademieUser() === null) {
-                                $user->setAkademieUser($team);
-                                $em->persist($user);
-                            }
-                            $target = $this->generateUrl('akademie_admin') . '#user';
-                            break;
-                        default:
-                            if (!$user->hasTeam($team)) {
-                                $user->addTeam($team);
-                                $em->persist($user);
-                            }
-                            if ($teamId) {
-                                $target = $this->generateUrl('team_mitglieder', ['id' => $teamId]);
-                            }
-                    }
-                }
-            }
-            $em->flush();
-            return $this->redirect($target);
-        }
-
-        return $this->render('team/modalViewUser.html.twig', [
-            'form' => $form->createView(),
-            'teamId' => $teamId,
-            'title' => $request->get('title'),
-            'type' => $request->get('type')
+        return $this->render('team/academy.html.twig', [
+            'currentTeam' => $team,
+            'title' => $this->translator->trans(id: 'academy.manage', domain: 'team'),
+            'team' => $team,
+            'data' => $team->getAkademieUsers(),
+            'kurse' => $kurse,
         ]);
-    }
-
-    #[Route(path: '/team_mitglieder/remove', name: 'team_mitglieder_remove')]
-    public function mitgliederRemove(
-        Request                $request,
-        SecurityService        $securityService,
-        TeamRepository         $teamRepository,
-        UserRepository         $userRepository,
-        EntityManagerInterface $em,
-        CurrentTeamService     $currentTeamService,
-    ): Response
-    {
-        $user = $this->getUser();
-        $teamId = $request->get('teamId');
-        $team = $teamId ? $teamRepository->find($teamId) : $currentTeamService->getCurrentAdminTeam($user);
-
-        if ($securityService->adminCheck($user, $team) === false) {
-            return $this->redirectToRoute('team_mitglieder');
-        }
-
-        $member = $userRepository->findOneBy(array('id' => $request->get('memberId')));
-
-        switch ($request->get('type')) {
-            case 'academy':
-                $member->setAkademieUser(null);
-                $target = $this->generateUrl('akademie_admin') . '#user';
-                break;
-            default:
-                if ($member !== $user && $member->hasTeam($team)) {
-                    $member->removeTeam($team);
-                    $team->removeAdmin($member);
-                }
-                if ($teamId) {
-                    $target = $this->generateUrl('team_mitglieder', ['id' => $teamId]);
-                } else {
-                    $target = $this->generateUrl('team_mitglieder');
-                }
-        }
-
-        $em->persist($member);
-        $em->persist($team);
-        $em->flush();
-        return $this->redirect($target);
     }
 
     #[Route(path: '/team_mitglieder/admin', name: 'team_mitglieder_admin')]
@@ -249,31 +91,6 @@ class TeamMemberController extends AbstractController
             return $this->redirectToRoute('team_mitglieder', ['id' => $teamId]);
         }
         return $this->redirectToRoute('team_mitglieder');
-    }
-
-    #[Route(path: '/akademie/admin', name: 'akademie_admin')]
-    public function academyAdmin(
-        SecurityService         $securityService,
-        CurrentTeamService      $currentTeamService,
-        AkademieKurseRepository $academyCourseRepository,
-    ): Response
-    {
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-
-        // Admin Route only
-        if (!$securityService->adminCheck($user, $team)) {
-            return $this->redirectToRoute('dashboard');
-        }
-        $kurse = $academyCourseRepository->findKurseByTeam($team);
-
-        return $this->render('team/academy.html.twig', [
-            'currentTeam' => $team,
-            'title' => $this->translator->trans(id: 'academy.manage', domain: 'team'),
-            'team' => $team,
-            'data' => $team->getAkademieUsers(),
-            'kurse' => $kurse,
-        ]);
     }
 
     #[Route(path: '/ext_team_dsb', name: 'team_dsb')]
@@ -362,5 +179,188 @@ class TeamMemberController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('team_dsb', ['snack' => $snack]);
+    }
+
+    #[Route(path: '/team_mitglieder', name: 'team_mitglieder')]
+    public function mitgliederAdd(
+        Request                $request,
+        InviteService          $inviteService,
+        EntityManagerInterface $em,
+        TeamRepository         $teamRepository,
+        SettingsRepository     $settingsRepository,
+        SecurityService        $securityService,
+        CurrentTeamService     $currentTeamService,
+    ): Response
+    {
+        $user = $this->getUser();
+        $teamId = $request->get('id');
+        $currentTeam = null;
+        $settings = $settingsRepository->findOne();
+        $useKeycloakGroups = $settings ? $settings->getUseKeycloakGroups() : false;
+
+        if ($teamId) {
+            $team = $teamRepository->find($teamId);
+        } else {
+            $team = $currentTeamService->getCurrentAdminTeam($user);
+            $currentTeam = $team;
+        }
+
+        $temp = array_merge($team->getMembers()->toArray(), $team->getAdmins()->toArray());
+        $members = [];
+        foreach ($temp as $member) {
+            if (!in_array($member, $members)) {
+                $members[] = $member;
+            }
+        }
+
+        if ($securityService->adminCheck($user, $team) === false) {
+            return $this->redirectToRoute('team_abteilungen');
+        }
+
+        $newMember = array();
+        $form = $this->createForm(NewMemberType::class, $newMember);
+        $form->handleRequest($request);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newMembers = $form->getData();
+            $lines = explode("\n", $newMembers['member']);
+
+            if (!empty($lines)) {
+                foreach ($lines as $line) {
+                    $newMember = trim($line);
+                    $newUser = $inviteService->newUser($newMember);
+                    $newUser->addTeam($team);
+                    $em->persist($newUser);
+                }
+                $em->flush();
+                if ($teamId) {
+                    return $this->redirectToRoute('team_mitglieder', ['id' => $teamId]);
+                }
+                return $this->redirectToRoute('team_mitglieder');
+            }
+        }
+        return $this->render('team/member.html.twig', [
+            'currentTeam' => $currentTeam,
+            'adminArea' => true,
+            'form' => $form->createView(),
+            'errors' => $errors,
+            'title' => $this->translator->trans(id: 'team.manageUsers', domain: 'team'),
+            'team' => $team,
+            'members' => $members,
+            'useKeycloakGroups' => $useKeycloakGroups,
+        ]);
+    }
+
+    #[Route(path: '/team_mitglieder/remove', name: 'team_mitglieder_remove')]
+    public function mitgliederRemove(
+        Request                $request,
+        SecurityService        $securityService,
+        TeamRepository         $teamRepository,
+        UserRepository         $userRepository,
+        EntityManagerInterface $em,
+        CurrentTeamService     $currentTeamService,
+    ): Response
+    {
+        $user = $this->getUser();
+        $teamId = $request->get('teamId');
+        $team = $teamId ? $teamRepository->find($teamId) : $currentTeamService->getCurrentAdminTeam($user);
+
+        if ($securityService->adminCheck($user, $team) === false) {
+            return $this->redirectToRoute('team_mitglieder');
+        }
+
+        $member = $userRepository->findOneBy(array('id' => $request->get('memberId')));
+
+        switch ($request->get('type')) {
+            case 'academy':
+                $member->setAkademieUser(null);
+                $target = $this->generateUrl('akademie_admin') . '#user';
+                break;
+            default:
+                if ($member !== $user && $member->hasTeam($team)) {
+                    $member->removeTeam($team);
+                    $team->removeAdmin($member);
+                }
+                if ($teamId) {
+                    $target = $this->generateUrl('team_mitglieder', ['id' => $teamId]);
+                } else {
+                    $target = $this->generateUrl('team_mitglieder');
+                }
+        }
+
+        $em->persist($member);
+        $em->persist($team);
+        $em->flush();
+        return $this->redirect($target);
+    }
+
+    #[Route(path: '/team_mitglieder/create', name: 'team_mitglieder_create')]
+    public function teamMemberCreate(
+        Request                $request,
+        SecurityService        $securityService,
+        InviteService          $inviteService,
+        EntityManagerInterface $em,
+        TeamRepository         $teamRepository,
+        CurrentTeamService     $currentTeamService,
+    ): Response
+    {
+        $user = $this->getUser();
+        $teamId = $request->get('id');
+        $team = $teamId ? $teamRepository->find($teamId) : $currentTeamService->getCurrentAdminTeam($user);
+        $target = $this->generateUrl('team_mitglieder');
+
+        if ($securityService->adminCheck($user, $team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $newMember = array();
+        $form = $this->createForm(NewMemberType::class, $newMember);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newMembers = $form->getData();
+            $lines = explode("\n", $newMembers['member']);
+
+            if (!empty($lines)) {
+                foreach ($lines as $line) {
+                    $newMember = trim($line);
+                    $user = $inviteService->newUser($newMember);
+
+                    switch ($request->get('type')) {
+                        case 'admin':
+                            if (!$user->hasAdminRole($team)) {
+                                $team->addAdmin($user);
+                                $em->persist($team);
+                            }
+                            break;
+                        case 'academy':
+                            if ($user->getAkademieUser() === null) {
+                                $user->setAkademieUser($team);
+                                $em->persist($user);
+                            }
+                            $target = $this->generateUrl('akademie_admin') . '#user';
+                            break;
+                        default:
+                            if (!$user->hasTeam($team)) {
+                                $user->addTeam($team);
+                                $em->persist($user);
+                            }
+                            if ($teamId) {
+                                $target = $this->generateUrl('team_mitglieder', ['id' => $teamId]);
+                            }
+                    }
+                }
+            }
+            $em->flush();
+            return $this->redirect($target);
+        }
+
+        return $this->render('team/modalViewUser.html.twig', [
+            'form' => $form->createView(),
+            'teamId' => $teamId,
+            'title' => $request->get('title'),
+            'type' => $request->get('type')
+        ]);
     }
 }

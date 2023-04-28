@@ -22,9 +22,9 @@ use Symfony\Component\Console\Output\Output;
 
 class ConnectDefaultToTeamsService
 {
-    private $team;
     private $output;
     private $progress;
+    private $team;
 
     public function __construct(private EntityManagerInterface $em)
     {
@@ -48,6 +48,147 @@ class ConnectDefaultToTeamsService
         $this->standDatenweitergabe();
         $this->schutzZiele();
         $this->finishProgress();
+    }
+
+    private function advanceProgress(): void
+    {
+        if ($this->progress) {
+            $this->progress->advance();
+        }
+    }
+
+    private function datenGruppen(): void
+    {
+        $tmp = array();
+        $datenkategorie = $this->em->getRepository(VVTDatenkategorie::class)->findBy(array('team' => null));
+        $this->increaseProgress(sizeof($datenkategorie));
+        foreach ($datenkategorie as $data) {
+            $dK = clone $data;
+            $dK->setTeam($this->team)->setActiv(true);
+            $this->em->persist($dK);
+            $tmp[$data->getId()] = $dK;
+            $data->setActiv(false);
+            $this->em->persist($data);
+            $this->advanceProgress();
+        }
+        $this->em->flush();
+
+        $risiken = $this->em->getRepository(Policies::class)->findBy(array('team' => $this->team));
+        $this->increaseProgress(sizeof($risiken));
+
+        foreach ($risiken as $data) {
+            foreach ($data->getCategories() as $data2) {
+                if (isset($tmp[$data2->getId()])) {
+                    $data->addCategory($tmp[$data2->getId()]);
+                    $data->removeCategory($data2);
+                    $this->em->persist($data);
+                }
+            }
+            $this->advanceProgress();
+        }
+        $this->em->flush();
+        $vvt = $this->em->getRepository(VVT::class)->findBy(array('team' => $this->team));
+        $this->increaseProgress(sizeof($vvt));
+        foreach ($vvt as $data) {
+            foreach ($data->getKategorien() as $data2) {
+                if (isset($tmp[$data2->getId()])) {
+                    $data->addKategorien($tmp[$data2->getId()]);
+                    $data->removeKategorien($data2);
+                    $this->em->persist($data);
+                }
+            }
+            $this->advanceProgress();
+        }
+        $this->em->flush();
+        $vorfall = $this->em->getRepository(Vorfall::class)->findBy(array('team' => $this->team));
+        $this->increaseProgress(sizeof($vorfall));
+        foreach ($vorfall as $data) {
+            foreach ($data->getDaten() as $data2) {
+                if (isset($tmp[$data2->getId()])) {
+                    $data->addDaten($tmp[$data2->getId()]);
+                    $data->removeDaten($data2);
+                    $this->em->persist($data);
+                }
+            }
+            $this->advanceProgress();
+        }
+        $this->em->flush();
+
+    }
+
+    private function finishProgress(): void
+    {
+        if ($this->progress) {
+            $this->progress->finish();
+        }
+    }
+
+    private function gesetzlicheGrundlagen(): void
+    {
+        $tmp = array();
+        $grundlagen = $this->em->getRepository(VVTGrundlage::class)->findBy(array('team' => null));
+        $this->increaseProgress(sizeof($grundlagen));
+        foreach ($grundlagen as $data) {
+            $new = clone $data;
+            $new->setTeam($this->team)->setActiv(true);
+            $this->em->persist($new);
+            $tmp[$data->getId()] = $new;
+            $data->setActiv(false);
+            $this->em->persist($data);
+            $this->advanceProgress();
+        }
+        $this->em->flush();
+
+        $vvt = $this->em->getRepository(VVT::class)->findBy(array('team' => $this->team));
+        $this->increaseProgress(sizeof($vvt));
+        foreach ($vvt as $data) {
+            foreach ($data->getGrundlage() as $data2) {
+                if (isset($tmp[$data2->getId()])) {
+                    $data->addGrundlage($tmp[$data2->getId()]);
+                    $data->removeGrundlage($data2);
+                    $this->em->persist($data);
+                }
+            }
+            $this->advanceProgress();
+        }
+        $this->em->flush();
+
+    }
+
+    private function grundlagenDatenweitergabe(): void
+    {
+        $tmp = array();
+        $grundlagenDatenweitergabe = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findBy(array('team' => null));
+        $this->increaseProgress(sizeof($grundlagenDatenweitergabe));
+        foreach ($grundlagenDatenweitergabe as $data) {
+            $new = clone $data;
+            $new->setTeam($this->team)->setActiv(true);
+            $this->em->persist($new);
+            $tmp[$data->getId()] = $new;
+            $data->setActiv(false);
+            $this->em->persist($data);
+            $this->advanceProgress();
+        }
+        $this->em->flush();
+
+        $datenweitergabe = $this->em->getRepository(Datenweitergabe::class)->findBy(array('team' => $this->team));
+        $this->increaseProgress(sizeof($datenweitergabe));
+        foreach ($datenweitergabe as $data) {
+            if (isset($tmp[$data->getGrundlage()->getId()])) {
+                $data->setGrundlage($tmp[$data->getGrundlage()->getId()]);
+                $this->em->persist($data);
+            }
+            $this->advanceProgress();
+        }
+        $this->em->flush();
+
+    }
+
+    private function increaseProgress($steps): void
+    {
+        if ($this->progress) {
+            $this->progress->setMaxSteps($this->progress->getMaxSteps() + $steps);
+        }
     }
 
     private function personenGruppen(): void
@@ -113,7 +254,6 @@ class ConnectDefaultToTeamsService
 
     }
 
-
     private function risikoGruppen(): void
     {
         $tmp = array();
@@ -138,183 +278,6 @@ class ConnectDefaultToTeamsService
                     $data->removeRisiko($data2);
                     $this->em->persist($data);
                 }
-            }
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-
-    }
-
-    private function datenGruppen(): void
-    {
-        $tmp = array();
-        $datenkategorie = $this->em->getRepository(VVTDatenkategorie::class)->findBy(array('team' => null));
-        $this->increaseProgress(sizeof($datenkategorie));
-        foreach ($datenkategorie as $data) {
-            $dK = clone $data;
-            $dK->setTeam($this->team)->setActiv(true);
-            $this->em->persist($dK);
-            $tmp[$data->getId()] = $dK;
-            $data->setActiv(false);
-            $this->em->persist($data);
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-
-        $risiken = $this->em->getRepository(Policies::class)->findBy(array('team' => $this->team));
-        $this->increaseProgress(sizeof($risiken));
-
-        foreach ($risiken as $data) {
-            foreach ($data->getCategories() as $data2) {
-                if (isset($tmp[$data2->getId()])) {
-                    $data->addCategory($tmp[$data2->getId()]);
-                    $data->removeCategory($data2);
-                    $this->em->persist($data);
-                }
-            }
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-        $vvt = $this->em->getRepository(VVT::class)->findBy(array('team' => $this->team));
-        $this->increaseProgress(sizeof($vvt));
-        foreach ($vvt as $data) {
-            foreach ($data->getKategorien() as $data2) {
-                if (isset($tmp[$data2->getId()])) {
-                    $data->addKategorien($tmp[$data2->getId()]);
-                    $data->removeKategorien($data2);
-                    $this->em->persist($data);
-                }
-            }
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-        $vorfall = $this->em->getRepository(Vorfall::class)->findBy(array('team' => $this->team));
-        $this->increaseProgress(sizeof($vorfall));
-        foreach ($vorfall as $data) {
-            foreach ($data->getDaten() as $data2) {
-                if (isset($tmp[$data2->getId()])) {
-                    $data->addDaten($tmp[$data2->getId()]);
-                    $data->removeDaten($data2);
-                    $this->em->persist($data);
-                }
-            }
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-
-    }
-
-    private function gesetzlicheGrundlagen(): void
-    {
-        $tmp = array();
-        $grundlagen = $this->em->getRepository(VVTGrundlage::class)->findBy(array('team' => null));
-        $this->increaseProgress(sizeof($grundlagen));
-        foreach ($grundlagen as $data) {
-            $new = clone $data;
-            $new->setTeam($this->team)->setActiv(true);
-            $this->em->persist($new);
-            $tmp[$data->getId()] = $new;
-            $data->setActiv(false);
-            $this->em->persist($data);
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-
-        $vvt = $this->em->getRepository(VVT::class)->findBy(array('team' => $this->team));
-        $this->increaseProgress(sizeof($vvt));
-        foreach ($vvt as $data) {
-            foreach ($data->getGrundlage() as $data2) {
-                if (isset($tmp[$data2->getId()])) {
-                    $data->addGrundlage($tmp[$data2->getId()]);
-                    $data->removeGrundlage($data2);
-                    $this->em->persist($data);
-                }
-            }
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-
-    }
-
-    private function status(): void
-    {
-        $tmp = array();
-        $status = $this->em->getRepository(VVTStatus::class)->findBy(array('team' => null));
-        $this->increaseProgress(sizeof($status));
-        foreach ($status as $data) {
-            $new = clone $data;
-            $new->setTeam($this->team)->setActiv(true);
-            $this->em->persist($new);
-            $tmp[$data->getId()] = $new;
-            $data->setActiv(false);
-            $this->em->persist($data);
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-
-        $vvt = $this->em->getRepository(VVT::class)->findBy(array('team' => $this->team));
-        $this->increaseProgress(sizeof($vvt));
-        foreach ($vvt as $data) {
-            if (isset($tmp[$data->getStatus()->getId()])) {
-                $data->setStatus($tmp[$data->getStatus()->getId()]);
-                $this->em->persist($data);
-            }
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-
-    }
-
-    private function grundlagenDatenweitergabe(): void
-    {
-        $tmp = array();
-        $grundlagenDatenweitergabe = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findBy(array('team' => null));
-        $this->increaseProgress(sizeof($grundlagenDatenweitergabe));
-        foreach ($grundlagenDatenweitergabe as $data) {
-            $new = clone $data;
-            $new->setTeam($this->team)->setActiv(true);
-            $this->em->persist($new);
-            $tmp[$data->getId()] = $new;
-            $data->setActiv(false);
-            $this->em->persist($data);
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-
-        $datenweitergabe = $this->em->getRepository(Datenweitergabe::class)->findBy(array('team' => $this->team));
-        $this->increaseProgress(sizeof($datenweitergabe));
-        foreach ($datenweitergabe as $data) {
-            if (isset($tmp[$data->getGrundlage()->getId()])) {
-                $data->setGrundlage($tmp[$data->getGrundlage()->getId()]);
-                $this->em->persist($data);
-            }
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-
-    }
-
-    private function standDatenweitergabe(): void
-    {
-        $tmp = array();
-        $defaultValue = $this->em->getRepository(DatenweitergabeStand::class)->findBy(array('team' => null));
-        $this->increaseProgress(sizeof($defaultValue));
-        foreach ($defaultValue as $data) {
-            $new = clone $data;
-            $new->setTeam($this->team)->setActiv(true);
-            $this->em->persist($new);
-            $tmp[$data->getId()] = $new;
-            $data->setActiv(false);
-            $this->em->persist($data);
-            $this->advanceProgress();
-        }
-        $this->em->flush();
-        $datenweitergabe = $this->em->getRepository(Datenweitergabe::class)->findBy(array('team' => $this->team));
-        $this->increaseProgress(sizeof($datenweitergabe));
-        foreach ($datenweitergabe as $data) {
-            if (isset($tmp[$data->getStand()->getId()])) {
-                $data->setStand($tmp[$data->getStand()->getId()]);
-                $this->em->persist($data);
             }
             $this->advanceProgress();
         }
@@ -353,24 +316,60 @@ class ConnectDefaultToTeamsService
 
     }
 
-    private function increaseProgress($steps): void
+    private function standDatenweitergabe(): void
     {
-        if ($this->progress) {
-            $this->progress->setMaxSteps($this->progress->getMaxSteps() + $steps);
+        $tmp = array();
+        $defaultValue = $this->em->getRepository(DatenweitergabeStand::class)->findBy(array('team' => null));
+        $this->increaseProgress(sizeof($defaultValue));
+        foreach ($defaultValue as $data) {
+            $new = clone $data;
+            $new->setTeam($this->team)->setActiv(true);
+            $this->em->persist($new);
+            $tmp[$data->getId()] = $new;
+            $data->setActiv(false);
+            $this->em->persist($data);
+            $this->advanceProgress();
         }
+        $this->em->flush();
+        $datenweitergabe = $this->em->getRepository(Datenweitergabe::class)->findBy(array('team' => $this->team));
+        $this->increaseProgress(sizeof($datenweitergabe));
+        foreach ($datenweitergabe as $data) {
+            if (isset($tmp[$data->getStand()->getId()])) {
+                $data->setStand($tmp[$data->getStand()->getId()]);
+                $this->em->persist($data);
+            }
+            $this->advanceProgress();
+        }
+        $this->em->flush();
+
     }
 
-    private function advanceProgress(): void
+    private function status(): void
     {
-        if ($this->progress) {
-            $this->progress->advance();
+        $tmp = array();
+        $status = $this->em->getRepository(VVTStatus::class)->findBy(array('team' => null));
+        $this->increaseProgress(sizeof($status));
+        foreach ($status as $data) {
+            $new = clone $data;
+            $new->setTeam($this->team)->setActiv(true);
+            $this->em->persist($new);
+            $tmp[$data->getId()] = $new;
+            $data->setActiv(false);
+            $this->em->persist($data);
+            $this->advanceProgress();
         }
-    }
+        $this->em->flush();
 
-    private function finishProgress(): void
-    {
-        if ($this->progress) {
-            $this->progress->finish();
+        $vvt = $this->em->getRepository(VVT::class)->findBy(array('team' => $this->team));
+        $this->increaseProgress(sizeof($vvt));
+        foreach ($vvt as $data) {
+            if (isset($tmp[$data->getStatus()->getId()])) {
+                $data->setStatus($tmp[$data->getStatus()->getId()]);
+                $this->em->persist($data);
+            }
+            $this->advanceProgress();
         }
+        $this->em->flush();
+
     }
 }

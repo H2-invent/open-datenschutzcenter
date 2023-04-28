@@ -48,6 +48,82 @@ class BerichtController extends AbstractController
     {
     }
 
+    #[Route(path: '/backupconcept', name: '_backupconcept')]
+    public function backupSoftware(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        SoftwareRepository $softwareRepository,
+        VVTRepository      $vvtRepository,
+    )
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+
+        $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
+        $vvt = $vvtRepository->findActiveByTeam($team);
+
+        if (count($software) < 1) {
+            return $this->redirectNoReport();
+        }
+
+        // Center Team authentication
+        if ($team === null || $software[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/backup.html.twig', [
+            'daten' => $software,
+            'vvt' => $vvt,
+            'titel' => $this->translator->trans(id: 'archiveConcept.word', domain: 'bericht'),
+            'team' => $team,
+            'all' => $request->get('all'),
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans(id: 'archiveConcept.word', domain: 'bericht') . '.pdf'
+        );
+        $response->send();
+    }
+
+    #[Route(path: '/revoceryconcept', name: '_recoveryconcept')]
+    public function recoverySoftware(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        SoftwareRepository $softwareRepository,
+    )
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
+
+        if (count($software) < 1) {
+            return $this->redirectNoReport();
+        }
+
+        // Center Team authentication
+        if ($team === null || $software[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/recovery.html.twig', [
+            'daten' => $software,
+            'titel' => $this->translator->trans(id: 'report.about.recoveryConcept', domain: 'bericht'),
+            'team' => $team,
+            'all' => $request->get('all'),
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans(id: 'recoveryConcept', domain: 'bericht')
+        );
+        $response->send();
+    }
+
     #[Route(path: '', name: '')]
     public function report(
         Request            $request,
@@ -67,51 +143,24 @@ class BerichtController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/vvt', name: '_vvt')]
-    public function reportVvt(
-        DompdfWrapper      $wrapper,
-        Request            $request,
-        CurrentTeamService $currentTeamService,
-        VVTRepository      $vvtRepository,
-    )
+    #[Route(path: '/akademie', name: '_akademie')]
+    public function reportAcademy(
+        AkademieBuchungenRepository $academyBillingRepository,
+    ): Response
     {
-        ini_set('max_execution_time', '900');
-        ini_set('memory_limit', '512M');
-
-        $req = $request->get('id');
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $doc = $this->translator->trans(id: 'processing.directory', domain: 'vvt');
-
-        if ($req) {
-            $vvt = $vvtRepository->findBy(array('id' => $req));
-            $title = $this->translator->trans(id: 'processing.export', domain: 'vvt') . $vvt[0]->getName();
-            $doc = $vvt[0]->getName();
-        } else {
-            $vvt = $vvtRepository->findBy(array('team' => $team, 'activ' => true));
-            $title = $this->translator->trans(id: 'processing.directoryOf', domain: 'vvt') . $team->getName();
-        }
-
-        if (count($vvt) < 1) {
-            return $this->redirectNoReport();
-        }
-
-        // Center Team authentication
-        if ($team === null || $vvt[0]->getTeam() !== $team) {
+        $user = $this->getUser();
+        $team = $user->getAkademieUser();
+        // Admin Team authentication
+        if (!$user->hasAdminRole($team)) {
             return $this->redirectToRoute('dashboard');
         }
 
-        // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('bericht/vvt.html.twig', [
-            'daten' => $vvt,
-            'titel' => $title,
-            'team' => $team,
-            'all' => $request->get('all'),
-            'min' => $request->get('min'),
-        ]);
+        $daten = $academyBillingRepository->findBerichtByTeam($team);
 
-        //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, $doc . ".pdf");
-        $response->send();
+        return $this->render('bericht/akademie.html.twig', [
+            'daten' => $daten,
+            'team' => $this->getUser()->getAkademieUser()
+        ]);
     }
 
     #[Route(path: '/audit', name: '_audit')]
@@ -156,81 +205,6 @@ class BerichtController extends AbstractController
 
         //Generate PDF File for Download
         $response = $wrapper->getStreamResponse($html, $this->translator->trans(id: 'auditQuestion.word', domain: 'audit_tom') . '.pdf');
-        $response->send();
-    }
-
-    #[Route(path: '/tom', name: '_tom')]
-    public function reportTom(
-        DompdfWrapper      $wrapper,
-        Request            $request,
-        CurrentTeamService $currentTeamService,
-        TomRepository      $tomRepository,
-    )
-    {
-
-        $req = $request->get('id');
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-
-        if ($req) {
-            $tom = $tomRepository->findBy(array('id' => $req));
-        } else {
-            $tom = $tomRepository->findBy(array('team' => $team, 'activ' => true));
-        }
-
-        if (count($tom) < 1) {
-            return $this->redirectNoReport();
-        }
-
-        // Center Team authentication
-        if ($team === null || $tom[0]->getTeam() !== $team) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('bericht/berichtTom.html.twig', [
-            'datenAll' => $tom,
-            'titel' => $this->translator->trans(id: 'tom.word', domain: 'bericht'),
-            'team' => $team,
-        ]);
-
-        //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse(
-            $html,
-            $this->translator->trans(id: 'technicalAndOrganizationMeasures', domain: 'audit_tom') . '.pdf');
-        $response->send();
-    }
-
-    #[Route(path: '/global_tom', name: '_global_tom')]
-    public function reportGlobalTom(
-        DompdfWrapper      $wrapper,
-        CurrentTeamService $currentTeamService,
-        AuditTomRepository $auditTomRepository,
-    )
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $audit = $auditTomRepository->findAllByTeam($team);
-
-        if (count($audit) < 1) {
-            return $this->redirectNoReport();
-        }
-
-        // Center Team authentication
-        if ($team === null || $audit[0]->getTeam() !== $team) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('bericht/berichtGlobalTom.html.twig', [
-            'daten' => $audit,
-            'titel' => $this->translator->trans(id: 'tom.general', domain: 'bericht'),
-            'team' => $team,
-        ]);
-
-        //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse(
-            $html,
-            $this->translator->trans(id: 'tom.global', domain: 'bericht') . '.pdf',
-        );
         $response->send();
     }
 
@@ -280,24 +254,184 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    #[Route(path: '/akademie', name: '_akademie')]
-    public function reportAcademy(
-        AkademieBuchungenRepository $academyBillingRepository,
-    ): Response
+    #[Route(path: '/loeschkonzept', name: '_loeschkonzept')]
+    public function reportDeletionConcept(
+        DompdfWrapper           $wrapper,
+        Request                 $request,
+        CurrentTeamService      $currentTeamService,
+        LoeschkonzeptRepository $deletionConceptRepository,
+    )
     {
-        $user = $this->getUser();
-        $team = $user->getAkademieUser();
-        // Admin Team authentication
-        if (!$user->hasAdminRole($team)) {
+        ini_set('max_execution_time', '900');
+        ini_set('memory_limit', '512M');
+
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $doc = $this->translator->trans(id: 'deletionConcept.plural', domain: 'loeschkonzept');
+
+
+        $loeschkonzept = $deletionConceptRepository->findByTeam($team);
+        $title = $this->translator->trans(id: 'deletionConcept.directoryOf') . ' ' . $team->getName();
+
+        if (count($loeschkonzept) < 1) {
+            return $this->redirectNoReport();
+        }
+
+        // Center Team authentication
+        if ($team === null || $loeschkonzept[0]->getTeam() !== $team) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $academyBillingRepository->findBerichtByTeam($team);
-
-        return $this->render('bericht/akademie.html.twig', [
-            'daten' => $daten,
-            'team' => $this->getUser()->getAkademieUser()
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/loeschkonzept.html.twig', [
+            'daten' => $loeschkonzept,
+            'titel' => $title,
+            'team' => $team,
+            'all' => $request->get('all'),
         ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse($html, $doc . ".pdf");
+        $response->send();
+    }
+
+    #[Route(path: '/reports/generate', name: '_reports_generate')]
+    public function reportGenerateReports(
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        ReportRepository   $reportRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+
+        $data = $request->get('report_export');
+        $qb = $reportRepository->createQueryBuilder('s');
+        $qb->andWhere(
+            $qb->expr()->between('s.date', ':von', ':bis')
+        )
+            ->andWhere('s.activ = 1')
+            ->setParameter('von', $data['von'])
+            ->setParameter('bis', $data['bis']);
+
+        if ($data['user'] !== null) {
+            $qb->innerJoin('s.user', 'u')
+                ->andWhere('u.email = :user')
+                ->setParameter('user', $data['user']);
+        }
+
+        if ($data['report'] === 1) {
+            $qb->andWhere('s.inReport = 1');
+        }
+
+        $report = $qb->getQuery()->getResult();
+
+        if (count($report) < 1) {
+            return $this->redirectNoReport();
+        }
+
+        // Center Team authentication
+        if ($team === null || $report[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+
+        // Create a new Word document
+        $phpWord = new PhpWord();
+        $phpWord->addTitleStyle(1, ['bold' => true], ['spaceAfter' => 240]);
+        $phpWord->addTitleStyle(2, ['bold' => true], ['spaceBefore' => 300]);
+        $header = ['size' => 34, 'bold' => true];
+        $secHeader = ['size' => 13, 'bold' => true];
+
+        $title = $data['title'];
+
+        $section = $phpWord->addSection();
+        $section->addText($title, $header);
+
+        foreach ($report as $item) {
+
+            // Adding a software to the document...
+            $section->addTitle($item->getDate()->format('d.m.Y'), 2);
+
+            $table = $section->addTable();
+            $table->addRow();
+            $table->addCell(100 * 50)->addText($this->translator->trans(id: 'date', domain: 'general'));
+            $table->addCell(100 * 50)->addText($item->getDate()->format('d.m.Y'));
+
+            $table->addRow();
+            $table->addCell()->addText($this->translator->trans(id: 'startTime', domain: 'general'));
+            $table->addCell()->addText($item->getStart()->format('H:i'));
+
+            $table->addRow();
+            $table->addCell()->addText($this->translator->trans(id: 'endTime', domain: 'general'));
+            $table->addCell()->addText($item->getEnd()->format('H:i'));
+
+            $table->addRow();
+            $table->addCell()->addText($this->translator->trans(id: 'worker', domain: 'report'));
+            $table->addCell()->addText($item->getUser()->getEmail());
+
+            $table->addRow();
+            $table->addCell()->addText($this->translator->trans(id: 'work.onSight', domain: 'report'));
+            $table->addCell()->addText($this->translator->trans(id: ($item->getOnSite() ? 'yes' : 'no'), domain: 'general'));
+
+            $table->addRow();
+            $table->addCell()->addText($this->translator->trans(id: 'description', domain: 'general'));
+            $table->addCell()->addText($item->getDescription());
+        }
+
+        $section->addHeader()->addText($title);
+        $section->addFooter()->addText('Powered by open-datenschutzcenter.de');
+
+        // Saving the document as OOXML file...
+        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+
+        // Create a temporal file in the system
+        $fileName = $data['title'] . '.docx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+
+        // Write in the temporal filepath
+        $objWriter->save($temp_file);
+
+        // Send the temporal file as response (as an attachment)
+        $response = new BinaryFileResponse($temp_file);
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $fileName
+        );
+
+        return $response;
+    }
+
+    #[Route(path: '/global_tom', name: '_global_tom')]
+    public function reportGlobalTom(
+        DompdfWrapper      $wrapper,
+        CurrentTeamService $currentTeamService,
+        AuditTomRepository $auditTomRepository,
+    )
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $audit = $auditTomRepository->findAllByTeam($team);
+
+        if (count($audit) < 1) {
+            return $this->redirectNoReport();
+        }
+
+        // Center Team authentication
+        if ($team === null || $audit[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/berichtGlobalTom.html.twig', [
+            'daten' => $audit,
+            'titel' => $this->translator->trans(id: 'tom.general', domain: 'bericht'),
+            'team' => $team,
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans(id: 'tom.global', domain: 'bericht') . '.pdf',
+        );
+        $response->send();
     }
 
     #[Route(path: '/vorfall', name: '_vorfall')]
@@ -385,123 +519,6 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
-    #[Route(path: '/software', name: '_software')]
-    public function reportSoftware(
-        DompdfWrapper      $wrapper,
-        Request            $request,
-        CurrentTeamService $currentTeamService,
-        SoftwareRepository $softwareRepository,
-    )
-    {
-        $id = $request->get('id');
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-
-        if ($id) {
-            $software = $softwareRepository->find($id);
-        } else {
-            $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
-        }
-
-        if (count($software) < 1) {
-            return $this->redirectNoReport();
-        }
-
-        // Center Team authentication
-        if ($team === null || $software[0]->getTeam() !== $team) {
-            return $this->redirectToRoute('dashboard');
-        }
-        // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('bericht/software.html.twig', [
-            'daten' => $software,
-            'titel' => $this->translator->trans(id: 'report.about.software', domain: 'bericht'),
-            'team' => $team,
-            'all' => $request->get('all'),
-        ]);
-
-        //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse(
-            $html,
-            $this->translator->trans('softwareConfig', domain: 'software') . '.pdf',
-        );
-        $response->send();
-    }
-
-    #[Route(path: '/backupconcept', name: '_backupconcept')]
-    public function backupSoftware(
-        DompdfWrapper      $wrapper,
-        Request            $request,
-        CurrentTeamService $currentTeamService,
-        SoftwareRepository $softwareRepository,
-        VVTRepository      $vvtRepository,
-    )
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-
-        $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
-        $vvt = $vvtRepository->findActiveByTeam($team);
-
-        if (count($software) < 1) {
-            return $this->redirectNoReport();
-        }
-
-        // Center Team authentication
-        if ($team === null || $software[0]->getTeam() !== $team) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('bericht/backup.html.twig', [
-            'daten' => $software,
-            'vvt' => $vvt,
-            'titel' => $this->translator->trans(id: 'archiveConcept.word', domain: 'bericht'),
-            'team' => $team,
-            'all' => $request->get('all'),
-        ]);
-
-        //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse(
-            $html,
-            $this->translator->trans(id: 'archiveConcept.word', domain: 'bericht') . '.pdf'
-        );
-        $response->send();
-    }
-
-    #[Route(path: '/revoceryconcept', name: '_recoveryconcept')]
-    public function recoverySoftware(
-        DompdfWrapper      $wrapper,
-        Request            $request,
-        CurrentTeamService $currentTeamService,
-        SoftwareRepository $softwareRepository,
-    )
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
-
-        if (count($software) < 1) {
-            return $this->redirectNoReport();
-        }
-
-        // Center Team authentication
-        if ($team === null || $software[0]->getTeam() !== $team) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('bericht/recovery.html.twig', [
-            'daten' => $software,
-            'titel' => $this->translator->trans(id: 'report.about.recoveryConcept', domain: 'bericht'),
-            'team' => $team,
-            'all' => $request->get('all'),
-        ]);
-
-        //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse(
-            $html,
-            $this->translator->trans(id: 'recoveryConcept', domain: 'bericht')
-        );
-        $response->send();
-    }
-
     #[Route(path: '/request', name: '_request')]
     public function reportRequest(
         DompdfWrapper           $wrapper,
@@ -544,6 +561,134 @@ class BerichtController extends AbstractController
         $response->send();
     }
 
+    #[Route(path: '/software', name: '_software')]
+    public function reportSoftware(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        SoftwareRepository $softwareRepository,
+    )
+    {
+        $id = $request->get('id');
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+
+        if ($id) {
+            $software = $softwareRepository->find($id);
+        } else {
+            $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
+        }
+
+        if (count($software) < 1) {
+            return $this->redirectNoReport();
+        }
+
+        // Center Team authentication
+        if ($team === null || $software[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/software.html.twig', [
+            'daten' => $software,
+            'titel' => $this->translator->trans(id: 'report.about.software', domain: 'bericht'),
+            'team' => $team,
+            'all' => $request->get('all'),
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans('softwareConfig', domain: 'software') . '.pdf',
+        );
+        $response->send();
+    }
+
+    #[Route(path: '/tom', name: '_tom')]
+    public function reportTom(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        TomRepository      $tomRepository,
+    )
+    {
+
+        $req = $request->get('id');
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+
+        if ($req) {
+            $tom = $tomRepository->findBy(array('id' => $req));
+        } else {
+            $tom = $tomRepository->findBy(array('team' => $team, 'activ' => true));
+        }
+
+        if (count($tom) < 1) {
+            return $this->redirectNoReport();
+        }
+
+        // Center Team authentication
+        if ($team === null || $tom[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/berichtTom.html.twig', [
+            'datenAll' => $tom,
+            'titel' => $this->translator->trans(id: 'tom.word', domain: 'bericht'),
+            'team' => $team,
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse(
+            $html,
+            $this->translator->trans(id: 'technicalAndOrganizationMeasures', domain: 'audit_tom') . '.pdf');
+        $response->send();
+    }
+
+    #[Route(path: '/vvt', name: '_vvt')]
+    public function reportVvt(
+        DompdfWrapper      $wrapper,
+        Request            $request,
+        CurrentTeamService $currentTeamService,
+        VVTRepository      $vvtRepository,
+    )
+    {
+        ini_set('max_execution_time', '900');
+        ini_set('memory_limit', '512M');
+
+        $req = $request->get('id');
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $doc = $this->translator->trans(id: 'processing.directory', domain: 'vvt');
+
+        if ($req) {
+            $vvt = $vvtRepository->findBy(array('id' => $req));
+            $title = $this->translator->trans(id: 'processing.export', domain: 'vvt') . $vvt[0]->getName();
+            $doc = $vvt[0]->getName();
+        } else {
+            $vvt = $vvtRepository->findBy(array('team' => $team, 'activ' => true));
+            $title = $this->translator->trans(id: 'processing.directoryOf', domain: 'vvt') . $team->getName();
+        }
+
+        if (count($vvt) < 1) {
+            return $this->redirectNoReport();
+        }
+
+        // Center Team authentication
+        if ($team === null || $vvt[0]->getTeam() !== $team) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('bericht/vvt.html.twig', [
+            'daten' => $vvt,
+            'titel' => $title,
+            'team' => $team,
+            'all' => $request->get('all'),
+            'min' => $request->get('min'),
+        ]);
+
+        //Generate PDF File for Download
+        $response = $wrapper->getStreamResponse($html, $doc . ".pdf");
+        $response->send();
+    }
 
     #[Route(path: '/reports', name: '_reports')]
     public function reports(
@@ -665,153 +810,6 @@ class BerichtController extends AbstractController
         }
 
         return $this->render('bericht/modalView.html.twig', array('form' => $form->createView(), 'title' => $title, 'members' => $users));
-    }
-
-    #[Route(path: '/loeschkonzept', name: '_loeschkonzept')]
-    public function reportDeletionConcept(
-        DompdfWrapper           $wrapper,
-        Request                 $request,
-        CurrentTeamService      $currentTeamService,
-        LoeschkonzeptRepository $deletionConceptRepository,
-    )
-    {
-        ini_set('max_execution_time', '900');
-        ini_set('memory_limit', '512M');
-
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $doc = $this->translator->trans(id: 'deletionConcept.plural', domain: 'loeschkonzept');
-
-
-        $loeschkonzept = $deletionConceptRepository->findByTeam($team);
-        $title = $this->translator->trans(id: 'deletionConcept.directoryOf') . ' ' . $team->getName();
-
-        if (count($loeschkonzept) < 1) {
-            return $this->redirectNoReport();
-        }
-
-        // Center Team authentication
-        if ($team === null || $loeschkonzept[0]->getTeam() !== $team) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('bericht/loeschkonzept.html.twig', [
-            'daten' => $loeschkonzept,
-            'titel' => $title,
-            'team' => $team,
-            'all' => $request->get('all'),
-        ]);
-
-        //Generate PDF File for Download
-        $response = $wrapper->getStreamResponse($html, $doc . ".pdf");
-        $response->send();
-    }
-
-
-    #[Route(path: '/reports/generate', name: '_reports_generate')]
-    public function reportGenerateReports(
-        Request            $request,
-        CurrentTeamService $currentTeamService,
-        ReportRepository   $reportRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-
-        $data = $request->get('report_export');
-        $qb = $reportRepository->createQueryBuilder('s');
-        $qb->andWhere(
-            $qb->expr()->between('s.date', ':von', ':bis')
-        )
-            ->andWhere('s.activ = 1')
-            ->setParameter('von', $data['von'])
-            ->setParameter('bis', $data['bis']);
-
-        if ($data['user'] !== null) {
-            $qb->innerJoin('s.user', 'u')
-                ->andWhere('u.email = :user')
-                ->setParameter('user', $data['user']);
-        }
-
-        if ($data['report'] === 1) {
-            $qb->andWhere('s.inReport = 1');
-        }
-
-        $report = $qb->getQuery()->getResult();
-
-        if (count($report) < 1) {
-            return $this->redirectNoReport();
-        }
-
-        // Center Team authentication
-        if ($team === null || $report[0]->getTeam() !== $team) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-
-        // Create a new Word document
-        $phpWord = new PhpWord();
-        $phpWord->addTitleStyle(1, ['bold' => true], ['spaceAfter' => 240]);
-        $phpWord->addTitleStyle(2, ['bold' => true], ['spaceBefore' => 300]);
-        $header = ['size' => 34, 'bold' => true];
-        $secHeader = ['size' => 13, 'bold' => true];
-
-        $title = $data['title'];
-
-        $section = $phpWord->addSection();
-        $section->addText($title, $header);
-
-        foreach ($report as $item) {
-
-            // Adding a software to the document...
-            $section->addTitle($item->getDate()->format('d.m.Y'), 2);
-
-            $table = $section->addTable();
-            $table->addRow();
-            $table->addCell(100 * 50)->addText($this->translator->trans(id: 'date', domain: 'general'));
-            $table->addCell(100 * 50)->addText($item->getDate()->format('d.m.Y'));
-
-            $table->addRow();
-            $table->addCell()->addText($this->translator->trans(id: 'startTime', domain: 'general'));
-            $table->addCell()->addText($item->getStart()->format('H:i'));
-
-            $table->addRow();
-            $table->addCell()->addText($this->translator->trans(id: 'endTime', domain: 'general'));
-            $table->addCell()->addText($item->getEnd()->format('H:i'));
-
-            $table->addRow();
-            $table->addCell()->addText($this->translator->trans(id: 'worker', domain: 'report'));
-            $table->addCell()->addText($item->getUser()->getEmail());
-
-            $table->addRow();
-            $table->addCell()->addText($this->translator->trans(id: 'work.onSight', domain: 'report'));
-            $table->addCell()->addText($this->translator->trans(id: ($item->getOnSite() ? 'yes' : 'no'), domain: 'general'));
-
-            $table->addRow();
-            $table->addCell()->addText($this->translator->trans(id: 'description', domain: 'general'));
-            $table->addCell()->addText($item->getDescription());
-        }
-
-        $section->addHeader()->addText($title);
-        $section->addFooter()->addText('Powered by open-datenschutzcenter.de');
-
-        // Saving the document as OOXML file...
-        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-
-        // Create a temporal file in the system
-        $fileName = $data['title'] . '.docx';
-        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
-
-        // Write in the temporal filepath
-        $objWriter->save($temp_file);
-
-        // Send the temporal file as response (as an attachment)
-        $response = new BinaryFileResponse($temp_file);
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $fileName
-        );
-
-        return $response;
     }
 
     private function redirectNoReport(): RedirectResponse

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\AkademieBuchungen;
 use App\Service\NotificationService;
+use DateTime;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,7 +16,7 @@ class CronController extends AbstractController
     #[Route(path: '/cron/akademie_update', name: 'cron_akademie')]
     public function updateCronAkademie(NotificationService $notificationService, Request $request, LoggerInterface $logger)
     {
-        $today = new \DateTime();
+        $today = new DateTime();
 
         if ($request->get('token') !== $this->getParameter('cronToken')) {
             $message = ['error' => true, 'hinweis' => 'Token fehlerhaft', 'token' => $request->get('token'), 'ip' => $request->getClientIp()];

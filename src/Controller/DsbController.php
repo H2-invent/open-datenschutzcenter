@@ -12,24 +12,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DsbController extends AbstractController
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(private readonly TranslatorInterface $translator)
+
+    public function __construct(private readonly TranslatorInterface $translator,
+                                private EntityManagerInterface       $em,
+    )
     {
-        $this->em = $this->getDoctrine()->getManager();
-    }
-
-    #[Route(path: '/ext-dsb', name: 'dsb')]
-    public function index(): Response
-    {
-        $dsbTeams = $this->getUser()->getTeamDsb();
-        if (count($dsbTeams) < 1) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        return $this->render('dsb/index.html.twig', [
-            'teams' => $dsbTeams,
-        ]);
     }
 
     #[Route(path: '/ext-dsb/change', name: 'dsb_change')]
@@ -61,5 +49,18 @@ class DsbController extends AbstractController
                 'snack' => $this->translator->trans(id: 'team.change.error', domain: 'dsb'),
             ],
         );
+    }
+
+    #[Route(path: '/ext-dsb', name: 'dsb')]
+    public function index(): Response
+    {
+        $dsbTeams = $this->getUser()->getTeamDsb();
+        if (count($dsbTeams) < 1) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        return $this->render('dsb/index.html.twig', [
+            'teams' => $dsbTeams,
+        ]);
     }
 }

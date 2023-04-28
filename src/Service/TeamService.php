@@ -37,6 +37,123 @@ class TeamService
         $this->translator = $translator;
     }
 
+    public function create($type, $id, Team $team): object
+    {
+        switch ($type) {
+            case 1:
+                if ($id) {
+                    $data1 = $this->em->getRepository(VVTPersonen::class)->find($id);
+                } else {
+                    $data1 = new VVTPersonen();
+                }
+                break;
+            case 2:
+                if ($id) {
+                    $data1 = $this->em->getRepository(VVTDatenkategorie::class)->find($id);
+                } else {
+                    $data1 = new VVTDatenkategorie();
+                }
+                break;
+            case 3:
+                if ($id) {
+                    $data1 = $this->em->getRepository(VVTRisiken::class)->find($id);
+                } else {
+                    $data1 = new VVTRisiken();
+                }
+                break;
+            case 4:
+                if ($id) {
+                    $data1 = $this->em->getRepository(VVTGrundlage::class)->find($id);
+                } else {
+                    $data1 = new VVTGrundlage();
+                }
+                break;
+            case 5:
+                if ($id) {
+                    $data1 = $this->em->getRepository(Produkte::class)->find($id);
+                } else {
+                    $data1 = new Produkte();
+                }
+                break;
+            case 6:
+                if ($id) {
+                    $data1 = $this->em->getRepository(VVTStatus::class)->find($id);
+                } else {
+                    $data1 = new VVTStatus();
+                }
+                break;
+            case 11:
+                if ($id) {
+                    $data1 = $this->em->getRepository(DatenweitergabeGrundlagen::class)->find($id);
+                } else {
+                    $data1 = new DatenweitergabeGrundlagen();
+                }
+                break;
+            case 12:
+                if ($id) {
+                    $data1 = $this->em->getRepository(DatenweitergabeStand::class)->find($id);
+                } else {
+                    $data1 = new DatenweitergabeStand();
+                }
+                break;
+            case 21:
+                if ($id) {
+                    $data1 = $this->em->getRepository(AuditTomZiele::class)->find($id);
+                } else {
+                    $data1 = new AuditTomZiele();
+                }
+                break;
+            default:
+
+                break;
+
+        }
+
+        $data1->setActiv(true);
+        $data1->setTeam($team);
+
+        return $data1;
+    }
+
+    public function delete($type, $id): ?object
+    {
+        switch ($type) {
+            case 1:
+                $data = $this->em->getRepository(VVTPersonen::class)->findOneBy(array('id' => $id));
+                break;
+            case 2:
+                $data = $this->em->getRepository(VVTDatenkategorie::class)->findOneBy(array('id' => $id));
+                break;
+            case 3:
+                $data = $this->em->getRepository(VVTRisiken::class)->findOneBy(array('id' => $id));
+                break;
+            case 4:
+                $data = $this->em->getRepository(VVTGrundlage::class)->findOneBy(array('id' => $id));
+                break;
+            case 5:
+                $data = $this->em->getRepository(Produkte::class)->findOneBy(array('id' => $id));
+                break;
+            case 6:
+                $data = $this->em->getRepository(VVTStatus::class)->findOneBy(array('id' => $id));
+                break;
+            case 11:
+                $data = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findOneBy(array('id' => $id));
+                break;
+            case 12:
+                $data = $this->em->getRepository(DatenweitergabeStand::class)->findOneBy(array('id' => $id));
+                break;
+            case 21:
+                $data = $this->em->getRepository(AuditTomZiele::class)->findOneBy(array('id' => $id));
+                break;
+
+            default:
+                break;
+
+        }
+
+        return $data;
+    }
+
     public function show(Team $team): array
     {
 
@@ -197,124 +314,6 @@ class TeamService
             }
         }
 
-
-        return $data;
-    }
-
-    public function create($type, $id, Team $team): object
-    {
-        switch ($type) {
-            case 1:
-                if ($id) {
-                    $data1 = $this->em->getRepository(VVTPersonen::class)->find($id);
-                } else {
-                    $data1 = new VVTPersonen();
-                }
-                break;
-            case 2:
-                if ($id) {
-                    $data1 = $this->em->getRepository(VVTDatenkategorie::class)->find($id);
-                } else {
-                    $data1 = new VVTDatenkategorie();
-                }
-                break;
-            case 3:
-                if ($id) {
-                    $data1 = $this->em->getRepository(VVTRisiken::class)->find($id);
-                } else {
-                    $data1 = new VVTRisiken();
-                }
-                break;
-            case 4:
-                if ($id) {
-                    $data1 = $this->em->getRepository(VVTGrundlage::class)->find($id);
-                } else {
-                    $data1 = new VVTGrundlage();
-                }
-                break;
-            case 5:
-                if ($id) {
-                    $data1 = $this->em->getRepository(Produkte::class)->find($id);
-                } else {
-                    $data1 = new Produkte();
-                }
-                break;
-            case 6:
-                if ($id) {
-                    $data1 = $this->em->getRepository(VVTStatus::class)->find($id);
-                } else {
-                    $data1 = new VVTStatus();
-                }
-                break;
-            case 11:
-                if ($id) {
-                    $data1 = $this->em->getRepository(DatenweitergabeGrundlagen::class)->find($id);
-                } else {
-                    $data1 = new DatenweitergabeGrundlagen();
-                }
-                break;
-            case 12:
-                if ($id) {
-                    $data1 = $this->em->getRepository(DatenweitergabeStand::class)->find($id);
-                } else {
-                    $data1 = new DatenweitergabeStand();
-                }
-                break;
-            case 21:
-                if ($id) {
-                    $data1 = $this->em->getRepository(AuditTomZiele::class)->find($id);
-                } else {
-                    $data1 = new AuditTomZiele();
-                }
-                break;
-            default:
-
-                break;
-
-        }
-
-        $data1->setActiv(true);
-        $data1->setTeam($team);
-
-        return $data1;
-    }
-
-
-    public function delete($type, $id): ?object
-    {
-        switch ($type) {
-            case 1:
-                $data = $this->em->getRepository(VVTPersonen::class)->findOneBy(array('id' => $id));
-                break;
-            case 2:
-                $data = $this->em->getRepository(VVTDatenkategorie::class)->findOneBy(array('id' => $id));
-                break;
-            case 3:
-                $data = $this->em->getRepository(VVTRisiken::class)->findOneBy(array('id' => $id));
-                break;
-            case 4:
-                $data = $this->em->getRepository(VVTGrundlage::class)->findOneBy(array('id' => $id));
-                break;
-            case 5:
-                $data = $this->em->getRepository(Produkte::class)->findOneBy(array('id' => $id));
-                break;
-            case 6:
-                $data = $this->em->getRepository(VVTStatus::class)->findOneBy(array('id' => $id));
-                break;
-            case 11:
-                $data = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findOneBy(array('id' => $id));
-                break;
-            case 12:
-                $data = $this->em->getRepository(DatenweitergabeStand::class)->findOneBy(array('id' => $id));
-                break;
-            case 21:
-                $data = $this->em->getRepository(AuditTomZiele::class)->findOneBy(array('id' => $id));
-                break;
-
-            default:
-                break;
-
-        }
 
         return $data;
     }

@@ -18,11 +18,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UploadController extends AbstractController
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(private readonly TranslatorInterface $translator)
+
+    public function __construct(private readonly TranslatorInterface $translator,
+                                private EntityManagerInterface       $em,
+    )
     {
-        $this->em = $this->getDoctrine()->getManager();
+    }
+
+    #[Route(path: '/upload/fail', name: 'upload_fail')]
+    public function fail(Request $request): Response
+    {
+        return $this->render('upload/fail.html.twig', array('message' => $request->get('message')));
     }
 
     #[Route(path: '/upload', name: 'upload_new')]
@@ -105,11 +112,5 @@ class UploadController extends AbstractController
     public function success(Request $request): Response
     {
         return $this->render('upload/success.html.twig');
-    }
-
-    #[Route(path: '/upload/fail', name: 'upload_fail')]
-    public function fail(Request $request): Response
-    {
-        return $this->render('upload/fail.html.twig', array('message' => $request->get('message')));
     }
 }

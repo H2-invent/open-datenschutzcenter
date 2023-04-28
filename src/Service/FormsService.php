@@ -31,16 +31,14 @@ class FormsService
     {
     }
 
-    public function newForm(User $user): Forms
+    public function cloneForms(Forms $forms, User $user): Forms
     {
-        $form = new Forms();
-        $form->setStatus(0);
-        $form->setTeam($this->currentTeamService->getTeamFromSession($user));
-        $form->setActiv(true);
-        $form->setCreatedAt(new DateTime());
-        $form->setUser($user);
-
-        return $form;
+        $newForms = clone $forms;
+        $newForms->setPrevious($forms);
+        $newForms->setCreatedAt(new DateTime());
+        $newForms->setUpdatedAt(new DateTime());
+        $newForms->setUser($user);
+        return $newForms;
     }
 
     public function createForm(Forms $forms, Team $team): FormInterface
@@ -53,13 +51,15 @@ class FormsService
         return $form;
     }
 
-    public function cloneForms(Forms $forms, User $user): Forms
+    public function newForm(User $user): Forms
     {
-        $newForms = clone $forms;
-        $newForms->setPrevious($forms);
-        $newForms->setCreatedAt(new DateTime());
-        $newForms->setUpdatedAt(new DateTime());
-        $newForms->setUser($user);
-        return $newForms;
+        $form = new Forms();
+        $form->setStatus(0);
+        $form->setTeam($this->currentTeamService->getTeamFromSession($user));
+        $form->setActiv(true);
+        $form->setCreatedAt(new DateTime());
+        $form->setUser($user);
+
+        return $form;
     }
 }

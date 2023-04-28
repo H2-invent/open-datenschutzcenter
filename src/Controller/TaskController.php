@@ -19,40 +19,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TaskController extends AbstractController
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(private readonly TranslatorInterface $translator)
-    {
-        $this->em = $this->getDoctrine()->getManager();
-    }
 
-    #[Route(path: '/tasks', name: 'tasks')]
-    public function index(
-        SecurityService    $securityService,
-        Request            $request,
-        CurrentTeamService $currentTeamService,
-        TaskRepository     $taskRepository,
+    public function __construct(private readonly TranslatorInterface $translator,
+                                private EntityManagerInterface       $em,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        if ($request->get('all')) {
-            $tasks = $taskRepository->findActiveByTeam($team);
-            $all = true;
-        } else {
-            $tasks = $taskRepository->findBy(['team' => $team, 'activ' => true, 'done' => false]);
-            $all = false;
-        }
-
-
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        return $this->render('task/index.html.twig', [
-            'task' => $tasks,
-            'all' => $all,
-            'currentTeam' => $team,
-        ]);
     }
 
     #[Route(path: '/task/new', name: 'task_new')]
@@ -92,6 +64,57 @@ class TaskController extends AbstractController
             'task' => $task,
             'activ' => $task->getActiv(),
         ]);
+    }
+
+    #[Route(path: '/task/disable', name: 'task_disable')]
+    public function disable(
+        Request            $request,
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        TaskRepository     $taskRepository,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+        $task = $taskRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($task, $team) && $securityService->adminCheck($user, $team)) {
+            if ($task->getActiv() === 1) {
+                $task->setActiv(2);
+            } else {
+                $task->setActiv(1);
+            }
+
+            $this->em->persist($task);
+            $this->em->flush();
+        }
+
+        return $this->redirectToRoute('tasks');
+    }
+
+    #[Route(path: '/task/done', name: 'task_done')]
+    public function done(
+        Request            $request,
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        TaskRepository     $taskRepository,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+        $task = $taskRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($task, $team) && $securityService->adminCheck($user, $team)) {
+            if ($task->getActiv() === 1) {
+                $task->setDone(1);
+                $task->setDoneDate(new DateTime());
+            }
+
+            $this->em->persist($task);
+            $this->em->flush();
+        }
+
+        return $this->redirectToRoute('tasks');
     }
 
     #[Route(path: '/task/edit', name: 'task_edit')]
@@ -145,54 +168,32 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/task/done', name: 'task_done')]
-    public function done(
-        Request            $request,
+    #[Route(path: '/tasks', name: 'tasks')]
+    public function index(
         SecurityService    $securityService,
+        Request            $request,
         CurrentTeamService $currentTeamService,
         TaskRepository     $taskRepository,
-    ): Response
+    )
     {
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-        $task = $taskRepository->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($task, $team) && $securityService->adminCheck($user, $team)) {
-            if ($task->getActiv() === 1) {
-                $task->setDone(1);
-                $task->setDoneDate(new DateTime());
-            }
-
-            $this->em->persist($task);
-            $this->em->flush();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        if ($request->get('all')) {
+            $tasks = $taskRepository->findActiveByTeam($team);
+            $all = true;
+        } else {
+            $tasks = $taskRepository->findBy(['team' => $team, 'activ' => true, 'done' => false]);
+            $all = false;
         }
 
-        return $this->redirectToRoute('tasks');
-    }
 
-    #[Route(path: '/task/disable', name: 'task_disable')]
-    public function disable(
-        Request            $request,
-        SecurityService    $securityService,
-        CurrentTeamService $currentTeamService,
-        TaskRepository     $taskRepository,
-    ): Response
-    {
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-        $task = $taskRepository->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($task, $team) && $securityService->adminCheck($user, $team)) {
-            if ($task->getActiv() === 1) {
-                $task->setActiv(2);
-            } else {
-                $task->setActiv(1);
-            }
-
-            $this->em->persist($task);
-            $this->em->flush();
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
         }
 
-        return $this->redirectToRoute('tasks');
+        return $this->render('task/index.html.twig', [
+            'task' => $tasks,
+            'all' => $all,
+            'currentTeam' => $team,
+        ]);
     }
 }

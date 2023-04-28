@@ -32,18 +32,17 @@ class ClientRequestService
     {
     }
 
-    public function userValid(ClientRequest $clientRequest, $user)
+    public function closeRequest(ClientRequest $clientRequest, $user)
     {
         try {
             if ($clientRequest) {
-                if ($clientRequest->getValiduser()) {
-                    $clientRequest->setValidUser(false);
-                    $clientRequest->setUserValidBy(null);
-                    $comment = $this->translator->trans(id: 'user.comment.validation.removed', domain: 'client_request');
+                if ($clientRequest->getActiv()) {
+                    $clientRequest->setActiv(false);
+                    $comment = $this->translator->trans(id: 'request.closed', domain: 'client_request');
                 } else {
-                    $clientRequest->setValidUser(true);
-                    $clientRequest->setUserValidBy($user);
-                    $comment = $this->translator->trans(id: 'user.comment.validation.success', domain: 'client_reqeust');
+                    $clientRequest->setActiv(true);
+                    $clientRequest->setOpen(true);
+                    $comment = $this->translator->trans(id: 'request.reopened', domain: 'client_request');
                 }
 
                 $team = $this->currentTeamService->getTeamFromSession($user);
@@ -58,6 +57,29 @@ class ClientRequestService
         (Exception $exception) {
             return false;
         }
+    }
+
+    public function interalRequest(ClientRequest $clientRequest): bool
+    {
+        try {
+            if ($clientRequest) {
+                if (!$clientRequest->getActiv()) {
+                    if ($clientRequest->getOpen()) {
+                        $clientRequest->setOpen(false);
+                    } else {
+                        $clientRequest->setOpen(true);
+                    }
+                }
+
+                $this->em->persist($clientRequest);
+                $this->em->flush();
+
+                return true;
+            }
+        } catch
+        (Exception $exception) {
+        }
+        return false;
     }
 
     public function newComment(ClientRequest $clientRequest, $comment, $user, $type): bool
@@ -122,56 +144,6 @@ class ClientRequestService
         }
     }
 
-    public function closeRequest(ClientRequest $clientRequest, $user)
-    {
-        try {
-            if ($clientRequest) {
-                if ($clientRequest->getActiv()) {
-                    $clientRequest->setActiv(false);
-                    $comment = $this->translator->trans(id: 'request.closed', domain: 'client_request');
-                } else {
-                    $clientRequest->setActiv(true);
-                    $clientRequest->setOpen(true);
-                    $comment = $this->translator->trans(id: 'request.reopened', domain: 'client_request');
-                }
-
-                $team = $this->currentTeamService->getTeamFromSession($user);
-                $this->newComment($clientRequest, $comment, $team->getKeycloakGroup() . ' > ' . $user->getUsername(), 1);
-
-                $this->em->persist($clientRequest);
-                $this->em->flush();
-
-                return true;
-            }
-        } catch
-        (Exception $exception) {
-            return false;
-        }
-    }
-
-    public function interalRequest(ClientRequest $clientRequest): bool
-    {
-        try {
-            if ($clientRequest) {
-                if (!$clientRequest->getActiv()) {
-                    if ($clientRequest->getOpen()) {
-                        $clientRequest->setOpen(false);
-                    } else {
-                        $clientRequest->setOpen(true);
-                    }
-                }
-
-                $this->em->persist($clientRequest);
-                $this->em->flush();
-
-                return true;
-            }
-        } catch
-        (Exception $exception) {
-        }
-        return false;
-    }
-
     public function newRequest($team): bool|FormInterface
     {
         try {
@@ -187,6 +159,34 @@ class ClientRequestService
 
             $form = $this->formBuilder->create(ClientRequestType::class, $clientRequest);
             return $form;
+        } catch
+        (Exception $exception) {
+            return false;
+        }
+    }
+
+    public function userValid(ClientRequest $clientRequest, $user)
+    {
+        try {
+            if ($clientRequest) {
+                if ($clientRequest->getValiduser()) {
+                    $clientRequest->setValidUser(false);
+                    $clientRequest->setUserValidBy(null);
+                    $comment = $this->translator->trans(id: 'user.comment.validation.removed', domain: 'client_request');
+                } else {
+                    $clientRequest->setValidUser(true);
+                    $clientRequest->setUserValidBy($user);
+                    $comment = $this->translator->trans(id: 'user.comment.validation.success', domain: 'client_reqeust');
+                }
+
+                $team = $this->currentTeamService->getTeamFromSession($user);
+                $this->newComment($clientRequest, $comment, $team->getKeycloakGroup() . ' > ' . $user->getUsername(), 1);
+
+                $this->em->persist($clientRequest);
+                $this->em->flush();
+
+                return true;
+            }
         } catch
         (Exception $exception) {
             return false;

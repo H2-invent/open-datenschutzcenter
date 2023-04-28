@@ -24,30 +24,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PoliciesController extends AbstractController
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(private readonly TranslatorInterface $translator)
+
+    public function __construct(private readonly TranslatorInterface $translator,
+                                private EntityManagerInterface       $em,
+    )
     {
-        $this->em = $this->getDoctrine()->getManager();
-    }
-
-    #[Route(path: '/policies', name: 'policies')]
-    public function index(
-        SecurityService    $securityService,
-        CurrentTeamService $currentTeamService,
-        PoliciesRepository $policiesRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-        $polcies = $policiesRepository->findActiveByTeam($team);
-
-        return $this->render('policies/index.html.twig', [
-            'data' => $polcies,
-            'currentTeam' => $team,
-        ]);
     }
 
     #[Route(path: '/policy/new', name: 'policy_new')]
@@ -89,59 +71,6 @@ class PoliciesController extends AbstractController
             'vvt' => $policy,
             'activ' => $policy->getActiv(),
             'CTA' => false,
-        ]);
-    }
-
-
-    #[Route(path: '/policy/edit', name: 'policy_edit')]
-    public function editPolicy(
-        ValidatorInterface $validator,
-        Request            $request,
-        PoliciesService    $policiesService,
-        SecurityService    $securityService,
-        AssignService      $assignService,
-        CurrentTeamService $currentTeamService,
-        PoliciesRepository $policiesRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $policy = $policiesRepository->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($policy, $team) === false) {
-            return $this->redirectToRoute('policies');
-        }
-        $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());
-        $form = $policiesService->createForm($newPolicy, $team);
-        $form->handleRequest($request);
-        $assign = $assignService->createForm($policy, $team);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved()) {
-            $policy->setActiv(false);
-            $newPolicy = $form->getData();
-            $errors = $validator->validate($newPolicy);
-            if (count($errors) == 0) {
-                $this->em->persist($newPolicy);
-                $this->em->persist($policy);
-                $this->em->flush();
-                return $this->redirectToRoute(
-                    'policy_edit',
-                    [
-                        'id' => $newPolicy->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
-                    ],
-                );
-            }
-        }
-
-        return $this->render('policies/edit.html.twig', [
-            'form' => $form->createView(),
-            'assignForm' => $assign->createView(),
-            'errors' => $errors,
-            'title' => $this->translator->trans(id: 'policies.edit', domain: 'policies'),
-            'policy' => $policy,
-            'activ' => $policy->getActiv(),
-            'snack' => $request->get('snack')
         ]);
     }
 
@@ -235,5 +164,76 @@ class PoliciesController extends AbstractController
             ],
         );
         return $response;
+    }
+
+    #[Route(path: '/policy/edit', name: 'policy_edit')]
+    public function editPolicy(
+        ValidatorInterface $validator,
+        Request            $request,
+        PoliciesService    $policiesService,
+        SecurityService    $securityService,
+        AssignService      $assignService,
+        CurrentTeamService $currentTeamService,
+        PoliciesRepository $policiesRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $policy = $policiesRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($policy, $team) === false) {
+            return $this->redirectToRoute('policies');
+        }
+        $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());
+        $form = $policiesService->createForm($newPolicy, $team);
+        $form->handleRequest($request);
+        $assign = $assignService->createForm($policy, $team);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved()) {
+            $policy->setActiv(false);
+            $newPolicy = $form->getData();
+            $errors = $validator->validate($newPolicy);
+            if (count($errors) == 0) {
+                $this->em->persist($newPolicy);
+                $this->em->persist($policy);
+                $this->em->flush();
+                return $this->redirectToRoute(
+                    'policy_edit',
+                    [
+                        'id' => $newPolicy->getId(),
+                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
+                    ],
+                );
+            }
+        }
+
+        return $this->render('policies/edit.html.twig', [
+            'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
+            'errors' => $errors,
+            'title' => $this->translator->trans(id: 'policies.edit', domain: 'policies'),
+            'policy' => $policy,
+            'activ' => $policy->getActiv(),
+            'snack' => $request->get('snack')
+        ]);
+    }
+
+    #[Route(path: '/policies', name: 'policies')]
+    public function index(
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        PoliciesRepository $policiesRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+        $polcies = $policiesRepository->findActiveByTeam($team);
+
+        return $this->render('policies/index.html.twig', [
+            'data' => $polcies,
+            'currentTeam' => $team,
+        ]);
     }
 }

@@ -29,6 +29,27 @@ class InviteService
     {
     }
 
+    public function connectUserWithEmail(User $userfromregisterId, User $user)
+    {
+        if ($user !== $userfromregisterId) {
+            foreach ($userfromregisterId->getTeams() as $team) {
+                $user->addTeam($team);
+            }
+            if (!$user->getAkademieUser()) {
+                $user->setAkademieUser($userfromregisterId->getAkademieUser());
+            }
+            foreach ($userfromregisterId->getTeamDsb() as $team) {
+                $user->addTeamDsb($team);
+            }
+            $this->em->remove($userfromregisterId);
+        }
+
+        $user->setRegisterId(null);
+        $this->em->persist($user);
+        $this->em->flush();
+        return $user;
+    }
+
     public function newUser($email): User
     {
         $user = $this->em->getRepository(User::class)->findOneBy(array('email' => $email));
@@ -57,27 +78,6 @@ class InviteService
             $this->translator->trans(id: 'subject.invite', domain: 'email'),
             $content
         );
-        return $user;
-    }
-
-    public function connectUserWithEmail(User $userfromregisterId, User $user)
-    {
-        if ($user !== $userfromregisterId) {
-            foreach ($userfromregisterId->getTeams() as $team) {
-                $user->addTeam($team);
-            }
-            if (!$user->getAkademieUser()) {
-                $user->setAkademieUser($userfromregisterId->getAkademieUser());
-            }
-            foreach ($userfromregisterId->getTeamDsb() as $team) {
-                $user->addTeamDsb($team);
-            }
-            $this->em->remove($userfromregisterId);
-        }
-
-        $user->setRegisterId(null);
-        $this->em->persist($user);
-        $this->em->flush();
         return $user;
     }
 

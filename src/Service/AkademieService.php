@@ -16,10 +16,10 @@ use Twig\Environment;
 
 class AkademieService
 {
-    private EntityManagerInterface $em;
-    private Environment $twig;
-    private NotificationService $notificationService;
+
     private CurrentTeamService $currentTeamService;
+    private NotificationService $notificationService;
+    private Environment $twig;
 
     public function __construct(
         Environment            $engine,

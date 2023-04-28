@@ -23,31 +23,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormsController extends AbstractController
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(private readonly TranslatorInterface $translator)
+
+    public function __construct(private readonly TranslatorInterface $translator,
+                                private EntityManagerInterface       $em,
+    )
     {
-        $this->em = $this->getDoctrine()->getManager();
-    }
-
-    #[Route(path: '/forms', name: 'forms')]
-    public function indexForms(
-        SecurityService    $securityService,
-        CurrentTeamService $currentTeamService,
-        FormsRepository    $formsRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        $daten = $formsRepository->findBy(['team' => $team, 'activ' => true]);
-        return $this->render('forms/index.html.twig', [
-            'table' => $daten,
-            'titel' => $this->translator->trans(id: 'form.word', domain: 'forms'),
-            'currentTeam' => $team,
-        ]);
     }
 
     #[Route(path: '/forms/new', name: 'forms_new')]
@@ -88,62 +69,6 @@ class FormsController extends AbstractController
             'title' => $this->translator->trans(id: 'form.create', domain: 'forms'),
             'daten' => $daten,
             'activ' => $daten->getActiv()
-        ]);
-    }
-
-    #[Route(path: '/forms/edit', name: 'forms_edit')]
-    public function editFormulare(
-        ValidatorInterface $validator,
-        Request            $request,
-        SecurityService    $securityService,
-        FormsService       $formsService,
-        AssignService      $assignService,
-        CurrentTeamService $currentTeamService,
-        FormsRepository    $formsRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $forms = $formsRepository->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($forms, $team) === false) {
-            return $this->redirectToRoute('forms');
-        }
-
-        $newForms = $formsService->cloneForms($forms, $this->getUser());
-        $form = $formsService->createForm($newForms, $team);
-        $form->handleRequest($request);
-        $assign = $assignService->createForm($forms, $team);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $forms->getActiv() && !$forms->getApproved()) {
-
-            $forms->setActiv(false);
-            $forms->setStatus(4);
-            $newForms = $form->getData();
-
-            $errors = $validator->validate($newForms);
-            if (count($errors) == 0) {
-                $this->em->persist($newForms);
-                $this->em->persist($forms);
-                $this->em->flush();
-
-                return $this->redirectToRoute(
-                    'forms_edit',
-                    [
-                        'id' => $newForms->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
-                    ]
-                );
-            }
-        }
-        return $this->render('forms/edit.html.twig', [
-            'form' => $form->createView(),
-            'assignForm' => $assign->createView(),
-            'errors' => $errors,
-            'title' => $this->translator->trans(id: 'form.edit', domain: 'forms'),
-            'daten' => $forms,
-            'activ' => $forms->getActiv(),
-            'snack' => $request->get('snack')
         ]);
     }
 
@@ -236,5 +161,81 @@ class FormsController extends AbstractController
             ],
         );
         return $response;
+    }
+
+    #[Route(path: '/forms/edit', name: 'forms_edit')]
+    public function editFormulare(
+        ValidatorInterface $validator,
+        Request            $request,
+        SecurityService    $securityService,
+        FormsService       $formsService,
+        AssignService      $assignService,
+        CurrentTeamService $currentTeamService,
+        FormsRepository    $formsRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $forms = $formsRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($forms, $team) === false) {
+            return $this->redirectToRoute('forms');
+        }
+
+        $newForms = $formsService->cloneForms($forms, $this->getUser());
+        $form = $formsService->createForm($newForms, $team);
+        $form->handleRequest($request);
+        $assign = $assignService->createForm($forms, $team);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid() && $forms->getActiv() && !$forms->getApproved()) {
+
+            $forms->setActiv(false);
+            $forms->setStatus(4);
+            $newForms = $form->getData();
+
+            $errors = $validator->validate($newForms);
+            if (count($errors) == 0) {
+                $this->em->persist($newForms);
+                $this->em->persist($forms);
+                $this->em->flush();
+
+                return $this->redirectToRoute(
+                    'forms_edit',
+                    [
+                        'id' => $newForms->getId(),
+                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
+                    ]
+                );
+            }
+        }
+        return $this->render('forms/edit.html.twig', [
+            'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
+            'errors' => $errors,
+            'title' => $this->translator->trans(id: 'form.edit', domain: 'forms'),
+            'daten' => $forms,
+            'activ' => $forms->getActiv(),
+            'snack' => $request->get('snack')
+        ]);
+    }
+
+    #[Route(path: '/forms', name: 'forms')]
+    public function indexForms(
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        FormsRepository    $formsRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $daten = $formsRepository->findBy(['team' => $team, 'activ' => true]);
+        return $this->render('forms/index.html.twig', [
+            'table' => $daten,
+            'titel' => $this->translator->trans(id: 'form.word', domain: 'forms'),
+            'currentTeam' => $team,
+        ]);
     }
 }

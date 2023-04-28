@@ -22,7 +22,9 @@ use App\Entity\VVTGrundlage;
 use App\Entity\VVTPersonen;
 use App\Entity\VVTRisiken;
 use App\Entity\VVTStatus;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 
@@ -76,14 +78,14 @@ class ParserService
                     $audit->addZiele($ziel);
                 }
                 $audit->setActiv(true);
-                $audit->setCreatedAt(new \DateTime());
+                $audit->setCreatedAt(new DateTime());
                 $audit->setTeam($team);
                 $audit->setUser($user);
                 $this->em->persist($audit);
             }
             $this->em->flush();
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
 
@@ -163,7 +165,7 @@ class ParserService
                 $vvt->setInformationspflicht($e->informationspflicht);
 
                 $vvt->setActiv(true);
-                $vvt->setCreatedAt(new \DateTime());
+                $vvt->setCreatedAt(new DateTime());
                 $vvt->setTeam($team);
                 $vvt->setUser($user);
                 $vvt->setSpeicherung($e->speicherung);
@@ -173,7 +175,7 @@ class ParserService
                 $vvt->setUserContract($user);
                 if ($e->nummer == null) {
                     $vvt->setNummer('VVT-' . hexdec(uniqid()));
-                }else {
+                } else {
                     $vvt->setNummer($e->nummer);
                 }
 
@@ -190,7 +192,7 @@ class ParserService
                     $dsfa->setDsb($e->dsfaData->dsbKommentar);
                     $dsfa->setErgebnis($e->dsfaData->ergebnis);
                     $dsfa->setActiv(true);
-                    $dsfa->setCreatedAt(new \DateTime());
+                    $dsfa->setCreatedAt(new DateTime());
                     $dsfa->setUser($user);
                     $dsfa->setVvt($vvt);
                     $this->em->persist($dsfa);
@@ -201,7 +203,7 @@ class ParserService
             }
             $this->em->flush();
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -220,7 +222,7 @@ class ParserService
             $signature = $json->signature;
             $res = openssl_verify($data, hex2bin($signature), file_get_contents($this->parameterBag->get('projectRoot') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public.key'), OPENSSL_ALGO_SHA256);
             return $res;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return 0;
         }
 

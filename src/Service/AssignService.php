@@ -29,7 +29,7 @@ use Twig\Environment;
 
 class AssignService
 {
-    private EntityManagerInterface $em;
+
     private FormFactoryInterface $formBuilder;
     private NotificationService $notificationService;
     private Environment $twig;
@@ -74,49 +74,6 @@ class AssignService
             return $assign;
         } catch (Exception $exception) {
             return $assign;
-        }
-    }
-
-    public function createForm($data, Team $team): FormInterface
-    {
-        if (count($team->getMembers()) > 0) {
-            $teamMembers = $team->getMembers();
-            if (!in_array($team->getDsbUser(), $teamMembers->toArray())) {
-                if ($team->getDsbUser()) {
-                    $teamMembers->add($team->getDsbUser());
-                }
-            }
-        } else {
-            $teamMembers = array();
-        }
-        $form = $this->formBuilder->create(AssignType::class, $data, ['user' => $teamMembers]);
-        return $form;
-    }
-
-    public function assignVvt($request, VVT $vvt): bool
-    {
-        try {
-            if ($vvt->getAssignedUser() == null) {
-                $data = $request->get('assign');
-                $user = $this->em->getRepository(User::class)->find($data['user']);
-                if ($user && $user->hasTeam($vvt->getTeam())) {
-                    $vvt->setAssignedUser($user);
-                    $content = $this->twig->render('email/assignementVvt.html.twig', [
-                        'assign' => $vvt->getName(),
-                        'data' => $vvt,
-                        'team' => $vvt->getTeam(),
-                    ]);
-                    $this->notificationService->sendNotificationAssign($content, $user);
-                }
-            } else {
-                $vvt->setAssignedUser(null);
-            }
-            $this->em->persist($vvt);
-            $this->em->flush();
-
-            return true;
-        } catch (Exception $exception) {
-            return false;
         }
     }
 
@@ -283,34 +240,6 @@ class AssignService
         }
     }
 
-    public function assignVorfall($request, Vorfall $vorfall): bool
-    {
-        try {
-
-            if ($vorfall->getAssignedUser() == null) {
-                $data = $request->get('assign');
-                $user = $this->em->getRepository(User::class)->find($data['user']);
-                if ($user && $user->hasTeam($vorfall->getTeam())) {
-                    $vorfall->setAssignedUser($user);
-                    $content = $this->twig->render('email/assignementVorfall.html.twig', [
-                        'assign' => $vorfall->getFakten(),
-                        'data' => $vorfall,
-                        'team' => $vorfall->getTeam()
-                    ]);
-                    $this->notificationService->sendNotificationAssign($content, $user);
-                }
-            } else {
-                $vorfall->setAssignedUser(null);
-            }
-            $this->em->persist($vorfall);
-            $this->em->flush();
-
-            return true;
-        } catch (Exception $exception) {
-            return false;
-        }
-    }
-
     public function assignTask($request, Task $task): bool
     {
         try {
@@ -339,5 +268,76 @@ class AssignService
         } catch (Exception $exception) {
             return false;
         }
+    }
+
+    public function assignVorfall($request, Vorfall $vorfall): bool
+    {
+        try {
+
+            if ($vorfall->getAssignedUser() == null) {
+                $data = $request->get('assign');
+                $user = $this->em->getRepository(User::class)->find($data['user']);
+                if ($user && $user->hasTeam($vorfall->getTeam())) {
+                    $vorfall->setAssignedUser($user);
+                    $content = $this->twig->render('email/assignementVorfall.html.twig', [
+                        'assign' => $vorfall->getFakten(),
+                        'data' => $vorfall,
+                        'team' => $vorfall->getTeam()
+                    ]);
+                    $this->notificationService->sendNotificationAssign($content, $user);
+                }
+            } else {
+                $vorfall->setAssignedUser(null);
+            }
+            $this->em->persist($vorfall);
+            $this->em->flush();
+
+            return true;
+        } catch (Exception $exception) {
+            return false;
+        }
+    }
+
+    public function assignVvt($request, VVT $vvt): bool
+    {
+        try {
+            if ($vvt->getAssignedUser() == null) {
+                $data = $request->get('assign');
+                $user = $this->em->getRepository(User::class)->find($data['user']);
+                if ($user && $user->hasTeam($vvt->getTeam())) {
+                    $vvt->setAssignedUser($user);
+                    $content = $this->twig->render('email/assignementVvt.html.twig', [
+                        'assign' => $vvt->getName(),
+                        'data' => $vvt,
+                        'team' => $vvt->getTeam(),
+                    ]);
+                    $this->notificationService->sendNotificationAssign($content, $user);
+                }
+            } else {
+                $vvt->setAssignedUser(null);
+            }
+            $this->em->persist($vvt);
+            $this->em->flush();
+
+            return true;
+        } catch (Exception $exception) {
+            return false;
+        }
+    }
+
+    public function createForm($data, Team $team): FormInterface
+    {
+        if (count($team->getMembers()) > 0) {
+            $teamMembers = $team->getMembers();
+            if (!in_array($team->getDsbUser(), $teamMembers->toArray())) {
+                if ($team->getDsbUser()) {
+                    $teamMembers->add($team->getDsbUser());
+                }
+            }
+        } else {
+            $teamMembers = array();
+        }
+        $form = $this->formBuilder->create(AssignType::class, $data, ['user' => $teamMembers]);
+        return $form;
     }
 }

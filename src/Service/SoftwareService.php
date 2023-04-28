@@ -34,18 +34,6 @@ class SoftwareService
         $this->formBuilder = $formBuilder;
     }
 
-    public function newSoftware(Team $team, User $user): Software
-    {
-        $software = new Software();
-        $software->setTeam($team);
-        $software->setCreatedAt(new DateTime());
-        $software->setPurchase(new DateTime());
-        $software->setActiv(true);
-        $software->setUser($user);
-
-        return $software;
-    }
-
     public function cloneSoftware(Software $software, User $user): Software
     {
         $newSoftware = clone $software;
@@ -54,6 +42,13 @@ class SoftwareService
         $newSoftware->setUser($user);
         $newSoftware->setCreatedAt(new DateTime());
         return $newSoftware;
+    }
+
+    public function createConfigForm(SoftwareConfig $softwareConfig): FormInterface
+    {
+        $form = $this->formBuilder->create(SoftwareConfigType::class, $softwareConfig);
+
+        return $form;
     }
 
     public function createForm(Software $software, Team $team): FormInterface
@@ -76,10 +71,15 @@ class SoftwareService
         return $config;
     }
 
-    public function createConfigForm(SoftwareConfig $softwareConfig): FormInterface
+    public function newSoftware(Team $team, User $user): Software
     {
-        $form = $this->formBuilder->create(SoftwareConfigType::class, $softwareConfig);
+        $software = new Software();
+        $software->setTeam($team);
+        $software->setCreatedAt(new DateTime());
+        $software->setPurchase(new DateTime());
+        $software->setActiv(true);
+        $software->setUser($user);
 
-        return $form;
+        return $software;
     }
 }

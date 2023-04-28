@@ -35,257 +35,6 @@ class TeamController extends AbstractController
     {
     }
 
-    #[Route(path: '/team_edit', name: 'team_edit')]
-    public function edit(
-        ValidatorInterface     $validator,
-        Request                $request,
-        EntityManagerInterface $em,
-        SecurityService        $securityService,
-        CurrentTeamService     $currentTeamService,
-        TeamRepository         $teamRepository,
-    ): Response
-    {
-        $user = $this->getUser();
-        $teamId = $request->get('id');
-        $currentTeam = null;
-
-        if ($teamId) {
-            $team = $teamRepository->find($teamId);
-        } else {
-            $team = $currentTeamService->getCurrentAdminTeam($user);
-            $currentTeam = $team;
-        }
-
-        if (!$team || (!$securityService->adminCheck($user, $team))) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        $form = $this->createForm(TeamType::class, $team);
-        $form->handleRequest($request);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $nTeam = $form->getData();
-            $errors = $validator->validate($nTeam);
-            if (count($errors) == 0) {
-                $em->persist($nTeam);
-                $em->flush();
-                if ($teamId) {
-                    return $this->redirectToRoute('team_edit', ['id' => $teamId]);
-                }
-                return $this->redirectToRoute('team_edit');
-            }
-        }
-        return $this->render('team/index.html.twig', [
-            'currentTeam' => $currentTeam,
-            'adminArea' => true,
-            'controller_name' => 'TeamController',
-            'form' => $form->createView(),
-            'errors' => $errors,
-            'title' => $this->translator->trans(id: 'team.data', domain: 'team')
-        ]);
-    }
-
-
-    #[Route(path: '/manage_teams', name: 'manage_teams')]
-    public function manage(
-        SecurityService    $securityService,
-        SettingsRepository $settingsRepository,
-        TeamRepository     $teamRepository,
-    ): Response
-    {
-        $user = $this->getUser();
-        $settings = $settingsRepository->findOne();
-        $useKeycloakGroups = $settings ? $settings->getUseKeycloakGroups() : false;
-
-        if (!$securityService->superAdminCheck($user)) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        $teams = $teamRepository->findAll();
-
-        return $this->render('team/manage.html.twig', [
-            'teams' => $teams,
-            'useKeycloakGroups' => $useKeycloakGroups,
-        ]);
-    }
-
-    #[Route(path: '/team_create', name: 'team_create')]
-    public function create(
-        ValidatorInterface     $validator,
-        EntityManagerInterface $em,
-        Request                $request,
-    ): Response
-    {
-        $user = $this->getUser();
-        $team = new Team();
-        $team->setActiv(true);
-        $form = $this->createForm(TeamType::class, $team);
-        $form->remove('video');
-        $form->remove('externalLink');
-        $form->handleRequest($request);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $nTeam = $form->getData();
-            $errors = $validator->validate($nTeam);
-            if (count($errors) == 0) {
-                $user->addTeam($nTeam);
-                $nTeam->addAdmin($user);
-                $em->persist($nTeam);
-                $em->persist($user);
-                $em->flush();
-                return $this->redirectToRoute('manage_teams');
-            }
-        }
-
-        return $this->render('team/index.html.twig', [
-            'controller_name' => 'TeamController',
-            'form' => $form->createView(),
-            'errors' => $errors,
-            'title' => $this->translator->trans(id: 'team.create', domain: 'team')
-        ]);
-    }
-
-    #[Route(path: '/manage_teams/delete', name: 'team_delete')]
-    public function teamDelete(
-        Request                $request,
-        SecurityService        $securityService,
-        EntityManagerInterface $em,
-        TeamRepository         $teamRepository,
-        CurrentTeamService     $currentTeamService,
-    ): Response
-    {
-        $user = $this->getUser();
-        $teamId = $request->get('id');
-        $team = $teamId ? $teamRepository->find($teamId) : $currentTeamService->getCurrentAdminTeam($user);
-
-        if ($securityService->superAdminCheck($user) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        if ($team->getDeleteBlockers()) {
-            return $this->render('team/modalViewDeleteBlockers.html.twig', [
-                'team' => $team,
-                'type' => $request->get('type')
-            ]);
-        } else {
-            $data = array();
-            $form = $this->createForm(DeleteTeamType::class, $data);
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
-                if ($data['teamName'] === $team->getName()) {
-                    $em->remove($team);
-                    $em->flush();
-                }
-                return $this->redirectToRoute('manage_teams');
-            }
-
-            return $this->render('team/modalViewDelete.html.twig', [
-                'form' => $form->createView(),
-                'team' => $team,
-                'type' => $request->get('type')
-            ]);
-        }
-    }
-
-    #[Route(path: '/team_custom', name: 'team_custom')]
-    public function customShow(
-        SecurityService    $securityService,
-        TeamService        $teamService,
-        CurrentTeamService $currentTeamService,
-    ): Response
-    {
-        $user = $this->getUser();
-        $team = $currentTeamService->getCurrentAdminTeam($user);
-
-        if (!$team || !$securityService->adminCheck($user, $team)) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        $data = $teamService->show($team);
-
-        return $this->render('team/custom.html.twig', [
-            'currentTeam' => $team,
-            'adminArea' => true,
-            'title' => $this->translator->trans(id: 'changeFormPresets', domain: 'team'),
-            'data' => $data,
-            'edit' => false
-        ]);
-    }
-
-    #[Route(path: '/team_custom/create', name: 'team_custom_create')]
-    public function customCreate(
-        Request                $request,
-        SecurityService        $securityService,
-        EntityManagerInterface $em,
-        TeamService            $teamService,
-        ValidatorInterface     $validator,
-        CurrentTeamService     $currentTeamService,
-    ): Response
-    {
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-
-        if ($securityService->adminCheck($user, $team) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        $data1 = $teamService->create($request->get('type'), $request->get('id'), $team);
-
-        $form = $this->createForm(NewType::class, $data1);
-        $form->handleRequest($request);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $errors = $validator->validate($data);
-            if (count($errors) == 0) {
-                $em->persist($data);
-                $em->flush();
-                return $this->redirect($this->generateUrl('team_custom') . '#' . $request->get('type'));
-            }
-        }
-
-        return $this->render('team/modalView.html.twig', [
-            'form' => $form->createView(),
-            'title' => $request->get('title'),
-            'type' => $request->get('type'),
-            'id' => $request->get('id'),
-            'errors' => $errors
-        ]);
-    }
-
-    #[Route(path: '/team_custom/deaktivieren', name: 'team_custom_deativate')]
-    public function customDeactivate(
-        Request                $request,
-        SecurityService        $securityService,
-        EntityManagerInterface $em,
-        TeamService            $teamService,
-        CurrentTeamService     $currentTeamService,
-    ): Response
-    {
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-
-        if ($securityService->adminCheck($user, $team) === false) {
-            return $this->redirectToRoute('team_custom');
-        }
-
-        $data = $teamService->delete($request->get('type'), $request->get('id'));
-
-        if ($this->getUser()->hasTeam($data->getTeam())) {
-            $data->setActiv(false);
-        }
-
-        $em->persist($data);
-        $em->flush();
-
-        return $this->redirectToRoute('team_custom');
-    }
-
     #[Route(path: '/team_abteilungen', name: 'team_abteilungen')]
     public function abteilungenAdd(
         ValidatorInterface          $validator,
@@ -363,6 +112,212 @@ class TeamController extends AbstractController
         return $this->redirectToRoute('team_abteilungen');
     }
 
+    #[Route(path: '/team_create', name: 'team_create')]
+    public function create(
+        ValidatorInterface     $validator,
+        EntityManagerInterface $em,
+        Request                $request,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = new Team();
+        $team->setActiv(true);
+        $form = $this->createForm(TeamType::class, $team);
+        $form->remove('video');
+        $form->remove('externalLink');
+        $form->handleRequest($request);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $nTeam = $form->getData();
+            $errors = $validator->validate($nTeam);
+            if (count($errors) == 0) {
+                $user->addTeam($nTeam);
+                $nTeam->addAdmin($user);
+                $em->persist($nTeam);
+                $em->persist($user);
+                $em->flush();
+                return $this->redirectToRoute('manage_teams');
+            }
+        }
+
+        return $this->render('team/index.html.twig', [
+            'controller_name' => 'TeamController',
+            'form' => $form->createView(),
+            'errors' => $errors,
+            'title' => $this->translator->trans(id: 'team.create', domain: 'team')
+        ]);
+    }
+
+    #[Route(path: '/team_custom/create', name: 'team_custom_create')]
+    public function customCreate(
+        Request                $request,
+        SecurityService        $securityService,
+        EntityManagerInterface $em,
+        TeamService            $teamService,
+        ValidatorInterface     $validator,
+        CurrentTeamService     $currentTeamService,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+
+        if ($securityService->adminCheck($user, $team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $data1 = $teamService->create($request->get('type'), $request->get('id'), $team);
+
+        $form = $this->createForm(NewType::class, $data1);
+        $form->handleRequest($request);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $errors = $validator->validate($data);
+            if (count($errors) == 0) {
+                $em->persist($data);
+                $em->flush();
+                return $this->redirect($this->generateUrl('team_custom') . '#' . $request->get('type'));
+            }
+        }
+
+        return $this->render('team/modalView.html.twig', [
+            'form' => $form->createView(),
+            'title' => $request->get('title'),
+            'type' => $request->get('type'),
+            'id' => $request->get('id'),
+            'errors' => $errors
+        ]);
+    }
+
+    #[Route(path: '/team_custom/deaktivieren', name: 'team_custom_deativate')]
+    public function customDeactivate(
+        Request                $request,
+        SecurityService        $securityService,
+        EntityManagerInterface $em,
+        TeamService            $teamService,
+        CurrentTeamService     $currentTeamService,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+
+        if ($securityService->adminCheck($user, $team) === false) {
+            return $this->redirectToRoute('team_custom');
+        }
+
+        $data = $teamService->delete($request->get('type'), $request->get('id'));
+
+        if ($this->getUser()->hasTeam($data->getTeam())) {
+            $data->setActiv(false);
+        }
+
+        $em->persist($data);
+        $em->flush();
+
+        return $this->redirectToRoute('team_custom');
+    }
+
+    #[Route(path: '/team_custom', name: 'team_custom')]
+    public function customShow(
+        SecurityService    $securityService,
+        TeamService        $teamService,
+        CurrentTeamService $currentTeamService,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getCurrentAdminTeam($user);
+
+        if (!$team || !$securityService->adminCheck($user, $team)) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $data = $teamService->show($team);
+
+        return $this->render('team/custom.html.twig', [
+            'currentTeam' => $team,
+            'adminArea' => true,
+            'title' => $this->translator->trans(id: 'changeFormPresets', domain: 'team'),
+            'data' => $data,
+            'edit' => false
+        ]);
+    }
+
+    #[Route(path: '/team_edit', name: 'team_edit')]
+    public function edit(
+        ValidatorInterface     $validator,
+        Request                $request,
+        EntityManagerInterface $em,
+        SecurityService        $securityService,
+        CurrentTeamService     $currentTeamService,
+        TeamRepository         $teamRepository,
+    ): Response
+    {
+        $user = $this->getUser();
+        $teamId = $request->get('id');
+        $currentTeam = null;
+
+        if ($teamId) {
+            $team = $teamRepository->find($teamId);
+        } else {
+            $team = $currentTeamService->getCurrentAdminTeam($user);
+            $currentTeam = $team;
+        }
+
+        if (!$team || (!$securityService->adminCheck($user, $team))) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $form = $this->createForm(TeamType::class, $team);
+        $form->handleRequest($request);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $nTeam = $form->getData();
+            $errors = $validator->validate($nTeam);
+            if (count($errors) == 0) {
+                $em->persist($nTeam);
+                $em->flush();
+                if ($teamId) {
+                    return $this->redirectToRoute('team_edit', ['id' => $teamId]);
+                }
+                return $this->redirectToRoute('team_edit');
+            }
+        }
+        return $this->render('team/index.html.twig', [
+            'currentTeam' => $currentTeam,
+            'adminArea' => true,
+            'controller_name' => 'TeamController',
+            'form' => $form->createView(),
+            'errors' => $errors,
+            'title' => $this->translator->trans(id: 'team.data', domain: 'team')
+        ]);
+    }
+
+    #[Route(path: '/manage_teams', name: 'manage_teams')]
+    public function manage(
+        SecurityService    $securityService,
+        SettingsRepository $settingsRepository,
+        TeamRepository     $teamRepository,
+    ): Response
+    {
+        $user = $this->getUser();
+        $settings = $settingsRepository->findOne();
+        $useKeycloakGroups = $settings ? $settings->getUseKeycloakGroups() : false;
+
+        if (!$securityService->superAdminCheck($user)) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $teams = $teamRepository->findAll();
+
+        return $this->render('team/manage.html.twig', [
+            'teams' => $teams,
+            'useKeycloakGroups' => $useKeycloakGroups,
+        ]);
+    }
+
     #[Route(path: '/team/switch', name: 'team_switch')]
     public function switchTeam(
         Request            $request,
@@ -374,5 +329,49 @@ class TeamController extends AbstractController
         $userService->switchToTeam($team);
 
         return new RedirectResponse($request->headers->get('referer'));
+    }
+
+    #[Route(path: '/manage_teams/delete', name: 'team_delete')]
+    public function teamDelete(
+        Request                $request,
+        SecurityService        $securityService,
+        EntityManagerInterface $em,
+        TeamRepository         $teamRepository,
+        CurrentTeamService     $currentTeamService,
+    ): Response
+    {
+        $user = $this->getUser();
+        $teamId = $request->get('id');
+        $team = $teamId ? $teamRepository->find($teamId) : $currentTeamService->getCurrentAdminTeam($user);
+
+        if ($securityService->superAdminCheck($user) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        if ($team->getDeleteBlockers()) {
+            return $this->render('team/modalViewDeleteBlockers.html.twig', [
+                'team' => $team,
+                'type' => $request->get('type')
+            ]);
+        } else {
+            $data = array();
+            $form = $this->createForm(DeleteTeamType::class, $data);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $data = $form->getData();
+                if ($data['teamName'] === $team->getName()) {
+                    $em->remove($team);
+                    $em->flush();
+                }
+                return $this->redirectToRoute('manage_teams');
+            }
+
+            return $this->render('team/modalViewDelete.html.twig', [
+                'form' => $form->createView(),
+                'team' => $team,
+                'type' => $request->get('type')
+            ]);
+        }
     }
 }

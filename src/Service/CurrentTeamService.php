@@ -15,6 +15,16 @@ class CurrentTeamService
         $this->requestStack = $requestStack;
     }
 
+    public function getCurrentAdminTeam(User $user): Team
+    {
+        return $this->findTeam($user->getAdminRoles());
+    }
+
+    public function getTeamFromSession(User $user): Team
+    {
+        return $this->findTeam($user->getTeams());
+    }
+
     public function switchToTeam($team): void
     {
         $session = $this->requestStack->getSession();
@@ -34,15 +44,5 @@ class CurrentTeamService
             }
         }
         return $teams->get(0);
-    }
-
-    public function getTeamFromSession(User $user): Team
-    {
-        return $this->findTeam($user->getTeams());
-    }
-
-    public function getCurrentAdminTeam(User $user): Team
-    {
-        return $this->findTeam($user->getAdminRoles());
     }
 }

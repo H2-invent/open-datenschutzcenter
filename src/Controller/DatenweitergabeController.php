@@ -30,52 +30,58 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DatenweitergabeController extends AbstractController
 {
-    private EntityManagerInterface $em;
+
 
     public function __construct(
         private readonly TranslatorInterface $translator,
+        private EntityManagerInterface       $em,
     )
     {
-        $this->em = $this->getDoctrine()->getManager();
     }
 
-    #[Route(path: '/datenweitergabe', name: 'datenweitergabe')]
-    public function indexDataTransfer(
-        SecurityService           $securityService,
-        CurrentTeamService        $currentTeamService,
-        DatenweitergabeRepository $dataTransferRepository,
+    #[Route(path: '/auftragsverarbeitung/new', name: 'auftragsverarbeitung_new')]
+    public function addAuftragsverarbeitung(
+        ValidatorInterface     $validator,
+        Request                $request,
+        SecurityService        $securityService,
+        DatenweitergabeService $datenweitergabeService,
+        CurrentTeamService     $currentTeamService,
     ): Response
     {
+        set_time_limit(600);
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $dataTransferRepository->findBy(array('team' => $team, 'activ' => true, 'art' => 1));
-        return $this->render('datenweitergabe/index.html.twig', [
-            'table' => $daten,
-            'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
-            'currentTeam' => $team,
-        ]);
-    }
+        $daten = $datenweitergabeService->newDatenweitergabe($this->getUser(), 2, 'AVV-');
 
-    #[Route(path: '/auftragsverarbeitung', name: 'auftragsverarbeitung')]
-    public function indexAuftragsverarbeitung(
-        SecurityService           $securityService,
-        CurrentTeamService        $currentTeamService,
-        DatenweitergabeRepository $dataTransferRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
+        $form = $datenweitergabeService->createForm($daten, $team);
+        $form->handleRequest($request);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $daten = $form->getData();
+            foreach ($daten->getVerfahren() as $item) {
+                $item->addDatenweitergaben($daten);
+                $this->em->persist($item);
+            }
+
+            $errors = $validator->validate($daten);
+            if (count($errors) == 0) {
+                $this->em->persist($daten);
+                $this->em->flush();
+                return $this->redirectToRoute('auftragsverarbeitung');
+            }
         }
-
-        $daten = $dataTransferRepository->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
-        return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
-            'table' => $daten,
-            'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
-            'currentTeam' => $team,
+        return $this->render('datenweitergabe/new.html.twig', [
+            'form' => $form->createView(),
+            'errors' => $errors,
+            'title' => $this->translator->trans(id: 'requestProcessing.create', domain: 'datenweitergabe'),
+            'daten' => $daten,
+            'activNummer' => true,
+            'activ' => $daten->getActiv()
         ]);
     }
 
@@ -125,50 +131,113 @@ class DatenweitergabeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/auftragsverarbeitung/new', name: 'auftragsverarbeitung_new')]
-    public function addAuftragsverarbeitung(
-        ValidatorInterface     $validator,
-        Request                $request,
-        SecurityService        $securityService,
-        DatenweitergabeService $datenweitergabeService,
-        CurrentTeamService     $currentTeamService,
+    #[Route(path: '/datenweitergabe/approve', name: 'datenweitergabe_approve')]
+    public function approveDatenweitergabe(
+        Request                   $request,
+        SecurityService           $securityService,
+        ApproveService            $approveService,
+        CurrentTeamService        $currentTeamService,
+        DatenweitergabeRepository $dataTransferRepository,
     ): Response
     {
-        set_time_limit(600);
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+        $daten = $dataTransferRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team)) {
+            $approve = $approveService->approve($daten, $this->getUser());
+            if ($approve['clone'] === true) {
+                $newDaten = $dataTransferRepository->find($approve['data']);
+
+
+                foreach ($newDaten->getVerfahren() as $item) {
+                    $item->addDatenweitergaben($newDaten);
+                    $this->em->persist($item);
+                }
+                foreach ($newDaten->getSoftware() as $item) {
+                    $item->addDatenweitergabe($newDaten);
+                    $this->em->persist($item);
+                }
+                $this->em->flush();
+            }
+            return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+        }
+
+        // if security check fails
+        if ($daten->getArt() === 1) {
+            return $this->redirectToRoute('datenweitergabe');
+        }
+        return $this->redirectToRoute('auftragsverarbeitung');
+    }
+
+    #[Route(path: '/datenweitergabe/disable', name: 'datenweitergabe_disable')]
+    public function disableDatenweitergabe(
+        Request                   $request,
+        SecurityService           $securityService,
+        DisableService            $disableService,
+        CurrentTeamService        $currentTeamService,
+        DatenweitergabeRepository $dataTransferRepository,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+        $daten = $dataTransferRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team) && !$daten->getApproved()) {
+            $disableService->disable($daten, $user);
+        }
+
+        if ($daten->getArt() === 1) {
+            return $this->redirectToRoute('datenweitergabe');
+        }
+        return $this->redirectToRoute('auftragsverarbeitung');
+    }
+
+    #[Route(path: '/datenweitergabe/download/{id}', name: 'datenweitergabe_download_file', methods: ['GET'])]
+    #[ParamConverter('datenweitergabe', options: ['mapping' => ['id' => 'id']])]
+    public function downloadArticleReference(
+        FilesystemInterface $datenFileSystem,
+        Datenweitergabe     $datenweitergabe,
+        SecurityService     $securityService,
+        LoggerInterface     $logger,
+        CurrentTeamService  $currentTeamService,
+    ): Response
+    {
+        $stream = $datenFileSystem->read($datenweitergabe->getUpload());
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        if ($securityService->teamCheck($team) === false) {
+        if ($securityService->teamDataCheck($datenweitergabe, $team) === false) {
+            $logger->error(
+                'DOWNLOAD',
+                [
+                    'typ' => 'DOWNLOAD',
+                    'error' => true,
+                    'hinweis' => 'Fehlerhafter download. User nicht berechtigt!',
+                    'dokument' => $datenweitergabe->getUpload(),
+                    'user' => $this->getUser()->getUsername()
+                ]);
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $datenweitergabeService->newDatenweitergabe($this->getUser(), 2, 'AVV-');
+        $type = $datenFileSystem->getMimetype($datenweitergabe->getUpload());
+        $response = new Response($stream);
+        $response->headers->set('Content-Type', $type);
+        $disposition = HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
+            preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $datenweitergabe->getUpload())
+        );
 
-        $form = $datenweitergabeService->createForm($daten, $team);
-        $form->handleRequest($request);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $daten = $form->getData();
-            foreach ($daten->getVerfahren() as $item) {
-                $item->addDatenweitergaben($daten);
-                $this->em->persist($item);
-            }
-
-            $errors = $validator->validate($daten);
-            if (count($errors) == 0) {
-                $this->em->persist($daten);
-                $this->em->flush();
-                return $this->redirectToRoute('auftragsverarbeitung');
-            }
-        }
-        return $this->render('datenweitergabe/new.html.twig', [
-            'form' => $form->createView(),
-            'errors' => $errors,
-            'title' => $this->translator->trans(id: 'requestProcessing.create', domain: 'datenweitergabe'),
-            'daten' => $daten,
-            'activNummer' => true,
-            'activ' => $daten->getActiv()
-        ]);
+        $response->headers->set('Content-Disposition', $disposition);
+        $logger->info(
+            'DOWNLOAD',
+            [
+                'typ' => 'DOWNLOAD',
+                'error' => false,
+                'hinweis' => 'Download erfolgreich',
+                'dokument' => $datenweitergabe->getUpload(),
+                'user' => $this->getUser()->getUsername()
+            ],
+        );
+        return $response;
     }
 
     #[Route(path: '/datenweitergabe/edit', name: 'datenweitergabe_edit')]
@@ -242,112 +311,43 @@ class DatenweitergabeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/datenweitergabe/download/{id}', name: 'datenweitergabe_download_file', methods: ['GET'])]
-    #[ParamConverter('datenweitergabe', options: ['mapping' => ['id' => 'id']])]
-    public function downloadArticleReference(
-        FilesystemInterface $datenFileSystem,
-        Datenweitergabe     $datenweitergabe,
-        SecurityService     $securityService,
-        LoggerInterface     $logger,
-        CurrentTeamService  $currentTeamService,
+    #[Route(path: '/auftragsverarbeitung', name: 'auftragsverarbeitung')]
+    public function indexAuftragsverarbeitung(
+        SecurityService           $securityService,
+        CurrentTeamService        $currentTeamService,
+        DatenweitergabeRepository $dataTransferRepository,
     ): Response
     {
-        $stream = $datenFileSystem->read($datenweitergabe->getUpload());
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        if ($securityService->teamDataCheck($datenweitergabe, $team) === false) {
-            $logger->error(
-                'DOWNLOAD',
-                [
-                    'typ' => 'DOWNLOAD',
-                    'error' => true,
-                    'hinweis' => 'Fehlerhafter download. User nicht berechtigt!',
-                    'dokument' => $datenweitergabe->getUpload(),
-                    'user' => $this->getUser()->getUsername()
-                ]);
+        if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $datenFileSystem->getMimetype($datenweitergabe->getUpload());
-        $response = new Response($stream);
-        $response->headers->set('Content-Type', $type);
-        $disposition = HeaderUtils::makeDisposition(
-            HeaderUtils::DISPOSITION_ATTACHMENT,
-            preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $datenweitergabe->getUpload())
-        );
-
-        $response->headers->set('Content-Disposition', $disposition);
-        $logger->info(
-            'DOWNLOAD',
-            [
-                'typ' => 'DOWNLOAD',
-                'error' => false,
-                'hinweis' => 'Download erfolgreich',
-                'dokument' => $datenweitergabe->getUpload(),
-                'user' => $this->getUser()->getUsername()
-            ],
-        );
-        return $response;
+        $daten = $dataTransferRepository->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
+        return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
+            'table' => $daten,
+            'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
+            'currentTeam' => $team,
+        ]);
     }
 
-    #[Route(path: '/datenweitergabe/approve', name: 'datenweitergabe_approve')]
-    public function approveDatenweitergabe(
-        Request                   $request,
+    #[Route(path: '/datenweitergabe', name: 'datenweitergabe')]
+    public function indexDataTransfer(
         SecurityService           $securityService,
-        ApproveService            $approveService,
         CurrentTeamService        $currentTeamService,
         DatenweitergabeRepository $dataTransferRepository,
     ): Response
     {
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-        $daten = $dataTransferRepository->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team)) {
-            $approve = $approveService->approve($daten, $this->getUser());
-            if ($approve['clone'] === true) {
-                $newDaten = $dataTransferRepository->find($approve['data']);
-
-
-                foreach ($newDaten->getVerfahren() as $item) {
-                    $item->addDatenweitergaben($newDaten);
-                    $this->em->persist($item);
-                }
-                foreach ($newDaten->getSoftware() as $item) {
-                    $item->addDatenweitergabe($newDaten);
-                    $this->em->persist($item);
-                }
-                $this->em->flush();
-            }
-            return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
         }
 
-        // if security check fails
-        if ($daten->getArt() === 1) {
-            return $this->redirectToRoute('datenweitergabe');
-        }
-        return $this->redirectToRoute('auftragsverarbeitung');
-    }
-
-    #[Route(path: '/datenweitergabe/disable', name: 'datenweitergabe_disable')]
-    public function disableDatenweitergabe(
-        Request                   $request,
-        SecurityService           $securityService,
-        DisableService            $disableService,
-        CurrentTeamService        $currentTeamService,
-        DatenweitergabeRepository $dataTransferRepository,
-    ): Response
-    {
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-        $daten = $dataTransferRepository->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team) && !$daten->getApproved()) {
-            $disableService->disable($daten, $user);
-        }
-
-        if ($daten->getArt() === 1) {
-            return $this->redirectToRoute('datenweitergabe');
-        }
-        return $this->redirectToRoute('auftragsverarbeitung');
+        $daten = $dataTransferRepository->findBy(array('team' => $team, 'activ' => true, 'art' => 1));
+        return $this->render('datenweitergabe/index.html.twig', [
+            'table' => $daten,
+            'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
+            'currentTeam' => $team,
+        ]);
     }
 }

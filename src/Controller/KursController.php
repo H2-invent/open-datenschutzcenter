@@ -20,11 +20,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class KursController extends AbstractController
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(private readonly TranslatorInterface $translator)
+
+    public function __construct(private readonly TranslatorInterface $translator,
+                                private EntityManagerInterface       $em,
+    )
     {
-        $this->em = $this->getDoctrine()->getManager();
     }
 
     #[Route(path: '/kurs/new', name: 'akademie_kurs_new')]

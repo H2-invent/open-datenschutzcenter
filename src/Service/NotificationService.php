@@ -35,6 +35,19 @@ class NotificationService
         $this->parameterBag = $parameterBag;
     }
 
+    public function sendEncrypt($pgp, $content, $email, $betreff): bool
+    {
+        $this->mailer->sendEncrypt(
+            $pgp,
+            $this->translator->trans(id: 'notification.odc.sender', domain: 'service'),
+            $this->parameterBag->get('defaultEmail'),
+            $email,
+            $betreff,
+            $content
+        );
+
+        return true;
+    }
 
     public function sendNotificationAkademie(AkademieBuchungen $buchung, $content): bool
     {
@@ -75,14 +88,13 @@ class NotificationService
         return true;
     }
 
-    public function sendEncrypt($pgp, $content, $email, $betreff): bool
+    public function sendRequestNew($content, $email): bool
     {
-        $this->mailer->sendEncrypt(
-            $pgp,
+        $this->mailer->sendEmail(
             $this->translator->trans(id: 'notification.odc.sender', domain: 'service'),
             $this->parameterBag->get('defaultEmail'),
             $email,
-            $betreff,
+            $this->translator->trans(id: 'notification.odc.new.clientRequest', domain: 'service'),
             $content
         );
 
@@ -96,19 +108,6 @@ class NotificationService
             $this->parameterBag->get('defaultEmail'),
             $email,
             $this->translator->trans(id: 'notification.odc.email.verify', domain: 'service'),
-            $content
-        );
-
-        return true;
-    }
-
-    public function sendRequestNew($content, $email): bool
-    {
-        $this->mailer->sendEmail(
-            $this->translator->trans(id: 'notification.odc.sender', domain: 'service'),
-            $this->parameterBag->get('defaultEmail'),
-            $email,
-            $this->translator->trans(id: 'notification.odc.new.clientRequest', domain: 'service'),
             $content
         );
 

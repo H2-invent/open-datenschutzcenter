@@ -12,6 +12,7 @@ namespace App\Service;
 use App\Entity\Task;
 use App\Entity\Team;
 use App\Entity\User;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -29,7 +30,7 @@ class TaskService
         $task = new Task();
         $task->setTeam($team);
         $task->setActiv(true);
-        $task->setCreatedAt(new \DateTime());
+        $task->setCreatedAt(new DateTime());
         $task->setUser($user);
         $task->setDone(false);
 

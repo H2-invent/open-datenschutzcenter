@@ -23,6 +23,71 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/vvtdatenkategorie')]
 class VVTDatenkategorieController extends AbstractController
 {
+    #[Route(path: '/{id}', name: 'app_vvtdatenkategorie_delete', methods: ['POST'])]
+    public function delete(
+        Request                $request,
+        VVTDatenkategorie      $vVTDatenkategorie,
+        EntityManagerInterface $entityManager,
+        SecurityService        $securityService,
+        CurrentTeamService     $currentTeamService,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        if ($securityService->teamCheck($team) === true) {
+            if ($this->isCsrfTokenValid('delete' . $vVTDatenkategorie->getId(), $request->request->get('_token'))) {
+
+                $vVTDatenkategorie->setActiv(false);
+                $entityManager->persist($vVTDatenkategorie);
+                $entityManager->flush();
+            }
+        }
+
+        return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route(path: '/{id}/edit', name: 'app_vvtdatenkategorie_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        Request                  $request,
+        VVTDatenkategorie        $vVTDatenkategorie,
+        EntityManagerInterface   $entityManager,
+        SecurityService          $securityService,
+        VVTDatenkategorieService $vVTDatenkategorieService,
+        CurrentTeamService       $currentTeamService,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('app_vvtdatenkategorie_index');
+        }
+
+        $newVVTDatenkategorie = $vVTDatenkategorieService->cloneVVTDatenkategorie($vVTDatenkategorie);
+        $form = $vVTDatenkategorieService->createForm($newVVTDatenkategorie, $team);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $vVTDatenkategorie->setActiv(false);
+            $entityManager->persist($vVTDatenkategorie);
+
+            $entityManager->persist($newVVTDatenkategorie);
+
+
+            foreach ($vVTDatenkategorie->getLoeschkonzept() as $loeschkonzept) {
+                $loeschkonzept->addVvtdatenkategory($newVVTDatenkategorie);
+                $entityManager->persist($loeschkonzept);
+            }
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('vvt_datenkategorie/edit.html.twig', [
+            'vvtdatenkategorie' => $vVTDatenkategorie,
+            'form' => $form,
+        ]);
+    }
+
     #[Route(path: '/', name: 'app_vvtdatenkategorie_index', methods: ['GET'])]
     public function index(
         VVTDatenkategorieRepository $vVTDatenkategorieRepository,
@@ -74,74 +139,9 @@ class VVTDatenkategorieController extends AbstractController
     #[Route(path: '/{id}', name: 'app_vvtdatenkategorie_show', methods: ['GET'])]
     public function show(VVTDatenkategorie $vVTDatenkategorie): Response
     {
-        
+
         return $this->render('vvt_datenkategorie/show.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
         ]);
-    }
-
-    #[Route(path: '/{id}/edit', name: 'app_vvtdatenkategorie_edit', methods: ['GET', 'POST'])]
-    public function edit(
-        Request                  $request,
-        VVTDatenkategorie        $vVTDatenkategorie,
-        EntityManagerInterface   $entityManager,
-        SecurityService          $securityService,
-        VVTDatenkategorieService $vVTDatenkategorieService,
-        CurrentTeamService       $currentTeamService,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('app_vvtdatenkategorie_index');
-        }
-
-        $newVVTDatenkategorie = $vVTDatenkategorieService->cloneVVTDatenkategorie($vVTDatenkategorie);
-        $form = $vVTDatenkategorieService->createForm($newVVTDatenkategorie, $team);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $vVTDatenkategorie->setActiv(false);
-            $entityManager->persist($vVTDatenkategorie);
-
-            $entityManager->persist($newVVTDatenkategorie);
-            
-            
-            foreach ($vVTDatenkategorie->getLoeschkonzept() as $loeschkonzept) {
-                $loeschkonzept->addVvtdatenkategory($newVVTDatenkategorie);
-                $entityManager->persist($loeschkonzept);
-            }
-
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('vvt_datenkategorie/edit.html.twig', [
-            'vvtdatenkategorie' => $vVTDatenkategorie,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route(path: '/{id}', name: 'app_vvtdatenkategorie_delete', methods: ['POST'])]
-    public function delete(
-        Request                $request,
-        VVTDatenkategorie      $vVTDatenkategorie,
-        EntityManagerInterface $entityManager,
-        SecurityService        $securityService,
-        CurrentTeamService     $currentTeamService,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        if ($securityService->teamCheck($team) === true) {
-            if ($this->isCsrfTokenValid('delete' . $vVTDatenkategorie->getId(), $request->request->get('_token'))) {
-
-                $vVTDatenkategorie->setActiv(false);
-                $entityManager->persist($vVTDatenkategorie);
-                $entityManager->flush();
-            }
-        }
-
-        return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
     }
 }

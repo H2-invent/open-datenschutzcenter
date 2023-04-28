@@ -16,33 +16,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route(path: '/akademie', name: 'akademie')]
 class AkademieController extends AbstractController
 {
-    private EntityManagerInterface $em;
+
 
     public function __construct(
         private readonly TranslatorInterface $translator,
+        private EntityManagerInterface       $em,
     )
     {
-        $this->em = $this->getDoctrine()->getManager();
-    }
-
-    #[Route(path: '', name: '')]
-    public function index(
-        SecurityService             $securityService,
-        AkademieBuchungenRepository $bookingRepository
-    ): Response
-    {
-        $team = $this->getUser()->getAkademieUser();
-
-        if (!$securityService->teamCheck($team)) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        $bookings = $bookingRepository->findMyBuchungenByUser($this->getUser());
-        return $this->render('akademie/index.html.twig', [
-            'buchungen' => $bookings,
-            'currentTeam' => $team,
-            'today' => new DateTime(),
-        ]);
     }
 
     #[Route(path: '/kurs', name: '_kurs')]
@@ -74,6 +54,39 @@ class AkademieController extends AbstractController
                 'kurs' => $buchung->getKurs(),
                 'buchung' => $buchung,
             ]);
+        }
+
+        return $this->redirectToRoute('akademie');
+    }
+
+    #[Route(path: '/kurs/zertifikat', name: '_kurs_zertifikat')]
+    public function academyLessonCertificate(
+        DompdfWrapper               $wrapper,
+        Request                     $request,
+        AkademieBuchungenRepository $academyBillingRepository,
+    ): Response
+    {
+        $buchung = $academyBillingRepository->find($request->get('buchung'));
+
+        if ($buchung->getUser() !== $this->getUser()) {
+
+            return $this->redirectToRoute('akademie');
+        }
+
+        //Abfrage, ob der Kurs abgeschlossen ist
+        if ($buchung->getAbgeschlossen() === true) {
+            // Retrieve the HTML generated in our twig file
+            $html = $this->renderView('bericht/zertifikatAkademie.html.twig', [
+                'daten' => $buchung,
+                'team' => $this->getUser()->getAkademieUser(),
+                'user' => $this->getUser(),
+            ]);
+
+            //Generate PDF File for Download
+            $response = $wrapper->getStreamResponse($html, $this->translator->trans(id: 'certificate', domain: 'academy'));
+            $response->send();
+
+            return new Response($this->translator->trans(id: 'pdf.generateSuccessful', domain: 'general'));
         }
 
         return $this->redirectToRoute('akademie');
@@ -116,36 +129,23 @@ class AkademieController extends AbstractController
         return $this->redirectToRoute('akademie');
     }
 
-    #[Route(path: '/kurs/zertifikat', name: '_kurs_zertifikat')]
-    public function academyLessonCertificate(
-        DompdfWrapper               $wrapper,
-        Request                     $request,
-        AkademieBuchungenRepository $academyBillingRepository,
+    #[Route(path: '', name: '')]
+    public function index(
+        SecurityService             $securityService,
+        AkademieBuchungenRepository $bookingRepository
     ): Response
     {
-        $buchung = $academyBillingRepository->find($request->get('buchung'));
+        $team = $this->getUser()->getAkademieUser();
 
-        if ($buchung->getUser() !== $this->getUser()) {
-
-            return $this->redirectToRoute('akademie');
+        if (!$securityService->teamCheck($team)) {
+            return $this->redirectToRoute('dashboard');
         }
 
-        //Abfrage, ob der Kurs abgeschlossen ist
-        if ($buchung->getAbgeschlossen() === true) {
-            // Retrieve the HTML generated in our twig file
-            $html = $this->renderView('bericht/zertifikatAkademie.html.twig', [
-                'daten' => $buchung,
-                'team' => $this->getUser()->getAkademieUser(),
-                'user' => $this->getUser(),
-            ]);
-
-            //Generate PDF File for Download
-            $response = $wrapper->getStreamResponse($html, $this->translator->trans(id: 'certificate', domain: 'academy'));
-            $response->send();
-
-            return new Response($this->translator->trans(id: 'pdf.generateSuccessful', domain: 'general'));
-        }
-
-        return $this->redirectToRoute('akademie');
+        $bookings = $bookingRepository->findMyBuchungenByUser($this->getUser());
+        return $this->render('akademie/index.html.twig', [
+            'buchungen' => $bookings,
+            'currentTeam' => $team,
+            'today' => new DateTime(),
+        ]);
     }
 }

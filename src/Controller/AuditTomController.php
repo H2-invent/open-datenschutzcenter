@@ -30,33 +30,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route(path: '/audit-tom', name: 'audit_tom')]
 class AuditTomController extends AbstractController
 {
-    private EntityManagerInterface $em;
+
 
     public function __construct(
         private readonly TranslatorInterface $translator,
+        private EntityManagerInterface       $em,
     )
     {
-        $this->em = $this->getDoctrine()->getManager();
-    }
-
-    #[Route(path: '', name: '')]
-    public function index(
-        SecurityService    $securityService,
-        CurrentTeamService $currentTeamService,
-        AuditTomRepository $auditTomRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $audit = $auditTomRepository->findAllByTeam($team);
-
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        return $this->render('audit_tom/index.html.twig', [
-            'audit' => $audit,
-            'currentTeam' => $team,
-        ]);
     }
 
     #[Route(path: '/new', name: '_new')]
@@ -117,6 +97,41 @@ class AuditTomController extends AbstractController
             'activNummer' => true,
             'activ' => $audit->getActiv()
         ]);
+    }
+
+    #[Route(path: '/clone', name: '_clone')]
+    public function cloneAuditTom(
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        AuditTomRepository $auditTomRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('audit_tom');
+        }
+
+        $today = new DateTime();
+        $audit = $auditTomRepository->findAllByTeam(1);
+
+        foreach ($audit as $data) {
+            if ($data->getCreatedAt() > $team->getClonedAt()) {
+                $newAudit = clone $data;
+                $newAudit->setTeam($team);
+                $newAudit->setCreatedAt($today);
+                $this->em->persist($newAudit);
+            }
+
+        }
+
+        //set ClonedAt Date to be able to update later newer versions
+        $team->setclonedAt($today);
+
+        $this->em->persist($team);
+        $this->em->flush();
+
+        return $this->redirectToRoute('audit_tom');
+
     }
 
     #[Route(path: '/edit', name: '_edit')]
@@ -213,38 +228,23 @@ class AuditTomController extends AbstractController
         );
     }
 
-    #[Route(path: '/clone', name: '_clone')]
-    public function cloneAuditTom(
+    #[Route(path: '', name: '')]
+    public function index(
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
         AuditTomRepository $auditTomRepository,
     ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $audit = $auditTomRepository->findAllByTeam($team);
+
         if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('audit_tom');
+            return $this->redirectToRoute('dashboard');
         }
 
-        $today = new DateTime();
-        $audit = $auditTomRepository->findAllByTeam(1);
-
-        foreach ($audit as $data) {
-            if ($data->getCreatedAt() > $team->getClonedAt()) {
-                $newAudit = clone $data;
-                $newAudit->setTeam($team);
-                $newAudit->setCreatedAt($today);
-                $this->em->persist($newAudit);
-            }
-
-        }
-
-        //set ClonedAt Date to be able to update later newer versions
-        $team->setclonedAt($today);
-
-        $this->em->persist($team);
-        $this->em->flush();
-
-        return $this->redirectToRoute('audit_tom');
-
+        return $this->render('audit_tom/index.html.twig', [
+            'audit' => $audit,
+            'currentTeam' => $team,
+        ]);
     }
 }

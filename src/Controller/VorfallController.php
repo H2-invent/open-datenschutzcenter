@@ -24,32 +24,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class VorfallController extends AbstractController
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(private readonly TranslatorInterface $translator)
+
+    public function __construct(private readonly TranslatorInterface $translator,
+                                private EntityManagerInterface       $em,
+    )
     {
-        $this->em = $this->getDoctrine()->getManager();
-    }
-
-    #[Route(path: '/vorfall', name: 'vorfall')]
-    public function index(
-        SecurityService    $securityService,
-        CurrentTeamService $currentTeamService,
-        VorfallRepository  $incidentRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        $vorfall = $incidentRepository->findAllByTeam($team);
-
-        return $this->render('vorfall/index.html.twig', [
-            'vorfall' => $vorfall,
-            'currentTeam' => $team,
-        ]);
     }
 
     #[Route(path: '/vorfall/new', name: 'vorfall_new')]
@@ -88,6 +68,28 @@ class VorfallController extends AbstractController
             'vorfall' => $vorfall,
             'activ' => $vorfall->getActiv()
         ]);
+    }
+
+    #[Route(path: '/vorfall/approve', name: 'vorfall_approve')]
+    public function approve(
+        Request            $request,
+        SecurityService    $securityService,
+        ApproveService     $approveService,
+        CurrentTeamService $currentTeamService,
+        VorfallRepository  $incidentRepository,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+        $vorfall = $incidentRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($vorfall, $team) && $securityService->adminCheck($user, $team)) {
+            $approve = $approveService->approve($vorfall, $user);
+            return $this->redirectToRoute('vorfall_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+        }
+
+        // if security check fails
+        return $this->redirectToRoute('vvt');
     }
 
     #[Route(path: '/vorfall/edit', name: 'vorfall_edit')]
@@ -143,25 +145,24 @@ class VorfallController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/vorfall/approve', name: 'vorfall_approve')]
-    public function approve(
-        Request            $request,
+    #[Route(path: '/vorfall', name: 'vorfall')]
+    public function index(
         SecurityService    $securityService,
-        ApproveService     $approveService,
         CurrentTeamService $currentTeamService,
         VorfallRepository  $incidentRepository,
     ): Response
     {
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-        $vorfall = $incidentRepository->find($request->get('id'));
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
-        if ($securityService->teamDataCheck($vorfall, $team) && $securityService->adminCheck($user, $team)) {
-            $approve = $approveService->approve($vorfall, $user);
-            return $this->redirectToRoute('vorfall_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
         }
 
-        // if security check fails
-        return $this->redirectToRoute('vvt');
+        $vorfall = $incidentRepository->findAllByTeam($team);
+
+        return $this->render('vorfall/index.html.twig', [
+            'vorfall' => $vorfall,
+            'currentTeam' => $team,
+        ]);
     }
 }

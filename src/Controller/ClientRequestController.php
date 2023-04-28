@@ -25,13 +25,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ClientRequestController extends AbstractController
 {
-    private EntityManagerInterface $em;
+
 
     public function __construct(
         private readonly TranslatorInterface $translator,
+        private EntityManagerInterface       $em,
     )
     {
-        $this->em = $this->getDoctrine()->getManager();
     }
 
     #[Route(path: '/client-requests', name: 'client_requests')]
@@ -54,29 +54,23 @@ class ClientRequestController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/client-requests/show', name: 'client_requests_show')]
-    public function showClientRequests(
-        SecurityService         $securityService,
+    #[Route(path: '/client/{slug}/comment', name: 'client_comment')]
+    #[ParamConverter('team', options: ['mapping' => ['slug' => 'slug']])]
+    public function clientComment(
         Request                 $request,
-        CurrentTeamService      $currentTeamService,
+        Team                    $team,
+        ClientRequestService    $clientRequestService,
         ClientRequestRepository $clientRequestRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $clientRequest = $clientRequestRepository->find($request->get('id'));
+        $data = $request->get('client_request_comment');
+        $clientRequest = $clientRequestRepository->findOneBy(['token' => $request->get('token')]);
 
-        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
-            return $this->redirectToRoute('client_requests');
-        }
+        $content = $data['comment'];
+        $clientRequestService->newComment($clientRequest, $content, $clientRequest->getName(), 0);
 
-        $form = $this->createForm(ClientRequesCommentType::class);
-
-        return $this->render('client_request/internalShow.html.twig', [
-            'data' => $clientRequest,
-            'team' => $team,
-            'form' => $form->createView(),
-            'snack' => $request->get('snack')
-        ]);
+        $snack = $this->translator->trans(id: 'save.comment', domain: 'general');
+        return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken(), 'snack' => $snack]);
     }
 
     #[Route(path: '/client-requests/comment', name: 'client_request_comment')]
@@ -101,28 +95,6 @@ class ClientRequestController extends AbstractController
         return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
     }
 
-    #[Route(path: '/client-requests/userValidate', name: 'client_valid_user')]
-    public function validateUserRequest(
-        SecurityService         $securityService,
-        Request                 $request,
-        ClientRequestService    $clientRequestService,
-        CurrentTeamService      $currentTeamService,
-        ClientRequestRepository $clientRequestRepository,
-    ): Response
-    {
-        $clientRequest = $clientRequestRepository->find($request->get('id'));
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-
-        if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
-            $clientRequestService->userValid($clientRequest, $user);
-            return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
-        }
-
-        // if security check fails
-        return $this->redirectToRoute('client_requests');
-    }
-
     #[Route(path: '/client-requests/close', name: 'client_request_close')]
     public function closeRequest(
         SecurityService         $securityService,
@@ -145,79 +117,6 @@ class ClientRequestController extends AbstractController
         // if security check fails
         return $this->redirectToRoute('client_requests');
     }
-
-    #[Route(path: '/client-requests/internal', name: 'client_request_make_internal')]
-    public function makeInternalRequest(
-        SecurityService         $securityService,
-        Request                 $request,
-        ClientRequestService    $clientRequestService,
-        CurrentTeamService      $currentTeamService,
-        ClientRequestRepository $clientRequestRepository,
-    ): Response
-    {
-        $clientRequest = $clientRequestRepository->find($request->get('id'));
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-
-        if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
-            if ($clientRequestService->interalRequest($clientRequest)) {
-                $snack = $this->translator->trans(id: 'save.changesSuccessful', domain: 'general');
-            } else {
-                $snack = $this->translator->trans(id: 'error.retry', domain: 'general');
-            }
-            return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => $snack]);
-        }
-
-        // if security check fails
-        return $this->redirectToRoute('client_requests');
-    }
-
-    #[Route(path: '/client-requests/internalNote', name: 'client_requests_internal_note')]
-    public function internalNoteClientRequests(
-        SecurityService         $securityService,
-        Request                 $request,
-        ValidatorInterface      $validator,
-        CurrentTeamService      $currentTeamService,
-        ClientRequestRepository $clientRequestRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $clientRequest = $clientRequestRepository->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
-            return $this->redirectToRoute('client_requests');
-        }
-        $form = $this->createForm(ClientRequestInternalNoteType::class, $clientRequest);
-        $form->handleRequest($request);
-        $errors = [];
-        if ($form->isSubmitted() && $form->isValid()) {
-            $clientRequest = $form->getData();
-
-            $errors = $validator->validate($clientRequest);
-            if (count($errors) == 0) {
-                $this->em->persist($clientRequest);
-                $this->em->flush();
-
-                return $this->redirectToRoute(
-                    'client_requests_show',
-                    [
-                        'id' => $clientRequest->getId(),
-                        'snack' => $this->translator->trans(id: 'save.changesSuccessful', domain: 'general'),
-                    ],
-                );
-            }
-        }
-
-        return $this->render(
-            'client_request/internalEdit.html.twig',
-            [
-                'data' => $clientRequest,
-                'team' => $team,
-                'form' => $form->createView(),
-            ],
-        );
-    }
-
 
     #[Route(path: '/client-requests/edit', name: 'client_requests_edit')]
     public function editClientRequests(
@@ -274,7 +173,6 @@ class ClientRequestController extends AbstractController
         return $this->redirectToRoute('client_requests');
     }
 
-
     #[Route(path: '/client/{slug}', name: 'client_index')]
     #[ParamConverter('team', options: ['mapping' => ['slug' => 'slug']])]
     public function index(
@@ -308,6 +206,78 @@ class ClientRequestController extends AbstractController
             'team' => $team,
             'snack' => $snack
         ]);
+    }
+
+    #[Route(path: '/client-requests/internalNote', name: 'client_requests_internal_note')]
+    public function internalNoteClientRequests(
+        SecurityService         $securityService,
+        Request                 $request,
+        ValidatorInterface      $validator,
+        CurrentTeamService      $currentTeamService,
+        ClientRequestRepository $clientRequestRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $clientRequest = $clientRequestRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
+            return $this->redirectToRoute('client_requests');
+        }
+        $form = $this->createForm(ClientRequestInternalNoteType::class, $clientRequest);
+        $form->handleRequest($request);
+        $errors = [];
+        if ($form->isSubmitted() && $form->isValid()) {
+            $clientRequest = $form->getData();
+
+            $errors = $validator->validate($clientRequest);
+            if (count($errors) == 0) {
+                $this->em->persist($clientRequest);
+                $this->em->flush();
+
+                return $this->redirectToRoute(
+                    'client_requests_show',
+                    [
+                        'id' => $clientRequest->getId(),
+                        'snack' => $this->translator->trans(id: 'save.changesSuccessful', domain: 'general'),
+                    ],
+                );
+            }
+        }
+
+        return $this->render(
+            'client_request/internalEdit.html.twig',
+            [
+                'data' => $clientRequest,
+                'team' => $team,
+                'form' => $form->createView(),
+            ],
+        );
+    }
+
+    #[Route(path: '/client-requests/internal', name: 'client_request_make_internal')]
+    public function makeInternalRequest(
+        SecurityService         $securityService,
+        Request                 $request,
+        ClientRequestService    $clientRequestService,
+        CurrentTeamService      $currentTeamService,
+        ClientRequestRepository $clientRequestRepository,
+    ): Response
+    {
+        $clientRequest = $clientRequestRepository->find($request->get('id'));
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+
+        if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
+            if ($clientRequestService->interalRequest($clientRequest)) {
+                $snack = $this->translator->trans(id: 'save.changesSuccessful', domain: 'general');
+            } else {
+                $snack = $this->translator->trans(id: 'error.retry', domain: 'general');
+            }
+            return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => $snack]);
+        }
+
+        // if security check fails
+        return $this->redirectToRoute('client_requests');
     }
 
     #[Route(path: '/client/{slug}/new', name: 'client_new')]
@@ -367,6 +337,31 @@ class ClientRequestController extends AbstractController
         ]);
     }
 
+    #[Route(path: '/client-requests/show', name: 'client_requests_show')]
+    public function showClientRequests(
+        SecurityService         $securityService,
+        Request                 $request,
+        CurrentTeamService      $currentTeamService,
+        ClientRequestRepository $clientRequestRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $clientRequest = $clientRequestRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($clientRequest, $team) === false) {
+            return $this->redirectToRoute('client_requests');
+        }
+
+        $form = $this->createForm(ClientRequesCommentType::class);
+
+        return $this->render('client_request/internalShow.html.twig', [
+            'data' => $clientRequest,
+            'team' => $team,
+            'form' => $form->createView(),
+            'snack' => $request->get('snack')
+        ]);
+    }
+
     #[Route(path: '/client/{slug}/show', name: 'client_show')]
     #[ParamConverter('team', options: ['mapping' => ['slug' => 'slug']])]
     public function showRequest(
@@ -387,25 +382,6 @@ class ClientRequestController extends AbstractController
         }
         $snack = $this->translator->trans(id: 'noTicketMatched', domain: 'client_request');
         return $this->redirectToRoute('client_index', ['slug' => $team->getSlug(), 'snack' => $snack]);
-    }
-
-    #[Route(path: '/client/{slug}/comment', name: 'client_comment')]
-    #[ParamConverter('team', options: ['mapping' => ['slug' => 'slug']])]
-    public function clientComment(
-        Request                 $request,
-        Team                    $team,
-        ClientRequestService    $clientRequestService,
-        ClientRequestRepository $clientRequestRepository,
-    ): Response
-    {
-        $data = $request->get('client_request_comment');
-        $clientRequest = $clientRequestRepository->findOneBy(['token' => $request->get('token')]);
-
-        $content = $data['comment'];
-        $clientRequestService->newComment($clientRequest, $content, $clientRequest->getName(), 0);
-
-        $snack = $this->translator->trans(id: 'save.comment', domain: 'general');
-        return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken(), 'snack' => $snack]);
     }
 
     #[Route(path: '/client/{slug}/verify', name: 'client_valid')]
@@ -438,5 +414,27 @@ class ClientRequestController extends AbstractController
             }
         }
         return $this->redirectToRoute('client_index', ['slug' => $team->getSlug(), 'snack' => $snack]);
+    }
+
+    #[Route(path: '/client-requests/userValidate', name: 'client_valid_user')]
+    public function validateUserRequest(
+        SecurityService         $securityService,
+        Request                 $request,
+        ClientRequestService    $clientRequestService,
+        CurrentTeamService      $currentTeamService,
+        ClientRequestRepository $clientRequestRepository,
+    ): Response
+    {
+        $clientRequest = $clientRequestRepository->find($request->get('id'));
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+
+        if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
+            $clientRequestService->userValid($clientRequest, $user);
+            return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
+        }
+
+        // if security check fails
+        return $this->redirectToRoute('client_requests');
     }
 }

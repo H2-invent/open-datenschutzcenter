@@ -17,31 +17,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReportController extends AbstractController
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(private readonly TranslatorInterface $translator)
+
+    public function __construct(private readonly TranslatorInterface $translator,
+                                private EntityManagerInterface       $em,
+    )
     {
-        $this->em = $this->getDoctrine()->getManager();
-    }
-
-    #[Route(path: '/report', name: 'report')]
-    public function index(
-        SecurityService    $securityService,
-        CurrentTeamService $currentTeamService,
-        ReportRepository   $reportRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $report = $reportRepository->findActiveByTeam($team);
-
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        return $this->render('report/index.html.twig', [
-            'report' => $report,
-            'currentTeam' => $team,
-        ]);
     }
 
     #[Route(path: '/report/new', name: 'report_new')]
@@ -80,6 +61,28 @@ class ReportController extends AbstractController
             'report' => $report,
             'activ' => $report->getActiv(),
         ]);
+    }
+
+    #[Route(path: '/report/delete', name: 'report_delete')]
+    public function deleteReport(
+        Request            $request,
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        ReportRepository   $reportRepository,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+        $report = $reportRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($report, $team) && $securityService->adminCheck($user, $team)) {
+            $report->setActiv(2);
+
+            $this->em->persist($report);
+            $this->em->flush();
+        }
+
+        return $this->redirectToRoute('report');
     }
 
     #[Route(path: '/report/edit', name: 'report_edit')]
@@ -128,6 +131,26 @@ class ReportController extends AbstractController
         ]);
     }
 
+    #[Route(path: '/report', name: 'report')]
+    public function index(
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        ReportRepository   $reportRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $report = $reportRepository->findActiveByTeam($team);
+
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        return $this->render('report/index.html.twig', [
+            'report' => $report,
+            'currentTeam' => $team,
+        ]);
+    }
+
     #[Route(path: '/report/invoice', name: 'report_invoice')]
     public function invoiceReport(
         Request            $request,
@@ -143,28 +166,6 @@ class ReportController extends AbstractController
             if ($report->getUser() === $this->getUser()) {
                 $report->setInvoice(1);
             }
-
-            $this->em->persist($report);
-            $this->em->flush();
-        }
-
-        return $this->redirectToRoute('report');
-    }
-
-    #[Route(path: '/report/delete', name: 'report_delete')]
-    public function deleteReport(
-        Request            $request,
-        SecurityService    $securityService,
-        CurrentTeamService $currentTeamService,
-        ReportRepository   $reportRepository,
-    ): Response
-    {
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-        $report = $reportRepository->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($report, $team) && $securityService->adminCheck($user, $team)) {
-            $report->setActiv(2);
 
             $this->em->persist($report);
             $this->em->flush();

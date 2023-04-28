@@ -25,32 +25,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class KontaktController extends AbstractController
 {
-    private EntityManagerInterface $em;
 
-    public function __construct(private readonly TranslatorInterface $translator)
+
+    public function __construct(private readonly TranslatorInterface $translator,
+                                private EntityManagerInterface       $em,
+    )
     {
-        $this->em = $this->getDoctrine()->getManager();
-    }
-
-    #[Route(path: '/kontakt', name: 'kontakt')]
-    public function index(
-        SecurityService    $securityService,
-        CurrentTeamService $currentTeamService,
-        KontakteRepository $contactRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-
-        $kontakte = $contactRepository->findBy(['team' => $team, 'activ' => true]);
-
-        return $this->render('kontakt/index.html.twig', [
-            'kontakte' => $kontakte,
-            'title' => $this->translator->trans(id: 'contact', domain: 'general'),
-            'currentTeam' => $team,
-        ]);
     }
 
     #[Route(path: '/kontakt/neu', name: 'kontakt_new')]
@@ -89,6 +69,48 @@ class KontaktController extends AbstractController
             'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
             'new' => true,
         ]);
+    }
+
+    #[Route(path: '/kontakt/approve', name: 'kontakt_approve')]
+    public function approve(
+        Request            $request,
+        SecurityService    $securityService,
+        ApproveService     $approveService,
+        CurrentTeamService $currentTeamService,
+        KontakteRepository $contactRepository,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+        $kontakt = $contactRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team)) {
+            $approve = $approveService->approve($kontakt, $user);
+            return $this->redirectToRoute('kontakt_edit', ['id' => $kontakt->getId(), 'snack' => $approve['snack']]);
+        }
+
+        // if security check fails
+        return $this->redirectToRoute('kontakt');
+    }
+
+    #[Route(path: '/kontakt/disable', name: 'kontakt_disable')]
+    public function disable(
+        Request            $request,
+        SecurityService    $securityService,
+        DisableService     $disableService,
+        CurrentTeamService $currentTeamService,
+        KontakteRepository $contactRepository,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+        $kontakt = $contactRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team) && !$kontakt->getApproved()) {
+            $disableService->disable($kontakt, $user);
+        }
+
+        return $this->redirectToRoute('kontakt');
     }
 
     #[Route(path: '/kontakt/edit', name: 'kontakt_edit')]
@@ -134,45 +156,24 @@ class KontaktController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/kontakt/approve', name: 'kontakt_approve')]
-    public function approve(
-        Request            $request,
+    #[Route(path: '/kontakt', name: 'kontakt')]
+    public function index(
         SecurityService    $securityService,
-        ApproveService     $approveService,
         CurrentTeamService $currentTeamService,
         KontakteRepository $contactRepository,
     ): Response
     {
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-        $kontakt = $contactRepository->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team)) {
-            $approve = $approveService->approve($kontakt, $user);
-            return $this->redirectToRoute('kontakt_edit', ['id' => $kontakt->getId(), 'snack' => $approve['snack']]);
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
         }
 
-        // if security check fails
-        return $this->redirectToRoute('kontakt');
-    }
+        $kontakte = $contactRepository->findBy(['team' => $team, 'activ' => true]);
 
-    #[Route(path: '/kontakt/disable', name: 'kontakt_disable')]
-    public function disable(
-        Request            $request,
-        SecurityService    $securityService,
-        DisableService     $disableService,
-        CurrentTeamService $currentTeamService,
-        KontakteRepository $contactRepository,
-    ): Response
-    {
-        $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
-        $kontakt = $contactRepository->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team) && !$kontakt->getApproved()) {
-            $disableService->disable($kontakt, $user);
-        }
-
-        return $this->redirectToRoute('kontakt');
+        return $this->render('kontakt/index.html.twig', [
+            'kontakte' => $kontakte,
+            'title' => $this->translator->trans(id: 'contact', domain: 'general'),
+            'currentTeam' => $team,
+        ]);
     }
 }

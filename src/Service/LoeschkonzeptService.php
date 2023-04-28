@@ -26,6 +26,15 @@ class LoeschkonzeptService
         $this->formBuilder = $formBuilder;
     }
 
+    function cloneLoeschkonzept(Loeschkonzept $loeschkonzept): Loeschkonzept
+    {
+        $newLoeschkonzept = clone $loeschkonzept;
+        $newLoeschkonzept->setPrevious($loeschkonzept);
+        $newLoeschkonzept->setCreateAt(new DateTimeImmutable());
+
+        return $newLoeschkonzept;
+    }
+
     function createForm(Loeschkonzept $loeschkonzept, Team $team): FormInterface
     {
         $vvtdatenkategories = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
@@ -44,15 +53,5 @@ class LoeschkonzeptService
         $loeschkonzept->setUser($user);
 
         return $loeschkonzept;
-    }
-
-
-    function cloneLoeschkonzept(Loeschkonzept $loeschkonzept): Loeschkonzept
-    {
-        $newLoeschkonzept = clone $loeschkonzept;
-        $newLoeschkonzept->setPrevious($loeschkonzept);
-        $newLoeschkonzept->setCreateAt(new DateTimeImmutable());
-
-        return $newLoeschkonzept;
     }
 }

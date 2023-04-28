@@ -22,61 +22,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/assign', name: 'assign')]
 class AssignController extends AbstractController
 {
-    #[Route(path: '', name: '')]
-    public function index(CurrentTeamService        $currentTeamService,
-                          DatenweitergabeRepository $transferRepository,
-                          VVTRepository             $processingRepository,
-                          AuditTomRepository        $auditRepository,
-                          VVTDsfaRepository         $impactAssessmentRepository,
-                          FormsRepository           $formRepository,
-                          PoliciesRepository        $policyRepository,
-                          SoftwareRepository        $softwareRepository,
-                          TaskRepository            $taskRepository
-    ): Response
-    {
-        $user = $this->getUser();
-        $currentTeam = $currentTeamService->getTeamFromSession($user);
-        $assignedDataTransfers = $transferRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignedProcessings = $processingRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignedAudits = $auditRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignImpactAssessments = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignedForms = $formRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignedPolicies = $policyRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignedSoftware = $softwareRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignedTasks = $taskRepository->findActiveByTeamAndUser($currentTeam, $user);
-
-        return $this->render('assign/index.html.twig', [
-            'currentTeam' => $currentTeam,
-            'dataTransfers' => $assignedDataTransfers,
-            'processings' => $assignedProcessings,
-            'audits' => $assignedAudits,
-            'impactAssessments' => $assignImpactAssessments,
-            'forms' => $assignedForms,
-            'policies' => $assignedPolicies,
-            'software' => $assignedSoftware,
-            'tasks' => $assignedTasks
-        ]);
-    }
-
-    #[Route(path: '/vvt', name: '_vvt')]
-    public function assignVvt(
-        Request            $request,
-        AssignService      $assignService,
-        SecurityService    $securityService,
-        CurrentTeamService $currentTeamService,
-        VVTRepository      $vvtRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $vvt = $vvtRepository->find($request->get('id'));
-        if ($securityService->teamDataCheck($vvt, $team) === false) {
-            return $this->redirectToRoute('vvt');
-        }
-
-        $assignService->assignVvt($request, $vvt);
-        return $this->redirect($request->headers->get('referer'));
-    }
-
     #[Route(path: '/audit', name: '_audit')]
     public function assignAudit(
         Request            $request,
@@ -191,6 +136,25 @@ class AssignController extends AbstractController
         return $this->redirect($request->headers->get('referer'));
     }
 
+    #[Route(path: '/task', name: '_task')]
+    public function assignTask(
+        Request            $request,
+        AssignService      $assignService,
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        TaskRepository     $taskRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $task = $taskRepository->find($request->get('id'));
+        if ($securityService->teamDataCheck($task, $team) === false) {
+            return $this->redirectToRoute('tasks');
+        }
+
+        $assignService->assignTask($request, $task);
+        return $this->redirect($request->headers->get('referer'));
+    }
+
     #[Route(path: '/vorfall', name: '_vorfall')]
     public function assignVorfall(
         Request            $request,
@@ -210,22 +174,58 @@ class AssignController extends AbstractController
         return $this->redirect($request->headers->get('referer'));
     }
 
-    #[Route(path: '/task', name: '_task')]
-    public function assignTask(
+    #[Route(path: '/vvt', name: '_vvt')]
+    public function assignVvt(
         Request            $request,
         AssignService      $assignService,
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
-        TaskRepository     $taskRepository,
+        VVTRepository      $vvtRepository,
     ): Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $task = $taskRepository->find($request->get('id'));
-        if ($securityService->teamDataCheck($task, $team) === false) {
-            return $this->redirectToRoute('tasks');
+        $vvt = $vvtRepository->find($request->get('id'));
+        if ($securityService->teamDataCheck($vvt, $team) === false) {
+            return $this->redirectToRoute('vvt');
         }
 
-        $assignService->assignTask($request, $task);
+        $assignService->assignVvt($request, $vvt);
         return $this->redirect($request->headers->get('referer'));
+    }
+
+    #[Route(path: '', name: '')]
+    public function index(CurrentTeamService        $currentTeamService,
+                          DatenweitergabeRepository $transferRepository,
+                          VVTRepository             $processingRepository,
+                          AuditTomRepository        $auditRepository,
+                          VVTDsfaRepository         $impactAssessmentRepository,
+                          FormsRepository           $formRepository,
+                          PoliciesRepository        $policyRepository,
+                          SoftwareRepository        $softwareRepository,
+                          TaskRepository            $taskRepository
+    ): Response
+    {
+        $user = $this->getUser();
+        $currentTeam = $currentTeamService->getTeamFromSession($user);
+        $assignedDataTransfers = $transferRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedProcessings = $processingRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedAudits = $auditRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignImpactAssessments = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedForms = $formRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedPolicies = $policyRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedSoftware = $softwareRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedTasks = $taskRepository->findActiveByTeamAndUser($currentTeam, $user);
+
+        return $this->render('assign/index.html.twig', [
+            'currentTeam' => $currentTeam,
+            'dataTransfers' => $assignedDataTransfers,
+            'processings' => $assignedProcessings,
+            'audits' => $assignedAudits,
+            'impactAssessments' => $assignImpactAssessments,
+            'forms' => $assignedForms,
+            'policies' => $assignedPolicies,
+            'software' => $assignedSoftware,
+            'tasks' => $assignedTasks
+        ]);
     }
 }
