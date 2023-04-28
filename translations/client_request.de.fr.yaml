@@ -36,3 +36,12 @@ issueId: Ticket ID
 dataPrivacyCenter: Datenschutzcenter
 backToPortal: Zurück zum Portal
 askForVerification: Für eine schnelle und unkomplizierte Identifikation, möchten wir Sie  darum bitten, uns folgende Daten zur Verifikation mitzuteilen
+login:
+  error:
+    retry: Login war nicht erfolgreich. Bitte versuchen Sie es noch einmal
+emailFromOdc: Neue Nachricht vom Datenschutzcenter
+noTicketMatched: Token passt zu keinem offenen Ticket
+noOpenTicket: Es wurde kein offenes Ticket gefunden
+email:
+  verified: Email wurde erfolgreich verifiziert
+  alreadyVerified: Email bereits verifiziert
