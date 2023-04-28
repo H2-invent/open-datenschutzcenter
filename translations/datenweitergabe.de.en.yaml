@@ -26,6 +26,7 @@ contractType: contract type
 associatedProcessing: Associated processing activity
 associatedSoftware: Related software
 dataTransfer:
+  edit: Datenweitergabe bearbeiten
   basics: Grundlage für die Datenweitergabe
   type: Data transfer type
   count: Number
@@ -33,6 +34,7 @@ dataTransfer:
   object: Data transfer object
   word: Datenweitergabe
   responsible: Responsible party (internal)
+  disclaimer: Alle Datenweitergaben nach DSGVO Art. 30(1)
   info:
     title: Data transfer info
     text: The transfer of data for processing is done in moste companies - for example for the use of external data centers or services (e.g. SaaS), cloud computing or maintenance of IT systems by a service provider. In these cases there is usually a data transfer involved, which means that special measures need to be met to ensure the GDPR isn't violated.
