@@ -1,6 +1,6 @@
 {% trans_default_domain 'vorfall' %}
 <a href="{{ path('vorfall_edit',{'id':p.id}) }}"><span>
-        Id: {{ p.id }} -- {{ p.nummer }} -- {{ p.createdAt|date('d.m.Y H:i') }} -- {{ p.user.email }} -- {% trans %}incident.reported{% endtrans %}: {% trans from 'general' %}{{ p.gemeldet? 'yes':'no' }}{% endtrans %}  {% trans from 'general' %}{{ p.approved?'versionApproved' }}{% endtrans %}
+        Id: {{ p.id }} -- {{ p.nummer }} -- {{ p.createdAt|date('d.m.Y H:i') }} -- {{ p.user.email }} -- {% trans %}incident.reported{% endtrans %}: {{ p.gemeldet ? 'yes':'no' |trans([], 'general') }} {{ p.approved ? 'versionApproved' |trans([], 'general') }}
     </span></a>
 {% if p.previous %}
     {{ include('vorfall/__history.html.twig', {'p':p.previous}) }}

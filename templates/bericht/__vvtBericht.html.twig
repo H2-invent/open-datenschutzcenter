@@ -1,5 +1,5 @@
 {% trans_default_domain 'vvt' %}
-<h2 style="page-break-before: always;">{% if not d.activ %}{% trans from 'bericht' %}{{ d.approved?'approved':'' }}{% endtrans%} {% trans from 'general' %}history{% endtrans %}: {% endif %} {{ d.name }}</h2>
+<h2 style="page-break-before: always;">{% if not d.activ %}{{ d.approved?'approved':'' |trans([], 'bericht') }} {% trans from 'general' %}history{% endtrans %}: {% endif %} {{ d.name }}</h2>
 <style>
     th, td {
         padding: 5px;
@@ -73,13 +73,13 @@
         <td>
             {% trans %}processing.jointControl{% endtrans %}
         </td>
-        <td>{% trans from 'general' %}{{ d.jointControl?'yes':'no' }}{% endtrans %}</td>
+        <td>{{ d.jointControl?'yes':'no' |trans([], 'general') }}</td>
     </tr>
     <tr>
         <td>
             {% trans %}processing.requestProcessing{% endtrans %}
         </td>
-        <td>{% trans from 'general' %}{{ d.auftragsverarbeitung?'yes':'no' }}{% endtrans %}</td>
+        <td>{{ d.auftragsverarbeitung?'yes':'no' |trans([], 'general') }}</td>
     </tr>
     <tr>
         <td>
@@ -97,7 +97,7 @@
     </tr>
     <tr>
         <td>
-            {% trans | raw %}usedSoftware{% endtrans %}
+            {% trans %}usedSoftware{% endtrans %}
         </td>
         <td>{% for dd in d.software | filter(dd => dd.activ) %}
                 <a
@@ -114,7 +114,7 @@
         <td>
             {% trans %}processing.outsideEU{% endtrans %}
         </td>
-        <td>{% trans from 'general' %}{{ d.eu?'yes':'no' }}{% endtrans %}</td>
+        <td>{{ d.eu?'yes':'no' |trans([], 'general') }}</td>
     </tr>
     <tr>
         <td>
@@ -181,7 +181,7 @@
         <td>
             {% trans %}dataPrivacyFollowUpEstimation.exists{% endtrans %}
         </td>
-        <td>{% trans from 'general' %}{{ d.activDsfa?'yes':'no' }}{% endtrans %}</td>
+        <td>{{ d.activDsfa?'yes':'no' |trans([], 'general') }}</td>
     </tr>
 
 </table>

@@ -27,7 +27,7 @@
             {{ form_widget(form.save, { 'disabled':'disabled' }) }}
         {% endif %}
         {% if nextAudit is defined %}
-            <a class="btn btn-info" href="{{ path('audit_tom_edit',{'tom':nextAudit.id}) }}">{% trans %}nextQuestion{% trans %}</a>
+            <a class="btn btn-info" href="{{ path('audit_tom_edit',{'tom':nextAudit.id}) }}">{% trans %}nextQuestion{% endtrans %}</a>
         {% endif %}
     </div>
     <div class="col-md-4 {% if not activ %}disabled{% endif %}">

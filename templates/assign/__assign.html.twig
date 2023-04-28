@@ -1,5 +1,5 @@
 {% if data.assignedUser is null %}
-    {% trans_defaul_domain 'assign' %}
+    {% trans_default_domain 'assign' %}
 
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#assignModal">
@@ -35,6 +35,6 @@
 {% else %}
     <h4>{% trans from 'general' %}assignedTo{% endtrans %}: </h4>
     <span class="small">{{ data.assignedUser.email }}</span>  <a class="btn btn-danger btn-sm rounded-circle"
-                                                                 title="{{ removeAssign|trans }}"
+                                                                 title="{{ 'removeAssign'|trans }}"
                                                                  href="{{ path(path,{'id':data.id}) }}">X</a>
 {% endif %}

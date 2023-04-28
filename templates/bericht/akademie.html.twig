@@ -24,7 +24,7 @@
                         <th scope="row">{{ b.kurs.title }} (id:{{ b.kurs.id }})</th>
                         <th>{{ b.user.username }} ({{ b.user.email }})</th>
                         <td>{{ b.zugewiesen|date('d.m.Y') }}</td>
-                        <td>{% trans from 'general' %}{{ b.abgeschlossen?'yes':'no' }}{% endtrans %}</td>
+                        <td>{{ b.abgeschlossen?'yes':'no' |trans([], 'general') }}</td>
                         <td>{{ b.vorlage }}</td>
                         <td>{% if b.start is not null %}{{ b.start|date('d.m.Y') }}{% endif %}</td>
                         <td>{% if b.ende is not null %}{{ b.ende|date('d.m.Y') }}{% endif %}</td>

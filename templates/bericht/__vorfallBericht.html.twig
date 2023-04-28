@@ -1,5 +1,5 @@
 {% trans_default_domain 'vorfall' %}
-<h2 style="page-break-before: always;">{% trans from 'bericht' %}{{ d.approved?'approved':'' }}{% endtrans %}{% trans from 'general' %}history{% endtrans %}: {% endif %}{{ d.nummer }}: {{ d.name }}
+<h2 style="page-break-before: always;">{% if not d.activ %}{{ d.approved?'approved':'' |trans([], 'general') }}{% trans from 'general' %}history{% endtrans %}: {% endif %}{{ d.nummer }}
     ({% trans from 'general' %}id{% endtrans %}:{{ d.id }})
 <style>
     th, td {
@@ -63,19 +63,19 @@
         <td>
             {% trans %}incident.reportedToStateAgency{% endtrans %}
         </td>
-        <td>{% trans from 'general' %}{{ d.gemeldet?'yes':'no' }}{% endtrans %}</td>
+        <td>{{ d.gemeldet?'yes':'no' |trans([], 'general') }}</td>
     </tr>
     <tr>
         <td>
             {% trans %}incident.reportedToAffectedPerson{% endtrans %}
         </td>
-        <td>{% trans from 'general' %}{{ d.betroffeneGemeldet?'yes':'no' }}{% endtrans %}</td>
+        <td>{{ d.betroffeneGemeldet?'yes':'no' |trans([], 'general') }}</td>
     </tr>
     <tr>
         <td>
             {% trans %}incident.reportedToAffectedClient{% endtrans %}
         </td>
-        <td>{% trans from 'general' %}{{ d.auftraggeberGemeldet?'yes':'no' }}{% endtrans %}</td>
+        <td>{{ d.auftraggeberGemeldet?'yes':'no' |trans([], 'general') }}</td>
     </tr>
 
 </table>

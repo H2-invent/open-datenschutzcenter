@@ -30,16 +30,15 @@
         <td>
             {% trans %}pgpKey.exists{% endtrans %}
         </td>
-        <td>{% trans from 'general' %}{{ d.pgp?'yes':'no' }}{% endtrans %}</td>
+        <td>{{ d.pgp?'yes':'no' |trans([], 'general') }}</td>
     </tr>
     <tr>
         <td>
             {% trans from 'general' %}state{% endtrans %}
         </td>
         <td>
-            {% trans %}active{% endtrans %}: {% trans from 'general' %}{{ d.activ?'yes':'no' }}{% endtrans %}<br>
-            {% trans %}openToCustomer{% endtrans %}: {% trans from 'general' %}{{ d.open?'yes':'no' }}{% endtrans %}
-
+            {% trans %}active{% endtrans %}: {{ d.activ?'yes':'no' |trans([], 'general') }}<br>
+            {% trans %}openToCustomer{% endtrans %}: {{ d.open?'yes':'no' |trans([], 'general') }}
         </td>
     </tr>
     <tr>
@@ -65,7 +64,8 @@
             {% trans %}validateIdentity{% endtrans %}
         </td>
         <td>
-            {% trans from 'general' %}{{ d.validUser?'yes':'no' }}{% endtrans %} {% if d.validuser %}{% trans %}at{% endtrans %} {{ d.userValidBy.email }}{% endif %}</td>
+            {{ d.validUser |trans([], 'general') }} {% if d.validuser %}{% trans %}at{% endtrans %} {{ d.userValidBy.email }}{% endif %}
+        </td>
     </tr>
     <tr>
         <td>

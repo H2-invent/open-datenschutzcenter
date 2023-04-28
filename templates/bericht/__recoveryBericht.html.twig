@@ -1,5 +1,5 @@
 {% trans_default_domain 'bericht' %}
-<h2>{% if not d.activ %}{% trans %}{{ d.approved?'approved':'' }}{% endtrans%} {% trans from 'general' %}history{% endtrans %}: {% endif %}{{ d.nummer }}: {{ d.name }}
+<h2>{% if not d.activ %}{{ d.approved?'approved':'' |trans([], 'general') }} {% trans from 'general' %}history{% endtrans %}: {% endif %}{{ d.nummer }}: {{ d.name }}
     ({% trans from 'general' %}id{% endtrans %}:{{ d.id }})</h2>
 <style>
     th, td {

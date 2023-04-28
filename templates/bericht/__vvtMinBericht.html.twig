@@ -55,7 +55,7 @@
         <td>
             {% trans %}processing.outsideEU{% endtrans %}
         </td>
-        <td>{% trans from 'general' %}{{ d.eu?'yes':'no' }}{% endtrans %}</td>
+        <td>{{ d.eu?'yes':'no' |trans([], 'general') }}</td>
     </tr>
     <tr>
         <td>

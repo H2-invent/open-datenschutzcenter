@@ -1,6 +1,6 @@
 {% trans_default_domain 'datenweitergabe' %}
 <h2 style="page-break-before: always;">
-    {% if not d.activ %}{% trans %}{{ d.approved?'approved':'' }}{% endtrans %} {% trans from 'general' %}history{% endtrans %}: {% endif %}{{ d.reference }}: {{ d.gegenstand }}({% trans from 'general' %}id{% endtrans %}:{{ d.id }})
+    {% if not d.activ %}{{ d.approved?'approved':'' |trans([], 'general') }} {% trans from 'general' %}history{% endtrans %}: {% endif %}{{ d.reference }}: {{ d.gegenstand }}({% trans from 'general' %}id{% endtrans %}:{{ d.id }})
 </h2>
 <style>
     th, td {
@@ -112,18 +112,18 @@
             {% trans %}requestProcessing.report.contract{% endtrans %}
         </td>
         <td>
-            {% trans | raw %}{{ d.checkItems ? 'requestProcessing.report.items' }}{% endtrans %}
-            {% trans | raw %}{{ d.checkPeople ? 'requestProcessing.report.people' }}{% endtrans %}
-            {% trans | raw %}{{ d.checkData ? 'requestProcessing.report.data' }}{% endtrans %}
-            {% trans | raw %}{{ d.checkDocumentation ? 'requestProcessing.report.documentation' }}{% endtrans %}
-            {% trans | raw %}{{ d.checkTrust ? 'requestProcessing.report.trust' }}{% endtrans %}
-            {% trans | raw %}{{ d.checkTom ? 'requestProcessing.report.tom' }}{% endtrans %}
-            {% trans | raw %}{{ d.checkSubcontractor ? 'requestProcessing.report.subcontractor' }}{% endtrans %}
-            {% trans | raw %}{{ d.checkSupport ? 'requestProcessing.report.support' }}{% endtrans %}
-            {% trans | raw %}{{ d.checkSupport3236 ? 'requestProcessing.report.support3236' }}{% endtrans %}
-            {% trans | raw %}{{ d.checkEnding ? 'requestProcessing.report.ending' }}{% endtrans %}
-            {% trans | raw %}{{ d.checkAudit ? 'requestProcessing.report.audit' }}{% endtrans %}
-            {% trans | raw %}{{ d.checkNotes ? 'requestProcessing.report.notes' }}{% endtrans %}
+            {{ d.checkItems ? 'requestProcessing.report.items' |trans }}
+            {{ d.checkPeople ? 'requestProcessing.report.people' |trans }}
+            {{ d.checkData ? 'requestProcessing.report.data' |trans }}
+            {{ d.checkDocumentation ? 'requestProcessing.report.documentation' |trans }}
+            {{ d.checkTrust ? 'requestProcessing.report.trust' |trans }}
+            {{ d.checkTom ? 'requestProcessing.report.tom' |trans }}
+            {{ d.checkSubcontractor ? 'requestProcessing.report.subcontractor' |trans }}
+            {{ d.checkSupport ? 'requestProcessing.report.support' |trans }}
+            {{ d.checkSupport3236 ? 'requestProcessing.report.support3236' |trans }}
+            {{ d.checkEnding ? 'requestProcessing.report.ending' |trans }}
+            {{ d.checkAudit ? 'requestProcessing.report.audit' |trans }}
+            {{ d.checkNotes ? 'requestProcessing.report.notes' |trans }}
         </td>
     </tr>
 

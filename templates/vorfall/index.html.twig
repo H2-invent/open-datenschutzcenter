@@ -33,9 +33,9 @@
                         <td>{{ a.fakten }}</td>
                         <td>{{ a.auswirkung }}</td>
                         <td>{{ a.massnahmen }}</td>
-                        <td>{% trans from 'general' %}{{ a.gemeldet? 'yes':'no' }}{% endtrans %}</td>
-                        <td>{% trans from 'general' %}{{ a.betroffeneGemeldet? 'yes':'no' }}{% endtrans %}</td>
-                        <td>{% trans from 'general' %}{{ a.auftraggeberGemeldet? 'yes':'no' }}{% endtrans %}</td>
+                        <td>{{ a.gemeldet ? 'yes':'no' |trans([], 'general') }}</td>
+                        <td>{{ a.betroffeneGemeldet ? 'yes':'no' |trans ([], 'general') }}</td>
+                        <td>{{ a.auftraggeberGemeldet ? 'yes':'no' |trans ([], 'general') }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
