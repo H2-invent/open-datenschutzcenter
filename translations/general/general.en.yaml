@@ -1,0 +1,85 @@
+abort: Abbrechen
+additionalInformation: Weitere Angaben
+address: Adresse
+approved: Approved
+archive: Archivieren
+assign: Assign
+assignedTo: Assigned to
+backwards: Zurück
+basic: Basis
+birthday: Geburtstag
+close: Close
+comments: Kommentare
+confirmAction: Do you really want to execute this action?
+contact: Contact
+createdAt: Created
+createdBy: Erstellt von
+date: Date
+delete: Delete
+deleted: Gelöscht
+departments: Departments
+description: Description
+download:
+  successful: Download erfolgreich
+edit: Edit
+editedBy: Bearbeitet von
+editor: Processor
+email: Email
+end: Ende
+endTime: End time
+error:
+  userIsNotTeamAdministrator: Benutzer*in ist nicht Admin dieses Teams
+  userWithoutTeam: Benutzer*in keinem Team zugewiesen
+  userNotFoundInArray: Benutzer*in nicht in Array von Teams
+  userNotInTeamAccessDenied: Benutzer*in nicht in Team und nicht berechtigt
+  userNotAuthorizedToManageTeam: Benutzer*in ist nicht berechtigt, Teams zu verwalten
+  signature: Die Signatur ist ungültig. Bitte kontaktieren Sie die Personen, die Ihnen die Datei überlassen hat.
+  file: ' Die Datei ist fehlerhaft und kann nicht eingelesen werden. Es können jedoch bereits Daten in Ihren Datenstamm eingetragen worden sein. Bitte kontaktieren Sie die Personen, die Ihnen die Datei überlassen hat.'
+  retry: Fehler. Bitte noch einmal versuchen
+  unauthorizedDownload: Fehlerhafter download. User nicht berechtigt!
+  dataType:
+    notOdif: Der Dateityp ist fehlerhaft. Die Datei muss mit .odif enden.
+fileNumber: Reference / file number
+history: Historie
+id: ID
+info: Info
+login: Anmelden
+name: Name
+no: Nein
+number: Number
+object: Object
+overview: Overview
+pdf:
+  create: PDF erstellen
+  createWithHistory: PDF mit Historie erstellen
+  generatedSuccessful: PDF wurde erfolgreich erstellt!
+phone: Tel.
+processing: Verarbeitung
+processings: Processings
+product: Product
+products: Products/Projects
+reason: Grund
+regard: Betreff
+remove: Remove
+responsible: Responsible
+restore: Restore
+restored: Wiederhergestellt
+save:
+  comment: Kommentar gespeichert
+  changesSuccessful: Änderung gespeichert
+  successful: Erfolgreich gespeichert
+show: anzeigen
+start: Start date
+startTime: Start time
+state: Status
+subscriptionDate: Sign date
+time: Time
+times: Zeiten
+title: Title
+to: zu
+type: Type
+username: User name
+uuid: UID
+version: Version
+versionApproved: (Diese Version war freigegeben)
+yes: Ja
