@@ -37,7 +37,6 @@ class AssistantController extends AbstractController
                          SecurityService $securityService,
                          CurrentTeamService $currentTeamService,
                          AssistantService $assistantService,
-                         TranslatorInterface $translator,
                          ValidatorInterface $validator,
                          EntityManagerInterface $entityManager
     )
@@ -55,7 +54,6 @@ class AssistantController extends AbstractController
                 $team,
                 $request,
                 $assistantService,
-                $translator,
                 $validator,
                 $entityManager
             );
@@ -92,13 +90,12 @@ class AssistantController extends AbstractController
                                Team $team,
                                Request $request,
                                AssistantService $assistantService,
-                               TranslatorInterface $translator,
                                ValidatorInterface $validator,
                                EntityManagerInterface $entityManager)
     {
-        $title = $translator->trans($assistantService->getTitleForStep($step));
-        $info = $translator->trans($assistantService->getInfoForStep($step));
-        $newTitle = $translator->trans($assistantService->getNewTitleForStep($step));
+        $title = $assistantService->getTitleForStep($step);
+        $info = $assistantService->getInfoForStep($step);
+        $newTitle = $assistantService->getNewTitleForStep($step);
         $select = $assistantService->getSelectDataForStep($step, $team);
         $skip = $assistantService->getSkipForStep($step);
         $newItem = $assistantService->createElementForStep($step, $this->getUser(), $team);

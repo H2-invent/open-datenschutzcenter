@@ -155,7 +155,7 @@ class AssistantService
     public function getTitleForStep(int $step): ?string {
         $steps =  AssistantService::$STEPS;
         if (array_key_exists($step, $steps) && array_key_exists('title', $steps[$step])) {
-            return $steps[$step]['title'];
+            return $this->translator->trans(id: $steps[$step]['title'], domain: 'assistant');
         }
         return null;
     }
@@ -163,7 +163,7 @@ class AssistantService
     public function getInfoForStep(int $step): ?string {
         $steps =  AssistantService::$STEPS;
         if (array_key_exists($step, $steps) && array_key_exists('info', $steps[$step])) {
-            return $steps[$step]['info'];
+            return $this->translator->trans(id: $steps[$step]['info'], domain: 'assistant');
         }
         return null;
     }
@@ -171,7 +171,7 @@ class AssistantService
     public function getNewTitleForStep(int $step): ?string {
         $steps =  AssistantService::$STEPS;
         if (array_key_exists($step, $steps) && array_key_exists('newTitle', $steps[$step])) {
-            return $steps[$step]['newTitle'];
+            return $this->translator->trans($steps[$step]['newTitle'], domain: 'assistant');
         }
         return null;
     }
@@ -279,19 +279,19 @@ class AssistantService
         switch ($this->getElementTypeForStep($step)) {
             case KontaktType::class:
                 $select['selected'] = $this->getPropertyForStep($step);
-                $select['label'] = $this->translator->trans('contactSelectLabel');
+                $select['label'] = $this->translator->trans(id: 'contactSelectLabel', domain: 'assistant');
                 $select['items'] = $this->contactRepository->findActiveByTeam($team);
                 $select['multiple'] = false;
                 break;
             case SoftwareType::class:
                 $select['selected'] = $this->getPropertyForStep($step);
-                $select['label'] = $this->translator->trans('softwareSelectLabel');
+                $select['label'] = $this->translator->trans(id: 'softwareSelectLabel', domain: 'assistant');
                 $select['items'] = $this->softwareRepository->findActiveByTeam($team);
                 $select['multiple'] = true;
                 break;
             case VVTType::class:
                 $select['selected'] = $this->getPropertyForStep($step);
-                $select['label'] = $this->translator->trans('procedureSelectLabel');
+                $select['label'] = $this->translator->trans(id: 'procedureSelectLabel', domain: 'assistant');
                 $select['items'] = $this->vvtRepository->findActiveByTeam($team);
                 $select['multiple'] = true;
                 break;
