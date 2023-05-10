@@ -26,6 +26,9 @@ use Symfony\Component\Form\FormInterface;
 
 class DatenweitergabeService
 {
+    const PREFIX_PROCESSING = 'AVV-';
+    const PREFIX_TRANSFER = 'DW-';
+
     public function __construct(
         private EntityManagerInterface $em,
         private FormFactoryInterface   $formBuilder,
@@ -69,17 +72,18 @@ class DatenweitergabeService
         return $form;
     }
 
-    function newDatenweitergabe(User $user, $type, $prefix): Datenweitergabe
+    function newDatenweitergabe(User $user, $type): Datenweitergabe
     {
-        $daten = new Datenweitergabe();
-        $daten->setTeam($this->currentTeamService->getTeamFromSession($user));
-        $daten->setNummer($prefix . hexdec(uniqid()));
-        $daten->setActiv(true);
-        $daten->setCreatedAt(new DateTime());
-        $daten->setArt($type);
-        $daten->setUser($user);
+        $data = new Datenweitergabe();
+        $prefix = $type === 1 ? self::PREFIX_TRANSFER : self::PREFIX_PROCESSING;
+        $data->setTeam($this->currentTeamService->getTeamFromSession($user));
+        $data->setNummer($prefix . hexdec(uniqid()));
+        $data->setActiv(true);
+        $data->setCreatedAt(new DateTime());
+        $data->setArt($type);
+        $data->setUser($user);
 
-        return $daten;
+        return $data;
     }
 
     function newDsfa(Team $team, User $user, VVT $vvt): VVTDsfa

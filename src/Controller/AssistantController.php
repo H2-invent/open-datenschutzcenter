@@ -93,13 +93,13 @@ class AssistantController extends AbstractController
                                ValidatorInterface $validator,
                                EntityManagerInterface $entityManager)
     {
-        $title = $assistantService->getTitleForStep($step);
-        $info = $assistantService->getInfoForStep($step);
-        $newTitle = $assistantService->getNewTitleForStep($step);
+        $title = $assistantService->getPropertyForStep($step, AssistantService::PROPERTY_TITLE);
+        $info = $assistantService->getPropertyForStep($step, AssistantService::PROPERTY_INFO);
+        $newTitle = $assistantService->getPropertyForStep($step, AssistantService::PROPERTY_NEW);
+        $type = $assistantService->getPropertyForStep($step, AssistantService::PROPERTY_TYPE);
+        $skip = $assistantService->getPropertyForStep($step, AssistantService::PROPERTY_SKIP);
         $select = $assistantService->getSelectDataForStep($step, $team);
-        $skip = $assistantService->getSkipForStep($step);
         $newItem = $assistantService->createElementForStep($step, $this->getUser(), $team);
-        $type = $assistantService->getElementTypeForStep($step);
         $form = $assistantService->createForm($type, $newItem, $team);
         $form->handleRequest($request);
 
@@ -116,7 +116,7 @@ class AssistantController extends AbstractController
                 }
                 $entityManager->persist($data);
                 $entityManager->flush();
-                $assistantService->setPropertyForStep($data->getId(), $step);
+                $assistantService->saveToSession(step: $step, id: $data->getId());
                 return $this->redirectToRoute('assistant_step', ['step' => $step + 1]);
             }
         }
@@ -148,7 +148,7 @@ class AssistantController extends AbstractController
 
         $step = $assistantService->getStep();
         $contact = $request->get('assistant_select');
-        $assistantService->setPropertyForStep($contact, $step);
+        $assistantService->saveToSession(step: $step, id: $contact);
         return $this->redirectToRoute('assistant_step', ['step' => $step + 1]);
     }
 }

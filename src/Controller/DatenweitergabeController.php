@@ -52,7 +52,7 @@ class DatenweitergabeController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $datenweitergabeService->newDatenweitergabe($this->getUser(), 2, 'AVV-');
+        $daten = $datenweitergabeService->newDatenweitergabe($this->getUser(), 2);
 
         $form = $datenweitergabeService->createForm($daten, $team);
         $form->handleRequest($request);
@@ -98,7 +98,7 @@ class DatenweitergabeController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $datenweitergabeService->newDatenweitergabe($this->getUser(), 1, 'DW-');
+        $daten = $datenweitergabeService->newDatenweitergabe($this->getUser(), 1);
 
         $form = $datenweitergabeService->createForm($daten, $team);
         $form->handleRequest($request);

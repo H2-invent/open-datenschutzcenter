@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\Datenweitergabe;
@@ -23,29 +25,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AssistantService
 {
-    private RequestStack $requestStack;
-
-    private DatenweitergabeService $dataTransferService;
-
-    private SoftwareService $softwareService;
-
-    private VVTService $vvtService;
-
-    private KontakteRepository $contactRepository;
-
-    private SoftwareRepository $softwareRepository;
-
-    private VVTRepository $vvtRepository;
-
-    private TranslatorInterface $translator;
-
-    private FormFactoryInterface $formBuilder;
-
     // TODO: Move to separate config file
     private static array $STEPS = [
         0 => [
             'type' => SoftwareType::class,
-            'key' => 'software-processing-procedure',
             'title' => 'software.processing.title',
             'info' => 'software.processing.info',
             'newTitle' => 'new.software',
@@ -53,7 +36,6 @@ class AssistantService
         ],
         1 => [
             'type' => VVTType::class,
-            'key' => 'processing-procedure',
             'title' => 'procedure.processing.title',
             'info' => 'procedure.processing.info',
             'newTitle' => 'new.procedure',
@@ -61,23 +43,22 @@ class AssistantService
         ],
         2 => [
             'type' => KontaktType::class,
-            'key' => 'contact-source',
             'title' => 'contact.source.title',
             'info' => 'contact.source.info',
             'newTitle' => 'new.contact',
         ],
         3 => [
             'type' => DatenweitergabeType::class,
-            'key' => 'order-processing',
             'title' => 'processing.title',
             'info' => 'processing.info',
             'newTitle' => 'new.processing',
+            'transferType' => 2,
             'contact' => 0,
-            'vvt' => 1,
+            'procedure' => 1,
+            'software' => 0,
         ],
         4 => [
             'type' => SoftwareType::class,
-            'key' => 'software-transfer',
             'title' => 'software.transfer.title',
             'info' => 'software.transfer.info',
             'newTitle' => 'new.software',
@@ -85,7 +66,6 @@ class AssistantService
         ],
         5 => [
             'type' => VVTType::class,
-            'key' => 'transfer-procedure',
             'title' => 'procedure.transfer.title',
             'info' => 'procedure.transfer.info',
             'newTitle' => 'new.procedure',
@@ -93,132 +73,95 @@ class AssistantService
         ],
         6 => [
             'type' => KontaktType::class,
-            'key' => 'contact-dest',
             'title' => 'contact.dest.title',
             'info' => 'contact.dest.info',
             'newTitle' => 'new.contact',
         ],
         7 => [
             'type' => DatenweitergabeType::class,
-            'key' => 'data-transfer',
             'title' => 'transfer.title',
             'info' => 'transfer.info',
             'newTitle' => 'new.transfer',
-            'vvt' => 5,
+            'transferType' => 1,
+            'procedure' => 5,
             'contact' => 6,
             'software' => 4,
         ],
     ];
 
-    public function __construct(RequestStack $requestStack,
-                                DatenweitergabeService $dataTransferService,
-                                SoftwareService $softwareService,
-                                VVTService $vvtService,
-                                KontakteRepository $contactRepository,
-                                SoftwareRepository $softwareRepository,
-                                VVTRepository $vvtRepository,
-                                TranslatorInterface $translator,
-                                FormFactoryInterface $formBuilder
+    const PROPERTY_TYPE = 'type';
+    const PROPERTY_TITLE = 'title';
+    const PROPERTY_INFO = 'info';
+    const PROPERTY_NEW = 'newTitle';
+    const PROPERTY_CONTACT = 'contact';
+    const PROPERTY_PROCEDURE = 'procedure';
+    const PROPERTY_SOFTWARE = 'software';
+    const PROPERTY_TRANSFER_TYPE = 'transferType';
+    const PROPERTY_SKIP = 'skip';
+
+    public function __construct(private readonly RequestStack           $requestStack,
+                                private readonly DatenweitergabeService $dataTransferService,
+                                private readonly SoftwareService        $softwareService,
+                                private readonly VVTService             $vvtService,
+                                private readonly KontakteRepository     $contactRepository,
+                                private readonly SoftwareRepository     $softwareRepository,
+                                private readonly VVTRepository          $vvtRepository,
+                                private readonly TranslatorInterface    $translator,
+                                private readonly FormFactoryInterface   $formBuilder
     )
     {
-        $this->requestStack = $requestStack;
-        $this->dataTransferService = $dataTransferService;
-        $this->softwareService = $softwareService;
-        $this->vvtService = $vvtService;
-        $this->contactRepository = $contactRepository;
-        $this->softwareRepository = $softwareRepository;
-        $this->vvtRepository = $vvtRepository;
-        $this->translator = $translator;
-        $this->formBuilder = $formBuilder;
+
     }
 
-    public function setPropertyForStep(string $id, int $step) {
+    public function saveToSession(int $step, string $id): void
+    {
         $session = $this->requestStack->getSession();
-        $property = AssistantService::$STEPS[$step]['key'];
-        $session->set($property, $id);
+        $key = 'step_' . $step;
+        $session->set($key, $id);
     }
 
-    public function getPropertyForStep(int $step): ?string {
+    public function getFromSession(int $step): ?string {
         $session = $this->requestStack->getSession();
-        $property = AssistantService::$STEPS[$step]['key'];
-        return $session->get($property);
+        $key = 'step_' . $step;
+        return $session->get($key);
     }
 
-    public function getTitleForStep(int $step): ?string {
+    public function getPropertyForStep(int $step, string $key): int|string|bool|Kontakte|VVT|Software|null {
         $steps =  AssistantService::$STEPS;
-        if (array_key_exists($step, $steps) && array_key_exists('title', $steps[$step])) {
-            return $this->translator->trans(id: $steps[$step]['title'], domain: 'assistant');
+        if (array_key_exists($step, $steps) && array_key_exists($key, $steps[$step])) {
+            $value = $steps[$step][$key];
+            return match($key) {
+                self::PROPERTY_CONTACT => $this->getContactFromStep($value),
+                self::PROPERTY_PROCEDURE => $this->getProcedureFromStep($value),
+                self::PROPERTY_SOFTWARE => $this->getSoftwareFromStep($value),
+                self::PROPERTY_TITLE, self::PROPERTY_INFO, self::PROPERTY_NEW
+                    => $this->translator->trans(id: $value, domain: 'assistant'),
+                default => $value
+            };
         }
         return null;
     }
 
-    public function getInfoForStep(int $step): ?string {
-        $steps =  AssistantService::$STEPS;
-        if (array_key_exists($step, $steps) && array_key_exists('info', $steps[$step])) {
-            return $this->translator->trans(id: $steps[$step]['info'], domain: 'assistant');
-        }
-        return null;
+    private function getContactFromStep(int $step): ?Kontakte {
+        $contactId = $this->getFromSession($step);
+        return $contactId ? $this->contactRepository->find($contactId): null;
     }
 
-    public function getNewTitleForStep(int $step): ?string {
-        $steps =  AssistantService::$STEPS;
-        if (array_key_exists($step, $steps) && array_key_exists('newTitle', $steps[$step])) {
-            return $this->translator->trans($steps[$step]['newTitle'], domain: 'assistant');
-        }
-        return null;
-    }
-
-    public function getElementTypeForStep(int $step): ?string {
-        $steps =  AssistantService::$STEPS;
-        if (array_key_exists($step, $steps) && array_key_exists('type', $steps[$step])) {
-            return $steps[$step]['type'];
-        }
-        return null;
-    }
-
-    public function getContactForStep(int $step): ?Kontakte {
-        $steps =  AssistantService::$STEPS;
-        if (array_key_exists($step, $steps) && array_key_exists('contact', $steps[$step])) {
-            $contactStep = $steps[$step]['contact'];
-            $contactId = $this->getPropertyForStep($contactStep);
-            return $contactId ? $this->contactRepository->find($contactId): null;
-        }
-        return null;
-    }
-
-    public function getProcedureForStep(int $step): ?VVT {
-        $steps =  AssistantService::$STEPS;
-        if (array_key_exists($step, $steps) && array_key_exists('vvt', $steps[$step])) {
-            $procedureStep = $steps[$step]['vvt'];
-            $procedureId = $this->getPropertyForStep($procedureStep);
+    private function getProcedureFromStep(int $step): ?VVT {
+            $procedureId = $this->getFromSession($step);
             return $procedureId ? $this->vvtRepository->find($procedureId): null;
-        }
-        return null;
     }
 
-    public function getSoftwareForStep(int $step): ?Software {
-        $steps =  AssistantService::$STEPS;
-        if (array_key_exists($step, $steps) && array_key_exists('software', $steps[$step])) {
-            $softwareStep = $steps[$step]['software'];
-            $softwareId = $this->getPropertyForStep($softwareStep);
-            return $softwareId ? $this->softwareRepository->find($softwareId): null;
-        }
-        return null;
-    }
-
-    public function getSkipForStep(int $step): ?bool {
-        $steps =  AssistantService::$STEPS;
-        if (array_key_exists($step, $steps) && array_key_exists('skip', $steps[$step])) {
-            return $steps[$step]['skip'];
-        }
-        return false;
+    private function getSoftwareFromStep(int $step): ?Software {
+        $softwareId = $this->getFromSession($step);
+        return $softwareId ? $this->softwareRepository->find($softwareId): null;
     }
 
     public function getStepCount(): int {
         return count(AssistantService::$STEPS);
     }
 
-    public function setStep(int $step) {
+    public function setStep(int $step): void {
         $session = $this->requestStack->getSession();
         $session->set('step', $step);
     }
@@ -229,35 +172,36 @@ class AssistantService
         return $id ? : 0;
     }
 
-    public function clear() {
+    public function clear(): void {
         $session = $this->requestStack->getSession();
         $session->set('step', 0);
 
-        foreach (AssistantService::$STEPS as $step) {
-            $session->remove($step['key']);
+        for ($i = 0; $i < count(AssistantService::$STEPS); $i++) {
+            $session->remove('step_' . $i);
         }
     }
 
-    public function createElementForStep(int $step, User $user, Team $team)
+    public function createElementForStep(int $step, User $user, Team $team): Software|Kontakte|VVT|Datenweitergabe|null
     {
         $item = null;
 
-        switch ($this->getElementTypeForStep($step)) {
+        switch ($this->getPropertyForStep($step, self::PROPERTY_TYPE)) {
             case SoftwareType::class:
-                return $this->softwareService->newSoftware($team, $user);
+                $item = $this->softwareService->newSoftware($team, $user);
+                break;
             case KontaktType::class:
                 $item = new Kontakte();
                 $item->setTeam($team);
                 $item->setActiv(1);
-                return $item;
+                break;
             case DatenweitergabeType::class:
-                if (AssistantService::$STEPS[$step]['title'] === 'orderProcessing') {
-                    $item = $this->dataTransferService->newDatenweitergabe($user, 2, 'AVV-');
+                if (array_key_exists(self::PROPERTY_TRANSFER_TYPE, AssistantService::$STEPS[$step])) {
+                    $item = $this->dataTransferService->newDatenweitergabe($user, 2);
                 } else {
-                    $item = $this->dataTransferService->newDatenweitergabe($user, 1, 'DW-');
+                    $item = $this->dataTransferService->newDatenweitergabe($user, 1);
                 }
                 $this->addDependenciesToDatenweitergabe($item, $step);
-                return $item;
+                break;
             case VVTType::class:
                 $item = $this->vvtService->newVvt($team, $user);
                 $this->addDependenciesToProcedure($item, $step);
@@ -265,24 +209,23 @@ class AssistantService
         return $item;
     }
 
-    public function getSelectDataForStep(int $step, Team $team):array
-    {
+    public function getSelectDataForStep(int $step, Team $team): array {
         $select = [];
-        switch ($this->getElementTypeForStep($step)) {
+        switch ($this->getPropertyForStep($step, 'type')) {
             case KontaktType::class:
-                $select['selected'] = $this->getPropertyForStep($step);
+                $select['selected'] = $this->getFromSession($step);
                 $select['label'] = $this->translator->trans(id: 'select.contact', domain: 'assistant');
                 $select['items'] = $this->contactRepository->findActiveByTeam($team);
                 $select['multiple'] = false;
                 break;
             case SoftwareType::class:
-                $select['selected'] = $this->getPropertyForStep($step);
+                $select['selected'] = $this->getFromSession($step);
                 $select['label'] = $this->translator->trans(id: 'select.software', domain: 'assistant');
                 $select['items'] = $this->softwareRepository->findActiveByTeam($team);
                 $select['multiple'] = true;
                 break;
             case VVTType::class:
-                $select['selected'] = $this->getPropertyForStep($step);
+                $select['selected'] = $this->getFromSession($step);
                 $select['label'] = $this->translator->trans(id: 'select.procedure', domain: 'assistant');
                 $select['items'] = $this->vvtRepository->findActiveByTeam($team);
                 $select['multiple'] = true;
@@ -291,31 +234,27 @@ class AssistantService
         return $select;
     }
 
-    public function createForm($type, $newItem, Team $team)
-    {
-        switch ($type) {
-            case DatenweitergabeType::class:
-                return $this->dataTransferService->createForm($newItem, $team);
-            case VVTType::class:
-                return $this->vvtService->createForm($newItem, $team);
-            default:
-                return $this->formBuilder->create($type, $newItem);
-        }
+    public function createForm($type, $newItem, Team $team) {
+        return match ($type) {
+            DatenweitergabeType::class => $this->dataTransferService->createForm($newItem, $team),
+            VVTType::class => $this->vvtService->createForm($newItem, $team),
+            default => $this->formBuilder->create($type, $newItem)
+        };
     }
 
-    private function addDependenciesToDatenweitergabe(Datenweitergabe $item, $step) {
-        $contact = $this->getContactForStep($step);
+    private function addDependenciesToDatenweitergabe(Datenweitergabe $item, $step): void {
+        $contact = $this->getPropertyForStep(step: $step, key: self::PROPERTY_CONTACT);
         $item->setKontakt($contact);
-        $software = $this->getSoftwareForStep($step);
+        $software = $this->getPropertyForStep(step: $step, key: self::PROPERTY_SOFTWARE);
         if ($software) {
             $item->addSoftware($software);
         }
-        $procedure = $this->getProcedureForStep($step);
+        $procedure = $this->getPropertyForStep(step: $step, key: self::PROPERTY_PROCEDURE);
         $item->addVerfahren($procedure);
     }
 
-    private function addDependenciesToProcedure(VVT $procedure, $step) {
-        $software = $this->getSoftwareForStep($step);
+    private function addDependenciesToProcedure(VVT $procedure, $step): void {
+        $software = $this->getPropertyForStep(step: $step, key: self::PROPERTY_SOFTWARE);
         if ($software) {
             $procedure->addSoftware($software);
         }
