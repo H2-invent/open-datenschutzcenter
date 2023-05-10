@@ -17,7 +17,9 @@ createdBy: Erstellt von
 date: Datum
 delete: Löschen
 deleted: Gelöscht
-departments: Abteilungen
+department:
+  word: Abteilung
+  words: Abteilungen
 description: Beschreibung
 download:
   successful: Download erfolgreich
