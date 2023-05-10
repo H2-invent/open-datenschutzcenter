@@ -17,78 +17,14 @@ use App\Form\Type\VVTType;
 use App\Repository\KontakteRepository;
 use App\Repository\SoftwareRepository;
 use App\Repository\VVTRepository;
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AssistantService
 {
-    // TODO: Move to separate config file
-    private static array $STEPS = [
-        0 => [
-            'type' => SoftwareType::class,
-            'title' => 'software.processing.title',
-            'info' => 'software.processing.info',
-            'newTitle' => 'new.software',
-            'skip' => true,
-        ],
-        1 => [
-            'type' => VVTType::class,
-            'title' => 'procedure.processing.title',
-            'info' => 'procedure.processing.info',
-            'newTitle' => 'new.procedure',
-            'software' => 0,
-        ],
-        2 => [
-            'type' => KontaktType::class,
-            'title' => 'contact.source.title',
-            'info' => 'contact.source.info',
-            'newTitle' => 'new.contact',
-        ],
-        3 => [
-            'type' => DatenweitergabeType::class,
-            'title' => 'processing.title',
-            'info' => 'processing.info',
-            'newTitle' => 'new.processing',
-            'transferType' => 2,
-            'contact' => 0,
-            'procedure' => 1,
-            'software' => 0,
-        ],
-        4 => [
-            'type' => SoftwareType::class,
-            'title' => 'software.transfer.title',
-            'info' => 'software.transfer.info',
-            'newTitle' => 'new.software',
-            'skip' => true,
-        ],
-        5 => [
-            'type' => VVTType::class,
-            'title' => 'procedure.transfer.title',
-            'info' => 'procedure.transfer.info',
-            'newTitle' => 'new.procedure',
-            'software' => 4,
-        ],
-        6 => [
-            'type' => KontaktType::class,
-            'title' => 'contact.dest.title',
-            'info' => 'contact.dest.info',
-            'newTitle' => 'new.contact',
-        ],
-        7 => [
-            'type' => DatenweitergabeType::class,
-            'title' => 'transfer.title',
-            'info' => 'transfer.info',
-            'newTitle' => 'new.transfer',
-            'transferType' => 1,
-            'procedure' => 5,
-            'contact' => 6,
-            'software' => 4,
-        ],
-    ];
-
     const PROPERTY_TYPE = 'type';
     const PROPERTY_TITLE = 'title';
     const PROPERTY_INFO = 'info';
@@ -98,6 +34,8 @@ class AssistantService
     const PROPERTY_SOFTWARE = 'software';
     const PROPERTY_TRANSFER_TYPE = 'transferType';
     const PROPERTY_SKIP = 'skip';
+
+    private array $steps = [];
 
     public function __construct(private readonly RequestStack           $requestStack,
                                 private readonly DatenweitergabeService $dataTransferService,
@@ -110,7 +48,13 @@ class AssistantService
                                 private readonly FormFactoryInterface   $formBuilder
     )
     {
-
+        $configDirectories = [__DIR__.'/../../config'];
+        $fileLocator = new FileLocator($configDirectories);
+        $stepsFile = $fileLocator->locate('assistant.yaml', null, false)[0];
+        $values = Yaml::parse(file_get_contents($stepsFile));
+        if (array_key_exists('steps', $values)) {
+            $this->steps = $values['steps'];
+        }
     }
 
     public function saveToSession(int $step, string $id): void
@@ -127,9 +71,8 @@ class AssistantService
     }
 
     public function getPropertyForStep(int $step, string $key): int|string|bool|Kontakte|VVT|Software|null {
-        $steps =  AssistantService::$STEPS;
-        if (array_key_exists($step, $steps) && array_key_exists($key, $steps[$step])) {
-            $value = $steps[$step][$key];
+        if (array_key_exists($step, $this->steps) && array_key_exists($key, $this->steps[$step])) {
+            $value = $this->steps[$step][$key];
             return match($key) {
                 self::PROPERTY_CONTACT => $this->getContactFromStep($value),
                 self::PROPERTY_PROCEDURE => $this->getProcedureFromStep($value),
@@ -158,7 +101,7 @@ class AssistantService
     }
 
     public function getStepCount(): int {
-        return count(AssistantService::$STEPS);
+        return count($this->steps);
     }
 
     public function setStep(int $step): void {
@@ -176,7 +119,7 @@ class AssistantService
         $session = $this->requestStack->getSession();
         $session->set('step', 0);
 
-        for ($i = 0; $i < count(AssistantService::$STEPS); $i++) {
+        for ($i = 0; $i < count($this->steps); $i++) {
             $session->remove('step_' . $i);
         }
     }
@@ -195,7 +138,7 @@ class AssistantService
                 $item->setActiv(1);
                 break;
             case DatenweitergabeType::class:
-                if (array_key_exists(self::PROPERTY_TRANSFER_TYPE, AssistantService::$STEPS[$step])) {
+                if (array_key_exists(self::PROPERTY_TRANSFER_TYPE, $this->steps[$step])) {
                     $item = $this->dataTransferService->newDatenweitergabe($user, 2);
                 } else {
                     $item = $this->dataTransferService->newDatenweitergabe($user, 1);
@@ -211,7 +154,7 @@ class AssistantService
 
     public function getSelectDataForStep(int $step, Team $team): array {
         $select = [];
-        switch ($this->getPropertyForStep($step, 'type')) {
+        switch ($this->getPropertyForStep($step, self::PROPERTY_TYPE)) {
             case KontaktType::class:
                 $select['selected'] = $this->getFromSession($step);
                 $select['label'] = $this->translator->trans(id: 'select.contact', domain: 'assistant');
