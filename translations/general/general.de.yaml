@@ -5,7 +5,7 @@ approved: Freigegeben
 archive: Archivieren
 assign: Zuweisen
 assignedTo: Zugewiesen an
-backwards: Zurück
+back: Zurück
 basic: Grundlage
 birthday: Geburtstag
 close: Schließen
@@ -70,10 +70,12 @@ responsible: Verantwortlich
 restore: Wiederherstellen
 restored: Wiederhergestellt
 save:
+  word: Speichern
   comment: Kommentar gespeichert
   changesSuccessful: Änderung gespeichert
   successful: Erfolgreich gespeichert
 show: anzeigen
+skip: Überspringen
 start: Start
 startTime: Startzeit
 state: Status

@@ -63,12 +63,12 @@ class AssistantController extends AbstractController
             $assistantService->clear();
             $this->addFlash(
                 'success',
-                'assistantFinished'
+                'assistant.finished'
             );
         } else {
             $this->addFlash(
                 'danger',
-                'stepError'
+                'step.error'
             );
         }
 
@@ -81,12 +81,12 @@ class AssistantController extends AbstractController
         $assistantService->clear();
         $this->addFlash(
             'info',
-            'assistantAborted'
+            'assistant.aborted'
         );
         return $this->redirectToRoute('assistant');
     }
 
-    public function renderStep(int $step,
+    private function renderStep(int $step,
                                Team $team,
                                Request $request,
                                AssistantService $assistantService,

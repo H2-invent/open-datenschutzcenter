@@ -46,75 +46,67 @@ class AssistantService
         0 => [
             'type' => SoftwareType::class,
             'key' => 'software-processing-procedure',
-            'title' => 'softwareProcessingProcedure',
-            'info' => 'softwareProcessingProcedureInfo',
-            'newTitle' => 'createNewSoftware',
+            'title' => 'software.processing.title',
+            'info' => 'software.processing.info',
+            'newTitle' => 'new.software',
             'skip' => true,
         ],
         1 => [
             'type' => VVTType::class,
             'key' => 'processing-procedure',
-            'title' => 'processingProcedure',
-            'info' => 'processingProcedureInfo',
-            'newTitle' => 'createNewProcedure',
+            'title' => 'procedure.processing.title',
+            'info' => 'procedure.processing.info',
+            'newTitle' => 'new.procedure',
             'software' => 0,
         ],
         2 => [
             'type' => KontaktType::class,
             'key' => 'contact-source',
-            'title' => 'contactSource',
-            'info' => 'contactSourceInfo',
-            'newTitle' => 'createNewContact',
+            'title' => 'contact.source.title',
+            'info' => 'contact.source.info',
+            'newTitle' => 'new.contact',
         ],
         3 => [
             'type' => DatenweitergabeType::class,
             'key' => 'order-processing',
-            'title' => 'orderProcessing',
-            'info' => 'orderProcessingInfo',
-            'newTitle' => 'createNewOrderProcessing',
+            'title' => 'processing.title',
+            'info' => 'processing.info',
+            'newTitle' => 'new.processing',
             'contact' => 0,
             'vvt' => 1,
         ],
         4 => [
             'type' => SoftwareType::class,
-            'key' => 'software-transfer-procedure',
-            'title' => 'softwareTransferProcedure',
-            'info' => 'softwareTransferProcedureInfo',
-            'newTitle' => 'createNewSoftware',
+            'key' => 'software-transfer',
+            'title' => 'software.transfer.title',
+            'info' => 'software.transfer.info',
+            'newTitle' => 'new.software',
             'skip' => true,
         ],
         5 => [
             'type' => VVTType::class,
             'key' => 'transfer-procedure',
-            'title' => 'transferProcedure',
-            'info' => 'transferProcedureInfo',
-            'newTitle' => 'createNewProcedure',
+            'title' => 'procedure.transfer.title',
+            'info' => 'procedure.transfer.info',
+            'newTitle' => 'new.procedure',
             'software' => 4,
         ],
         6 => [
             'type' => KontaktType::class,
             'key' => 'contact-dest',
-            'title' => 'contactDest',
-            'info' => 'contactDestInfo',
-            'newTitle' => 'createNewContact',
+            'title' => 'contact.dest.title',
+            'info' => 'contact.dest.info',
+            'newTitle' => 'new.contact',
         ],
         7 => [
-            'type' => SoftwareType::class,
-            'key' => 'software-transfer',
-            'title' => 'softwareTransfer',
-            'info' => 'softwareTransferInfo',
-            'newTitle' => 'createNewSoftware',
-            'skip' => true,
-        ],
-        8 => [
             'type' => DatenweitergabeType::class,
             'key' => 'data-transfer',
-            'title' => 'dataTransfer',
-            'info' => 'dataTransferInfo',
-            'newTitle' => 'createNewDataTransfer',
+            'title' => 'transfer.title',
+            'info' => 'transfer.info',
+            'newTitle' => 'new.transfer',
             'vvt' => 5,
             'contact' => 6,
-            'software' => 7,
+            'software' => 4,
         ],
     ];
 
@@ -279,19 +271,19 @@ class AssistantService
         switch ($this->getElementTypeForStep($step)) {
             case KontaktType::class:
                 $select['selected'] = $this->getPropertyForStep($step);
-                $select['label'] = $this->translator->trans(id: 'contactSelectLabel', domain: 'assistant');
+                $select['label'] = $this->translator->trans(id: 'select.contact', domain: 'assistant');
                 $select['items'] = $this->contactRepository->findActiveByTeam($team);
                 $select['multiple'] = false;
                 break;
             case SoftwareType::class:
                 $select['selected'] = $this->getPropertyForStep($step);
-                $select['label'] = $this->translator->trans(id: 'softwareSelectLabel', domain: 'assistant');
+                $select['label'] = $this->translator->trans(id: 'select.software', domain: 'assistant');
                 $select['items'] = $this->softwareRepository->findActiveByTeam($team);
                 $select['multiple'] = true;
                 break;
             case VVTType::class:
                 $select['selected'] = $this->getPropertyForStep($step);
-                $select['label'] = $this->translator->trans(id: 'procedureSelectLabel', domain: 'assistant');
+                $select['label'] = $this->translator->trans(id: 'select.procedure', domain: 'assistant');
                 $select['items'] = $this->vvtRepository->findActiveByTeam($team);
                 $select['multiple'] = true;
                 break;

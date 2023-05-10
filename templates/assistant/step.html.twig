@@ -3,7 +3,7 @@
 
 {% block body %}
     <div class="container">
-        <h2 class="h2-responsive">{% trans %}step{% endtrans %} {{ step + 1}}: {{ title }}</h2>
+        <h2 class="h2-responsive">{% trans %}step.word{% endtrans %} {{ step + 1}}: {{ title }}</h2>
         <div class="card card-body">
             <div class="alert alert-info" role="alert">
                 <p>{{ info }}</p>
@@ -18,22 +18,22 @@
                             {% for item in select.items %}
                                 <option {% if item.id == select.selected %}selected="selected"{% endif %} value="{{ item.id }}">{{ item.name }}</option>
                             {% endfor %}
-                            <option value="new">{% trans %}new{% endtrans %}</option>
+                            <option value="new">{% trans %}new.word{% endtrans %}</option>
                         </select>
                     </div>
                     <div class="col-12 mt-2 button-container">
                         <div class="row">
                             <div class="col-md-4">
                                 {% if step > 0 %}
-                                    <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step - 1) }) }}">{% trans %}back{% endtrans %}</a>
+                                    <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step - 1) }) }}">{% trans from 'general' %}back{% endtrans %}</a>
                                 {% endif %}
                             </div>
                             <div class="col-md-4 text-center">
-                                <button type="submit" class="btn btn-primary">{% trans %}save{% endtrans %}</button>
+                                <button type="submit" class="btn btn-primary">{% trans from 'general' %}save.word{% endtrans %}</button>
                             </div>
                             <div class="col-md-4 text-right">
                                 {% if skip %}
-                                    <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step + 1) }) }}">{% trans %}skip{% endtrans %}</a>
+                                    <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step + 1) }) }}">{% trans from 'general' %}skip{% endtrans %}</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -43,12 +43,12 @@
                 <div class="d-flex justify-content-between">
                     <div class="d-inline-block">
                         {% if step > 0 %}
-                            <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step - 1) }) }}">{% trans %}back{% endtrans %}</a>
+                            <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step - 1) }) }}">{% trans from 'general' %}back{% endtrans %}</a>
                         {% endif %}
                     </div>
                     <div class="d-inline-block">
                         {% if skip %}
-                            <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step + 1) }) }}">{% trans %}skip{% endtrans %}</a>
+                            <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step + 1) }) }}">{% trans from 'general' %}skip{% endtrans %}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                 {{ form_end(form) }}
             </div>
             <p class="text-right">
-                <a class="btn btn-outline-danger" href="{{ path('assistant_cancel') }}">{% trans %}cancel{% endtrans %}</a>
+                <a class="btn btn-outline-danger" href="{{ path('assistant_cancel') }}">{% trans from 'general' %}abort{% endtrans %}</a>
             </p>
         </div>
     </div>
