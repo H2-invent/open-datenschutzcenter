@@ -42,8 +42,16 @@ class VVTType extends AbstractType
     {
 
         $builder
-            ->add('nummer', TextType::class, ['label' => 'procedureNumber', 'required' => true, 'translation_domain' => 'form'])
-            ->add('name', TextType::class, ['label' => 'procedureDenomination', 'required' => true, 'translation_domain' => 'form'])
+            ->add('nummer', TextType::class, [
+                'label' => 'procedureNumber',
+                'required' => true,
+                'translation_domain' => 'form'
+            ])
+            ->add('name', TextType::class, [
+                'label' => 'procedureDenomination',
+                'required' => true,
+                'translation_domain' => 'form'
+            ])
             ->add('verantwortlich', TextareaType::class, ['label' => 'furtherResponsibleParties', 'required' => false, 'translation_domain' => 'form'])
             ->add('userContract', EntityType::class, [
                 'choice_label' => 'email',
@@ -73,12 +81,46 @@ class VVTType extends AbstractType
                 ],
                 'help' => 'procedureUsedSOftwareHelp'
             ])
-            ->add('zweck', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'procedurePurpose', 'required' => true, 'translation_domain' => 'form', 'help' => 'procedurePurposeHelp'])
-            ->add('jointControl', CheckboxType::class, ['label' => 'jointControl', 'required' => false, 'translation_domain' => 'form', 'help' => 'jointControlHelp'])
-            ->add('auftragsverarbeitung', CheckboxType::class, ['label' => 'isContract', 'required' => false, 'translation_domain' => 'form', 'help' => 'isContractHelp'])
-            ->add('speicherung', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'procedureDataStorage', 'required' => true, 'translation_domain' => 'form', 'help' => 'procedureDataStorage'])
-            ->add('loeschfrist', TextareaType::class, ['attr' => ['readonly'=>true, 'class' => 'summernote summernote-disable'], 'label' => 'deleteDeadline', 'required' => false, 'translation_domain' => 'form', 'help' => 'deleteDeadlineHelp'])
-            ->add('weitergabe', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'procedureDataTransferPartners', 'required' => false, 'translation_domain' => 'form', 'help' => 'procedureDataTransferPartners'])
+            ->add('zweck', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'procedurePurpose',
+                'required' => true,
+                'translation_domain' => 'form',
+                'help' => 'procedurePurposeHelp'
+            ])
+            ->add('jointControl', CheckboxType::class, [
+                'label' => 'jointControl',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'jointControlHelp'
+            ])
+            ->add('auftragsverarbeitung', CheckboxType::class, [
+                'label' => 'isContract',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'isContractHelp'
+            ])
+            ->add('speicherung', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'procedureDataStorage',
+                'required' => true,
+                'translation_domain' => 'form',
+                'help' => 'procedureDataStorage'
+            ])
+            ->add('loeschfrist', TextareaType::class, [
+                'attr' => ['readonly'=>true, 'class' => 'summernote summernote-disable'],
+                'label' => 'deleteDeadline',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'deleteDeadlineHelp'
+            ])
+            ->add('weitergabe', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'procedureDataTransferPartners',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'procedureDataTransferPartners'
+            ])
             ->add('grundlage', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTGrundlage::class,
@@ -129,7 +171,12 @@ class VVTType extends AbstractType
                 ],
                 'help' => 'procedureCategoriesHelp'
             ])
-            ->add('eu', CheckboxType::class, ['label' => 'procedureDataTransferOutsideEU', 'required' => false, 'translation_domain' => 'form', 'help' => 'procedureDataTransferOutsideEuHelp'])
+            ->add('eu', CheckboxType::class, [
+                'label' => 'procedureDataTransferOutsideEU',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'procedureDataTransferOutsideEuHelp'
+            ])
             ->add('tomLink', EntityType::class, [
                 'choice_label' => 'titel',
                 'class' => Tom::class,
@@ -144,7 +191,13 @@ class VVTType extends AbstractType
                 ],
                 'help' => 'procedureTOM'
             ])
-            ->add('tom', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'procedureFurtherMeasures', 'required' => false, 'translation_domain' => 'form', 'help' => 'procedureFurtherMeasuresHelp'])
+            ->add('tom', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'procedureFurtherMeasures',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'procedureFurtherMeasuresHelp'
+            ])
             ->add('risiko', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTRisiken::class,
@@ -184,9 +237,27 @@ class VVTType extends AbstractType
                 ],
                 'help' => 'procedureDepartment'
             ])
-            ->add('source', TextareaType::class, ['attr' => ['row' => 8], 'label' => 'procedureDataCollection', 'required' => false, 'translation_domain' => 'form', 'help' => 'procedureDataCollectionHelp'])
-            ->add('informationspflicht', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'informationObligation', 'required' => false, 'translation_domain' => 'form', 'help' => 'informationObligationHelp'])
-            ->add('dsb', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'dsbComment', 'required' => false, 'translation_domain' => 'form', 'help' => 'dsbCommentHelp'])
+            ->add('source', TextareaType::class, [
+                'attr' => ['row' => 8],
+                'label' => 'procedureDataCollection',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'procedureDataCollectionHelp'
+            ])
+            ->add('informationspflicht', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'informationObligation',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'informationObligationHelp'
+            ])
+            ->add('dsb', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'dsbComment',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'dsbCommentHelp'
+            ])
             ->add('beurteilungEintritt', ChoiceType::class, [
                 'choices' => [
                     'nothingSelected' => 0,
@@ -235,7 +306,11 @@ class VVTType extends AbstractType
                     'data-live-search' => 'true'
                 ],
             ])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block'), 'label' => 'save', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, [
+                'attr' => array('class' => 'btn btn-primary btn-block'),
+                'label' => 'save',
+                'translation_domain' => 'form'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

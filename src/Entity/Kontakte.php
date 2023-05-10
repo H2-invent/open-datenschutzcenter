@@ -311,6 +311,6 @@ class Kontakte
 
     public function getName(): string
     {
-        return $this->firma ?: $this->getVorname() . $this->getNachname();
+        return $this->firma ?? $this->getVorname() . $this->getNachname();
     }
 }

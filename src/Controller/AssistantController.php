@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Team;
@@ -9,16 +11,20 @@ use App\Service\AssistantService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route(path: '/assistant', name: 'assistant')]
 class AssistantController extends AbstractController
 {
-    #[Route('/assistant', name: 'assistant')]
-    public function index(SecurityService $securityService, CurrentTeamService $currentTeamService)
+    #[Route('', name: '')]
+    public function index(SecurityService $securityService,
+                          CurrentTeamService $currentTeamService,
+    ): RedirectResponse|Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
@@ -31,15 +37,15 @@ class AssistantController extends AbstractController
         ]);
     }
 
-    #[Route('/assistant/step/{step}', name: 'assistant_step')]
+    #[Route('/step/{step}', name: '_step')]
     public function step(int $step,
                          Request $request,
                          SecurityService $securityService,
                          CurrentTeamService $currentTeamService,
                          AssistantService $assistantService,
                          ValidatorInterface $validator,
-                         EntityManagerInterface $entityManager
-    )
+                         EntityManagerInterface $entityManager,
+    ): RedirectResponse|Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
@@ -75,7 +81,7 @@ class AssistantController extends AbstractController
         return $this->redirectToRoute('assistant');
     }
 
-    #[Route('/assistant/cancel', name: 'assistant_cancel')]
+    #[Route('/cancel', name: '_cancel')]
     public function cancel(AssistantService $assistantService) : Response
     {
         $assistantService->clear();
@@ -91,7 +97,8 @@ class AssistantController extends AbstractController
                                Request $request,
                                AssistantService $assistantService,
                                ValidatorInterface $validator,
-                               EntityManagerInterface $entityManager)
+                               EntityManagerInterface $entityManager,
+    ): RedirectResponse|Response
     {
         $title = $assistantService->getPropertyForStep($step, AssistantService::PROPERTY_TITLE);
         $info = $assistantService->getPropertyForStep($step, AssistantService::PROPERTY_INFO);
@@ -134,11 +141,11 @@ class AssistantController extends AbstractController
         ]);
     }
 
-    #[Route('/assistant/contact/select', name: 'assistant_contact_select')]
+    #[Route('/contact/select', name: '_select')]
     public function selectContact(Request $request,
                                   SecurityService $securityService,
                                   CurrentTeamService $currentTeamService,
-                                  AssistantService $assistantService
+                                  AssistantService $assistantService,
     ) : Response
     {
         $team = $currentTeamService->getTeamFromSession($this->getUser());
@@ -147,8 +154,8 @@ class AssistantController extends AbstractController
         }
 
         $step = $assistantService->getStep();
-        $contact = $request->get('assistant_select');
-        $assistantService->saveToSession(step: $step, id: $contact);
+        $selected = $request->get('assistant_select');
+        $assistantService->saveToSession(step: $step, id: $selected);
         return $this->redirectToRoute('assistant_step', ['step' => $step + 1]);
     }
 }

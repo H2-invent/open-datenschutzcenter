@@ -38,33 +38,15 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
 {
     use TargetPathTrait;
 
-    private $clientRegistry;
-    private $em;
-    private $router;
-    private $tokenStorage;
-    private $userManager;
-    private $paramterBag;
-
-    private $teamRepository;
-
-    private $logger;
-
     public function __construct(
-        LoggerInterface        $logger,
-        ParameterBagInterface  $parameterBag,
-        TokenStorageInterface  $tokenStorage,
-        ClientRegistry         $clientRegistry,
-        EntityManagerInterface $em,
-        RouterInterface        $router,
-        TeamRepository         $teamRepository)
+        private readonly LoggerInterface        $logger,
+        private readonly ParameterBagInterface  $parameterBag,
+        private readonly TokenStorageInterface  $tokenStorage,
+        private readonly ClientRegistry         $clientRegistry,
+        private readonly EntityManagerInterface $em,
+        private readonly RouterInterface        $router,
+        private readonly TeamRepository         $teamRepository)
     {
-        $this->clientRegistry = $clientRegistry;
-        $this->em = $em;
-        $this->router = $router;
-        $this->tokenStorage = $tokenStorage;
-        $this->paramterBag = $parameterBag;
-        $this->logger = $logger;
-        $this->teamRepository = $teamRepository;
     }
 
     public function supports(Request $request): bool
