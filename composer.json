@@ -102,6 +102,14 @@
     ],
     "post-update-cmd": [
       "@auto-scripts"
+    ],
+    "db-create": "php bin/console doctrine:database:create --if-not-exists",
+    "db-drop": "php bin/console doctrine:database:drop --force --if-exists",
+    "db-migrate": "php bin/console doctrine:migrations:migrate -n",
+    "db-reset": [
+      "@db-drop",
+      "@db-create",
+      "@db-migrate"
     ]
   },
   "conflict": {

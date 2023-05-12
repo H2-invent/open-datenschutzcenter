@@ -25,7 +25,7 @@ class Team
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'text', unique: true)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     private $name;
 
