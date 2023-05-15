@@ -12,12 +12,12 @@ class RelationColumn
     private static $INDEX_FORMAT = '%s_%s_FK';
 
     /** @throws SchemaException */
-    public static function addRelation(Table $table, Table $targetTable, string $targetColumn = 'id'): void
+    public static function addRelation(Table $table, Table $targetTable, bool $nullable = true, string $targetColumn = 'id'): void
     {
         $columnName = $targetTable->getName() . '_' . $targetColumn;
 
         $table->addColumn($columnName, Types::INTEGER)
-            ->setNotnull(true);
+            ->setNotnull(!$nullable);
 
         $table->addForeignKeyConstraint(
             foreignTable: $targetTable,
