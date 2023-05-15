@@ -5,7 +5,7 @@ approved: Approved
 archive: Archivieren
 assign: Assign
 assignedTo: Assigned to
-backwards: Zurück
+back: Zurück
 basic: Basis
 birthday: Geburtstag
 close: Close
@@ -17,7 +17,9 @@ createdBy: Erstellt von
 date: Date
 delete: Delete
 deleted: Gelöscht
-departments: Departments
+department:
+  word: Department
+  words: Departments
 description: Description
 download:
   successful: Download erfolgreich
@@ -65,10 +67,12 @@ responsible: Responsible
 restore: Restore
 restored: Wiederhergestellt
 save:
+  word: Save
   comment: Kommentar gespeichert
   changesSuccessful: Änderung gespeichert
   successful: Erfolgreich gespeichert
 show: anzeigen
+skip: Überspringen
 start: Start date
 startTime: Start time
 state: Status
