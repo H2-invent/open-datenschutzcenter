@@ -11,31 +11,29 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20230515103631 extends AbstractMigration
+final class Version20230515112211 extends AbstractMigration
 {
-    private const FIELD_LABEL = 'label';
-    private const FIELD_IS_CORRECT = 'is_correct';
+    private const FIELD_STEP = 'step';
 
     public function getDescription(): string
     {
-        return 'Create answer table';
+        return 'Create questionnaire_question table';
     }
 
     public function up(Schema $schema): void
     {
-        $table = CreateTable::createTable($schema, Tables::$ANSWER);
+        $table = CreateTable::createTable($schema, Tables::$QUESTIONNAIRE_QUESTION);
 
-        $table->addColumn(self::FIELD_LABEL, Types::STRING)
-            ->setLength(255)
+        $table->addColumn(self::FIELD_STEP, Types::INTEGER)
             ->setNotnull(true);
 
-        $table->addColumn(self::FIELD_IS_CORRECT, Types::BOOLEAN)
-            ->setNotnull(true);
-
-        RelationColumn::addRelation(
-            table: $table,
-            targetTable: $schema->getTable(Tables::$QUESTION)
-        );
+        foreach ([Tables::$QUESTION, Tables::$QUESTIONNAIRE] as $targetTableName) {
+            RelationColumn::addRelation(
+                table: $table,
+                targetTable: $schema->getTable($targetTableName),
+                nullable: false,
+            );
+        }
     }
 
     public function down(Schema $schema): void
@@ -44,6 +42,6 @@ final class Version20230515103631 extends AbstractMigration
             $schema->getTable(Tables::$QUESTIONNAIRE_QUESTION)->dropIndex($index->getName());
         }
 
-        $schema->dropTable(Tables::$ANSWER);
+        $schema->dropTable(Tables::$QUESTIONNAIRE_QUESTION);
     }
 }

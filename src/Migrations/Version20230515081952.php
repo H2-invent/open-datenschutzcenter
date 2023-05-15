@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use App\Migrations\Templates\CreateTable;
+use App\Migrations\Util\Tables;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
 final class Version20230515081952 extends AbstractMigration
 {
-    private const TABLE = 'question';
     private const FIELD_LABEL = 'label';
     private const FIELD_HINT_LABEL = 'hint_label';
     private const FIELD_EVAL_VALUE = 'eval_value';
@@ -24,7 +24,7 @@ final class Version20230515081952 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $table = CreateTable::createTable($schema, self::TABLE);
+        $table = CreateTable::createTable($schema, Tables::$QUESTION);
 
         $table->addColumn(self::FIELD_LABEL, Types::STRING)
             ->setLength(255)
@@ -46,6 +46,6 @@ final class Version20230515081952 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $schema->dropTable(self::TABLE);
+        $schema->dropTable(Tables::$QUESTION);
     }
 }

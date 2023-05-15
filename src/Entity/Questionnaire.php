@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Templates\EntityWithTimestamps;
 use App\Repository\QuestionnaireRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,6 +20,14 @@ class Questionnaire extends EntityWithTimestamps
 
     #[ORM\Column(type: Types::FLOAT)]
     private float $percentageToPass;
+
+    #[ORM\OneToMany(mappedBy: 'Questionnaire', targetEntity: QuestionnaireQuestion::class)]
+    private Collection $questionnaireQuestions;
+
+    public function __construct()
+    {
+        $this->questionnaireQuestions = new ArrayCollection();
+    }
 
     public function getLabel(): ?string
     {
@@ -51,6 +61,36 @@ class Questionnaire extends EntityWithTimestamps
     public function setPercentageToPass(float $percentageToPass): self
     {
         $this->percentageToPass = $percentageToPass;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, QuestionnaireQuestion>
+     */
+    public function getQuestionnaireQuestions(): Collection
+    {
+        return $this->questionnaireQuestions;
+    }
+
+    public function addQuestionnaireQuestion(QuestionnaireQuestion $questionnaireQuestion): self
+    {
+        if (!$this->questionnaireQuestions->contains($questionnaireQuestion)) {
+            $this->questionnaireQuestions->add($questionnaireQuestion);
+            $questionnaireQuestion->setQuestionnaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestionnaireQuestion(QuestionnaireQuestion $questionnaireQuestion): self
+    {
+        if ($this->questionnaireQuestions->removeElement($questionnaireQuestion)) {
+            // set the owning side to null (unless already changed)
+            if ($questionnaireQuestion->getQuestionnaire() === $this) {
+                $questionnaireQuestion->setQuestionnaire(null);
+            }
+        }
 
         return $this;
     }
