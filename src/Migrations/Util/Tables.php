@@ -9,4 +9,6 @@ class Tables
     public static string $ANSWER = 'answer';
     public static string $QUESTIONNAIRE = 'questionnaire';
     public static string $QUESTIONNAIRE_QUESTION = 'questionnaire_question';
+    public static string $PARTICIPATION = 'participation';
+    public static string $USER = 'user';
 }
