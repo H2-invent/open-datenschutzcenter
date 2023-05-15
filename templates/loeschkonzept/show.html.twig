@@ -3,14 +3,14 @@
 
  {% block CTA %}
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_loeschkonzept_index') }}">
-        <span>{% trans from 'general' %}backwards{% endtrans %}</span>
+        <span>{% trans from 'general' %}back{% endtrans %}</span>
     </a>
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_loeschkonzept_edit',{'id': loeschkonzept.id}) }}">
         <span>{% trans from 'general' %}edit{% endtrans %}</span>
     </a>
     {{ include('loeschkonzept/_delete_form.html.twig') }}
 
-    
+
 {% endblock %}
 
 {% block body %}

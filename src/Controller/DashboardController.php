@@ -41,7 +41,7 @@ class DashboardController extends AbstractController
                               CurrentTeamService          $currentTeamService,
                               TeamRepository              $teamRepository,
                               DatenweitergabeRepository   $transferRepository,
-                              VVTRepository               $processingActivityRepository,
+                              VVTRepository               $procedureRepository,
                               AuditTomRepository          $auditRepository,
                               VVTDsfaRepository           $impactAssessmentRepository,
                               FormsRepository             $formRepository,
@@ -76,7 +76,7 @@ class DashboardController extends AbstractController
         $audit = $auditRepository->findAllByTeam($currentTeam);
         $daten = $transferRepository->findActiveTransfersByTeam($currentTeam);
         $av = $transferRepository->findActiveOrderProcessingsByTeam($currentTeam);
-        $vvt = $processingActivityRepository->findActiveByTeam($currentTeam);
+        $vvt = $procedureRepository->findActiveByTeam($currentTeam);
         $vvtDsfa = $impactAssessmentRepository->findActiveByTeam($currentTeam);
         $kontakte = $contactRepository->findActiveByTeam($currentTeam);
         $tom = $tomRepository->findActiveByTeam($currentTeam);
@@ -87,11 +87,11 @@ class DashboardController extends AbstractController
         $loeschkonzepte = $deletionConceptRepository->findByTeam($currentTeam);
         $vvtdatenkategorien = $dataCategoryRepository->findByTeam($currentTeam);
         $kritischeAudits = $auditRepository->findCriticalByTeam($currentTeam);
-        $kritischeVvts = $processingActivityRepository->findCriticalByTeam($currentTeam);
+        $kritischeVvts = $procedureRepository->findCriticalByTeam($currentTeam);
         $openDsfa = $impactAssessmentRepository->findActiveAndOpenByTeam($currentTeam);
         $buchungen = $bookingRepository->findActiveByUser($user);
 
-        $assignVvt = $processingActivityRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignVvt = $procedureRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignAudit = $auditRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignDsfa = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignDatenweitergabe = $transferRepository->findActiveByTeamAndUser($currentTeam, $user);

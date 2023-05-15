@@ -8,6 +8,7 @@ use App\Entity\FosUser;
 use App\Entity\MyUser;
 use App\Entity\Settings;
 use App\Entity\User;
+use App\Repository\TeamRepository;
 use App\Service\IndexUserService;
 use App\Service\ThemeService;
 use App\Service\UserCreatorService;
@@ -37,30 +38,15 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
 {
     use TargetPathTrait;
 
-    private $clientRegistry;
-    private $em;
-    private $router;
-    private $tokenStorage;
-    private $userManager;
-    private $paramterBag;
-
-
-    private $logger;
-
     public function __construct(
-        LoggerInterface        $logger,
-        ParameterBagInterface  $parameterBag,
-        TokenStorageInterface  $tokenStorage,
-        ClientRegistry         $clientRegistry,
-        EntityManagerInterface $em,
-        RouterInterface        $router,)
+        private readonly LoggerInterface        $logger,
+        private readonly ParameterBagInterface  $parameterBag,
+        private readonly TokenStorageInterface  $tokenStorage,
+        private readonly ClientRegistry         $clientRegistry,
+        private readonly EntityManagerInterface $em,
+        private readonly RouterInterface        $router,
+        private readonly TeamRepository         $teamRepository)
     {
-        $this->clientRegistry = $clientRegistry;
-        $this->em = $em;
-        $this->router = $router;
-        $this->tokenStorage = $tokenStorage;
-        $this->paramterBag = $parameterBag;
-        $this->logger = $logger;
     }
 
     public function supports(Request $request): bool

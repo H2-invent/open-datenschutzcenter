@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% trans_default_domain 'assistant' %}
+
+{% block CTA %}
+    <h4 class="h4-responsive ml-4 mb-0 d-none d-md-block">
+        {{ 'assistant.word' | trans }}
+    </h4>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2 class="h2-responsive">{% trans %}assistant.word{% endtrans %}</h2>
+        <div class="card card-body">
+            {% if app.request.hasPreviousSession %}
+                {% for type, messages in app.session.flashbag.all() %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ type }}" role="alert">
+                            {{ message | trans }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+            <p>{% trans %}assistant.info{% endtrans %}</p>
+            <p>
+                <a class="btn btn-primary" href="{{ path('assistant_step',{'step':0}) }}">{% trans %}assistant.start{% endtrans %}</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

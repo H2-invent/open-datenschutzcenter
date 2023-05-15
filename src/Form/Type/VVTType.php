@@ -42,8 +42,16 @@ class VVTType extends AbstractType
     {
 
         $builder
-            ->add('nummer', TextType::class, ['label' => 'processingActivityNumber', 'required' => true, 'translation_domain' => 'form'])
-            ->add('name', TextType::class, ['label' => 'processingActivityDenomination', 'required' => true, 'translation_domain' => 'form'])
+            ->add('nummer', TextType::class, [
+                'label' => 'procedureNumber',
+                'required' => true,
+                'translation_domain' => 'form'
+            ])
+            ->add('name', TextType::class, [
+                'label' => 'procedureDenomination',
+                'required' => true,
+                'translation_domain' => 'form'
+            ])
             ->add('verantwortlich', TextareaType::class, ['label' => 'furtherResponsibleParties', 'required' => false, 'translation_domain' => 'form'])
             ->add('userContract', EntityType::class, [
                 'choice_label' => 'email',
@@ -63,7 +71,7 @@ class VVTType extends AbstractType
                 'choice_label' => 'name',
                 'class' => Software::class,
                 'choices' => $options['software'],
-                'label' => 'processingActivityUsedSoftware',
+                'label' => 'procedureUsedSoftware',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => false,
@@ -71,19 +79,53 @@ class VVTType extends AbstractType
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
                 ],
-                'help' => 'processingActivityUsedSOftwareHelp'
+                'help' => 'procedureUsedSOftwareHelp'
             ])
-            ->add('zweck', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'processingActivityPurpose', 'required' => true, 'translation_domain' => 'form', 'help' => 'processingActivityPurposeHelp'])
-            ->add('jointControl', CheckboxType::class, ['label' => 'jointControl', 'required' => false, 'translation_domain' => 'form', 'help' => 'jointControlHelp'])
-            ->add('auftragsverarbeitung', CheckboxType::class, ['label' => 'isContract', 'required' => false, 'translation_domain' => 'form', 'help' => 'isContractHelp'])
-            ->add('speicherung', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'processingActivityDataStorage', 'required' => true, 'translation_domain' => 'form', 'help' => 'processingActivityDataStorage'])
-            ->add('loeschfrist', TextareaType::class, ['attr' => ['readonly'=>true, 'class' => 'summernote summernote-disable'], 'label' => 'deleteDeadline', 'required' => false, 'translation_domain' => 'form', 'help' => 'deleteDeadlineHelp'])
-            ->add('weitergabe', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'processingActivityDataTransferPartners', 'required' => false, 'translation_domain' => 'form', 'help' => 'processingActivityDataTransferPartners'])
+            ->add('zweck', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'procedurePurpose',
+                'required' => true,
+                'translation_domain' => 'form',
+                'help' => 'procedurePurposeHelp'
+            ])
+            ->add('jointControl', CheckboxType::class, [
+                'label' => 'jointControl',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'jointControlHelp'
+            ])
+            ->add('auftragsverarbeitung', CheckboxType::class, [
+                'label' => 'isContract',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'isContractHelp'
+            ])
+            ->add('speicherung', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'procedureDataStorage',
+                'required' => true,
+                'translation_domain' => 'form',
+                'help' => 'procedureDataStorage'
+            ])
+            ->add('loeschfrist', TextareaType::class, [
+                'attr' => ['readonly'=>true, 'class' => 'summernote summernote-disable'],
+                'label' => 'deleteDeadline',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'deleteDeadlineHelp'
+            ])
+            ->add('weitergabe', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'procedureDataTransferPartners',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'procedureDataTransferPartners'
+            ])
             ->add('grundlage', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTGrundlage::class,
                 'choices' => $options['grundlage'],
-                'label' => 'processingActivityBasis',
+                'label' => 'procedureBasis',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => true,
@@ -96,7 +138,7 @@ class VVTType extends AbstractType
                 'choice_label' => 'name',
                 'class' => VVTPersonen::class,
                 'choices' => $options['personen'],
-                'label' => 'processingActivityPeople',
+                'label' => 'procedurePeople',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'attr' => [
@@ -108,7 +150,7 @@ class VVTType extends AbstractType
                 'choice_label' => 'gegenstand',
                 'class' => Datenweitergabe::class,
                 'choices' => $options['daten'],
-                'label' => 'processingActivityDataTransfers',
+                'label' => 'procedureDataTransfers',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => false,
@@ -120,21 +162,26 @@ class VVTType extends AbstractType
             ->add('kategorien', EntityType::class, [
                 'class' => VVTDatenkategorie::class,
                 'choices' => $options['kategorien'],
-                'label' => 'processingActivityCategories',
+                'label' => 'procedureCategories',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'attr' => [
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
                 ],
-                'help' => 'processingActivityCategoriesHelp'
+                'help' => 'procedureCategoriesHelp'
             ])
-            ->add('eu', CheckboxType::class, ['label' => 'processingActivityDataTransferOutsideEU', 'required' => false, 'translation_domain' => 'form', 'help' => 'processingActivityDataTransferOutsideEuHelp'])
+            ->add('eu', CheckboxType::class, [
+                'label' => 'procedureDataTransferOutsideEU',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'procedureDataTransferOutsideEuHelp'
+            ])
             ->add('tomLink', EntityType::class, [
                 'choice_label' => 'titel',
                 'class' => Tom::class,
                 'choices' => $options['tom'],
-                'label' => 'processingActivityTOM',
+                'label' => 'procedureTOM',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'required' => false,
@@ -142,21 +189,27 @@ class VVTType extends AbstractType
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
                 ],
-                'help' => 'processingActivityTOM'
+                'help' => 'procedureTOM'
             ])
-            ->add('tom', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'processingActivityFurtherMeasures', 'required' => false, 'translation_domain' => 'form', 'help' => 'processingActivityFurtherMeasuresHelp'])
+            ->add('tom', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'procedureFurtherMeasures',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'procedureFurtherMeasuresHelp'
+            ])
             ->add('risiko', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTRisiken::class,
                 'choices' => $options['risiken'],
-                'label' => 'processingActivityRiskSources',
+                'label' => 'procedureRiskSources',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'attr' => [
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
                 ],
-                'help' => 'processingActivityRiskSourcesHelp'
+                'help' => 'procedureRiskSourcesHelp'
             ])
             ->add('status', EntityType::class, [
                 'choice_label' => 'name',
@@ -168,13 +221,13 @@ class VVTType extends AbstractType
                 'attr' => [
                     'class' => 'selectpicker',
                 ],
-                'help' => 'processingActivityStatusHelp'
+                'help' => 'procedureStatusHelp'
             ])
             ->add('abteilung', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => AuditTomAbteilung::class,
                 'choices' => $options['abteilung'],
-                'label' => 'processingActivityDepartment',
+                'label' => 'procedureDepartment',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'required' => false,
@@ -182,11 +235,29 @@ class VVTType extends AbstractType
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
                 ],
-                'help' => 'processingActivityDepartment'
+                'help' => 'procedureDepartment'
             ])
-            ->add('source', TextareaType::class, ['attr' => ['row' => 8], 'label' => 'processingActivityDataCollection', 'required' => false, 'translation_domain' => 'form', 'help' => 'processingActivityDataCollectionHelp'])
-            ->add('informationspflicht', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'informationObligation', 'required' => false, 'translation_domain' => 'form', 'help' => 'informationObligationHelp'])
-            ->add('dsb', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'dsbComment', 'required' => false, 'translation_domain' => 'form', 'help' => 'dsbCommentHelp'])
+            ->add('source', TextareaType::class, [
+                'attr' => ['row' => 8],
+                'label' => 'procedureDataCollection',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'procedureDataCollectionHelp'
+            ])
+            ->add('informationspflicht', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'informationObligation',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'informationObligationHelp'
+            ])
+            ->add('dsb', TextareaType::class, [
+                'attr' => ['class' => 'summernote'],
+                'label' => 'dsbComment',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'dsbCommentHelp'
+            ])
             ->add('beurteilungEintritt', ChoiceType::class, [
                 'choices' => [
                     'nothingSelected' => 0,
@@ -195,14 +266,14 @@ class VVTType extends AbstractType
                     'significantRisk' => 3,
                     'highRisk' => 4,
                 ],
-                'label' => 'processingActivityRiskProbability',
+                'label' => 'procedureRiskProbability',
                 'translation_domain' => 'form',
                 'required' => true,
                 'multiple' => false,
                 'attr' => [
                     'class' => 'selectpicker',
                 ],
-                'help' => 'processingActivityRiskProbabilityHelp'
+                'help' => 'procedureRiskProbabilityHelp'
             ])
             ->add('beurteilungSchaden', ChoiceType::class, [
                 'choices' => [
@@ -212,21 +283,21 @@ class VVTType extends AbstractType
                     'significantDamage' => 3,
                     'criticalDamage' => 4,
                 ],
-                'label' => 'processingActivityRiskDamage',
+                'label' => 'procedureRiskDamage',
                 'translation_domain' => 'form',
                 'required' => true,
                 'multiple' => false,
                 'attr' => [
                     'class' => 'selectpicker',
                 ],
-                'help' => 'processingActivityRiskDamageHelp'
+                'help' => 'procedureRiskDamageHelp'
             ])
             ->add('produkt', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => Produkte::class,
                 'choices' => $options['produkte'],
-                'label' => 'processingActivityProducts',
-                'help' => 'processingActivityProductsHelp',
+                'label' => 'procedureProducts',
+                'help' => 'procedureProductsHelp',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => false,
@@ -235,7 +306,11 @@ class VVTType extends AbstractType
                     'data-live-search' => 'true'
                 ],
             ])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block'), 'label' => 'save', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, [
+                'attr' => array('class' => 'btn btn-primary btn-block'),
+                'label' => 'save',
+                'translation_domain' => 'form'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
