@@ -28,7 +28,7 @@ class CreateTable
                 ->setNotnull(true);
         }
 
-        $table->setPrimaryKey([self::$FIELD_ID, $tableName.'_PK']);
+        $table->setPrimaryKey([self::$FIELD_ID], $tableName.'_PK');
 
         return $table;
     }

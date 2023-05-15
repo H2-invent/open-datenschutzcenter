@@ -16,7 +16,7 @@ class Question extends EntityWithTimestamps
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $label;
 
-    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $hintLabel = null;
 
     #[ORM\Column(type: Types::FLOAT)]
