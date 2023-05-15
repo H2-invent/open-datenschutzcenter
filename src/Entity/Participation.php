@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Entity\Templates\EntityWithTimestamps;
 use App\Repository\ParticipationRepository;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipationRepository::class)]
@@ -22,6 +24,14 @@ class Participation extends EntityWithTimestamps
     #[ORM\ManyToOne(inversedBy: 'participations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'participation', targetEntity: ParticipationAnswer::class)]
+    private Collection $participationAnswers;
+
+    public function __construct()
+    {
+        $this->participationAnswers = new ArrayCollection();
+    }
 
     public function getCompletedAt(): ?DateTimeImmutable
     {
@@ -67,6 +77,36 @@ class Participation extends EntityWithTimestamps
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParticipationAnswer>
+     */
+    public function getParticipationAnswers(): Collection
+    {
+        return $this->participationAnswers;
+    }
+
+    public function addParticipationAnswer(ParticipationAnswer $participationAnswer): self
+    {
+        if (!$this->participationAnswers->contains($participationAnswer)) {
+            $this->participationAnswers->add($participationAnswer);
+            $participationAnswer->setParticipation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipationAnswer(ParticipationAnswer $participationAnswer): self
+    {
+        if ($this->participationAnswers->removeElement($participationAnswer)) {
+            // set the owning side to null (unless already changed)
+            if ($participationAnswer->getParticipation() === $this) {
+                $participationAnswer->setParticipation(null);
+            }
+        }
 
         return $this;
     }

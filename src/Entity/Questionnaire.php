@@ -24,9 +24,13 @@ class Questionnaire extends EntityWithTimestamps
     #[ORM\OneToMany(mappedBy: 'Questionnaire', targetEntity: QuestionnaireQuestion::class)]
     private Collection $questionnaireQuestions;
 
+    #[ORM\OneToMany(mappedBy: 'questionnaire', targetEntity: ParticipationAnswer::class)]
+    private Collection $participationAnswers;
+
     public function __construct()
     {
         $this->questionnaireQuestions = new ArrayCollection();
+        $this->participationAnswers = new ArrayCollection();
     }
 
     public function getLabel(): ?string
@@ -89,6 +93,36 @@ class Questionnaire extends EntityWithTimestamps
             // set the owning side to null (unless already changed)
             if ($questionnaireQuestion->getQuestionnaire() === $this) {
                 $questionnaireQuestion->setQuestionnaire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParticipationAnswer>
+     */
+    public function getParticipationAnswers(): Collection
+    {
+        return $this->participationAnswers;
+    }
+
+    public function addParticipationAnswer(ParticipationAnswer $participationAnswer): self
+    {
+        if (!$this->participationAnswers->contains($participationAnswer)) {
+            $this->participationAnswers->add($participationAnswer);
+            $participationAnswer->setQuestionnaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipationAnswer(ParticipationAnswer $participationAnswer): self
+    {
+        if ($this->participationAnswers->removeElement($participationAnswer)) {
+            // set the owning side to null (unless already changed)
+            if ($participationAnswer->getQuestionnaire() === $this) {
+                $participationAnswer->setQuestionnaire(null);
             }
         }
 
