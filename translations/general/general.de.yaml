@@ -5,6 +5,9 @@ approved: Freigegeben
 archive: Archivieren
 assign: Zuweisen
 assignedTo: Zugewiesen an
+action:
+  word: Aktion
+  words: Aktionen
 back: Zurück
 basic: Grundlage
 birthday: Geburtstag
@@ -14,6 +17,7 @@ confirmAction: Möchten Sie diese Aktion wirklich durchführen?
 contact: Kontakt
 createdAt: Erstellt am
 createdBy: Erstellt von
+continue: Weiter
 date: Datum
 delete: Löschen
 deleted: Gelöscht
@@ -45,6 +49,7 @@ error:
   dataType:
     notOdif: Der Dateityp ist fehlerhaft. Die Datei muss mit .odif enden.
 fileNumber: Aktenzeichen
+finished: Abgeschlossen
 history: Historie
 id: ID
 info: Info

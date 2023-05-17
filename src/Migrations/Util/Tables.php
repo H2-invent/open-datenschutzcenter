@@ -12,4 +12,7 @@ class Tables
     public static string $PARTICIPATION = 'participation';
     public static string $USER = 'user';
     public static string $PARTICIPATION_ANSWER = 'participation_answer';
+    public static string $AKADEMIE_KURS = 'akademie_kurse';
+    public static string $TEAM = 'team';
+    public static string $ACADEMY_BILLING = 'akademie_buchungen';
 }

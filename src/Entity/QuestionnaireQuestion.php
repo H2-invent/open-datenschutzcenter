@@ -7,6 +7,7 @@ use App\Repository\QuestionnaireQuestionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: QuestionnaireQuestionRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class QuestionnaireQuestion extends EntityWithTimestamps
 {
     #[ORM\Column]

@@ -13,7 +13,7 @@ use Doctrine\Migrations\AbstractMigration;
 final class Version20230515081952 extends AbstractMigration
 {
     private const FIELD_LABEL = 'label';
-    private const FIELD_HINT_LABEL = 'hint_label';
+    private const FIELD_HINT = 'hint';
     private const FIELD_EVAL_VALUE = 'eval_value';
     private const FIELD_TYPE = 'type';
 
@@ -30,11 +30,11 @@ final class Version20230515081952 extends AbstractMigration
             ->setLength(255)
             ->setNotnull(true);
 
-        $table->addColumn(self::FIELD_HINT_LABEL, Types::STRING)
+        $table->addColumn(self::FIELD_HINT, Types::STRING)
             ->setLength(255)
             ->setNotnull(false);
 
-        $table->addColumn(self::FIELD_EVAL_VALUE, Types::BOOLEAN)
+        $table->addColumn(self::FIELD_EVAL_VALUE, Types::FLOAT)
             ->setNotnull(true)
             ->setDefault(1);
 

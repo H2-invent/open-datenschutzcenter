@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Questionnaire;
+use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,6 +40,13 @@ class QuestionnaireRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByTeam(Team $team): array {
+        return $this->createQueryBuilder('q')
+            ->where('q.team = :team')
+            ->setParameter('team', $team)
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Questionnaire[] Returns an array of Questionnaire objects
 //     */

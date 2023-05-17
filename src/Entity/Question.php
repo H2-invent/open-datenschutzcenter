@@ -11,18 +11,22 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Question extends EntityWithTimestamps
 {
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $label;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    private ?string $hintLabel = null;
+    private ?string $hint = null;
 
     #[ORM\Column(type: Types::FLOAT)]
     private float $evalValue = 1.0;
 
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private string $type;
+
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, cascade: ['persist'])]
     private Collection $answers;
 
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: QuestionnaireQuestion::class)]
@@ -49,14 +53,25 @@ class Question extends EntityWithTimestamps
         return $this;
     }
 
-    public function getHintLabel(): string
+    public function getHint(): ?string
     {
-        return $this->hintLabel;
+        return $this->hint;
     }
 
-    public function setHintLabel(string $hintLabel): self
+    public function setHint(string $hint): self
     {
-        $this->hintLabel = $hintLabel;
+        $this->hint = $hint;
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
         return $this;
     }
 

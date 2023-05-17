@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% trans_default_domain 'questionnaire' %}
+{% block body %}
+    {% trans_default_domain 'questionnaire' %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ question.label }}</h5>
+                {% if question.hint is not empty %}
+                    <p class="card-text">{{ question.hint }}</p>
+                {% endif %}
+                <p class="card-text">{% trans %}question.evaluationValue{% endtrans %}: {{ question.evalValue }}</p>
+                <table class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th>{{ question.type }}</th>
+                    </tr>
+                    </thead>
+                    {% for answer in question.answers %}
+                        {% if answer.isCorrect %}
+                            <tr class="table-success">
+                                <td>{{ answer.label }}</td>
+                            </tr>
+                        {% else %}
+                            <tr class="table-danger">
+                                <td>{{ answer.label }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-primary"
+                   href="{{ path('question_edit', {'id': question.id}) }}">{% trans from 'general' %}edit{% endtrans %}</a>
+                <a class="btn btn-danger"
+                   href="{{ path('question_delete', {'id': question.id}) }}">{% trans from 'general' %}remove{% endtrans %}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

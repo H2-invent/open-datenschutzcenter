@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Participation extends EntityWithTimestamps
 {
     #[ORM\Column(nullable: true)]
@@ -22,11 +23,15 @@ class Participation extends EntityWithTimestamps
     private ?bool $passed = null;
 
     #[ORM\ManyToOne(inversedBy: 'participations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    #[ORM\JoinColumn(name: 'akademie_buchungen_id')]
+    private AkademieBuchungen $academyBilling;
 
     #[ORM\OneToMany(mappedBy: 'participation', targetEntity: ParticipationAnswer::class)]
     private Collection $participationAnswers;
+
+    #[ORM\ManyToOne(targetEntity: Questionnaire::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Questionnaire $questionnaire;
 
     public function __construct()
     {
@@ -69,14 +74,26 @@ class Participation extends EntityWithTimestamps
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getAcademyBilling(): ?AkademieBuchungen
     {
-        return $this->user;
+        return $this->academyBilling;
     }
 
-    public function setUser(?User $user): self
+    public function setAcademyBilling(?AkademieBuchungen $academyBilling): self
     {
-        $this->user = $user;
+        $this->academyBilling = $academyBilling;
+
+        return $this;
+    }
+
+    public function getQuestionnaire(): Questionnaire
+    {
+        return $this->questionnaire;
+    }
+
+    public function setQuestionnaire(Questionnaire $questionnaire): self
+    {
+        $this->questionnaire = $questionnaire;
 
         return $this;
     }

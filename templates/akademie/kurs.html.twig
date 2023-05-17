@@ -46,7 +46,7 @@
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-lg btn-primary sendButton"
-                                    disabled>{% trans %}lesson.finish{% endtrans %}</button>
+                                    disabled>{% trans from 'questionnaire' %}participation.start{% endtrans %}</button>
                         </div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
         <script>
             var vid = document.getElementById("akademie_video_kurs");
             vid.onended = function () {
-                $('.sendButton').wrap('<a href="{{ path('akademie_kurs_finish',{'id':buchung.finishedID}) }}">');
+                $('.sendButton').wrap('<a href="{{ path('participation_start',{'id':buchung.participations[0].id}) }}">');
                 $('.sendButton').prop('disabled', false);
                 $('#finishModal').modal('show', true);
             };
@@ -84,7 +84,7 @@
             var videoPlayer = new Vimeo.Player('vimeoVideo', options);
             {% if not buchung.abgeschlossen %}
             videoPlayer.on('ended', function () {
-                $('.sendButton').wrap('<a href="{{ path('akademie_kurs_finish',{'id':buchung.finishedID}) }}">');
+                $('.sendButton').wrap('<a href="{{ path('participation_start',{'id':buchung.participations[0].id}) }}">');
                 $('.sendButton').prop('disabled', false);
                 $('#finishModal').modal('show', true);
             });

@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Form\Type\DsbType;
 use App\Form\Type\NewMemberType;
 use App\Repository\AkademieKurseRepository;
+use App\Repository\QuestionnaireRepository;
 use App\Repository\SettingsRepository;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
@@ -35,6 +36,7 @@ class TeamMemberController extends AbstractController
         SecurityService         $securityService,
         CurrentTeamService      $currentTeamService,
         AkademieKurseRepository $academyCourseRepository,
+        QuestionnaireRepository $questionnaireRepository,
     ): Response
     {
         $user = $this->getUser();
@@ -52,6 +54,7 @@ class TeamMemberController extends AbstractController
             'team' => $team,
             'data' => $team->getAkademieUsers(),
             'kurse' => $kurse,
+            'questionnaires' => $questionnaireRepository->findByTeam($team),
         ]);
     }
 

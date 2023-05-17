@@ -39,7 +39,13 @@ final class Version20230515123533 extends AbstractMigration
 
         RelationColumn::addRelation(
             table: $table,
-            targetTable: $schema->getTable(Tables::$USER),
+            targetTable: $schema->getTable(Tables::$ACADEMY_BILLING),
+            nullable: false,
+        );
+
+        RelationColumn::addRelation(
+            table: $table,
+            targetTable: $schema->getTable(Tables::$QUESTIONNAIRE),
             nullable: false,
         );
     }

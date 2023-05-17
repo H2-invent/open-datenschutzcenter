@@ -40,22 +40,22 @@ class Team
     private $members;
 
     #[ORM\OneToMany(targetEntity: AuditTomZiele::class, mappedBy: 'team')]
-    private $ziele;
+    private Collection $ziele;
 
     #[ORM\OneToMany(targetEntity: AuditTomAbteilung::class, mappedBy: 'team')]
-    private $abteilungen;
+    private Collection $abteilungen;
 
     #[ORM\OneToMany(targetEntity: AuditTom::class, mappedBy: 'team')]
-    private $auditToms;
+    private Collection $auditToms;
 
     #[ORM\OneToMany(targetEntity: Kontakte::class, mappedBy: 'team', orphanRemoval: true)]
-    private $kontakte;
+    private Collection $kontakte;
 
     #[ORM\OneToMany(targetEntity: VVT::class, mappedBy: 'team')]
-    private $vvts;
+    private Collection $vvts;
 
     #[ORM\OneToMany(targetEntity: Datenweitergabe::class, mappedBy: 'team')]
-    private $datenweitergaben;
+    private Collection $datenweitergaben;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
@@ -89,35 +89,35 @@ class Team
     private $kurse;
 
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'akademieUser')]
-    private $akademieUsers;
+    private Collection $akademieUsers;
 
     #[ORM\JoinTable(name: 'team_admin')]
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'adminRoles')]
     private $admins;
 
     #[ORM\OneToMany(targetEntity: Tom::class, mappedBy: 'team')]
-    private $toms;
+    private Collection $toms;
 
     #[ORM\OneToMany(targetEntity: Vorfall::class, mappedBy: 'team')]
-    private $vorfalls;
+    private Collection $vorfalls;
 
     #[ORM\OneToMany(targetEntity: Produkte::class, mappedBy: 'team')]
-    private $produktes;
+    private Collection $produktes;
 
     #[ORM\OneToMany(targetEntity: Forms::class, mappedBy: 'team')]
-    private $forms;
+    private Collection $forms;
 
     #[ORM\OneToMany(targetEntity: Policies::class, mappedBy: 'team')]
-    private $policies;
+    private Collection $policies;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $signature;
 
     #[ORM\OneToMany(targetEntity: Software::class, mappedBy: 'team')]
-    private $software;
+    private Collection $software;
 
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'team')]
-    private $tasks;
+    private Collection $tasks;
 
     /**
      * @Encrypted()
@@ -133,7 +133,7 @@ class Team
     private $video;
 
     #[ORM\OneToMany(targetEntity: ClientRequest::class, mappedBy: 'team')]
-    private $clientRequests;
+    private Collection $clientRequests;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $slug;
@@ -142,19 +142,19 @@ class Team
     private $dsbUser;
 
     #[ORM\OneToMany(targetEntity: Report::class, mappedBy: 'team')]
-    private $reports;
+    private Collection $reports;
 
     #[ORM\OneToMany(targetEntity: VVTDatenkategorie::class, mappedBy: 'team')]
-    private $vVTDatenkategories;
+    private Collection $vVTDatenkategories;
 
     #[ORM\OneToMany(targetEntity: VVTPersonen::class, mappedBy: 'team')]
-    private $vVTPersonens;
+    private Collection $vVTPersonens;
 
     #[ORM\OneToMany(targetEntity: VVTRisiken::class, mappedBy: 'team')]
-    private $vVTRisikens;
+    private Collection $vVTRisikens;
 
     #[ORM\OneToMany(targetEntity: VVTGrundlage::class, mappedBy: 'team')]
-    private $vVTGrundlages;
+    private Collection $vVTGrundlages;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $industry;
@@ -163,16 +163,19 @@ class Team
     private $specialty;
 
     #[ORM\OneToMany(targetEntity: VVTStatus::class, mappedBy: 'team')]
-    private $vVTStatuses;
+    private Collection $vVTStatuses;
 
     #[ORM\OneToMany(targetEntity: DatenweitergabeGrundlagen::class, mappedBy: 'team')]
-    private $datenweitergabeGrundlagens;
+    private Collection $datenweitergabeGrundlagens;
 
     #[ORM\OneToMany(targetEntity: DatenweitergabeStand::class, mappedBy: 'team')]
-    private $datenweitergabeStands;
+    private Collection $datenweitergabeStands;
 
     #[ORM\OneToMany(targetEntity: Loeschkonzept::class, mappedBy: 'team')]
-    private $loeschkonzepts;
+    private Collection $loeschkonzepts;
+    
+    #[ORM\OneToMany(targetEntity: Questionnaire::class, mappedBy: 'team')]
+    private Collection $questionnaires;
 
     public function __construct()
     {
@@ -203,6 +206,7 @@ class Team
         $this->datenweitergabeGrundlagens = new ArrayCollection();
         $this->datenweitergabeStands = new ArrayCollection();
         $this->loeschkonzepts = new ArrayCollection();
+        $this->questionnaires = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -1245,6 +1249,36 @@ class Team
             // set the owning side to null (unless already changed)
             if ($loeschkonzept->getTeam() === $this) {
                 $loeschkonzept->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Questionnaire>
+     */
+    public function getQuestionnaires(): Collection
+    {
+        return $this->questionnaires;
+    }
+
+    public function addQuestionnaire(Questionnaire $questionnaire): self
+    {
+        if (!$this->questionnaires->contains($questionnaire)) {
+            $this->questionnaires[] = $questionnaire;
+            $questionnaire->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestionnaire(Questionnaire $questionnaire): self
+    {
+        if ($this->questionnaires->removeElement($questionnaire)) {
+            // set the owning side to null (unless already changed)
+            if ($questionnaire->getTeam() === $this) {
+                $questionnaire->setTeam(null);
             }
         }
 

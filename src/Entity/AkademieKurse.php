@@ -47,6 +47,10 @@ class AkademieKurse
     #[ORM\Column(type: 'integer')]
     private $type;
 
+    #[ORM\ManyToOne(targetEntity: Questionnaire::class, inversedBy: 'academyLessons')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Questionnaire $questionnaire;
+
     public function __construct()
     {
         $this->team = new ArrayCollection();
@@ -195,6 +199,18 @@ class AkademieKurse
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getQuestionnaire(): ?Questionnaire
+    {
+        return $this->questionnaire;
+    }
+
+    public function setQuestionnaire(Questionnaire $questionnaire): self
+    {
+        $this->questionnaire = $questionnaire;
 
         return $this;
     }

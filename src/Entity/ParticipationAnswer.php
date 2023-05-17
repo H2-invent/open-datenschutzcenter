@@ -7,6 +7,7 @@ use App\Repository\ParticipationAnswerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipationAnswerRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class ParticipationAnswer extends EntityWithTimestamps
 {
     #[ORM\ManyToOne(inversedBy: 'participationAnswers')]

@@ -10,27 +10,36 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: QuestionnaireRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Questionnaire extends EntityWithTimestamps
 {
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $label;
 
     #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
-    private ?string $descriptionLabel = null;
+    private ?string $description = null;
 
     #[ORM\Column(type: Types::FLOAT)]
     private float $percentageToPass;
 
-    #[ORM\OneToMany(mappedBy: 'Questionnaire', targetEntity: QuestionnaireQuestion::class)]
+    #[ORM\OneToMany(mappedBy: 'questionnaire', targetEntity: QuestionnaireQuestion::class)]
     private Collection $questionnaireQuestions;
 
     #[ORM\OneToMany(mappedBy: 'questionnaire', targetEntity: ParticipationAnswer::class)]
     private Collection $participationAnswers;
 
+    #[ORM\OneToMany(mappedBy: 'questionnaire', targetEntity: AkademieKurse::class)]
+    private Collection $academyLessons;
+
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'questionnaires')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Team $team;
+
     public function __construct()
     {
         $this->questionnaireQuestions = new ArrayCollection();
         $this->participationAnswers = new ArrayCollection();
+        $this->academyLessons = new ArrayCollection();
     }
 
     public function getLabel(): ?string
@@ -45,14 +54,14 @@ class Questionnaire extends EntityWithTimestamps
         return $this;
     }
 
-    public function getDescriptionLabel(): ?string
+    public function getDescription(): ?string
     {
-        return $this->descriptionLabel;
+        return $this->description;
     }
 
-    public function setDescriptionLabel(string $descriptionLabel): self
+    public function setDescription(string $description): self
     {
-        $this->descriptionLabel = $descriptionLabel;
+        $this->description = $description;
 
         return $this;
     }
@@ -127,5 +136,44 @@ class Questionnaire extends EntityWithTimestamps
         }
 
         return $this;
+    }
+
+    public function getAcademyLessons(): Collection
+    {
+        return $this->academyLessons;
+    }
+
+    public function addAcademyLesson(AkademieKurse $academyLesson): self
+    {
+        if (!$this->academyLessons->contains($academyLesson)) {
+            $this->academyLessons->add($academyLesson);
+            $academyLesson->setQuestionnaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAcademyLesson(AkademieKurse $academyLesson): self
+    {
+        if ($this->academyLessons->removeElement($academyLesson)) {
+            // set the owning side to null (unless already changed)
+            if ($academyLesson->getQuestionnaire() === $this) {
+                $academyLesson->setQuestionnaire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setTeam(Team $team): self
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    public function getTeam(): Team
+    {
+        return $this->team;
     }
 }

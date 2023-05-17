@@ -11,6 +11,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AnswerRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Answer extends EntityWithTimestamps
 {
     #[ORM\Column(type: Types::STRING, length: 255)]
@@ -19,7 +20,7 @@ class Answer extends EntityWithTimestamps
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isCorrect;
 
-    #[ORM\ManyToOne(inversedBy: 'question')]
+    #[ORM\ManyToOne(inversedBy: 'answers', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Question $question;
 
