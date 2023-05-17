@@ -128,8 +128,8 @@ class User implements UserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: VVTDatenkategorie::class)]
     private Collection $vVTDatenkategories;
 
-    // #[ORM\Column(type: 'json')]
-    private $roles = [];
+    #[ORM\Column(type: 'json', nullable: true)]
+    private array $roles;
 
     public function __construct()
     {
@@ -1054,9 +1054,13 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles = $this->roles ?? [];
         $roles[] = 'ROLE_USER';
         return array_unique($roles);
+    }
+
+    public function setRoles($roles) {
+        $this->roles = $roles;
     }
 
     public function eraseCredentials()

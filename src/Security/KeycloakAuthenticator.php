@@ -133,6 +133,25 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         return $email;
     }
 
+    private function getRolesForKeycloakUser($keycloakUser): array
+    {
+        $clientId = $this->parameterBag->get('KEYCLOAK_ID'); // name of keycloak client
+        $this->parameterBag->get('superAdminRole'); // name of super admin role in keycloak
+
+        $roles = [];
+
+        $clientData = $keycloakUser->toArray()['resource_access'][$clientId] ?? null;
+
+        if ($clientData && isset($clientData['roles'])) {
+            $superAdminRole = $this->parameterBag->get('superAdminRole');
+            if (in_array($superAdminRole, $clientData['roles'])) {
+                $roles [] = 'ROLE_ADMIN';
+            }
+        }
+
+        return $roles;
+    }
+
     private function getUserForKeycloakUser($keycloakUser) {
         $email = $this->getEmailForKeycloakUser($keycloakUser);
         $id = $keycloakUser->getId();
@@ -164,6 +183,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         $user->setFirstName(firstName: $keycloakUser->toArray()['given_name'] ?? '');
         $user->setLastName(lastName: $keycloakUser->toArray()['family_name'] ?? '');
         $user->setTeams(teams: $this->getTeamsFromKeycloakGroups(keycloakUser: $keycloakUser));
+        $user->setRoles(roles: $this->getRolesForKeycloakUser(keycloakUser: $keycloakUser));
         $this->em->persist($user);
         $this->em->flush();
         return $user;
