@@ -79,7 +79,7 @@ class TeamMemberController extends AbstractController
         $member = $userRepository->findOneBy(array('id' => $request->get('memberId')));
 
         // Only superadmins can promote themselves
-        if (in_array('ROLE_ADMIN', $user->getRoles()) || ($user !== $member && $member->hasTeam($team))) {
+        if ($securityService->superAdminCheck($user) || ($user !== $member && $member->hasTeam($team))) {
             if ($member->hasAdminRole($team)) {
                 $team->removeAdmin($member);
             } else {

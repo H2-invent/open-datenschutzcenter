@@ -6,132 +6,130 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\UserBase as BaseUser;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Table(name: 'user')]
 #[ORM\Entity]
-class User extends BaseUser
+class User implements UserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    #[Assert\NotBlank(message: 'fos_user.password.blank', groups: ['Registration', 'ResetPassword', 'ChangePassword'])]
-    #[Assert\Length(min: 8, minMessage: 'fos_user.password.short', groups: ['Registration', 'Profile', 'ResetPassword', 'ChangePassword'])]
-    protected $plainPassword;
-
     #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'members')]
-    private $teams;
+    private Collection $teams;
 
-    #[ORM\OneToMany(targetEntity: Datenweitergabe::class, mappedBy: 'user')]
-    private $datenweitergabes;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Datenweitergabe::class)]
+    private Collection $datenweitergabes;
 
-    #[ORM\OneToMany(targetEntity: VVT::class, mappedBy: 'user')]
-    private $vVTs;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: VVT::class)]
+    private Collection $vVTs;
 
-    #[ORM\OneToMany(targetEntity: AuditTom::class, mappedBy: 'user')]
-    private $auditToms;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AuditTom::class)]
+    private Collection $auditToms;
 
-    #[ORM\OneToMany(targetEntity: VVTDsfa::class, mappedBy: 'user')]
-    private $vVTDsfas;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: VVTDsfa::class)]
+    private Collection $vVTDsfas;
 
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'akademieUsers')]
-    private $akademieUser;
+    private ?Team $akademieUser;
 
     #[ORM\ManyToMany(targetEntity: Team::class, mappedBy: 'admins')]
     private $adminRoles;
 
-    #[ORM\OneToMany(targetEntity: VVT::class, mappedBy: 'userContract')]
-    private $myVvts;
+    #[ORM\OneToMany(mappedBy: 'userContract', targetEntity: VVT::class)]
+    private Collection $myVvts;
 
-    #[ORM\OneToMany(targetEntity: Tom::class, mappedBy: 'user')]
-    private $toms;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Tom::class)]
+    private Collection $toms;
 
-    #[ORM\OneToMany(targetEntity: Vorfall::class, mappedBy: 'user')]
-    private $vorfalls;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Vorfall::class)]
+    private Collection $vorfalls;
 
-    #[ORM\OneToMany(targetEntity: AkademieKurse::class, mappedBy: 'user')]
-    private $akademieKurses;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AkademieKurse::class)]
+    private Collection $akademieKurses;
 
-    #[ORM\OneToMany(targetEntity: VVT::class, mappedBy: 'assignedUser')]
-    private $assignedVvts;
+    #[ORM\OneToMany(mappedBy: 'assignedUser', targetEntity: VVT::class)]
+    private Collection $assignedVvts;
 
-    #[ORM\OneToMany(targetEntity: AuditTom::class, mappedBy: 'assignedUser')]
-    private $assignedAudits;
+    #[ORM\OneToMany(mappedBy: 'assignedUser', targetEntity: AuditTom::class)]
+    private Collection $assignedAudits;
 
-    #[ORM\OneToMany(targetEntity: Datenweitergabe::class, mappedBy: 'assignedUser')]
-    private $assignedDatenweitergaben;
+    #[ORM\OneToMany(mappedBy: 'assignedUser', targetEntity: Datenweitergabe::class)]
+    private Collection $assignedDatenweitergaben;
 
-    #[ORM\OneToMany(targetEntity: VVTDsfa::class, mappedBy: 'assignedUser')]
-    private $assignedDsfa;
+    #[ORM\OneToMany(mappedBy: 'assignedUser', targetEntity: VVTDsfa::class)]
+    private Collection $assignedDsfa;
 
-    #[ORM\OneToMany(targetEntity: Forms::class, mappedBy: 'user')]
-    private $forms;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Forms::class)]
+    private Collection $forms;
 
-    #[ORM\OneToMany(targetEntity: Policies::class, mappedBy: 'user')]
-    private $policies;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Policies::class)]
+    private Collection $policies;
 
-    #[ORM\OneToMany(targetEntity: Policies::class, mappedBy: 'person')]
-    private $policiesResponsible;
+    #[ORM\OneToMany(mappedBy: 'person', targetEntity: Policies::class)]
+    private Collection $policiesResponsible;
 
-    #[ORM\OneToMany(targetEntity: Policies::class, mappedBy: 'assignedUser')]
-    private $assignedPolicies;
+    #[ORM\OneToMany(mappedBy: 'assignedUser', targetEntity: Policies::class)]
+    private Collection $assignedPolicies;
 
-    #[ORM\OneToMany(targetEntity: Forms::class, mappedBy: 'assignedUser')]
-    private $assignedForms;
+    #[ORM\OneToMany(mappedBy: 'assignedUser', targetEntity: Forms::class)]
+    private Collection $assignedForms;
 
-    #[ORM\OneToMany(targetEntity: Software::class, mappedBy: 'user')]
-    private $software;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Software::class)]
+    private Collection $software;
 
-    #[ORM\OneToMany(targetEntity: Software::class, mappedBy: 'assignedUser')]
-    private $assignedSoftware;
+    #[ORM\OneToMany(mappedBy: 'assignedUser', targetEntity: Software::class)]
+    private Collection $assignedSoftware;
 
-    #[ORM\OneToMany(targetEntity: Vorfall::class, mappedBy: 'assignedUser')]
-    private $assignedVorfalls;
+    #[ORM\OneToMany(mappedBy: 'assignedUser', targetEntity: Vorfall::class)]
+    private Collection $assignedVorfalls;
 
-    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'assignedUser')]
-    private $tasks;
+    #[ORM\OneToMany(mappedBy: 'assignedUser', targetEntity: Task::class)]
+    private Collection $tasks;
 
-    #[ORM\OneToMany(targetEntity: ClientRequest::class, mappedBy: 'user')]
-    private $clientRequests;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: ClientRequest::class)]
+    private Collection $clientRequests;
 
-    #[ORM\OneToMany(targetEntity: ClientRequest::class, mappedBy: 'assignedUser')]
-    private $assignedRequests;
+    #[ORM\OneToMany(mappedBy: 'assignedUser', targetEntity: ClientRequest::class)]
+    private Collection $assignedRequests;
 
-    #[ORM\OneToMany(targetEntity: Team::class, mappedBy: 'dsbUser')]
-    private $teamDsb;
+    #[ORM\OneToMany(mappedBy: 'dsbUser', targetEntity: Team::class)]
+    private Collection $teamDsb;
 
     #[ORM\Column(type: 'text')]
-    private $email;
+    private ?string $email;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $keycloakId;
+    private ?string $keycloakId;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $createdAt;
+    private ?\DateTimeInterface $createdAt;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $username;
+    private string $username;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $lastLogin;
+    private ?\DateTimeInterface $lastLogin;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $firstName;
+    private ?string $firstName;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $lastName;
+    private ?string $lastName;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $registerId;
+    private ?string $registerId;
 
-    #[ORM\OneToMany(targetEntity: Loeschkonzept::class, mappedBy: 'user')]
-    private $loeschkonzepts;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Loeschkonzept::class)]
+    private Collection $loeschkonzepts;
 
-    #[ORM\OneToMany(targetEntity: VVTDatenkategorie::class, mappedBy: 'user')]
-    private $vVTDatenkategories;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: VVTDatenkategorie::class)]
+    private Collection $vVTDatenkategories;
+
+    // #[ORM\Column(type: 'json')]
+    private $roles = [];
 
     public function __construct()
     {
@@ -163,15 +161,17 @@ class User extends BaseUser
         $this->vVTDatenkategories = new ArrayCollection();
     }
 
-    /**
-     * @return Collection|Team[]
-     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getTeams(): Collection
     {
         return $this->teams;
     }
 
-    public function setTeams(?array $teams): self
+    public function setTeams(Collection $teams): self
     {
         $this->teams = $teams;
 
@@ -204,9 +204,6 @@ class User extends BaseUser
         return count($this->teams) > 0;
     }
 
-    /**
-     * @return Collection|Datenweitergabe[]
-     */
     public function getDatenweitergabes(): Collection
     {
         return $this->datenweitergabes;
@@ -235,9 +232,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|VVT[]
-     */
     public function getVVTs(): Collection
     {
         return $this->vVTs;
@@ -266,9 +260,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|AuditTom[]
-     */
     public function getAuditToms(): Collection
     {
         return $this->auditToms;
@@ -297,9 +288,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|VVTDsfa[]
-     */
     public function getVVTDsfas(): Collection
     {
         return $this->vVTDsfas;
@@ -340,10 +328,6 @@ class User extends BaseUser
         return $this;
     }
 
-
-    /**
-     * @return Collection|Team[]
-     */
     public function getAdminRoles(): Collection
     {
         return $this->adminRoles;
@@ -357,9 +341,6 @@ class User extends BaseUser
         return count($this->adminRoles) > 0;
     }
 
-    /**
-     * @return Collection|VVT[]
-     */
     public function getMyVvts(): Collection
     {
         return $this->myVvts;
@@ -388,9 +369,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Tom[]
-     */
     public function getToms(): Collection
     {
         return $this->toms;
@@ -419,9 +397,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Vorfall[]
-     */
     public function getVorfalls(): Collection
     {
         return $this->vorfalls;
@@ -450,9 +425,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|AkademieKurse[]
-     */
     public function getAkademieKurses(): Collection
     {
         return $this->akademieKurses;
@@ -481,9 +453,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|VVT[]
-     */
     public function getAssignedVvts(): Collection
     {
         return $this->assignedVvts;
@@ -512,9 +481,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|AuditTom[]
-     */
     public function getAssignedAudits(): Collection
     {
         return $this->assignedAudits;
@@ -543,9 +509,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Datenweitergabe[]
-     */
     public function getAssignedDatenweitergaben(): Collection
     {
         return $this->assignedDatenweitergaben;
@@ -575,9 +538,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|VVTDsfa[]
-     */
     public function getAssignedDsfa(): Collection
     {
         return $this->assignedDsfa;
@@ -606,9 +566,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Forms[]
-     */
     public function getForms(): Collection
     {
         return $this->forms;
@@ -637,9 +594,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Policies[]
-     */
     public function getPolicies(): Collection
     {
         return $this->policies;
@@ -668,9 +622,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Policies[]
-     */
     public function getPoliciesResponsible(): Collection
     {
         return $this->policiesResponsible;
@@ -699,9 +650,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Policies[]
-     */
     public function getAssignedPolicies(): Collection
     {
         return $this->assignedPolicies;
@@ -730,9 +678,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Forms[]
-     */
     public function getAssignedForms(): Collection
     {
         return $this->assignedForms;
@@ -761,9 +706,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Software[]
-     */
     public function getSoftware(): Collection
     {
         return $this->software;
@@ -792,9 +734,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Software[]
-     */
     public function getAssignedSoftware(): Collection
     {
         return $this->assignedSoftware;
@@ -823,9 +762,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Vorfall[]
-     */
     public function getAssignedVorfalls(): Collection
     {
         return $this->assignedVorfalls;
@@ -854,9 +790,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Task[]
-     */
     public function getTasks(): Collection
     {
         return $this->tasks;
@@ -885,9 +818,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|ClientRequest[]
-     */
     public function getClientRequests(): Collection
     {
         return $this->clientRequests;
@@ -916,9 +846,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|ClientRequest[]
-     */
     public function getAssignedRequests(): Collection
     {
         return $this->assignedRequests;
@@ -947,9 +874,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection|Team[]
-     */
     public function getTeamDsb(): Collection
     {
         return $this->teamDsb;
@@ -1074,9 +998,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection<int, Loeschkonzept>
-     */
     public function getLoeschkonzepts(): Collection
     {
         return $this->loeschkonzepts;
@@ -1104,9 +1025,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return Collection<int, VVTDatenkategorie>
-     */
     public function getVVTDatenkategories(): Collection
     {
         return $this->vVTDatenkategories;
@@ -1132,5 +1050,23 @@ class User extends BaseUser
         }
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
+    }
+
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getUsername();
     }
 }
