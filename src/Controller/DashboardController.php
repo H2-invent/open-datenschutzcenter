@@ -29,6 +29,7 @@ use App\Repository\VVTDatenkategorieRepository;
 use App\Repository\VVTDsfaRepository;
 use App\Repository\VVTRepository;
 use App\Service\CurrentTeamService;
+use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +40,7 @@ class DashboardController extends AbstractController
     #[Route(path: '/', name: 'dashboard')]
     public function dashboard(Request                     $request,
                               CurrentTeamService          $currentTeamService,
+                              SecurityService             $securityService,
                               TeamRepository              $teamRepository,
                               DatenweitergabeRepository   $transferRepository,
                               VVTRepository               $procedureRepository,
@@ -65,12 +67,16 @@ class DashboardController extends AbstractController
         $user = $this->getUser();
         $currentTeam = $currentTeamService->getTeamFromSession($user);
 
-        if ($currentTeam === null && $this->getUser()->getAkademieUser() !== null) {
-            return $this->redirectToRoute('akademie');
-        } elseif ($currentTeam === null && count($this->getUser()->getTeamDsb()) > 0) {
-            return $this->redirectToRoute('dsb');
-        } elseif ($currentTeam === null && $this->getUser()->getAkademieUser() === null) {
-            return $this->redirectToRoute('no_team');
+        if ($currentTeam === null) {
+            if ($securityService->superAdminCheck($this->getUser())) {
+                return $this->redirectToRoute('manage_teams');
+            } elseif ($this->getUser()->getAkademieUser() !== null) {
+                return $this->redirectToRoute('akademie');
+            } elseif (count($this->getUser()->getTeamDsb()) > 0) {
+                return $this->redirectToRoute('dsb');
+            } else {
+                return $this->redirectToRoute('no_team');
+            }
         }
 
         $audit = $auditRepository->findAllByTeam($currentTeam);

@@ -20,7 +20,7 @@ class CurrentTeamService
         return $this->findTeam($user->getAdminRoles());
     }
 
-    public function getTeamFromSession(User $user): Team
+    public function getTeamFromSession(User $user): ?Team
     {
         return $this->findTeam($user->getTeams());
     }
@@ -31,7 +31,7 @@ class CurrentTeamService
         $session->set('team', $team);
     }
 
-    private function findTeam($teams): Team
+    private function findTeam($teams): ?Team
     {
         $session = $this->requestStack->getSession();
         $teamName = $session->get('team');
