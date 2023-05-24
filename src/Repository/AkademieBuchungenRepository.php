@@ -20,7 +20,8 @@ class AkademieBuchungenRepository extends ServiceEntityRepository
         parent::__construct($registry, AkademieBuchungen::class);
     }
 
-    public function findMyBuchungenByUser($value)
+    /** @return AkademieBuchungen[] */
+    public function findMyBuchungenByUser($value): array
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.user = :user')

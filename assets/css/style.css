@@ -361,7 +361,7 @@ a.article:hover {
     Add Reuqired Symbole to Forms
 ----------------------------------------------------- */
 
-label.required:after {
+label:not(.form-check-label).required:after {
     content: " *";
 }
 
@@ -610,3 +610,4 @@ label.required:after {
 .thin::-webkit-scrollbar {
     width: 10px;
 }
+

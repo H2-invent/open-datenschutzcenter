@@ -47,6 +47,12 @@ class AkademieBuchungen
     #[ORM\Column(type: 'boolean')]
     private $invitation;
 
+    #[ORM\OneToMany(mappedBy: 'academyBilling', targetEntity: Participation::class)]
+    private Collection $participations;
+
+    public function __construct(){
+        $this->participations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -169,6 +175,36 @@ class AkademieBuchungen
     public function setInvitation(bool $invitation): self
     {
         $this->invitation = $invitation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participation>
+     */
+    public function getParticipations(): Collection
+    {
+        return $this->participations;
+    }
+
+    public function addParticipation(Participation $participation): self
+    {
+        if (!$this->participations->contains($participation)) {
+            $this->participations->add($participation);
+            $participation->setAcademyBilling($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipation(Participation $participation): self
+    {
+        if ($this->participations->removeElement($participation)) {
+            // set the owning side to null (unless already changed)
+            if ($participation->getAcademyBilling() === $this) {
+                $participation->setAcademyBilling(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,39 @@
+{% trans_default_domain 'questionnaire' %}
+<div class="card card-body">
+    <a class="btn btn-primary btn-sm" href="{{ path('questionnaire_create') }}">
+        {% trans %}questionnaire.create{% endtrans %}
+    </a>
+    <div class="table-responsive">
+        <table class="table display table-striped data-table">
+            <thead>
+            <tr>
+                <th scope="col">{% trans %}questionnaire.label{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}createdAt{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}action.word{% endtrans %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for questionnaire in questionnaires %}
+                <tr>
+                    <td>{{ questionnaire.label }}</td>
+                    <td>{{ questionnaire.createdAt | date('Y-m-d H:i:s') }}</td>
+                    <td>
+                        <a href="{{ path('questionnaire_details', {'id': questionnaire.id}) }}"
+                           class="btn btn-sm btn-primary">
+                            {% trans from 'general' %}show{% endtrans %}
+                        </a>
+                        <a href="{{ path('questionnaire_edit', {'id': questionnaire.id}) }}"
+                           class="btn btn-sm btn-success">
+                            {% trans from 'general' %}edit{% endtrans %}
+                        </a>
+                        <a href="{{ path('questionnaire_delete', {'id': questionnaire.id}) }}"
+                           class="btn btn-sm btn-danger">
+                            {% trans from 'general' %}remove{% endtrans %}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

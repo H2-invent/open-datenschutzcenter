@@ -144,6 +144,7 @@ class KursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $daten = $form->getData();
             $akademieService->addUser($kurs, $daten);
+
             return $this->redirectToRoute('akademie_admin');
         }
         return $this->render('akademie/new.html.twig', [

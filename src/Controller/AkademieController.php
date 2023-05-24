@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\DataTypes\ParticipationStateTypes;
+use App\Entity\AkademieBuchungen;
+use App\Entity\Participation;
 use App\Repository\AkademieBuchungenRepository;
 use App\Service\SecurityService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +37,6 @@ class AkademieController extends AbstractController
     ): Response
     {
         $team = $this->getUser()->getAkademieUser();
-
         $today = new DateTime();
         $buchung = $academyBillingRepository->find($request->get('kurs'));
 
@@ -59,25 +62,22 @@ class AkademieController extends AbstractController
         return $this->redirectToRoute('akademie');
     }
 
-    #[Route(path: '/kurs/zertifikat', name: '_kurs_zertifikat')]
+    #[Route(path: '/kurs/zertifikat/{id}', name: '_kurs_zertifikat')]
+    #[ParamConverter(data: 'billing', class: AkademieBuchungen::class, options: ['mapping' => ['id' => 'id']])]
     public function academyLessonCertificate(
-        DompdfWrapper               $wrapper,
-        Request                     $request,
-        AkademieBuchungenRepository $academyBillingRepository,
+        AkademieBuchungen $billing,
+        DompdfWrapper     $wrapper,
     ): Response
     {
-        $buchung = $academyBillingRepository->find($request->get('buchung'));
-
-        if ($buchung->getUser() !== $this->getUser()) {
-
+        if ($billing->getUser() !== $this->getUser()) {
             return $this->redirectToRoute('akademie');
         }
 
         //Abfrage, ob der Kurs abgeschlossen ist
-        if ($buchung->getAbgeschlossen() === true) {
+        if ($billing->getParticipations()[0]->isPassed()) {
             // Retrieve the HTML generated in our twig file
             $html = $this->renderView('bericht/zertifikatAkademie.html.twig', [
-                'daten' => $buchung,
+                'daten' => $billing,
                 'team' => $this->getUser()->getAkademieUser(),
                 'user' => $this->getUser(),
             ]);

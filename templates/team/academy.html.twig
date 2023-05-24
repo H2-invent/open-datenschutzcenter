@@ -15,6 +15,16 @@
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#user" role="tab" aria-controls="profile"
                    aria-selected="false">{% trans %}academy.users{% endtrans %}</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                   id="questionnaire-tab"
+                   data-toggle="tab"
+                   href="#questionnaire"
+                   aria-controls="questionnaire"
+                   aria-selected="false">
+                    {% trans from 'questionnaire' %}questionnaire.words{% endtrans %}
+                </a>
+            </li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="courses" role="tabpanel" aria-labelledby="home-tab">
@@ -38,6 +48,9 @@
                         {% endfor %}
                     </ul>
                 </div>
+            </div>
+            <div class="tab-pane fade" id="questionnaire" role="tabpanel" aria-labelledby="questionnaire-tab">
+                {% include 'questionnaire/questionnaire/list.html.twig' with {'questionnaires': questionnaires} %}
             </div>
         </div>
 

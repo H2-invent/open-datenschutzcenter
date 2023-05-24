@@ -8,8 +8,10 @@
 
 namespace App\Service;
 
+use App\DataTypes\ParticipationStateTypes;
 use App\Entity\AkademieBuchungen;
 use App\Entity\AkademieKurse;
+use App\Entity\Participation;
 use App\Entity\Team;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Environment;
@@ -35,6 +37,9 @@ class AkademieService
 
     public function addUser(AkademieKurse $kurs, $daten): void
     {
+        $participation = (new Participation())
+            ->setState(ParticipationStateTypes::$ASSIGNED)
+            ->setQuestionnaire($kurs->getQuestionnaire());
 
         $buchung = new AkademieBuchungen();
         $buchung->setKurs($kurs);
@@ -42,6 +47,9 @@ class AkademieService
         $buchung->setVorlage($daten['wiedervorlage']);
         $buchung->setZugewiesen($daten['zugewiesen']);
         $buchung->setInvitation(false);
+        $buchung->addParticipation($participation);
+
+        $this->em->persist($participation);
 
         foreach ($daten['user'] as $user) {
             $buchung->setUser($user);
