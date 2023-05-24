@@ -1,0 +1,31 @@
+question:
+  word: 'Frage'
+  words: 'Fragen'
+  label: 'Frage'
+  evaluationValue: 'Gewichtung'
+  hint: 'Hinweis'
+  answers: 'Antwortmöglichkeiten'
+  error: 'Unzulässige Anzahl an korrekten antworten'
+  type:
+    word: 'Art der Frage'
+    checkbox: 'Mehrere Antworten auswählbar'
+    radio: 'Eine Antwort auswählbar'
+  create: 'Neue Frage hinzufügen'
+  answer:
+    add: 'Antwort hinzufügen'
+answer:
+  add: 'Antwort hinzufügen'
+  label: 'Antwort'
+  isCorrect: 'Korrekt?'
+  correct: 'Richtig'
+  incorrect: 'Falsch'
+questionnaire:
+  label: 'Name des Fragebogens'
+  description: 'Beschreibung'
+  words: 'Fragebögen'
+  create: 'Fragebogen hinzufügen'
+  percentageToPass: 'Benötigte Punktzahl zum Bestehen'
+participation:
+  start: 'Prüfung beginnen'
+passed: 'Bestanden'
+retry: 'Erneut Versuchen'
