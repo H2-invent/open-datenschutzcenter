@@ -14,12 +14,17 @@ video:
   start: Video starten
   pause: Video pausieren
 lesson:
+  video:
+    link: Videolink
+    type: Videotype angeben
   word: Kurs
   overview: Übersicht über alle Akademiebuchungen
   finish: Kurs abschließen
   disclaimer:
     finish: Sie haben diesen Kurs komplett angeschaut. Klicken Sie auf den Button "Kurs abschließen" um Ihren Abschluss an Ihren Datenschutzbeauftragen zu melden.
     repeat: Nach Anschluss des Kurses können Sie das Video erneut, diesmal mit Pausieren und Vorspulen, anschauen.
+questionnaire:
+  word: Fragebogen
 vimeo:
   disclaimer: 'Wichtig bei Vimeo: Denken Sie an den Auftragsverarbeitungsvertrag zwischen Ihrer Organisation und Vimeo.'
 certification:
