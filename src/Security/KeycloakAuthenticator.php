@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
+use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -53,9 +54,9 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         $request->getSession()->set('id_token', $accessToken->getValues()['id_token']);
         $passport = new SelfValidatingPassport(
             new UserBadge($accessToken->getToken(), function () use ($accessToken, $client,) {
-                $keycloakUser = $client->fetchUserFromToken($accessToken);
-                $user = $this->getUserForKeycloakUser($keycloakUser);
-                $this->persistUser($user, $keycloakUser);
+                $keycloakUser = $client->fetchUserFromToken(accessToken: $accessToken);
+                $user = $this->getUserForKeycloakUser(keycloakUser: $keycloakUser);
+                $this->persistUser(user: $user, keycloakUser: $keycloakUser);
                 return $user;
             }
             )
@@ -81,7 +82,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
 
     public function onAuthenticationFailure(
         Request $request,
-       AuthenticationException $exception,
+        AuthenticationException $exception,
     ): ?Response
     {
         return new RedirectResponse($this->router->generate('no_team'));
@@ -100,7 +101,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         return new RedirectResponse($targetUrl);
     }
 
-    private function getTeamsFromKeycloakGroups($keycloakUser): ArrayCollection
+    private function getTeamsFromKeycloakGroups(ResourceOwnerInterface $keycloakUser): ArrayCollection
     {
         $userTeams = new ArrayCollection();
         $settings = $this->em->getRepository(Settings::class)->findOne();
@@ -120,20 +121,18 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         return $userTeams;
     }
 
-    private function getEmailForKeycloakUser($keycloakUser) {
-        $email = null;
+    private function getEmailForKeycloakUser(ResourceOwnerInterface $keycloakUser): string {
         try {
-            $email = $keycloakUser->getEmail();
+            return $keycloakUser->getEmail();
         } catch (\Exception $e) {
             try {
-                $email = $keycloakUser->toArray()['preferred_username'];
+                return $keycloakUser->toArray()['preferred_username'];
             } catch (\Exception $e) {
             }
         }
-        return $email;
     }
 
-    private function getRolesForKeycloakUser($keycloakUser): array
+    private function getRolesForKeycloakUser(ResourceOwnerInterface $keycloakUser): array
     {
         $clientId = $this->parameterBag->get('KEYCLOAK_ID'); // name of keycloak client
         $this->parameterBag->get('superAdminRole'); // name of super admin role in keycloak
@@ -152,8 +151,9 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         return $roles;
     }
 
-    private function getUserForKeycloakUser($keycloakUser) {
-        $email = $this->getEmailForKeycloakUser($keycloakUser);
+    private function getUserForKeycloakUser(ResourceOwnerInterface $keycloakUser): User
+    {
+        $email = $this->getEmailForKeycloakUser(keycloakUser: $keycloakUser);
         $id = $keycloakUser->getId();
 
         // 1) the user has logged in with keycloak before
@@ -173,7 +173,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         return $user;
     }
 
-    private function persistUser(User $user, $keycloakUser): User
+    private function persistUser(User $user, ResourceOwnerInterface $keycloakUser): User
     {
         $email = $this->getEmailForKeycloakUser(keycloakUser: $keycloakUser);
         $user->setLastLogin(new \DateTime());

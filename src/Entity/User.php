@@ -1060,7 +1060,8 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    public function setRoles($roles) {
+    public function setRoles(array $roles): void
+    {
         $this->roles = $roles;
     }
 

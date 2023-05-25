@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Team;
 use App\Entity\User;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class CurrentTeamService
@@ -31,7 +32,7 @@ class CurrentTeamService
         $session->set('team', $team);
     }
 
-    private function findTeam($teams): ?Team
+    private function findTeam(Collection $teams): ?Team
     {
         $session = $this->requestStack->getSession();
         $teamName = $session->get('team');
