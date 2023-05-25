@@ -14,20 +14,20 @@ else
     echo "ODC_DB_PW=$ODC_DB_PW" >> $FILE
   source $FILE
 fi
-  ENVIRONMENT=${ENVIRONMENT:=dev}
+  ENVIRONMENT=${ENVIRONMENT:=prod}
   read -p "Enter the environment dev/prod[$ENVIRONMENT]: " input
   ENVIRONMENT=${input:=$ENVIRONMENT}
   sed -i '/ENVIRONMENT/d' $FILE
   echo "ENVIRONMENT=$ENVIRONMENT" >> $FILE
 
-  HTTP_METHOD=${HTTP_METHOD:=http}
+  HTTP_METHOD=${HTTP_METHOD:=https}
   read -p "Enter http/https for testing on local environment ALWAYS use http [$HTTP_METHOD]: " input
   HTTP_METHOD=${input:=$HTTP_METHOD}
   sed -i '/HTTP_METHOD/d' $FILE
   echo "HTTP_METHOD=$HTTP_METHOD" >> $FILE
 
   PUBLIC_URL=${PUBLIC_URL:=dev.domain.de}
-  read -p "Enter the url you want to enter the open-datenschutzcenter [$PUBLIC_URL]: " input
+  read -p "Enter the url you want to enter the open-datenschutzcenter without http://, https:// or ports [$PUBLIC_URL]: " input
   PUBLIC_URL=${input:=$PUBLIC_URL}
   sed -i '/PUBLIC_URL/d' $FILE
   echo "PUBLIC_URL=$PUBLIC_URL" >> $FILE
