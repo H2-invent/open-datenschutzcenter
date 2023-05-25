@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
@@ -14,18 +15,20 @@ final class Version20230518145342 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add roles to user';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE user ADD roles LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\'');
+        $table = $schema->getTable('user');
+        $table->addColumn('roles', Types::JSON)
+            ->setNotnull(false)
+            ->setDefault(null);
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE user DROP roles');
+        $table = $schema->getTable('user');
+        $table->dropColumn('roles');
     }
 }
