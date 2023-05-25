@@ -35,7 +35,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         private readonly ClientRegistry         $clientRegistry,
         private readonly EntityManagerInterface $em,
         private readonly RouterInterface        $router,
-        private readonly TeamRepository         $teamRepository
+        private readonly TeamRepository         $teamRepository,
     )
     {
     }
@@ -69,7 +69,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
     public function onAuthenticationSuccess(
         Request $request,
         TokenInterface $token,
-        string $firewallName
+        string $firewallName,
     ): ?Response
     {
         $targetUrl = $this->getTargetPath($request->getSession(), 'main');
@@ -81,7 +81,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
 
     public function onAuthenticationFailure(
         Request $request,
-        AuthenticationException $exception
+       AuthenticationException $exception,
     ): ?Response
     {
         return new RedirectResponse($this->router->generate('no_team'));
@@ -93,7 +93,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
      */
     public function start(
         Request $request,
-        AuthenticationException $authException = null
+        AuthenticationException $authException = null,
     ): RedirectResponse
     {
         $targetUrl = $this->router->generate('login_keycloak');
