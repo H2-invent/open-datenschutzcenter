@@ -168,7 +168,8 @@ class User implements UserInterface
 
     public function getTeams(): Collection
     {
-        return $this->teams;
+        $allTeams = array_merge($this->teams->toArray(), $this->adminRoles->toArray());
+        return new ArrayCollection(array_unique($allTeams));
     }
 
     public function setTeams(Collection $teams): self
@@ -199,9 +200,9 @@ class User implements UserInterface
     public function hasTeam(Team $team = null): bool
     {
         if ($team) {
-            return $this->teams->contains($team);
+            return $this->getTeams()->contains($team);
         }
-        return count($this->teams) > 0;
+        return count($this->getTeams()) > 0;
     }
 
     public function getDatenweitergabes(): Collection
