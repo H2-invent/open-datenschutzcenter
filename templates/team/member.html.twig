@@ -56,22 +56,6 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <a class="btn btn-sm btn-info float-md-right"
-                           href="{{ path('team_mitglieder_admin', {'id':d.id}) }}">{% if d.adminUser %}{% trans %}Admin entfernen{% endtrans %}{% else %}{% trans %}Admin ernennen{% endtrans %}{% endif %}</a>
-                        <a class="btn btn-sm btn-danger float-md-right"
-                           href="{{ path('team_mitglieder_remove',{'id':d.id,'type':'odc'}) }}">{% trans %}Entfernen{% endtrans %}</a>
-                    </li>
-                {% endfor %}
-                </ul>
-
-                <h5 class="h5-responsive mt-3">{% trans %}Offene Einladungen{% endtrans %}</h5>
-            <ul class="list-group">
-                {% for d in data.members |filter(d => d.registerId) %}
-                    <li class="list-group-item">{{ d.email }}
-                        <a class="btn btn-sm btn-info float-md-right"
-                           href="{{ path('team_mitglieder_admin',{'id':d.id}) }}">{% if d.adminUser %}{% trans %}Admin entfernen{% endtrans %}{% else %}{% trans %}Admin ernennen{% endtrans %}{% endif %}</a>
-                        <a class="btn btn-sm btn-danger float-md-right"
-                           href="{{ path('team_mitglieder_remove',{'id':d.id,'type':'odc'}) }}">{% trans %}Einladung entfernen{% endtrans %}</a>
                     </li>
                 {% endfor %}
             </ul>
