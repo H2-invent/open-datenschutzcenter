@@ -27,14 +27,14 @@ class FormsType extends AbstractType
     {
 
         $builder
-            ->add('title', TextType::class, ['label' => 'Titel', 'required' => true, 'translation_domain' => 'form'])
-            ->add('description', TextareaType::class, ['label' => 'Beschreibung', 'required' => false, 'translation_domain' => 'form'])
-            ->add('version', TextType::class, ['label' => 'Version', 'required' => true, 'translation_domain' => 'form'])
+            ->add('title', TextType::class, ['label' => 'title', 'required' => true, 'translation_domain' => 'form'])
+            ->add('description', TextareaType::class, ['label' => 'description', 'required' => false, 'translation_domain' => 'form'])
+            ->add('version', TextType::class, ['label' => 'version', 'required' => true, 'translation_domain' => 'form'])
             ->add('departments', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => AuditTomAbteilung::class,
                 'choices' => $options['departments'],
-                'label' => 'Zugeordnete Abteilungen',
+                'label' => 'relatedDepartments',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => true,
@@ -47,7 +47,7 @@ class FormsType extends AbstractType
                 'choice_label' => 'name',
                 'class' => Produkte::class,
                 'choices' => $options['products'],
-                'label' => 'Zugeordnete Produkte/Dienstleistungen',
+                'label' => 'relatedProducts',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => true,
@@ -60,18 +60,18 @@ class FormsType extends AbstractType
                 'required' => false,
                 'allow_delete' => false,
                 'delete_label' => 'Löschen',
-                'label' => 'Formular hochladen',
+                'label' => 'uploadForm',
                 'translation_domain' => 'form',
                 'download_label' => false
             ])
             ->add('status', ChoiceType::class, [
                 'choices' => [
-                    'Angelegt' => 0,
-                    'In Bearbeitung' => 1,
-                    'Prüfung' => 2,
-                    'Zur Freigabe vorgelegt' => 3,
-                    'Veraltet' => 4,],
-                'label' => 'Status',
+                    'created' => 0,
+                    'inProgress' => 1,
+                    'inReview' => 2,
+                    'submitted' => 3,
+                    'outdated' => 4,],
+                'label' => 'status',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'attr' => [
@@ -79,7 +79,7 @@ class FormsType extends AbstractType
                     'data-live-search' => 'true'
                 ]
             ])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

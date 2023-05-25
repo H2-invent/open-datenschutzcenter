@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'team/index.html.twig' %}
+{% trans_default_domain 'team' %}
 
-{% block title %}{{ title }}{% endblock %}
 {% block body %}
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
@@ -10,12 +10,14 @@
             {% if data %}
                 <div class="row">
                     <div class="col-md-6">
-                        {{ 'Email'|trans }}: {{ data.email }}<br>
-                        {{ 'Benutzername'|trans }}: {{ data.username }}
+                        {% trans from 'general' %}email{% endtrans %}: {{ data.email }}<br>
+                        {% trans from 'general' %}username{% endtrans %}: {{ data.username }}
                     </div>
                     <div class="col-md-6">
                         <a href="{{ path('team_dsb_remove', {'id':data.id}) }}" class="btn btn-sm btn-danger"
-                           onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen? Der DSB wird daraufhin als Admin, Koordinator und Akademiebenutzer entfernt.{% endtrans %}')">Entfernen</a>
+                           onClick="return confirm('{% trans %}removeDsb{% endtrans %}')">
+                                {% trans from 'general' %}remove{% endtrans %}
+                        </a>
                     </div>
                 </div>
             {% else %}
@@ -23,7 +25,7 @@
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
                 <p class="alert-danger mt-5 text-center">
-                    {% trans %}Hier können Sie einen externen DSB ernennen. Der externe DSB hat die Möglichkeit, zwischen Teams hin und her zu wechseln und dabei jedesmal die die Berechtigung Datenschutzkoordinator, Datenschutzbeauftragter, Admin und Akademiemitglied zu erhalten.{% endtrans %}
+                    {% trans %}addExternalDsbInfo{% endtrans %}
                 </p>
             {% endif %}
 
@@ -31,7 +33,4 @@
         </div>
     </div>
     {{ include('base/__snack.html.twig') }}
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

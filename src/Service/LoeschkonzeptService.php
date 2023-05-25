@@ -5,12 +5,14 @@ namespace App\Service;
 
 
 use App\Entity\Loeschkonzept;
-use App\Entity\VVTDatenkategorie;
 use App\Entity\Team;
 use App\Entity\User;
+use App\Entity\VVTDatenkategorie;
 use App\Form\Type\LoeschkonzeptType;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 
 class LoeschkonzeptService
@@ -24,7 +26,16 @@ class LoeschkonzeptService
         $this->formBuilder = $formBuilder;
     }
 
-    function createForm(Loeschkonzept $loeschkonzept, Team $team)
+    function cloneLoeschkonzept(Loeschkonzept $loeschkonzept): Loeschkonzept
+    {
+        $newLoeschkonzept = clone $loeschkonzept;
+        $newLoeschkonzept->setPrevious($loeschkonzept);
+        $newLoeschkonzept->setCreateAt(new DateTimeImmutable());
+
+        return $newLoeschkonzept;
+    }
+
+    function createForm(Loeschkonzept $loeschkonzept, Team $team): FormInterface
     {
         $vvtdatenkategories = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
 
@@ -33,24 +44,14 @@ class LoeschkonzeptService
         return $form;
     }
 
-    function newLoeschkonzept(Team $team, User $user)
+    function newLoeschkonzept(Team $team, User $user): Loeschkonzept
     {
         $loeschkonzept = new Loeschkonzept();
         $loeschkonzept->setTeam($team);
-        $loeschkonzept->setCreateAt(new \DateTimeImmutable());
+        $loeschkonzept->setCreateAt(new DateTimeImmutable());
         $loeschkonzept->setActiv(true);
         $loeschkonzept->setUser($user);
 
         return $loeschkonzept;
-    }
-
-
-    function cloneLoeschkonzept(Loeschkonzept $loeschkonzept)
-    {
-        $newLoeschkonzept = clone $loeschkonzept;
-        $newLoeschkonzept->setPrevious($loeschkonzept);
-        $newLoeschkonzept->setCreateAt(new \DateTimeImmutable());
-        
-        return $newLoeschkonzept;
     }
 }

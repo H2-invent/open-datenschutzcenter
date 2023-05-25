@@ -4,27 +4,27 @@ vich_uploader:
     mappings:
         profil_picture:
             uri_prefix: '%app.path.images%'
-            upload_destination: intern_adapter
+            upload_destination: oneup_flysystem.intern_filesystem
             namer: vich_uploader.namer_uniqid
             delete_on_update: true
         policies:
             uri_prefix: '%app.path.images%'
-            upload_destination: policy_adapter
+            upload_destination: oneup_flysystem.policies_filesystem
             namer: vich_uploader.namer_uniqid
             delete_on_update: true
         forms:
             uri_prefix: '%app.path.images%'
-            upload_destination: forms_adapter
+            upload_destination: oneup_flysystem.forms_filesystem
             namer: vich_uploader.namer_uniqid
             delete_on_update: true
         daten:
             uri_prefix: '%app.path.images%'
-            upload_destination: daten_adapter
+            upload_destination: oneup_flysystem.daten_filesystem
             namer: vich_uploader.namer_uniqid
             delete_on_update: true
         software:
             uri_prefix: '%kernel.project_dir%/data/software'
-            upload_destination: software_adapter
+            upload_destination: oneup_flysystem.software_filesystem
             namer: vich_uploader.namer_uniqid
             delete_on_update: true
 

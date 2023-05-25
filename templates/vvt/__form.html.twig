@@ -1,7 +1,8 @@
+{% trans_default_domain 'vvt' %}
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
 <div class="card mt-4">
-    <h4 class="h4-responsive card-header">Daten zur Verarbeitung</h4>
+    <h4 class="h4-responsive card-header">{% trans %}dataForProcessing{% endtrans %}</h4>
 
     <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
         {% if activNummer %}
@@ -117,7 +118,7 @@
 </div>
 
 <div class="card mt-4">
-    <h4 class="h4-responsive card-header">Erfasste Daten</h4>
+    <h4 class="h4-responsive card-header">{% trans %}collectedData{% endtrans %}</h4>
 
     <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
         <div class="mt-4 row">
@@ -143,7 +144,7 @@
 </div>
 
 <div class="card mt-4">
-    <h4 class="h4-responsive card-header">Datenweitergabe und Auftragsverarbeitung</h4>
+    <h4 class="h4-responsive card-header">{% trans %}orderProcessing{% endtrans %}</h4>
 
     <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
         <div class="mt-4 row">
@@ -176,7 +177,7 @@
             </div>
             <div class="col-md-4">
                 {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
-                    <b>Zugehörige Datenweitergaben</b><br>
+                    <b>{% trans %}associatedDataTransfer{% endtrans %}</b><br>
                     <ul>
                         {% for d in vvt.datenweitergaben %}
                             {% if d.activ == 1 %}
@@ -187,7 +188,7 @@
                             {% endif %}
                         {% endfor %}
                     </ul>
-                    <b>Zugehörige Auftragsdatenverarbeitungen</b><br>
+                    <b>{% trans %}associatedOrderProcessing{% endtrans %}</b><br>
                     <ul>
                         {% for d in vvt.datenweitergaben %}
                             {% if d.activ == 1 %}
@@ -215,7 +216,7 @@
 </div>
 
 <div class="card mt-4">
-    <h4 class="h4-responsive card-header">Technische und organisatorische Maßnahmen</h4>
+    <h4 class="h4-responsive card-header">{% trans %}technicalOrganizationalActions{% endtrans %}</h4>
 
     <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
         <div class="mt-4 row">
@@ -250,7 +251,7 @@
 </div>
 
 <div class="card mt-4">
-    <h4 class="h4-responsive card-header">Risikoabschätzung</h4>
+    <h4 class="h4-responsive card-header">{% trans %}riskAssessment{% endtrans %}</h4>
 
     <div class="card-body">
         <div class="mt-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
@@ -274,16 +275,16 @@
                 <p>
                 <ul>
                     <li>
-                        "Sehr wahrscheinlich": einmal pro Woche oder öfter,
+                        {% trans %}probability.highest{% endtrans %}
                     </li>
                     <li>
-                        "Signifikant": einmal pro Monat,
+                        {% trans %}probability.high{% endtrans %}
                     </li>
                     <li>
-                        "Eingeschränkt möglich": einmal pro Jahr,
+                        {% trans %}probability.low{% endtrans %}
                     </li>
                     <li>
-                        "Vernachlässigbar": alle 10 Jahre oder seltener.
+                        {% trans %}probability.lowest{% endtrans %}
                     </li>
                 </ul>
                 </p>
@@ -297,15 +298,7 @@
             <div class="col-md-9">
                 {{ form_widget(form.beurteilungSchaden) }}
                 <div class="mt-4">
-                    <p>
-                        Wenn nach der Risikomatrix der Wert des Risikos bei <b>hoch</b> liegt, ist es erforderlich eine
-                        Datenschutzfolgenabschätzung (DSFA) durchzuführen und zu dokumentieren. Die DSFA muss von einem
-                        Datenschutzbeauftragten erstellt werden.
-                        Ein hohes Risiko liegt vor, wenn Einer der Faktoren Stufe 3 oder 4 und der Andere Faktor 4 ist.
-                    </p>
-                    <p>
-                        Beispiel: Eintrittswahrscheinlichkeit: 3, Schadenspotenzial: 4
-                    </p>
+                    {% trans %}riskAssessmentDisclaimer{% endtrans %}
                 </div>
 
             </div>
@@ -314,11 +307,11 @@
             <div class="offset-md-3 col-md-9">
                 {% if vvt.activDsfa is not null %}
                     <a href="{{ path('vvt_dsfa_edit',{'dsfa':vvt.activDsfa.id}) }}"
-                       class="btn btn-primary">DSFA anzeigen</a>
+                       class="btn btn-primary">{% trans %}dsfa.show{% endtrans %}</a>
                 {% else %}
                     <a class="btn btn-indigo" href="{{ path('vvt_dsfa_new', {'vvt':vvt.id}) }}"
-                       title="Datenschutzfolgeabschätzung anlegen">
-                        <span>DSFA anlegen</span>
+                       title="{% trans %}dataProtectionImpactAssessment.create{% endtrans %}">
+                        <span>{% trans %}dsfa.create{% endtrans %}</span>
                     </a>
                 {% endif %}
             </div>
@@ -329,7 +322,7 @@
 
 
 <div class="card mt-4">
-    <h4 class="h4-responsive card-header">Informationspflicht</h4>
+    <h4 class="h4-responsive card-header">{% trans %}dutyToInform{% endtrans %}</h4>
 
     <div class="card-body">
         <div class="mt-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
@@ -362,7 +355,7 @@
         <div class="row">
             <div class="col-md-3">
                 <p>
-                    Dieser Verarbeitung wurden folgende interne Richtlinien und Arbeitsanweisungen angefügt.
+                    {% trans %}processing.disclaimer{% endtrans %}
                 </p>
             </div>
             <div class="col-md-9">

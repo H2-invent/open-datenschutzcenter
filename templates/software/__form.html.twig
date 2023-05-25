@@ -1,3 +1,4 @@
+{% trans_default_domain 'software' %}
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 <div class="mt-4 row">
     <div class="col-md-3">
@@ -115,7 +116,7 @@
         {{ form_widget(form.purchase) }}
     </div>
 </div>
-<h4 class="h4-responsive mt-4">Verarbeitungen</h4>
+<h4 class="h4-responsive mt-4">{% trans from 'general' %}processings{% endtrans %}</h4>
 <div class="row mb-4">
     <div class="col-md-3">
         {{ form_label(form.vvts) }}
@@ -124,7 +125,7 @@
         {{ form_widget(form.vvts) }}
     </div>
 </div>
-<h4 class="h4-responsive mt-4">Datenweitergabe</h4>
+<h4 class="h4-responsive mt-4">{% trans %}dataSharing{% endtrans %}</h4>
 <div class="row mb-4">
     <div class="col-md-3">
         {{ form_label(form.datenweitergabe) }}

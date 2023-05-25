@@ -48,7 +48,7 @@ class KontakteRepository extends ServiceEntityRepository
     }
     */
 
-    public function findActivByTeam($value)
+    public function findActiveByTeam($value)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.team = :val')

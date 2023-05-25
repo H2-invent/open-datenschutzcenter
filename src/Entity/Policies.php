@@ -12,138 +12,106 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass=PoliciesRepository::class)
  * @Vich\Uploadable
  */
+#[ORM\Entity(repositoryClass: PoliciesRepository::class)]
 class Policies
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="policies")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'policies')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="policies")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'policies')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $activ;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Policies::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Policies::class, cascade: ['persist', 'remove'])]
     private $previous;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $scope;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=VVT::class, inversedBy="policies")
-     * @Assert\NotBlank()
-     */
+    #[ORM\ManyToMany(targetEntity: VVT::class, inversedBy: 'policies')]
+    #[Assert\NotBlank]
     private $processes;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=VVTPersonen::class)
-     * @Assert\NotBlank()
-     */
+    #[ORM\ManyToMany(targetEntity: VVTPersonen::class)]
+    #[Assert\NotBlank]
     private $people;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=VVTDatenkategorie::class)
-     * @Assert\NotBlank()
-     */
+    #[ORM\ManyToMany(targetEntity: VVTDatenkategorie::class)]
+    #[Assert\NotBlank]
     private $categories;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $risk;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $foundation;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="policiesResponsible")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'policiesResponsible')]
+    #[ORM\JoinColumn(nullable: false)]
     private $person;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $protection;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $notes;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $consequences;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $contact;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $status;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedPolicies")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedPolicies')]
     private $assignedUser;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $title;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $reference;
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=true)
      * @var string
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $upload;
 
     /**
@@ -152,14 +120,10 @@ class Policies
      */
     private $uploadFile;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $approved;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $approvedBy;
 
     public function __construct()

@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'vvt_datenkategorie' %}
 
 {% block CTA %}
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_vvtdatenkategorie_index') }}">
-        <span>Zurück</span>
+        <span>{% trans from 'general' %}back{% endtrans %}</span>
     </a>
 {% endblock %}
 
 {% block body %}
-    <h1>Neue Datenkategorie anlegen </h1>
+    <h1>{% trans %}dataCategory.create{% endtrans %}</h1>
 
     {{ include('vvt_datenkategorie/_form.html.twig') }}
 

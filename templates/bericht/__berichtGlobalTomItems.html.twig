@@ -1,4 +1,5 @@
-<p>Getroffene Maßnahmen:</p>
+{% trans_default_domain 'tom' %}
+<p>{% trans %}measuresTaken{% endtrans %}:</p>
 <ul>
     {% for data in daten %}
         {% if data.tomZiel == item %}

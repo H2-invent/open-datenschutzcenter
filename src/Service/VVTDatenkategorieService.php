@@ -4,12 +4,12 @@
 namespace App\Service;
 
 
-use App\Entity\VVT;
-use App\Entity\VVTDatenkategorie;
 use App\Entity\Loeschkonzept;
 use App\Entity\Team;
 use App\Entity\User;
+use App\Entity\VVTDatenkategorie;
 use App\Form\Type\VVTDatenkategorieType;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -25,30 +25,11 @@ class VVTDatenkategorieService
         $this->formBuilder = $formBuilder;
     }
 
-    function createForm(VVTDatenkategorie $vVTDatenkategorie, Team $team)
-    {
-        $form = $this->formBuilder->create(VVTDatenkategorieType::class, $vVTDatenkategorie);
-
-        return $form;
-    }
-
-    function newVVTDatenkategorie(Team $team, User $user)
-    {
-        $vVTDatenkategorie = new VVTDatenkategorie();
-        $vVTDatenkategorie->setTeam($team);
-        $vVTDatenkategorie->setCreatedAt(new \DateTimeImmutable());
-        $vVTDatenkategorie->setActiv(true);
-        $vVTDatenkategorie->setUser($user);
-
-        return $vVTDatenkategorie;
-    }
-
-
     function cloneVVTDatenkategorie(VVTDatenkategorie $vVTDatenkategorie)
     {
         $newVVTDatenkategorie = clone $vVTDatenkategorie;
         $newVVTDatenkategorie->setPrevious($vVTDatenkategorie);
-        $newVVTDatenkategorie->setCreatedAt(new \DateTimeImmutable());
+        $newVVTDatenkategorie->setCreatedAt(new DateTimeImmutable());
         $newVVTDatenkategorie->setActiv(true);
         return $newVVTDatenkategorie;
     }
@@ -58,7 +39,7 @@ class VVTDatenkategorieService
         //first we clone the datenkategorie
         $childVVTDatenkategorie = new VVTDatenkategorie();
         $childVVTDatenkategorie->setCloneOf($vVTDatenkategorie);
-        $childVVTDatenkategorie->setCreatedAt(new \DateTimeImmutable())
+        $childVVTDatenkategorie->setCreatedAt(new DateTimeImmutable())
             ->setPrevious(null)
             ->setName($vVTDatenkategorie->getName())
             ->setDatenarten($vVTDatenkategorie->getDatenarten())
@@ -69,7 +50,7 @@ class VVTDatenkategorieService
         // we clone the löschkonzept
         $loeschkonzept = $vVTDatenkategorie->getLastLoeschkonzept();
         if ($loeschkonzept) {
-            $childLoeschkonzept =new Loeschkonzept();
+            $childLoeschkonzept = new Loeschkonzept();
             $childLoeschkonzept->setUser($loeschkonzept->getUser())
                 ->setTeam($loeschkonzept->getTeam())
                 ->setPrevious(null)
@@ -77,7 +58,7 @@ class VVTDatenkategorieService
                 ->setUser($loeschkonzept->getUser())
                 ->setActiv(false)
                 ->setBeschreibung($loeschkonzept->getBeschreibung())
-                ->setCreateAt(new \DateTimeImmutable())
+                ->setCreateAt(new DateTimeImmutable())
                 ->setLoeschbeauftragter($loeschkonzept->getLoeschbeauftragter())
                 ->setLoeschfrist($loeschkonzept->getLoeschfrist())
                 ->setSpeicherorte($loeschkonzept->getSpeicherorte())
@@ -86,6 +67,13 @@ class VVTDatenkategorieService
             $childVVTDatenkategorie->addLoeschkonzept($childLoeschkonzept);
         }
         return $childVVTDatenkategorie;
+    }
+
+    function createForm(VVTDatenkategorie $vVTDatenkategorie, Team $team)
+    {
+        $form = $this->formBuilder->create(VVTDatenkategorieType::class, $vVTDatenkategorie);
+
+        return $form;
     }
 
     function findLatestKategorie(VVTDatenkategorie $VVTDatenkategorie): ?VVTDatenkategorie
@@ -99,6 +87,17 @@ class VVTDatenkategorieService
             $act = $next;
         }
 
+    }
+
+    function newVVTDatenkategorie(Team $team, User $user)
+    {
+        $vVTDatenkategorie = new VVTDatenkategorie();
+        $vVTDatenkategorie->setTeam($team);
+        $vVTDatenkategorie->setCreatedAt(new DateTimeImmutable());
+        $vVTDatenkategorie->setActiv(true);
+        $vVTDatenkategorie->setUser($user);
+
+        return $vVTDatenkategorie;
     }
 
 }

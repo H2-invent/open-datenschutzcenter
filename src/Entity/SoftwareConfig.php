@@ -10,64 +10,52 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass=SoftwareConfigRepository::class)
  * @Vich\Uploadable
  */
+#[ORM\Entity(repositoryClass: SoftwareConfigRepository::class)]
 class SoftwareConfig
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="text")
      * @Encrypted()
-     * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $name;
 
     /**
-     * @ORM\Column(type="text")
      * @Encrypted()
-     * @Assert\NotBlank()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $config;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Software::class, inversedBy="config")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Software::class, inversedBy: 'config')]
+    #[ORM\JoinColumn(nullable: false)]
     private $software;
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=true)
      * @var string
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $upload;
 
     /**
-     * @Assert\File(
-     *     maxSize = "600k",
-     *     mimeTypes = {"image/jpg", "image/jpeg", "image/gif", "image/png"},
-     *     mimeTypesMessage = "Please upload a valid JP, JPEG, GIF or PNG"
-     * )
      *
      * @Vich\UploadableField(mapping="software", fileNameProperty="upload")
      * @var File
      */
+    #[Assert\File(maxSize: '600k', mimeTypes: ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'], mimeTypesMessage: 'Please upload a valid JP, JPEG, GIF or PNG')]
     private $uploadFile;
 
 

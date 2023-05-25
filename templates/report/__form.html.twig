@@ -1,3 +1,4 @@
+{% trans_default_domain 'report' %}
 {{ form_start(form) }}
 <div {% if not activ or report.invoice %}class="disabled"{% endif %}>
     <div class="mb-4 row">
@@ -11,7 +12,7 @@
 
     <div class="mb-4 row">
         <div class="col-md-3">
-            <p>Zeiten</p>
+            <p>{% trans from 'general'%}times{% endtrans %}</p>
         </div>
         <div class="col-md-3">
             {{ form_label(form.date) }}
@@ -47,7 +48,7 @@
 
     <div class="mb-4 row">
         <div class="col-md-3">
-            Weitere Optionen
+            {% trans %}additionalOptions{% endtrans %}
         </div>
         <div class="col-md-9">
             {{ form_widget(form.invoice) }}

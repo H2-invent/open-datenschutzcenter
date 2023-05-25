@@ -1,17 +1,14 @@
 {% extends 'base.html.twig' %}
-
+{% trans_default_domain 'external' %}
 {% block CTA %}
 
 {% endblock %}
 
 {% block body %}
     <div class="card card-body">
-        <h2 class="h2-responsive">Videokonferenz über {{ team.video }}</h2>
+        <h2 class="h2-responsive">{% trans with {'{video}': team.video} %}videoConference.about{% endtrans %}</h2>
         <div id="meet"></div>
-        <p class="note-info text-center">
-            Es handelt sich bei dieser Jitsi Instanz um eine Installtion auf {{ team.video }}. Durch das Nutzen dieser
-            Instanz werden personenbezogene Daten an diesen Server übertragen.
-        </p>
+        <p class="note-info text-center">{% trans with {'{video}': team.video} %}videoConference.disclaimer{% endtrans %}</p>
     </div>
 {% endblock %}
 
@@ -28,7 +25,7 @@
                 },
                 height: 700,
                 userInfo: {
-                    displayName: '{{ app.user.username }}'
+                    name: '{{ app.user.username }}'
                 },
                 parentNode: document.querySelector('#meet')
             };

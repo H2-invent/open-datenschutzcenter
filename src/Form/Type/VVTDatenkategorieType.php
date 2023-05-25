@@ -22,18 +22,18 @@ class VVTDatenkategorieType extends AbstractType
     {
         $builder
             ->add('name', TextareaType::class, [
-                'label' => 'Name',
+                'label' => 'dataCategoryName',
                 'empty_data' => '',
                 'required' => true,
                 'translation_domain' => 'form',
-                'help' => 'Der Name bezeichnet die Datenkategorie, unter der die dazugehörigen Datenarten zusammengefasst werden sollen.'
+                'help' => 'dataCategoryNameHelp'
             ])
             ->add('datenarten', TextareaType::class, [
-                'label' => 'Datenarten',
+                'label' => 'dataTypes',
                 'empty_data' => '',
                 'required' => true,
                 'translation_domain' => 'form',
-                'help' => 'Hier sollen alle Datenarten eingetragen werden, die sich auf die oben benannte Datenkategorie beziehen.'
+                'help' => 'dataTypesHelp'
             ])
         ;
     }

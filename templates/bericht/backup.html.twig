@@ -1,14 +1,15 @@
 {% extends 'bericht/berichtBase.html.twig' %}
+{% trans_default_domain 'bericht' %}
 
 {% block body %}
     <div style="page-break-before: always;">
-        <h1>Archiviungskonzept nach Software</h1>
+        <h1>{% trans %}archiveConcept.software{% endtrans %}</h1>
         {% for d in daten %}
             {{ include('bericht/__backupBericht.html.twig', {'d':d}) }}
         {% endfor %}
     </div>
     <div style="page-break-before: always;">
-        <h1>Archiviungskonzept nach Verarbeitungen</h1>
+        <h1>{% trans %}archiveConcept.processing{% endtrans %}</h1>
         {% for d in vvt %}
             {{ include('bericht/__backup2Bericht.html.twig', {'d':d}) }}
         {% endfor %}

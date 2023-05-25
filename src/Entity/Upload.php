@@ -9,46 +9,36 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass=FileRepository::class)
  * @Vich\Uploadable
  */
+#[ORM\Entity(repositoryClass: FileRepository::class)]
 class Upload
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
     /**
-     * @ORM\Column(type="string", length=255,nullable=true)
      * @var string
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $file;
 
     /**
-     * @Assert\File(
-     *  maxSize="2M",
-     *  mimeTypes={"text/plain"})
      * @Vich\UploadableField(mapping="profil_picture", fileNameProperty="file")
      * @var File
      */
+    #[Assert\File(maxSize: '2M', mimeTypes: ['text/plain'])]
     private $fileFile;
 
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    #[ORM\Column(type: 'string', length: 50)]
     private $UId;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $amount;
 
     public function getId(): ?int

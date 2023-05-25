@@ -5,31 +5,21 @@ namespace App\Entity;
 use App\Repository\VVTRisikenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=VVTRisikenRepository::class)
- */
+#[ORM\Entity(repositoryClass: VVTRisikenRepository::class)]
 class VVTRisiken
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="vVTRisikens")
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'vVTRisikens')]
     private $team;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
     public function getId(): ?int

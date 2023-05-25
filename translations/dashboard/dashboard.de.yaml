@@ -1,0 +1,34 @@
+myAssignment: Meine Zuweisungen
+tasks: Aufgaben
+academy: Akademie
+audit: Audit
+vvt: VVT
+vvts: VVTs
+dsfa: DSFA
+dw: DW
+showAllAssignments: Alle Zuweisungen anzeigen
+criticalProcesses: Kritische Vorgänge
+auditQuestions: Auditfragen
+openDsfa: Offene DSFA
+dsbMissing: Beurteilung DSB fehlt
+resultMissing: Ergebnis fehlt
+lastChanges: Letzte Änderungen
+processing: Verarbeitungen
+privacyCenter: Datenschutzcenter
+flowChart: Datenflussplan
+departments:
+  all: Alle Abteilungen
+
+approvedBy: Freigegeben von
+contact: KONTAKT
+licenseExpired: LIZENZ ABGELAUFEN
+license: Lizenz
+expired: ABGELAUFEN
+software: Software
+av: AV
+tom: TOM
+guideline: Richtlinie
+noTeamHelp: Für Ihren Benutzer ist kein Team vorhanden.<br>Fragen Sie Ihrem Administrator oder beim Support der H2 invent nach.
+supportRequest: Support anfragen
+logout: Logout
+noTeam: Kein Team vorhanden

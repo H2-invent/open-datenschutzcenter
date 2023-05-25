@@ -1,7 +1,9 @@
 {% if data.assignedUser is null %}
+    {% trans_default_domain 'assign' %}
+
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#assignModal">
-        Zuweisen
+        {% trans from 'general' %}assign{% endtrans %}
     </button>
 
     <!-- Modal -->
@@ -10,7 +12,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="assignModalLabel">Dokument für die weitere Bearbeitung zuweisen</h5>
+                    <h5 class="modal-title" id="assignModalLabel">{% trans %}assignFurtherEditing{% endtrans %}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -31,8 +33,8 @@
         </div>
     </div>
 {% else %}
-    <h4>{% trans %}Zugewiesen an:{% endtrans %} </h4>
+    <h4>{% trans from 'general' %}assignedTo{% endtrans %}: </h4>
     <span class="small">{{ data.assignedUser.email }}</span>  <a class="btn btn-danger btn-sm rounded-circle"
-                                                                 title="Zuweisung entfernen"
+                                                                 title="{{ 'removeAssign'|trans }}"
                                                                  href="{{ path(path,{'id':data.id}) }}">X</a>
 {% endif %}

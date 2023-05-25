@@ -1,24 +1,25 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'vvt_datenkategorie' %}
 
 {% block CTA %}
     <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_vvtdatenkategorie_new') }}">
-        <span>Neue Datenkategorie anlegen</span>
+        <span>{% trans %}dataCategory.create{% endtrans %}</span>
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">Datenkategorien Übersicht</h2>
+    <h2 class="h2-responsive">{% trans %}dataCategory.overview{% endtrans %}</h2>
     <div class="card card-body">
         <div class="table-responsive">
             <table id="data-table" class="table display table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Datenkategorie</th>
-                    <th scope="col">Datenarten</th>
-                    <th scope="col">Löschfrist</th>
-                    <th scope="col">Löschkonzept</th>
-                    <th scope="col">Übersicht</th>
+                    <th scope="col">{% trans from 'general' %}id{% endtrans %}</th>
+                    <th scope="col">{% trans %}dataCategory.word{% endtrans %}</th>
+                    <th scope="col">{% trans %}dataType{% endtrans %}</th>
+                    <th scope="col">{% trans %}deletion.deadline{% endtrans %}</th>
+                    <th scope="col">{% trans %}deletion.concept{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}overview{% endtrans %}</th>
 
                 </tr>
                 </thead>
@@ -37,10 +38,10 @@
                         <td>
                             {% if d.loeschkonzept %}
                                 {% if d.loeschkonzept|last %}
-                                    <a href="{{ path('app_loeschkonzept_show', {'id': d.loeschkonzept|last.id}) }}">anzeigen</a>
+                                    <a href="{{ path('app_loeschkonzept_show', {'id': d.loeschkonzept|last.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
                                 {% else %}
                                     {% for l in d.loeschkonzept %}
-                                    <a href="{{ path('app_loeschkonzept_show', {'id': l.id}) }}">anzeigen</a>
+                                    <a href="{{ path('app_loeschkonzept_show', {'id': l.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
                                     {% endfor %}
                                 {% endif %}
                             {% else %}
@@ -49,7 +50,7 @@
                             
                         </td>
                         <td>
-                            <a href="{{ path('app_vvtdatenkategorie_show', {'id': d.id}) }}">anzeigen</a>
+                            <a href="{{ path('app_vvtdatenkategorie_show', {'id': d.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
                         </td>
                     </tr>
                 {% endfor %}

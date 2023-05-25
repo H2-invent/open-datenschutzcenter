@@ -12,28 +12,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass=FormsRepository::class)
  * @Vich\Uploadable
  */
+#[ORM\Entity(repositoryClass: FormsRepository::class)]
 class Forms
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
      * @var \DateTime
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=true)
      * @var string
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $upload;
 
     /**
@@ -42,81 +40,59 @@ class Forms
      */
     private $uploadFile;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="forms")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'forms')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $title;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $version;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $activ;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="forms")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'forms')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Forms::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Forms::class, cascade: ['persist', 'remove'])]
     private $previous;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Produkte::class)
-     */
+    #[ORM\ManyToMany(targetEntity: Produkte::class)]
     private $products;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=AuditTomAbteilung::class)
-     */
+    #[ORM\ManyToMany(targetEntity: AuditTomAbteilung::class)]
     private $departments;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $status;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedForms")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedForms')]
     private $assignedUser;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $approvedBy;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $approved;
 
     public function __construct()

@@ -16,11 +16,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ConnectDefaultToTeamsCommand extends Command
 {
     protected static $defaultName = 'app:connect:defaultToTeams';
-    protected static $defaultDescription = 'This Command converts default attributes which can be selected in the dropdown field. ONLY USE ONCE. MAKE A BACKUP OF THE DATABASE BEFOE';
+    protected static $defaultDescription = 'This Command converts default attributes which can be selected in the dropdown field. ONLY USE ONCE. MAKE A BACKUP OF THE DATABASE BEFORE EXECUTING.';
     private $connectDefaultService;
     private $em;
 
-    public function __construct($name = null, ConnectDefaultToTeamsService $connectDefaultToTeamsService, EntityManagerInterface $entityManager)
+    public function __construct(ConnectDefaultToTeamsService $connectDefaultToTeamsService, EntityManagerInterface $entityManager, $name = null)
     {
         parent::__construct($name);
         $this->connectDefaultService = $connectDefaultToTeamsService;
@@ -38,19 +38,19 @@ class ConnectDefaultToTeamsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $teams = $this->em->getRepository(Team::class)->findAll();
-        $io->success(sprintf('We connect %d Teams',sizeof($teams)));
+        $io->success(sprintf('We will connect %d Teams', sizeof($teams)));
         $section1 = $output->section();
         $section2 = $output->section();
         $progressBar = new ProgressBar($section1, sizeof($teams));
         $progressBar->start();
 
         foreach ($teams as $data) {
-            $this->connectDefaultService->connectDefault($data,$section2);
+            $this->connectDefaultService->connectDefault($data, $section2);
             $progressBar->advance();
         }
         $progressBar->finish();
 
-        $io->success('We ');
+        $io->success('Success');
 
         return Command::SUCCESS;
     }

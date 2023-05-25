@@ -37,171 +37,7 @@ class TeamService
         $this->translator = $translator;
     }
 
-    function show(Team $team)
-    {
-
-        $data = array();
-
-        $id = 1;
-        $data1 = $this->em->getRepository(VVTPersonen::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Personengruppen');
-        $data[$id]['titleNew'] = $this->translator->trans('Neues Personengruppe hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Personengruppe bearbeiten');
-        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
-        $data[$id]['type'] = $id;
-        foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
-                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
-                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
-                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['default'] = false;
-                if ($item->getTeam() === null) {
-                    $data[$id]['data'][$item->getId()]['default'] = true;
-                }
-            }
-        }
-
-        $id = 3;
-        $data1 = $this->em->getRepository(VVTRisiken::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Risiken der Verarbeitung');
-        $data[$id]['titleNew'] = $this->translator->trans('Neues Risiko hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Risiko bearbeiten');
-        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
-        foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
-                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
-                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
-                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['default'] = false;
-                if ($item->getTeam() === null) {
-                    $data[$id]['data'][$item->getId()]['default'] = true;
-                }
-            }
-        }
-
-        $id = 4;
-        $data1 = $this->em->getRepository(VVTGrundlage::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Gesetzliche Grundlagen für die Verarbeitungen');
-        $data[$id]['titleNew'] = $this->translator->trans('Gesetzliche Grundlage hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Gesetzliche Grundlage bearbeiten');
-        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
-        foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
-                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
-                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
-                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['default'] = false;
-                if ($item->getTeam() === null) {
-                    $data[$id]['data'][$item->getId()]['default'] = true;
-                }
-            }
-        }
-
-        $id = 5;
-        $data1 = $this->em->getRepository(Produkte::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Produkte /Projekte');
-        $data[$id]['titleNew'] = $this->translator->trans('Produkt /Projekt hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Produkt /Projekt bearbeiten');
-        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
-        foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
-                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
-                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
-                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['default'] = false;
-                if ($item->getTeam() === null) {
-                    $data[$id]['data'][$item->getId()]['default'] = true;
-                }
-            }
-        }
-
-
-        $id = 6;
-        $data1 = $this->em->getRepository(VVTStatus::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('VVT Status');
-        $data[$id]['titleNew'] = $this->translator->trans('VVT Status hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('VVT Status bearbeiten');
-        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
-        foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
-                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
-                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
-                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['default'] = false;
-                if ($item->getTeam() === null) {
-                    $data[$id]['data'][$item->getId()]['default'] = true;
-                }
-            }
-        }
-
-        $id = 11;
-        $data1 = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Grundlage für Datenweitergaben');
-        $data[$id]['titleNew'] = $this->translator->trans('Grundlage hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Grundlage bearbeiten');
-        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
-        foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
-                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
-                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
-                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['default'] = false;
-                if ($item->getTeam() === null) {
-                    $data[$id]['data'][$item->getId()]['default'] = true;
-                }
-            }
-        }
-
-        $id = 12;
-        $data1 = $this->em->getRepository(DatenweitergabeStand::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Stände in Datenweitergaben');
-        $data[$id]['titleNew'] = $this->translator->trans('Stand hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Stand bearbeiten');
-        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
-        foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
-                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
-                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
-                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['default'] = false;
-                if ($item->getTeam() === null) {
-                    $data[$id]['data'][$item->getId()]['default'] = true;
-                }
-            }
-        }
-
-
-        $id = 21;
-        $data1 = $this->em->getRepository(AuditTomZiele::class)->findBy(array('activ' => true));
-        $data[$id]['title'] = $this->translator->trans('Schutzziele für Audits');
-        $data[$id]['titleNew'] = $this->translator->trans('Schutzziel hinzufügen');
-        $data[$id]['titleEdit'] = $this->translator->trans('Schutzziel bearbeiten');
-        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
-        foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
-                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
-                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
-                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
-                $data[$id]['data'][$item->getId()]['default'] = false;
-                if ($item->getTeam() === null) {
-                    $data[$id]['data'][$item->getId()]['default'] = true;
-                }
-            }
-        }
-
-
-        return $data;
-    }
-
-    function create($type, $id, Team $team)
+    public function create($type, $id, Team $team): object
     {
         switch ($type) {
             case 1:
@@ -279,8 +115,7 @@ class TeamService
         return $data1;
     }
 
-
-    function delete($type, $id)
+    public function delete($type, $id): ?object
     {
         switch ($type) {
             case 1:
@@ -315,6 +150,170 @@ class TeamService
                 break;
 
         }
+
+        return $data;
+    }
+
+    public function show(Team $team): array
+    {
+
+        $data = array();
+
+        $id = 1;
+        $data1 = $this->em->getRepository(VVTPersonen::class)->findBy(array('activ' => true));
+        $data[$id]['title'] = $this->translator->trans(id: 'groupOfPeople.word', domain: 'service');
+        $data[$id]['titleNew'] = $this->translator->trans(id: 'groupOfPeople.add', domain: 'service');
+        $data[$id]['titleEdit'] = $this->translator->trans(id: 'groupOfPeople.edit', domain: 'service');
+        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
+        $data[$id]['type'] = $id;
+        foreach ($data1 as $item) {
+            if ($item->getTeam() === $team || $item->getTeam() === null) {
+                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
+                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
+                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['default'] = false;
+                if ($item->getTeam() === null) {
+                    $data[$id]['data'][$item->getId()]['default'] = true;
+                }
+            }
+        }
+
+        $id = 3;
+        $data1 = $this->em->getRepository(VVTRisiken::class)->findBy(array('activ' => true));
+        $data[$id]['title'] = $this->translator->trans(id: 'risk.processing', domain: 'service');
+        $data[$id]['titleNew'] = $this->translator->trans(id: 'risk.new', domain: 'service');
+        $data[$id]['titleEdit'] = $this->translator->trans(id: 'risk.edit', domain: 'service');
+        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
+        foreach ($data1 as $item) {
+            if ($item->getTeam() === $team || $item->getTeam() === null) {
+                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
+                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
+                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['default'] = false;
+                if ($item->getTeam() === null) {
+                    $data[$id]['data'][$item->getId()]['default'] = true;
+                }
+            }
+        }
+
+        $id = 4;
+        $data1 = $this->em->getRepository(VVTGrundlage::class)->findBy(array('activ' => true));
+        $data[$id]['title'] = $this->translator->trans(id: 'legalBase.word', domain: 'service');
+        $data[$id]['titleNew'] = $this->translator->trans(id: 'legalBase.add', domain: 'service');
+        $data[$id]['titleEdit'] = $this->translator->trans(id: 'legalBase.edit', domain: 'service');
+        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
+        foreach ($data1 as $item) {
+            if ($item->getTeam() === $team || $item->getTeam() === null) {
+                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
+                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
+                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['default'] = false;
+                if ($item->getTeam() === null) {
+                    $data[$id]['data'][$item->getId()]['default'] = true;
+                }
+            }
+        }
+
+        $id = 5;
+        $data1 = $this->em->getRepository(Produkte::class)->findBy(array('activ' => true));
+        $data[$id]['title'] = $this->translator->trans(id: 'product.word', domain: 'service');
+        $data[$id]['titleNew'] = $this->translator->trans(id: 'product.add', domain: 'service');
+        $data[$id]['titleEdit'] = $this->translator->trans(id: 'product.edit', domain: 'service');
+        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
+        foreach ($data1 as $item) {
+            if ($item->getTeam() === $team || $item->getTeam() === null) {
+                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
+                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
+                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['default'] = false;
+                if ($item->getTeam() === null) {
+                    $data[$id]['data'][$item->getId()]['default'] = true;
+                }
+            }
+        }
+
+
+        $id = 6;
+        $data1 = $this->em->getRepository(VVTStatus::class)->findBy(array('activ' => true));
+        $data[$id]['title'] = $this->translator->trans(id: 'processingState.word', domain: 'service');
+        $data[$id]['titleNew'] = $this->translator->trans(id: 'processingState.add', domain: 'service');
+        $data[$id]['titleEdit'] = $this->translator->trans(id: 'processingState.edit', domain: 'service');
+        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
+        foreach ($data1 as $item) {
+            if ($item->getTeam() === $team || $item->getTeam() === null) {
+                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
+                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
+                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['default'] = false;
+                if ($item->getTeam() === null) {
+                    $data[$id]['data'][$item->getId()]['default'] = true;
+                }
+            }
+        }
+
+        $id = 11;
+        $data1 = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findBy(array('activ' => true));
+        $data[$id]['title'] = $this->translator->trans(id: 'dataTransfer.base.word', domain: 'service');
+        $data[$id]['titleNew'] = $this->translator->trans(id: 'dataTransfer.base.add', domain: 'service');
+        $data[$id]['titleEdit'] = $this->translator->trans(id: 'dataTransfer.base.edit', domain: 'service');
+        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
+        foreach ($data1 as $item) {
+            if ($item->getTeam() === $team || $item->getTeam() === null) {
+                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
+                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
+                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['default'] = false;
+                if ($item->getTeam() === null) {
+                    $data[$id]['data'][$item->getId()]['default'] = true;
+                }
+            }
+        }
+
+        $id = 12;
+        $data1 = $this->em->getRepository(DatenweitergabeStand::class)->findBy(array('activ' => true));
+        $data[$id]['title'] = $this->translator->trans(id: 'dataTransfer.state.word', domain: 'service');
+        $data[$id]['titleNew'] = $this->translator->trans(id: 'dataTransfer.state.add', domain: 'service');
+        $data[$id]['titleEdit'] = $this->translator->trans(id: 'dataTransfer.state.edit', domain: 'service');
+        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
+        foreach ($data1 as $item) {
+            if ($item->getTeam() === $team || $item->getTeam() === null) {
+                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
+                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
+                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['default'] = false;
+                if ($item->getTeam() === null) {
+                    $data[$id]['data'][$item->getId()]['default'] = true;
+                }
+            }
+        }
+
+
+        $id = 21;
+        $data1 = $this->em->getRepository(AuditTomZiele::class)->findBy(array('activ' => true));
+        $data[$id]['title'] = $this->translator->trans(id: 'auditGoal.word', domain: 'service');
+        $data[$id]['titleNew'] = $this->translator->trans(id: 'auditGoal.add', domain: 'service');
+        $data[$id]['titleEdit'] = $this->translator->trans(id: 'auditGoal.edit', domain: 'service');
+        $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
+        foreach ($data1 as $item) {
+            if ($item->getTeam() === $team || $item->getTeam() === null) {
+                $data[$id]['data'][$item->getId()]['id'] = $item->getId();
+                $data[$id]['data'][$item->getId()]['name'] = $item->getName();
+                $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
+                $data[$id]['data'][$item->getId()]['default'] = false;
+                if ($item->getTeam() === null) {
+                    $data[$id]['data'][$item->getId()]['default'] = true;
+                }
+            }
+        }
+
 
         return $data;
     }

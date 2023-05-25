@@ -1,16 +1,17 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'report' %}
 
 {% block CTA %}
     {% if not edit and report.user == app.user %}
         <a href="{{ path('report_edit', {'id':report.id,'edit':1}) }}"
-           class="btn btn-outline-elegant btn-sm">{% trans %}Akitivität bearbeiten{% endtrans %}</a>
+           class="btn btn-outline-elegant btn-sm">{% trans %}work.edit{% endtrans %}</a>
         <a href="{{ path('report_invoice', {'id':report.id}) }}"
-           class="btn btn-primary btn-sm">{% trans %}Akitivität abgerechnet{% endtrans %}</a>
+           class="btn btn-primary btn-sm">{% trans %}work.billed{% endtrans %}</a>
     {% endif %}
 
-    {% if app.user.adminUser == report.team %}
+    {% if report.team in app.user.adminRoles %}
         <a href="{{ path('report_delete', {'id':report.id}) }}"
-           class="btn btn-primary btn-sm">{% trans %}Akitivität löschen{% endtrans %}</a>
+           class="btn btn-primary btn-sm">{% trans %}work.delete{% endtrans %}</a>
     {% endif %}
 {% endblock %}
 

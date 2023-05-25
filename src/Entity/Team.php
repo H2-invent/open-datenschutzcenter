@@ -16,248 +16,166 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=TeamRepository::class)
- * @UniqueEntity("slug")
- */
+#[ORM\Entity(repositoryClass: TeamRepository::class)]
+#[UniqueEntity('slug')]
 class Team
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank]
     private $name;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
+    private $keycloakGroup;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Assert\NotBlank]
     private $activ;
 
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="team")
-     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams')]
     private $members;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AuditTomZiele::class, mappedBy="team")
-     */
-    private $ziele;
+    #[ORM\OneToMany(targetEntity: AuditTomZiele::class, mappedBy: 'team')]
+    private Collection $ziele;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AuditTomAbteilung::class, mappedBy="team")
-     */
-    private $abteilungen;
+    #[ORM\OneToMany(targetEntity: AuditTomAbteilung::class, mappedBy: 'team')]
+    private Collection $abteilungen;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AuditTom::class, mappedBy="team")
-     */
-    private $auditToms;
+    #[ORM\OneToMany(targetEntity: AuditTom::class, mappedBy: 'team')]
+    private Collection $auditToms;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Kontakte::class, mappedBy="team", orphanRemoval=true)
-     */
-    private $kontakte;
+    #[ORM\OneToMany(targetEntity: Kontakte::class, mappedBy: 'team', orphanRemoval: true)]
+    private Collection $kontakte;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVT::class, mappedBy="team")
-     */
-    private $vvts;
+    #[ORM\OneToMany(targetEntity: VVT::class, mappedBy: 'team')]
+    private Collection $vvts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Datenweitergabe::class, mappedBy="team")
-     */
-    private $datenweitergaben;
+    #[ORM\OneToMany(targetEntity: Datenweitergabe::class, mappedBy: 'team')]
+    private Collection $datenweitergaben;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $strasse;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $plz;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $stadt;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $email;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $telefon;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $dsb;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $ceo;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $clonedAt;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=AkademieKurse::class, mappedBy="team")
-     */
+    #[ORM\ManyToMany(targetEntity: AkademieKurse::class, mappedBy: 'team')]
     private $kurse;
 
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="akademieUser")
-     */
-    private $akademieUsers;
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'akademieUser')]
+    private Collection $akademieUsers;
 
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="adminUser")
-     */
+    #[ORM\JoinTable(name: 'team_admin')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'adminRoles')]
     private $admins;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Tom::class, mappedBy="team")
-     */
-    private $toms;
+    #[ORM\OneToMany(targetEntity: Tom::class, mappedBy: 'team')]
+    private Collection $toms;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Vorfall::class, mappedBy="team")
-     */
-    private $vorfalls;
+    #[ORM\OneToMany(targetEntity: Vorfall::class, mappedBy: 'team')]
+    private Collection $vorfalls;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Produkte::class, mappedBy="team")
-     */
-    private $produktes;
+    #[ORM\OneToMany(targetEntity: Produkte::class, mappedBy: 'team')]
+    private Collection $produktes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Forms::class, mappedBy="team")
-     */
-    private $forms;
+    #[ORM\OneToMany(targetEntity: Forms::class, mappedBy: 'team')]
+    private Collection $forms;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Policies::class, mappedBy="team")
-     */
-    private $policies;
+    #[ORM\OneToMany(targetEntity: Policies::class, mappedBy: 'team')]
+    private Collection $policies;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $signature;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Software::class, mappedBy="team")
-     */
-    private $software;
+    #[ORM\OneToMany(targetEntity: Software::class, mappedBy: 'team')]
+    private Collection $software;
+
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'team')]
+    private Collection $tasks;
 
     /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="team")
-     */
-    private $tasks;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
-     * @Assert\Url()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Url]
     private $externalLink;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $video;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ClientRequest::class, mappedBy="team")
-     */
-    private $clientRequests;
+    #[ORM\OneToMany(targetEntity: ClientRequest::class, mappedBy: 'team')]
+    private Collection $clientRequests;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $slug;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="teamDsb")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'teamDsb')]
     private $dsbUser;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="team")
-     */
-    private $reports;
+    #[ORM\OneToMany(targetEntity: Report::class, mappedBy: 'team')]
+    private Collection $reports;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTDatenkategorie::class, mappedBy="team")
-     */
-    private $vVTDatenkategories;
+    #[ORM\OneToMany(targetEntity: VVTDatenkategorie::class, mappedBy: 'team')]
+    private Collection $vVTDatenkategories;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTPersonen::class, mappedBy="team")
-     */
-    private $vVTPersonens;
+    #[ORM\OneToMany(targetEntity: VVTPersonen::class, mappedBy: 'team')]
+    private Collection $vVTPersonens;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTRisiken::class, mappedBy="team")
-     */
-    private $vVTRisikens;
+    #[ORM\OneToMany(targetEntity: VVTRisiken::class, mappedBy: 'team')]
+    private Collection $vVTRisikens;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTGrundlage::class, mappedBy="team")
-     */
-    private $vVTGrundlages;
+    #[ORM\OneToMany(targetEntity: VVTGrundlage::class, mappedBy: 'team')]
+    private Collection $vVTGrundlages;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $industry;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $specialty;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTStatus::class, mappedBy="team")
-     */
-    private $vVTStatuses;
+    #[ORM\OneToMany(targetEntity: VVTStatus::class, mappedBy: 'team')]
+    private Collection $vVTStatuses;
 
-    /**
-     * @ORM\OneToMany(targetEntity=DatenweitergabeGrundlagen::class, mappedBy="team")
-     */
-    private $datenweitergabeGrundlagens;
+    #[ORM\OneToMany(targetEntity: DatenweitergabeGrundlagen::class, mappedBy: 'team')]
+    private Collection $datenweitergabeGrundlagens;
 
-    /**
-     * @ORM\OneToMany(targetEntity=DatenweitergabeStand::class, mappedBy="team")
-     */
-    private $datenweitergabeStands;
+    #[ORM\OneToMany(targetEntity: DatenweitergabeStand::class, mappedBy: 'team')]
+    private Collection $datenweitergabeStands;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Loeschkonzept::class, mappedBy="team")
-     */
-    private $loeschkonzepts;
-
+    #[ORM\OneToMany(targetEntity: Loeschkonzept::class, mappedBy: 'team')]
+    private Collection $loeschkonzepts;
+    
+    #[ORM\OneToMany(targetEntity: Questionnaire::class, mappedBy: 'team')]
+    private Collection $questionnaires;
 
     public function __construct()
     {
@@ -288,9 +206,10 @@ class Team
         $this->datenweitergabeGrundlagens = new ArrayCollection();
         $this->datenweitergabeStands = new ArrayCollection();
         $this->loeschkonzepts = new ArrayCollection();
+        $this->questionnaires = new ArrayCollection();
     }
 
-    public function __toString(): ?string
+    public function __toString(): string
     {
         return $this->name;
     }
@@ -309,6 +228,18 @@ class Team
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getKeycloakGroup(): ?string
+    {
+        return $this->keycloakGroup ? : $this->name;
+    }
+
+    public function setKeycloakGroup(?string $keycloakGroup): self
+    {
+        $this->keycloakGroup = $keycloakGroup;
 
         return $this;
     }
@@ -337,7 +268,7 @@ class Team
     {
         if (!$this->members->contains($member)) {
             $this->members[] = $member;
-            $member->setTeam($this);
+            $member->addTeam($this);
         }
 
         return $this;
@@ -348,9 +279,7 @@ class Team
         if ($this->members->contains($member)) {
             $this->members->removeElement($member);
             // set the owning side to null (unless already changed)
-            if ($member->getTeam() === $this) {
-                $member->setTeam(null);
-            }
+            $member->removeTeam($this);
         }
 
         return $this;
@@ -709,7 +638,6 @@ class Team
     {
         if (!$this->admins->contains($admin)) {
             $this->admins[] = $admin;
-            $admin->setAdminUser($this);
         }
 
         return $this;
@@ -719,10 +647,6 @@ class Team
     {
         if ($this->admins->contains($admin)) {
             $this->admins->removeElement($admin);
-            // set the owning side to null (unless already changed)
-            if ($admin->getAdminUser() === $this) {
-                $admin->setAdminUser(null);
-            }
         }
 
         return $this;
@@ -1331,4 +1255,67 @@ class Team
         return $this;
     }
 
+    /**
+     * @return Collection<int, Questionnaire>
+     */
+    public function getQuestionnaires(): Collection
+    {
+        return $this->questionnaires;
+    }
+
+    public function addQuestionnaire(Questionnaire $questionnaire): self
+    {
+        if (!$this->questionnaires->contains($questionnaire)) {
+            $this->questionnaires[] = $questionnaire;
+            $questionnaire->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestionnaire(Questionnaire $questionnaire): self
+    {
+        if ($this->questionnaires->removeElement($questionnaire)) {
+            // set the owning side to null (unless already changed)
+            if ($questionnaire->getTeam() === $this) {
+                $questionnaire->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * returns list of elements that prevent team deletion
+     * @return array
+     */
+    public function getDeleteBlockers(): array
+    {
+        $blockers = [];
+        if (count($this->ziele)) $blockers[] = 'auditGoals';
+        if (count($this->abteilungen)) $blockers[] = 'departments';
+        if (count($this->auditToms)) $blockers[] = 'audits';
+        if (count($this->kontakte)) $blockers[] = 'contacts';
+        if (count($this->vvts)) $blockers[] = 'processingActivities';
+        if (count($this->datenweitergaben)) $blockers[] = 'dataTransfers';
+        if (count($this->kurse)) $blockers[] = 'academyCourses';
+        if (count($this->akademieUsers)) $blockers[] = 'academyUsers';
+        if (count($this->toms)) $blockers[] = 'toms';
+        if (count($this->vorfalls)) $blockers[] = 'incidents';
+        if (count($this->produktes)) $blockers[] = 'products';
+        if (count($this->forms)) $blockers[] = 'forms';
+        if (count($this->policies)) $blockers[] = 'policies';
+        if (count($this->software)) $blockers[] = 'software';
+        if (count($this->tasks)) $blockers[] = 'tasks';
+        if (count($this->clientRequests)) $blockers[] = 'clientRequests';
+        if (count($this->reports)) $blockers[] = 'reports';
+        if (count($this->vVTDatenkategories)) $blockers[] = 'dataCategories';
+        if (count($this->vVTPersonens)) $blockers[] = 'groupsOfPeople';
+        if (count($this->vVTRisikens)) $blockers[] = 'processingRisks';
+        if (count($this->vVTGrundlages)) $blockers[] = 'dataTransferBases';
+        if (count($this->vVTStatuses)) $blockers[] = 'processingStatuses';
+        if (count($this->datenweitergabeStands)) $blockers[] = 'dataTransferStatuses';
+        if (count($this->loeschkonzepts)) $blockers[] = 'deleteConcepts';
+        return $blockers;
+    }
 }

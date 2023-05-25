@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\AkademieBuchungen;
 use App\Service\NotificationService;
+use DateTime;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,12 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CronController extends AbstractController
 {
-    /**
-     * @Route("/cron/akademie_update", name="cron_akademie")
-     */
+    #[Route(path: '/cron/akademie_update', name: 'cron_akademie')]
     public function updateCronAkademie(NotificationService $notificationService, Request $request, LoggerInterface $logger)
     {
-        $today = new \DateTime();
+        $today = new DateTime();
 
         if ($request->get('token') !== $this->getParameter('cronToken')) {
             $message = ['error' => true, 'hinweis' => 'Token fehlerhaft', 'token' => $request->get('token'), 'ip' => $request->getClientIp()];
@@ -36,14 +35,16 @@ class CronController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $countNeu = 0;
         $countWdh = 0;
+
+        // TODO: How should users with multiple teams be handled?
         foreach ($buchungen as $buchung) {
             if (!$buchung->getInvitation()) {
-                $content = $this->renderView('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeam()]);
+                $content = $this->renderView('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()->get(0)]);
                 $buchung->setInvitation(true);
                 $em->persist($buchung);
                 ++$countNeu;
             } else {
-                $content = $this->renderView('email/errinnerungKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeam()]);
+                $content = $this->renderView('email/errinnerungKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()->get(0)]);
                 ++$countWdh;
             }
             $notificationService->sendNotificationAkademie($buchung, $content);

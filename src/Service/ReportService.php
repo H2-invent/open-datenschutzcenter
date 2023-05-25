@@ -11,6 +11,7 @@ namespace App\Service;
 
 use App\Entity\Report;
 use App\Entity\Team;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -27,9 +28,9 @@ class ReportService
     {
         $report = new Report();
         $report->setTeam($team);
-        $report->setDate(new \DateTime());
+        $report->setDate(new DateTime());
         $report->setActiv(true);
-        $report->setCreatedAt(new \DateTime());
+        $report->setCreatedAt(new DateTime());
 
         return $report;
     }

@@ -1,0 +1,9 @@
+dataCategory:
+  word: Datenkategorie
+  edit: Datenkategorie bearbeiten
+  create: Neue Datenkategorie anlegen
+  overview: Datenkategorien Übersicht
+dataType: Datenarten
+deletion:
+  deadline: Löschfrist
+  concept: Löschkonzept

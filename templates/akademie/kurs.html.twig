@@ -1,23 +1,23 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'academy' %}
 
 {% block body %}
     <h2 class="h2-responsive">{{ kurs.title }}</h2>
     <div class="card card-body text-center">
         {% if kurs.type == 0 %}
-            {% if not buchung.abgeschlossen %}<p class="alert-info">Dieses Video kann nicht gestoppt werden. Am
-                Ende des Videos können Sie den Kurs als abgeschlossen markieren.</p>{% endif %}
+            {% if not buchung.abgeschlossen %}<p class="alert-info">{% trans %}video.uninterruptible{% endtrans %}</p>{% endif %}
             <div class="offset-md-2 col-md-8">
                 <video style="width: 100%; text-align: center" {% if buchung.abgeschlossen %}
                     controls{% else %}autoplay{% endif %} id="akademie_video_kurs">
                     <source src="{{ kurs.video }}" type="video/mp4">
-                    Ihr Browser kann dieses Video nicht wiedergeben.
+                    {% trans %}video.browserError{% endtrans %}
                 </video>
             </div>
         {% elseif kurs.type == 1 %}
-            <p class="alert-warning">Dieses Video wird von Vimeo gestreamt.</p>
+            <p class="alert-warning">{% trans %}video.vimeo{% endtrans %}</p>
             <div class="btn-block">
-                <a class="btn btn-sm btn-primary startBtn">{% trans %}Video starten{% endtrans %}</a>
-                <a class="btn btn-sm btn-secondary pauseBtn disabled">{% trans %}Video pausieren{% endtrans %}</a>
+                <a class="btn btn-sm btn-primary startBtn">{% trans %}video.start{% endtrans %}</a>
+                <a class="btn btn-sm btn-secondary pauseBtn disabled">{% trans %}video.pause{% endtrans %}</a>
             </div>
             <div class="offset-md-2 col-md-8" id="vimeoVideo"></div>
 
@@ -30,25 +30,23 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content note-warning">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="finishModalLabel">Kurs abgeschließen</h5>
+                            <h5 class="modal-title" id="finishModalLabel">{% trans %}lesson.finish{% endtrans %}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <p>
-                                Sie haben diesen Kurs komplett angeschaut. Klicken Sie auf den Button "Kurs
-                                abschließen" um Ihren Abschluss an Ihren Datenschutzbeauftragen zu melden.
+                                {% trans %}lesson.disclaimer.finish{% endtrans %}
                             </p>
                             <p>
-                                Nach Anschluss des Kurses können Sie das Video erneut, diesmal mit Pausieren und
-                                Vorspulen, anschauen.
+                                {% trans %}lesson.disclaimer.repeat{% endtrans %}
                             </p>
 
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-lg btn-primary sendButton"
-                                    disabled>{% trans %}Kurs abschließen{% endtrans %}</button>
+                                    disabled>{% trans from 'questionnaire' %}participation.start{% endtrans %}</button>
                         </div>
                     </div>
                 </div>
@@ -66,7 +64,7 @@
         <script>
             var vid = document.getElementById("akademie_video_kurs");
             vid.onended = function () {
-                $('.sendButton').wrap('<a href="{{ path('akademie_kurs_finish',{'id':buchung.finishedID}) }}">');
+                $('.sendButton').wrap('<a href="{{ path('participation_start',{'id':buchung.participations[0].id}) }}">');
                 $('.sendButton').prop('disabled', false);
                 $('#finishModal').modal('show', true);
             };
@@ -86,7 +84,7 @@
             var videoPlayer = new Vimeo.Player('vimeoVideo', options);
             {% if not buchung.abgeschlossen %}
             videoPlayer.on('ended', function () {
-                $('.sendButton').wrap('<a href="{{ path('akademie_kurs_finish',{'id':buchung.finishedID}) }}">');
+                $('.sendButton').wrap('<a href="{{ path('participation_start',{'id':buchung.participations[0].id}) }}">');
                 $('.sendButton').prop('disabled', false);
                 $('#finishModal').modal('show', true);
             });

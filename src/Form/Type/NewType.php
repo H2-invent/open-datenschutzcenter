@@ -21,8 +21,8 @@ class NewType extends AbstractType
     {
 
         $builder
-            ->add('name', TextType::class, ['label' => 'Neu', 'required' => true, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('name', TextType::class, ['label' => 'new', 'required' => true, 'translation_domain' => 'form'])
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

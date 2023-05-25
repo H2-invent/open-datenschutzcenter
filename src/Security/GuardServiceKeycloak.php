@@ -3,15 +3,15 @@
 
 namespace App\Security;
 
-
-use App\Entity\FosUser;
-use App\Entity\MyUser;
+use App\Entity\Settings;
+use App\Entity\Team;
 use App\Entity\User;
+use App\Repository\TeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\Provider\KeycloakClient;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
-use League\OAuth2\Client\Provider\GoogleUser;
+use Stevenmaguire\OAuth2\Client\Provider\KeycloakResourceOwner;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -29,13 +29,15 @@ class GuardServiceKeycloak extends SocialAuthenticator
     private $router;
     private $tokenStorage;
     private $userManager;
+    private $teamRepository;
 
-    public function __construct(TokenStorageInterface $tokenStorage, ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router)
+    public function __construct(TokenStorageInterface $tokenStorage, ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router, TeamRepository $teamRepository)
     {
         $this->clientRegistry = $clientRegistry;
         $this->em = $em;
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;
+        $this->teamRepository = $teamRepository;
     }
 
     public function supports(Request $request)
@@ -52,56 +54,73 @@ class GuardServiceKeycloak extends SocialAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-
-        /** @var KeycloakUser $keycloakUser */
+        /** @var KeycloakResourceOwner $keycloakUser */
         $keycloakUser = $this->getauth0Client()->fetchUserFromToken($credentials);
         $email = $keycloakUser->getEmail();
         $id = $keycloakUser->getId();
-        $firstName = $keycloakUser->toArray()['given_name'];
-        $lastName = $keycloakUser->toArray()['family_name'];
-        // 1) have they logged in with keycloak befor then login the user
-        $existingUser = $this->em->getRepository(User::class)->findOneBy(array('keycloakId' => $id));
-        if ($existingUser) {
-            $existingUser->setLastLogin(new \DateTime());
-            $existingUser->setEmail($email);
-            $existingUser->setFirstName($firstName);
-            $existingUser->setLastName($lastName);
-            $existingUser->setUsername($email);
-            $this->em->persist($existingUser);
-            $this->em->flush();
-            return $existingUser;
+
+        // 1) the user has logged in with keycloak before
+        $user = $this->em->getRepository(User::class)->findOneBy(array('keycloakId' => $id));
+
+        // 2) it is an old user who has never logged in from keycloak
+        if (!$user) {
+            $user = $this->em->getRepository(User::class)->findOneBy(array('email' => $email));
         }
 
-        // 1) it is an old USer from FOS USer time never loged in from keycloak
-        $existingUser = null;
-        $existingUser = $this->em->getRepository(User::class)->findOneBy(array('email' => $email));
-        if ($existingUser) {
-            $existingUser->setKeycloakId($id);
-            $existingUser->setLastLogin(new \DateTime());
-            $existingUser->setEmail($email);
-            $existingUser->setFirstName($firstName);
-            $existingUser->setLastName($lastName);
-            $existingUser->setUsername($email);
-            $this->em->persist($existingUser);
-            $this->em->flush();
-            return $existingUser;
+        // 3) the user has never logged in with this email address or keycloak
+        if (!$user) {
+            $user = new User();
+            $user->setPassword('123');
+            $user->setUuid($email);
+            $user->setCreatedAt(new \DateTime());
         }
 
-        // the user never logged in with this email adress or keycloak
-        $newUser = new User();
-        $newUser->setPassword('123')
-            ->setFirstName($firstName)
-            ->setLastName($lastName)
-            ->setUuid($email)
-            ->setEmail($email)
-            ->setCreatedAt(new \DateTime())
-            ->setLastLogin(new \DateTime())
-            ->setKeycloakId($id)
-            ->setUsername($email);
-        $this->em->persist($newUser);
+        $this->persistUser($user, $keycloakUser);
+        return $user;
+    }
+
+    /**
+     * @param $user
+     * @param $keycloakUser
+     */
+    private function getTeamsFromKeycloakGroups($user, $keycloakUser)
+    {
+        $settings = $this->em->getRepository(Settings::class)->findOne();
+
+        if (isset($keycloakUser->toArray()['groups']) && $settings && $settings->getUseKeycloakGroups()) {
+            $userTeams = [];
+            $groups = $keycloakUser->toArray()['groups'];
+            $teams = $this->teamRepository->findAll();
+
+            foreach ($groups as $keycloakGroup) {
+                foreach($teams as $team) {
+                    if ($team->getKeycloakGroup() === $keycloakGroup) {
+                        $userTeams[] = $team;
+                    }
+                }
+            }
+            $user->setTeams($userTeams);
+        }
+    }
+
+    private function persistUser($user, $keycloakUser) {
+        $email = $keycloakUser->getEmail();
+        $id = $keycloakUser->getId();
+
+        $user->setLastLogin(new \DateTime());
+        $user->setEmail($email);
+        $user->setUsername($email);
+        $user->setKeycloakId($id);
+        $this->getTeamsFromKeycloakGroups($user, $keycloakUser);
+        if (isset($keycloakUser->toArray()['given_name'])) {
+            $user->setFirstName($keycloakUser->toArray()['given_name']);
+        }
+        if (isset($keycloakUser->toArray()['family_name'])) {
+            $user->setLastName($keycloakUser->toArray()['family_name']);
+        }
+        $this->em->persist($user);
         $this->em->flush();
-        return $newUser;
-
+        return $user;
     }
 
     /**

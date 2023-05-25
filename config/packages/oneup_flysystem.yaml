@@ -3,45 +3,45 @@ oneup_flysystem:
     adapters:
         asset_adapter:
             local:
-                directory: '%kernel.project_dir%/public%app.path.images%'
+              location: '%kernel.project_dir%/public%app.path.images%'
         intern_adapter:
             local:
-              directory: '%kernel.project_dir%/data'
+              location: '%kernel.project_dir%/data'
         policy_adapter:
           local:
-            directory: '%kernel.project_dir%/data/policies'
+            location: '%kernel.project_dir%/data/policies'
         forms_adapter:
           local:
-            directory: '%kernel.project_dir%/data/forms'
+            location: '%kernel.project_dir%/data/forms'
         daten_adapter:
           local:
-            directory: '%kernel.project_dir%/data/daten'
+            location: '%kernel.project_dir%/data/daten'
         software_adapter:
           local:
-            directory: '%kernel.project_dir%/data/software'
+            location: '%kernel.project_dir%/data/software'
 
     filesystems:
-        asset_filesystem:
+        asset:
             adapter: asset_adapter
             alias: League\Flysystem\Asset
-            mount: asset_filesystem
-        intern_fileSystem:
+            mount: asset
+        intern:
             adapter: intern_adapter
             alias: League\Flysystem\Intern
-            mount: intern_adapter
-        policies_fileSystem:
+            mount: intern
+        policies:
             adapter: policy_adapter
             alias: League\Flysystem\Intern
-            mount: policy_adapter
-        forms_fileSystem:
+            mount: policies
+        forms:
           adapter: forms_adapter
           alias: League\Flysystem\Intern
-          mount: forms_adapter
-        daten_fileSystem:
+          mount: forms
+        daten:
           adapter: daten_adapter
           alias: League\Flysystem\Intern
-          mount: daten_adapter
-        software_fileSystem:
+          mount: daten
+        software:
           adapter: software_adapter
           alias: League\Flysystem\Intern
-          mount: software_adapter
+          mount: software

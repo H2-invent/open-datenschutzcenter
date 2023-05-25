@@ -26,19 +26,19 @@ class VorfallType extends AbstractType
     {
 
         $builder
-            ->add('gemeldet', CheckboxType::class, ['label' => 'Datenschutzvorfall der Landesdatenschutzbehörde gemeldet. Wenn ja, die meldende Person in getroffene Maßnahmen eintragen', 'required' => false, 'translation_domain' => 'form'])
-            ->add('betroffeneGemeldet', CheckboxType::class, ['label' => 'Datenschutzvorfall an die betroffenen Personen gemeldet', 'required' => false, 'translation_domain' => 'form'])
-            ->add('auftraggeberGemeldet', CheckboxType::class, ['label' => 'Datenschutzvorfall an die Auftraggeber gemeldet', 'required' => false, 'translation_domain' => 'form'])
-            ->add('fakten', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Fakten zum Datenschutzvorfall', 'required' => true, 'translation_domain' => 'form'])
-            ->add('auswirkung', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Auswirkungen und Folgen der Datenschutzverletzung', 'required' => true, 'translation_domain' => 'form'])
-            ->add('massnahmen', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Getroffene Maßnahmen', 'required' => true, 'translation_domain' => 'form'])
-            ->add('datum', DateTimeType::class, ['label' => 'Datenschutzvorfall bemerkt', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form'])
+            ->add('gemeldet', CheckboxType::class, ['label' => 'incidentReportedToStateAgency', 'required' => false, 'translation_domain' => 'form'])
+            ->add('betroffeneGemeldet', CheckboxType::class, ['label' => 'incidentReportedToAffectedPersons', 'required' => false, 'translation_domain' => 'form'])
+            ->add('auftraggeberGemeldet', CheckboxType::class, ['label' => 'incidentReportedToClients', 'required' => false, 'translation_domain' => 'form'])
+            ->add('fakten', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'incidentFacts', 'required' => true, 'translation_domain' => 'form'])
+            ->add('auswirkung', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'incidentConsequences', 'required' => true, 'translation_domain' => 'form'])
+            ->add('massnahmen', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'incidentMeasures', 'required' => true, 'translation_domain' => 'form'])
+            ->add('datum', DateTimeType::class, ['label' => 'incidentDiscovered', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text'])
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'save', 'translation_domain' => 'form'])
             ->add('personen', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTPersonen::class,
                 'choices' => $options['personen'],
-                'label' => 'Betroffene Personenkategorien',
+                'label' => 'affectedPersons',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'attr' => [
@@ -50,7 +50,7 @@ class VorfallType extends AbstractType
                 'choice_label' => 'name',
                 'class' => VVTDatenkategorie::class,
                 'choices' => $options['daten'],
-                'label' => 'Betroffene Datenkategorien',
+                'label' => 'affectedDataCategories',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'attr' => [

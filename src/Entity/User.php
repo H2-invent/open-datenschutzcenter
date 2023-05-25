@@ -9,212 +9,129 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\UserBase as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="fos_user")
- */
+#[ORM\Table(name: 'user')]
+#[ORM\Entity]
 class User extends BaseUser
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @Assert\NotBlank(message="fos_user.password.blank", groups={"Registration", "ResetPassword", "ChangePassword"})
-     * @Assert\Length(min=8,
-     *     minMessage="fos_user.password.short",
-     *     groups={"Registration", "Profile", "ResetPassword", "ChangePassword"})
-     */
+    #[Assert\NotBlank(message: 'fos_user.password.blank', groups: ['Registration', 'ResetPassword', 'ChangePassword'])]
+    #[Assert\Length(min: 8, minMessage: 'fos_user.password.short', groups: ['Registration', 'Profile', 'ResetPassword', 'ChangePassword'])]
     protected $plainPassword;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="members")
-     */
-    private $team;
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'members')]
+    private $teams;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Datenweitergabe::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Datenweitergabe::class, mappedBy: 'user')]
     private $datenweitergabes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVT::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: VVT::class, mappedBy: 'user')]
     private $vVTs;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AuditTom::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: AuditTom::class, mappedBy: 'user')]
     private $auditToms;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTDsfa::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: VVTDsfa::class, mappedBy: 'user')]
     private $vVTDsfas;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="akademieUsers")
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'akademieUsers')]
     private $akademieUser;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="admins")
-     */
-    private $adminUser;
+    #[ORM\ManyToMany(targetEntity: Team::class, mappedBy: 'admins')]
+    private $adminRoles;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVT::class, mappedBy="userContract")
-     */
+    #[ORM\OneToMany(targetEntity: VVT::class, mappedBy: 'userContract')]
     private $myVvts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Tom::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Tom::class, mappedBy: 'user')]
     private $toms;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Vorfall::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Vorfall::class, mappedBy: 'user')]
     private $vorfalls;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AkademieKurse::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: AkademieKurse::class, mappedBy: 'user')]
     private $akademieKurses;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVT::class, mappedBy="assignedUser")
-     */
+    #[ORM\OneToMany(targetEntity: VVT::class, mappedBy: 'assignedUser')]
     private $assignedVvts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AuditTom::class, mappedBy="assignedUser")
-     */
+    #[ORM\OneToMany(targetEntity: AuditTom::class, mappedBy: 'assignedUser')]
     private $assignedAudits;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Datenweitergabe::class, mappedBy="assignedUser")
-     */
+    #[ORM\OneToMany(targetEntity: Datenweitergabe::class, mappedBy: 'assignedUser')]
     private $assignedDatenweitergaben;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTDsfa::class, mappedBy="assignedUser")
-     */
+    #[ORM\OneToMany(targetEntity: VVTDsfa::class, mappedBy: 'assignedUser')]
     private $assignedDsfa;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Forms::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Forms::class, mappedBy: 'user')]
     private $forms;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Policies::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Policies::class, mappedBy: 'user')]
     private $policies;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Policies::class, mappedBy="person")
-     */
+    #[ORM\OneToMany(targetEntity: Policies::class, mappedBy: 'person')]
     private $policiesResponsible;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Policies::class, mappedBy="assignedUser")
-     */
+    #[ORM\OneToMany(targetEntity: Policies::class, mappedBy: 'assignedUser')]
     private $assignedPolicies;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Forms::class, mappedBy="assignedUser")
-     */
+    #[ORM\OneToMany(targetEntity: Forms::class, mappedBy: 'assignedUser')]
     private $assignedForms;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Software::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Software::class, mappedBy: 'user')]
     private $software;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Software::class, mappedBy="assignedUser")
-     */
+    #[ORM\OneToMany(targetEntity: Software::class, mappedBy: 'assignedUser')]
     private $assignedSoftware;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Vorfall::class, mappedBy="assignedUser")
-     */
+    #[ORM\OneToMany(targetEntity: Vorfall::class, mappedBy: 'assignedUser')]
     private $assignedVorfalls;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="assignedUser")
-     */
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'assignedUser')]
     private $tasks;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ClientRequest::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: ClientRequest::class, mappedBy: 'user')]
     private $clientRequests;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ClientRequest::class, mappedBy="assignedUser")
-     */
+    #[ORM\OneToMany(targetEntity: ClientRequest::class, mappedBy: 'assignedUser')]
     private $assignedRequests;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="dsbUser")
-     */
+    #[ORM\OneToMany(targetEntity: Team::class, mappedBy: 'dsbUser')]
     private $teamDsb;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $email;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $keycloakId;
 
-    /**
-     * @ORM\Column(type="datetime",nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $username;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $lastLogin;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $firstName;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $lastName;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $registerId;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Loeschkonzept::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: Loeschkonzept::class, mappedBy: 'user')]
     private $loeschkonzepts;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTDatenkategorie::class, mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: VVTDatenkategorie::class, mappedBy: 'user')]
     private $vVTDatenkategories;
-
 
     public function __construct()
     {
@@ -246,16 +163,45 @@ class User extends BaseUser
         $this->vVTDatenkategories = new ArrayCollection();
     }
 
-    public function getTeam(): ?Team
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeams(): Collection
     {
-        return $this->team;
+        return $this->teams;
     }
 
-    public function setTeam(?Team $team): self
+    public function setTeams(?array $teams): self
     {
-        $this->team = $team;
+        $this->teams = $teams;
 
         return $this;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if(!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->contains($team)) {
+            $this->teams->removeElement($team);
+        }
+
+        return $this;
+    }
+
+    public function hasTeam(Team $team = null): bool
+    {
+        if ($team) {
+            return $this->teams->contains($team);
+        }
+        return count($this->teams) > 0;
     }
 
     /**
@@ -394,16 +340,21 @@ class User extends BaseUser
         return $this;
     }
 
-    public function getAdminUser(): ?Team
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getAdminRoles(): Collection
     {
-        return $this->adminUser;
+        return $this->adminRoles;
     }
 
-    public function setAdminUser(?Team $adminUser): self
+    public function hasAdminRole(Team $team = null): bool
     {
-        $this->adminUser = $adminUser;
-
-        return $this;
+        if ($team && $this->adminRoles) {
+            return $this->adminRoles->contains($team);
+        }
+        return count($this->adminRoles) > 0;
     }
 
     /**
@@ -609,6 +560,7 @@ class User extends BaseUser
 
         return $this;
     }
+
 
     public function removeAssignedDatenweitergaben(Datenweitergabe $assignedDatenweitergaben): self
     {
@@ -1062,6 +1014,11 @@ class User extends BaseUser
         return $this;
     }
 
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
     public function setUsername(?string $username): self
     {
         $this->username = $username;
@@ -1176,5 +1133,4 @@ class User extends BaseUser
 
         return $this;
     }
-
 }

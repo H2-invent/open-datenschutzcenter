@@ -18,48 +18,52 @@ use App\Entity\User;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Form\Type\DatenweitergabeType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 
 class DatenweitergabeService
 {
-    private $em;
-    private $formBuilder;
+    const PREFIX_PROCESSING = 'AVV-';
+    const PREFIX_TRANSFER = 'DW-';
 
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder)
+    public function __construct(
+        private EntityManagerInterface $em,
+        private FormFactoryInterface   $formBuilder,
+        private CurrentTeamService     $currentTeamService,
+
+    )
     {
-        $this->em = $entityManager;
-        $this->formBuilder = $formBuilder;
     }
 
-    function newDatenweitergabe(User $user, $type, $prefix)
-    {
-        $daten = new Datenweitergabe();
-        $daten->setTeam($user->getTeam());
-        $daten->setNummer($prefix . hexdec(uniqid()));
-        $daten->setActiv(true);
-        $daten->setCreatedAt(new \DateTime());
-        $daten->setArt($type);
-        $daten->setUser($user);
-
-        return $daten;
-    }
-
-    function cloneDatenweitergabe(Datenweitergabe $datenweitergabe, User $user)
+    function cloneDatenweitergabe(Datenweitergabe $datenweitergabe, User $user): Datenweitergabe
     {
         $newDaten = clone $datenweitergabe;
         $newDaten->setPrevious($datenweitergabe);
-        $newDaten->setCreatedAt(new \DateTime());
-        $newDaten->setUpdatedAt(new \DateTime());
+        $newDaten->setCreatedAt(new DateTime());
+        $newDaten->setUpdatedAt(new DateTime());
         $newDaten->setUser($user);
         return $newDaten;
     }
 
-    function createForm(Datenweitergabe $datenweitergabe, Team $team)
+    function cloneDsfa(VVTDsfa $dsfa, User $user): VVTDsfa
     {
-        $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActivByTeam($team);
-        $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActivByTeam($team);
+        $newDsfa = clone $dsfa;
+        $newDsfa->setPrevious($dsfa);
+        $newDsfa->setVvt($dsfa->getVvt());
+        $newDsfa->setActiv(true);
+        $newDsfa->setCreatedAt(new DateTime());
+        $newDsfa->setUser($user);
+
+        return $newDsfa;
+    }
+
+    function createForm(Datenweitergabe $datenweitergabe, Team $team): FormInterface
+    {
+        $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeam($team);
+        $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeam($team);
         $verfahren = $this->em->getRepository(VVT::class)->findBy(array('team' => $team, 'activ' => true));
         $software = $this->em->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true));
 
@@ -68,26 +72,28 @@ class DatenweitergabeService
         return $form;
     }
 
-    function newDsfa(Team $team, User $user, VVT $vvt)
+    function newDatenweitergabe(User $user, $type): Datenweitergabe
+    {
+        $data = new Datenweitergabe();
+        $prefix = $type === 1 ? self::PREFIX_TRANSFER : self::PREFIX_PROCESSING;
+        $data->setTeam($this->currentTeamService->getTeamFromSession($user));
+        $data->setNummer($prefix . hexdec(uniqid()));
+        $data->setActiv(true);
+        $data->setCreatedAt(new DateTime());
+        $data->setArt($type);
+        $data->setUser($user);
+
+        return $data;
+    }
+
+    function newDsfa(Team $team, User $user, VVT $vvt): VVTDsfa
     {
         $dsfa = new VVTDsfa();
         $dsfa->setVvt($vvt);
-        $dsfa->setCreatedAt(new \DateTime());
+        $dsfa->setCreatedAt(new DateTime());
         $dsfa->setActiv(true);
         $dsfa->setUser($user);
 
         return $dsfa;
-    }
-
-    function cloneDsfa(VVTDsfa $dsfa, User $user)
-    {
-        $newDsfa = clone $dsfa;
-        $newDsfa->setPrevious($dsfa);
-        $newDsfa->setVvt($dsfa->getVvt());
-        $newDsfa->setActiv(true);
-        $newDsfa->setCreatedAt(new \DateTime());
-        $newDsfa->setUser($user);
-
-        return $newDsfa;
     }
 }

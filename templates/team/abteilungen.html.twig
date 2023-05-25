@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'team/index.html.twig' %}
+{% trans_default_domain 'team' %}
 
-{% block title %}{{ title }}{% endblock %}
 {% block body %}
     <h2 class="h2-responsive">{{ title }}</h2>
 
@@ -11,9 +11,9 @@
                     {% for d in data %}
                         <li class="list-group-item">{{ d.name }}
                             <a href="{{ path('team_abteilungen', {'id':d.id}) }}"
-                               class="btn btn-sm btn-info float-md-right">Bearbeiten</a>
+                               class="btn btn-sm btn-info float-md-right">{% trans from 'general' %}edit{% endtrans %}</a>
                             <a href="{{ path('team_abteilungen_deativate', {'id':d.id}) }}"
-                               class="btn btn-sm btn-danger float-md-right">Löschen</a>
+                               class="btn btn-sm btn-danger float-md-right">{% trans from 'general' %}delete{% endtrans %}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -26,7 +26,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

@@ -1,22 +1,14 @@
-{% block subject %}Passwort zurücksetzen{% endblock %}
+{% trans_default_domain 'email' %}
+{% block subject %}{% trans %}subject.passwordReset{% endtrans %}{% endblock %}
 
 {% block body_text %}
     {% autoescape false %}
-        Passwort neu setzen
-
-        <h3>
-            Hallo!
-        </h3>
-
-        Sie wurden gerade von einem Administrator zu einem Datenschutz Team auf Ihrem Datenschutz Center hinzugefügt.
-
-        Um ihr Passwort nun festzulegen klicken Sie den nachfolgenden Link.
+        {% trans %}body.passwordReset{% endtrans %}
 
         {{ link }}
 
 
-        Mit freundlichen Grüßen
-        Ihr Datenschutz Center
+        {% trans %}salutation{% endtrans %}
     {% endautoescape %}
 
 {% endblock %}

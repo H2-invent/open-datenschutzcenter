@@ -21,8 +21,8 @@ class DsbType extends AbstractType
     {
 
         $builder
-            ->add('dsb', TextType::class, ['required' => false, 'label' => 'E-Mail Adresse des DSB angeben', 'help' => 'Wenn die E-Mail Adresse im diesem Datenschutzcenter noch nicht vorhanden ist, wird ein neues Konto angelegt und der Empfänger wird per E-Mail darüber informiert.', 'translation_domain' => 'form'])
-            ->add('submit', SubmitType::class, ['attr' => array('class' => 'btn btn-outline-primary'), 'label' => 'Ernennen', 'translation_domain' => 'form']);
+            ->add('dsb', TextType::class, ['required' => false, 'label' => 'dpoEmail', 'help' => 'dpoEmailHelp', 'translation_domain' => 'form'])
+            ->add('submit', SubmitType::class, ['attr' => array('class' => 'btn btn-outline-primary'), 'label' => 'appoint', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -1,4 +1,5 @@
-<h2 style="page-break-before: always;">{% if not d.activ %}Historie: {% endif %} {{ d.name }}</h2>
+{% trans_default_domain 'vvt' %}
+<h2 style="page-break-before: always;">{% if not d.activ %}{% trans from 'general' %}history{% endtrans %}: {% endif %} {{ d.name }}</h2>
 <style>
     th, td {
         padding: 5px;
@@ -6,59 +7,59 @@
         width: 50%;
     }
 </style>
-<h4>Datenschutzfolgeabschätzung zu {{ d.nummer }} (id:{{ dsfa.id }})</h4>
+<h4>{% trans %}dataPrivacyFollowUpEstimation.about{% endtrans %} {{ d.nummer }} (id:{{ dsfa.id }})</h4>
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Nummer des Verarbeitungsverzeichnisses
+            {% trans %}processing.directoryNumber{% endtrans %}
         </td>
         <td>{{ d.nummer }}</td>
     </tr>
     <tr>
         <td>
-            Verantworliche Person für die Verarbeitung
+            {% trans %}processing.responsible.word{% endtrans %}
         </td>
         <td>{{ d.userContract.username }} ({{ d.userContract.email }})</td>
     </tr>
     <tr>
         <td>
-            Beschreibung der Datenschutzfolgeabschätzung
+            {% trans %}dataPrivacyFollowUpEstimation.description{% endtrans %}
         </td>
         <td>{{ dsfa.beschreibung|raw }}</td>
     </tr>
     <tr>
         <td>
-            Notwendigkeit der Datenverarbeitung
+             {% trans %}processing.prerequisite{% endtrans %}
         </td>
         <td>{{ dsfa.notwendigkeit|raw }}</td>
     </tr>
     <tr>
         <td>
-            Risiko der Datenverarbeitung
+            {% trans %}processing.risk{% endtrans %}
         </td>
         <td>{{ dsfa.risiko|raw }}</td>
     </tr>
     <tr>
         <td>
-            Abhilfe zur Minimierung der Risiken
+            {% trans %}risk.minimize{% endtrans %}
         </td>
         <td>{{ dsfa.abhilfe|raw }}</td>
     </tr>
     <tr>
         <td>
-            Weitere Standpunkte (z.B. Betriebsrat)
+            {% trans %}additionalStands{% endtrans %}
         </td>
         <td>{{ dsfa.standpunkt|raw }}</td>
     </tr>
     <tr>
         <td>
-            Stellungnahme des DSB in der Datenschutzfolgeabschätzung
+            {% trans %}dsbStatement{% endtrans %}
         </td>
         <td>{{ dsfa.dsb|raw }}</td>
     </tr>
     <tr>
         <td>
-            Ergebniss der Datenschutzfolgeabschätzung
+            {% trans %}dataPrivacyFollowUpEstimation.result{% endtrans %}
         </td>
         <td>{{ dsfa.ergebnis|raw }}</td>
     </tr>

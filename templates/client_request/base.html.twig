@@ -1,3 +1,4 @@
+{% trans_default_domain 'client_request' %}
 <!DOCTYPE html>
 <html>
 
@@ -17,10 +18,9 @@
                                 src="{{ asset('logo.png') }}" style="height: 50px"></a>
                 </div>
                 <div class="col-md-6">
-                    <a href="{{ dataPrivacy }}" target="_blank" class="small">Datenschutzhinweis</a><br>
-                    <a href="https://open-datenschutzcenter.de" target="_blank" class="small">Powered by Open
-                        Datenschutzcenter</a><br>
-                    <a href="https://h2-invent.com" target="_blank" class="small">Made with ❤ by H2 invent •
+                    <a href="{{ dataPrivacy }}" target="_blank" class="small">{% trans %}dataPrivacyDisclaimer{% endtrans %}</a><br>
+                    <a href="https://open-datenschutzcenter.de" target="_blank" class="small">{% trans %}poweredBy{% endtrans %}</a><br>
+                    <a href="https://h2-invent.com" target="_blank" class="small">{% trans %}salutation{% endtrans %} •
                         2019-{{ 'now'|date('Y') }}
                         • v{{ laf_version }}</a>
                 </div>

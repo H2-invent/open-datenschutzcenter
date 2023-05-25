@@ -19,35 +19,7 @@ class FormsRepository extends ServiceEntityRepository
         parent::__construct($registry, Forms::class);
     }
 
-    // /**
-    //  * @return Forms[] Returns an array of Forms objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Forms
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-    public function findActivByTeam($value)
+    public function findActiveByTeam($value)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.team = :val')
@@ -64,6 +36,19 @@ class FormsRepository extends ServiceEntityRepository
             ->andWhere('a.activ = 1')
             ->andWhere('a.status != 4')
             ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActiveByTeamAndUser($team, $user)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team = :team')
+            ->andWhere('a.assignedUser = :user')
+            ->andWhere('a.activ = 1')
+            ->setParameter('team', $team)
+            ->setParameter('user', $user)
+            ->orderBy('a.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

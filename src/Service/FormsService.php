@@ -15,34 +15,33 @@ use App\Entity\Produkte;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Form\Type\FormsType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 
 class FormsService
 {
-    private $em;
-    private $formBuilder;
-
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder)
+    public function __construct(
+        private EntityManagerInterface $em,
+        private FormFactoryInterface   $formBuilder,
+        private CurrentTeamService     $currentTeamService,
+    )
     {
-        $this->em = $entityManager;
-        $this->formBuilder = $formBuilder;
     }
 
-    function newForm(User $user)
+    public function cloneForms(Forms $forms, User $user): Forms
     {
-        $form = new Forms();
-        $form->setStatus(0);
-        $form->setTeam($user->getTeam());
-        $form->setActiv(true);
-        $form->setCreatedAt(new \DateTime());
-        $form->setUser($user);
-
-        return $form;
+        $newForms = clone $forms;
+        $newForms->setPrevious($forms);
+        $newForms->setCreatedAt(new DateTime());
+        $newForms->setUpdatedAt(new DateTime());
+        $newForms->setUser($user);
+        return $newForms;
     }
 
-    function createForm(Forms $forms, Team $team)
+    public function createForm(Forms $forms, Team $team): FormInterface
     {
         $departments = $this->em->getRepository(AuditTomAbteilung::class)->findBy(array('team' => $team, 'activ' => true));
         $products = $this->em->getRepository(Produkte::class)->findBy(array('team' => $team, 'activ' => true));
@@ -52,13 +51,15 @@ class FormsService
         return $form;
     }
 
-    function cloneForms(Forms $forms, User $user)
+    public function newForm(User $user): Forms
     {
-        $newForms = clone $forms;
-        $newForms->setPrevious($forms);
-        $newForms->setCreatedAt(new \DateTime());
-        $newForms->setUpdatedAt(new \DateTime());
-        $newForms->setUser($user);
-        return $newForms;
+        $form = new Forms();
+        $form->setStatus(0);
+        $form->setTeam($this->currentTeamService->getTeamFromSession($user));
+        $form->setActiv(true);
+        $form->setCreatedAt(new DateTime());
+        $form->setUser($user);
+
+        return $form;
     }
 }

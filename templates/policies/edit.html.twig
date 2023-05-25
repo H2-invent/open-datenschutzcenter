@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'policies' %}
 
 {% block CTA %}
     {% if policy.activ %}
         <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_policy', {'id':policy.id}) }}">
-            <span>PDF erstellen</span>
+            <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
         </a>
         <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_policy', {'id':policy.id, 'all':1}) }}">
-            <span>PDF mit Historie erstellen</span>
+            <span>{% trans from 'general' %}pdf.createWithHistory{% endtrans %}</span>
         </a>
         {{ include('base/__approveBtn.html.twig',{'data':policy,'dataLink':'policy_approve'}) }}
         {{ include('base/__disableBtn.html.twig',{'data':policy,'dataLink':'policy_disable'}) }}
@@ -29,7 +30,7 @@
     <p>Erstellt von: {{ policy.user.email }}</p>
     {% if policy.previous %}
         <div class="card card-body mt-2">
-            <h2>Historie</h2>
+            <h2>{% trans from 'general'%}history{% endtrans %}</h2>
             {{ include('policies/__history.html.twig', {'p':policy.previous}) }}
         </div>
     {% endif %}

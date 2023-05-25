@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Policies;
+use App\Repository\PoliciesRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
+use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\PoliciesService;
 use App\Service\SecurityService;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -17,32 +20,28 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PoliciesController extends AbstractController
 {
-    /**
-     * @Route("/policies", name="policies")
-     */
-    public function index(SecurityService $securityService)
+
+
+    public function __construct(private readonly TranslatorInterface $translator,
+                                private EntityManagerInterface       $em,
+    )
     {
-        $team = $this->getUser()->getTeam();
-        if ($securityService->teamCheck($team) === false) {
-            return $this->redirectToRoute('dashboard');
-        }
-        $polcies = $this->getDoctrine()->getRepository(Policies::class)->findActivByTeam($team);
-
-        return $this->render('policies/index.html.twig', [
-            'data' => $polcies,
-
-        ]);
     }
 
-    /**
-     * @Route("/policy/new", name="policy_new")
-     */
-    public function addPolicy(ValidatorInterface $validator, Request $request, PoliciesService $policiesService, SecurityService $securityService)
+    #[Route(path: '/policy/new', name: 'policy_new')]
+    public function addPolicy(
+        ValidatorInterface $validator,
+        Request            $request,
+        PoliciesService    $policiesService,
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+    )
     {
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('policies');
@@ -58,9 +57,8 @@ class PoliciesController extends AbstractController
             $policy = $form->getData();
             $errors = $validator->validate($policy);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($policy);
-                $em->flush();
+                $this->em->persist($policy);
+                $this->em->flush();
                 return $this->redirectToRoute('policies');
             }
         }
@@ -68,7 +66,7 @@ class PoliciesController extends AbstractController
             'form' => $form->createView(),
             'policy' => $policy,
             'errors' => $errors,
-            'title' => 'Richtlinie & Arbeitsanweisung erstellen',
+            'title' => $this->translator->trans(id: 'policies.create', domain: 'policies'),
             'activNummer' => true,
             'vvt' => $policy,
             'activ' => $policy->getActiv(),
@@ -76,93 +74,73 @@ class PoliciesController extends AbstractController
         ]);
     }
 
-
-    /**
-     * @Route("/policy/edit", name="policy_edit")
-     */
-    public function editPolicy(ValidatorInterface $validator, Request $request, PoliciesService $policiesService, SecurityService $securityService, AssignService $assignService)
+    #[Route(path: '/policy/approve', name: 'policy_approve')]
+    public function approvePolicy(
+        Request            $request,
+        SecurityService    $securityService,
+        ApproveService     $approveService,
+        CurrentTeamService $currentTeamService,
+        PoliciesRepository $policiesRepository,
+    ): Response
     {
-        $team = $this->getUser()->getTeam();
-        $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+        $policy = $policiesRepository->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($policy, $team) === false) {
-            return $this->redirectToRoute('policies');
-        }
-        $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());
-        $form = $policiesService->createForm($newPolicy, $team);
-        $form->handleRequest($request);
-        $assign = $assignService->createForm($policy, $team);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved()) {
-
-            $em = $this->getDoctrine()->getManager();
-            $policy->setActiv(false);
-            $newPolicy = $form->getData();
-            $errors = $validator->validate($newPolicy);
-            if (count($errors) == 0) {
-                $em->persist($newPolicy);
-                $em->persist($policy);
-                $em->flush();
-                return $this->redirectToRoute('policy_edit', ['id' => $newPolicy->getId(), 'snack' => 'Erfolgreich gespeichert']);
-            }
+        if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team)) {
+            $approve = $approveService->approve($policy, $user);
+            return $this->redirectToRoute('policy_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
         }
 
-        return $this->render('policies/edit.html.twig', [
-            'form' => $form->createView(),
-            'assignForm' => $assign->createView(),
-            'errors' => $errors,
-            'title' => 'Richtlinie / Arbeitsanweisung bearbeiten',
-            'policy' => $policy,
-            'activ' => $policy->getActiv(),
-            'snack' => $request->get('snack')
-        ]);
+        // if security check fails
+        return $this->redirectToRoute('policies');
     }
 
-    /**
-     * @Route("/policy/approve", name="policy_approve")
-     */
-    public function approvePolicy(Request $request, SecurityService $securityService, ApproveService $approveService)
+    #[Route(path: '/policy/disable', name: 'policy_disable')]
+    public function disable(
+        Request            $request,
+        SecurityService    $securityService,
+        DisableService     $disableService,
+        CurrentTeamService $currentTeamService,
+        PoliciesRepository $policiesRepository,
+    ): Response
     {
-        $team = $this->getUser()->getAdminUser();
-        $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+        $policy = $policiesRepository->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($policy, $team) === false) {
-            return $this->redirectToRoute('policies');
-        }
-        $approve = $approveService->approve($policy, $this->getUser());
-
-        return $this->redirectToRoute('policy_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
-    }
-
-    /**
-     * @Route("/policy/disable", name="policy_disable")
-     */
-    public function disable(Request $request, SecurityService $securityService, DisableService $disableService)
-    {
-        $team = $this->getUser()->getAdminUser();
-        $policy = $this->getDoctrine()->getRepository(Policies::class)->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($policy, $team) === true && !$policy->getApproved()) {
+        if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team) && !$policy->getApproved()) {
             $disableService->disable($policy, $this->getUser());
         }
 
         return $this->redirectToRoute('policies');
     }
 
-    /**
-     * @Route("/policy/download/{id}", name="policy_download_file", methods={"GET"})
-     * @ParamConverter("policies", options={"mapping"={"id"="id"}})
-     */
-    public function downloadArticleReference(FilesystemInterface $policiesFileSystem, Policies $policies, SecurityService $securityService, LoggerInterface $logger)
+    #[Route(path: '/policy/download/{id}', name: 'policy_download_file', methods: ['GET'])]
+    #[ParamConverter('policies', options: ['mapping' => ['id' => 'id']])]
+    public function downloadArticleReference(
+        FilesystemInterface $policiesFileSystem,
+        Policies            $policies,
+        SecurityService     $securityService,
+        LoggerInterface     $logger,
+        CurrentTeamService  $currentTeamService,
+    ): Response
     {
 
         $stream = $policiesFileSystem->read($policies->getUpload());
 
-        $team = $this->getUser()->getTeam();
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamDataCheck($policies, $team) === false) {
-            $message = ['typ' => 'DOWNLOAD', 'error' => true, 'hinweis' => 'Fehlerhafter download. User nicht berechtigt!', 'dokument' => $policies->getUpload(), 'user' => $this->getUser()->getUsername()];
-            $logger->error($message['typ'], $message);
+            $logger->error(
+                'DOWNLOAD',
+                [
+                    'typ' => 'DOWNLOAD',
+                    'error' => true,
+                    'hinweis' => 'Fehlerhafter download. User nicht berechtigt!',
+                    'dokument' => $policies->getUpload(),
+                    'user' => $this->getUser()->getUsername()
+                ],
+            );
             return $this->redirectToRoute('dashboard');
         }
 
@@ -175,8 +153,87 @@ class PoliciesController extends AbstractController
         );
 
         $response->headers->set('Content-Disposition', $disposition);
-        $message = ['typ' => 'DOWNLOAD', 'error' => false, 'hinweis' => 'Download erfolgreich', 'dokument' => $policies->getUpload(), 'user' => $this->getUser()->getUsername()];
-        $logger->info($message['typ'], $message);
+        $logger->info(
+            'DOWNLOAD',
+            [
+                'typ' => 'DOWNLOAD',
+                'error' => false,
+                'hinweis' => 'Download erfolgreich',
+                'dokument' => $policies->getUpload(),
+                'user' => $this->getUser()->getUsername()
+            ],
+        );
         return $response;
+    }
+
+    #[Route(path: '/policy/edit', name: 'policy_edit')]
+    public function editPolicy(
+        ValidatorInterface $validator,
+        Request            $request,
+        PoliciesService    $policiesService,
+        SecurityService    $securityService,
+        AssignService      $assignService,
+        CurrentTeamService $currentTeamService,
+        PoliciesRepository $policiesRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $policy = $policiesRepository->find($request->get('id'));
+
+        if ($securityService->teamDataCheck($policy, $team) === false) {
+            return $this->redirectToRoute('policies');
+        }
+        $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());
+        $form = $policiesService->createForm($newPolicy, $team);
+        $form->handleRequest($request);
+        $assign = $assignService->createForm($policy, $team);
+
+        $errors = array();
+        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved()) {
+            $policy->setActiv(false);
+            $newPolicy = $form->getData();
+            $errors = $validator->validate($newPolicy);
+            if (count($errors) == 0) {
+                $this->em->persist($newPolicy);
+                $this->em->persist($policy);
+                $this->em->flush();
+                return $this->redirectToRoute(
+                    'policy_edit',
+                    [
+                        'id' => $newPolicy->getId(),
+                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
+                    ],
+                );
+            }
+        }
+
+        return $this->render('policies/edit.html.twig', [
+            'form' => $form->createView(),
+            'assignForm' => $assign->createView(),
+            'errors' => $errors,
+            'title' => $this->translator->trans(id: 'policies.edit', domain: 'policies'),
+            'policy' => $policy,
+            'activ' => $policy->getActiv(),
+            'snack' => $request->get('snack')
+        ]);
+    }
+
+    #[Route(path: '/policies', name: 'policies')]
+    public function index(
+        SecurityService    $securityService,
+        CurrentTeamService $currentTeamService,
+        PoliciesRepository $policiesRepository,
+    ): Response
+    {
+        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        if ($securityService->teamCheck($team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+        $polcies = $policiesRepository->findActiveByTeam($team);
+
+        return $this->render('policies/index.html.twig', [
+            'data' => $polcies,
+            'currentTeam' => $team,
+        ]);
     }
 }

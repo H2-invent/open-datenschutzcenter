@@ -1,25 +1,60 @@
-{% extends 'base.html.twig' %}
+{% extends 'team/index.html.twig' %}
+{% trans_default_domain 'team' %}
 
-{% block title %}{{ title }}{% endblock %}
 {% block body %}
-
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
-        <a href="{{ path('team_mitglieder_create', {'title':'Mitglied hinzufügen', 'type':'odc'}) }}"
-           class="btn btn-primary btn-sm loadContent">Benutzer hinzufügen</a>
-        <a href="{{ path('akademie_admin') }}#user"
-           class="btn btn-cyan btn-sm">Akademiebenutzer</a>
+        {% if useKeycloakGroups %}
+            <a href="{{ path('team_mitglieder_create', {'title':'Admin hinzufügen', 'type':'admin', 'id':team.id}) }}"
+               class="btn btn-primary btn-sm loadContent">{% trans %}admin.create{% endtrans %}</a>
+        {% else %}
+            <a href="{{ path('team_mitglieder_create', {'title':'Mitglied hinzufügen', 'type':'odc', 'id':team.id}) }}"
+               class="btn btn-primary btn-sm loadContent">{% trans %}user.create{% endtrans %}</a>
+        {% endif %}
+        <a href="{{ path('akademie_admin') }}#user" class="btn btn-cyan btn-sm">{% trans %}academy.users{% endtrans %}</a>
         <div class="card card-body">
-
             <ul class="list-group">
-                {% for d in data.members|filter(d => d.keycloakId) %}
-                    <li class="list-group-item">{{ d.firstname }} {{ d.lastname }} ({{ d.email }})
-                        <div class="small">
-                            {% if data in d.teamDsb %}<span
-                                    class="badge-primary p-1 mt-sm-1 rounded">Ext. DSB</span>{% endif %} {% if d.adminUser == data %}
-                                <span class="badge-success p-1 rounded">Admin</span>{% endif %} {% if d.akademieUser == data %}
-                                <span class="badge-warning p-1 rounded">Akademie</span>{% endif %} {% if d.team == data %}
-                                <span class="badge-info p-1 rounded">Koordinator</span>{% endif %}
+                {% for member in members|filter(member => member.email) %}
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <p class="mb-2">
+                                    {% if member.firstname or member.lastname %}
+                                        {{ member.firstname }} {{ member.lastname }} -
+                                    {% endif %}
+                                    {{ member.email }}
+                                </p>
+                                <div class="small mb-2">
+                                    {% if team in member.teamDsb %}
+                                        <span class="badge-primary p-1 mt-sm-1 rounded">{% trans %}extDsb{% endtrans %}</span>
+                                    {% endif %}
+                                    {% if team in member.adminRoles %}
+                                        <span class="badge-success p-1 rounded">{% trans %}admin.word{% endtrans %}</span>
+                                    {% endif %}
+                                    {% if member.akademieUser == team %}
+                                        <span class="badge-warning p-1 rounded">{% trans %}academy.word{% endtrans %}</span>
+                                    {% endif %}
+                                    {% if team in member.teams %}
+                                        <span class="badge-info p-1 rounded">{% trans %}coordinator{% endtrans %}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                {% if team in member.adminRoles %}
+                                    <a class="btn btn-sm btn-info float-md-right" href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':team.id}) }}">
+                                        {% trans %}admin.remove{% endtrans %}
+                                    </a>
+                                {% else %}
+                                    <a class="btn btn-sm btn-success float-md-right" href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':team.id}) }}">
+                                        {% trans %}admin.create{% endtrans %}
+                                    </a>
+                                {% endif %}
+                                {# Hide this button if keycloak groups are used #}
+                                {% if not useKeycloakGroups %}
+                                    <a class="btn btn-sm btn-danger float-md-right"
+                                       href="{{ path('team_mitglieder_remove',{'memberId':member.id, 'teamId':team.id, 'type':'odc'}) }}">{% trans from 'general' %}remove{% endtrans %}</a>
+                                {% endif %}
+                            </div>
                         </div>
                         <a class="btn btn-sm btn-info float-md-right"
                            href="{{ path('team_mitglieder_admin', {'id':d.id}) }}">{% if d.adminUser %}{% trans %}Admin entfernen{% endtrans %}{% else %}{% trans %}Admin ernennen{% endtrans %}{% endif %}</a>
@@ -40,12 +75,39 @@
                     </li>
                 {% endfor %}
             </ul>
-            <p class="note-info m-1 text-center">
-                {% trans %}Mitarbeitende können als Datenschutzkoordinatoren (Kein Admin) oder als DSB und Geschäftsführung (Admin) hinzugefügt werden. Datenschutzkoordinatoren können Elemente erstellen, bearbeiten, zuweisen und exportieren. Admins können neue Mitglieder hinzufügen, Elemente freigeben und die Akademie verwalten.{% endtrans %}
-            </p>
+
+            {# Hide this section if keycloak groups are used to avoid confusing users #}
+            {% if not useKeycloakGroups %}
+                <h5 class="h5-responsive mt-3">{% trans %}openInvitations{% endtrans %}</h5>
+                <ul class="list-group">
+                    {% for member in team.members |filter(member => member.registerId) %}
+                        <li class="list-group-item">
+                            {{ member.email }}
+                            {% if team in member.adminRoles %}
+                                <a class="btn btn-sm btn-info float-md-right" href="{{ path('team_mitglieder_admin', {'id':member.id}) }}">
+                                    {% trans %}admin.remove{% endtrans %}
+                                </a>
+                            {% else %}
+                                <a class="btn btn-sm btn-success float-md-right" href="{{ path('team_mitglieder_admin', {'id':member.id}) }}">
+                                    {% trans %}admin.create{% endtrans %}
+                                </a>
+                            {% endif %}
+                            <a class="btn btn-sm btn-danger float-md-right" href="{{ path('team_mitglieder_remove',{'id':member.id,'type':'odc'}) }}">
+                                {% trans from 'general' %}remove{% endtrans %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if useKeycloakGroups %}
+                <p class="note-info mt-4 p-2 text-center">
+                    {% trans %}members.manageHint.keycloak{% endtrans %}
+                </p>
+                {% else %}
+                    <p class="note-info mt-4 p-2 text-center">
+                        {% trans %}members.manageHint.odc{% endtrans %}
+                    </p>
+            {% endif %}
         </div>
     </div>
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

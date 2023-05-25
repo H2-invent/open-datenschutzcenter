@@ -26,17 +26,17 @@ class TasksType extends AbstractType
     {
 
         $builder
-            ->add('title', TextType::class, ['label' => 'Titel', 'required' => true, 'translation_domain' => 'form'])
-            ->add('task', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Beschreibung der Aufgabe', 'required' => true, 'translation_domain' => 'form'])
-            ->add('endDate', DateType::class, ['label' => 'Enddatum', 'widget' => 'single_text', 'required' => false, 'translation_domain' => 'form'])
+            ->add('title', TextType::class, ['label' => 'title', 'required' => true, 'translation_domain' => 'form'])
+            ->add('task', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'taskDescription', 'required' => true, 'translation_domain' => 'form'])
+            ->add('endDate', DateType::class, ['label' => 'endDate', 'widget' => 'single_text', 'required' => false, 'translation_domain' => 'form'])
             ->add('prio', ChoiceType::class, [
                 'choices' => [
-                    'Ohne Priorität' => 0,
-                    'Wenig Wichtig' => 1,
-                    'Normal' => 2,
-                    'Wichtig' => 3,
-                    'Sehr wichtig' => 4,],
-                'label' => 'Priorität',
+                    'noPriority' => 0,
+                    'lowPriority' => 1,
+                    'normalPriority' => 2,
+                    'highPriority' => 3,
+                    'veryHighPriority' => 4,],
+                'label' => 'priority',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'attr' => [
@@ -47,7 +47,7 @@ class TasksType extends AbstractType
                 'choice_label' => 'email',
                 'class' => User::class,
                 'choices' => $options['user'],
-                'label' => 'Aufgabe zuweisen',
+                'label' => 'assignTask',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'required' => false,
@@ -56,7 +56,7 @@ class TasksType extends AbstractType
                     'data-live-search' => 'true'
                 ],
             ])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -31,30 +31,30 @@ class DatenweitergabeType extends AbstractType
     {
 
         $builder
-            ->add('gegenstand', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'Vertragsgegenstand', 'required' => true, 'translation_domain' => 'form', 'help' => 'Geben Sie hier den Gegenstand der Datenweitergabe oder Auftragsverarbeitung an. Der Gegenstand ist in den meisten Verträgen bereits in einem der ersten Paragraphen beschreiben und muss nur übernommen werden.'])
-            ->add('notes', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Bemerkungen', 'required' => false, 'translation_domain' => 'form'])
-            ->add('nummer', TextType::class, ['label' => 'Nummer der Datenweitergabe', 'required' => true, 'translation_domain' => 'form'])
-            ->add('verantwortlich', TextType::class, ['label' => 'Verantwortlich für die Datenweitergabe (Intern)', 'required' => true, 'translation_domain' => 'form'])
-            ->add('vertragsform', TextType::class, ['label' => 'Vertragsform', 'required' => true, 'translation_domain' => 'form'])
-            ->add('reference', TextType::class, ['label' => 'Aktenzeichen', 'required' => false, 'translation_domain' => 'form', 'help' => 'Hängen Sie den original Vertrag in einem Ordner ab. Geben Sie hier den Pfad zu diesem Lagerort oder das Aktenziech an, damit Sie das Dokument später wieder finden können.'])
-            ->add('zeichnungsdatum', DateType::class, ['label' => 'Zeichnungsdatum', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text', 'help' => 'Ab wann ist die Datenweitergabe oder Auftragsverarbeitung unterschrieben. Geben Sie hier das Datum der Unterschrift an.'])
-            ->add('checkItems', CheckboxType::class, ['label' => 'Gegenstand und Dauer der Verarbeitung, Art und Zweck der Verarbeitung', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkPeople', CheckboxType::class, ['label' => 'Art der personenbezogenen Daten', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkData', CheckboxType::class, ['label' => 'Kategorien betroffener Personen', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkDocumentation', CheckboxType::class, ['label' => 'Verarbeitung auf dokumentierte Weisung des Verantwortlichen', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkTom', CheckboxType::class, ['label' => 'Ergreifen erforderlicher technischer und organisatorischer Maßnahmen', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkSubcontractor', CheckboxType::class, ['label' => 'Inanspruchnahme von Unterauftragnehmern nach Art. Art. 28 Abs. 2 und Abs. 4 DSGVO', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkTrust', CheckboxType::class, ['label' => 'Vertraulichkeitsverpflichtung', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkSupport', CheckboxType::class, ['label' => 'Unterstützung des Verantwortlichen bei der Beantwortung von Betroffenenanfragen', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkSupport3236', CheckboxType::class, ['label' => 'Unterstützung des Verantwortlichen bei den Pflichten nach Art. 32 – 36 DSGVO', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkNotes', CheckboxType::class, ['label' => 'Hinweispflicht', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkEnding', CheckboxType::class, ['label' => 'Umgang mit personenbezogenen Daten nach Beendigung der Auftragsverarbeitung', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkAudit', CheckboxType::class, ['label' => 'Zurverfügungstellung von Informationen und Ermöglichung von Überprüfungen', 'required' => false, 'translation_domain' => 'form'])
+            ->add('gegenstand', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'contractObject', 'required' => true, 'translation_domain' => 'form', 'help' => 'contractObjectHelp'])
+            ->add('notes', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'comments', 'required' => false, 'translation_domain' => 'form'])
+            ->add('nummer', TextType::class, ['label' => 'dataTransferNumber', 'required' => true, 'translation_domain' => 'form'])
+            ->add('verantwortlich', TextType::class, ['label' => 'responsibleParty', 'required' => true, 'translation_domain' => 'form'])
+            ->add('vertragsform', TextType::class, ['label' => 'contractType', 'required' => true, 'translation_domain' => 'form'])
+            ->add('reference', TextType::class, ['label' => 'reference', 'required' => false, 'translation_domain' => 'form', 'help' => 'referenceHelp'])
+            ->add('zeichnungsdatum', DateType::class, ['label' => 'signDate', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text', 'help' => 'signDateHelp'])
+            ->add('checkItems', CheckboxType::class, ['label' => 'dataTransferParameters', 'required' => false, 'translation_domain' => 'form'])
+            ->add('checkPeople', CheckboxType::class, ['label' => 'personalDataType', 'required' => false, 'translation_domain' => 'form'])
+            ->add('checkData', CheckboxType::class, ['label' => 'affectedPersons', 'required' => false, 'translation_domain' => 'form'])
+            ->add('checkDocumentation', CheckboxType::class, ['label' => 'documentedInstructions', 'required' => false, 'translation_domain' => 'form'])
+            ->add('checkTom', CheckboxType::class, ['label' => 'technicalAndOrganisationalMeasures', 'required' => false, 'translation_domain' => 'form'])
+            ->add('checkSubcontractor', CheckboxType::class, ['label' => 'subcontractors', 'required' => false, 'translation_domain' => 'form'])
+            ->add('checkTrust', CheckboxType::class, ['label' => 'privacyObligation', 'required' => false, 'translation_domain' => 'form'])
+            ->add('checkSupport', CheckboxType::class, ['label' => 'supportWithInquiries', 'required' => false, 'translation_domain' => 'form'])
+            ->add('checkSupport3236', CheckboxType::class, ['label' => 'supportWithObligations', 'required' => false, 'translation_domain' => 'form'])
+            ->add('checkNotes', CheckboxType::class, ['label' => 'dutyToInform', 'required' => false, 'translation_domain' => 'form'])
+            ->add('checkEnding', CheckboxType::class, ['label' => 'handlingOfDataAfterProcessing', 'required' => false, 'translation_domain' => 'form'])
+            ->add('checkAudit', CheckboxType::class, ['label' => 'resources', 'required' => false, 'translation_domain' => 'form'])
             ->add('kontakt', EntityType::class, [
                 'choice_label' => 'firma',
                 'class' => Kontakte::class,
                 'choices' => $options['kontakt'],
-                'label' => 'Kontakt',
+                'label' => 'contact',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'attr' => [
@@ -66,7 +66,7 @@ class DatenweitergabeType extends AbstractType
                 'choice_label' => 'name',
                 'class' => VVT::class,
                 'choices' => $options['verfahren'],
-                'label' => 'Zugehörige Verarbeitungstätigkeit',
+                'label' => 'relatedprocedure',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => false,
@@ -74,13 +74,13 @@ class DatenweitergabeType extends AbstractType
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
                 ],
-                'help' => 'Zu jeder Datenweitergabe und Auftragsverarbeitung muss mindestens eine Verarbeitung eingetragen werden, da die Datenweitergabe und Auftragsverarbeitung sonst kein Funktion erfüllt oder keine Verarbeitung nach der DSGVO darstellt.'
+                'help' => 'relatedprocedureHelp'
             ])
             ->add('stand', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => DatenweitergabeStand::class,
                 'choices' => $options['stand'],
-                'label' => 'Status',
+                'label' => 'status',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'attr' => [
@@ -91,20 +91,20 @@ class DatenweitergabeType extends AbstractType
                 'choice_label' => 'name',
                 'class' => DatenweitergabeGrundlagen::class,
                 'choices' => $options['grundlage'],
-                'label' => 'Grundlage für die Verarbeitung',
+                'label' => 'dataTransferBasis',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'attr' => [
                     'class' => 'selectpicker',
                     'data-live-search' => 'true'
                 ],
-                'help' => 'Auf welcher Grundlage wird der Vertrag abgeschlossen. Nach der DSGVO stehen unterschiedliche Möglichkeiten zur Verfügung, die unterschiedlich betrachtet und bewertet werden müssen.'
+                'help' => 'dataTransferBasisHelp'
             ])
             ->add('software', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => Software::class,
                 'choices' => $options['software'],
-                'label' => 'Software, die in der Weitergabe involviert ist',
+                'label' => 'relatedSoftware',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => false,
@@ -116,12 +116,12 @@ class DatenweitergabeType extends AbstractType
             ->add('uploadFile', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => false,
-                'delete_label' => 'Löschen',
-                'label' => 'Dokument zur Datenweitergabe hochladen',
+                'delete_label' => 'delete',
+                'label' => 'dataTransferDocument',
                 'translation_domain' => 'form',
                 'download_label' => false
             ])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block'), 'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block'), 'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Team;
 use App\Entity\VVT;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,36 +20,7 @@ class VVTRepository extends ServiceEntityRepository
         parent::__construct($registry, VVT::class);
     }
 
-    // /**
-    //  * @return VVT[] Returns an array of VVT objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?VVT
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findActivByTeam($value)
+    public function findActiveByTeam($value)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.team = :val')
@@ -58,5 +30,28 @@ class VVTRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function findCriticalByTeam(Team $team) {
+        return $this->createQueryBuilder('vvt')
+            ->andWhere('vvt.team = :team')
+            ->andWhere('vvt.activ = 1')
+            ->andWhere('vvt.status = 3')
+            ->orderBy('vvt.CreatedAt', 'DESC')
+            ->setParameter('team', $team)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActiveByTeamAndUser($team, $user)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team = :team')
+            ->andWhere('a.assignedUser = :user')
+            ->andWhere('a.activ = 1')
+            ->setParameter('team', $team)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
     }
 }

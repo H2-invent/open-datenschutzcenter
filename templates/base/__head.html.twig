@@ -1,3 +1,4 @@
+{% trans_default_domain 'base' %}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,7 +7,7 @@
     <link rel="manifest" href="{{asset('site.webmanifest')}}">
 
     {% block title %}
-        <title>Datenschutzcenter</title>
+        <title>{% trans %}dataPrivacyCenter{% endtrans %}</title>
     {% endblock %}
 
     {% if app.debug == 0 and not app.request.attributes.get('_route') == 'akademie_kurs' %}

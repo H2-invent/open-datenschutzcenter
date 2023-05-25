@@ -21,8 +21,8 @@ class AbteilungType extends AbstractType
     {
 
         $builder
-            ->add('name', TextType::class, ['label' => 'Neues Abteilung hinzufügen', 'required' => true, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('name', TextType::class, ['label' => 'newDepartment', 'required' => true, 'translation_domain' => 'form'])
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -12,19 +12,17 @@ namespace App\Service;
 use nicoSWD\GPG\GPG;
 use nicoSWD\GPG\PublicKey;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 class MailerService
 {
 
-    private $smtp;
-    private $swift;
     private $parameter;
 
-    public function __construct(ParameterBagInterface $parameterBag, TransportInterface $smtp, \Swift_Mailer $swift_Mailer)
+    public function __construct(ParameterBagInterface $parameterBag, private MailerInterface $mailer)
     {
-        $this->smtp = $smtp;
-        $this->swift = $swift_Mailer;
         $this->parameter = $parameterBag;
     }
 
@@ -33,34 +31,38 @@ class MailerService
         $this->sendViaSwiftMailer($sender, $from, $to, $betreff, $content, $attachment);
     }
 
-    private function sendViaSwiftMailer($sender, $from, $to, $betreff, $content, $attachment = array())
-    {
-        $message = (new \Swift_Message($betreff))
-            ->setFrom(array($from => $sender))
-            ->setTo($to)
-            ->setBody(
-
-                $content
-                , 'text/html'
-            );
-        foreach ($attachment as $data) {
-            $message->attach(new \Swift_Attachment($data['body'], $data['filename'], $data['type']));
-        };
-        $this->swift->send($message);
-    }
-
     public function sendEncrypt($pgp, $sender, $from, $to, $betreff, $content, $attachment = array())
     {
-        $message = (new \Swift_Message($betreff))
-            ->setFrom(array($from => $sender))
-            ->setTo($to);
+
+        $message = (new Email())
+            ->subject($betreff)
+            ->from(new Address($from, $sender))
+            ->to($to);
+
         foreach ($attachment as $data) {
-            $message->attach(new \Swift_Attachment($data['body'], $data['filename'], $data['type']));
-        };
+            $message->attach($data['body'], $data['filename'], $data['type']);
+        }
+
         $gpg = new GPG();
         $privat = new PublicKey($pgp);
         $data = $gpg->encrypt($privat, $content);
-        $message->setBody($data, 'text/plain');
-        $this->swift->send($message);
+        $message->text($data);
+
+        $this->mailer->send($message);
+    }
+
+    private function sendViaSwiftMailer($sender, $from, $to, $betreff, $content, $attachment = array())
+    {
+        $message = (new Email())
+            ->subject($betreff)
+            ->from(new Address($from, $sender))
+            ->to($to)
+            ->html(
+                $content
+            );
+        foreach ($attachment as $data) {
+            $message->attach($data['body'], $data['filename'], $data['type']);
+        }
+        $this->mailer->send($message);
     }
 }

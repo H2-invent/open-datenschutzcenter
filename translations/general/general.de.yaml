@@ -1,0 +1,97 @@
+abort: Abbrechen
+additionalInformation: Weitere Angaben
+address: Adresse
+approved: Freigegeben
+archive: Archivieren
+assign: Zuweisen
+assignedTo: Zugewiesen an
+action:
+  word: Aktion
+  words: Aktionen
+back: Zurück
+basic: Grundlage
+birthday: Geburtstag
+close: Schließen
+comments: Kommentare
+confirmAction: Möchten Sie diese Aktion wirklich durchführen?
+contact: Kontakt
+createdAt: Erstellt am
+createdBy: Erstellt von
+continue: Weiter
+date: Datum
+delete: Löschen
+deleted: Gelöscht
+department:
+  word: Abteilung
+  words: Abteilungen
+description: Beschreibung
+download:
+  successful: Download erfolgreich
+edit: Bearbeiten
+editedBy: Bearbeitet von
+editor: Bearbeiter
+email: Email
+end: Ende
+endTime: Endzeit
+error:
+  userIsNotTeamAdministrator: Benutzer*in ist nicht Admin dieses Teams
+  userWithoutTeam: Benutzer*in keinem Team zugewiesen
+  userNotFoundInArray: Benutzer*in nicht in Array von Teams
+  userNotInTeamAccessDenied: Benutzer*in nicht in Team und nicht berechtigt
+  userNotAuthorizedToManageTeam: Benutzer*in ist nicht berechtigt, Teams zu verwalten
+  signature: Die Signatur ist ungültig. Bitte kontaktieren Sie die Personen, die Ihnen die Datei überlassen hat.
+  file: '
+    Die Datei ist fehlerhaft und kann nicht eingelesen werden. 
+    Es können jedoch bereits Daten in Ihren Datenstamm eingetragen worden sein. 
+    Bitte kontaktieren Sie die Personen, die Ihnen die Datei überlassen hat.'
+  retry: Fehler. Bitte noch einmal versuchen
+  unauthorizedDownload: Fehlerhafter download. User nicht berechtigt!
+  dataType:
+    notOdif: Der Dateityp ist fehlerhaft. Die Datei muss mit .odif enden.
+fileNumber: Aktenzeichen
+finished: Abgeschlossen
+history: Historie
+id: ID
+info: Info
+login: Anmelden
+name: Name
+no: Nein
+number: Nummer
+object: Gegenstand
+overview: Übersicht
+pdf:
+  create: PDF erstellen
+  createWithHistory: PDF mit Historie erstellen
+  generatedSuccessful: PDF wurde erfolgreich erstellt!
+phone: Tel.
+processing: Verarbeitung
+processings: Verarbeitungen
+product: Produkt
+products: Produkte/Projekte
+reason: Grund
+regard: Betreff
+remove: Entfernen
+responsible: Verantwortlich
+restore: Wiederherstellen
+restored: Wiederhergestellt
+save:
+  word: Speichern
+  comment: Kommentar gespeichert
+  changesSuccessful: Änderung gespeichert
+  successful: Erfolgreich gespeichert
+show: anzeigen
+skip: Überspringen
+start: Start
+startTime: Startzeit
+state: Status
+subscriptionDate: Zeichnungsdatum
+time: Zeit
+times: Zeiten
+title: Titel
+to: zu
+type: Typ
+username: Benutzername
+uuid: UID
+version: Version
+versionApproved: (Diese Version war freigegeben)
+yes: Ja

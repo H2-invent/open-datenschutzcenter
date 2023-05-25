@@ -17,8 +17,10 @@ use App\Entity\User;
 use App\Entity\VVT;
 use App\Form\Type\SoftwareConfigType;
 use App\Form\Type\SoftwareType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 
 class SoftwareService
@@ -32,31 +34,26 @@ class SoftwareService
         $this->formBuilder = $formBuilder;
     }
 
-    function newSoftware(Team $team, User $user)
-    {
-        $software = new Software();
-        $software->setTeam($team);
-        $software->setCreatedAt(new \DateTime());
-        $software->setPurchase(new \DateTime());
-        $software->setActiv(true);
-        $software->setUser($user);
-
-        return $software;
-    }
-
-    function cloneSoftware(Software $software, User $user)
+    public function cloneSoftware(Software $software, User $user): Software
     {
         $newSoftware = clone $software;
         $newSoftware->setPrevious($software);
         $newSoftware->setActiv(true);
         $newSoftware->setUser($user);
-        $newSoftware->setCreatedAt(new \DateTime());
+        $newSoftware->setCreatedAt(new DateTime());
         return $newSoftware;
     }
 
-    function createForm(Software $software, Team $team)
+    public function createConfigForm(SoftwareConfig $softwareConfig): FormInterface
     {
-        $processes = $this->em->getRepository(VVT::class)->findActivByTeam($team);
+        $form = $this->formBuilder->create(SoftwareConfigType::class, $softwareConfig);
+
+        return $form;
+    }
+
+    public function createForm(Software $software, Team $team): FormInterface
+    {
+        $processes = $this->em->getRepository(VVT::class)->findActiveByTeam($team);
         $data = $this->em->getRepository(Datenweitergabe::class)->findBy(['team' => $team, 'activ' => true, 'art' => 1]);
 
         $form = $this->formBuilder->create(SoftwareType::class, $software, ['processes' => $processes, 'datenweitergabe' => $data]);
@@ -64,20 +61,25 @@ class SoftwareService
         return $form;
     }
 
-    function newConfig(Software $software)
+    public function newConfig(Software $software): SoftwareConfig
     {
         $config = new SoftwareConfig();
-        $config->setCreatedAt(new \DateTime());
+        $config->setCreatedAt(new DateTime());
         $config->setActiv(true);
         $config->setSoftware($software);
 
         return $config;
     }
 
-    function createConfigForm(SoftwareConfig $softwareConfig)
+    public function newSoftware(Team $team, User $user): Software
     {
-        $form = $this->formBuilder->create(SoftwareConfigType::class, $softwareConfig);
+        $software = new Software();
+        $software->setTeam($team);
+        $software->setCreatedAt(new DateTime());
+        $software->setPurchase(new DateTime());
+        $software->setActiv(true);
+        $software->setUser($user);
 
-        return $form;
+        return $software;
     }
 }

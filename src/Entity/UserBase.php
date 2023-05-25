@@ -10,20 +10,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserBase implements UserInterface
 {
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $uuid;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: 'string')]
     private $password;
 
     public function getId(): ?int
@@ -61,6 +57,9 @@ class UserBase implements UserInterface
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
+
+        // TODO: GET ROLE NFO FROM KEYCLOAK
+        $roles[] = 'ROLE_ADMIN';
 
         return array_unique($roles);
     }
@@ -102,5 +101,10 @@ class UserBase implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getUserIdentifier(): string
+    {
+       return $this->getUsername();
     }
 }

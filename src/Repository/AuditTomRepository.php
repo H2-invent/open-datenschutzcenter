@@ -20,35 +20,6 @@ class AuditTomRepository extends ServiceEntityRepository
         parent::__construct($registry, AuditTom::class);
     }
 
-    // /**
-    //  * @return AuditTom[] Returns an array of AuditTom objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?AuditTom
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
     public function findAllByTeam($value)
     {
         return $this->createQueryBuilder('a')
@@ -82,5 +53,30 @@ class AuditTomRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function findCriticalByTeam(Team $team)
+    {
+        return $this->createQueryBuilder('audit')
+            ->andWhere('audit.team = :team')
+            ->andWhere('audit.activ = 1')
+            ->andWhere('audit.status = 5 OR audit.status = 6')
+            ->orderBy('audit.createdAt', 'DESC')
+            ->setParameter('team', $team)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActiveByTeamAndUser($team, $user)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team = :team')
+            ->andWhere('a.assignedUser = :user')
+            ->andWhere('a.activ = 1')
+            ->setParameter('team', $team)
+            ->setParameter('user', $user)
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }
