@@ -105,6 +105,11 @@ sed -i "s|<keycloak-pw>|$KEYCLOAK_PW|g" docker-entrypoint-initdb.d/init-userdb.s
 
 
 export MAILER_DSN=smtp://$smtpUsername:$smtpPassword@$smtpHost:$smtpPort
+export MAILER_HOST=$smtpHost
+export MAILER_PORT=$smtpPort
+export MAILER_PASSWORD=$smtpPassword
+export MAILER_USERNAME=$smtpUsername
+export MAILER_ENC=$smtpEncryption
 export laF_baseUrl=$HTTP_METHOD://$PUBLIC_URL
 
 export GIT_VERSION=$(git rev-parse --short=5 HEAD)
