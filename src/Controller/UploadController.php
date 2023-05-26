@@ -9,7 +9,7 @@ use App\Service\ParserService;
 use App\Service\SecurityService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +35,7 @@ class UploadController extends AbstractController
     #[Route(path: '/upload', name: 'upload_new')]
     public function index(
         Request             $request,
-        FilesystemInterface $internFileSystem,
+        FilesystemOperator $internFilesystem,
         ParserService       $parserService,
         SecurityService     $securityService,
         CurrentTeamService  $currentTeamService,
@@ -68,11 +68,11 @@ class UploadController extends AbstractController
             }
 
             $this->em->flush();
-            $stream = $internFileSystem->read($upload->getFile());
+            $stream = $internFilesystem->read($upload->getFile());
             $data = json_decode($stream);
             $verify = $parserService->verify($data);
             if ($verify != 1) {
-                $internFileSystem->delete($upload->getFile());
+                $internFilesystem->delete($upload->getFile());
                 return $this->redirectToRoute(
                     'upload_fail',
                     [
@@ -93,10 +93,10 @@ class UploadController extends AbstractController
             }
 
             if ($res) {
-                $internFileSystem->delete($upload->getFile());
+                $internFilesystem->delete($upload->getFile());
                 return $this->redirectToRoute('upload_success');
             } else {
-                $internFileSystem->delete($upload->getFile());
+                $internFilesystem->delete($upload->getFile());
                 return $this->redirectToRoute(
                     'upload_fail',
                     [

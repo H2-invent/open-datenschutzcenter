@@ -11,7 +11,7 @@ use App\Service\DisableService;
 use App\Service\PoliciesService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -119,7 +119,7 @@ class PoliciesController extends AbstractController
     #[Route(path: '/policy/download/{id}', name: 'policy_download_file', methods: ['GET'])]
     #[ParamConverter('policies', options: ['mapping' => ['id' => 'id']])]
     public function downloadArticleReference(
-        FilesystemInterface $policiesFileSystem,
+        FilesystemOperator $policiesFilesystem,
         Policies            $policies,
         SecurityService     $securityService,
         LoggerInterface     $logger,
@@ -127,7 +127,7 @@ class PoliciesController extends AbstractController
     ): Response
     {
 
-        $stream = $policiesFileSystem->read($policies->getUpload());
+        $stream = $policiesFilesystem->read($policies->getUpload());
 
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamDataCheck($policies, $team) === false) {
@@ -144,7 +144,7 @@ class PoliciesController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $policiesFileSystem->getMimetype($policies->getUpload());
+        $type = $policiesFilesystem->getMimetype($policies->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(
