@@ -11,7 +11,7 @@ use App\Service\DisableService;
 use App\Service\FormsService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -118,14 +118,14 @@ class FormsController extends AbstractController
     #[Route(path: '/forms/download/{id}', name: 'forms_download_file', methods: ['GET'])]
     #[ParamConverter('forms', options: ['mapping' => ['id' => 'id']])]
     public function downloadArticleReference(
-        FilesystemInterface $formsFileSystem,
+        FilesystemOperator $formsFilesystem,
         Forms               $forms,
         SecurityService     $securityService,
         LoggerInterface     $logger,
         CurrentTeamService  $currentTeamService,
     ): Response
     {
-        $stream = $formsFileSystem->read($forms->getUpload());
+        $stream = $formsFilesystem->read($forms->getUpload());
 
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamDataCheck($forms, $team) === false) {
@@ -142,7 +142,7 @@ class FormsController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $formsFileSystem->getMimetype($forms->getUpload());
+        $type = $formsFilesystem->getMimetype($forms->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(

@@ -17,7 +17,7 @@ use App\Service\DatenweitergabeService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -194,14 +194,14 @@ class DatenweitergabeController extends AbstractController
     #[Route(path: '/datenweitergabe/download/{id}', name: 'datenweitergabe_download_file', methods: ['GET'])]
     #[ParamConverter('datenweitergabe', options: ['mapping' => ['id' => 'id']])]
     public function downloadArticleReference(
-        FilesystemInterface $datenFileSystem,
-        Datenweitergabe     $datenweitergabe,
-        SecurityService     $securityService,
-        LoggerInterface     $logger,
-        CurrentTeamService  $currentTeamService,
+        FilesystemOperator $datenFilesystem,
+        Datenweitergabe    $datenweitergabe,
+        SecurityService    $securityService,
+        LoggerInterface    $logger,
+        CurrentTeamService $currentTeamService,
     ): Response
     {
-        $stream = $datenFileSystem->read($datenweitergabe->getUpload());
+        $stream = $datenFilesystem->read($datenweitergabe->getUpload());
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamDataCheck($datenweitergabe, $team) === false) {
             $logger->error(
@@ -216,7 +216,7 @@ class DatenweitergabeController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $datenFileSystem->getMimetype($datenweitergabe->getUpload());
+        $type = $datenFilesystem->getMimetype($datenweitergabe->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(
