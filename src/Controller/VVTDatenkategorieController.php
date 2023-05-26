@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/vvtdatenkategorie')]
 class VVTDatenkategorieController extends AbstractController
 {
-    #[Route(path: '/{id}', name: 'app_vvtdatenkategorie_delete', methods: ['POST'])]
+    #[Route(path: '/delete/{id}', name: 'app_vvtdatenkategorie_delete', methods: ['POST'])]
     public function delete(
         Request                $request,
         VVTDatenkategorie      $vVTDatenkategorie,
@@ -45,7 +45,7 @@ class VVTDatenkategorieController extends AbstractController
         return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route(path: '/{id}/edit', name: 'app_vvtdatenkategorie_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/edit/{id}', name: 'app_vvtdatenkategorie_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request                  $request,
         VVTDatenkategorie        $vVTDatenkategorie,
@@ -136,7 +136,7 @@ class VVTDatenkategorieController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}', name: 'app_vvtdatenkategorie_show', methods: ['GET'])]
+    #[Route(path: '/show/{id}', name: 'app_vvtdatenkategorie_show', methods: ['GET'])]
     public function show(VVTDatenkategorie $vVTDatenkategorie): Response
     {
 
