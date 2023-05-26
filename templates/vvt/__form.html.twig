@@ -303,19 +303,6 @@
 
             </div>
         </div>
-        <div class="row">
-            <div class="offset-md-3 col-md-9">
-                {% if vvt.activDsfa is not null %}
-                    <a href="{{ path('vvt_dsfa_edit',{'dsfa':vvt.activDsfa.id}) }}"
-                       class="btn btn-primary">{% trans %}dsfa.show{% endtrans %}</a>
-                {% else %}
-                    <a class="btn btn-indigo" href="{{ path('vvt_dsfa_new', {'vvt':vvt.id}) }}"
-                       title="{% trans %}dataProtectionImpactAssessment.create{% endtrans %}">
-                        <span>{% trans %}dsfa.create{% endtrans %}</span>
-                    </a>
-                {% endif %}
-            </div>
-        </div>
     </div>
 
 </div>
