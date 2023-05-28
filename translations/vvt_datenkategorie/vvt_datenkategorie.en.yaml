@@ -1,0 +1,9 @@
+dataCategory:
+  word: Data category
+  edit: Datenkategorie bearbeiten
+  create: New data category
+  overview: Data category overview
+dataType: Data types
+deletion:
+  deadline: Deadline for deletion
+  concept: Deletion concept
