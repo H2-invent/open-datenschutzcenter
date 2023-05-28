@@ -1,0 +1,13 @@
+priority: Priority
+deadlineDue: Zu erledigen bis
+finishedAt: Erledigt am
+finish: Abschließen
+confirmAction: Do you really want to execute this action?
+task:
+  create: New task
+  word: Aufgabe
+  edit: Aufgabe bearbeiten
+  overview: Task overview
+  show:
+    all: Show all tasks
+    open: Show open tasks
