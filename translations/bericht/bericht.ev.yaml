@@ -1,0 +1,108 @@
+archiveConcept:
+  word: Archivierungskonzept
+  software: Archivierungskonzept nach Software
+  processing: Archivierungskonzept nach Verarbeitungen
+softwareName: Name der Software
+inventoryNumber: Inventarnummer
+expired: ABGELAUFEN
+publishSoftwareAndConfig: Software und Konfiguration freigegeben
+with: mit
+openDataPrivacyCenter:
+  word: Open-DatenschutzCenter
+  disclaimer: Open-Datenschutz Center ist die Open Source Lösung um Datenschutzdokumente schnell, einfach und sicher zu erstellen
+tableOfContents: Inhaltsverzeichnis
+approved: Freigegebene
+archiving: Archivierung
+restorationConcept: Wiederherstellungskonzept
+reasonForRequest: Grund der Anfrage
+pgpKey:
+  exists: PGP Schlüssel vorhanden
+active: Aktiv
+openToCustomer: Für Kunde offen
+internalNotice: Interne Notizen
+validateIdentity: Identität bestätigt
+at: bei
+protocol: Protokoll
+billedTime: Abgerechnete Zeit
+minutes: Minuten
+versionCreatedBy: Version erstellt von
+exportCreatedAt: Export erstellt am
+dataProtectionOfficer: Datenschutzbeauftragter
+representedBy: Vertreten durch
+responsible: Verantwortliche Stelle
+report:
+  about:
+    auditQuestions: Bericht zu Audit-Fragen
+    dataTransfer: Bericht zur Datenweitergabe
+    dataIncident: Bericht zu Datenvorfall
+    dataProtectionGuidelines: Bericht zu Datenschutzrichtlinien
+    software: Bericht zu verwendeter Software und Konfiguration
+    recoveryConcept: Recovery- und Wiederherstellungskonzept
+    clientRequest: Bericht zur Kundenanfrage und Datenauskunft
+    clientRequestBy: Bericht zur Kundenanfrage und Datenauskunft von
+    workReport: Tätigkeitsbericht erstellen
+  create: Bericht erstellen
+  notAvailable: Keine Berichte vorhanden
+vvt: Verarbeitungstätigkeiten (VVT)
+dw: Datenweitergaben (DW)
+avv: Auftragsverarbeitung (AV)
+auditQuestions:
+  word: Audit-Fragen
+  exportCurrent: Exportieren Sie Ihre aktuelle Audit-Fragen
+  exportCurrentWithRevisions: Exportieren Sie Ihre aktuelle Audit-Fragen zusammen mit allen Revisionen
+  exportRelevant:
+    all: Alle relevanten Audit-Fragen exportieren
+    title: Exportieren Sie Ihre aktuelle und relevanten (nicht unbearbeitet, nicht zutreffend) Audit-Fragen
+  exportUnedited:
+    all: Exportieren Sie Ihre aktuelle und unbearbeiteten Audit-Fragen
+    title: Alle unbearbeiteten Audit-Fragen exportieren
+pdf:
+  create: 'PDF von allen {target} erstellen'
+  createWithHistory: 'PDF von allen {target} inkl. Historie erstellen'
+tom:
+  word: TOM
+  general: Allgemeine TOM
+  global: Globale_TOM
+  create:
+    all:
+      export: Exportieren Sie Ihre aktuelle technischen und organisatorischen Maßnahmen für alle Verabreitungen
+      word: Alle TOMs erstellen
+    general:
+      word: Allgemeine Globale TOM erstellen
+      export: Exportieren Sie Ihre aktuelle technischen und organisatorischen Maßnahmen
+dataProtection:
+  word: Datenschutzvorfälle
+  incident: Datenschutzvorfall
+  create:
+    all:
+      export: Exportieren Sie alle Datenschutzvorfälle
+      word: Alle Datenschutzvorfälle exportieren
+    allWithHistory:
+      export: Exportieren Sie alle Datenschutzvorfälle mit allen Änderungen
+      word: Alle Datenschutzvorfälle mit Historie exportieren
+software:
+  word: Software
+  export:
+    config:
+      title: Exportieren Sie alle Anwendungen und Konfigurationen
+      export: Alle Anwendungen exportieren
+    history:
+      title: Exportieren Sie alle Anwendungen mit allen Änderungen
+      export: Alle Anwendungen mit Historie exportieren
+    archiveConcept:
+      title: Exportieren Sie das Archivierungskonzept von allen Anwendungen
+      export: Archivierungskonzept exportieren
+    recoveryConcept:
+      title: Exportieren Sie das Archivierungskonzept von allen Anwendungen
+      export: Recovery-Konzept exportieren
+academy:
+  word: Akademie
+  allDoneBills: Alle bis jetzt abgeschlossenen Buchungen
+dataProtectionGuideline:
+  word: Datenschutzrichtlinien
+  export: Alle Richtlinien exportieren
+customerRequest:
+  word: Tätigkeitsbericht
+  create: Tätigkeitsbericht erstellen
+deletionConcept: Löschkonzepte
+recoveryConcept: Wiederherstellungskonzept
