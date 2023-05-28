@@ -1,0 +1,60 @@
+element:
+  unpublished: Freigabe entfernt und neue Version angelegt
+  published: Element freigegeben
+  error: "FEHLER: Element konnte nicht freigegeben werden. Versuchen Sie es noch einmal."
+notification:
+  odc:
+    sender: Datenschutzcenter
+    email:
+      verify: Bestätigen Sie Ihre Email Adresse
+    new:
+      clientRequest: Neue Kundenanfrage in Datenschutzcenter
+      message:
+        available: Es ist eine neue Nachricht für Sie vorhanden
+    element:
+      assigned: Ihnen wurde ein Element zum Bearbeiten zugewiesen
+  academy:
+    lesson:
+      assigned: Ihnen wurde ein neuer Kurs zugewiesen
+    sender: Akademie Datenschutzcenter
+  new:
+    message:
+      available: Neue Nachricht vorhanden
+cron:
+  ip:
+    unauthorized: IP Adresse für Cron Jobs nicht zugelassen
+  token:
+    invalid: Token fehlerhaft
+groupOfPeople:
+  word: Personengruppen
+  add: Neue Personengruppe hinzufügen
+  edit: Personengruppe bearbeiten
+risk:
+  processing: Risiken der Verarbeitung
+  new: Neues Risiko hinzufügen
+  edit: Risiko bearbeiten
+legalBase:
+  word: Gesetzliche Grundlagen für die Verarbeitungen
+  add: Gesetzliche Grundlage hinzufügen
+  edit: Gesetzliche Grundlage bearbeiten
+product:
+  word: Produkte/Projekte
+  add: Produkt/Projekt hinzufügen
+  edit: Produkt/Projekt bearbeiten
+processingState:
+  word: VVT Status
+  add: VVT Status hinzufügen
+  edit: VVT Status bearbeiten
+dataTransfer:
+  base:
+    word: Grundlagen für Datenweitergabe
+    add: Grundlage hinzufügen
+    edit: Grundlage bearbeiten
+  state:
+    word: Stände in Datenweitergaben
+    add: Stand hinzufügen
+    edit: Stand bearbeiten
+auditGoal:
+  word: Schutzziele für Audits
+  add: Schutzziel hinzufügen
+  edit: Schutzziel bearbeiten
