@@ -1,0 +1,49 @@
+confirmAction: Do you really want to execute this action?
+approve: Approve
+rescindApproval: Revoke approval
+approvedBy: Freigegeben von
+delete: Delete
+restore: Restore
+imprint: Impressum
+dataPrivacy: Datenschutzhinweis
+bugReport: Fehler melden
+salutation: Made with ❤ by H2 invent
+dataPrivacyCenter: Privacy Center
+profile: Profile
+name: Name
+email: Email
+editProfile: Edit profile
+changePassword: Change password
+logout: Logout
+externalDsb: External DPO
+dashboard: Dashboard
+myAssignments: My assignments
+tasks: Tasks
+elements: Datenschutzelemente
+auditQuestions: Audit questions
+dataCategories: Data categories
+toms: TOMs
+processings: Processings
+deleteConcepts: Löschkonzepte
+policies: Policies
+contacts: Kontakte
+dataTransfers: Data transfers
+orderProcessing: Order processing
+software: Software
+forms: Formulare
+incidents: Vorfälle
+customerQuestions: Kundenfragen
+activities: Aktivitäten
+assistant: VVT-Assistent
+reports: Berichte
+external: Extern
+academy: Academy
+teamData: Stammdaten
+presets: Presets
+departments: Departments
+users: Benutzer*innen
+import: Import
+manageOdc: Manage ODC
+manageTeams: Manage teams
+teamAdminArea: Team Admin Area
+superAdminArea: ODC Admin Area
