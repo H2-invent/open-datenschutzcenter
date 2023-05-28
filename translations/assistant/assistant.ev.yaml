@@ -1,0 +1,47 @@
+assistant:
+  word: VVT-Assistent
+  info: Es sind eine Reihe von Elementen notwendig, um neue VVTs zu erstellen. Der Assistent hilft dabei, diese auszuwählen und anzulegen.
+  start: Assistent Starten
+  finished: Der Assistent ist fertig und alle Elemente wurden erfolgreich angelegt. Du kannst ihn neu starten, um weitere Verarbeitungstätigkeiten zu dokumentieren.
+  aborted: Der Assistent wurde abgebrochen. Bereits angelegte Elemente wurden gespeichert.
+contact:
+  source:
+    title: Eingangskontakt
+    info: Wo kommen die Daten für die Auftragsverarbeitung her?
+  dest:
+    title: Ausgangskontakt
+    info: Wo werden die Daten bei der Datenweitergabe hingeschickt?
+procedure:
+  processing:
+    title: Verarbeitungstätigkeit für Auftragsverarbeitung
+    info: Einer Auftragsverarbeitung muss mindestens eine Verarbeitungstätigkeit zugeordnet sein
+  transfer:
+    title: Verarbeitungstätigkeit für Datenweitergabe
+    info: Einer Datenweitergabe muss mindestens eine Verarbeitungstätigkeit zugeordnet sein
+processing:
+  title: Auftragsverarbeitung
+  info: Was wird mit den Daten gemacht?
+transfer:
+  title: Datenweitergabe
+  info: Was wird mit den Daten gemacht?
+step:
+  word: Schritt
+  error: Dieser Schritt existiert nicht
+software:
+  processing:
+    title: Software für die Auftragsverarbeitung
+    info: Wird bei der zur Auftragsvearbeitung zugehörigen Verarbeitungstätigkeit Software verwendet? Wenn keine Software verwendet wird oder eine bereits vorhandene Verarbeitungstätigkeit verwendet werden soll, kann dieser Schritt übersprungen werden.
+  transfer:
+    title: Software für die Datenweitergabe
+    info: Wird für die Datenweitergabe Software verwendet? Wenn keine Software verwendet wird, kann dieser Schritt übersprungen werden.
+new:
+  word: Neu
+  contact: Neuer Kontakt
+  transfer: Neue Datenweitergabe
+  processing: Neue Auftragsverarbeitung
+  procedure: Neue Verarbeitungstätigkeit
+  software: Neue Software
+select:
+  contact: Kontakt wählen
+  procedure: Verarbeitungstätigkeit wählen
+  software: Software wählen
