@@ -1,4 +1,5 @@
-<h2 style="page-break-before: always;">id:{{ d.id }}</h2>
+{% trans_default_domain 'bericht' %}
+<h2 style="page-break-before: always;">{% trans from 'general' %}id{% endtrans %}:{{ d.id }}</h2>
 <style>
     th, td {
         padding: 5px;
@@ -9,25 +10,25 @@
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Datum
+            {% trans from 'general' %}date{% endtrans %}
         </td>
         <td>{{ d.date|date('d.m.Y') }}</td>
     </tr>
     <tr>
         <td>
-            Zeit
+            {% trans from 'general' %}time{% endtrans %}
         </td>
         <td>{{ d.start|date('H:i') }} - {{ d.end|date('H:i') }}</td>
     </tr>
     <tr>
         <td>
-            Abgerechnete Zeit
+            {% trans %}billedTime{% endtrans %}
         </td>
-        <td>{{ d.calcTime }} Minuten</td>
+        <td>{{ d.calcTime }} {% trans %}minutes{% endtrans %}</td>
     </tr>
     <tr>
         <td>
-            Beschreibung
+            {% trans from 'general' %}description{% endtrans %}
         </td>
         <td>{{ d.description }}</td>
     </tr>

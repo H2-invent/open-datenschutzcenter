@@ -1,124 +1,123 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'bericht' %}
 
 {% block CTA %}
-
 {% endblock %}
-
 {% block body %}
-    <h1>Berichte erstellen</h1>
+    <h1>{% trans %}report.create{% endtrans %}</h1>
     <div class="card card-body">
         <div class="row">
             <div class="col-lg-3 mt-2">
-                <h4>Verarbeitungstätigkeiten (VVT)</h4>
+                <h4>{% trans %}vvt{% endtrans %}</h4>
 
                 <a class="btn bg-vvt btn-block mb-1" href="{{ path('bericht_vvt') }}">
-                    <span>PDF von allen VVTs erstellen</span>
+                    <span>{% trans with {'{target}': 'VVTs'} %}pdf.create{% endtrans %}</span>
                 </a>
                 <a class="btn bg-vvt btn-block" href="{{ path('bericht_vvt', {'all':1}) }}">
-                    <span>PDF von allen VVTs inkl. Historie erstellen</span>
+                    <span>{% trans with {'{target}': 'VVTs'} %}pdf.createWithHistory{% endtrans %}</span>
                 </a>
             </div>
 
 
             <div class="col-lg-3 mt-2">
-                <h4>Datenweitergaben (DW)</h4>
+                <h4>{% trans %}dw{% endtrans %}</h4>
                 <a class="btn bg-daten btn-block mb-1" href="{{ path('bericht_weitergabe', {'art':1}) }}">
-                    <span>PDF von allen DWs erstellen</span>
+                    <span>{% trans with {'{target}': 'DWs'} %}pdf.create{% endtrans %}</span>
                 </a>
                 <a class="btn bg-daten btn-block" href="{{ path('bericht_weitergabe', {'all':1, 'art':1}) }}">
-                    <span>PDF von allen DWs inkl. Historie erstellen</span>
+                    <span>{% trans with {'{target}': 'DWs'} %}pdf.createWithHistory{% endtrans %}</span>
                 </a>
             </div>
 
 
             <div class="col-lg-3 mt-2">
-                <h4>Auftragsverarbeitung (AV)</h4>
+                <h4>{% trans %}avv{% endtrans %}</h4>
                 <a class="btn bg-av btn-block mb-1" href="{{ path('bericht_weitergabe', {'art':2}) }}">
-                    <span>PDF von allen AVVs erstellen</span>
+                    <span>{% trans with {'{target}': 'AVVs'} %}pdf.create{% endtrans %}</span>
                 </a>
                 <a class="btn bg-av btn-block" href="{{ path('bericht_weitergabe', {'all':1, 'art':2}) }}">
-                    <span>PDF von allen AVVs inkl. Historie erstellen</span>
+                    <span>{% trans with {'{target}': 'AVVs'} %}pdf.createWithHistory{% endtrans %}</span>
                 </a>
             </div>
 
 
             <div class="col-lg-3 mt-2">
-                <h4>Auditfragen</h4>
+                <h4>{% trans %}auditQuestions.word{% endtrans %}</h4>
                 <a class="btn bg-audit btn-block mb-1" href="{{ path('bericht_audit') }}"
-                   title="Exportieren Sie Ihre aktuelle Auditfragen">
-                    <span>PDF von allen Auditfragen erstellen</span>
+                   title="{% trans %}auditQuestions.exportCurrent{% endtrans %}">
+                    <span>{% trans with {'{target}': 'Audit-Fragen'} %}pdf.create{% endtrans %}</span>
                 </a>
                 <a class="btn bg-audit btn-block mb-1" href="{{ path('bericht_audit', {'all':1}) }}"
-                   title="Exportieren Sie Ihre aktuelle Auditfragen zusammen mit allen Revisionen">
-                    <span>PDF von allen Auditfragen inkl. Historie erstellen</span>
+                   title="{% trans %}auditQuestions.exportCurrentWithRevisions{% endtrans %}">
+                    <span>{% trans with {'{target}': 'Audit-Fragen'} %}pdf.createWithHistory{% endtrans %}</span>
                 </a>
                 <a class="btn bg-audit btn-block mb-1" href="{{ path('bericht_audit', {'activ':1}) }}"
-                   title="Exportieren Sie Ihre aktuelle und relevanten (nicht unbearbetiet, nicht zutreffend) Auditfragen">
-                    <span>Alle relevanten Auditfragen exportieren</span>
+                   title="{% trans %}auditQuestions.exportRelevant.title{% endtrans %}">
+                    <span>{% trans %}auditQuestions.exportRelevant.all{% endtrans %}</span>
                 </a>
                 <a class="btn bg-audit btn-block mb-1" href="{{ path('bericht_audit', {'open':1}) }}"
-                   title="Exportieren Sie Ihre aktuelle und unbearbetieten Auditfragen">
-                    <span>Alle unbearbeiteten Auditfragen exportieren</span>
+                   title="{% trans %}auditQuestions.exportUnedited.title{% endtrans %}">
+                    <span>{% trans %}auditQuestions.exportUnedited.all{% endtrans %}</span>
                 </a>
             </div>
 
             <div class="col-lg-3 mt-2">
-                <h4>TOM</h4>
+                <h4>{% trans %}tom.word{% endtrans %}</h4>
                 <a class="btn bg-tom btn-block" href="{{ path('bericht_global_tom') }}"
-                   title="Exportieren Sie Ihre aktuelle technischen und organisatorischen Maßnahmen">
-                    <span>Allgemeine Globale TOM erstellen</span>
+                   title="{% trans %}tom.create.general.export{% endtrans %}">
+                    <span>{% trans %}tom.create.general.word{% endtrans %}</span>
                 </a>
                 <a class="btn bg-tom btn-block" href="{{ path('bericht_tom') }}"
-                   title="Exportieren Sie Ihre aktuelle technischen und organisatorischen Maßnahmen für alle Verabreitungen">
-                    <span>Alle TOMs erstellen</span>
+                   title="{% trans %}tom.create.all.export{% endtrans %}">
+                    <span>{% trans %}tom.create.all.word{% endtrans %}</span>
                 </a>
             </div>
 
             <div class="col-lg-3 mt-2">
-                <h4>Datenschutzvorfälle</h4>
+                <h4>{% trans %}dataProtection.word{% endtrans %}</h4>
                 <a class="btn btn-block bg-vorfall" href="{{ path('bericht_vorfall') }}"
-                   title="Exportieren Sie alle Datenschutzvorfälle">
-                    <span>Alle Datenschutzvorfälle exportieren</span>
+                   title="{% trans %}dataProtection.create.all.export{% endtrans %}">
+                    <span>{% trans %}dataProtection.create.all.word{% endtrans %}</span>
                 </a>
                 <a class="btn btn-block bg-vorfall" href="{{ path('bericht_vorfall', {'all':1}) }}"
-                   title="Exportieren Sie alle Datenschutzvorfälle mit allen Änderungen">
-                    <span>Alle Datenschutzvorfälle mit Historie exportieren</span>
+                   title="{% trans %}dataProtection.create.allWithHistory.export{% endtrans %}">
+                    <span>{% trans %}dataProtection.create.allWithHistory.word{% endtrans %}</span>
                 </a>
             </div>
 
             <div class="col-lg-3 mt-2">
-                <h4>Software</h4>
+                <h4>{% trans %}software.word{% endtrans %}</h4>
                 <a class="btn btn-block bg-software" href="{{ path('bericht_software') }}"
-                   title="Exportieren Sie alle Anwenungen und Konfigurationen">
-                    <span>Alle Anwendungen exportieren</span>
+                   title="{% trans %}software.export.config.title{% endtrans %}">
+                    <span>{% trans %}software.export.config.export{% endtrans %}</span>
                 </a>
                 <a class="btn btn-block bg-software" href="{{ path('bericht_software', {'all':1}) }}"
-                   title="Exportieren Sie alle Anwendungen mit allen Änderungen">
-                    <span>Alle Anwendungen mit Historie exportieren</span>
+                   title="{% trans %}software.export.history.title{% endtrans %}">
+                    <span>{% trans %}software.export.history.export{% endtrans %}</span>
                 </a>
                 <a class="btn btn-block bg-software" href="{{ path('bericht_backupconcept') }}"
-                   title="Exportieren Sie das Archivierungskonzept von allen Anwendungen">
-                    <span>Archivierungskonzept exportieren</span>
+                   title="{% trans %}software.export.archiveConcept.title{% endtrans %}">
+                    <span>{% trans %}software.export.archiveConcept.export{% endtrans %}</span>
                 </a>
                 <a class="btn btn-block bg-software" href="{{ path('bericht_recoveryconcept') }}"
-                   title="Exportieren Sie das Archivierungskonzept von allen Anwendungen">
-                    <span>Recoverykonzept exportieren</span>
+                   title="{% trans %}software.export.recoveryConcept.title{% endtrans %}">
+                    <span>{% trans %}software.export.recoveryConcept.export{% endtrans %}</span>
                 </a>
             </div>
 
-            {% if app.user.adminUser %}
+            {% if currentTeam in app.user.adminRoles %}
                 <div class="col-lg-3 mt-2">
-                    <h4>Akademie</h4>
+                    <h4>{% trans %}academy.word{% endtrans %}</h4>
                     <a class="btn btn-block bg-akademie mb-1" href="{{ path('bericht_akademie') }}">
-                        <span>Alle bis jetzt abgeschlossenen Buchungen</span>
+                        <span>{% trans %}academy.allDoneBills{% endtrans %}</span>
                     </a>
                 </div>
             {% endif %}
 
             <div class="col-lg-3 mt-2">
-                <h4>Datenschutzrichtlinien</h4>
+                <h4>{% trans %}dataProtectionGuideline.word{% endtrans %}</h4>
                 <a class="btn btn-block bg-policy mb-1" href="{{ path('bericht_policy') }}">
-                    <span>Alle Richtlinien exportieren</span>
+                    <span>{% trans %}dataProtectionGuideline.export{% endtrans %}</span>
                 </a>
             </div>
 
@@ -130,25 +129,23 @@
             </div>
 
             <div class="col-lg-3 mt-2">
-                <h4>Tätigkeitsbericht</h4>
+                <h4>{% trans %}customerRequest.word{% endtrans %}</h4>
                 <a class="btn btn-block bg-request mb-1 loadContent"
-                   href="{{ path('bericht_reports', {'team':app.user.team.id}) }}">
-                    <span>Tätigkeitsbericht erstellen</span>
+                   href="{{ path('bericht_reports', {'team':currentTeam.id}) }}">
+                    <span>{% trans %}customerRequest.create{% endtrans %}</span>
                 </a>
             </div>
 
            <div class="col-lg-3 mt-2">
-                <h4>Löschkonzepte</h4>
+                <h4>{% trans %}deletionConcept{% endtrans %}</h4>
 
                 <a class="btn btn-block orange mb-1" href="{{ path('bericht_loeschkonzept') }}">
-                    <span>PDF von allen Löschkonzepten erstellen</span>
+                    <span>{% trans with {'{target}': 'deletionConcept'|trans} %}pdf.create{% endtrans %}</span>
                 </a>
                 <a class="btn btn-block orange mb-1" href="{{ path('bericht_loeschkonzept', {'all':1}) }}">
-                    <span>PDF von allen Löschkonzepten inkl. Historie erstellen</span>
+                    <span>{% trans with {'{target}': 'deletionConcept'|trans} %}pdf.createWithHistory{% endtrans %}</span>
                 </a>
             </div>
-
-
         </div>
     </div>
     {{ include('base/__snack.html.twig') }}

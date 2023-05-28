@@ -1,3 +1,4 @@
+{% trans_default_domain 'policies' %}
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 <div class="card card-body">
 
@@ -127,8 +128,9 @@
                 {{ form_widget(form.uploadFile, { 'disabled':'disabled' }) }}
             {% endif %}
             {% if policy.upload %}
-                <a href="{{ path('policy_download_file', {'id':policy.id}) }}" download class="btn btn-amber mb-4">Anhang
-                    herunterladen</a>
+                <a href="{{ path('policy_download_file', {'id':policy.id}) }}" download class="btn btn-amber mb-4">
+                    {% trans %}downloadAttachment{% endtrans %}
+                </a>
             {% endif %}
         </div>
     </div>

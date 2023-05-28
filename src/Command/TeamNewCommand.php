@@ -26,7 +26,7 @@ class TeamNewCommand extends Command
             ->setDescription(self::$defaultDescription);
     }
 
-    public function __construct(string $name = null, EntityManagerInterface $entityManager, ConnectDefaultToTeamsService $connectDefaultToTeamsService)
+    public function __construct(EntityManagerInterface $entityManager, ConnectDefaultToTeamsService $connectDefaultToTeamsService, string $name = null)
     {
         parent::__construct($name);
         $this->em = $entityManager;
@@ -38,10 +38,13 @@ class TeamNewCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $helper = $this->getHelper('question');
         $team = new Team();
-        $question = new Question('Please enter the name of Team: ', 'TestCompany');
+        $question = new Question('Team name (identical to keycloak group name if keycloak groups are used): ', 'TestCompany');
         $name = $helper->ask($input, $output, $question);
         $team->setName($name);
-        $question = new Question('Street: ', 'default');
+        $question = new Question('Display name (if different from team name): ', '');
+        $keycloakGroup = $helper->ask($input, $output, $question);
+        $team->setKeycloakGroup($keycloakGroup);
+        $question = new Question('Street: ', '');
         $street = $helper->ask($input, $output, $question);
         $team->setStrasse($street);
         $question = new Question('PLZ: ', 'default');
@@ -50,7 +53,7 @@ class TeamNewCommand extends Command
         $question = new Question('City: ', 'default');
         $city = $helper->ask($input, $output, $question);
         $team->setStadt($city);
-        $question = new Question('email: ', 'default');
+        $question = new Question('Email: ', 'default');
         $email = $helper->ask($input, $output, $question);
         $team->setEmail($email);
         $question = new Question('DSB : ', 'default');
@@ -59,24 +62,24 @@ class TeamNewCommand extends Command
         $question = new Question('Phone: ', 'default');
         $phone = $helper->ask($input, $output, $question);
         $team->setTelefon($phone);
-        $question = new Question('ceo: ', 'default');
+        $question = new Question('CEO: ', 'default');
         $ceo = $helper->ask($input, $output, $question);
         $team->setCeo($ceo);
-        $question = new Question('Signatur which is schown on all emails: ', 'default');
+        $question = new Question('Email signature: ', 'default');
         $signature = $helper->ask($input, $output, $question);
         $team->setSignature($signature);
-        $question = new Question('industry: ', 'default');
+        $question = new Question('Industry: ', 'default');
         $industry = $helper->ask($input, $output, $question);
         $team->setIndustry($industry);
-        $question = new Question('speciality: ', 'default');
-        $scpeciality = $helper->ask($input, $output, $question);
-        $team->setSpecialty($scpeciality);
+        $question = new Question('Specialty: ', 'default');
+        $specialty = $helper->ask($input, $output, $question);
+        $team->setSpecialty($specialty);
         $team->setActiv(true);
         $this->em->persist($team);
         $this->em->flush();
-        $this->connectService->connectDefault($team,$output);
+        $this->connectService->connectDefault($team, $output);
 
-        $io->success(sprintf('We create a new Team with the name %s', $team->getName()));
+        $io->success(sprintf('We created a new Team with the name %s', $team->getName()));
 
         return Command::SUCCESS;
     }

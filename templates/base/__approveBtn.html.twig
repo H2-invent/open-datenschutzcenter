@@ -1,6 +1,13 @@
-{% if app.user.adminUser == data.team and not data.activ == 0 %}
-    <a onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen?{% endtrans %}')"
-       href='{{ path(dataLink,{'id':data.id}) }}' type='button'
-       class='btn btn-success ml-1 btn-sm'>{% if data.approved %}{% trans %}Freigabe löschen{% endtrans %}{% else %}{% trans %}Freigeben{% endtrans %}{% endif %}</a>
+{% trans_default_domain 'base' %}
 
+{% if data.team in app.user.adminRoles and not data.activ == 0 %}
+    <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
+       href='{{ path(dataLink,{'id':data.id}) }}' type='button'
+       class='btn btn-success ml-1 btn-sm'>
+        {% if data.approved %}
+            {% trans %}rescindApproval{% endtrans %}
+        {% else %}
+            {% trans %}approve{% endtrans %}
+        {% endif %}
+    </a>
 {% endif %}

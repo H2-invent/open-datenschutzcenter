@@ -9,187 +9,167 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=TomRepository::class)
- */
+#[ORM\Entity(repositoryClass: TomRepository::class)]
 class Tom
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="toms")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'toms')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $team;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="toms")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'toms')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $user;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
     private $createdAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVT::class, mappedBy="tomLink")
-     */
+    #[ORM\OneToMany(targetEntity: VVT::class, mappedBy: 'tomLink')]
     private $vvts;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $activ;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomPseudo;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomZutrittskontrolle;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomZugangskontrolle;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomZugriffskontrolle;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomBenutzerkontrolle;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomSpeicherkontrolle;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomTrennbarkeit;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomDatenintegritaet;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomTransportkontrolle;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomUebertragungskontrolle;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomZuverlaessigkeit;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomAuftragskontrolle;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomVerfuegbarkeitskontrolle;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomWiederherstellbarkeit;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomAudit;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $tomEingabekontrolle;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Tom::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Tom::class, cascade: ['persist', 'remove'])]
     private $previous;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $beschreibung;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $titel;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $approved;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $approvedBy;
 
     public function __construct()

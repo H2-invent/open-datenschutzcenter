@@ -1,14 +1,15 @@
+{% trans_default_domain 'dashboard' %}
 <!--Card-->
 <div class="card">
     <!-- Card header -->
     <div class="card-header text-center">
-        Kritische Vorgänge
+        {% trans %}criticalProcesses{% endtrans %}
     </div>
     <!--Card content-->
     <div class="card-body">
         <div class="row">
             <div class="col-md-4">
-                <h5 class="h5-responsive">Auditfragen</h5>
+                <h5 class="h5-responsive">{% trans %}auditQuestions{% endtrans %}</h5>
                 <ul>
                     {% for a in kAudit %}
                         <li>
@@ -19,7 +20,7 @@
                 </ul>
             </div>
             <div class="col-md-4">
-                <h5 class="h5-responsive">VVTs</h5>
+                <h5 class="h5-responsive">{% trans %}vvts{% endtrans %}</h5>
                 <ul>
                     {% for v in kVvt %}
                         <li>
@@ -30,13 +31,13 @@
                 </ul>
             </div>
             <div class="col-md-4">
-                <h5 class="h5-responsive">Offene DSFA</h5>
+                <h5 class="h5-responsive">{% trans %}openDsfa{% endtrans %}</h5>
                 <ul>
                     {% for d in openDsfa %}
                         <li>
                             <a href="{{ path('vvt_dsfa_edit', {'dsfa':d.id}) }}">{{ d.createdAt|date('d.m.Y H:i') }}
                                 - {{ d.vvt.name }}
-                                ({% if not d.dsb %}Beurteilung DSB fehlt{% else %}Ergebnis fehlt{% endif %}
+                                ({% trans %}{% if not d.dsb %}dsbMissing{% else %}resultMissing{% endif %}{% endtrans %}
                                 )</a></li>
                     {% endfor %}
                 </ul>

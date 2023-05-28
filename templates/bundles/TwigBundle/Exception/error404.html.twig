@@ -1,3 +1,4 @@
+{% trans_default_domain 'error' %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -112,6 +113,7 @@
         75% { top: 100px; left: 40%;  opacity:0.6; }
         100% { top: 10px; left: 45%; opacity: 1; }
     }
+
     @keyframes smallmove {
         0% { top: 10px; left: 45%; opacity: 1; }
         25% { top: 300px; left: 40%; opacity:0.7; }
@@ -143,6 +145,7 @@
         75% { top: 100px; right: 35%;  opacity:0.6; }
         100% { top: 0px; right: 4%; opacity: 0.5; }
     }
+
     @keyframes bigmove {
         0% { top: 0px; right: 4%; opacity: 0.5; }
         25% { top: 100px; right: 40%; opacity:0.4; }
@@ -153,10 +156,10 @@
 
 </style>
 <section id="not-found">
-    <div id="title">{{ 'Fehler'|trans }}</div>
+    <div id="title">{% trans %}error{% endtrans %}</div>
     <div class="circles">
         <p>404<br>
-            <small>{% trans %}Seite nicht gefunden{% endtrans %}</small>
+            <small>{% trans %}pageNotFound{% endtrans %}</small>
         </p>
         <span class="circle big"></span>
         <span class="circle med"></span>

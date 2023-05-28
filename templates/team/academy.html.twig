@@ -1,8 +1,7 @@
-{% extends 'base.html.twig' %}
+{% extends 'team/index.html.twig' %}
+{% trans_default_domain 'team' %}
 
-{% block title %}{{ title }}{% endblock %}
 {% block body %}
-
 
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
@@ -10,32 +9,48 @@
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#courses" role="tab"
                    aria-controls="home"
-                   aria-selected="true">{% trans %}Datenschutzkurse{% endtrans %}</a>
+                   aria-selected="true">{% trans %}dataPrivacyLessons{% endtrans %}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#user" role="tab" aria-controls="profile"
-                   aria-selected="false">{% trans %}Akademiemitglieder{% endtrans %}</a>
+                   aria-selected="false">{% trans %}academy.users{% endtrans %}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                   id="questionnaire-tab"
+                   data-toggle="tab"
+                   href="#questionnaire"
+                   aria-controls="questionnaire"
+                   aria-selected="false">
+                    {% trans from 'questionnaire' %}questionnaire.words{% endtrans %}
+                </a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="courses" role="tabpanel" aria-labelledby="home-tab">
 
-                {{ include('kurs/__indexTabel.html.twig') }}
+                {{ include('kurs/__indexTable.html.twig') }}
             </div>
             <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="profile-tab">
 
                 <div class="card card-body">
-                    <a href="{{ path('team_mitglieder_create', {'title':'Mitarbeitende zur Akademie hinzufügen', 'type':'academy'}) }}"
-                       class="btn btn-primary btn-sm loadContent">Mitglied hinzufügen</a>
+                    <a href="{{ path('team_mitglieder_create', {'title':'Akademiemitglied hinzufügen', 'type':'academy'}) }}"
+                       class="btn btn-primary btn-sm loadContent">{% trans %}academy.addUser{% endtrans %}</a>
                     <ul class="list-group">
                         {% for d in data %}
-                            <li class="list-group-item">{{ d.email }}<a class="btn btn-sm btn-danger float-md-right"
-                                                                        onClick="return confirm('{% trans %}Möchten Sie diese Aktion wirklich durchführen?{% endtrans %}')"
-                                                                        href="{{ path('team_mitglieder_remove',{'id':d.id, 'type':'academy'}) }}">Entfernen</a>
+                            <li class="list-group-item">{{ d.email }}
+                                <a class="btn btn-sm btn-danger float-md-right"
+                                    onClick="return confirm('{% trans from 'general' %}confirmAction{% endtrans %}')"
+                                    href="{{ path('team_mitglieder_remove',{'memberId':d.id, 'teamId':team.id, 'type':'academy'}) }}">
+                                    {% trans from 'general' %}remove{% endtrans %}
+                                </a>
                             </li>
                         {% endfor %}
                     </ul>
                 </div>
+            </div>
+            <div class="tab-pane fade" id="questionnaire" role="tabpanel" aria-labelledby="questionnaire-tab">
+                {% include 'questionnaire/questionnaire/list.html.twig' with {'questionnaires': questionnaires} %}
             </div>
         </div>
 

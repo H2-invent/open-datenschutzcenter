@@ -1,3 +1,4 @@
+{% trans_default_domain 'policies' %}
 <style>
     th, td {
         padding: 5px;
@@ -6,37 +7,36 @@
     }
 </style>
 
-<h4 style="text-align: center">Interne Dateschutzrichtlinie
-    von {{ d.team.name }} {% if not d.activ %}Historie {% endif %}</h4>
+<h4 style="text-align: center">{% trans %}policies.dataPrivacyBy{% endtrans%} {{ d.team.name }} {% if not d.activ %}{% trans from 'general' %}history{% endtrans %} {% endif %}</h4>
 
 <h1 style="margin-bottom: 20px; text-align: center">
     {{ d.title }}
 </h1>
 <p>
-    Referenz: {{ d.reference }}
+    {% trans %}reference{% endtrans %}: {{ d.reference }}
 </p>
 <p>
     {{ d.scope|raw }}
 </p>
 
 <p>
-    Status: {% if d.approved %}Richtlinie freigegeben von {{ d.approvedBy.username }}{% else %}{{ d.statusString }}{% endif %}
+    {% trans from 'general' %}state{% endtrans %}: {% if d.approved %}{% trans %}policies.approvedBy{% endtrans %} {{ d.approvedBy.username }}{% else %}{{ d.statusString }}{% endif %}
     <br>
-    Datum: {{ d.createdAt|date('d.m.Y') }}
+    {% trans from 'general' %}date{% endtrans %}: {{ d.createdAt|date('d.m.Y') }}
 </p>
 
 <p>
-    <b>Risiken:</b><br>
+    <b>{% trans %}risks{% endtrans %}:</b><br>
     {{ d.risk|raw }}
 </p>
 
 <p>
-    <b>Bezug zu Gesetzen, Verordnungen und Standards:</b> <br>
+    <b>{% trans %}referring{% endtrans %}:</b> <br>
     {{ d.foundation|raw }}
 </p>
 
 <p>
-    <b>Zu ergreifende Schutzmaßnahmen:</b> <br>
+    <b>{% trans %}protectiveMeasure{% endtrans %}:</b> <br>
     {{ d.protection|raw }}
 </p>
 
@@ -45,20 +45,20 @@
 </p>
 
 <p style="margin-bottom: 60px">
-    <b>Hinweis:</b><br>
+    <b>{% trans %}clue{% endtrans %}:</b><br>
     {{ d.notes|raw }}
 </p>
 
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Betroffene Arbeitsvorgänge und Fachverfahren
+            {% trans %}affected.processes{% endtrans %}
         </td>
         <td>{% for p in d.processes | filter(p => p.activ) %}{{ p.name }}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Betroffene Personen und Datenkategorien
+            {% trans %}affected.people{% endtrans %}
         </td>
         <td>
             {% for p in d.people %}{{ p.name }},<br>{% endfor %}<br>
@@ -69,7 +69,7 @@
 </table>
 
 <p>
-    Verantwortlichkeiten für die Schutzmaßnahmen: <br>
+    {% trans %}responsibleForProtectiveMeasure{% endtrans %}: <br>
     {{ d.person.username }} ({{ d.createdAt|date('d.m.Y') }})
 </p>
 <p>

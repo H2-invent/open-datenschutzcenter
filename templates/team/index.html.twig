@@ -1,17 +1,25 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'team' %}
+
+{% block CTA %}
+    <h4 class="h4-responsive ml-4 mb-0 d-none d-md-block">
+        {% trans %}adminArea{% endtrans %}
+        {% if currentTeam is defined and currentTeam %}{{ currentTeam.name }}{% endif %}
+    </h4>
+{% endblock %}
 
 {% block title %}{{ title }}{% endblock %}
 {% block body %}
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
 
-    <div class="card card-body ">
-        <div>
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            {{ form_end(form) }}
+        <div class="card card-body ">
+            <div>
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
         </div>
-    </div>
     </div>
 {% endblock %}
 

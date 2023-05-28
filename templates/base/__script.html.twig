@@ -8,3 +8,43 @@
 <script type="text/javascript" src="{{ asset('build/js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('build/js/mdb.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('build/js/vis-network.min.js') }}"></script>
+
+<script type="text/javascript">
+    (function () {
+        $(document).ready(function () {
+            function doStuff(selectContainer, select) {
+                const buttonContainer = $(selectContainer).find('.button-container');
+                const formContainer = $(selectContainer).siblings('.form-container');
+
+                if ($(select).val() === 'new' || $.inArray('new', (select).val()) >= 0) {
+                    if (buttonContainer && !buttonContainer.hasClass('d-none')) {
+                        buttonContainer.addClass('d-none');
+                    }
+
+                    if (formContainer.hasClass('d-none')) {
+                        formContainer.removeClass('d-none');
+                    }
+                } else {
+                    if (buttonContainer && buttonContainer.hasClass('d-none')) {
+                        buttonContainer.removeClass('d-none');
+                    }
+
+                    if (!formContainer.hasClass('d-none')) {
+                        formContainer.addClass('d-none');
+                    }
+                }
+            }
+
+            $('.select-container').each(function(index, container) {
+                const select = $(container).find('select');
+                if (select) {
+                    doStuff(container, select);
+
+                    $(select).change(function () {
+                        doStuff(container, select);
+                    })
+                }
+            });
+        });
+    })();
+</script>

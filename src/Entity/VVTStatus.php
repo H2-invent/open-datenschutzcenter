@@ -5,41 +5,27 @@ namespace App\Entity;
 use App\Repository\VVTStatusRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=VVTStatusRepository::class)
- */
+#[ORM\Entity(repositoryClass: VVTStatusRepository::class)]
 class VVTStatus
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $name;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $color;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $network;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="vVTStatuses")
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'vVTStatuses')]
     private $team;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ = true;
 
     public function getId(): ?int

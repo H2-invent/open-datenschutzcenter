@@ -12,116 +12,94 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass=DatenweitergabeRepository::class)
  * @Vich\Uploadable
  */
+#[ORM\Entity(repositoryClass: DatenweitergabeRepository::class)]
 class Datenweitergabe
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $gegenstand;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $verantwortlich;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Kontakte::class, inversedBy="datenweitergaben")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
-     */
+    #[ORM\ManyToOne(targetEntity: Kontakte::class, inversedBy: 'datenweitergaben')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $kontakt;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $vertragsform;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
+    #[Assert\NotBlank]
     private $zeichnungsdatum;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="datenweitergaben")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'datenweitergaben')]
+    #[ORM\JoinColumn(nullable: false)]
     private $team;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $activ;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Datenweitergabe::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: Datenweitergabe::class, cascade: ['persist', 'remove'])]
     private $previous;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $nummer;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=DatenweitergabeStand::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
-     */
+    #[ORM\ManyToOne(targetEntity: DatenweitergabeStand::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $stand;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=DatenweitergabeGrundlagen::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
-     */
+    #[ORM\ManyToOne(targetEntity: DatenweitergabeGrundlagen::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $grundlage;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
     private $art;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="datenweitergabes")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'datenweitergabes')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
      * @var \DateTime
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=true)
      * @var string
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $upload;
 
     /**
@@ -130,99 +108,61 @@ class Datenweitergabe
      */
     private $uploadFile;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=VVT::class, mappedBy="datenweitergaben")
-     */
+    #[ORM\ManyToMany(targetEntity: VVT::class, mappedBy: 'datenweitergaben')]
     private $verfahren;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedDatenweitergaben")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedDatenweitergaben')]
     private $assignedUser;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Software::class, mappedBy="datenweitergabe")
-     */
+    #[ORM\ManyToMany(targetEntity: Software::class, mappedBy: 'datenweitergabe')]
     private $software;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $reference;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $approved;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private $approvedBy;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $notes;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkItems;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkPeople;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkData;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkDocumentation;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkTrust;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkTom;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkSubcontractor;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkSupport;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkSupport3236;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkEnding;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkAudit;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $checkNotes;
 
     public function __construct()

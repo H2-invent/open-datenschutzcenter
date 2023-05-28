@@ -8,66 +8,48 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=AkademieKurseRepository::class)
- */
+#[ORM\Entity(repositoryClass: AkademieKurseRepository::class)]
 class AkademieKurse
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $video;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $title;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $beschreibung;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Team::class, inversedBy="kurse")
-     */
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'kurse')]
     private $team;
 
-    /**
-     * @ORM\OneToMany(targetEntity=AkademieBuchungen::class, mappedBy="kurs")
-     */
+    #[ORM\OneToMany(targetEntity: AkademieBuchungen::class, mappedBy: 'kurs')]
     private $buchungen;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $activ;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="akademieKurses")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'akademieKurses')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $type;
+
+    #[ORM\ManyToOne(targetEntity: Questionnaire::class, inversedBy: 'academyLessons')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Questionnaire $questionnaire;
 
     public function __construct()
     {
@@ -217,6 +199,18 @@ class AkademieKurse
     public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getQuestionnaire(): ?Questionnaire
+    {
+        return $this->questionnaire;
+    }
+
+    public function setQuestionnaire(Questionnaire $questionnaire): self
+    {
+        $this->questionnaire = $questionnaire;
 
         return $this;
     }

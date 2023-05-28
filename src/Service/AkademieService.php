@@ -8,34 +8,38 @@
 
 namespace App\Service;
 
-
+use App\DataTypes\ParticipationStateTypes;
 use App\Entity\AkademieBuchungen;
 use App\Entity\AkademieKurse;
+use App\Entity\Participation;
 use App\Entity\Team;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Twig\Environment;
-
 
 class AkademieService
 {
-    private $em;
-    private $mailer;
-    private $twig;
-    private $parameterbag;
-    private $notificationService;
 
-    public function __construct(Environment $engine, EntityManagerInterface $entityManager, MailerService $mailerService, ParameterBagInterface $parameterBag, NotificationService $notificationService)
+    private CurrentTeamService $currentTeamService;
+    private NotificationService $notificationService;
+    private Environment $twig;
+
+    public function __construct(
+        Environment            $engine,
+        EntityManagerInterface $entityManager,
+        NotificationService    $notificationService,
+        CurrentTeamService     $currentTeamService)
     {
         $this->em = $entityManager;
-        $this->mailer = $mailerService;
         $this->twig = $engine;
-        $this->parameterbag = $parameterBag;
         $this->notificationService = $notificationService;
+        $this->currentTeamService = $currentTeamService;
     }
 
-    function addUser(AkademieKurse $kurs, $daten)
+    public function addUser(AkademieKurse $kurs, $daten): void
     {
+        $participation = (new Participation())
+            ->setState(ParticipationStateTypes::$ASSIGNED)
+            ->setQuestionnaire($kurs->getQuestionnaire());
 
         $buchung = new AkademieBuchungen();
         $buchung->setKurs($kurs);
@@ -43,13 +47,17 @@ class AkademieService
         $buchung->setVorlage($daten['wiedervorlage']);
         $buchung->setZugewiesen($daten['zugewiesen']);
         $buchung->setInvitation(false);
+        $buchung->addParticipation($participation);
+
+        $this->em->persist($participation);
 
         foreach ($daten['user'] as $user) {
             $buchung->setUser($user);
             $this->em->persist($buchung);
             $this->em->flush();
             if ($daten['invite'] === true) {
-                $content = $this->twig->render('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $user->getTeam()]);
+                $team = $this->currentTeamService->getTeamFromSession($user);
+                $content = $this->twig->render('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $team]);
                 $buchung->setInvitation(true);
                 $this->notificationService->sendNotificationAkademie($buchung, $content);
             }
@@ -59,7 +67,7 @@ class AkademieService
 
     }
 
-    function removeKurs(Team $team, AkademieKurse $kurs)
+    public function removeKurs(Team $team, AkademieKurse $kurs): bool
     {
         $buchungen = $this->em->getRepository(AkademieBuchungen::class)->findBuchungenByTeam($team, $kurs);
 

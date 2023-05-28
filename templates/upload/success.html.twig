@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'upload' %}
 
 {% block body %}
 
-    <h2 class="h2-responsive">Import</h2>
+    <h2 class="h2-responsive">{% trans %}import.word{% endtrans %}</h2>
     <div class="card card-body">
 <div class="alert-success alert">
-    <h2>Der Import war erfolgreich</h2>
+    <h2>{% trans %}import.success{% endtrans %}</h2>
 </div>
     </div>
 

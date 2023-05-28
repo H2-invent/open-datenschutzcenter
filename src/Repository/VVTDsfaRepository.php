@@ -19,36 +19,7 @@ class VVTDsfaRepository extends ServiceEntityRepository
         parent::__construct($registry, VVTDsfa::class);
     }
 
-    // /**
-    //  * @return VVTDsfa[] Returns an array of VVTDsfa objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?VVTDsfa
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findActivByTeam($value)
+    public function findActiveByTeam($value)
     {
         return $this->createQueryBuilder('a')
             ->innerJoin('a.vvt', 'v')
@@ -59,5 +30,33 @@ class VVTDsfaRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function findActiveAndOpenByTeam($team) {
+        return $this->createQueryBuilder('dsfa')
+            ->innerJoin('dsfa.vvt', 'vvt')
+            ->andWhere('vvt.activ = 1')
+            ->andWhere('dsfa.activ = 1')
+            ->andWhere('dsfa.dsb IS NULL OR dsfa.ergebnis IS NULL')
+            ->andWhere('vvt.team = :team')
+            ->setParameter('team', $team)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActiveByTeamAndUser($team, $user)
+    {
+        $query = $this->createQueryBuilder('dsfa')
+            ->innerJoin('dsfa.vvt', 'vvt')
+            ->andWhere('dsfa.assignedUser = :user')
+            ->andWhere('vvt.team = :team')
+            ->andWhere('vvt.activ = 1')
+            ->andWhere('dsfa.activ = 1')
+            ->setParameter('user', $user)
+            ->setParameter('team', $team)
+            ->getQuery()
+            ->getResult();
+
+        return $query;
     }
 }

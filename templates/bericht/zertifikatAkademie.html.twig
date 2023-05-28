@@ -1,3 +1,4 @@
+{% trans_default_domain 'academy' %}
 <style>
     /** Define the margins of your page **/
     @page {
@@ -33,6 +34,7 @@
         margin: -60px;
         padding: 60px;
     }
+
     th, td {
         padding: 5px;
         border: 1px solid black;
@@ -41,24 +43,31 @@
 </style>
 <body>
 <header>
-    Zertifikat für den Abschluss einen Datenschutzkurses von der Open-Datenschutz Akademie
+    {% trans %}certification.title{% endtrans %}
 </header>
 
 
 <main>
     <div style="font-family: Helvetica; margin-top: 200px">
         <div class="page-head" style="margin-bottom: 70px">
-            <h2 style="text-align: center">Zertifikat für den Abschluss einen Datenschutzkurses von der Open-Datenschutz Akademie</h2>
+            <h2 style="text-align: center">{% trans %}certification.title{% endtrans %}</h2>
             <h5 style="text-align: center">{{ team.name }} - {{ team.strasse }} - {{ team.plz }} {{ team.stadt }} -
-                eMail: <a href="mailto:{{ team.email }}">{{ team.email }}</a> - Telefon: <a
-                        href="tel:{{ team.telefon }}">{{ team.telefon }}</a></h5>
+                {% trans from 'general' %}email{% endtrans %}: <a href="mailto:{{ team.email }}">{{ team.email }}</a> -
+                {% trans from 'general' %}phone{% endtrans %}: <a href="tel:{{ team.telefon }}">{{ team.telefon }}</a>
+            </h5>
 
             <p style="text-align: center">
-                Hiermit bestätigen wir, dass {{ user.username }} ({{ user.email }}) den Kurs "{{ daten.kurs.title }}" am {{ daten.ende|date('d.m.Y') }} erfolgreich abgeschlossen hat.
+                {% trans with {
+                    '{username}': user.username,
+                    '{email}': user.email,
+                    '{lessonTitle}': daten.kurs.title,
+                    '{finishedAt}': daten.ende|date('d.m.Y')
+                } %}
+                    certification.text
+                {% endtrans %}
             </p>
             <p style="text-align: center">
-                Dieses Zertifikat wurde automatisch erstellt.<br>
-                Die Gültigkeit kann über die Buchungs ID: -- {{ daten.buchungsID }} -- überprüft werden.
+                {% trans with {'{billingId}': daten.id} |raw %}certification.disclaimer{% endtrans %}
             </p>
         </div>
 

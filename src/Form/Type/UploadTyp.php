@@ -25,11 +25,11 @@ class UploadTyp extends AbstractType
             ->add('fileFile', VichFileType::class, [
                 'required' => false,
                 'allow_delete' => false,
-                'label' => 'Import File',
+                'label' => 'importFile',
                 'translation_domain' => 'form',
                 'download_label' => false
             ])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Hochladen', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'uploadFile', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

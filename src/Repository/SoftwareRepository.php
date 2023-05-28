@@ -19,41 +19,25 @@ class SoftwareRepository extends ServiceEntityRepository
         parent::__construct($registry, Software::class);
     }
 
-    // /**
-    //  * @return Software[] Returns an array of Software objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Software
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findActivByTeam($value)
+    public function findActiveByTeam($value)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.team = :val')
             ->andWhere('a.activ = 1')
             ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActiveByTeamAndUser($team, $user)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team = :team')
+            ->andWhere('a.assignedUser = :user')
+            ->andWhere('a.activ = 1')
+            ->setParameter('team', $team)
+            ->setParameter('user', $user)
+            ->orderBy('a.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

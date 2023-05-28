@@ -27,24 +27,24 @@ class KontaktType extends AbstractType
         $builder
             ->add('art', ChoiceType::class, [
                 'choices'  => [
-                    'Auftraggeber' => 1,
-                    'Auftragnehmer' => 2,],
-                'label'=>'Funktion des Kontakts',
+                    'client' => 1,
+                    'contractor' => 2,],
+                'label'=>'contactFunction',
                 'translation_domain' => 'form',
                 'multiple' =>false,
             ])
-            ->add('firma', TextType::class, ['label' => 'Firma', 'required' => true, 'translation_domain' => 'form'])
-            ->add('nummer', TextType::class, ['label' => 'Nummer', 'required' => false, 'translation_domain' => 'form'])
-            ->add('anrede', TextType::class, ['label' => 'Anrede', 'required' => false, 'translation_domain' => 'form'])
-            ->add('vorname', TextType::class, ['label' => 'Vorname', 'required' => false, 'translation_domain' => 'form'])
-            ->add('nachname', TextType::class, ['label' => 'Nachname', 'required' => true, 'translation_domain' => 'form'])
-            ->add('strase', TextType::class, ['label' => 'Straße', 'required' => true, 'translation_domain' => 'form'])
-            ->add('plz', TextType::class, ['label' => 'PLZ', 'required' => true, 'translation_domain' => 'form'])
-            ->add('ort', TextType::class, ['label' => 'Ort', 'required' => true, 'translation_domain' => 'form'])
-            ->add('email', TextType::class, ['label' => 'E-Mail', 'required' => false, 'translation_domain' => 'form'])
-            ->add('telefon', TextType::class, ['label' => 'Telefon', 'required' => false, 'translation_domain' => 'form'])
-            ->add('bemerkung', TextareaType::class, ['label' => 'Bemerkung', 'required' => false, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('firma', TextType::class, ['label' => 'company', 'required' => true, 'translation_domain' => 'form'])
+            ->add('nummer', TextType::class, ['label' => 'number', 'required' => false, 'translation_domain' => 'form'])
+            ->add('anrede', TextType::class, ['label' => 'salutation', 'required' => false, 'translation_domain' => 'form'])
+            ->add('vorname', TextType::class, ['label' => 'firstName', 'required' => false, 'translation_domain' => 'form'])
+            ->add('nachname', TextType::class, ['label' => 'lastName', 'required' => true, 'translation_domain' => 'form'])
+            ->add('strase', TextType::class, ['label' => 'street', 'required' => true, 'translation_domain' => 'form'])
+            ->add('plz', TextType::class, ['label' => 'postcode', 'required' => true, 'translation_domain' => 'form'])
+            ->add('ort', TextType::class, ['label' => 'city', 'required' => true, 'translation_domain' => 'form'])
+            ->add('email', TextType::class, ['label' => 'email', 'required' => false, 'translation_domain' => 'form'])
+            ->add('telefon', TextType::class, ['label' => 'phone', 'required' => false, 'translation_domain' => 'form'])
+            ->add('bemerkung', TextareaType::class, ['label' => 'comment', 'required' => false, 'translation_domain' => 'form'])
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

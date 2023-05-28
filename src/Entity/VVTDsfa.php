@@ -7,96 +7,80 @@ use App\Repository\VVTDsfaRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=VVTDsfaRepository::class)
- */
+#[ORM\Entity(repositoryClass: VVTDsfaRepository::class)]
 class VVTDsfa
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $beschreibung;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $notwendigkeit;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $risiko;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $abhilfe;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $standpunkt;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $dsb;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
      * @Encrypted()
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $ergebnis;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
-    /**
-     * @ORM\OneToOne(targetEntity=VVTDsfa::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: VVTDsfa::class, cascade: ['persist', 'remove'])]
     private $previous;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $CreatedAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=VVT::class, inversedBy="dsfa")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
-     */
+    #[ORM\ManyToOne(targetEntity: VVT::class, inversedBy: 'dsfa')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private $vvt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="vVTDsfas")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'vVTDsfas')]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="assignedDsfa")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedDsfa')]
     private $assignedUser;
 
 

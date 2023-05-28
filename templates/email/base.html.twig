@@ -1,3 +1,4 @@
+{% trans_default_domain 'email' %}
 {% apply inky_to_html|inline_css(source('@css/foundation-emails.css')) %}
     <style type="text/css">
         body,
@@ -49,7 +50,7 @@
                 <p style="text-align: center">
                     <a href="{{ dataPrivacy }}">Datenschutzhinweis</a><br>
                     {% if team is defined and team is not null %}
-                        {% trans %}Diese Mail wurde Ihnen gesendet im Auftrag von:{% endtrans %}<br>
+                        {% trans %}footer.standard{% endtrans %}<br>
                         {{ team.name }} - {{ team.strasse }}, {{ team.plz }} {{ team.stadt }}
                     {% endif %}
                 </p>

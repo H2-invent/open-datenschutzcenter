@@ -9,6 +9,7 @@ import $ from 'jquery';
 import 'datatables.net-dt';
 import 'summernote/dist/summernote-bs4';
 import * as h2Button from 'h2-invent-apps';
+import {initFreeFields} from './freeField';
 
 global.$ = global.jQuery = $;
 
@@ -29,7 +30,6 @@ $(document).ready(function () {
         }, 3000);
     }, 500);
 
-
     $('#dismiss, .overlay').on('click', function () {
         // hide sidebar
         $('#sidebar').removeClass('active');
@@ -46,12 +46,39 @@ $(document).ready(function () {
         $('a[aria-expanded=true]').attr('aria-expanded', 'false');
     });
 
-
     $('#data-table').DataTable({
         dom: 'Bfrtip',
         buttons: [
-            'csv', 'excel'
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(.hide-in-export)'
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(.hide-in-export)'
+                }
+            }
+        ]
+    });
 
+    $('.data-table').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(.hide-in-export)'
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(.hide-in-export)'
+                }
+            }
         ]
     });
 
@@ -88,6 +115,8 @@ $(document).ready(function () {
             $('.sendButton').addClass('disabled');
         }
     });
+
+    initFreeFields();
 });
 
 $(document).on('click', '.loadContent', function (e) {

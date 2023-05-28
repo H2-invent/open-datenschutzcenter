@@ -29,16 +29,16 @@ class PolicyType extends AbstractType
     {
 
         $builder
-            ->add('title', TextType::class, ['label' => 'Name der Richtlinie', 'required' => true, 'translation_domain' => 'form'])
-            ->add('scope', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Festlegung des Geltungsbereiches', 'required' => true, 'translation_domain' => 'form'])
-            ->add('risk', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Abzuwehrende IT-Risiken, bestehende Gefahren und mögliche Konsequenzen (wichtig für die Motivation!)', 'required' => true, 'translation_domain' => 'form'])
-            ->add('foundation', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Bezug zu Gesetzen, Verordnungen und Standards', 'required' => true, 'translation_domain' => 'form'])
-            ->add('reference', TextType::class, ['label' => 'Aktenzeichen', 'required' => false, 'translation_domain' => 'form'])
+            ->add('title', TextType::class, ['label' => 'policyName', 'required' => true, 'translation_domain' => 'form'])
+            ->add('scope', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policyScope', 'required' => true, 'translation_domain' => 'form'])
+            ->add('risk', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policyPotentialDangers', 'required' => true, 'translation_domain' => 'form'])
+            ->add('foundation', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policyLegislation', 'required' => true, 'translation_domain' => 'form'])
+            ->add('reference', TextType::class, ['label' => 'fileNumber', 'required' => false, 'translation_domain' => 'form'])
             ->add('processes', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVT::class,
                 'choices' => $options['processes'],
-                'label' => 'Betroffene Arbeitsvorgänge und Fachverfahren',
+                'label' => 'affectedProcesses',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'required' => true,
@@ -48,15 +48,15 @@ class PolicyType extends AbstractType
                     'data-live-search' => 'true'
                 ]
             ])
-            ->add('protection', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Zu ergreifende Schutzmaßnahmen in kurzer, verständlicher Form', 'required' => false, 'translation_domain' => 'form'])
-            ->add('notes', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Hinweis auf Schulungsangebotet', 'required' => false, 'translation_domain' => 'form'])
-            ->add('consequences', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Konsequenzen bei Nichtbeachtung der Sicherheitsrichtlinie', 'required' => false, 'translation_domain' => 'form'])
-            ->add('contact', TextareaType::class, ['attr' => ['row' => 5], 'label' => 'Kontaktdaten von IT-Sicherheitsverantwortlichen und Datenschutzbeauftragten', 'required' => false, 'translation_domain' => 'form'])
+            ->add('protection', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policySafetyMeasures', 'required' => false, 'translation_domain' => 'form'])
+            ->add('notes', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policyTrainingOffer', 'required' => false, 'translation_domain' => 'form'])
+            ->add('consequences', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policyNoncomplianceConsequences', 'required' => false, 'translation_domain' => 'form'])
+            ->add('contact', TextareaType::class, ['attr' => ['row' => 5], 'label' => 'policyContacts', 'required' => false, 'translation_domain' => 'form'])
             ->add('people', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTPersonen::class,
                 'choices' => $options['personen'],
-                'label' => 'Die Daten welcher Personen werden verarbeitet?',
+                'label' => 'affectedPersons',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'expanded' => false,
@@ -69,7 +69,7 @@ class PolicyType extends AbstractType
                 'choice_label' => 'name',
                 'class' => VVTDatenkategorie::class,
                 'choices' => $options['kategorien'],
-                'label' => 'Betroffene Datenkategorien sind betroffen',
+                'label' => 'affectedDataCategories',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'expanded' => false,
@@ -82,7 +82,7 @@ class PolicyType extends AbstractType
                 'choice_label' => 'email',
                 'class' => User::class,
                 'choices' => $options['user'],
-                'label' => 'Konkrete Verantwortlichkeiten für die Schutzmaßnahmen',
+                'label' => 'responsibilitiesForSafetyMeasures',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'attr' => [
@@ -92,12 +92,12 @@ class PolicyType extends AbstractType
             ])
             ->add('status', ChoiceType::class, [
                 'choices' => [
-                    'Angelegt' => 0,
-                    'In Bearbeitung' => 1,
-                    'Prüfung' => 2,
-                    'Zur Freigabe vorgelegt' => 3,
-                    'Veraltet' => 4,],
-                'label' => 'Status',
+                    'created' => 0,
+                    'inProgress' => 1,
+                    'inReview' => 2,
+                    'submitted' => 3,
+                    'outdated' => 4,],
+                'label' => 'status',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'attr' => [
@@ -108,12 +108,12 @@ class PolicyType extends AbstractType
             ->add('uploadFile', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => false,
-                'delete_label' => 'Löschen',
-                'label' => 'Dokument zur Richtlinie hochladen',
+                'delete_label' => 'delete',
+                'label' => 'policyDocument',
                 'translation_domain' => 'form',
                 'download_label' => false
             ])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -15,6 +15,7 @@ use App\Entity\Vorfall;
 use App\Entity\VVTDatenkategorie;
 use App\Entity\VVTPersonen;
 use App\Form\Type\VorfallType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -30,26 +31,13 @@ class VorfallService
         $this->formBuilder = $formBuilder;
     }
 
-    function newVorfall(Team $team, User $user)
-    {
-        $vorfall = new Vorfall();
-        $vorfall->setTeam($team);
-        $vorfall->setActiv(true);
-        $vorfall->setNummer(uniqid());
-        $vorfall->setCreatedAt(new \DateTime());
-        $vorfall->setUser($user);
-        $vorfall->setDatum(new \DateTime());
-
-        return $vorfall;
-    }
-
     function cloneVorfall(Vorfall $input, User $user)
     {
         $data = clone $input;
         $data->setPrevious($input);
         $data->setActiv(true);
         $data->setUser($user);
-        $data->setCreatedAt(new \DateTime());
+        $data->setCreatedAt(new DateTime());
         return $data;
     }
 
@@ -61,5 +49,18 @@ class VorfallService
         $form = $this->formBuilder->create(VorfallType::class, $vorfall, ['personen' => $personen, 'daten' => $kategorien]);
 
         return $form;
+    }
+
+    function newVorfall(Team $team, User $user)
+    {
+        $vorfall = new Vorfall();
+        $vorfall->setTeam($team);
+        $vorfall->setActiv(true);
+        $vorfall->setNummer(uniqid());
+        $vorfall->setCreatedAt(new DateTime());
+        $vorfall->setUser($user);
+        $vorfall->setDatum(new DateTime());
+
+        return $vorfall;
     }
 }

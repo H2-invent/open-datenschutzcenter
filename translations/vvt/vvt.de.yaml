@@ -1,0 +1,97 @@
+dsbReviewMissing: Beurteilung DSB fehlt
+resultMissing: Ergebnis fehlt
+dataForProcessing: Daten zur Verarbeitung
+collectedData: Erfasste Daten
+orderProcessing: Datenweitergabe und Auftragsverarbeitung
+associatedDataTransfer: Zugehörige Datenweitergaben
+associatedOrderProcessing: Zugehörige Auftragsdatenverarbeitungen
+technicalOrganizationalActions: Technische und organisatorische Maßnahmen
+riskAssessment: Risikoabschätzung
+riskAssessmentDisclaimer: '
+  <p>
+      Wenn nach der Risikomatrix der Wert des Risikos bei <b>hoch</b> liegt, ist es erforderlich eine
+      Datenschutzfolgenabschätzung (DSFA) durchzuführen und zu dokumentieren. Die DSFA muss von einem
+      Datenschutzbeauftragten erstellt werden.
+      Ein hohes Risiko liegt vor, wenn Einer der Faktoren Stufe 3 oder 4 und der Andere Faktor 4 ist.
+  </p>
+  <p>
+      Beispiel: Eintrittswahrscheinlichkeit: 3, Schadenspotenzial: 4
+  </p>'
+probability:
+  highest: '"Sehr wahrscheinlich": einmal pro Woche oder öfter,'
+  high: '"Signifikant": einmal pro Monat,'
+  low: '"Eingeschränkt möglich": einmal pro Jahr,'
+  lowest: '"Vernachlässigbar": alle 10 Jahre oder seltener.'
+dsfa:
+  show: DSFA anzeigen
+  create: DSFA anlegen
+  created: DSFA angelegt
+  exists: DSFA vorhanden
+dutyToInform: Informationspflicht
+pdf:
+  createExternal: Ext. PDF erstellen
+assessment: Beurteilung
+deleteDeadlineCategory: Kategorie (Löschfrist)
+oldDeletionDeadline: Alte Löschfrist (auf Verarbeitung bezogen)
+dataTransferTo: An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben.
+dataProtectionImpactAssessment:
+  word: Datenschutz-Folgenabschätzung
+  show: Datenschutzfolgeabschätzung anzeigen
+  create: Datenschutzfolgeabschätzung anlegen
+processing:
+  edit: Verarbeitung bearbeiten
+  track: Verarbeitung erfassen
+  export: Export der Verarbeitungstätigkeit
+  name: Bezeichnung der verarbeitung
+  outsideEU: Werden Daten außerhalb der EU verarbeitet?
+  jointControl: Handelt es sich bei der Verarbeitung um ein Joint Control Verarbeitung?
+  create: Neue Verarbeitung anlegen
+  directory: Verzeichnis der Verarbeitungen
+  directoryOf: Verzeichnis fer Verarbeitungen von
+  directoryNumber: Nummer des Verarbeitungsverzeichnisses
+  typeHelp: AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung
+  back: Zurück zur Verarbeitung
+  duplicate: Verarbeitung duplizieren
+  disclaimer: Dieser Verarbeitung wurden folgende interne Richtlinien und Arbeitsanweisungen angefügt.
+  approvedBy: Verfahren freigegeben von
+  reason: Zweck der Verarbeitung
+  requestProcessing: Handelt es sich bei der Verarbeitung um ein Auftragsverarbeitung?
+  prerequisite: Notwendigkeit der Datenverarbeitung
+  risk: Risiko der Datenverarbeitung
+  legalBasis: Rechtsgrundlage für die Verarbeitung
+  responsible:
+    word: Verantwortliche Person für die Verarbeitung
+    internal: Verantwortliche Person für die Verarbeitung (intern)
+    additional: Verantwortliche Person für die Verarbeitung (weitere)
+  target:
+    person: Die Daten welcher Personen werden verarbeitet?
+    dataCategory: Welche Datenkategorien (Löschfristen) werden verarbeitet?
+    saveDirectory: Die Daten werden an folgenden Stellen gespeichert.
+  describeReason: Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Rechtsgrundlage)
+processingDirectory: Verarbeitungsverzeichnis
+connected:
+  dataTransfer: Zugehörige Datenweitergaben
+  requestDataProcessing: Zugehörige Auftragsdatenverarbeitungen
+usedSoftware: Verwendete Software<br> und verbundene Datenweitergaben
+measuresTaken: Welche technischen und organisatorischen Maßnahmen werden umgesetzt?
+tom:
+  noLink: Keine Zuordnung zu einer bestehenden digitalen TOM vorgenommen.
+  additionalInfo: Weitere Hinweise zur TOM
+risk:
+  minimize: Abhilfe zur Minimierung der Risiken
+  source: Mögliche Risko-Quellen
+  evaluation: Risikoabschätzung
+  probability: Eintrittswahrscheinlichkeit
+  damagePotential: Schadenspotential
+dataCollection: Datenerhebung
+existingInternalRegulations: Vorhandene interne Richtlinien
+dataPrivacyResponsibleComment: Beurteilung und Kommentar des Datenschutzbeauftragten
+dataPrivacyFollowUpEstimation:
+  create: Datenschutzfolgeabschätzung erstellen
+  edit: Datenschutzfolgeabschätzung bearbeiten
+  result: Ergebnis der Datenschutzfolgeabschätzung
+  exists: Datenschutzfolgeabschätzung notwendig und vorhanden
+  about: Datenschutzfolgeabschätzung zu
+  description: Beschreibung der Datenschutzfolgeabschätzung
+dsbStatement: Stellungnahme des DSB in der Datenschutzfolgeabschätzung
+additionalStands: Weitere Standpunkte (z.B. Betriebsrat)

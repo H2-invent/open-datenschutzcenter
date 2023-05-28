@@ -43,7 +43,7 @@
         {% if label is empty -%}
             {%- if label_format is not empty -%}
                 {% set label = label_format|replace({
-                    '%name%': name,
+                    '{name}': name,
                     '%id%': id,
                 }) %}
             {%- else -%}
@@ -99,7 +99,7 @@
         {%- if label is not same as(false) and label is empty -%}
             {%- if label_format is not empty -%}
                 {%- set label = label_format|replace({
-                    '%name%': name,
+                    '{name}': name,
                     '%id%': id,
                 }) -%}
             {%- else -%}

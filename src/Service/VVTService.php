@@ -24,6 +24,7 @@ use App\Entity\VVTPersonen;
 use App\Entity\VVTRisiken;
 use App\Entity\VVTStatus;
 use App\Form\Type\VVTType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -39,16 +40,16 @@ class VVTService
         $this->formBuilder = $formBuilder;
     }
 
-    function newVvt(Team $team, User $user)
+    function cloneDsfa(VVTDsfa $dsfa, User $user)
     {
-        $vvt = new VVT();
-        $vvt->setTeam($team);
-        $vvt->setNummer('VVT-' . hexdec(uniqid()));
-        $vvt->setCreatedAt(new \DateTime());
-        $vvt->setActiv(true);
-        $vvt->setUser($user);
+        $newDsfa = clone $dsfa;
+        $newDsfa->setPrevious($dsfa);
+        $newDsfa->setVvt($dsfa->getVvt());
+        $newDsfa->setActiv(true);
+        $newDsfa->setCreatedAt(new DateTime());
+        $newDsfa->setUser($user);
 
-        return $vvt;
+        return $newDsfa;
     }
 
     function cloneVvt(VVT $vvt, User $user)
@@ -57,13 +58,13 @@ class VVTService
         $newVvt->setPrevious($vvt);
         $newVvt->setActiv(true);
         $newVvt->setUser($user);
-        $newVvt->setCreatedAt(new \DateTime());
+        $newVvt->setCreatedAt(new DateTime());
         return $newVvt;
     }
 
     function createForm(VVT $VVT, Team $team)
     {
-        $status = $this->em->getRepository(VVTStatus::class)->findActivByTeam($team);
+        $status = $this->em->getRepository(VVTStatus::class)->findActiveByTeam($team);
         $personen = $this->em->getRepository(VVTPersonen::class)->findByTeam($team);
         $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
         $risiken = $this->em->getRepository(VVTRisiken::class)->findByTeam($team);
@@ -71,10 +72,22 @@ class VVTService
         $daten = $this->em->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true));
         $tom = $this->em->getRepository(Tom::class)->findBy(array('team' => $team, 'activ' => true));
         $abteilung = $this->em->getRepository(AuditTomAbteilung::class)->findBy(array('team' => $team, 'activ' => true));
-        $produkte = $this->em->getRepository(Produkte::class)->findActivByTeam($team);
-        $software = $this->em->getRepository(Software::class)->findActivByTeam($team);
+        $produkte = $this->em->getRepository(Produkte::class)->findActiveByTeam($team);
+        $software = $this->em->getRepository(Software::class)->findActiveByTeam($team);
 
-        $form = $this->formBuilder->create(VVTType::class, $VVT, ['personen' => $personen, 'kategorien' => $kategorien, 'risiken' => $risiken, 'status' => $status, 'grundlage' => $grundlagen, 'user' => $team->getMembers(), 'daten' => $daten, 'tom' => $tom, 'abteilung' => $abteilung, 'produkte' => $produkte, 'software' => $software]);
+        $form = $this->formBuilder->create(VVTType::class, $VVT, [
+            'personen' => $personen,
+            'kategorien' => $kategorien,
+            'risiken' => $risiken,
+            'status' => $status,
+            'grundlage' => $grundlagen,
+            'user' => $team->getMembers(),
+            'daten' => $daten,
+            'tom' => $tom,
+            'abteilung' => $abteilung,
+            'produkte' => $produkte,
+            'software' => $software
+        ]);
 
         return $form;
     }
@@ -83,22 +96,22 @@ class VVTService
     {
         $dsfa = new VVTDsfa();
         $dsfa->setVvt($vvt);
-        $dsfa->setCreatedAt(new \DateTime());
+        $dsfa->setCreatedAt(new DateTime());
         $dsfa->setActiv(true);
         $dsfa->setUser($user);
 
         return $dsfa;
     }
 
-    function cloneDsfa(VVTDsfa $dsfa, User $user)
+    function newVvt(Team $team, User $user)
     {
-        $newDsfa = clone $dsfa;
-        $newDsfa->setPrevious($dsfa);
-        $newDsfa->setVvt($dsfa->getVvt());
-        $newDsfa->setActiv(true);
-        $newDsfa->setCreatedAt(new \DateTime());
-        $newDsfa->setUser($user);
+        $vvt = new VVT();
+        $vvt->setTeam($team);
+        $vvt->setNummer('VVT-' . hexdec(uniqid()));
+        $vvt->setCreatedAt(new DateTime());
+        $vvt->setActiv(true);
+        $vvt->setUser($user);
 
-        return $newDsfa;
+        return $vvt;
     }
 }

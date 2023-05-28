@@ -1,5 +1,6 @@
-<h2 style="page-break-before: always;">{% if not d.activ %}{{ d.approved?'Freigegebene':'' }} Historie: {% endif %}{{ d.nummer }}
-    (id:{{ d.id }})</h2>
+{% trans_default_domain 'vorfall' %}
+<h2 style="page-break-before: always;">{% if not d.activ %}{{ d.approved?'approved':'' |trans([], 'general') }}{% trans from 'general' %}history{% endtrans %}: {% endif %}{{ d.nummer }}
+    ({% trans from 'general' %}id{% endtrans %}:{{ d.id }})
 <style>
     th, td {
         padding: 5px;
@@ -10,71 +11,71 @@
 <table style="table-layout:fixed; width: 100%">
     <tr>
         <td>
-            Datum des Datenschutzvorfalls
+            {% trans %}incident.date{% endtrans %}
         </td>
         <td>{{ d.datum|date('d.m.Y H:i') }}</td>
     </tr>
     <tr>
         <td>
-            Uid des Datenschutzvorfalls
+            {% trans %}incident.uuid{% endtrans %}
         </td>
         <td>{{ d.nummer }}</td>
     </tr>
     <tr>
         <td>
-            Freigabe
+            {% trans %}approval{% endtrans %}
         </td>
-        <td>{% if d.approved %}Vorfall freigegeben von {{ d.approvedBy.username }}{% endif %}</td>
+        <td>{% if d.approved %}{% trans %}incident.approvedBy{% endtrans %} {{ d.approvedBy.username }}{% endif %}</td>
     </tr>
     <tr>
         <td>
-            Fakten und Beschreibung des Datenschutzvorfalls
+            {% trans %}incident.factsAndDescription{% endtrans %}
         </td>
         <td>{{ d.fakten|nl2br }}</td>
     </tr>
 
     <tr>
         <td>
-            Betroffene Personenkategorien
+            {% trans %}affected.personCategory{% endtrans %}
         </td>
         <td>{% for person in d.personen %}{{ person.name }}<br>{% endfor %}</td>
     </tr>
     <tr>
         <td>
-            Betroffene Datenkategorien
+            {% trans %}affected.dataCategory{% endtrans %}
         </td>
         <td>{% for data in d.daten %}{{ data.name }}<br>{% endfor %}</td>
     </tr>
 
     <tr>
         <td>
-            Auswirkungen des Datenschutzvorfalls auf die Daten der betroffenen Personen
+            {% trans %}incident.effects{% endtrans %}
         </td>
         <td>{{ d.auswirkung|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            Getroffene Maßnahmen
+            {% trans %}measuresTaken{% endtrans %}
         </td>
         <td>{{ d.massnahmen|nl2br }}</td>
     </tr>
     <tr>
         <td>
-            Datenschutzvorfall gemeldet and Landesdatenschutzbehörde
+            {% trans %}incident.reportedToStateAgency{% endtrans %}
         </td>
-        <td>{{ d.gemeldet?'Ja':'Nein' }}</td>
+        <td>{{ d.gemeldet?'yes':'no' |trans([], 'general') }}</td>
     </tr>
     <tr>
         <td>
-            Datenschutzvorfall gemeldet an betroffene Person
+            {% trans %}incident.reportedToAffectedPerson{% endtrans %}
         </td>
-        <td>{{ d.betroffeneGemeldet?'Ja':'Nein' }}</td>
+        <td>{{ d.betroffeneGemeldet?'yes':'no' |trans([], 'general') }}</td>
     </tr>
     <tr>
         <td>
-            Datenschutzvorfall gemeldet an Auftraggeber
+            {% trans %}incident.reportedToAffectedClient{% endtrans %}
         </td>
-        <td>{{ d.auftraggeberGemeldet?'Ja':'Nein' }}</td>
+        <td>{{ d.auftraggeberGemeldet?'yes':'no' |trans([], 'general') }}</td>
     </tr>
 
 </table>

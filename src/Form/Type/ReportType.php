@@ -27,12 +27,12 @@ class ReportType extends AbstractType
     {
 
         $builder
-            ->add('description', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'Beschreibung', 'required' => true, 'translation_domain' => 'form'])
+            ->add('description', TextareaType::class, ['attr' => ['rows' => 12], 'label' => 'description', 'required' => true, 'translation_domain' => 'form'])
             ->add('user', EntityType::class, [
                 'choice_label' => 'email',
                 'class' => User::class,
                 'choices' => $options['user'],
-                'label' => 'User',
+                'label' => 'user',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'required' => true,
@@ -41,14 +41,14 @@ class ReportType extends AbstractType
                     'data-live-search' => 'true'
                 ],
             ])
-            ->add('date', DateType::class, ['label' => 'Datum', 'widget' => 'single_text', 'required' => true, 'translation_domain' => 'form'])
-            ->add('start', TimeType::class, ['label' => 'Startzeit', 'required' => true, 'translation_domain' => 'form'])
-            ->add('end', TimeType::class, ['label' => 'Endzeit', 'required' => true, 'translation_domain' => 'form'])
-            ->add('calcTime', TextType::class, ['label' => 'Abrechenbare Zeit in Minuten', 'required' => true, 'translation_domain' => 'form'])
-            ->add('invoice', CheckboxType::class, ['label' => 'Abgerechnet', 'required' => false, 'translation_domain' => 'form'])
-            ->add('inReport', CheckboxType::class, ['label' => 'Im Report anzeigen', 'required' => false, 'translation_domain' => 'form'])
-            ->add('onsite', CheckboxType::class, ['label' => 'Vor Ort', 'required' => false, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('date', DateType::class, ['label' => 'date', 'widget' => 'single_text', 'required' => true, 'translation_domain' => 'form'])
+            ->add('start', TimeType::class, ['label' => 'startTime', 'required' => true, 'translation_domain' => 'form'])
+            ->add('end', TimeType::class, ['label' => 'endTime', 'required' => true, 'translation_domain' => 'form'])
+            ->add('calcTime', TextType::class, ['label' => 'billableTime', 'required' => true, 'translation_domain' => 'form'])
+            ->add('invoice', CheckboxType::class, ['label' => 'billed', 'required' => false, 'translation_domain' => 'form'])
+            ->add('inReport', CheckboxType::class, ['label' => 'showInReport', 'required' => false, 'translation_domain' => 'form'])
+            ->add('onsite', CheckboxType::class, ['label' => 'onSite', 'required' => false, 'translation_domain' => 'form'])
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

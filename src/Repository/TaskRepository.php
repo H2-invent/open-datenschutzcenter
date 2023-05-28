@@ -20,36 +20,20 @@ class TaskRepository extends ServiceEntityRepository
         parent::__construct($registry, Task::class);
     }
 
-    // /**
-    //  * @return Task[] Returns an array of Task objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findActiveByTeamAndUser($team, $user)
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team = :team')
+            ->andWhere('a.assignedUser = :user')
+            ->andWhere('a.activ = 1')
+            ->setParameter('team', $team)
+            ->setParameter('user', $user)
+            ->orderBy('a.createdAt', 'DESC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Task
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findActivByTeam($value)
+    public function findActiveByTeam($value)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.team = :val AND a.activ = 1')
@@ -59,7 +43,19 @@ class TaskRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findActivByUser(User $user)
+    public function findActiveAndOpenByTeam($team)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team = :team')
+            ->andWhere('a.activ = 1')
+            ->andWhere('a.done = false')
+            ->setParameter('team', $team)
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActiveByUser(User $user)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.assignedUser = :user')

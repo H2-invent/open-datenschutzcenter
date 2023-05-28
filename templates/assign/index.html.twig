@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'assign' %}
 
 {% block CTA %}
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">Meine Zuweisungen</h2>
+    <h2 class="h2-responsive">{% trans %}myAssignments{% endtrans %}</h2>
     <div class="card card-body">
         <ul class="nav nav-tabs" id="audit-tab" role="tablist">
             <li class="nav-item">
@@ -12,55 +13,55 @@
                    aria-controls="home"
                    aria-selected="true"><img style="height: 30px" src="{{ asset('images/task.png') }}">
                     <span
-                            class="d-none d-xl-block">Aufgaben</span></a>
+                            class="d-none d-xl-block">{% trans %}tasks{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="home-tab" data-toggle="tab" href="#audit" role="tab"
                    aria-controls="home"
                    aria-selected="true"><img style="height: 30px" src="{{ asset('images/pruefung.png') }}"> <span
-                            class="d-none d-sm-block">Auditfragen</span></a>
+                            class="d-none d-sm-block">{% trans %}auditQuestions{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
                    aria-controls="profile"
                    aria-selected="false"><img style="width: 30px" src="{{ asset('images/prozess.png') }}"> <span
-                            class="d-none d-sm-block">Verarbeitungen</span></a>
+                            class="d-none d-sm-block">{% trans %}processing{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
                    aria-controls="contact"
                    aria-selected="false"><img style="width: 30px" src="{{ asset('images/dsta.png') }}"> <span
-                            class="d-none d-sm-block">Datenschutzfolgeabschätzungen</span></a>
+                            class="d-none d-sm-block">{% trans %}dataProtectionImpactAssessment{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#daten" role="tab"
                    aria-controls="contact"
                    aria-selected="false"><img style="width: 30px" src="{{ asset('images/data.png') }}"> <span
-                            class="d-none d-sm-block">Datenweitergaben</span></a>
+                            class="d-none d-sm-block">{% trans %}dataTransfers{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#forms" role="tab"
                    aria-controls="contact"
                    aria-selected="false"><img style="width: 30px" src="{{ asset('images/information.png') }}"> <span
-                            class="d-none d-sm-block">Formulare</span></a>
+                            class="d-none d-sm-block">{% trans %}forms{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#policies" role="tab"
                    aria-controls="contact"
                    aria-selected="false"><img style="width: 30px" src="{{ asset('images/contract.png') }}"> <span
-                            class="d-none d-sm-block">Richtlinien</span></a>
+                            class="d-none d-sm-block">{% trans %}policies{% endtrans %}</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#software" role="tab"
                    aria-controls="contact"
                    aria-selected="false"><img style="width: 30px" src="{{ asset('images/monitor.png') }}"> <span
-                            class="d-none d-sm-block">Software</span></a>
+                            class="d-none d-sm-block">{% trans %}software{% endtrans %}</span></a>
             </li>
         </ul>
 
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="tasks" role="tabpanel" aria-labelledby="home-tab">
-                {% for a in assignTasks %}
+                {% for a in tasks %}
                     <a href="{{ path('task_edit',{'id':a.id}) }}">
                         <div class="btn btn-block bg-tasks text-md-left mt-1">
                             <div class="row">
@@ -79,7 +80,7 @@
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="audit" role="tabpanel" aria-labelledby="home-tab">
-                {% for a in assignAudit %}
+                {% for a in audits %}
                     {% if a.activ %}
                         <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
                             <div class="btn btn-block bg-audit text-xl-left mt-1">
@@ -100,7 +101,7 @@
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="vvt" role="tabpanel" aria-labelledby="profile-tab">
-                {% for a in assignVvt %}
+                {% for a in processings %}
                     {% if a.activ %}
                         <a href="{{ path('vvt_edit',{'id':a.id}) }}">
                             <div class="btn btn-block bg-vvt text-xl-left mt-1">
@@ -124,8 +125,8 @@
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="dsfa" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in assignDsfa %}
-                    {% if a.activ %}
+                {% for a in impactAssessments %}
+                    {% if a.vvt.team == currentTeam %}
                         <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
                             <div class="btn btn-block bg-dsfa text-xl-left mt-1">
                                 <div class="row">
@@ -133,7 +134,7 @@
                                         <img style="width: 30px" src="{{ asset('images/dsta.png') }}">
                                     </div>
                                     <div class="col-md-7">
-                                        {{ a.team.name }}: {{ a.beschreibung }}
+                                        {{ a.vvt.team.name }}: {{ a.beschreibung }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.vvt.name }}
@@ -148,7 +149,7 @@
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="daten" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in assignDaten %}
+                {% for a in dataTransfers %}
                     {% if a.activ %}
                         <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">
                             <div class="btn btn-block {% if a.art == 1 %}bg-daten{% else %}bg-av{% endif %} text-xl-left mt-1">
@@ -169,7 +170,7 @@
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="forms" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in assignForms %}
+                {% for a in forms %}
                     {% if a.activ %}
                         <a href="{{ path('forms_edit',{'id':a.id}) }}">
                             <div class="btn btn-block bg-forms text-xl-left mt-1">
@@ -190,7 +191,7 @@
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="policies" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in assignPolicies %}
+                {% for a in policies %}
                     {% if a.activ %}
                         <a href="{{ path('policy_edit',{'id':a.id}) }}">
                             <div class="btn btn-block bg-policy text-xl-left mt-1">
@@ -212,7 +213,7 @@
             </div>
 
             <div class="tab-pane fade" id="software" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in assignSoftware %}
+                {% for a in software %}
                     {% if a.activ %}
                         <a href="{{ path('software_edit',{'id':a.id}) }}">
                             <div class="btn btn-block bg-software text-xl-left mt-1">
@@ -224,7 +225,7 @@
                                         {{ a.team.name }}: {{ a.name }}
                                     </div>
                                     <div class="col-md-4">
-                                        Konfigurationen: {{ a.config|length }}
+                                        {% trans %}configurations{% endtrans %}: {{ a.config|length }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ a.createdAt|date('d.m.Y') }}

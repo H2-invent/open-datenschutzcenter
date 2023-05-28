@@ -1,3 +1,4 @@
+{% trans_default_domain 'tom' %}
 <style>
     /** Define the margins of your page **/
     @page {
@@ -43,119 +44,93 @@
 </style>
 <body>
 <header>
-    Technisch und organisatorische Massnahmen nach Art. 32 DSGVO, § 62 BDSG - {{ team.name }}
+    {% trans %}lawParagraph.technicalAndOrganizationalMeasures.title{% endtrans %} - {{ team.name }}
 </header>
-
 
 <main>
     <div style="font-family: Helvetica">
         <div class="page-head" style="margin-bottom: 70px">
-            <h2 style="text-align: center">Technisch und organisatorische Massnahmen nach Art. 32 DSGVO, § 62 BDSG</h2>
+            <h2 style="text-align: center">{% trans %}lawParagraph.technicalAndOrganizationalMeasures.title{% endtrans %}</h2>
             <h5 style="text-align: center">{{ team.name }} - {{ team.strasse }} - {{ team.plz }} {{ team.stadt }} -
-                eMail: <a href="mailto:{{ team.email }}">{{ team.email }}</a> - Telefon: <a
-                        href="tel:{{ team.telefon }}">{{ team.telefon }}</a></h5>
+                {% trans from 'general' %}email{% endtrans %}: <a href="mailto:{{ team.email }}">{{ team.email }}</a> -
+                {% trans from 'general' %}phone{% endtrans %}: <a href="tel:{{ team.telefon }}">{{ team.telefon }}</a>
+            </h5>
 
             <p style="text-align: center">
-                Im Folgenden werden die technischen und organisatorischen Maßnahmen zur Gewährleistung von Datenschutz
-                und
-                Datensicherheit festgelegt, die der Auftragnehmer mindestens einzurichten und laufend aufrecht zu
-                erhalten
-                hat.
+                {% trans %}lawParagraph.technicalAndOrganizationalMeasures.excerpt{% endtrans %}
             </p>
         </div>
 
         {% for daten in datenAll %}
             {% if not daten.activ %}
-                <h3>Historie</h3>
+                <h3>{% trans from 'general' %}history{% endtrans %}</h3>
             {% endif %}
 
-            <h3>A. Pseudonymisierung Verschlüsselung (Art. 32 Abs. 1 lit. a) DSGVO)</h3>
+            <h3>{% trans %}lawParagraph.pseudo.title{% endtrans %}</h3>
             <p></p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomPseudo}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 1}) }}
 
-            <h3>B. Vertraulichkeit (Art. 32 Abs. 1 lit. b) DSGVO)</h3>
-            <h4>1. Zutrittskontrolle</h4>
-            <p>Gewährleistung, dass der Zutritt zu den Betriebsarealen und deren Bereichen nur berechtigten Personen
-                möglich
-                sind:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomZutrittskontrolle}) }}
+            <h3>{% trans %}lawParagraph.confidentiality.title{% endtrans %}</h3>
+            <h4>{% trans %}lawParagraph.entryControl.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.entryControl.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 2}) }}
 
-            <h4>2. Zugangskontrolle</h4>
-            <p>Gewährleistung, dass nur Mitarbeiter der verantwortlichen Stelle oder Arbeitskräfte, die im Rahmen einer
-                Auftragsverarbeitung verpflichtet sind, in den hierfür vorgesehenen Aufgabenbereich dürfen und mit
-                Benutzeridentifikation entsprechende Daten verarbeiten:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomZugangskontrolle}) }}
+            <h4>{% trans %}lawParagraph.entranceControl.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.entranceControl.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 3}) }}
 
-            <h4>3. Zugriffskontrolle</h4>
-            <p>Gewährleistung, dass die zur Benutzung eines automatisierten Verarbeitungssystems Berechtigten
-                ausschließlich zu den von ihrer Zugangsberechtigung umfassten personenbezogenen Daten Zugriff haben:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomZugriffskontrolle}) }}
+            <h4>{% trans %}lawParagraph.accessControl.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.accessControl.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 4}) }}
 
-            <h4>4. Benutzerkontrolle</h4>
-            <p>Gewährleistung der Verhinderung der Nutzung automatisierter Verarbeitungssysteme mit Hilfe von
-                Einrichtungen
-                zur Datenübertragung durch Unbefugte:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomBenutzerkontrolle}) }}
+            <h4>{% trans %}lawParagraph.userControl.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.userControl.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 5}) }}
 
-            <h4>5. Speicherkontrolle </h4>
-            <p>Verhinderung der unbefugten Eingabe von personenbezogenen Daten sowie der unbefugten Kenntnisnahme,
-                Veränderung und Löschung von gespeicherten personenbezogenen Daten:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomSpeicherkontrolle}) }}
+            <h4>{% trans %}lawParagraph.saveControl.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.saveControl.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 6}) }}
 
-            <h4>6. Trennbarkeit</h4>
-            <p>Gewährleistung, dass zu unterschiedlichen Zwecken erhobene personenbezogene Daten getrennt verarbeitet
-                werden:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomTrennbarkeit}) }}
+            <h4>{% trans %}lawParagraph.separability.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.separability.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 7}) }}
 
-            <h3>C. Integrität (Art. 32 Abs. 1 lit. c) DSGVO)</h3>
-            <h4>7. Datenintegrität</h4>
-            <p>Gewährleistung, dass gespeicherte personenbezogene Daten nicht durch Fehlfunktionen des Systems
-                beschädigt
-                werden können:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomDatenintegritaet}) }}
+            <h3>{% trans %}lawParagraph.integrity.title{% endtrans %}</h3>
+            <h4>{% trans %}lawParagraph.dataIntegrity.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.dataIntegrity.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 8}) }}
 
-            <h4>8. Transportkontrolle</h4>
-            <p>Gewährleistung, dass bei der Übermittlung personenbezogener Daten sowie beim Transport von Datenträgern
-                die
-                Vertraulichkeit und Integrität der Daten geschützt werden:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomtransportkontrolle}) }}
+            <h4>{% trans %}lawParagraph.transportControl.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.transportControl.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 9}) }}
 
-            <h4>9. Übertragungskontrolle</h4>
-            <p>Gewährleistung, dass überprüft und festgestellt werden kann, an welche Stellen personenbezogene Daten mit
-                Hilfe von Einrichtungen zur Datenübertragung übermittelt oder zur Verfügung gestellt wurden oder werden
-                können.</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomUebertragungskontrolle}) }}
+            <h4>{% trans %}lawParagraph.transmissionControl.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.transmissionControl.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 10}) }}
 
-            <h4>10. Eingabekontrolle </h4>
-            <p>Gewährleistung, dass nachträglich überprüft und festgestellt werden kann, welche personenbezogenen Daten
-                zu
-                welcher Zeit und von wem in automatisierte Verarbeitungssysteme eingegeben oder verändert worden
-                sind:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomEingabekontrolle}) }}
+            <h4>{% trans %}lawParagraph.inputControl.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.inputControl.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 11}) }}
 
-            <h4>11. Zuverlässigkeit</h4>
-            <p>Gewährleistung, dass alle Funktionen des Systems zur Verfügung stehen und auftretende Fehlfunktionen
-                gemeldet
-                werden:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomZuverlaessigkeit}) }}
+            <h4>{% trans %}lawParagraph.reliability.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.reliability.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 12}) }}
 
-            <h4>12. Auftragskontrolle</h4>
-            <p>Gewährleistung, dass personenbezogene Daten, die im Auftrag verarbeitet werden, nur entsprechend den
-                Weisungen des Auftraggebers verarbeitet werden können:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomAuftragskontrolle}) }}
+            <h4>{% trans %}lawParagraph.requestControl.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.requestControl.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 13}) }}
 
-            <h3>D. Verfügbarkeit und Belastbarkeit (Art. 32 Abs. 1 lit. c) DSGVO)</h3>
-            <h4>13. Verfügbarkeitskontrolle</h4>
-            <p>Gewährleistung, dass personenbezogene Daten gegen Zerstörung oder Verlust geschützt sind:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomVerfuegbarkeitskontrolle}) }}
+            <h3>{% trans %}lawParagraph.availability.title{% endtrans %}</h3>
+            <h4>{% trans %}lawParagraph.availabilityControl.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.availabilityControl.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 14}) }}
 
-            <h4>14. Wiederherstellbarkeit</h4>
-            <p>Gewährleistung, dass eingesetzte Systeme im Störungsfall wiederhergestellt werden können:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomWiederherstellbarkeit}) }}
+            <h4>{% trans %}lawParagraph.recoverability.title{% endtrans %}</h4>
+            <p>{% trans %}lawParagraph.recoverability.excerpt{% endtrans %}:</p>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 15}) }}
 
-            <h3>E. Verfahren zur regelmässigen Überprüfung, Bewertung und Evaluierung (Art. 32 Abs. 1 lit. c)
-                DSGVO)</h3>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomAudit}) }}
+            <h3>{% trans %}lawParagraph.evaluation.title{% endtrans %}</h3>
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': 16}) }}
 
 
             {{ daten.createdAt|date('d.m.Y H:i') }} by {{ daten.user.email }}

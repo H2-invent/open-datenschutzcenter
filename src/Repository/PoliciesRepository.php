@@ -19,36 +19,7 @@ class PoliciesRepository extends ServiceEntityRepository
         parent::__construct($registry, Policies::class);
     }
 
-    // /**
-    //  * @return Policies[] Returns an array of Policies objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Policies
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findActivByTeam($value)
+    public function findActiveByTeam($value)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.team = :val')
@@ -65,6 +36,19 @@ class PoliciesRepository extends ServiceEntityRepository
             ->andWhere('a.activ = 1')
             ->andWhere('a.status != 4')
             ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActiveByTeamAndUser($team, $user)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team = :team')
+            ->andWhere('a.assignedUser = :user')
+            ->andWhere('a.activ = 1')
+            ->setParameter('team', $team)
+            ->setParameter('user', $user)
+            ->orderBy('a.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

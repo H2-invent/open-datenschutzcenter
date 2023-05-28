@@ -27,15 +27,15 @@ class AuditTomType extends AbstractType
     {
 
         $builder
-            ->add('frage', TextType::class, ['label' => 'Fragestellung', 'required' => true, 'translation_domain' => 'form'])
-            ->add('nummer', TextType::class, ['label' => 'AuditTom Nummer', 'required' => true, 'translation_domain' => 'form'])
-            ->add('bemerkung', TextareaType::class, ['attr' => ['rows' => 8],'label' => 'Bemerkung', 'required' => true, 'translation_domain' => 'form'])
-            ->add('empfehlung', TextareaType::class, ['attr' => ['rows' => 8],'label' => 'Empfehlung', 'required' => true, 'translation_domain' => 'form'])
+            ->add('frage', TextType::class, ['label' => 'question', 'required' => true, 'translation_domain' => 'form'])
+            ->add('nummer', TextType::class, ['label' => 'auditTomNumber', 'required' => true, 'translation_domain' => 'form'])
+            ->add('bemerkung', TextareaType::class, ['attr' => ['rows' => 8],'label' => 'comment', 'required' => true, 'translation_domain' => 'form'])
+            ->add('empfehlung', TextareaType::class, ['attr' => ['rows' => 8],'label' => 'recommendation', 'required' => true, 'translation_domain' => 'form'])
             ->add('ziele', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => AuditTomZiele::class,
                 'choices' => $options['ziele'],
-                'label' => 'Schutzziele',
+                'label' => 'auditGoals',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'attr' => [
@@ -47,7 +47,7 @@ class AuditTomType extends AbstractType
                 'choice_label' => 'name',
                 'class' => AuditTomAbteilung::class,
                 'choices' => $options['abteilungen'],
-                'label' => 'Abteilungen',
+                'label' => 'departments',
                 'translation_domain' => 'form',
                 'multiple' => true,
                 'attr' => [
@@ -59,7 +59,7 @@ class AuditTomType extends AbstractType
                 'choice_label' => 'name',
                 'class' => AuditTomStatus::class,
                 'choices' => $options['status'],
-                'label' => 'Status',
+                'label' => 'status',
                 'translation_domain' => 'form',
                 'multiple' => false,
                 'attr' => [
@@ -67,28 +67,28 @@ class AuditTomType extends AbstractType
                     'data-live-search' => 'true'
                 ],
             ])
-            ->add('tomAttribut', TextType::class, ['label' => 'Attribut für die globale TOM', 'required' => false, 'translation_domain' => 'form'])
+            ->add('tomAttribut', TextType::class, ['label' => 'globalTomAttribute', 'required' => false, 'translation_domain' => 'form'])
             ->add('tomZiel', ChoiceType::class, [
                 'choices'  => [
-                    'Bitte auswählen (Nicht in der TOM darstellen)' => null,
-                    'Pseudonymisierung Verschlüsselung' => 1,
-                    'Zutrittskontrolle' => 2,
-                    'Zugangskontrolle' => 3,
-                    'Zugriffskontrolle' => 4,
-                    'Benutzerkontrolle' => 5,
-                    'Speicherkontrolle' => 6,
-                    'Trennbarkeit' => 7,
-                    'Datenintegrität' => 8,
-                    'Transportkontrolle ' => 9,
-                    'Übertragungskontrolle' => 10,
-                    'Eingabekontrolle' => 11,
-                    'Zuverlässigkeit' => 12,
-                    'Auftragskontrolle' => 13,
-                    'Verfügbarkeitskontrolle' => 14,
-                    'Wiederherstellbarkeit' => 15,
-                    'Evaluierung' => 16,
+                    'nothingSelectedTomView' => null,
+                    'encryption' => 1,
+                    'physicalAccessControl' => 2,
+                    'authenticatedAccessControl' => 3,
+                    'privilegedAccessControl' => 4,
+                    'userControl' => 5,
+                    'storageControl' => 6,
+                    'separability' => 7,
+                    'dataIntegrity' => 8,
+                    'transportControl' => 9,
+                    'transferControl' => 10,
+                    'inputControl' => 11,
+                    'reliability' => 12,
+                    'assignmentControl' => 13,
+                    'availabilityControl' => 14,
+                    'recoverability' => 15,
+                    'evaluation' => 16,
                 ],
-                'label' => 'TOM Possition des Attributes',
+                'label' => 'globalTomPosition',
                 'translation_domain' => 'form',
                 'required' => false,
                 'multiple' => false,
@@ -99,34 +99,34 @@ class AuditTomType extends AbstractType
             ])
             ->add('kategorie', ChoiceType::class, [
                 'choices'  => [
-                    'Bitte auswählen' => '',
-                    'Datenschutzmanagement' => 'Datenschutzmanagement',
-                    'Verbindliche Vorlagen Datenschutz' => 'Verbindliche Vorlagen Datenschutz',
-                    'Arbeitsanweisungen' => 'Arbeitsanweisungen',
-                    'Notfallplanung und Dokumentation' => 'Notfallplanung und Dokumentation',
-                    'Bauliche Sicherheit' => 'Bauliche Sicherheit',
-                    'Video' => 'Video',
-                    'Authentifizierungen' => 'Authentifizierungen',
-                    'Berechtigungen' => 'Berechtigungen',
-                    'Logs' => 'Logs',
-                    'Backups' => 'Backups',
-                    'Datenvernichtung/ Löschen' => 'Datenvernichtung/ Löschen',
-                    'Übermittlung/ Transport' => 'Übermittlung/ Transport',
-                    'Fernwartung' => 'Fernwartung',
-                    'Mobile Geräte' => 'Mobile Geräte',
-                    'WLAN' => 'WLAN',
-                    'Marketing' => 'Marketing',
-                    'Cloud' => 'Cloud',
-                    'Archiv' => 'Archiv',
-                    'IT Sicherheit' => 'IT Sicherheit',
+                    'nothingSelected' => '',
+                    'privacyManagement' => 'privacyManagement',
+                    'privacyTemplates' => 'privacyTemplates',
+                    'instructions' => 'instructions',
+                    'emergencyPlanAndDocumentation' => 'emergencyPlanAndDocumentation',
+                    'structuralSafety' => 'structuralSafety',
+                    'video' => 'video',
+                    'authentications' => 'authentications',
+                    'privileges' => 'privileges',
+                    'logs' => 'logs',
+                    'backups' => 'backups',
+                    'deletion' => 'deletion',
+                    'transfer' => 'transfer',
+                    'remoteMaintenance' => 'remoteMaintenance',
+                    'mobileDevices' => 'mobileDevices',
+                    'wlan' => 'wlan',
+                    'marketing' => 'marketing',
+                    'cloud' => 'cloud',
+                    'archive' => 'archive',
+                    'ITSec' => 'ITSec',
                     'MFC' => 'MFC',
-                    'Serverraum' => 'Serverraum',
-                    'Mandantenfähigkeit' => 'Mandantenfähigkeit',
-                    'Compliance' => 'Compliance',
+                    'serverRoom' => 'serverRoom',
+                    'clientCapability' => 'clientCapability',
+                    'compliance' => 'compliance',
                     'GoBD' => 'GoBD',
-                    'Sonstiges' => 'Sonstiges',
+                    'other' => 'other',
                 ],
-                'label' => 'Kategorie',
+                'label' => 'category',
                 'translation_domain' => 'form',
                 'required' => true,
                 'multiple' => false,
@@ -136,7 +136,7 @@ class AuditTomType extends AbstractType
                 ],
             ])
 
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

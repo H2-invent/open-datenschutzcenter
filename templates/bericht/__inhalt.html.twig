@@ -1,4 +1,5 @@
-<h4>Inhaltsverzeichnis</h4>
+{% trans_default_domain 'bericht' %}
+<h4>{% trans %}tableOfContents{% endtrans %}/h4>
 
 {% for company in companies %}
 <h5>{{ company.name }}</h5>

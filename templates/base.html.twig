@@ -10,22 +10,12 @@
 
     <!-- Page Content  -->
     <div id="content">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand navbar-light bg-light">
             <div class="container-fluid">
 
-                <button type="button" id="sidebarCollapse" class="btn btn-dark btn-sm">
-                    Navigation
+                <button type="button" id="sidebarCollapse">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-
-                <!-- Button trigger modal -->
-                <a class="d-inline-block d-lg-none ml-auto mr-2"
-                   type="button"
-                   data-toggle="modal" data-target="#sideModalTR" aria-controls="navbarSupportedContent"
-                   aria-expanded="false" aria-label="Toggle navigation">
-                    <img src="{{ asset('images/profil.svg') }}" style="max-height: 30px">
-                </a>
-                <a href="{{ path('logout_keycloak') }}" class="d-lg-none"><img src="{{ asset('images/logout.svg') }}"
-                                                                               style="max-height: 30px"></a>
 
                 {% block CTA %}{% endblock %}
 

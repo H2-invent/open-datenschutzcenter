@@ -14,70 +14,46 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=VVTDatenkategorieRepository::class)
- */
+#[ORM\Entity(repositoryClass: VVTDatenkategorieRepository::class)]
 class VVTDatenkategorie
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="vVTDatenkategories")
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'vVTDatenkategories')]
     private $team;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $datenarten;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $activ;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Loeschkonzept::class, mappedBy="vvtdatenkategories",cascade={"persist", "remove"})
-     */
+    #[ORM\ManyToMany(targetEntity: Loeschkonzept::class, mappedBy: 'vvtdatenkategories', cascade: ['persist', 'remove'])]
     private $loeschkonzept;
 
-    /**
-     * @ORM\OneToOne(targetEntity=VVTDatenkategorie::class, cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: VVTDatenkategorie::class, cascade: ['persist', 'remove'])]
     private $previous;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable = true)
-     */
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $CreatedAt;
 
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="vVTDatenkategories")
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'vVTDatenkategories')]
+    #[ORM\JoinColumn(nullable: true)]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=VVTDatenkategorie::class, inversedBy="parentOf")
-     */
+    #[ORM\ManyToOne(targetEntity: VVTDatenkategorie::class, inversedBy: 'parentOf')]
     private $cloneOf;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VVTDatenkategorie::class, mappedBy="cloneOf")
-     */
+    #[ORM\OneToMany(targetEntity: VVTDatenkategorie::class, mappedBy: 'cloneOf')]
     private $parentOf;
 
     public function __construct()
@@ -86,7 +62,7 @@ class VVTDatenkategorie
         $this->parentOf = new ArrayCollection();
     }
 
-    public function __toString(): ?string
+    public function __toString(): string
     {
         if ($this->getLoeschkonzept())
         {

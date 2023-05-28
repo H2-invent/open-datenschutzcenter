@@ -1,3 +1,4 @@
+{% trans_default_domain 'policies' %}
 <style>
     /** Define the margins of your page **/
     @page {
@@ -47,7 +48,7 @@
 </style>
 <body>
 <header>
-    Interne Datenschutzrichtlinie
+    {% trans %}internal{% endtrans %}
 </header>
 <main>
     {% for d in daten %}

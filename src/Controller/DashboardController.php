@@ -6,7 +6,7 @@
  * Time: 09:15
  */
 
- /**
+/**
  * Modified by
  * User: Jan Juister
  * Date: 13.05.2022
@@ -14,96 +14,97 @@
 
 namespace App\Controller;
 
-use App\Entity\AkademieBuchungen;
-use App\Entity\AuditTom;
-use App\Entity\Datenweitergabe;
-use App\Entity\Forms;
-use App\Entity\Kontakte;
-use App\Entity\Policies;
-use App\Entity\Software;
-use App\Entity\Task;
-use App\Entity\Team;
-use App\Entity\Tom;
-use App\Entity\VVT;
-use App\Entity\VVTDsfa;
-use App\Entity\Loeschkonzept;
-use App\Entity\VVTDatenkategorie;
+use App\Repository\AkademieBuchungenRepository;
+use App\Repository\AuditTomRepository;
+use App\Repository\DatenweitergabeRepository;
+use App\Repository\FormsRepository;
+use App\Repository\KontakteRepository;
+use App\Repository\LoeschkonzeptRepository;
+use App\Repository\PoliciesRepository;
+use App\Repository\SoftwareRepository;
+use App\Repository\TaskRepository;
+use App\Repository\TeamRepository;
+use App\Repository\TomRepository;
+use App\Repository\VVTDatenkategorieRepository;
+use App\Repository\VVTDsfaRepository;
+use App\Repository\VVTRepository;
+use App\Service\CurrentTeamService;
+use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
 {
-    /**
-     * @Route("/", name="dashboard")
-     */
-    public function dashboard(Request $request)
+    #[Route(path: '/', name: 'dashboard')]
+    public function dashboard(Request                     $request,
+                              CurrentTeamService          $currentTeamService,
+                              SecurityService             $securityService,
+                              TeamRepository              $teamRepository,
+                              DatenweitergabeRepository   $transferRepository,
+                              VVTRepository               $procedureRepository,
+                              AuditTomRepository          $auditRepository,
+                              VVTDsfaRepository           $impactAssessmentRepository,
+                              FormsRepository             $formRepository,
+                              PoliciesRepository          $policyRepository,
+                              SoftwareRepository          $softwareRepository,
+                              KontakteRepository          $contactRepository,
+                              TomRepository               $tomRepository,
+                              LoeschkonzeptRepository     $deletionConceptRepository,
+                              VVTDatenkategorieRepository $dataCategoryRepository,
+                              AkademieBuchungenRepository $bookingRepository,
+                              TaskRepository              $taskRepository
+    ): Response
     {
-        $team = $this->getUser()->getTeam();
-        $allTeams = $this->getDoctrine()->getRepository(Team::class)->findAll();
-        if (sizeof($allTeams) === 0){
+        // if no teams exist, redirect to first_run
+        $allTeams = $teamRepository->findAll();
+        if (sizeof($allTeams) === 0) {
             return $this->redirectToRoute('first_run');
         }
-        if ($team === null && $this->getUser()->getAkademieUser() !== null) {
-            return $this->redirectToRoute('akademie');
-        } elseif ($team === null && count($dsbTeams = $this->getUser()->getTeamDsb()) > 0) {
-            return $this->redirectToRoute('dsb');
-        } elseif ($team === null && $this->getUser()->getAkademieUser() === null) {
-            return $this->redirectToRoute('no_team');
+
+        // else get team for current user
+        $user = $this->getUser();
+        $currentTeam = $currentTeamService->getTeamFromSession($user);
+
+        if ($currentTeam === null) {
+            if ($securityService->superAdminCheck($this->getUser())) {
+                return $this->redirectToRoute('manage_teams');
+            } elseif ($this->getUser()->getAkademieUser() !== null) {
+                return $this->redirectToRoute('akademie');
+            } elseif (count($this->getUser()->getTeamDsb()) > 0) {
+                return $this->redirectToRoute('dsb');
+            } else {
+                return $this->redirectToRoute('no_team');
+            }
         }
 
-        $audit = $this->getDoctrine()->getRepository(AuditTom::class)->findAllByTeam($team);
-        $daten = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => 1));
-        $av = $this->getDoctrine()->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
-        $vvt = $this->getDoctrine()->getRepository(VVT::class)->findActivByTeam($team);
-        $vvtDsfa = $this->getDoctrine()->getRepository(VVTDsfa::class)->findActivByTeam($team);
-        $kontakte = $this->getDoctrine()->getRepository(Kontakte::class)->findActivByTeam($team);
-        $tom = $this->getDoctrine()->getRepository(Tom::class)->findActivByTeam($team);
-        $forms = $this->getDoctrine()->getRepository(Forms::class)->findPublicByTeam($team);
-        $policies = $this->getDoctrine()->getRepository(Policies::class)->findPublicByTeam($team);
-        $software = $this->getDoctrine()->getRepository(Software::class)->findActivByTeam($team);
-        $tasks = $this->getDoctrine()->getRepository(Task::class)->findBy(['team' => $team, 'activ' => true, 'done' => false]);
-        $loeschkonzepte = $this->getDoctrine()->getRepository(Loeschkonzept::class)->findByTeam($team);
-        $vvtdatenkategorien = $this->getDoctrine()->getRepository(VVTDatenkategorie::class)->findByTeam($team);
+        $audit = $auditRepository->findAllByTeam($currentTeam);
+        $daten = $transferRepository->findActiveTransfersByTeam($currentTeam);
+        $av = $transferRepository->findActiveOrderProcessingsByTeam($currentTeam);
+        $vvt = $procedureRepository->findActiveByTeam($currentTeam);
+        $vvtDsfa = $impactAssessmentRepository->findActiveByTeam($currentTeam);
+        $kontakte = $contactRepository->findActiveByTeam($currentTeam);
+        $tom = $tomRepository->findActiveByTeam($currentTeam);
+        $forms = $formRepository->findPublicByTeam($currentTeam);
+        $policies = $policyRepository->findPublicByTeam($currentTeam);
+        $software = $softwareRepository->findActiveByTeam($currentTeam);
+        $tasks = $taskRepository->findActiveAndOpenByTeam($currentTeam);
+        $loeschkonzepte = $deletionConceptRepository->findByTeam($currentTeam);
+        $vvtdatenkategorien = $dataCategoryRepository->findByTeam($currentTeam);
+        $kritischeAudits = $auditRepository->findCriticalByTeam($currentTeam);
+        $kritischeVvts = $procedureRepository->findCriticalByTeam($currentTeam);
+        $openDsfa = $impactAssessmentRepository->findActiveAndOpenByTeam($currentTeam);
+        $buchungen = $bookingRepository->findActiveByUser($user);
 
-        $qb = $this->getDoctrine()->getRepository(AuditTom::class)->createQueryBuilder('audit');
-        $qb->andWhere('audit.team = :team')
-            ->andWhere('audit.activ = 1')
-            ->andWhere('audit.status = 5 OR audit.status = 6')
-            ->orderBy('audit.createdAt', 'DESC')
-            ->setParameter('team', $team);
-        $query = $qb->getQuery();
-        $kritischeAudits = $query->getResult();
-
-        $qb = $this->getDoctrine()->getRepository(VVT::class)->createQueryBuilder('vvt');
-        $qb->andWhere('vvt.team = :team')
-            ->andWhere('vvt.activ = 1')
-            ->andWhere('vvt.status = 3')
-            ->orderBy('vvt.CreatedAt', 'DESC')
-            ->setParameter('team', $team);
-        $query = $qb->getQuery();
-        $kritischeVvts = $query->getResult();
-
-        $qb = $this->getDoctrine()->getRepository(VVTDsfa::class)->createQueryBuilder('dsfa');
-        $qb->innerJoin('dsfa.vvt', 'vvt')
-            ->andWhere('vvt.activ = 1')
-            ->andWhere('dsfa.activ = 1')
-            ->andWhere('dsfa.dsb IS NULL OR dsfa.ergebnis IS NULL')
-            ->andWhere('vvt.team = :team')
-            ->setParameter('team', $team);
-        $query = $qb->getQuery();
-        $openDsfa = $query->getResult();
-
-        $assignVvt = $this->getUser()->getAssignedVvts()->toarray();
-        $assignAudit = $this->getUser()->getAssignedAudits()->toarray();
-        $assignDsfa = $this->getUser()->getAssignedDsfa()->toarray();
-        $assignDatenweitergabe = $this->getUser()->getAssignedDatenweitergaben()->toarray();
-        $assignTasks = $this->getDoctrine()->getRepository(Task::class)->findActivByUser($this->getUser());
-
-        $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findActivBuchungenByUser($this->getUser());
+        $assignVvt = $procedureRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignAudit = $auditRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignDsfa = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignDatenweitergabe = $transferRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignTasks = $taskRepository->findActiveByTeamAndUser($currentTeam, $user);
 
         return $this->render('dashboard/index.html.twig', [
-            'team' => $team,
+            'currentTeam' => $currentTeam,
             'audit' => $audit,
             'daten' => $daten,
             'vvt' => $vvt,
@@ -126,19 +127,17 @@ class DashboardController extends AbstractController
             'tasks' => $tasks,
             'snack' => $request->get('snack'),
             'loeschkonzepte' => $loeschkonzepte,
-            'vvtdatenkategorien' => $vvtdatenkategorien, 
-            
+            'vvtdatenkategorien' => $vvtdatenkategorien,
+
 
         ]);
     }
 
-    /**
-     * @Route("/no_team", name="no_team")
-     */
-    public function noTeam()
+    #[Route(path: '/no_team', name: 'no_team')]
+    public function noTeam(): Response
     {
         if ($this->getUser()) {
-            if ($this->getUser()->getTeam()) {
+            if (count($this->getUser()->getTeams())) {
                 return $this->redirectToRoute('dashboard');
             }
             if ($this->getUser()->getAkademieUser()) {

@@ -48,7 +48,7 @@ class VVTStatusRepository extends ServiceEntityRepository
     }
     */
 
-    public function findActivByTeam($value)
+    public function findActiveByTeam($value)
     {
         return $this->createQueryBuilder('a')
             ->where('a.team is null OR a.team = :val')

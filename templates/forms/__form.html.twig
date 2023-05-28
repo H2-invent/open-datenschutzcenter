@@ -1,3 +1,4 @@
+{% trans_default_domain 'forms' %}
 {{ form_start(form) }}
 <div class="row">
     <div class="col-md-8 {% if not activ == 1 or daten.approved %}disabled{% endif %}">
@@ -41,7 +42,7 @@
         </div>
         {% if daten.upload %}
             <a href="{{ path('forms_download_file', {'id':daten.id}) }}" download class="btn bg-forms">{{ daten.title }}
-                herunterladen</a>
+                {% trans %}download{% endtrans %}</a>
         {% endif %}
     </div>
 </div>
