@@ -15,4 +15,6 @@ class Tables
     public static string $AKADEMIE_KURS = 'akademie_kurse';
     public static string $TEAM = 'team';
     public static string $ACADEMY_BILLING = 'akademie_buchungen';
+    public static string $TEAM_ADMIN = 'team_admin';
+    public static string $USER_TEAM = 'user_team';
 }

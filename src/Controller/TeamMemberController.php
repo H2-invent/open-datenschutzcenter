@@ -116,17 +116,19 @@ class TeamMemberController extends AbstractController
         $form = $this->createForm(DsbType::class);
         $form->handleRequest($request);
 
-        $errors = array();
+        $errors = [];
         if ($form->isSubmitted() && $form->isValid()) {
 
             $dsb = $form->getData();
             $email = $dsb['dsb'];
-            $user = $userRepository->findOneBy(array('email' => $email));
+            $user = $userRepository->findOneBy(['email' => $email]);
             if (!$user) {
                 $user = $inviteService->newUser($email, $team);
             }
             if (!$team->getDsbUser()) {
-                $team->setDsbUser($user);
+                $team->setDsbUser($user)
+                    ->addAdmin($user)
+                    ->addMember($user);
                 $em->persist($team);
             }
 
