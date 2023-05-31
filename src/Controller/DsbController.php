@@ -24,8 +24,9 @@ class DsbController extends AbstractController
 
     #[Route(path: '/ext-dsb/change', name: 'dsb_change')]
     public function change(
-        Request        $request,
-        TeamRepository $teamRepository,
+        Request            $request,
+        TeamRepository     $teamRepository,
+        CurrentTeamService $currentTeamService,
     ): Response
     {
         $team = $teamRepository->find($request->get('id'));
@@ -38,6 +39,7 @@ class DsbController extends AbstractController
             $this->em->persist($user);
             $this->em->persist($team);
             $this->em->flush();
+            $currentTeamService->switchToTeam(strval($team->getId()));
             return $this->redirectToRoute(
                 'dashboard',
                 [
@@ -54,16 +56,18 @@ class DsbController extends AbstractController
     }
 
     #[Route(path: '/ext-dsb', name: 'dsb')]
-    public function index(): Response
+    public function index(CurrentTeamService $currentTeamService): Response
     {
         $dsbTeams = $this->getUser()->getTeamDsb();
         if (count($dsbTeams) < 1) {
             return $this->redirectToRoute('dashboard');
         }
 
+        $currentTeam = $currentTeamService->getCurrentAdminTeam($this->getUser());
+
         return $this->render('dsb/index.html.twig', [
             'teams' => $dsbTeams,
-            'currentTeam' => $this->currentTeamService->getTeamFromSession($this->getUser()),
+            'currentTeam' => $currentTeam,
         ]);
     }
 }
