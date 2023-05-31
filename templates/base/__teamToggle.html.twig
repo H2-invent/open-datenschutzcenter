@@ -14,7 +14,7 @@
                 {% if currentTeam == team %}
                     <a class="dropdown-item" disabled>{{ team.name }}</a>
                 {% else %}
-                    <a class="dropdown-item" href="{{ path('team_switch',{'team':team.name}) }}">{{ team.name }}</a>
+                    <a class="dropdown-item" href="{{ path('team_switch',{'team':team.id}) }}">{{ team.name }}</a>
                 {% endif %}
             {% endfor %}
         </div>
