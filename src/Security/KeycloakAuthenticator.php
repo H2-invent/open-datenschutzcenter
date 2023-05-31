@@ -104,9 +104,8 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
     private function getTeamsFromKeycloakGroups(ResourceOwnerInterface $keycloakUser): ArrayCollection
     {
         $userTeams = new ArrayCollection();
-        $settings = $this->em->getRepository(Settings::class)->findOne();
 
-        if (isset($keycloakUser->toArray()['groups']) && $settings && $settings->getUseKeycloakGroups()) {
+        if (isset($keycloakUser->toArray()['groups'])) {
             $groups = $keycloakUser->toArray()['groups'];
             $teams = $this->teamRepository->findAll();
 
@@ -182,8 +181,13 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         $user->setKeycloakId(keycloakId: $keycloakUser->getId());
         $user->setFirstName(firstName: $keycloakUser->toArray()['given_name'] ?? '');
         $user->setLastName(lastName: $keycloakUser->toArray()['family_name'] ?? '');
-        $user->setTeams(teams: $this->getTeamsFromKeycloakGroups(keycloakUser: $keycloakUser));
         $user->setRoles(roles: $this->getRolesForKeycloakUser(keycloakUser: $keycloakUser));
+
+        $settings = $this->em->getRepository(Settings::class)->findOne();
+        if ($settings && $settings->getUseKeycloakGroups()) {
+            $user->setTeams(teams: $this->getTeamsFromKeycloakGroups(keycloakUser: $keycloakUser));
+        }
+
         $this->em->persist($user);
         $this->em->flush();
         return $user;

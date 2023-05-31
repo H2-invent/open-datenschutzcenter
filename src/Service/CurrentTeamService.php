@@ -35,11 +35,11 @@ class CurrentTeamService
     private function findTeam(Collection $teams): ?Team
     {
         $session = $this->requestStack->getSession();
-        $teamName = $session->get('team');
+        $id = $session->get('team');
 
-        if ($teamName) {
+        if ($id) {
             foreach ($teams as $team) {
-                if ($team->getName() === $teamName) {
+                if (strval($team->getId()) === $id) {
                     return $team;
                 }
             }
