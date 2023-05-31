@@ -21,18 +21,20 @@ final class Version20230530074306 extends AbstractMigration
             ->select(select: 't.*')
             ->from(Tables::$TEAM, 't')
             ->fetchAllAssociative();
-
         $teamAdmins = $this->connection->createQueryBuilder()
             ->select(select: 'ta.*')
             ->from(Tables::$TEAM_ADMIN, 'ta')
             ->fetchAllAssociative();
-
         $teamMembers = $this->connection->createQueryBuilder()
             ->select(select: 'tu.*')
             ->from(Tables::$USER_TEAM, 'tu')
             ->fetchAllAssociative();
 
         foreach ($teams as $team) {
+            if(!isset($team['dsb_user_id'])){
+                continue;
+            }
+
             if (!$this->exists(haystacks: $teamAdmins, needle: $team)) {
                 $this->connection->createQueryBuilder()
                     ->insert(Tables::$TEAM_ADMIN)
