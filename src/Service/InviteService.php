@@ -60,9 +60,7 @@ class InviteService
                 ->setCreatedAt(new DateTime())
                 ->setRegisterId(md5(uniqid('ksdjhfkhsdkjhjksd', true)))
                 ->setUsername($email)
-                ->setEmail($email)
-                ->setPassword('123')
-                ->setUuid('123');
+                ->setEmail($email);
             $user->setEmail($email);
         }
 
