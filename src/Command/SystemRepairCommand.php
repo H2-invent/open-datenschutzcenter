@@ -9,6 +9,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(name: 'app:system:repair')]
 class SystemRepairCommand extends Command
@@ -22,8 +23,14 @@ class SystemRepairCommand extends Command
     }
 
     protected function execute(InputInterface $input, OutputInterface $output):int {
+        $io = new SymfonyStyle($input, $output);
+        $io->info('-------------------------');
+        $io->info('we try to repair you ODC');
+        $io->info('-------------------------');
+        $io->info('We repair the external DSB entities');
         $this->addDsbAsAdminAndTeamMember();
 
+        $io->success('We repaired your system');
         return self::SUCCESS;
     }
 
