@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\TeamRepository;
+use App\Service\CurrentTeamService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ class DsbController extends AbstractController
 
     public function __construct(private readonly TranslatorInterface $translator,
                                 private EntityManagerInterface       $em,
+                                private CurrentTeamService           $currentTeamService,
     )
     {
     }
@@ -61,6 +63,7 @@ class DsbController extends AbstractController
 
         return $this->render('dsb/index.html.twig', [
             'teams' => $dsbTeams,
+            'currentTeam' => $this->currentTeamService->getTeamFromSession($this->getUser()),
         ]);
     }
 }
