@@ -18,7 +18,9 @@ RUN rm -rf node_modules/
 #copy all the rest of the app
 COPY . /var/www/html
 #install all php dependencies
+USER docker
 RUN composer install
+USER root
 #do all the directory stuff
 RUN chmod -R 775 public/build
 RUN mkdir -p var/cache
