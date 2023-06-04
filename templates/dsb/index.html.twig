@@ -7,12 +7,23 @@
         <div class="card card-body">
             {% for t in teams %}
                 <div class="row text-center text-md-left">
-                    <div class="col">
+                    <div class="col-md-6">
                         <b>{{ t.name }}</b>, {{ t.strasse }} {{ t.plz }} {{ t.stadt }}
+                    </div>
+                    <div class="col-md-3">
+                        {% if currentTeam == t %}
+                            <span class="badge-success z-depth-1 pl-1 pr-1">{% trans %}currentTeam{% endtrans %}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-3 mt-2 mt-md-0">
+                        <a href="{{ path('dsb_change', {'id':t.id}) }}" class="btn btn-sm btn-elegant m-0">{% trans %}change{% endtrans %}</a>
                     </div>
                 </div>
                 <hr>
             {% endfor %}
+        </div>
+        <div class="card-footer">
+            {% trans %}footer.disclaimer{% endtrans %}
         </div>
     </div>
 {% endblock %}

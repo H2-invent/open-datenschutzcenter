@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -320,15 +321,24 @@ class TeamController extends AbstractController
 
     #[Route(path: '/team/switch', name: 'team_switch')]
     public function switchTeam(
-        Request            $request,
-        CurrentTeamService $userService,
+        Request               $request,
+        CurrentTeamService    $userService,
+        UrlGeneratorInterface $urlGenerator,
+        TeamRepository        $teamRepository,
     ): RedirectResponse
     {
         $team = $request->get('team');
+        if (is_numeric($team)){
+            $teamTest = $teamRepository->find($team);
+            if ($teamTest) {
+                if (in_array($this->getUser(), $teamTest->getMembers()->toArray())) {
+                    $userService->switchToTeam($team);
+                }
+            }
 
-        $userService->switchToTeam($team);
-
-        return new RedirectResponse($request->headers->get('referer'));
+        }
+        $referer = $request->headers->get('referer');
+        return new RedirectResponse($referer ?: $urlGenerator->generate('dashboard'));
     }
 
     #[Route(path: '/manage_teams/delete', name: 'team_delete')]
