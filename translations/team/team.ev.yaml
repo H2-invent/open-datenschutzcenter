@@ -42,3 +42,6 @@ dsb:
   manage: Externen DSB verwalten
   added: Ein neuer DSB wurde hinzugefügt.
   removed: Sie haben den externen DSB aus Ihrem Team entfernt.
+footer:
+  disclaimer: Um den ODC-Administrations-Bereich nutzen zu können müssen Sie die Rolle "SuperAdmin" besitzen.
+  clickHere: Wie man diese Rolle zuweist erfahren sie hier
