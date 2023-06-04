@@ -220,7 +220,7 @@ class BerichtController extends AbstractController
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($id) {
-            $daten = $dataTransferRepository->find($id);
+            $daten = $dataTransferRepository->findBy(['id'=>$id]);
         } else {
             $daten = $dataTransferRepository->findBy([
                 'team' => $team,
@@ -447,7 +447,7 @@ class BerichtController extends AbstractController
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($id) {
-            $daten = $vorfallRepository->find($id);
+            $daten = $vorfallRepository->findBy(['id'=>$id]);
         } else {
             $daten = $vorfallRepository->findBy(['team' => $team, 'activ' => true], ['datum' => 'DESC']);
         }
@@ -489,7 +489,7 @@ class BerichtController extends AbstractController
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($id) {
-            $policies = $policiesRepository->find($id);
+            $policies = $policiesRepository->findBy(['id'=>$id]);
         } else {
             $policies = $policiesRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
         }
@@ -532,7 +532,7 @@ class BerichtController extends AbstractController
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($id) {
-            $clientRequest = $clientRequestRepository->find($id);
+            $clientRequest = $clientRequestRepository->findBy(['id'=>$id]);
             $title = $this->translator->trans(id: 'report.about.clientRequestBy', domain: 'bericht') . ' ' . $clientRequest->getName();
         } else {
             $clientRequest = $clientRequestRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
@@ -573,7 +573,7 @@ class BerichtController extends AbstractController
         $team = $currentTeamService->getTeamFromSession($this->getUser());
 
         if ($id) {
-            $software = $softwareRepository->find($id);
+            $software = $softwareRepository->findBy(['id'=>$id]);
         } else {
             $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
         }
