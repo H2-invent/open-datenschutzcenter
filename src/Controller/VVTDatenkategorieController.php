@@ -82,7 +82,7 @@ class VVTDatenkategorieController extends AbstractController
             return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('vvt_datenkategorie/edit.html.twig', [
+        return $this->render('vvt_datenkategorie/edit.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
             'form' => $form,
         ]);
@@ -130,7 +130,7 @@ class VVTDatenkategorieController extends AbstractController
             return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('vvt_datenkategorie/new.html.twig', [
+        return $this->render('vvt_datenkategorie/new.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
             'form' => $form,
         ]);

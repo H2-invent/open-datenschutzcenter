@@ -88,7 +88,7 @@ class LoeschkonzeptController extends AbstractController
             return $this->redirectToRoute('app_loeschkonzept_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('loeschkonzept/edit.html.twig', [
+        return $this->render('loeschkonzept/edit.html.twig', [
             'loeschkonzept' => $newloeschkonzept,
             'form' => $form,
         ]);
@@ -167,7 +167,7 @@ class LoeschkonzeptController extends AbstractController
             return $this->redirectToRoute('app_loeschkonzept_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('loeschkonzept/new.html.twig', [
+        return $this->render('loeschkonzept/new.html.twig', [
             'loeschkonzept' => $loeschkonzept,
             'form' => $form,
         ]);
