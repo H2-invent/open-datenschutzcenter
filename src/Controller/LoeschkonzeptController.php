@@ -20,11 +20,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 #[Route(path: '/loeschkonzept')]
 class LoeschkonzeptController extends AbstractController
 {
-    #[Route(path: '/{id}', name: 'app_loeschkonzept_delete', methods: ['POST'])]
+    #[Route(path: '/{id}/delete', name: 'app_loeschkonzept_delete', methods: ['POST'])]
     public function delete(
         Loeschkonzept          $loeschkonzept,
         EntityManagerInterface $entityManager,
@@ -145,9 +144,11 @@ class LoeschkonzeptController extends AbstractController
     {
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
+
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
+
         $loeschkonzept = $loeschkonzeptService->newLoeschkonzept($team, $user);
         $form = $loeschkonzeptService->createForm($loeschkonzept, $team);
         $form->handleRequest($request);
@@ -172,7 +173,7 @@ class LoeschkonzeptController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}', name: 'app_loeschkonzept_show', methods: ['GET'])]
+    #[Route(path: '/{id}/details', name: 'app_loeschkonzept_show', methods: ['GET'])]
     public function show(Loeschkonzept $loeschkonzept): Response
     {
         return $this->render('loeschkonzept/show.html.twig', [
