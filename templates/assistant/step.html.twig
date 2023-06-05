@@ -14,9 +14,9 @@
                         <label for="assistant_select">{{ select.label }}:</label>
                     </div>
                     <div class="col-md-8">
-                        <select id="assistant_select" name="assistant_select" class="selectpicker" {% if select.multiple %}multiple="multiple"{% endif %} data-live-search="true" data-width="auto">
+                        <select id="assistant_select" name="assistant_select[]" class="selectpicker" {% if select.multiple %}multiple="multiple"{% endif %} >
                             {% for item in select.items %}
-                                <option {% if item.id == select.selected %}selected="selected"{% endif %} value="{{ item.id }}">{{ item.name }}</option>
+                                <option {% if item.id in select.selected %}selected="selected"{% endif %} value="{{ item.id }}">{{ item.name }}</option>
                             {% endfor %}
                             <option value="new">{% trans %}new.word{% endtrans %}</option>
                         </select>
