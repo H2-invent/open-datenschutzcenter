@@ -10,7 +10,7 @@ on:
 
 jobs:
   artifact:
-    uses: h2-invent/open-datenschutzcenter/.github/workflows/artifact.yml@devops
+    uses: h2-invent/open-datenschutzcenter/.github/workflows/task-artifact.yml@devops
 
   create_release:
     needs:
