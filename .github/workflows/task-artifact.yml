@@ -1,0 +1,44 @@
+name: Task test artifact
+
+on: workflow_call
+
+jobs:
+  buildTestArtifact:
+    runs-on: ubuntu-latest
+
+    steps:
+      # region git_pull
+      - name: Pull current commit
+        uses: actions/checkout@v3
+      # endregion git_pull
+      # region update_php_version
+      - name: Update PHP Version and tools
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+          ini-values: date.timezone ="Europe/Berlin"
+      # endregion update_php_version
+      # region setup
+      # region composer_install
+      - name: Composer Install
+        run: composer install
+      # endregion composer_install
+      # region npm_install
+      - name: NPM Install
+        run: |
+          npm install
+          npm run build
+      # endregion npm_install
+      # endregion setup
+      # region save_artifact
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r odc_${{github.run_number}}.zip .
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: odc_${{github.run_number}}
+          path: odc_${{github.run_number}}.zip
+      # endregion save_artifact
