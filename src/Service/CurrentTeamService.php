@@ -45,6 +45,9 @@ class CurrentTeamService
                 }
             }
         }
+        if (count($teams) === 0){
+            return  null;
+        }
         $team =  $teams->get(0);
         $this->switchToTeam($team);
         return $team;
