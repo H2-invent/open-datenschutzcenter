@@ -1,44 +1,37 @@
-name: Task test artifact
+name: Build Artifacts
 
 on: workflow_call
 
 jobs:
-  buildTestArtifact:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      # region git_pull
-      - name: Pull current commit
-        uses: actions/checkout@v3
-      # endregion git_pull
-      # region update_php_version
-      - name: Update PHP Version and tools
-        uses: shivammathur/setup-php@v2
+      - uses: actions/checkout@v3
+
+      - name: Install PHP Dependencies
+        uses: php-actions/composer@v6
         with:
-          php-version: '8.2'
-          tools: composer
-          ini-values: date.timezone ="Europe/Berlin"
-      # endregion update_php_version
-      # region setup
-      # region composer_install
-      - name: Composer Install
-        run: composer install
-      # endregion composer_install
-      # region npm_install
-      - name: NPM Install
-        run: |
-          npm install
-          npm run build
-      # endregion npm_install
-      # endregion setup
-      # region save_artifact
+          php_version: ${{ vars.PHP_VERSION }}
+          php_extensions: ldap xsl zip
+
+      - name: Install NPM Packages
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+      - run: npm install
+      - run: npm run build
+      - run: rm -r node_modules
+
+      - name: Build JS for the Websocket
+        working-directory: nodejs/
+        run: npm install
+
       - uses: montudor/action-zip@v1
         with:
           args: zip -qq -r odc_${{github.run_number}}.zip .
 
-      - name: Upload artifacts
+      - name: Upload articats
         uses: actions/upload-artifact@v3
         with:
           name: odc_${{github.run_number}}
           path: odc_${{github.run_number}}.zip
-      # endregion save_artifact
