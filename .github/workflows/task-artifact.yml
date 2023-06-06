@@ -22,10 +22,6 @@ jobs:
       - run: npm run build
       - run: rm -r node_modules
 
-      - name: Build JS for the Websocket
-        working-directory: nodejs/
-        run: npm install
-
       - uses: montudor/action-zip@v1
         with:
           args: zip -qq -r odc_${{github.run_number}}.zip .
