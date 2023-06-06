@@ -103,6 +103,7 @@ services:
       - "traefik.http.services.app-odc.loadbalancer.sticky.cookie.secure=true"
     volumes:
       - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
+      - datenschutzcenter_secret_storage:/var/www/html/public/uploads:rw
       - datenschutzcenter_data:/var/www/html/public/data:rw
       - $PWD/dockerupdate.sh:/etc/container/startup.sh
 
@@ -155,3 +156,4 @@ volumes:
   image_upload:
   datenschutzcenter_uploads:
   datenschutzcenter_data:
+  datenschutzcenter_secret_storage:
