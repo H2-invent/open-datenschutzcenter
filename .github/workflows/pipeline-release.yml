@@ -1,0 +1,16 @@
+name: Release Pipeline
+env:
+  GITHUB_TOKEN: ${{ secrets.token }}
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  development:
+    uses: h2-invent/open-datenschutzcenter/.github/workflows/pipeline-development.yml@devops
+
+  create-release:
+    uses: h2-invent/open-datenschutzcenter/.github/workflows/task-release.yml@devops
