@@ -23,14 +23,8 @@ class CurrentTeamService
 
     public function getTeamFromSession(User $user): ?Team
     {
-        $team = $this->findTeam($user->getTeams());
-        if (!$team){
-            if (count($user->getTeams()->toArray())>0){
-                $team = $user->getTeams()[0];
-                $this->switchToTeam($team);
-            }
-        }
-        return $team;
+
+        return $this->findTeam($user->getTeams());
     }
 
     public function switchToTeam(string $team): void
@@ -51,6 +45,11 @@ class CurrentTeamService
                 }
             }
         }
-        return $teams->get(0);
+        if (count($teams) === 0){
+            return  null;
+        }
+        $team =  $teams->get(0);
+        $this->switchToTeam($team);
+        return $team;
     }
 }

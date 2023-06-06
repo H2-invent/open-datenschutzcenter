@@ -138,7 +138,7 @@ class TeamController extends AbstractController
                 $em->persist($nTeam);
                 $em->persist($user);
                 $em->flush();
-                return $this->redirectToRoute('manage_teams');
+                return $this->redirectToRoute('team_edit',['id'=>$nTeam->getId()]);
             }
         }
 

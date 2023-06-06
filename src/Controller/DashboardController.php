@@ -75,6 +75,7 @@ class DashboardController extends AbstractController
             } elseif (count($this->getUser()->getTeamDsb()) > 0) {
                 return $this->redirectToRoute('dsb');
             } else {
+
                 return $this->redirectToRoute('no_team');
             }
         }
