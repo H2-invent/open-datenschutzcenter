@@ -18,6 +18,7 @@ RUN rm -rf node_modules/
 #copy all the rest of the app
 COPY . /var/www/html
 #install all php dependencies
+RUN chown -R docker:docker secretStorage
 USER docker
 RUN composer install
 USER root

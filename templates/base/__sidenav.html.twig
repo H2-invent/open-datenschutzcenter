@@ -77,9 +77,9 @@
             <li class="{{ app.request.attributes.get('_route') == 'bericht' ? 'active' }}">
                 <a href="{{ path('bericht') }}">{% trans %}reports{% endtrans %}</a>
             </li>
-            <li class="{{ app.request.attributes.get('_route') == 'external' ? 'active' }}">
-                <a href="{{ path('external') }}">{% trans %}external{% endtrans %}</a>
-            </li>
+{#            <li class="{{ app.request.attributes.get('_route') == 'external' ? 'active' }}">#}
+{#                <a href="{{ path('external') }}">{% trans %}external{% endtrans %}</a>#}
+{#            </li>#}
         {% endif %}
         {% if app.user.akademieUser %}
             <li class="{{ app.request.attributes.get('_route') == 'akademie' ? 'active' }}">
@@ -111,9 +111,9 @@
                     <li>
                         <a href="{{ path('team_dsb') }}">{% trans %}externalDsb{% endtrans %}</a>
                     </li>
-                    <li>
-                        <a href="{{ path('upload_new') }}">{% trans %}import{% endtrans %}</a>
-                    </li>
+{#                    <li>#}
+{#                        <a href="{{ path('upload_new') }}">{% trans %}import{% endtrans %}</a>#}
+{#                    </li>#}
                 </ul>
             </li>
         {% endif %}
