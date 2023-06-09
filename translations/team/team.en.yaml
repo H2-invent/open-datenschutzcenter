@@ -42,3 +42,6 @@ dsb:
   manage: Manage external DPO
   added: A new DPO was added.
   removed: You have removed the external DPO from your team.
+footer:
+  disclaimer: Um den ODC-Administrations-Bereich nutzen zu können müssen Sie die Rolle "SuperAdmin" besitzen.
+  clickHere: Wie man diese Rolle zuweist erfahren sie hier

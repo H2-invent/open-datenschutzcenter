@@ -5,4 +5,5 @@ team:
   change:
     successful: Team gewechselt
     error: DSB passt nicht zu diesem Team. Benutzer kann das Team nicht wechseln.
-
+footer:
+  disclaimer: Zum Team wechsel bitte in der oberen Navigationsleiste den Teamnamen anklicken und das Zielteam auswählen
