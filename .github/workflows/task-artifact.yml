@@ -24,7 +24,7 @@ jobs:
 
       - uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r artifact${{github.run_number}}.zip .
+          args: zip -qq -r artifact_${{github.run_number}}.zip .
 
       - name: Upload articats
         uses: actions/upload-artifact@v3
