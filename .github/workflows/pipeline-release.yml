@@ -44,9 +44,9 @@ jobs:
   
       - uses: actions/download-artifact@v3
         with:
-          name: odc_${{github.run_number}}
+          name: artifact_${{github.run_number}}
 
-      - run: unzip -qq odc_${{github.run_number}}.zip -d artifact
+      - run: unzip -qq artifact_${{github.run_number}}.zip -d artifact
 
       - name: Write semantic Version in .env.local
         uses: jacobtomlinson/gha-find-replace@v3
