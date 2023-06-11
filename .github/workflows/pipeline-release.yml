@@ -41,7 +41,11 @@ jobs:
           prerelease: false
           release_name: Release ${{ steps.version.outputs.version }}
           tag_name: v${{ steps.version.outputs.version }}
-  
+
+  upload_asset:
+    runs-on: ubuntu-latest
+    steps:
+
       - uses: actions/download-artifact@v3
         with:
           name: artifact_${{github.run_number}}
