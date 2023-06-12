@@ -10,13 +10,16 @@ use App\Entity\Software;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\VVT;
+use App\Entity\VVTDatenkategorie;
 use App\Form\Type\DatenweitergabeType;
 use App\Form\Type\KontaktType;
 use App\Form\Type\SoftwareType;
+use App\Form\Type\VVTDatenkategorieType;
 use App\Form\Type\VVTType;
 use App\Repository\DatenweitergabeRepository;
 use App\Repository\KontakteRepository;
 use App\Repository\SoftwareRepository;
+use App\Repository\VVTDatenkategorieRepository;
 use App\Repository\VVTRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Config\FileLocator;
@@ -31,6 +34,7 @@ class AssistantService
     const PROPERTY_TITLE = 'title';
     const PROPERTY_INFO = 'info';
     const PROPERTY_NEW = 'newTitle';
+    const PROPERTY_CATEGORY = 'category';
     const PROPERTY_CONTACT = 'contact';
     const PROPERTY_PROCEDURE = 'procedure';
     const PROPERTY_SOFTWARE = 'software';
@@ -39,16 +43,18 @@ class AssistantService
 
     private array $steps = [];
 
-    public function __construct(private readonly RequestStack              $requestStack,
-                                private readonly DatenweitergabeService    $dataTransferService,
-                                private readonly SoftwareService           $softwareService,
-                                private readonly VVTService                $vvtService,
-                                private readonly KontakteRepository        $contactRepository,
-                                private readonly SoftwareRepository        $softwareRepository,
-                                private readonly DatenweitergabeRepository $datenweitergabeRepository,
-                                private readonly VVTRepository             $vvtRepository,
-                                private readonly TranslatorInterface       $translator,
-                                private readonly FormFactoryInterface      $formBuilder
+    public function __construct(private readonly RequestStack                $requestStack,
+                                private readonly VVTDatenkategorieService    $categoryService,
+                                private readonly DatenweitergabeService      $dataTransferService,
+                                private readonly SoftwareService             $softwareService,
+                                private readonly VVTService                  $vvtService,
+                                private readonly KontakteRepository          $contactRepository,
+                                private readonly SoftwareRepository          $softwareRepository,
+                                private readonly DatenweitergabeRepository   $datenweitergabeRepository,
+                                private readonly VVTDatenkategorieRepository $categoryRepository,
+                                private readonly VVTRepository               $vvtRepository,
+                                private readonly TranslatorInterface         $translator,
+                                private readonly FormFactoryInterface        $formBuilder
     )
     {
         $configDirectories = [__DIR__.'/../../config'];
@@ -74,6 +80,7 @@ class AssistantService
         if (array_key_exists($step, $this->steps) && array_key_exists($key, $this->steps[$step])) {
             $value = $this->steps[$step][$key];
             return match($key) {
+                self::PROPERTY_CATEGORY => $this->getCategoriesFromStep($value),
                 self::PROPERTY_CONTACT => $this->getContactFromStep($value),
                 self::PROPERTY_PROCEDURE => $this->getProcedureFromStep($value),
                 self::PROPERTY_SOFTWARE => $this->getSoftwareFromStep($value),
@@ -94,6 +101,19 @@ class AssistantService
     private function getSingleFromSessionForStep(int $step): ?string {
         $array = $this->getArrayFromSessionForStep(step: $step);
         return $array ? strval($array[0]) : null;
+    }
+    private function getCategoriesFromStep(int $step): ArrayCollection {
+        $categoryIds = $this->getArrayFromSessionForStep($step);
+        $categoryArray = new ArrayCollection();
+        if (is_array($categoryIds)) {
+            for ($i = 0; $i < count($categoryIds); $i++) {
+                $category = $this->categoryRepository->find($categoryIds[$i]);
+                if ($category) {
+                    $categoryArray->add($category);
+                }
+            }
+        }
+        return $categoryArray;
     }
 
     private function getContactFromStep(int $step): ?Kontakte {
@@ -149,7 +169,7 @@ class AssistantService
         }
     }
 
-    public function createElementForStep(int $step, User $user, Team $team): Software|Kontakte|VVT|Datenweitergabe|null
+    public function createElementForStep(int $step, User $user, Team $team): Software|Kontakte|VVT|Datenweitergabe|VVTDatenkategorie|null
     {
         $item = null;
 
@@ -161,6 +181,9 @@ class AssistantService
                 $item = new Kontakte();
                 $item->setTeam($team);
                 $item->setActiv(1);
+                break;
+            case VVTDatenKategorieType::class:
+                $item = $this->categoryService->newVVTDatenkategorie(team: $team, user: $user);
                 break;
             case DatenweitergabeType::class:
                 // if a datenweitergabe already exists for this step, use that instead
@@ -206,6 +229,11 @@ class AssistantService
                 $select['items'] = $this->vvtRepository->findActiveByTeam($team);
                 $select['multiple'] = true;
                 break;
+            case VVTDatenkategorieType::class:
+                $select['selected'] = $this->getArrayFromSessionForStep($step);
+                $select['label'] = $this->translator->trans(id: 'select.category', domain: 'assistant');
+                $select['items'] = $this->categoryRepository->findByTeam($team);
+                $select['multiple'] = true;
         }
         return $select;
     }
@@ -231,8 +259,12 @@ class AssistantService
 
     private function addDependenciesToProcedure(VVT $procedure, $step): void {
         $softwareArray = $this->getPropertyForStep(step: $step, key: self::PROPERTY_SOFTWARE);
+        $categoryArray = $this->getPropertyForStep(step: $step, key: self::PROPERTY_CATEGORY);
         foreach($softwareArray as $software) {
             $procedure->addSoftware($software);
+        }
+        foreach ($categoryArray as $category) {
+            $procedure->addKategorien($category);
         }
     }
 }

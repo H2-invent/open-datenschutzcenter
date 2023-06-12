@@ -4,6 +4,13 @@ assistant:
   start: Assistent Starten
   finished: Der Assistent ist fertig und alle Elemente wurden erfolgreich angelegt. Du kannst ihn neu starten, um weitere Verarbeitungstätigkeiten zu dokumentieren.
   aborted: Der Assistent wurde abgebrochen. Bereits angelegte Elemente wurden gespeichert.
+category:
+  processing:
+    title: Datenkategorie für Auftragsverarbeitung
+    info: Welche Datenkategorie/Löschfrist soll für die zur Auftragsverarbeitung zugehörigen Verarbeitstätigkeit gelten? Dieser Punkt kann übersprungen werden falls die Verarbeitungstätigkeit bereits existiert.
+  transfer:
+    title: Datenkategorie für Datenweitergabe
+    info: Welche Datenkategorie/Löschfrist soll für die zur Datenweitergabe zugehörigen Verarbeitstätigkeit gelten? Dieser Punkt kann übersprungen werden falls die Verarbeitungstätigkeit bereits existiert.
 contact:
   source:
     title: Eingangskontakt
@@ -36,12 +43,14 @@ software:
     info: Wird für die Datenweitergabe Software verwendet? Wenn keine Software verwendet wird, kann dieser Schritt übersprungen werden.
 new:
   word: Neu
+  category: Neue Kategorie
   contact: Neuer Kontakt
   transfer: Neue Datenweitergabe
   processing: Neue Auftragsverarbeitung
   procedure: Neue Verarbeitungstätigkeit
   software: Neue Software
 select:
+  category: Datenkategorie wählen
   contact: Kontakt wählen
   procedure: Verarbeitungstätigkeit wählen
   software: Software wählen
