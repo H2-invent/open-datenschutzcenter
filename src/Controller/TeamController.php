@@ -15,12 +15,15 @@ use App\Form\Type\DeleteTeamType;
 use App\Form\Type\NewType;
 use App\Form\Type\TeamType;
 use App\Repository\AuditTomAbteilungRepository;
+use App\Repository\DatenweitergabeStandRepository;
 use App\Repository\SettingsRepository;
 use App\Repository\TeamRepository;
+use App\Repository\VVTStatusRepository;
 use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use App\Service\TeamService;
 use Doctrine\ORM\EntityManagerInterface;
+use Proxies\__CG__\App\Entity\DatenweitergabeStand;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -138,7 +141,7 @@ class TeamController extends AbstractController
                 $em->persist($nTeam);
                 $em->persist($user);
                 $em->flush();
-                return $this->redirectToRoute('team_edit',['id'=>$nTeam->getId()]);
+                return $this->redirectToRoute('team_edit', ['id' => $nTeam->getId()]);
             }
         }
 
@@ -192,7 +195,64 @@ class TeamController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/team_custom/deaktivieren', name: 'team_custom_deativate')]
+    #[Route(path: '/team_custom/vvtStatus/network', name: 'team_custom_network_vvtstatus')]
+    public function customvvtStatusToogleNetwork(
+        Request                $request,
+        SecurityService        $securityService,
+        EntityManagerInterface $em,
+        TeamService            $teamService,
+        ValidatorInterface     $validator,
+        CurrentTeamService     $currentTeamService,
+        VVTStatusRepository    $VVTStatusRepository,
+        EntityManagerInterface $entityManager,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+
+        if ($securityService->adminCheck($user, $team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $data1 = $VVTStatusRepository->find($request->get('id'));
+        if ($data1) {
+            $data1->setNetwork(!$data1->getNetwork());
+            $entityManager->persist($data1);
+            $entityManager->flush();
+        };
+        return $this->redirectToRoute('team_custom');
+    }
+
+    #[Route(path: '/team_custom/datenweitergabeStatus/network', name: 'team_custom_network_datenweitergabestatus')]
+    public function customdatenweitergabeToogleNetwork(
+        Request                        $request,
+        SecurityService                $securityService,
+        EntityManagerInterface         $em,
+        TeamService                    $teamService,
+        ValidatorInterface             $validator,
+        CurrentTeamService             $currentTeamService,
+        DatenweitergabeStandRepository $datenweitergabeStandRepository,
+        EntityManagerInterface         $entityManager,
+    ): Response
+    {
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
+
+        if ($securityService->adminCheck($user, $team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $data1 = $datenweitergabeStandRepository->find($request->get('id'));
+        if ($data1) {
+            $data1->setNetwork(!$data1->getNetwork());
+            $entityManager->persist($data1);
+            $entityManager->flush();
+        };
+        return $this->redirectToRoute('team_custom');
+    }
+
+    #[
+        Route(path: '/team_custom/deaktivieren', name: 'team_custom_deativate')]
     public function customDeactivate(
         Request                $request,
         SecurityService        $securityService,
@@ -328,7 +388,7 @@ class TeamController extends AbstractController
     ): RedirectResponse
     {
         $team = $request->get('team');
-        if (is_numeric($team)){
+        if (is_numeric($team)) {
             $teamTest = $teamRepository->find($team);
             if ($teamTest) {
                 if (in_array($this->getUser(), $teamTest->getMembers()->toArray())) {

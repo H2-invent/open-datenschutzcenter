@@ -95,3 +95,7 @@ uuid: UID
 version: Version
 versionApproved: (Diese Version war freigegeben)
 yes: Ja
+network:
+  show:
+    add: Im Datenflussplan anzeigen
+    remove: Im Datenflussplan verstecken
