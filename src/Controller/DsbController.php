@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\TeamRepository;
+use App\Service\CurrentTeamService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,14 +17,16 @@ class DsbController extends AbstractController
 
     public function __construct(private readonly TranslatorInterface $translator,
                                 private EntityManagerInterface       $em,
+                                private CurrentTeamService           $currentTeamService,
     )
     {
     }
 
     #[Route(path: '/ext-dsb/change', name: 'dsb_change')]
     public function change(
-        Request        $request,
-        TeamRepository $teamRepository,
+        Request            $request,
+        TeamRepository     $teamRepository,
+        CurrentTeamService $currentTeamService,
     ): Response
     {
         $team = $teamRepository->find($request->get('id'));
@@ -36,6 +39,7 @@ class DsbController extends AbstractController
             $this->em->persist($user);
             $this->em->persist($team);
             $this->em->flush();
+            $currentTeamService->switchToTeam(strval($team->getId()));
             return $this->redirectToRoute(
                 'dashboard',
                 [
@@ -52,15 +56,18 @@ class DsbController extends AbstractController
     }
 
     #[Route(path: '/ext-dsb', name: 'dsb')]
-    public function index(): Response
+    public function index(CurrentTeamService $currentTeamService): Response
     {
         $dsbTeams = $this->getUser()->getTeamDsb();
         if (count($dsbTeams) < 1) {
             return $this->redirectToRoute('dashboard');
         }
 
+        $currentTeam = $currentTeamService->getCurrentAdminTeam($this->getUser());
+
         return $this->render('dsb/index.html.twig', [
             'teams' => $dsbTeams,
+            'currentTeam' => $currentTeam,
         ]);
     }
 }

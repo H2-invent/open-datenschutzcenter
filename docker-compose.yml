@@ -109,6 +109,7 @@ services:
       - "traefik.http.services.app-odc.loadbalancer.sticky.cookie.secure=true"
     volumes:
       - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
+      - datenschutzcenter_secret_storage:/var/www/html/secretStorage:rw
       - datenschutzcenter_data:/var/www/html/public/data:rw
       - $PWD/dockerupdate.sh:/etc/container/startup.sh
 
@@ -117,7 +118,7 @@ services:
     image: mariadb:latest
     hostname: ${RANDOMTAG}db-odc
     healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      test: [ "CMD", "mariadb-admin" ,"ping", "-h", "localhost","-ptest" ]
       timeout: 20s
       retries: 10
     environment:
@@ -161,3 +162,4 @@ volumes:
   image_upload:
   datenschutzcenter_uploads:
   datenschutzcenter_data:
+  datenschutzcenter_secret_storage:

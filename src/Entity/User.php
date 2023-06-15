@@ -133,10 +133,12 @@ class User implements UserInterface
 
     public function __construct()
     {
+        $this->teams = new ArrayCollection();
         $this->datenweitergabes = new ArrayCollection();
         $this->vVTs = new ArrayCollection();
         $this->auditToms = new ArrayCollection();
         $this->vVTDsfas = new ArrayCollection();
+        $this->adminRoles = new ArrayCollection();
         $this->myVvts = new ArrayCollection();
         $this->toms = new ArrayCollection();
         $this->vorfalls = new ArrayCollection();

@@ -19,10 +19,14 @@ RUN rm -rf node_modules/
 #copy all the rest of the app
 COPY . /var/www/html
 #install all php dependencies
-RUN composer install --ignore-platform-req=ext-http
+
+RUN chown -R docker:docker secretStorage
+USER docker
+RUN composer install
+USER root
 #do all the directory stuff
 RUN chmod -R 775 public/build
 RUN mkdir -p var/cache
-RUN chown -R www-data:www-data var
+RUN chown -R docker:docker var
 RUN chmod -R 777 var
 USER docker
