@@ -17,7 +17,6 @@ class HealthCheckController extends AbstractController
     {
         try {
             $res = $incidentRepository->findAll();
-            $vorfall = $res[0]->getFakten();
         } catch (Exception $exception) {
             throw $this->createNotFoundException('Database not working');
         }
