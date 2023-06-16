@@ -251,8 +251,7 @@ class TeamController extends AbstractController
         return $this->redirectToRoute('team_custom');
     }
 
-    #[
-        Route(path: '/team_custom/deaktivieren', name: 'team_custom_deativate')]
+    #[Route(path: '/team_custom/deaktivieren', name: 'team_custom_deativate')]
     public function customDeactivate(
         Request                $request,
         SecurityService        $securityService,
