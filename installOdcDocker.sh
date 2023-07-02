@@ -1,3 +1,5 @@
+#! /bin/bash
+
 echo Welcome to the installer:
 FILE=docker.conf
 if [ -f "$FILE" ]; then
