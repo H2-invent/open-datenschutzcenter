@@ -76,7 +76,7 @@ class DatenweitergabeService
     {
         $data = new Datenweitergabe();
         $prefix = $type === 1 ? self::PREFIX_TRANSFER : self::PREFIX_PROCESSING;
-        $data->setTeam($this->currentTeamService->getTeamFromSession($user));
+        $data->setTeam($this->currentTeamService->getCurrentTeam($user));
         $data->setNummer($prefix . hexdec(uniqid()));
         $data->setActiv(true);
         $data->setCreatedAt(new DateTime());

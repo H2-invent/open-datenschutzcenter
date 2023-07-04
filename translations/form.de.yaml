@@ -29,6 +29,9 @@ outdated: Veraltet
 
 # team
 teamName: Teamname
+parentTeam:
+  word: Parent
+  help: Wenn ein Team Eigenschaften von einem anderen Team erben soll, kann hier das andere Team ausgewählt werden.
 keycloakGroup: Keycloak Gruppe (falls abweichend vom Teamnamen)
 keycloakGroupHelp: Die Teamzuweisung erfolgt in diesem ODC über Keycloak Gruppen. Falls das Team im ODC einen anderen Bezeichner hat als in Keycloak, muss hier der Name der Keycloak Gruppe eingetragen werden. Damit Keycloak die Gruppen übergibt, muss für den Keycloak Client ein Mapper namens 'groups' existieren, bei dem die Option 'Full group path' deaktiviert ist.
 dsb: Datenschutzbeauftragte*r

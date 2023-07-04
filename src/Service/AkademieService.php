@@ -56,7 +56,7 @@ class AkademieService
             $this->em->persist($buchung);
             $this->em->flush();
             if ($daten['invite'] === true) {
-                $team = $this->currentTeamService->getTeamFromSession($user);
+                $team = $this->currentTeamService->getCurrentTeam($user);
                 $content = $this->twig->render('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $team]);
                 $buchung->setInvitation(true);
                 $this->notificationService->sendNotificationAkademie($buchung, $content);

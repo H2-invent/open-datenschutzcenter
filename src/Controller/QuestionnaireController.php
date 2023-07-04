@@ -182,6 +182,6 @@ class QuestionnaireController extends BaseController
         /** @var User&UserInterface $user */
         $user = $this->getUser();
 
-        return $this->currentTeamService->getTeamFromSession($user);
+        return $this->currentTeamService->getCurrentTeam($user);
     }
 }
