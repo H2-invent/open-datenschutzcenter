@@ -9,14 +9,16 @@
 namespace App\Entity;
 
 use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
-use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
-#[ORM\Entity(repositoryClass: TeamRepository::class)]
+#[Gedmo\Tree(type: 'nested')]
+#[ORM\Entity(repositoryClass: NestedTreeRepository::class)]
 #[UniqueEntity('slug')]
 class Team
 {
@@ -162,20 +164,45 @@ class Team
     #[ORM\Column(type: 'text', nullable: true)]
     private $specialty;
 
-    #[ORM\OneToMany(targetEntity: VVTStatus::class, mappedBy: 'team')]
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: VVTStatus::class)]
     private Collection $vVTStatuses;
 
-    #[ORM\OneToMany(targetEntity: DatenweitergabeGrundlagen::class, mappedBy: 'team')]
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: DatenweitergabeGrundlagen::class)]
     private Collection $datenweitergabeGrundlagens;
 
-    #[ORM\OneToMany(targetEntity: DatenweitergabeStand::class, mappedBy: 'team')]
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: DatenweitergabeStand::class)]
     private Collection $datenweitergabeStands;
 
-    #[ORM\OneToMany(targetEntity: Loeschkonzept::class, mappedBy: 'team')]
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Loeschkonzept::class)]
     private Collection $loeschkonzepts;
-    
-    #[ORM\OneToMany(targetEntity: Questionnaire::class, mappedBy: 'team')]
+
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Questionnaire::class)]
     private Collection $questionnaires;
+
+    #[Gedmo\TreeLevel]
+    #[ORM\Column(name: 'lvl', type: 'integer', nullable: true)]
+    private $lvl;
+
+    #[Gedmo\TreeRoot]
+    #[ORM\ManyToOne(targetEntity: Team::class)]
+    #[ORM\JoinColumn(name: 'tree_root', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    private $root;
+
+    #[Gedmo\TreeParent]
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private $parent;
+
+    #[Gedmo\TreeLeft]
+    #[ORM\Column(name: 'lft', type: 'integer', nullable: true)]
+    private $lft;
+
+    #[Gedmo\TreeRight]
+    #[ORM\Column(name: 'rgt', type: 'integer', nullable: true)]
+    private $rgt;
+
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Team::class)]
+    private $children;
 
     public function __construct()
     {
@@ -1317,5 +1344,25 @@ class Team
         if (count($this->datenweitergabeStands)) $blockers[] = 'dataTransferStatuses';
         if (count($this->loeschkonzepts)) $blockers[] = 'deleteConcepts';
         return $blockers;
+    }
+
+    public function getRoot(): ?self
+    {
+        return $this->root;
+    }
+
+    public function setParent(self $parent = null): void
+    {
+        $this->parent = $parent;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function getChildren(): ?Collection
+    {
+        return $this->children;
     }
 }
