@@ -40,7 +40,7 @@ class ClientRequestController extends BaseController
         ClientRequestRepository $clientRequestRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $client = $clientRequestRepository->findBy(['team' => $team, 'emailValid' => true]);
 
         if ($securityService->teamCheck($team) === false) {
@@ -84,7 +84,7 @@ class ClientRequestController extends BaseController
     ): Response
     {
         $clientRequest = $clientRequestRepository->find($request->get('clientRequest'));
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
             return $this->redirectToRoute('client_requests');
         }
@@ -111,7 +111,7 @@ class ClientRequestController extends BaseController
     {
         $clientRequest = $clientRequestRepository->find($request->get('id'));
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
             $clientRequestService->closeRequest($clientRequest, $this->getUser());
@@ -134,7 +134,7 @@ class ClientRequestController extends BaseController
     )
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $clientRequest = $clientRequestRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
@@ -220,7 +220,7 @@ class ClientRequestController extends BaseController
         ClientRequestRepository $clientRequestRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $clientRequest = $clientRequestRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
@@ -270,7 +270,7 @@ class ClientRequestController extends BaseController
     {
         $clientRequest = $clientRequestRepository->find($request->get('id'));
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
             if ($clientRequestService->interalRequest($clientRequest)) {
@@ -350,7 +350,7 @@ class ClientRequestController extends BaseController
         ClientRequestRepository $clientRequestRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $clientRequest = $clientRequestRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
@@ -433,7 +433,7 @@ class ClientRequestController extends BaseController
     {
         $clientRequest = $clientRequestRepository->find($request->get('id'));
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
             $clientRequestService->userValid($clientRequest, $user);

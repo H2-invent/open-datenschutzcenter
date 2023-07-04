@@ -30,7 +30,7 @@ class AssignController extends BaseController
         AuditTomRepository $auditTomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $audit = $auditTomRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($audit, $team) === false) {
             return $this->redirectToRoute('audit_tom');
@@ -49,7 +49,7 @@ class AssignController extends BaseController
         DatenweitergabeRepository $dataTransferRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $daten = $dataTransferRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($daten, $team) === false) {
             return $this->redirectToRoute('datenweitergabe');
@@ -68,7 +68,7 @@ class AssignController extends BaseController
         VVTDsfaRepository  $impactAssessmentRepository
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $impactAssessment = $impactAssessmentRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($impactAssessment->getVvt(), $team)) {
             $assignService->assignDsfa($request, $impactAssessment);
@@ -87,7 +87,7 @@ class AssignController extends BaseController
         FormsRepository    $formsRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $form = $formsRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($form, $team) === false) {
             return $this->redirectToRoute('forms');
@@ -106,7 +106,7 @@ class AssignController extends BaseController
         PoliciesRepository $policiesRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $policy = $policiesRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($policy, $team) === false) {
             return $this->redirectToRoute('policies');
@@ -125,7 +125,7 @@ class AssignController extends BaseController
         SoftwareRepository $softwareRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $software = $softwareRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($software, $team) === false) {
             return $this->redirectToRoute('software');
@@ -144,7 +144,7 @@ class AssignController extends BaseController
         TaskRepository     $taskRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $task = $taskRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($task, $team) === false) {
             return $this->redirectToRoute('tasks');
@@ -163,7 +163,7 @@ class AssignController extends BaseController
         VorfallRepository  $vorfallRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vorfall = $vorfallRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($vorfall, $team) === false) {
             return $this->redirectToRoute('vorfall');
@@ -182,7 +182,7 @@ class AssignController extends BaseController
         VVTRepository      $vvtRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vvt = $vvtRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
@@ -205,7 +205,7 @@ class AssignController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $currentTeam = $currentTeamService->getTeamFromSession($user);
+        $currentTeam = $currentTeamService->getCurrentTeam($user);
         $assignedDataTransfers = $transferRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedProcessings = $processingRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedAudits = $auditRepository->findActiveByTeamAndUser($currentTeam, $user);

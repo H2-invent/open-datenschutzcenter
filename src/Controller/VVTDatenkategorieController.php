@@ -31,7 +31,7 @@ class VVTDatenkategorieController extends BaseController
         CurrentTeamService     $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === true) {
             if ($this->isCsrfTokenValid('delete' . $vVTDatenkategorie->getId(), $request->request->get('_token'))) {
 
@@ -54,7 +54,7 @@ class VVTDatenkategorieController extends BaseController
         CurrentTeamService       $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('app_vvtdatenkategorie_index');
         }
@@ -96,7 +96,7 @@ class VVTDatenkategorieController extends BaseController
         CurrentTeamService          $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -116,7 +116,7 @@ class VVTDatenkategorieController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
