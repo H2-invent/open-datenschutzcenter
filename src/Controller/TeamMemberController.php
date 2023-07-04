@@ -40,7 +40,7 @@ class TeamMemberController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         // Admin Route only
         if (!$securityService->adminCheck($user, $team)) {
@@ -161,7 +161,7 @@ class TeamMemberController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('dashboard');

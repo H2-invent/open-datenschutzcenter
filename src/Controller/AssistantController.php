@@ -26,7 +26,7 @@ class AssistantController extends AbstractController
                           CurrentTeamService $currentTeamService,
     ): RedirectResponse|Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if (!$securityService->teamCheck($team)) {
             return $this->redirectToRoute('dashboard');
@@ -47,7 +47,7 @@ class AssistantController extends AbstractController
                          EntityManagerInterface $entityManager,
     ): RedirectResponse|Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if (!$securityService->teamCheck($team)) {
             return $this->redirectToRoute('dashboard');
@@ -148,7 +148,7 @@ class AssistantController extends AbstractController
                                   AssistantService $assistantService,
     ) : Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }

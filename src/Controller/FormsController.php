@@ -41,7 +41,7 @@ class FormsController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -83,7 +83,7 @@ class FormsController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $forms = $formsRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($forms, $team) && $securityService->adminCheck($user, $team)) {
@@ -105,7 +105,7 @@ class FormsController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $forms = $formsRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($forms, $team) && $securityService->adminCheck($user, $team) && !$forms->getApproved()) {
@@ -127,7 +127,7 @@ class FormsController extends AbstractController
     {
         $stream = $formsFilesystem->read($forms->getUpload());
 
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamDataCheck($forms, $team) === false) {
             $logger->error(
                 'DOWNLOAD',
@@ -175,7 +175,7 @@ class FormsController extends AbstractController
         FormsRepository    $formsRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $forms = $formsRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($forms, $team) === false) {
@@ -227,7 +227,7 @@ class FormsController extends AbstractController
         FormsRepository    $formsRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }

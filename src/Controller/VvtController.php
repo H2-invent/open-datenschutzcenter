@@ -46,7 +46,7 @@ class VvtController extends AbstractController
         CurrentTeamService       $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('vvt');
@@ -98,7 +98,7 @@ class VvtController extends AbstractController
         VVTRepository      $vvtRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
@@ -143,7 +143,7 @@ class VvtController extends AbstractController
     ): Response
     {
         $vvt = $vvtRepository->find($request->get('id'));
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
@@ -196,7 +196,7 @@ class VvtController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) && $securityService->adminCheck($user, $team) && !$vvt->getApproved()) {
@@ -218,7 +218,7 @@ class VvtController extends AbstractController
         VVTRepository            $vvtRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
@@ -302,7 +302,7 @@ class VvtController extends AbstractController
         VVTDsfaRepository  $vvtDsfaRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $dsfa = $vvtDsfaRepository->find($request->get('dsfa'));
 
         if ($securityService->teamDataCheck($dsfa->getVvt(), $team) === false) {
@@ -355,7 +355,7 @@ class VvtController extends AbstractController
         VVTRepository      $vvtRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -378,7 +378,7 @@ class VvtController extends AbstractController
         VVTRepository      $vvtRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vvt = $vvtRepository->find($request->get('vvt'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {

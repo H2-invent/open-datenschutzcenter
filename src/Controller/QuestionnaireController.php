@@ -172,6 +172,6 @@ class QuestionnaireController extends AbstractController
         /** @var User&UserInterface $user */
         $user = $this->getUser();
 
-        return $this->currentTeamService->getTeamFromSession($user);
+        return $this->currentTeamService->getCurrentTeam($user);
     }
 }

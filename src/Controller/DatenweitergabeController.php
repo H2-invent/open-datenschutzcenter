@@ -47,7 +47,7 @@ class DatenweitergabeController extends AbstractController
     ): Response
     {
         set_time_limit(600);
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -93,7 +93,7 @@ class DatenweitergabeController extends AbstractController
     ): Response
     {
         set_time_limit(600);
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -139,7 +139,7 @@ class DatenweitergabeController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $daten = $dataTransferRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team)) {
@@ -178,7 +178,7 @@ class DatenweitergabeController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $daten = $dataTransferRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team) && !$daten->getApproved()) {
@@ -202,7 +202,7 @@ class DatenweitergabeController extends AbstractController
     ): Response
     {
         $stream = $datenFilesystem->read($datenweitergabe->getUpload());
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamDataCheck($datenweitergabe, $team) === false) {
             $logger->error(
                 'DOWNLOAD',
@@ -250,7 +250,7 @@ class DatenweitergabeController extends AbstractController
     ): Response
     {
         set_time_limit(600);
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $daten = $dataTransferRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) === false) {
@@ -316,7 +316,7 @@ class DatenweitergabeController extends AbstractController
         DatenweitergabeRepository $dataTransferRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -336,7 +336,7 @@ class DatenweitergabeController extends AbstractController
         DatenweitergabeRepository $dataTransferRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }

@@ -97,7 +97,7 @@ class TeamController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('team_abteilungen');
@@ -118,12 +118,25 @@ class TeamController extends AbstractController
         ValidatorInterface     $validator,
         EntityManagerInterface $em,
         Request                $request,
+        SecurityService        $securityService,
+        TeamRepository         $teamRepository,
     ): Response
     {
         $user = $this->getUser();
+
+        if ($securityService->superAdminCheck($user) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $teams = $teamRepository->findAll();
+
         $team = new Team();
         $team->setActiv(true);
-        $form = $this->createForm(TeamType::class, $team);
+        $form = $this->createForm(
+            TeamType::class,
+            $team,
+            ['teams' => $teams,]
+        );
         $form->remove('video');
         $form->remove('externalLink');
         $form->handleRequest($request);
@@ -161,7 +174,7 @@ class TeamController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -202,7 +215,7 @@ class TeamController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('team_custom');
@@ -266,11 +279,21 @@ class TeamController extends AbstractController
             $currentTeam = $team;
         }
 
+        // only admins can edit
         if (!$team || (!$securityService->adminCheck($user, $team))) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $form = $this->createForm(TeamType::class, $team);
+        // only superadmins can edit the team hierarchy, and children of the current node cannot be selected
+        if ($securityService->superAdminCheck($user)) {
+            $availableTeams = $currentTeamService->getAvailableWithoutCurrentAndChildren($user, $team);
+        }
+
+        $form = $this->createForm(
+            TeamType::class,
+            $team,
+            ['teams' => $availableTeams ?? null,]
+        );
         $form->handleRequest($request);
 
         $errors = array();

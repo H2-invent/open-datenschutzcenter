@@ -10,6 +10,7 @@ namespace App\Form\Type;
 
 use App\Entity\Team;
 use App\Repository\SettingsRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -35,6 +36,24 @@ class TeamType extends AbstractType
             $builder->add('keycloakGroup', TextType::class, ['label' => 'keycloakGroup', 'help' => 'keycloakGroupHelp', 'required' => false, 'translation_domain' => 'form']);
         }
 
+        if ($options['teams']) {
+            $builder
+                ->add('parent', EntityType::class, [
+                    'choice_label' => 'name',
+                    'class' => Team::class,
+                    'choices' => $options['teams'],
+                    'label' => 'parentTeam.word',
+                    'required' => false,
+                    'translation_domain' => 'form',
+                    'multiple' => false,
+                    'help' => 'parentTeam.help',
+                    'attr' => [
+                        'class' => 'selectpicker',
+                        'data-live-search' => 'true'
+                    ],
+                ]);
+        }
+
         $builder
             ->add('strasse', TextType::class, ['label' => 'street', 'required' => true, 'translation_domain' => 'form'])
             ->add('plz', TextType::class, ['label' => 'postcode', 'required' => true, 'translation_domain' => 'form'])
@@ -56,6 +75,7 @@ class TeamType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Team::class,
+            'teams' => array(),
         ]);
     }
 }

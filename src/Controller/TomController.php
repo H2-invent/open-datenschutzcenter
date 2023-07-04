@@ -44,7 +44,7 @@ class TomController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('tom');
         }
@@ -85,7 +85,7 @@ class TomController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $tom = $tomRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
@@ -104,7 +104,7 @@ class TomController extends AbstractController
         AuditTomRepository $auditTomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($team === null) {
             return $this->redirectToRoute('dashboard');
         }
@@ -141,7 +141,7 @@ class TomController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $tom = $tomRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
@@ -161,7 +161,7 @@ class TomController extends AbstractController
         TomRepository      $tomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $tom = $tomRepository->find($request->get('tom'));
 
         if ($securityService->teamDataCheck($tom, $team) === false) {
@@ -211,7 +211,7 @@ class TomController extends AbstractController
         TomRepository      $tomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $tom = $tomRepository->findActiveByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {

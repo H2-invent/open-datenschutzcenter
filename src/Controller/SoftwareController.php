@@ -42,7 +42,7 @@ class SoftwareController extends AbstractController
     )
     {
         //Requests: id: SoftwareID, config: ConfigID
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $software = $softwareRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) === false) {
@@ -106,7 +106,7 @@ class SoftwareController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('software');
@@ -148,7 +148,7 @@ class SoftwareController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $software = $softwareRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) && $securityService->adminCheck($user, $team)) {
@@ -181,7 +181,7 @@ class SoftwareController extends AbstractController
     {
         // Request: config: ConfigID
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $config = $softwareConfigRepository->find($request->get('config'));
 
         if ($securityService->teamDataCheck($config->getSoftware(), $team) && $securityService->adminCheck($user, $team)) {
@@ -208,7 +208,7 @@ class SoftwareController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $path = $this->getParameter('kernel.project_dir') . "/data/software/" . $softwareConfig->getUpload();
 
         if ($securityService->teamDataCheck($softwareConfig->getSoftware(), $team) === false) {
@@ -231,7 +231,7 @@ class SoftwareController extends AbstractController
     ): Response
     {
         //Request: id: SoftwareID, snack:Snack Notice
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $software = $softwareRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) === false) {
@@ -288,7 +288,7 @@ class SoftwareController extends AbstractController
     ): Response
     {
         //Request: snack: Snack Notice
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }

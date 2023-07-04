@@ -57,7 +57,7 @@ class BerichtController extends AbstractController
         VVTRepository      $vvtRepository,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
         $vvt = $vvtRepository->findActiveByTeam($team);
@@ -96,7 +96,7 @@ class BerichtController extends AbstractController
         SoftwareRepository $softwareRepository,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $software = $softwareRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
 
         if (count($software) < 1) {
@@ -130,7 +130,7 @@ class BerichtController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         // Center Team authentication
         if (!$team) {
@@ -174,7 +174,7 @@ class BerichtController extends AbstractController
 
         $req = $request->get('id');
 
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($req) {
             $audit = $auditTomRepository->findBy(array('id' => $req));
@@ -217,7 +217,7 @@ class BerichtController extends AbstractController
     )
     {
         $id = $request->get('id');
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($id) {
             $daten = $dataTransferRepository->findBy(['id'=>$id]);
@@ -265,7 +265,7 @@ class BerichtController extends AbstractController
         ini_set('max_execution_time', '900');
         ini_set('memory_limit', '512M');
 
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $doc = $this->translator->trans(id: 'deletionConcept.plural', domain: 'loeschkonzept');
 
 
@@ -301,7 +301,7 @@ class BerichtController extends AbstractController
         ReportRepository   $reportRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         $data = $request->get('report_export');
         $qb = $reportRepository->createQueryBuilder('s');
@@ -407,7 +407,7 @@ class BerichtController extends AbstractController
         AuditTomRepository $auditTomRepository,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $audit = $auditTomRepository->findAllByTeam($team);
 
         if (count($audit) < 1) {
@@ -444,7 +444,7 @@ class BerichtController extends AbstractController
     {
         $id = $request->get('id');
 
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($id) {
             $daten = $vorfallRepository->findBy(['id'=>$id]);
@@ -486,7 +486,7 @@ class BerichtController extends AbstractController
     )
     {
         $id = $request->get('id');
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($id) {
             $policies = $policiesRepository->findBy(['id'=>$id]);
@@ -529,7 +529,7 @@ class BerichtController extends AbstractController
     {
 
         $id = $request->get('id');
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($id) {
             $clientRequest = $clientRequestRepository->findBy(['id'=>$id]);
@@ -570,7 +570,7 @@ class BerichtController extends AbstractController
     )
     {
         $id = $request->get('id');
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($id) {
             $software = $softwareRepository->findBy(['id'=>$id]);
@@ -612,7 +612,7 @@ class BerichtController extends AbstractController
     {
 
         $req = $request->get('id');
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($req) {
             $tom = $tomRepository->findBy(array('id' => $req));
@@ -655,7 +655,7 @@ class BerichtController extends AbstractController
         ini_set('memory_limit', '512M');
 
         $req = $request->get('id');
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $doc = $this->translator->trans(id: 'processing.directory', domain: 'vvt');
 
         if ($req) {
@@ -697,7 +697,7 @@ class BerichtController extends AbstractController
         ReportRepository   $reportRepository,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $users = $team->getMembers();
 
         $members = [];

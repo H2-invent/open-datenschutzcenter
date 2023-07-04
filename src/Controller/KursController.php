@@ -85,7 +85,7 @@ class KursController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
@@ -129,7 +129,7 @@ class KursController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
@@ -163,7 +163,7 @@ class KursController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
 
         if (!$securityService->teamArrayDataCheck($kurs, $team)) {

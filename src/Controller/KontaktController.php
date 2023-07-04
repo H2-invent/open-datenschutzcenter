@@ -41,7 +41,7 @@ class KontaktController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -81,7 +81,7 @@ class KontaktController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $kontakt = $contactRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team)) {
@@ -103,7 +103,7 @@ class KontaktController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $kontakt = $contactRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team) && !$kontakt->getApproved()) {
@@ -122,7 +122,7 @@ class KontaktController extends AbstractController
         KontakteRepository $contactRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $kontakt = $contactRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($kontakt, $team) === false) {
             return $this->redirectToRoute('kurse');
@@ -163,7 +163,7 @@ class KontaktController extends AbstractController
         KontakteRepository $contactRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }

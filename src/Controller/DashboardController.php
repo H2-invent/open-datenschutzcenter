@@ -65,7 +65,7 @@ class DashboardController extends AbstractController
 
         // else get team for current user
         $user = $this->getUser();
-        $currentTeam = $currentTeamService->getTeamFromSession($user);
+        $currentTeam = $currentTeamService->getCurrentTeam($user);
 
         if ($currentTeam === null) {
             if ($securityService->superAdminCheck($this->getUser())) {

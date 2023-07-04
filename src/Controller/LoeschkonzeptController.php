@@ -32,7 +32,7 @@ class LoeschkonzeptController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         if ($securityService->teamCheck($team) && $securityService->adminCheck($user, $team)) {
             $loeschkonzept->setActiv(false);
             $entityManager->persist($loeschkonzept);
@@ -53,7 +53,7 @@ class LoeschkonzeptController extends AbstractController
         CurrentTeamService          $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('app_loeschkonzept_index');
         }
@@ -102,7 +102,7 @@ class LoeschkonzeptController extends AbstractController
         CurrentTeamService          $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -143,7 +143,7 @@ class LoeschkonzeptController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');

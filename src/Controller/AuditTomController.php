@@ -50,7 +50,7 @@ class AuditTomController extends AbstractController
         AuditTomAbteilungRepository $auditTomAbteilungRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('audit_tom');
@@ -106,7 +106,7 @@ class AuditTomController extends AbstractController
         AuditTomRepository $auditTomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('audit_tom');
         }
@@ -147,7 +147,7 @@ class AuditTomController extends AbstractController
         AuditTomZieleRepository     $auditTomZieleRepository,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $audit = $auditTomRepository->find($request->get('tom'));
 
         if ($securityService->teamDataCheck($audit, $team) === false) {
@@ -235,7 +235,7 @@ class AuditTomController extends AbstractController
         AuditTomRepository $auditTomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $audit = $auditTomRepository->findAllByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {

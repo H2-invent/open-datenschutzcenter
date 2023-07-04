@@ -41,7 +41,7 @@ class PoliciesController extends AbstractController
         CurrentTeamService $currentTeamService,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('policies');
@@ -84,7 +84,7 @@ class PoliciesController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $policy = $policiesRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team)) {
@@ -106,7 +106,7 @@ class PoliciesController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $policy = $policiesRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team) && !$policy->getApproved()) {
@@ -129,7 +129,7 @@ class PoliciesController extends AbstractController
 
         $stream = $policiesFilesystem->read($policies->getUpload());
 
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamDataCheck($policies, $team) === false) {
             $logger->error(
                 'DOWNLOAD',
@@ -177,7 +177,7 @@ class PoliciesController extends AbstractController
         PoliciesRepository $policiesRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $policy = $policiesRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($policy, $team) === false) {
@@ -225,7 +225,7 @@ class PoliciesController extends AbstractController
         PoliciesRepository $policiesRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
