@@ -73,6 +73,16 @@ php bin/console app:migrate:defaultTeam
 # Kooperation
 In Kooperation mit der [Professur "Datenschutz und Compliance"](https://www.unibw.de/datcom) des Forschungsinstituts Cyber Defence (CODE) der [Universität der Bundeswehr München](https://www.unibw.de/home) wurde das Open Datenschutzcenter im Rahmen der [Masterarbeit](docs/Masterarbeit_loeschkonzepte.pdf) von Herrn Juister um die Funktion zum Dokumentieren von Löschkonzepten ergänzt.
 
+# Dev Setup
+
+1. Abhängigkeiten installieren mit `composer install` und `npm install`
+1. Starte docker container für Datenbank und Keycloak `docker compose -f docker-compose.dev.yml up -d`
+1. Mit Account `admin` und Passwort `admin` im Keycloak anmelden
+1. Unter `http://localhost:8080/admin/master/console/#/opendatenschutzcenter/users/add-user` Nutzer für open-datenschutzcenter realm anlegen
+1. Passwort für neuen Nutzer festlegen und die beiden opendatenschutzcenter client roles `uma_protection` und `odc-super-admin` zuweisen
+1. Führe Migrationen der Datenbank aus `symfony console doctrine:migrations:migrate`
+1. Starte den dev Server mit `symfony serve -d`
+
 # Lizenz
 Die aktuelle Version von Open Datenschutzcenter wird unter der AGPL-3.0 License bereitgestellt. Weitere Informationen finden Sie in der LICENSE Datei in diesem Repo.
 Copyright (c) 2020 H2 invent
