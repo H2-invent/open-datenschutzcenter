@@ -13,6 +13,7 @@
 
 {% block body %}
 
+<<<<<<< HEAD
     <table id="data-table" class="dataTable">
         <thead>
         <tr>
@@ -26,12 +27,13 @@
             <th scope="col">{% trans from 'general' %}product{% endtrans %}</th>
             <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
             <th scope="col">{% trans %}assessment{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}inheritance.fromTeam{% endtrans %}</th>
         </tr>
         </thead>
         <tbody>
         {% for v in vvt %}
-            <tr data-href='{{ path('vvt_edit',{'id':v.id}) }}'>
-                <td>{{ v.nummer }}</td>
+            <tr class="clickable-row" data-href='{{ path('vvt_edit',{'id':v.id}) }}'>
+                <th scope="row">{{ v.nummer }}</th>
                 <td>{{ v.auftragsverarbeitung? 'AV':'' }}<br>{{ v.jointControl? 'GV':'' }}</td>
                 <td>{{ v.name }}</td>
                 <td>{% for g in v.grundlage %}- {{ g.name }}<br>{% endfor %}</td>
@@ -41,15 +43,17 @@
                 <td>{% if v.produkt %}{% for p in v.produkt %}{{ p.name }}<br>{% endfor %}{% endif %}</td>
                 <td>
                     {% if v.approved %}
-                        <span>{% trans from 'general' %}approved{% endtrans %}</span>
+                        <span class="note-success p-1">{% trans from 'general' %}approved{% endtrans %}</span>
                     {% else %}
                         {{ v.status.name }}
                     {% endif %}
                 </td>
                 <td>| E: {{ v.beurteilungEintrittString }}<br>| S: {{ v.beurteilungSchadenString }}</td>
+                <td{% if v.team != currentTeam %} title="{% trans from 'general' %}inheritance.infoText{% endtrans %}"{% endif %}>
+                    {% if v.team != currentTeam %}{{ v.team }}{% else %}-{% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
 {% endblock %}

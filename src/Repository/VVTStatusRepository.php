@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Team;
 use App\Entity\VVTStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -54,6 +55,16 @@ class VVTStatusRepository extends ServiceEntityRepository
             ->where('a.team is null OR a.team = :val')
             ->andWhere('a.activ = 1')
             ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActiveByTeamPath(array $teamPath)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.team is null OR a.team IN (:teamPath)')
+            ->andWhere('a.activ = 1')
+            ->setParameter('teamPath', $teamPath)
             ->getQuery()
             ->getResult();
     }
