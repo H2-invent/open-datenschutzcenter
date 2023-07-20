@@ -2,7 +2,7 @@
 {% trans_default_domain 'vvt' %}
 
 {% block CTA %}
-    {% if vvt.activDsfa is null %}
+    {% if vvt.activDsfa is null and isEditable %}
         <a class="btn btn-indigo btn-sm ml-1" href="{{ path('vvt_dsfa_new', {'vvt':vvt.id}) }}"
            title="{% trans %}dataProtectionImpactAssessment.create{% endtrans %}">
             <span>{% trans %}dsfa.create{% endtrans %}</span>
@@ -14,9 +14,11 @@
         </a>
     {% endif %}
     {% if vvt.activ %}
-        <a class="btn btn-cyan btn-sm ml-1" href="{{ path('vvt_clone', {'id':vvt.id}) }}">
-            <span>{% trans %}processing.duplicate{% endtrans %}</span>
-        </a>
+        {% if isEditable %}
+            <a class="btn btn-cyan btn-sm ml-1" href="{{ path('vvt_clone', {'id':vvt.id}) }}">
+                <span>{% trans %}processing.duplicate{% endtrans %}</span>
+            </a>
+        {% endif %}
         <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_vvt', {'id':vvt.id}) }}">
             <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
         </a>
@@ -26,8 +28,10 @@
         <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_vvt', {'id':vvt.id, 'min':1}) }}">
             <span>{% trans %}pdf.createExternal{% endtrans %}</span>
         </a>
-        {{ include('base/__approveBtn.html.twig',{'data':vvt,'dataLink':'vvt_approve'}) }}
-        {{ include('base/__disableBtn.html.twig',{'data':vvt,'dataLink':'vvt_disable'}) }}
+        {% if isEditable %}
+            {{ include('base/__approveBtn.html.twig',{'data':vvt,'dataLink':'vvt_approve'}) }}
+            {{ include('base/__disableBtn.html.twig',{'data':vvt,'dataLink':'vvt_disable'}) }}
+        {% endif %}
     {% endif %}
 {% endblock %}
 

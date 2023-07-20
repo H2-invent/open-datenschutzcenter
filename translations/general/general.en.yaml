@@ -92,3 +92,6 @@ uuid: UID
 version: Version
 versionApproved: (Diese Version war freigegeben)
 yes: Ja
+inheritance:
+  fromTeam: Inherited from team
+  infoText: This element was transferred by team inheritance und thus is not editable.

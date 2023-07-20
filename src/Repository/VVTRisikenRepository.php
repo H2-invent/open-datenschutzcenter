@@ -57,4 +57,14 @@ class VVTRisikenRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByTeamPath(array $teamPath)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.team is null OR a.team IN (:teamIds)')
+            ->andWhere('a.activ = 1')
+            ->setParameter('teamIds', $teamPath)
+            ->getQuery()
+            ->getResult();
+    }
 }

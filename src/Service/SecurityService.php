@@ -135,4 +135,37 @@ class SecurityService
 
         return true;
     }
+
+    /**
+     * @param $data
+     * @param Team[]|null $teamPath
+     * @return bool
+     */
+    public function teamPathDataCheck($data, ?array $teamPath): bool
+    {
+        //Sicherheitsfunktion, dass ein Team vorhanden ist
+        if (!$teamPath) {
+            $message = [
+                'typ' => 'LOGIN',
+                'error' => true,
+                'hinweis' => $this->translator->trans(id: 'error.userWithoutTeam', domain: 'general'),
+            ];
+            $this->logger->error($message['typ'], $message);
+            return false;
+        }
+
+        //Sicherheitsfunktion, dass nur eigene Daten bearbeitet werden können
+        if (!in_array($data->getTeam(), $teamPath)) {
+            $message = [
+                'typ' => 'LOGIN',
+                'error' => true,
+                'hinweis' => $this->translator->trans(id: 'error.userNotInTeamAccessDenied', domain: 'general'),
+                'team' => $teamPath,
+            ];
+            $this->logger->error($message['typ'], $message);
+            return false;
+        }
+
+        return true;
+    }
 }

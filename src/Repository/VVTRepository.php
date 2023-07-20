@@ -34,12 +34,10 @@ class VVTRepository extends ServiceEntityRepository
 
     public function findActiveByTeamPath(array $teamPath)
     {
-        $qb = $this->createQueryBuilder('a');
-        foreach ($teamPath as $key => $team) {
-            $qb->orWhere("a.team = ?$key")
-                ->setParameter($key, $team);
-        }
-        return $qb->andWhere('a.activ = 1')
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team IN (:teamPath)')
+            ->andWhere('a.activ = 1')
+            ->setParameter('teamPath', $teamPath)
             ->orderBy('a.CreatedAt', 'DESC')
             ->getQuery()
             ->getResult()

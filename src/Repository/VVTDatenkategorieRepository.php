@@ -78,4 +78,16 @@ class VVTDatenkategorieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByTeamPath(array $teamPath)
+    {
+        $qb = $this->createQueryBuilder('a');
+        return $qb
+            ->andWhere('a.team is null OR a.team IN (:teamPath)')
+            ->andWhere($qb->expr()->isNull('a.cloneOf'))
+            ->andWhere('a.activ = 1')
+            ->setParameter('teamPath', $teamPath)
+            ->getQuery()
+            ->getResult();
+    }
 }

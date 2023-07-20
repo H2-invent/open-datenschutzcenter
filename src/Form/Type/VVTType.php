@@ -40,6 +40,10 @@ class VVTType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $summernoteClass = 'summernote';
+        if ($options['disabled']) {
+            $summernoteClass .= ' summernote-disable';
+        }
 
         $builder
             ->add('nummer', TextType::class, [
@@ -82,7 +86,7 @@ class VVTType extends AbstractType
                 'help' => 'procedureUsedSOftwareHelp'
             ])
             ->add('zweck', TextareaType::class, [
-                'attr' => ['class' => 'summernote'],
+                'attr' => ['class' => $summernoteClass],
                 'label' => 'procedurePurpose',
                 'required' => true,
                 'translation_domain' => 'form',
@@ -101,7 +105,7 @@ class VVTType extends AbstractType
                 'help' => 'isContractHelp'
             ])
             ->add('speicherung', TextareaType::class, [
-                'attr' => ['class' => 'summernote'],
+                'attr' => ['class' => $summernoteClass],
                 'label' => 'procedureDataStorage',
                 'required' => true,
                 'translation_domain' => 'form',
@@ -115,7 +119,7 @@ class VVTType extends AbstractType
                 'help' => 'deleteDeadlineHelp'
             ])
             ->add('weitergabe', TextareaType::class, [
-                'attr' => ['class' => 'summernote'],
+                'attr' => ['class' => $summernoteClass],
                 'label' => 'procedureDataTransferPartners',
                 'required' => false,
                 'translation_domain' => 'form',
@@ -192,7 +196,7 @@ class VVTType extends AbstractType
                 'help' => 'procedureTOM'
             ])
             ->add('tom', TextareaType::class, [
-                'attr' => ['class' => 'summernote'],
+                'attr' => ['class' => $summernoteClass],
                 'label' => 'procedureFurtherMeasures',
                 'required' => false,
                 'translation_domain' => 'form',
@@ -245,14 +249,14 @@ class VVTType extends AbstractType
                 'help' => 'procedureDataCollectionHelp'
             ])
             ->add('informationspflicht', TextareaType::class, [
-                'attr' => ['class' => 'summernote'],
+                'attr' => ['class' => $summernoteClass],
                 'label' => 'informationObligation',
                 'required' => false,
                 'translation_domain' => 'form',
                 'help' => 'informationObligationHelp'
             ])
             ->add('dsb', TextareaType::class, [
-                'attr' => ['class' => 'summernote'],
+                'attr' => ['class' => $summernoteClass],
                 'label' => 'dsbComment',
                 'required' => false,
                 'translation_domain' => 'form',
@@ -327,7 +331,7 @@ class VVTType extends AbstractType
             'tom' => array(),
             'abteilung' => array(),
             'produkte' => array(),
-            'software' => array()
+            'software' => array(),
         ]);
     }
 }

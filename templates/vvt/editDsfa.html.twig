@@ -8,7 +8,7 @@
             <a href="{{ path('vvt_edit',{'id':dsfa.vvt.id}) }}" class="btn btn-sm btn-secondary">{% trans %}processing.back{% endtrans %}</a>
         </div>
         <div class="col-md-4 text-right">
-            {% if assignForm is defined %}{{ include('assign/__assign.html.twig',{'data':dsfa,'path':'assign_dsfa'}) }}{% endif %}
+            {% if assignForm is defined and isEditable %}{{ include('assign/__assign.html.twig',{'data':dsfa,'path':'assign_dsfa'}) }}{% endif %}
         </div>
     </div>
 
