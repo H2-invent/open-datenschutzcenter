@@ -325,7 +325,7 @@ class AssignService
         }
     }
 
-    public function createForm($data, Team $team): FormInterface
+    public function createForm($data, Team $team, array $options = []): FormInterface
     {
         if (count($team->getMembers()) > 0) {
             $teamMembers = $team->getMembers();
@@ -337,7 +337,6 @@ class AssignService
         } else {
             $teamMembers = array();
         }
-        $form = $this->formBuilder->create(AssignType::class, $data, ['user' => $teamMembers]);
-        return $form;
+        return $this->formBuilder->create(AssignType::class, $data, array_merge(['user' => $teamMembers], $options));
     }
 }

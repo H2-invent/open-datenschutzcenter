@@ -58,4 +58,15 @@ class TomRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function findActiveByTeamPath(array $teamPath)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team IN (:teamPath) AND a.activ = 1')
+            ->setParameter('teamPath', $teamPath)
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

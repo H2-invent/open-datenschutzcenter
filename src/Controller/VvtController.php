@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Form\Type\VvtDsfaType;
+use App\Repository\TeamRepository;
 use App\Repository\VVTDsfaRepository;
 use App\Repository\VVTRepository;
 use App\Service\ApproveService;
@@ -86,6 +87,7 @@ class VvtController extends BaseController
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'CTA' => false,
+            'isEditable' => true,
         ]);
     }
 
@@ -186,6 +188,7 @@ class VvtController extends BaseController
             'vvt' => $newVvt,
             'activ' => $newVvt->getActiv(),
             'CTA' => false,
+            'isEditable' => true,
         ]);
     }
 
@@ -219,12 +222,14 @@ class VvtController extends BaseController
         VVTDatenkategorieService $VVTDatenkategorieService,
         CurrentTeamService       $currentTeamService,
         VVTRepository            $vvtRepository,
+        TeamRepository           $teamRepository
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vvt = $vvtRepository->find($request->get('id'));
+        $teamPath = $team ? $teamRepository->getPath($team) : null;
 
-        if ($securityService->teamDataCheck($vvt, $team) === false) {
+        if ($securityService->teamPathDataCheck($vvt, $teamPath) === false) {
             return $this->redirectToRoute('vvt');
         }
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
@@ -233,13 +238,14 @@ class VvtController extends BaseController
             $newVvt->addKategorien($VVTDatenkategorieService->findLatestKategorie($cloneKat->getCloneOf()));//wir hängen die neueste gültige Datenkategorie an den VVT clone an.
         }
 
-        $form = $VVTService->createForm($newVvt, $team);
+        $isEditable = $vvt->getTeam() === $team;
+        $form = $VVTService->createForm($newVvt, $team, ['disabled' => !$isEditable]);
         $form->remove('nummer');
         $form->handleRequest($request);
         $assign = $assignService->createForm($vvt, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $vvt->getActiv() && !$vvt->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $vvt->getActiv() && !$vvt->getApproved() && $isEditable) {
             $vvt->setActiv(false);
             $newVvt = $form->getData();
 
@@ -290,6 +296,7 @@ class VvtController extends BaseController
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'activNummer' => false,
+            'isEditable' => $isEditable,
         ]);
     }
 
@@ -302,23 +309,26 @@ class VvtController extends BaseController
         AssignService      $assignService,
         CurrentTeamService $currentTeamService,
         VVTDsfaRepository  $vvtDsfaRepository,
+        TeamRepository     $teamRepository
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
         $dsfa = $vvtDsfaRepository->find($request->get('dsfa'));
+        $teamPath = $team ? $teamRepository->getPath($team) : null;
 
-        if ($securityService->teamDataCheck($dsfa->getVvt(), $team) === false) {
+        if ($securityService->teamPathDataCheck($dsfa->getVvt(), $teamPath) === false) {
             return $this->redirectToRoute('vvt');
         }
 
         $newDsfa = $VVTService->cloneDsfa($dsfa, $this->getUser());
+        $isEditable = $dsfa->getVvt()->getTeam() === $team;
 
-        $form = $this->createForm(VvtDsfaType::class, $newDsfa);
+        $form = $this->createForm(VvtDsfaType::class, $newDsfa, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
-        $assign = $assignService->createForm($dsfa, $team);
+        $assign = $assignService->createForm($dsfa, $team, ['disabled' => !$isEditable]);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $dsfa->getActiv() && !$dsfa->getVvt()->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $dsfa->getActiv() && !$dsfa->getVvt()->getApproved() && $isEditable) {
 
             $dsfa->setActiv(false);
             $newDsfa = $form->getData();
@@ -345,6 +355,7 @@ class VvtController extends BaseController
             'title' => $this->translator->trans(id: 'dataPrivacyFollowUpEstimation.edit', domain: 'vvt'),
             'dsfa' => $dsfa,
             'activ' => $dsfa->getActiv(),
+            'isEditable' => $isEditable,
         ]);
     }
 
@@ -354,13 +365,15 @@ class VvtController extends BaseController
         Request            $request,
         CurrentTeamService $currentTeamService,
         VVTRepository      $vvtRepository,
+        TeamRepository     $teamRepository
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $vvt = $vvtRepository->findActiveByTeam($team);
+        $teamPath = $teamRepository->getPath($team);
+        $vvt = $vvtRepository->findActiveByTeamPath($teamPath);
 
         return $this->render('vvt/index.html.twig', [
             'vvt' => $vvt,
@@ -412,6 +425,7 @@ class VvtController extends BaseController
             'title' => $this->translator->trans(id: 'dataPrivacyFollowUpEstimation.create', domain: 'vvt'),
             'dsfa' => $dsfa,
             'activ' => $dsfa->getActiv(),
+            'isEditable' => true,
         ]);
     }
 }
