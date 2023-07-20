@@ -351,7 +351,7 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="{% if not activ or vvt.approved %} disabled{% endif %}">
+        <div class="{% if not activ or vvt.approved or not isEditable %} disabled{% endif %}">
             {{ form_widget(form.save) }}
         </div>
     </div>
