@@ -2,6 +2,7 @@
 {% trans_default_domain 'team' %}
 
 {% block body %}
+    <a class="text-primary" href="{{ path('manage_teams') }}">{% trans %}backToTeamManagement{% endtrans %}</a>
     <div class="container">
         <h2 class="h2-responsive">{{ title }}</h2>
         {% if useKeycloakGroups %}
