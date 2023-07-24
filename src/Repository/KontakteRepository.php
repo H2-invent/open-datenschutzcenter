@@ -58,4 +58,15 @@ class KontakteRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function findActiveByTeamPath(array $teamPath)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.team IN (:teamPath)')
+            ->andWhere('a.activ = 1')
+            ->setParameter('teamPath', $teamPath)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

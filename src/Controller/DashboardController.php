@@ -79,22 +79,23 @@ class DashboardController extends AbstractController
                 return $this->redirectToRoute('no_team');
             }
         }
+        $teamPath = $teamRepository->getPath($currentTeam);
 
         $audit = $auditRepository->findAllByTeam($currentTeam);
-        $daten = $transferRepository->findActiveTransfersByTeam($currentTeam);
-        $av = $transferRepository->findActiveOrderProcessingsByTeam($currentTeam);
-        $vvt = $procedureRepository->findActiveByTeam($currentTeam);
-        $vvtDsfa = $impactAssessmentRepository->findActiveByTeam($currentTeam);
-        $kontakte = $contactRepository->findActiveByTeam($currentTeam);
-        $tom = $tomRepository->findActiveByTeam($currentTeam);
+        $daten = $transferRepository->findActiveTransfersByTeamPath($teamPath);
+        $av = $transferRepository->findActiveOrderProcessingsByTeamPath($teamPath);
+        $vvt = $procedureRepository->findActiveByTeamPath($teamPath);
+        $vvtDsfa = $impactAssessmentRepository->findActiveByTeamPath($teamPath);
+        $kontakte = $contactRepository->findActiveByTeamPath($teamPath);
+        $tom = $tomRepository->findActiveByTeamPath($teamPath);
         $forms = $formRepository->findPublicByTeam($currentTeam);
-        $policies = $policyRepository->findPublicByTeam($currentTeam);
-        $software = $softwareRepository->findActiveByTeam($currentTeam);
+        $policies = $policyRepository->findPublicByTeamPath($teamPath);
+        $software = $softwareRepository->findActiveByTeamPath($teamPath);
         $tasks = $taskRepository->findActiveAndOpenByTeam($currentTeam);
         $loeschkonzepte = $deletionConceptRepository->findByTeam($currentTeam);
         $vvtdatenkategorien = $dataCategoryRepository->findByTeam($currentTeam);
         $kritischeAudits = $auditRepository->findCriticalByTeam($currentTeam);
-        $kritischeVvts = $procedureRepository->findCriticalByTeam($currentTeam);
+        $kritischeVvts = $procedureRepository->findCriticalByTeamPath($teamPath);
         $openDsfa = $impactAssessmentRepository->findActiveAndOpenByTeam($currentTeam);
         $buchungen = $bookingRepository->findActiveByUser($user);
 

@@ -42,34 +42,34 @@ class DatenweitergabeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $value
+     * @param array $teamPath
      * @return int|mixed|string
      * find transfers of type Datenweitergabe
      */
-    public function findActiveTransfersByTeam($value)
+    public function findActiveTransfersByTeamPath(array $teamPath): mixed
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.team = :val')
+            ->andWhere('a.team IN (:teamPath)')
             ->andWhere('a.activ = 1')
             ->andWhere('a.art = 1')
-            ->setParameter('val', $value)
+            ->setParameter('teamPath', $teamPath)
             ->getQuery()
             ->getResult()
             ;
     }
 
     /**
-     * @param $value
+     * @param array $teamPath
      * @return int|mixed|string
      * find transfers of type Auftragsverarbeitung
      */
-    public function findActiveOrderProcessingsByTeam($value)
+    public function findActiveOrderProcessingsByTeamPath(array $teamPath): mixed
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.team = :val')
+            ->andWhere('a.team IN (:teamPath)')
             ->andWhere('a.activ = 1')
             ->andWhere('a.art = 2')
-            ->setParameter('val', $value)
+            ->setParameter('teamPath', $teamPath)
             ->getQuery()
             ->getResult()
             ;
