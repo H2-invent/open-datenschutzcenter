@@ -29,13 +29,13 @@ class PoliciesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findPublicByTeam($value)
+    public function findPublicByTeamPath(array $teamPath)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.team = :val')
+            ->andWhere('a.team IN (:teamPath)')
             ->andWhere('a.activ = 1')
             ->andWhere('a.status != 4')
-            ->setParameter('val', $value)
+            ->setParameter('teamPath', $teamPath)
             ->getQuery()
             ->getResult();
     }

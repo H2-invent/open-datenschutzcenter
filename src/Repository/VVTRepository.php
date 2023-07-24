@@ -44,13 +44,13 @@ class VVTRepository extends ServiceEntityRepository
             ;
     }
 
-    public function findCriticalByTeam(Team $team) {
+    public function findCriticalByTeamPath(array $teamPath) {
         return $this->createQueryBuilder('vvt')
-            ->andWhere('vvt.team = :team')
+            ->andWhere('vvt.team IN (:teamPath)')
             ->andWhere('vvt.activ = 1')
             ->andWhere('vvt.status = 3')
             ->orderBy('vvt.CreatedAt', 'DESC')
-            ->setParameter('team', $team)
+            ->setParameter('teamPath', $teamPath)
             ->getQuery()
             ->getResult();
     }
