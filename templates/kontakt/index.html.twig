@@ -18,6 +18,7 @@
                     <th scope="col">{% trans from 'general' %}name{% endtrans %}</th>
                     <th scope="col">{% trans %}location{% endtrans %}</th>
                     <th scope="col">{% trans %}function{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}inheritance.fromTeam{% endtrans %}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,6 +34,9 @@
                             {% elseif k.art == 2 %}
                                 {% trans %}contractor{% endtrans %}
                             {% endif %}
+                        </td>
+                        <td{% if k.team != currentTeam %} title="{% trans from 'general' %}inheritance.infoText{% endtrans %}"{% endif %}>
+                            {% if k.team != currentTeam %}{{ k.team }}{% else %}-{% endif %}
                         </td>
                     </tr>
                 {% endfor %}

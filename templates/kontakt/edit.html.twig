@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block CTA %}
-    {% if new is not defined %}
+    {% if new is not defined and isEditable %}
         {{ include('base/__approveBtn.html.twig',{'data':kontakt,'dataLink':'kontakt_approve'}) }}
         {{ include('base/__disableBtn.html.twig',{'data':kontakt,'dataLink':'kontakt_disable'}) }}
     {% endif %}
