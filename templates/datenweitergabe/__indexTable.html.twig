@@ -12,6 +12,7 @@
                 <th scope="col">{% trans from 'general' %}contact{% endtrans %}</th>
                 <th scope="col">{% trans from 'general' %}subscriptionDate{% endtrans %}</th>
                 <th scope="col">{% trans from 'general' %}approved{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}inheritance.fromTeam{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -24,6 +25,9 @@
                     <td>{{ t.kontakt.firma }} (id:{{ t.kontakt.id }})</td>
                     <td>{{ t.zeichnungsdatum|date('Y.m.d') }}</td>
                     <td>{{ t.approved?'yes':'no' | trans( [], 'general') }}</td>
+                    <td{% if t.team != currentTeam %} title="{% trans from 'general' %}inheritance.infoText{% endtrans %}"{% endif %}>
+                        {% if t.team != currentTeam %}{{ t.team }}{% else %}-{% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
