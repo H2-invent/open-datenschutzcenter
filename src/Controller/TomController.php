@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Form\Type\TomType;
 use App\Repository\AuditTomRepository;
+use App\Repository\TeamRepository;
 use App\Repository\TomRepository;
 use App\Service\ApproveService;
 use App\Service\CurrentTeamService;
@@ -71,7 +72,8 @@ class TomController extends AbstractController
             'title' => $this->translator->trans(id: 'tom.create', domain: 'tom'),
             'tom' => $tom,
             'activ' => $tom->getActiv(),
-            'activTitel' => true
+            'activTitel' => true,
+            'isEditable' => true,
         ]);
     }
 
@@ -159,22 +161,25 @@ class TomController extends AbstractController
         TomService         $tomService,
         CurrentTeamService $currentTeamService,
         TomRepository      $tomRepository,
+        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
+        $teamPath = $team ? $teamRepository->getPath($team) : null;
         $tom = $tomRepository->find($request->get('tom'));
 
-        if ($securityService->teamDataCheck($tom, $team) === false) {
+        if ($securityService->teamPathDataCheck($tom, $teamPath) === false) {
             return $this->redirectToRoute('tom');
         }
 
         $newTom = $tomService->cloneTom($tom, $this->getUser());
 
-        $form = $this->createForm(TomType::class, $newTom);
+        $isEditable = $tom->getTeam() === $team;
+        $form = $this->createForm(TomType::class, $newTom, ['disabled' => !$isEditable]);
         $form->remove('titel');
         $form->handleRequest($request);
         $errors = [];
-        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === 1 && !$tom->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === 1 && !$tom->getApproved() && $isEditable) {
 
             $tom->setActiv(false);
             $newTom = $form->getData();
@@ -200,7 +205,8 @@ class TomController extends AbstractController
             'activ' => $tom->getActiv(),
             'activTitel' => false,
             'snack' => $request->get('snack'),
-            'currentTeam' => $team
+            'currentTeam' => $team,
+            'isEditable' => $isEditable,
         ]);
     }
 
@@ -209,14 +215,16 @@ class TomController extends AbstractController
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
         TomRepository      $tomRepository,
+        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
-        $tom = $tomRepository->findActiveByTeam($team);
-
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
+
+        $teamPath = $teamRepository->getPath($team);
+        $tom = $tomRepository->findActiveByTeamPath($teamPath);
 
         return $this->render('tom/index.html.twig', [
             'tom' => $tom,

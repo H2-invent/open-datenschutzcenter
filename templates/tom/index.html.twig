@@ -19,6 +19,7 @@
                     <th scope="col">{% trans from 'general' %}createdAt{% endtrans %}</th>
                     <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
                     <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general' %}inheritance.fromTeam{% endtrans %}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -29,6 +30,9 @@
                         <td>{{ t.createdAt|date('d.m.Y') }}</td>
                         <td>{{ t.titel }}</td>
                         <td>{{ t.beschreibung }}</td>
+                        <td{% if t.team != currentTeam %} title="{% trans from 'general' %}inheritance.infoText{% endtrans %}"{% endif %}>
+                            {% if t.team != currentTeam %}{{ t.team }}{% else %}-{% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

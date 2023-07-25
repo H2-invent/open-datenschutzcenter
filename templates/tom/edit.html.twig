@@ -6,8 +6,10 @@
         <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_tom', {'id':tom.id}) }}">
             <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
         </a>
-        {{ include('base/__approveBtn.html.twig',{'data':tom,'dataLink':'tom_approve'}) }}
-        {{ include('base/__disableBtn.html.twig',{'data':tom,'dataLink':'tom_disable'}) }}
+        {% if isEditable %}
+            {{ include('base/__approveBtn.html.twig',{'data':tom,'dataLink':'tom_approve'}) }}
+            {{ include('base/__disableBtn.html.twig',{'data':tom,'dataLink':'tom_disable'}) }}
+        {% endif %}
     {% endif %}
 {% endblock %}
 
