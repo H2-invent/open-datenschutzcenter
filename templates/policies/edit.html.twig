@@ -11,9 +11,11 @@
         <a href="{{ path('bericht_policy', {'id':policy.id, 'all':1}) }}" class="btn">
             <span>{% trans from 'general' %}pdf.createWithHistory{% endtrans %}</span>
         </a>
-        {{ include('base/__approveBtn.html.twig',{'data':policy,'dataLink':'policy_approve'}) }}
-        {{ include('base/__disableBtn.html.twig',{'data':policy,'dataLink':'policy_disable'}) }}
-        {{ include('assign/__assign.html.twig',{'data':policy,'path':'assign_policy'}) }}
+        {% if isEditable %}
+            {{ include('base/__approveBtn.html.twig',{'data':policy,'dataLink':'policy_approve'}) }}
+            {{ include('base/__disableBtn.html.twig',{'data':policy,'dataLink':'policy_disable'}) }}
+            {{ include('assign/__assign.html.twig',{'data':policy,'path':'assign_policy'}) }}
+        {% endif %}
     {% endif %}
 {% endblock %}
 

@@ -14,6 +14,7 @@
 {% endblock %}
 
 {% block body %}
+<<<<<<< HEAD
     <table id="data-table" class="dataTable">
         <thead>
             <tr>
@@ -22,6 +23,7 @@
                 <th scope="col">{% trans %}scopes{% endtrans %}</th>
                 <th scope="col">{% trans from 'general' %}processings{% endtrans %}</th>
                 <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}inheritance.fromTeam{% endtrans %}</th>
             </tr>
         </thead>
         <tbody>
@@ -31,8 +33,14 @@
                 <td>{{ d.title }}</td>
                 <td>{{ d.scope|raw }}</td>
                 <td>{% for p in d.processes | filter(p => p.activ) %}{{ p.name }}<br>{% endfor %}</td>
-                <td>{% if d.approved %}<span
-                           >{% trans from 'general' %}approved{% endtrans %}</span>{% else %}{{ d.statusString }}{% endif %}
+                <td>{% if d.approved %}
+                        {% trans from 'general' %}approved{% endtrans %}
+                    {% else %}
+                        {{ d.statusString }}
+                    {% endif %}
+                </td>
+                <td{% if d.team != currentTeam %} title="{% trans from 'general' %}inheritance.infoText{% endtrans %}"{% endif %}>
+                    {% if d.team != currentTeam %}{{ d.team }}{% else %}-{% endif %}
                 </td>
             </tr>
         {% endfor %}
