@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Policies;
 use App\Repository\PoliciesRepository;
+use App\Repository\TeamRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
@@ -178,21 +179,24 @@ class PoliciesController extends BaseController
         AssignService      $assignService,
         CurrentTeamService $currentTeamService,
         PoliciesRepository $policiesRepository,
+        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
+        $teamPath = $team ? $teamRepository->getPath($team) : null;
         $policy = $policiesRepository->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($policy, $team) === false) {
+        if ($securityService->teamPathDataCheck($policy, $teamPath) === false) {
             return $this->redirectToRoute('policies');
         }
         $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());
-        $form = $policiesService->createForm($newPolicy, $team);
+        $isEditable = $policy->getTeam() === $team;
+        $form = $policiesService->createForm($newPolicy, $team, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
-        $assign = $assignService->createForm($policy, $team);
+        $assign = $assignService->createForm($policy, $team, ['disabled' => !$isEditable]);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved() && $isEditable) {
             $policy->setActiv(false);
             $newPolicy = $form->getData();
             $errors = $validator->validate($newPolicy);
@@ -219,6 +223,7 @@ class PoliciesController extends BaseController
             'title' => $this->translator->trans(id: 'policies.edit', domain: 'policies'),
             'policy' => $policy,
             'activ' => $policy->getActiv(),
+            'isEditable' => $isEditable,
         ]);
     }
 
@@ -227,16 +232,19 @@ class PoliciesController extends BaseController
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
         PoliciesRepository $policiesRepository,
+        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $polcies = $policiesRepository->findActiveByTeam($team);
+
+        $teamPath = $teamRepository->getPath($team);
+        $policies = $policiesRepository->findActiveByTeamPath($teamPath);
 
         return $this->render('policies/index.html.twig', [
-            'data' => $polcies,
+            'data' => $policies,
             'currentTeam' => $team,
         ]);
     }
