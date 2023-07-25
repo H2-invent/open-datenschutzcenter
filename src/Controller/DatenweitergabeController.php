@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Datenweitergabe;
 use App\Repository\DatenweitergabeRepository;
+use App\Repository\TeamRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
@@ -253,13 +254,15 @@ class DatenweitergabeController extends BaseController
         AssignService             $assignService,
         CurrentTeamService        $currentTeamService,
         DatenweitergabeRepository $dataTransferRepository,
+        TeamRepository            $teamRepository,
     ): Response
     {
         set_time_limit(600);
         $team = $currentTeamService->getCurrentTeam($this->getUser());
+        $teamPath = $team ? $teamRepository->getPath($team) : null;
         $daten = $dataTransferRepository->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($daten, $team) === false) {
+        if ($securityService->teamPathDataCheck($daten, $teamPath) === false) {
             if ($daten->getArt() === 1) {
                 return $this->redirectToRoute('datenweitergabe');
             }
@@ -267,13 +270,14 @@ class DatenweitergabeController extends BaseController
         }
 
         $newDaten = $datenweitergabeService->cloneDatenweitergabe($daten, $this->getUser());
-        $form = $datenweitergabeService->createForm($newDaten, $team);
+        $isEditable = $daten->getTeam() === $team;
+        $form = $datenweitergabeService->createForm($newDaten, $team, ['disabled' => !$isEditable]);
         $form->remove('nummer');
         $form->handleRequest($request);
-        $assign = $assignService->createForm($daten, $team);
+        $assign = $assignService->createForm($daten, $team, ['disabled' => !$isEditable]);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $daten->getActiv() && !$daten->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $daten->getActiv() && !$daten->getApproved() && $isEditable) {
 
 
             $daten->setActiv(false);
@@ -314,6 +318,7 @@ class DatenweitergabeController extends BaseController
             'daten' => $daten,
             'activ' => $daten->getActiv(),
             'activNummer' => false,
+            'isEditable' => $isEditable
         ]);
     }
 
@@ -322,6 +327,7 @@ class DatenweitergabeController extends BaseController
         SecurityService           $securityService,
         CurrentTeamService        $currentTeamService,
         DatenweitergabeRepository $dataTransferRepository,
+        TeamRepository            $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -329,7 +335,8 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $dataTransferRepository->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
+        $teamPath = $teamRepository->getPath($team);
+        $daten = $dataTransferRepository->findActiveOrderProcessingsByTeamPath($teamPath);
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
             'table' => $daten,
             'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
@@ -342,6 +349,7 @@ class DatenweitergabeController extends BaseController
         SecurityService           $securityService,
         CurrentTeamService        $currentTeamService,
         DatenweitergabeRepository $dataTransferRepository,
+        TeamRepository            $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -349,7 +357,8 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $dataTransferRepository->findBy(array('team' => $team, 'activ' => true, 'art' => 1));
+        $teamPath = $teamRepository->getPath($team);
+        $daten = $dataTransferRepository->findActiveTransfersByTeamPath($teamPath);
         return $this->render('datenweitergabe/index.html.twig', [
             'table' => $daten,
             'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),

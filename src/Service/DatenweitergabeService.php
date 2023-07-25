@@ -60,16 +60,28 @@ class DatenweitergabeService
         return $newDsfa;
     }
 
-    function createForm(Datenweitergabe $datenweitergabe, Team $team): FormInterface
+    function createForm(Datenweitergabe $datenweitergabe, Team $team, array $options = []): FormInterface
     {
-        $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeam($team);
-        $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeam($team);
-        $verfahren = $this->em->getRepository(VVT::class)->findBy(array('team' => $team, 'activ' => true));
-        $software = $this->em->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true));
+        if (isset($options['disabled']) && $options['disabled']) {
+            $teamPath = $this->em->getRepository(Team::class)->getPath($team);
+            $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeamPath($teamPath);
+            $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeamPath($teamPath);
+            $verfahren = $this->em->getRepository(VVT::class)->findActiveByTeamPath($teamPath);
+            $software = $this->em->getRepository(Software::class)->findActiveByTeamPath($teamPath);
+        } else {
+            $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeam($team);
+            $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeam($team);
+            $verfahren = $this->em->getRepository(VVT::class)->findBy(array('team' => $team, 'activ' => true));
+            $software = $this->em->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true));
+        }
 
-        $form = $this->formBuilder->create(DatenweitergabeType::class, $datenweitergabe, ['stand' => $stand, 'grundlage' => $grundlagen, 'kontakt' => $team->getKontakte(), 'verfahren' => $verfahren, 'software' => $software]);
-
-        return $form;
+        return $this->formBuilder->create(DatenweitergabeType::class, $datenweitergabe, array_merge([
+            'stand' => $stand,
+            'grundlage' => $grundlagen,
+            'kontakt' => $team->getKontakte(),
+            'verfahren' => $verfahren,
+            'software' => $software
+        ], $options));
     }
 
     function newDatenweitergabe(User $user, $type): Datenweitergabe
