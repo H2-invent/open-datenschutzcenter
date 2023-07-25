@@ -44,15 +44,25 @@ class PoliciesService
         return $newPolicy;
     }
 
-    function createForm(Policies $policies, Team $team)
+    function createForm(Policies $policies, Team $team, array $options = [])
     {
-        $personen = $this->em->getRepository(VVTPersonen::class)->findByTeam($team);
-        $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
-        $processes = $this->em->getRepository(VVT::class)->findActiveByTeam($team);
+        if (isset($options['disabled']) && $options['disabled']) {
+            $teamPath = $this->em->getRepository(Team::class)->getPath($team);
+            $personen = $this->em->getRepository(VVTPersonen::class)->findByTeamPath($teamPath);
+            $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeamPath($teamPath);
+            $processes = $this->em->getRepository(VVT::class)->findActiveByTeamPath($teamPath);
+        } else {
+            $personen = $this->em->getRepository(VVTPersonen::class)->findByTeam($team);
+            $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
+            $processes = $this->em->getRepository(VVT::class)->findActiveByTeam($team);
+        }
 
-        $form = $this->formBuilder->create(PolicyType::class, $policies, ['personen' => $personen, 'kategorien' => $kategorien, 'user' => $team->getMembers(), 'processes' => $processes]);
-
-        return $form;
+        return $this->formBuilder->create(PolicyType::class, $policies, array_merge([
+            'personen' => $personen,
+            'kategorien' => $kategorien,
+            'user' => $team->getMembers(),
+            'processes' => $processes
+        ], $options));
     }
 
     function newPolicy(Team $team, User $user)

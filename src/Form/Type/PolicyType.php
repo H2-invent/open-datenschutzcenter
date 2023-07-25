@@ -27,13 +27,40 @@ class PolicyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $summernoteClass = 'summernote';
+        if ($options['disabled']) {
+            $summernoteClass .= ' summernote-disable';
+        }
 
         $builder
-            ->add('title', TextType::class, ['label' => 'policyName', 'required' => true, 'translation_domain' => 'form'])
-            ->add('scope', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policyScope', 'required' => true, 'translation_domain' => 'form'])
-            ->add('risk', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policyPotentialDangers', 'required' => true, 'translation_domain' => 'form'])
-            ->add('foundation', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policyLegislation', 'required' => true, 'translation_domain' => 'form'])
-            ->add('reference', TextType::class, ['label' => 'fileNumber', 'required' => false, 'translation_domain' => 'form'])
+            ->add('title', TextType::class, [
+                'label' => 'policyName',
+                'required' => true,
+                'translation_domain' => 'form'
+            ])
+            ->add('scope', TextareaType::class, [
+                'attr' => ['class' => $summernoteClass],
+                'label' => 'policyScope',
+                'required' => true,
+                'translation_domain' => 'form'
+            ])
+            ->add('risk', TextareaType::class, [
+                'attr' => ['class' => $summernoteClass],
+                'label' => 'policyPotentialDangers',
+                'required' => true,
+                'translation_domain' => 'form'
+            ])
+            ->add('foundation', TextareaType::class, [
+                'attr' => ['class' => $summernoteClass],
+                'label' => 'policyLegislation',
+                'required' => true,
+                'translation_domain' => 'form'
+            ])
+            ->add('reference', TextType::class, [
+                'label' => 'fileNumber',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
             ->add('processes', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVT::class,
@@ -48,10 +75,30 @@ class PolicyType extends AbstractType
                     'data-live-search' => 'true'
                 ]
             ])
-            ->add('protection', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policySafetyMeasures', 'required' => false, 'translation_domain' => 'form'])
-            ->add('notes', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policyTrainingOffer', 'required' => false, 'translation_domain' => 'form'])
-            ->add('consequences', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'policyNoncomplianceConsequences', 'required' => false, 'translation_domain' => 'form'])
-            ->add('contact', TextareaType::class, ['attr' => ['row' => 5], 'label' => 'policyContacts', 'required' => false, 'translation_domain' => 'form'])
+            ->add('protection', TextareaType::class, [
+                'attr' => ['class' => $summernoteClass],
+                'label' => 'policySafetyMeasures',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('notes', TextareaType::class, [
+                'attr' => ['class' => $summernoteClass],
+                'label' => 'policyTrainingOffer',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('consequences', TextareaType::class, [
+                'attr' => ['class' => $summernoteClass],
+                'label' => 'policyNoncomplianceConsequences',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('contact', TextareaType::class, [
+                'attr' => ['row' => 5],
+                'label' => 'policyContacts',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
             ->add('people', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTPersonen::class,

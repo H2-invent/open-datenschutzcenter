@@ -9,8 +9,10 @@
         <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_policy', {'id':policy.id, 'all':1}) }}">
             <span>{% trans from 'general' %}pdf.createWithHistory{% endtrans %}</span>
         </a>
-        {{ include('base/__approveBtn.html.twig',{'data':policy,'dataLink':'policy_approve'}) }}
-        {{ include('base/__disableBtn.html.twig',{'data':policy,'dataLink':'policy_disable'}) }}
+        {% if isEditable %}
+            {{ include('base/__approveBtn.html.twig',{'data':policy,'dataLink':'policy_approve'}) }}
+            {{ include('base/__disableBtn.html.twig',{'data':policy,'dataLink':'policy_disable'}) }}
+        {% endif %}
     {% endif %}
 {% endblock %}
 
@@ -21,7 +23,9 @@
             {{ include('base/__approvedBy.html.twig', {'data':policy}) }}
         </div>
         <div class="col-md-4 text-right">
-            {{ include('assign/__assign.html.twig',{'data':policy,'path':'assign_policy'}) }}
+            {% if isEditable %}
+                {{ include('assign/__assign.html.twig',{'data':policy,'path':'assign_policy'}) }}
+            {% endif %}
         </div>
     </div>
 
