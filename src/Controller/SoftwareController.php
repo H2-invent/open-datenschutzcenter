@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\SoftwareConfig;
 use App\Repository\SoftwareConfigRepository;
 use App\Repository\SoftwareRepository;
+use App\Repository\TeamRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
@@ -228,22 +229,25 @@ class SoftwareController extends AbstractController
         AssignService      $assignService,
         CurrentTeamService $currentTeamService,
         SoftwareRepository $softwareRepository,
+        TeamRepository     $teamRepository,
     ): Response
     {
         //Request: id: SoftwareID, snack:Snack Notice
         $team = $currentTeamService->getCurrentTeam($this->getUser());
+        $teamPath = $team ? $teamRepository->getPath($team) : null;
         $software = $softwareRepository->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($software, $team) === false) {
+        if ($securityService->teamPathDataCheck($software, $teamPath) === false) {
             return $this->redirectToRoute('software');
         }
         $newSoftware = $softwareService->cloneSoftware($software, $this->getUser());
-        $form = $softwareService->createForm($newSoftware, $team);
+        $isEditable = $software->getTeam() === $team;
+        $form = $softwareService->createForm($newSoftware, $team, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
-        $assign = $assignService->createForm($software, $team);
+        $assign = $assignService->createForm($software, $team, ['disabled' => !$isEditable]);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $software->getActiv() && !$software->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $software->getActiv() && !$software->getApproved() && $isEditable) {
             $software->setActiv(false);
             $newSoftware = $form->getData();
 
@@ -276,6 +280,7 @@ class SoftwareController extends AbstractController
             'software' => $software,
             'activ' => $software->getActiv(),
             'snack' => $request->get('snack'),
+            'isEditable' => $isEditable,
         ]);
     }
 
@@ -285,6 +290,7 @@ class SoftwareController extends AbstractController
         Request            $request,
         CurrentTeamService $currentTeamService,
         SoftwareRepository $softwareRepository,
+        TeamRepository     $teamRepository,
     ): Response
     {
         //Request: snack: Snack Notice
@@ -292,7 +298,8 @@ class SoftwareController extends AbstractController
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $software = $softwareRepository->findActiveByTeam($team);
+        $teamPath = $teamRepository->getPath($team);
+        $software = $softwareRepository->findActiveByTeamPath($teamPath);
 
         return $this->render('software/index.html.twig', [
             'data' => $software,

@@ -9,7 +9,9 @@
         <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_software', {'id':software.id, 'all':1}) }}">
             <span>{% trans from 'general' %}pdf.createWithHistory{% endtrans %}</span>
         </a>
-        {{ include('base/__approveBtn.html.twig',{'data':software,'dataLink':'software_approve'}) }}
+        {% if isEditable %}
+            {{ include('base/__approveBtn.html.twig',{'data':software,'dataLink':'software_approve'}) }}
+        {% endif %}
     {% endif %}
 
 {% endblock %}
@@ -21,7 +23,9 @@
             {{ include('base/__approvedBy.html.twig', {'data':software}) }}
         </div>
         <div class="col-md-4 text-right">
-            {{ include('assign/__assign.html.twig',{'data':software,'path':'assign_software'}) }}
+            {% if isEditable %}
+                {{ include('assign/__assign.html.twig',{'data':software,'path':'assign_software'}) }}
+            {% endif %}
         </div>
     </div>
 
@@ -36,7 +40,7 @@
                     </button>
                 </h5>
             </div>
-            <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+            <div id="collapseOne" class="collapse{% if not isEditable %} show{% endif %}" aria-labelledby="headingOne"
                  data-parent="#accordionExample">
                 <div class="card-body {% if not activ or software.approved %}disabled{% endif %}">
                     {{ include('software/__form.html.twig') }}
@@ -44,21 +48,23 @@
                 </div>
             </div>
         </div>
-        <div class="card z-depth-0 bordered">
-            <div class="card-header" id="headingTwo">
-                <h5 class="mb-0">
-                    <button class="btn btn-link " type="button" data-toggle="collapse"
-                            data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                        <h4 class="h4-responsive">{% trans %}config.attached{% endtrans %}</h4>
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                <div class="card-body {% if not activ or software.approved %}disabled{% endif %}">
-                    {{ include('software/__config.html.twig') }}
+        {% if isEditable %}
+            <div class="card z-depth-0 bordered">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link " type="button" data-toggle="collapse"
+                                data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                            <h4 class="h4-responsive">{% trans %}config.attached{% endtrans %}</h4>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body {% if not activ or software.approved %}disabled{% endif %}">
+                        {{ include('software/__config.html.twig') }}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 
     {% if software.previous %}
