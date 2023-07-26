@@ -51,14 +51,21 @@ class SoftwareService
         return $form;
     }
 
-    public function createForm(Software $software, Team $team): FormInterface
+    public function createForm(Software $software, Team $team, array $options = []): FormInterface
     {
-        $processes = $this->em->getRepository(VVT::class)->findActiveByTeam($team);
-        $data = $this->em->getRepository(Datenweitergabe::class)->findBy(['team' => $team, 'activ' => true, 'art' => 1]);
+        if (isset($options['disabled']) && $options['disabled']) {
+            $teamPath = $this->em->getRepository(Team::class)->getPath($team);
+            $processes = $this->em->getRepository(VVT::class)->findActiveByTeamPath($teamPath);
+            $data = $this->em->getRepository(Datenweitergabe::class)->findActiveTransfersByTeamPath($teamPath);
+        } else {
+            $processes = $this->em->getRepository(VVT::class)->findActiveByTeam($team);
+            $data = $this->em->getRepository(Datenweitergabe::class)->findBy(['team' => $team, 'activ' => true, 'art' => 1]);
+        }
 
-        $form = $this->formBuilder->create(SoftwareType::class, $software, ['processes' => $processes, 'datenweitergabe' => $data]);
-
-        return $form;
+        return $this->formBuilder->create(SoftwareType::class, $software, array_merge([
+            'processes' => $processes,
+            'datenweitergabe' => $data
+        ], $options));
     }
 
     public function newConfig(Software $software): SoftwareConfig
