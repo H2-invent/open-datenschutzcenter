@@ -20,30 +20,13 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--api.dashboard=true"
-
       - "--providers.docker.exposedbydefault=false"
-
-#      - "--entrypoints.unsecure.address=:80"
       - "--entrypoints.web.address=:80"
-      # Global HTTP -> HTTPS
-#      - "--entrypoints.unsecure.http.redirections.entryPoint.to=web"
-#      - "--entrypoints.unsecure.http.redirections.entryPoint.scheme=https"
-#      # SSL configuration
-#      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
-#      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=unsecure"
-#      - "--certificatesresolvers.letsencrypt.acme.email=${registerEmailAdress}"
-#      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
 
     labels:
       - "traefik.enable=true"
-#      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
-#      - "traefik.http.routers.http-catchall.entrypoints=unsecure"
-#      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https@docker"
-#      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-
       - "traefik.http.routers.traefik-odc.rule=Host(`traefik.${PUBLIC_URL}`)"
       - "traefik.http.routers.traefik-odc.entrypoints=web"
-#      - "traefik.http.routers.traefik-odc.tls.certresolver=letsencrypt"
       - "traefik.http.routers.traefik-odc.service=api@internal"
       - "traefik.http.routers.traefik-odc.middlewares=traefik-auth"
       - "traefik.http.middlewares.traefik-auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/" # test:test
@@ -57,6 +40,12 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       -  ./data/letsencrypt:/letsencrypt
       - ./tools/traefik/config.yml:/etc/traefik/dynamic_conf/conf.yml:ro
+ 
+    networks:
+      default:
+        aliases:
+          - keycloak.${PUBLIC_URL}
+          - ${PUBLIC_URL}
 
   #Here is the ODC app
   app-odc:
@@ -100,22 +89,19 @@ services:
 
     labels:
       - "traefik.enable=true"
-#      - "traefik.http.routers.app-odc.tls=true"
       - "traefik.http.routers.app-odc.rule=Host(`${PUBLIC_URL}`)"
       - "traefik.http.routers.app-odc.entrypoints=web"
       - "traefik.http.services.app-odc.loadbalancer.server.port=80"
-#      - "traefik.http.routers.app-odc.tls.certresolver=letsencrypt"
       - "traefik.http.services.app-odc.loadbalancer.sticky=true"
       - "traefik.http.services.app-odc.loadbalancer.sticky.cookie.name=odc"
-#      - "traefik.http.services.app-odc.loadbalancer.sticky.cookie.secure=true"
     volumes:
       - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
       - datenschutzcenter_secret_storage:/var/www/html/secretStorage:rw
       - datenschutzcenter_data:/var/www/html/public/data:rw
       - $PWD/dockerupdate.sh:/etc/container/startup.sh
-    extra_hosts:
-      - keycloak.${PUBLIC_URL}:${HOST_IP}
-      - ${PUBLIC_URL}:${HOST_IP}
+    networks:
+      - default
+
 
   db-odc:
     image: mariadb:latest
@@ -129,7 +115,8 @@ services:
     volumes:
       - mariadb:/var/lib/mysql
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-
+    networks:
+      -  default
 
   keycloak-odc:
     image: jboss/keycloak:latest
@@ -151,14 +138,15 @@ services:
       KEYCLOAK_FRONTEND_URL: "${HTTP_METHOD}://keycloak.${PUBLIC_URL}/auth"
     labels:
       - "traefik.enable=true"
-#      - "traefik.http.routers.keycloak-odc.tls=true"
       - "traefik.http.routers.keycloak-odc.rule=Host(`keycloak.${PUBLIC_URL}`)"
       - "traefik.http.routers.keycloak-odc.entrypoints=web"
       - "traefik.http.services.keycloak-odc.loadbalancer.server.port=8080"
-#      - "traefik.http.routers.keycloak-odc.tls.certresolver=letsencrypt"
 
     volumes:
       - ./keycloak/realm-export.json:/tmp/realm-export.json
+
+    networks:
+      - default
 
 volumes:
   mariadb:
