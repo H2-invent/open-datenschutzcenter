@@ -76,10 +76,6 @@ fi
   sed -i '/smtpFrom/d' $FILE
   echo "smtpFrom=$smtpFrom" >> $FILE
 
-  host_ip=$(ip a | grep -w 'inet' | sed -n '2 p' | cut -d ' ' -f6 | cut -d '/' -f1)
-  sed -i '/HOST_IP/d' $FILE
-  echo "HOST_IP=$host_ip" >> $FILE
-
   echo -------------------------------------------------------------
   echo -----------------we build the KEycloak-----------------------
   echo -------------------------------------------------------------
@@ -125,7 +121,6 @@ export KEYCLOAK_ADMIN_PW=$KEYCLOAK_ADMIN_PW
 export registerEmailAdress=$smtpFrom
 RANDOMTAG=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1);
 export RANDOMTAG
-export HOST_IP=$HOST_IP
 
 chmod +x dockerupdate.sh
 
