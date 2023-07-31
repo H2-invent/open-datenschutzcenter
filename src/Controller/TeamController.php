@@ -21,6 +21,7 @@ use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use App\Service\TeamService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -266,6 +267,7 @@ class TeamController extends AbstractController
         SecurityService        $securityService,
         CurrentTeamService     $currentTeamService,
         TeamRepository         $teamRepository,
+        LoggerInterface        $logger,
     ): Response
     {
         $user = $this->getUser();
@@ -299,6 +301,10 @@ class TeamController extends AbstractController
             $errors = $validator->validate($nTeam);
             if (count($errors) == 0) {
                 $em->persist($nTeam);
+                if($teamRepository->verify() !== true) {
+                    $logger->alert('Tree invalid, attempting recovery', $teamRepository->verify());
+                    $teamRepository->recover();
+                }
                 $em->flush();
                 if ($teamId) {
                     return $this->redirectToRoute('team_edit', ['id' => $teamId]);
