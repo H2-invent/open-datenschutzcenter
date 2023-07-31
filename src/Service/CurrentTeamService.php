@@ -44,9 +44,6 @@ class CurrentTeamService
             $result = [];
 
             if ($currentAndDescendants) {
-                for ($i = 0; $i < count($currentAndDescendants); $i++) {
-                    var_dump($currentAndDescendants[$i]->getName());
-                }
                 for ($i = 0; $i < count($availableTeams); $i++) {
                     if (array_search($availableTeams[$i], $currentAndDescendants) === false) {
                         $result[] = $availableTeams[$i];
