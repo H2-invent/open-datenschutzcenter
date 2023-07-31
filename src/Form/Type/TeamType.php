@@ -36,13 +36,14 @@ class TeamType extends AbstractType
             $builder->add('keycloakGroup', TextType::class, ['label' => 'keycloakGroup', 'help' => 'keycloakGroupHelp', 'required' => false, 'translation_domain' => 'form']);
         }
 
-        if ($options['teams']) {
+        if ($options['teams'] !== null) {
             $builder
                 ->add('parent', EntityType::class, [
                     'choice_label' => 'name',
                     'class' => Team::class,
                     'choices' => $options['teams'],
                     'label' => 'parentTeam.word',
+                    'placeholder' => 'nothingSelected',
                     'required' => false,
                     'translation_domain' => 'form',
                     'multiple' => false,
