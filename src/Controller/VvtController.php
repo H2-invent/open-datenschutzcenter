@@ -231,8 +231,9 @@ class VvtController extends AbstractController
         }
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
 
-        foreach ($vvt->getKategorien() as $cloneKat) {//hier haben wir die geklonten KAtegorien
-            $newVvt->addKategorien($VVTDatenkategorieService->findLatestKategorie($cloneKat->getCloneOf()));//wir hängen die neueste gültige Datenkategorie an den VVT clone an.
+        foreach ($vvt->getKategorien() as $category) {//hier haben wir die geklonten Kategorien
+            $cloneOf = $category->getCloneOf() ?: $category; //wir hängen die neueste gültige Datenkategorie an den VVT clone an.
+            $newVvt->addKategorien($VVTDatenkategorieService->findLatestKategorie($cloneOf));
         }
 
         $isEditable = $vvt->getTeam() === $team;

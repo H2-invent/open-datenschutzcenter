@@ -7,7 +7,7 @@
            title="{% trans %}dataProtectionImpactAssessment.create{% endtrans %}">
             <span>{% trans %}dsfa.create{% endtrans %}</span>
         </a>
-    {% else %}
+    {% elseif vvt.activDsfa is not null %}
         <a class="btn btn-indigo ml-1 btn-sm " href="{{ path('vvt_dsfa_edit', {'dsfa':vvt.activDsfa.id}) }}"
            title="{% trans %}dataProtectionImpactAssessment.show{% endtrans %}">
             <span>{% trans %}dsfa.show{% endtrans %}</span>
