@@ -4,6 +4,7 @@ assistant:
   start: Assistent Starten
   finished: Der Assistent ist fertig und alle Elemente wurden erfolgreich angelegt. Du kannst ihn neu starten, um weitere Verarbeitungstätigkeiten zu dokumentieren.
   aborted: Der Assistent wurde abgebrochen. Bereits angelegte Elemente wurden gespeichert.
+  noneSelected: Es wurde kein Element ausgewählt
 category:
   processing:
     title: Datenkategorie für Auftragsverarbeitung

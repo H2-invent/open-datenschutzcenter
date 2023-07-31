@@ -155,7 +155,16 @@ class AssistantController extends AbstractController
 
         $step = $assistantService->getStep();
         $selected = $request->get('assistant_select');
-        $assistantService->saveToSession(step: $step, data: $selected);
+
+        if ($selected) {
+            $assistantService->saveToSession(step: $step, data: $selected);
+        } elseif (!$assistantService->getPropertyForStep($step, AssistantService::PROPERTY_SKIP)) {
+            $this->addFlash(
+                'danger',
+                'assistant.noneSelected'
+            );
+            return $this->redirectToRoute('assistant_step', ['step' => $step]);
+        }
         return $this->redirectToRoute('assistant_step', ['step' => $step + 1]);
     }
 }
