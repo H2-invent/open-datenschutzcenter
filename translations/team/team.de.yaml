@@ -7,6 +7,7 @@ removeDsb: Der DSB wird daraufhin als Admin, Koordinator und Akademiebenutzer en
 addExternalDsbInfo: Hier können Sie einen externen DSB ernennen. Der externe DSB hat die Möglichkeit, zwischen Teams hin und her zu wechseln und dabei jedesmal die die Berechtigung Datenschutzkoordinator, Datenschutzbeauftragter, Admin und Akademiemitglied zu erhalten.
 adminArea: Adminbereich
 memberCount: Anzahl Mitglieder
+parentTeam: Erbt von
 admins: Administratoren
 admin:
   create: Admin hinzufügen
