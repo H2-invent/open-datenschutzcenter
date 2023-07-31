@@ -8,6 +8,12 @@
            title="{% trans %}dataProtectionImpactAssessment.create{% endtrans %}">
             <span>{% trans %}dsfa.create{% endtrans %}</span>
         </a>
+    {% elseif vvt.activDsfa is not null %}
+        <a href="{{ path('dsfa_new', {'vvt':vvt.id}) }}"
+           class="btn"
+           title="{% trans %}dataProtectionImpactAssessment.show{% endtrans %}">
+            <span>{% trans %}dsfa.show{% endtrans %}</span>
+        </a>
     {% endif %}
     {% if vvt.activ %}
         <a href="{{ path('vvt_clone', {'id':vvt.id}) }}" class="btn">
