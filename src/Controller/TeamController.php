@@ -342,15 +342,12 @@ class TeamController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        // only superadmins can edit the team hierarchy, and children of the current node cannot be selected
-        if ($securityService->superAdminCheck($user)) {
-            $availableTeams = $currentTeamService->getAvailableWithoutCurrentAndChildren($user, $team);
-        }
+        $availableTeams = $currentTeamService->getTeamsWithoutCurrentHierarchy($user, $team);
 
         $form = $this->createForm(
             TeamType::class,
             $team,
-            ['teams' => $availableTeams ?? null,]
+            ['teams' => $availableTeams,]
         );
         $form->handleRequest($request);
 
