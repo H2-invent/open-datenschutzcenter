@@ -23,7 +23,7 @@ use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use App\Service\TeamService;
 use Doctrine\ORM\EntityManagerInterface;
-use Proxies\__CG__\App\Entity\DatenweitergabeStand;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -208,19 +208,16 @@ class TeamController extends BaseController
     }
 
     #[Route(path: '/team_custom/vvtStatus/network', name: 'team_custom_network_vvtstatus')]
-    public function customvvtStatusToogleNetwork(
+    public function customvvtStatusToggleNetwork(
         Request                $request,
         SecurityService        $securityService,
-        EntityManagerInterface $em,
-        TeamService            $teamService,
-        ValidatorInterface     $validator,
         CurrentTeamService     $currentTeamService,
         VVTStatusRepository    $VVTStatusRepository,
         EntityManagerInterface $entityManager,
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -236,19 +233,16 @@ class TeamController extends BaseController
     }
 
     #[Route(path: '/team_custom/datenweitergabeStatus/network', name: 'team_custom_network_datenweitergabestatus')]
-    public function customdatenweitergabeToogleNetwork(
+    public function customdatenweitergabeToggleNetwork(
         Request                        $request,
         SecurityService                $securityService,
-        EntityManagerInterface         $em,
-        TeamService                    $teamService,
-        ValidatorInterface             $validator,
         CurrentTeamService             $currentTeamService,
         DatenweitergabeStandRepository $datenweitergabeStandRepository,
         EntityManagerInterface         $entityManager,
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -324,6 +318,7 @@ class TeamController extends BaseController
         SecurityService        $securityService,
         CurrentTeamService     $currentTeamService,
         TeamRepository         $teamRepository,
+        LoggerInterface        $logger,
     ): Response
     {
         $user = $this->getUser();
@@ -357,6 +352,10 @@ class TeamController extends BaseController
             $errors = $validator->validate($nTeam);
             if (count($errors) == 0) {
                 $em->persist($nTeam);
+                if($teamRepository->verify() !== true) {
+                    $logger->alert('Tree invalid, attempting recovery', $teamRepository->verify());
+                    $teamRepository->recover();
+                }
                 $em->flush();
                 if ($teamId) {
                     return $this->redirectToRoute('team_edit', ['id' => $teamId]);
