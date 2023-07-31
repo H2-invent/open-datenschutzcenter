@@ -16,6 +16,7 @@
                     {% if useKeycloakGroups %}
                         <th scope="col">{% trans %}keycloakGroup{% endtrans %}</th>
                     {% endif %}
+                    <th scope="col">{% trans %}parentTeam{% endtrans %}</th>
                     <th scope="col">{% trans %}memberCount{% endtrans %}</th>
                     <th scope="col">{% trans %}admins{% endtrans %}</th>
                     <th class="hide-in-export"></th>
@@ -28,6 +29,7 @@
                         {% if useKeycloakGroups %}
                             <td>{{ t.keycloakGroup }}</td>
                         {% endif %}
+                        <td>{{ t.parent }}</td>
                         <td>{{ t.members | length }}</td>
                         <td>
                             {% for a in t.admins %}
