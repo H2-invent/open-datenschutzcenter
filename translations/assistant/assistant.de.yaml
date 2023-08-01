@@ -2,7 +2,7 @@ assistant:
   word: VVT-Assistent
   info: Es sind eine Reihe von Elementen notwendig, um neue VVTs zu erstellen. Der Assistent hilft dabei, diese auszuwählen und anzulegen.
   start: Assistent Starten
-  finished: Der Assistent ist fertig und alle Elemente wurden erfolgreich angelegt. Du kannst ihn neu starten, um weitere Verarbeitungstätigkeiten zu dokumentieren.
+  finished: Der Assistent ist fertig und alle Elemente wurden erfolgreich angelegt. Sie können ihn neu starten, um weitere Verarbeitungstätigkeiten zu dokumentieren.
   aborted: Der Assistent wurde abgebrochen. Bereits angelegte Elemente wurden gespeichert.
   noneSelected: Es wurde kein Element ausgewählt
 category:
