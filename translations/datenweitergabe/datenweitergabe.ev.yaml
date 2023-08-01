@@ -14,9 +14,9 @@ requestProcessing:
     documentation: Verarbeitung auf dokumentierte Weisung des Verantwortlichen<br><br>
     trust: Vertraulichkeitsverpflichtung<br><br>
     tom: Ergreifen erforderlicher technischer und organisatorischer Maßnahmen<br><br>
-    subcontractor: Inanspruchnahme von Unterauftragnehmern nach Art. Art. 28 Abs. 2 und Abs. 4 DSG EKD<br><br>
+    subcontractor: Inanspruchnahme von Unterauftragnehmern nach § 30 DSG EKD<br><br>
     support: Unterstützung des Verantwortlichen bei der Beantwortung von Betroffenen anfragen<br><br>
-    support3236: Unterstützung des Verantwortlichen bei den Pflichten nach Art. 32 – 36 DSG EKD<br><br>
+    support3236: Unterstützung des Verantwortlichen bei den Pflichten nach DSG EKD<br><br>
     ending: Umgang mit personenbezogenen Daten nach Beendigung der Auftragsverarbeitung<br><br>
     audit: Zurverfügungstellung von Informationen und Ermöglichung von Überprüfungen<br><br>
     notes: Hinweispflicht<br>
@@ -34,7 +34,7 @@ dataTransfer:
   object: Gegenstand der Datenweitergabe
   word: Datenweitergabe
   responsible: Verantwortlich für die Datenweitergabe (Intern)
-  disclaimer: Alle Datenweitergaben nach DSG EKD Art. 30(1)
+  disclaimer: Alle Datenweitergaben nach § 31 DSG EKD
   info:
     title: Erklärung Datenweitergabe
     text: Die Verarbeitung von Daten im Auftrag kommt in nahezu jedem Unternehmen vor. Sei es durch die Nutzung eines externen Rechenzentrums, die Nutzung einer Dienstleistung, die als sog. Software-as-a-Service (SaaS) erbracht wird, Cloud Computing oder bestimmte Wartungen von IT-Systemen durch technische Dienstleister. In diesen Fällen liegt in der Regel eine Datenweitergabe vor. Und da gilt es besondere Maßnahmen zu treffen, um die Vorgaben des DSG EKD (DSG EKD) einzuhalten.
