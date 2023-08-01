@@ -3,20 +3,20 @@ requestProcessing:
   word: Auftragsdatenverarbeitung
   create: Auftragsverarbeitung anlegen
   noSoftware: Einer Auftragsverarbeitung kann keine Software zugewiesen werden.
-  disclaimer: Der Vertrag zur Auftragsverarbeitung nach Art. 28 Abs. 3 DSGVO berücksichtigt folgende Punkte
+  disclaimer: Der Vertrag zur Auftragsverarbeitung nach § 30 Abs. 3 DSG EKD berücksichtigt folgende Punkte
   explanation: 'Erklärung: Auftragsverarbeitung'
-  contract: Wenn Sie oder Ihr Unternehmen für eine externe Person oder Unternehmen eine Verarbeitung von Daten durchführt, spricht man von einer sog. "Auftragsverarbeitung". Als Auftragsverarbeiter ist man nicht der Verantwortliche der Verarbeitung, da die Verantwortung der Datenverarbeitung nach der DSGVO weiterhin beim Kunden, dem sog. "Verantwortlichen" ist. Damit die Auftragsverarbeitung dennoch Vertraglich geregelt ist, ist es wichtig einen Auftragsverarbeitervertrag mit dem Kunden abzuschließen.
+  contract: Wenn Sie oder Ihr Unternehmen für eine externe Person oder Unternehmen eine Verarbeitung von Daten durchführt, spricht man von einer sog. "Auftragsverarbeitung". Als Auftragsverarbeiter ist man nicht der Verantwortliche der Verarbeitung, da die Verantwortung der Datenverarbeitung nach der DSG EKD weiterhin beim Kunden, dem sog. "Verantwortlichen" ist. Damit die Auftragsverarbeitung dennoch Vertraglich geregelt ist, ist es wichtig einen Auftragsverarbeitervertrag mit dem Kunden abzuschließen.
   report:
-    contract: Der Vertrag zur Auftragsverarbeitung nach Art. 28 Abs. 3 DSGVO berücksichtigt folgende Punkte
+    contract: Der Vertrag zur Auftragsverarbeitung nach § 30 Abs. 3 DSG EKD berücksichtigt folgende Punkte
     items: Gegenstand und Dauer der Verarbeitung, Art und Zweck der Verarbeitung<br><br>
     people: Die Kategorien betroffener Personen<br><br>
     data: Die Art der personenbezogenen Daten <br><br>
     documentation: Verarbeitung auf dokumentierte Weisung des Verantwortlichen<br><br>
     trust: Vertraulichkeitsverpflichtung<br><br>
     tom: Ergreifen erforderlicher technischer und organisatorischer Maßnahmen<br><br>
-    subcontractor: Inanspruchnahme von Unterauftragnehmern nach Art. Art. 28 Abs. 2 und Abs. 4 DSGVO<br><br>
+    subcontractor: Inanspruchnahme von Unterauftragnehmern nach Art. Art. 28 Abs. 2 und Abs. 4 DSG EKD<br><br>
     support: Unterstützung des Verantwortlichen bei der Beantwortung von Betroffenen anfragen<br><br>
-    support3236: Unterstützung des Verantwortlichen bei den Pflichten nach Art. 32 – 36 DSGVO<br><br>
+    support3236: Unterstützung des Verantwortlichen bei den Pflichten nach Art. 32 – 36 DSG EKD<br><br>
     ending: Umgang mit personenbezogenen Daten nach Beendigung der Auftragsverarbeitung<br><br>
     audit: Zurverfügungstellung von Informationen und Ermöglichung von Überprüfungen<br><br>
     notes: Hinweispflicht<br>
@@ -34,10 +34,10 @@ dataTransfer:
   object: Gegenstand der Datenweitergabe
   word: Datenweitergabe
   responsible: Verantwortlich für die Datenweitergabe (Intern)
-  disclaimer: Alle Datenweitergaben nach DSGVO Art. 30(1)
+  disclaimer: Alle Datenweitergaben nach DSG EKD Art. 30(1)
   info:
     title: Erklärung Datenweitergabe
-    text: Die Verarbeitung von Daten im Auftrag kommt in nahezu jedem Unternehmen vor. Sei es durch die Nutzung eines externen Rechenzentrums, die Nutzung einer Dienstleistung, die als sog. Software-as-a-Service (SaaS) erbracht wird, Cloud Computing oder bestimmte Wartungen von IT-Systemen durch technische Dienstleister. In diesen Fällen liegt in der Regel eine Datenweitergabe vor. Und da gilt es besondere Maßnahmen zu treffen, um die Vorgaben der Datenschutz-Grundverordnung (DSGVO) einzuhalten.
+    text: Die Verarbeitung von Daten im Auftrag kommt in nahezu jedem Unternehmen vor. Sei es durch die Nutzung eines externen Rechenzentrums, die Nutzung einer Dienstleistung, die als sog. Software-as-a-Service (SaaS) erbracht wird, Cloud Computing oder bestimmte Wartungen von IT-Systemen durch technische Dienstleister. In diesen Fällen liegt in der Regel eine Datenweitergabe vor. Und da gilt es besondere Maßnahmen zu treffen, um die Vorgaben des DSG EKD (DSG EKD) einzuhalten.
 info: Info
 approved: Freigegebene
 approval: Freigabe
