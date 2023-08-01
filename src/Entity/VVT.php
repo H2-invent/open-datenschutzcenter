@@ -146,9 +146,6 @@ class VVT
     #[ORM\ManyToMany(targetEntity: Produkte::class, inversedBy: 'Vvts')]
     private $produkt;
 
-    private $beurteilungEintrittString;
-    private $beurteilungSchadenString;
-
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedVvts')]
     private $assignedUser;
 
@@ -168,10 +165,13 @@ class VVT
     private $source;
 
     /**
-     * @Encrypted() 
+     * @Encrypted()
      */
     #[ORM\Column(type: 'text', nullable: true)]
     private $loeschfrist;
+
+    #[ORM\Column(type: 'boolean')]
+    private $inherited = false;
 
     public function __construct()
     {
@@ -832,7 +832,19 @@ class VVT
         $this->loeschfrist = $loeschfrist;
 
         return $this;
-    } 
+    }
+
+    public function getInherited(): bool
+    {
+        return $this->inherited;
+    }
+
+    public function setInherited(bool $inherited): self
+    {
+        $this->inherited = $inherited;
+
+        return $this;
+    }
 
     public function __clone()
     {
