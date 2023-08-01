@@ -13,7 +13,6 @@
 
 {% block body %}
 
-<<<<<<< HEAD
     <table id="data-table" class="dataTable">
         <thead>
         <tr>
@@ -28,6 +27,7 @@
             <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
             <th scope="col">{% trans %}assessment{% endtrans %}</th>
             <th scope="col">{% trans from 'general' %}inheritance.fromTeam{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}inheritance.isInherited{% endtrans %}</th>
         </tr>
         </thead>
         <tbody>
@@ -51,6 +51,11 @@
                 <td>| E: {{ v.beurteilungEintrittString }}<br>| S: {{ v.beurteilungSchadenString }}</td>
                 <td{% if v.team != currentTeam %} title="{% trans from 'general' %}inheritance.infoText{% endtrans %}"{% endif %}>
                     {% if v.team != currentTeam %}{{ v.team }}{% else %}-{% endif %}
+                </td>
+                <td>
+                    {% if v.team == currentTeam %}
+                        {% if v.inherited %}✅{% else %}❌{% endif %}
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

@@ -193,6 +193,8 @@ informationObligation: Informationspflicht
 informationObligationHelp: Es sollte je Verarbeitungstätigkeit dokumentiert werden, wo und wie den Informationspflichten jeweils nachgekommen wird. Dies kann bspw. durch Verweis auf Datenschutzhinweise, Vertragsbestandteile, Disclaimer in Formularen, bei Mitarbeiterdaten z.B. auch durch Verweise bei Erhebung auf intern bekanntgemachte Betriebsvereinbarung etc. erfolgen.
 dsbComment: Kommentar der*des Datenschutzbeauftragten
 dsbCommentHelp: Neben der verpflichtenden Erfassung des Verarbeitungstätigkeitszwecks sollte zur Erfüllung der Rechenschaftpflichten gem. Art. 5 auch die Rechtsgrundlage mitsamt ggfs. erforderlicher Abwägungen, Einwilligungsklauseln und Prüfvermerken, ob bspw. die Anforderungen an Widerspruchsmöglichkeiten oder die automatisierte Einzelentscheidung berücksichtigt wurden.
+inheritedHelp: Diese Verarbeitungstätigkeit kann mit allen dazugehörigen Elementen an Kind-Teams weitervererbt werden. Kind-Teams können die geerbten Elemente für ihre eigene Dokumentation verwenden aber nicht verändern.
+inherited: Wird vererbt
 
 # delete concept
 dataCategories: Datenkategorien
