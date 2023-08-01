@@ -46,6 +46,12 @@ class VVTType extends AbstractType
         }
 
         $builder
+            ->add('inherited', CheckboxType::class, [
+                'label' => 'inherited',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'inheritedHelp'
+            ])
             ->add('nummer', TextType::class, [
                 'label' => 'procedureNumber',
                 'required' => true,

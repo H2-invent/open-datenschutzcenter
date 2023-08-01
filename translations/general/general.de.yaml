@@ -101,5 +101,6 @@ network:
     add: Im Datenflussplan anzeigen
     remove: Im Datenflussplan verstecken
 inheritance:
-  fromTeam: Von Team vererbt
+  isInherited: Wird vererbt
+  fromTeam: Geerbt von
   infoText: Dieses Element wurde durch Team-Vererbung übertragen und ist daher nicht bearbeitbar.
