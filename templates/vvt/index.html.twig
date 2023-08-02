@@ -25,8 +25,7 @@
                     <th scope="col">{% trans from 'general' %}product{% endtrans %}</th>
                     <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
                     <th scope="col">{% trans %}assessment{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}inheritance.fromTeam{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}inheritance.isInherited{% endtrans %}</th>
+                    {% include 'base/__inheritanceTHeaders.html.twig' with {currentTeam:currentTeam} %}
                 </tr>
                 </thead>
                 <tbody>
@@ -48,14 +47,8 @@
                             {% endif %}
                         </td>
                         <td>| E: {{ v.beurteilungEintrittString }}<br>| S: {{ v.beurteilungSchadenString }}</td>
-                        <td{% if v.team != currentTeam %} title="{% trans from 'general' %}inheritance.infoText{% endtrans %}"{% endif %}>
-                            {% if v.team != currentTeam %}{{ v.team }}{% endif %}
-                        </td>
-                        <td>
-                            {% if v.team == currentTeam %}
-                                {% if v.inherited %}✅{% else %}❌{% endif %}
-                            {% endif %}
-                        </td>
+                        {% set used = v not in currentTeam.ignoredInheritances %}
+                        {% include 'base/__inheritanceTCols.html.twig' with {team:v.team, currentTeam:currentTeam, used:used, inherited:v.inherited, domain:'vvt'} %}
                     </tr>
                 {% endfor %}
                 </tbody>

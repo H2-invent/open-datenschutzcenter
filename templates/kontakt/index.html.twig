@@ -18,7 +18,7 @@
                     <th scope="col">{% trans from 'general' %}name{% endtrans %}</th>
                     <th scope="col">{% trans %}location{% endtrans %}</th>
                     <th scope="col">{% trans %}function{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}inheritance.fromTeam{% endtrans %}</th>
+                    {% include 'base/__inheritanceTHeaders.html.twig' with {currentTeam:currentTeam} %}
                 </tr>
                 </thead>
                 <tbody>
@@ -35,9 +35,9 @@
                                 {% trans %}contractor{% endtrans %}
                             {% endif %}
                         </td>
-                        <td{% if k.team != currentTeam %} title="{% trans from 'general' %}inheritance.infoText{% endtrans %}"{% endif %}>
-                            {% if k.team != currentTeam %}{{ k.team }}{% else %}-{% endif %}
-                        </td>
+                        {% set inherited = contactInherited(k) %}
+                        {% set used = teamUsesContact(currentTeam, k) %}
+                        {% include 'base/__inheritanceTCols.html.twig' with {team:k.team, currentTeam:currentTeam, inherited:inherited, used:used} %}
                     </tr>
                 {% endfor %}
                 </tbody>
