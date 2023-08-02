@@ -204,6 +204,10 @@ class Team
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Team::class)]
     private $children;
 
+    // inherited VVTs can be deactivated for individual child teams
+    #[ORM\ManyToMany(targetEntity: VVT::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredInheritances;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
@@ -230,6 +234,7 @@ class Team
         $this->vVTRisikens = new ArrayCollection();
         $this->vVTGrundlages = new ArrayCollection();
         $this->vVTStatuses = new ArrayCollection();
+        $this->ignoredInheritances = new ArrayCollection();
         $this->datenweitergabeGrundlagens = new ArrayCollection();
         $this->datenweitergabeStands = new ArrayCollection();
         $this->loeschkonzepts = new ArrayCollection();
@@ -1364,5 +1369,33 @@ class Team
     public function getChildren(): ?Collection
     {
         return $this->children;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredInheritances(): Collection
+    {
+        return $this->ignoredInheritances;
+    }
+
+    public function addIgnoredInheritance(VVT $vvt): self
+    {
+        if (!$this->ignoredInheritances->contains($vvt)) {
+            $this->ignoredInheritances[] = $vvt;
+            $vvt->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredInheritance(VVT $vvt): self
+    {
+        if ($this->ignoredInheritances->contains($vvt)) {
+            $this->ignoredInheritances->removeElement($vvt);
+            $vvt->removeIgnoredInTeam($this);
+        }
+
+        return $this;
     }
 }
