@@ -838,7 +838,7 @@ class VVT
         return $this;
     }
 
-    public function getInherited(): bool
+    public function isInherited(): bool
     {
         return $this->inherited;
     }
