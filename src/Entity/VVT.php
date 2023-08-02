@@ -173,6 +173,10 @@ class VVT
     #[ORM\Column(type: 'boolean')]
     private $inherited = false;
 
+    // inherited VVTs can be deactivated for individual child teams
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'ignoredInheritances')]
+    private $ignoredInTeams;
+
     public function __construct()
     {
         $this->grundlage = new ArrayCollection();
@@ -842,6 +846,32 @@ class VVT
     public function setInherited(bool $inherited): self
     {
         $this->inherited = $inherited;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredInTeams(): Collection
+    {
+        return $this->ignoredInTeams;
+    }
+
+    public function addIgnoredInTeam(Team $team): self
+    {
+        if (!$this->ignoredInTeams->contains($team)) {
+            $this->ignoredInTeams[] = $team;
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredInTeam(Team $team): self
+    {
+        if ($this->ignoredInTeams->contains($team)) {
+            $this->ignoredInTeams->removeElement($team);
+        }
 
         return $this;
     }
