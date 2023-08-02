@@ -14,7 +14,7 @@ final class Version20230704152545 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add team hierarchie';
     }
 
     public function up(Schema $schema): void
@@ -45,5 +45,16 @@ final class Version20230704152545 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_C4E0A61FA977936C ON team');
         $this->addSql('DROP INDEX IDX_C4E0A61F727ACA70 ON team');
         $this->addSql('ALTER TABLE team DROP tree_root, DROP parent_id, DROP lvl, DROP lft, DROP rgt');
+    }
+
+    public function postUp(Schema $schema): void
+    {
+        $this->connection->createQueryBuilder()
+            ->update('team', 't')
+            ->set('t.tree_root', 't.id')
+            ->set('t.lvl', 0)
+            ->set('t.lft', 1)
+            ->set('t.rgt', 2)
+            ->executeStatement();
     }
 }
