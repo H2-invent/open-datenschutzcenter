@@ -1,0 +1,21 @@
+{% trans_default_domain domain|default('general') %}
+{% if currentTeam.children.count %}{# hide column in leaf teams #}
+    <td>
+        {% if team == currentTeam %}
+            {% if inherited %}✅{% else %}❌{% endif %}
+        {% endif %}
+    </td>
+{% endif %}
+
+{% if currentTeam.root != currentTeam %}{# hide columns in root teams #}
+    <td{% if team != currentTeam %} title="{% trans %}inheritance.infoText.fromTeam{% endtrans %}"{% endif %}>
+        {% if team != currentTeam %}{{ team }}{% else %}{% endif %}
+    </td>
+    {% if team != currentTeam and used %}
+        <td title="{% trans %}inheritance.infoText.inactive{% endtrans %}">✅</td>
+    {% elseif team != currentTeam %}
+        <td title="{% trans %}inheritance.infoText.active{% endtrans %}">❌</td>
+    {% else %}
+        <td></td>
+    {% endif %}
+{% endif %}

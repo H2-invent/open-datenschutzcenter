@@ -95,3 +95,8 @@ dataPrivacyFollowUpEstimation:
   description: Beschreibung der Datenschutzfolgeabschätzung
 dsbStatement: Stellungnahme des DSB in der Datenschutzfolgeabschätzung
 additionalStands: Weitere Standpunkte (z.B. Betriebsrat)
+inheritance:
+  infoText:
+    fromTeam: Von einem übergeordneten Team vererbt (kann nicht bearbeitet werden)
+    active: Gerbte Verarbeitung - für dieses Team aktiv
+    inactive: Gerbte Verarbeitung - für dieses Team deaktiviert

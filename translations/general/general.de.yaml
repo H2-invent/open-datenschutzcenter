@@ -103,4 +103,8 @@ network:
 inheritance:
   isInherited: Wird vererbt
   fromTeam: Geerbt von
-  infoText: Dieses Element wurde durch Team-Vererbung übertragen und ist daher nicht bearbeitbar.
+  isActive: Aktiv
+  infoText:
+    fromTeam: Abhängigkeit einer geerbten Vearbeitung (kann nicht bearbeitet werden)
+    active: Gerbtes Element - für dieses Team aktiv
+    inactive: Gerbtes Element - für dieses Team deaktiviert
