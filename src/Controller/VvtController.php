@@ -21,9 +21,11 @@ use App\Service\VVTDatenkategorieService;
 use App\Service\VVTService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -296,6 +298,7 @@ class VvtController extends AbstractController
             'activNummer' => false,
             'snack' => $request->get('snack'),
             'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -428,5 +431,40 @@ class VvtController extends AbstractController
             'activ' => $dsfa->getActiv(),
             'isEditable' => true,
         ]);
+    }
+
+    #[Route(path: '/vvt/ignore', name: 'vvt_set_ignored')]
+    public function setVvtIgnored(
+        Request               $request,
+        UrlGeneratorInterface $urlGenerator,
+        TeamRepository        $teamRepository,
+        VVTRepository         $vvtRepository,
+    ): RedirectResponse
+    {
+        $team = $request->get('team');
+        $vvt = $request->get('vvt');
+        $active = $request->get('set');
+
+        if (is_numeric($team)) {
+            $team = $teamRepository->find($team);
+        }
+
+        if (is_numeric($vvt)) {
+            $vvt = $vvtRepository->find($vvt);
+        }
+
+        if($team && $vvt) {
+            if ($active) {
+                $team->removeIgnoredInheritance($vvt);
+            } else {
+                $team->addIgnoredInheritance($vvt);
+            }
+            $this->em->persist($vvt);
+            $this->em->persist($team);
+            $this->em->flush();
+        }
+
+        $referer = $request->headers->get('referer');
+        return new RedirectResponse($referer ?: $urlGenerator->generate('dashboard'));
     }
 }
