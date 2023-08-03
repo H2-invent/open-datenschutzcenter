@@ -106,5 +106,9 @@ inheritance:
   isActive: Aktiv
   infoText:
     fromTeam: Abhängigkeit einer geerbten Vearbeitung (kann nicht bearbeitet werden)
-    active: Gerbtes Element - für dieses Team aktiv
-    inactive: Gerbtes Element - für dieses Team deaktiviert
+    active:
+      short: Gerbtes Element - für dieses Team aktiv
+      long: Dieses Element ist eine Abhängigkeit einer Verarbeitung, die von einem übergeordneten Team vererbt wurde. Es kann in diesem Team verwendet aber nicht bearbeitet werden.
+    inactive:
+      short: Gerbtes Element - für dieses Team deaktiviert
+      long: Dieses Element ist eine Abhängigkeit einer Verarbeitung, die von einem übergeordneten Team vererbt wurde. Diese ist jedoch für dieses Team deaktiviert.

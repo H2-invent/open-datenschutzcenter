@@ -34,6 +34,9 @@
         <a href="{{ path('bericht_vvt', {'id':vvt.id, 'min':1}) }}" class="btn">
             <span>{% trans %}pdf.createExternal{% endtrans %}</span>
         </a>
+        {% if not isEditable %}
+            {{ include('vvt/__ignoreInheritanceBtn.html.twig',{'process':vvt,'team':currentTeam}) }}
+        {% endif %}
         {% if isEditable %}
             {{ include('base/__approveBtn.html.twig',{'data':vvt,'dataLink':'vvt_approve'}) }}
             {{ include('base/__disableBtn.html.twig',{'data':vvt,'dataLink':'vvt_disable'}) }}
@@ -59,6 +62,9 @@
             </a>
         </div>
     {% endif %}
+    {% set used = vvt not in currentTeam.ignoredInheritances %}
+    {% include 'base/__inheritanceInfo.html.twig' with {team:vvt.team, currentTeam:currentTeam, used:used, inherited:vvt.inherited, domain:'vvt'} %}
+
     {{ include('vvt/__form.html.twig') }}
     <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ vvt.user.email }}</p>
     {% if vvt.previous %}
