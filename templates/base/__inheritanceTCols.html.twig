@@ -12,9 +12,9 @@
         {% if team != currentTeam %}{{ team }}{% else %}{% endif %}
     </td>
     {% if team != currentTeam and used %}
-        <td title="{% trans %}inheritance.infoText.inactive{% endtrans %}">✅</td>
+        <td title="{% trans %}inheritance.infoText.active.short{% endtrans %}">✅</td>
     {% elseif team != currentTeam %}
-        <td title="{% trans %}inheritance.infoText.active{% endtrans %}">❌</td>
+        <td title="{% trans %}inheritance.infoText.inactive.short{% endtrans %}">❌</td>
     {% else %}
         <td></td>
     {% endif %}

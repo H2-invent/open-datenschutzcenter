@@ -96,7 +96,14 @@ dataPrivacyFollowUpEstimation:
 dsbStatement: Stellungnahme des DSB in der Datenschutzfolgeabschätzung
 additionalStands: Weitere Standpunkte (z.B. Betriebsrat)
 inheritance:
+  setInactive: Für dieses Team deaktivieren
+  setActive: Für dieses Team aktivieren
   infoText:
+    inherited: Diese Verarbeitung wird vererbt. Sie kann von Kind-Teams verwendet aber nicht bearbeitet werden.
     fromTeam: Von einem übergeordneten Team vererbt (kann nicht bearbeitet werden)
-    active: Gerbte Verarbeitung - für dieses Team aktiv
-    inactive: Gerbte Verarbeitung - für dieses Team deaktiviert
+    active:
+      short: Gerbte Verarbeitung - für dieses Team aktiv
+      long: Die Verarbeitung wurde mit allen zugehörigen Elementen von einem übergeordneten Team vererbt. Sie kann in diesem Team verwendet aber nicht bearbeitet werden.
+    inactive:
+      short: Gerbte Verarbeitung - für dieses Team deaktiviert
+      long: Die Verarbeitung wurde mit allen zugehörigen Elementen von einem übergeordneten Team vererbt, diese sind jedoch für dieses Team deaktiviert.
