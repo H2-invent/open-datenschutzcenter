@@ -53,6 +53,7 @@
     {% if vvt.activDsfa is not null %}<h3>{% trans %}dsfa.exists{% endtrans %}</h3>{% endif %}
     {% set used = vvt not in currentTeam.ignoredInheritances %}
     {% include 'base/__inheritanceInfo.html.twig' with {team:vvt.team, currentTeam:currentTeam, used:used, inherited:vvt.inherited, domain:'vvt'} %}
+    {% include 'base/__flashMessage.html.twig' with {app:app} %}
 
     {{ include('vvt/__form.html.twig') }}
     <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ vvt.user.email }}</p>
