@@ -16,6 +16,7 @@ use App\Entity\VVT;
 use App\Entity\VVTDatenkategorie;
 use App\Entity\VVTPersonen;
 use App\Form\Type\PolicyType;
+use App\Repository\VVTRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -23,13 +24,12 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class PoliciesService
 {
-    private $em;
-    private $formBuilder;
-
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder)
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly FormFactoryInterface   $formBuilder,
+        private readonly VVTRepository          $processRepository,
+    )
     {
-        $this->em = $entityManager;
-        $this->formBuilder = $formBuilder;
     }
 
     function clonePolicy(Policies $policy, User $user)
@@ -50,12 +50,12 @@ class PoliciesService
             $teamPath = $this->em->getRepository(Team::class)->getPath($team);
             $personen = $this->em->getRepository(VVTPersonen::class)->findByTeamPath($teamPath);
             $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeamPath($teamPath);
-            $processes = $this->em->getRepository(VVT::class)->findActiveByTeamPath($teamPath);
         } else {
             $personen = $this->em->getRepository(VVTPersonen::class)->findByTeam($team);
             $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
-            $processes = $this->em->getRepository(VVT::class)->findActiveByTeam($team);
         }
+
+        $processes = $this->processRepository->findActiveByTeam($team);
 
         return $this->formBuilder->create(PolicyType::class, $policies, array_merge([
             'personen' => $personen,
