@@ -49,3 +49,4 @@ manageTeams: Teams verwalten
 teamAdminArea: Team Adminbereich
 superAdminArea: ODC Adminbereich
 dsfa: DSFA
+assignError: Die Zuweisung ist fehlgeschlagen. Wenden Sie sich an Ihren Admin wenn das Problem bestehen bleibt.
