@@ -196,6 +196,23 @@ dsbCommentHelp: Neben der verpflichtenden Erfassung des Verarbeitungstätigkeits
 inheritedHelp: Diese Verarbeitungstätigkeit kann mit allen dazugehörigen Elementen an Kind-Teams weitervererbt werden. Kind-Teams können die geerbten Elemente für ihre eigene Dokumentation verwenden aber nicht verändern.
 inherited: Wird vererbt
 
+# dpia/dsfa
+dpiaDescription:
+  label: Systematische Beschreibung der geplanten Verarbeitungsvorgänge
+  help: Welche Verarbeitung ist geplant?, Welche Zuständigkeiten bestehen für die Verarbeitung?, Gibt es Normen oder Standards für die Verarbeitung?, Welche Daten werden verarbeitetet?, Wie verläuft der Lebenszyklus von Daten und Prozessen?, Mit Hilfe welcher Betriebsmittel erfolgt die Datenverarbeitung?
+needAssessment:
+  label: Bewertung der Notwendigkeit
+  help: Sind die Verarbeitungszwecke eindeutig definiert und rechtmäßig?, Aufgrund welcher Rechtsgrundlage erfolgt die Verarbeitung?, Sind die erhobenen Daten erforderlich, relevant und auf das für die Datenverarbeitung Notwendige beschränkt?, Sind die Daten korrekt und auf dem neuesten Stand?
+riskAssessment:
+  label: Bewertung der Risiken
+  help: Was sind die Hauptbedrohungen, die zu dem Risiko führen könnten?, Was sind die Risikoquellen?, Was könnten die wesentlichen Auswirkungen für die betroffenen Personen sein, wenn das Risiko eintritt?
+correctiveActions:
+  label: Zur Bewältigung der Risiken geplante Abhilfemaßnahmen (Garantie, Sicherheitskopien,...)
+  help: Datentrennung, Datensicherung, Verschlüsselung, Anonymisierung, Datentrennung, Zugangskontrolle, Zugriffskontrolle, Protokollierung, Archivierung, Datenminimierung, Betriebssicherheit, Papierdokumentensicherung
+positionOtherInstitutions: Standpunkt von weiteren Organen (z.B. Betriebsrat)
+positionDataProtectionOfficer: Standpunkt des Datenschutzbeauftragten
+dpiaResult: Ergebnis der Datenschutz-Folgenabschätzung
+
 # delete concept
 dataCategories: Datenkategorien
 standardDeleteDeadline: Standard Löschfrist
