@@ -18,6 +18,7 @@ use App\Entity\User;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Form\Type\DatenweitergabeType;
+use App\Repository\VVTRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -30,10 +31,10 @@ class DatenweitergabeService
     const PREFIX_TRANSFER = 'DW-';
 
     public function __construct(
-        private EntityManagerInterface $em,
-        private FormFactoryInterface   $formBuilder,
-        private CurrentTeamService     $currentTeamService,
-
+        private readonly EntityManagerInterface $em,
+        private readonly FormFactoryInterface   $formBuilder,
+        private readonly CurrentTeamService     $currentTeamService,
+        private readonly VVTRepository          $processRepository,
     )
     {
     }
@@ -66,20 +67,20 @@ class DatenweitergabeService
             $teamPath = $this->em->getRepository(Team::class)->getPath($team);
             $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeamPath($teamPath);
             $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeamPath($teamPath);
-            $verfahren = $this->em->getRepository(VVT::class)->findActiveByTeamPath($teamPath);
             $software = $this->em->getRepository(Software::class)->findActiveByTeamPath($teamPath);
         } else {
             $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeam($team);
             $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeam($team);
-            $verfahren = $this->em->getRepository(VVT::class)->findBy(array('team' => $team, 'activ' => true));
             $software = $this->em->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true));
         }
+
+        $processes = $this->processRepository->findActiveByTeam($team);
 
         return $this->formBuilder->create(DatenweitergabeType::class, $datenweitergabe, array_merge([
             'stand' => $stand,
             'grundlage' => $grundlagen,
             'kontakt' => $team->getKontakte(),
-            'verfahren' => $verfahren,
+            'verfahren' => $processes,
             'software' => $software
         ], $options));
     }
