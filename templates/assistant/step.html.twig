@@ -8,15 +8,7 @@
             <div class="alert alert-info" role="alert">
                 <p>{{ info }}</p>
             </div>
-            {% if app.request.hasPreviousSession %}
-                {% for type, messages in app.session.flashbag.all() %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ type }}" role="alert">
-                            {{ message | trans }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            {% endif %}
+            {% include 'base/__flashMessage.html.twig' with {app:app, domain:'assistant'} %}
             {% if select %}
                 <form name="select" method="post" action="{{ path('assistant_select') }}" class="select-container row mb-2">
                     <div class="col-md-4 pt-3 mb-3">
