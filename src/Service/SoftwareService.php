@@ -14,9 +14,9 @@ use App\Entity\Software;
 use App\Entity\SoftwareConfig;
 use App\Entity\Team;
 use App\Entity\User;
-use App\Entity\VVT;
 use App\Form\Type\SoftwareConfigType;
 use App\Form\Type\SoftwareType;
+use App\Repository\VVTRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -25,13 +25,13 @@ use Symfony\Component\Form\FormInterface;
 
 class SoftwareService
 {
-    private $em;
-    private $formBuilder;
 
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder)
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly FormFactoryInterface   $formBuilder,
+        private readonly VVTRepository          $processRepository,
+    )
     {
-        $this->em = $entityManager;
-        $this->formBuilder = $formBuilder;
     }
 
     public function cloneSoftware(Software $software, User $user): Software
@@ -55,12 +55,12 @@ class SoftwareService
     {
         if (isset($options['disabled']) && $options['disabled']) {
             $teamPath = $this->em->getRepository(Team::class)->getPath($team);
-            $processes = $this->em->getRepository(VVT::class)->findActiveByTeamPath($teamPath);
             $data = $this->em->getRepository(Datenweitergabe::class)->findActiveTransfersByTeamPath($teamPath);
         } else {
-            $processes = $this->em->getRepository(VVT::class)->findActiveByTeam($team);
             $data = $this->em->getRepository(Datenweitergabe::class)->findBy(['team' => $team, 'activ' => true, 'art' => 1]);
         }
+
+        $processes = $this->processRepository->findActiveByTeam($team);
 
         return $this->formBuilder->create(SoftwareType::class, $software, array_merge([
             'processes' => $processes,

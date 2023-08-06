@@ -367,16 +367,14 @@ class VvtController extends AbstractController
         SecurityService    $securityService,
         Request            $request,
         CurrentTeamService $currentTeamService,
-        VVTRepository      $vvtRepository,
-        TeamRepository     $teamRepository
+        VVTRepository      $vvtRepository
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $teamPath = $teamRepository->getPath($team);
-        $vvt = $vvtRepository->findActiveByTeamPath($teamPath);
+        $vvt = $vvtRepository->findAllByTeam($team);
 
         return $this->render('vvt/index.html.twig', [
             'vvt' => $vvt,
