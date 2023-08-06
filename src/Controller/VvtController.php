@@ -362,6 +362,7 @@ class VvtController extends BaseController
             'dsfa' => $dsfa,
             'activ' => $dsfa->getActiv(),
             'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
