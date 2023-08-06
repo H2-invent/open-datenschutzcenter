@@ -11,6 +11,8 @@
             {% if assignForm is defined and isEditable %}{{ include('assign/__assign.html.twig',{'data':dsfa,'path':'assign_dsfa'}) }}{% endif %}
         </div>
         <div class="col-12">
+            {% set used = dsfa.vvt not in currentTeam.ignoredInheritances %}
+            {% include 'base/__inheritanceInfo.html.twig' with {team:dsfa.vvt.team, currentTeam:currentTeam, used:used, inherited:dsfa.vvt.inherited} %}
             {% include 'base/__flashMessage.html.twig' with {app:app} %}
         </div>
     </div>

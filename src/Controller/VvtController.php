@@ -359,6 +359,7 @@ class VvtController extends AbstractController
             'activ' => $dsfa->getActiv(),
             'snack' => $request->get('snack'),
             'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 

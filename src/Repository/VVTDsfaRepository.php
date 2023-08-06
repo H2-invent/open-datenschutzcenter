@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Team;
 use App\Entity\VVTDsfa;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,62 +16,53 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class VVTDsfaRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly TeamRepository $teamRepository,
+    )
     {
         parent::__construct($registry, VVTDsfa::class);
     }
 
-    public function findActiveByTeam($value)
+    public function findActiveByTeam(Team $team)
     {
-        return $this->createQueryBuilder('a')
-            ->innerJoin('a.vvt', 'v')
-            ->andWhere('a.activ = 1')
-            ->andWhere('v.team = :val')
-            ->andWhere('v.activ = 1')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function findActiveByTeamPath(array $teamPath)
-    {
-        return $this->createQueryBuilder('a')
-            ->innerJoin('a.vvt', 'v')
-            ->andWhere('a.activ = 1')
-            ->andWhere('v.team IN (:teamPath)')
-            ->andWhere('v.activ = 1')
-            ->setParameter('teamPath', $teamPath)
-            ->getQuery()
-            ->getResult()
-            ;
+        $queryBuilder = $this->getBaseQueryBuilder($team);
+        return $queryBuilder->getQuery()->getResult();
     }
 
     public function findActiveAndOpenByTeam($team) {
-        return $this->createQueryBuilder('dsfa')
-            ->innerJoin('dsfa.vvt', 'vvt')
-            ->andWhere('vvt.activ = 1')
-            ->andWhere('dsfa.activ = 1')
-            ->andWhere('dsfa.dsb IS NULL OR dsfa.ergebnis IS NULL')
-            ->andWhere('vvt.team = :team')
-            ->setParameter('team', $team)
-            ->getQuery()
-            ->getResult();
+        $queryBuilder = $this->getBaseQueryBuilder($team);
+        $queryBuilder->andWhere('a.dsb IS NULL OR a.ergebnis IS NULL');
+        return $queryBuilder->getQuery()->getResult();
     }
 
     public function findActiveByTeamAndUser($team, $user)
     {
-        $query = $this->createQueryBuilder('dsfa')
-            ->innerJoin('dsfa.vvt', 'vvt')
-            ->andWhere('dsfa.assignedUser = :user')
-            ->andWhere('vvt.team = :team')
-            ->andWhere('vvt.activ = 1')
-            ->andWhere('dsfa.activ = 1')
-            ->setParameter('user', $user)
-            ->setParameter('team', $team)
-            ->getQuery()
-            ->getResult();
+        $queryBuilder = $this->getBaseQueryBuilder($team);
+        $queryBuilder
+            ->andWhere('a.assignedUser = :user')
+            ->setParameter('user', $user);
+        return $queryBuilder->getQuery()->getResult();
+    }
 
-        return $query;
+    private function getBaseQueryBuilder(Team $team) :QueryBuilder
+    {
+        $teamPath = $this->teamRepository->getPath($team);
+        $ignored = $team->getIgnoredInheritances();
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->innerJoin('a.vvt', 'process')
+            ->andWhere('process.activ = 1')
+            ->andWhere('a.activ = 1')
+            ->andWhere('process.team IN (:teamPath)')
+            ->andWhere('process.team = :team OR process.inherited = 1')
+            ->setParameter('teamPath', $teamPath)
+            ->setParameter('team', $team)
+            ;
+        if (count($ignored)) {
+            $queryBuilder
+                ->andWhere('process NOT IN (:ignored)')
+                ->setParameter('ignored', $ignored);
+        }
+        return $queryBuilder;
     }
 }

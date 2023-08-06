@@ -85,7 +85,7 @@ class DashboardController extends AbstractController
         $daten = $transferRepository->findActiveTransfersByTeamPath($teamPath);
         $av = $transferRepository->findActiveOrderProcessingsByTeamPath($teamPath);
         $processes = $processRepository->findActiveByTeam($currentTeam);
-        $vvtDsfa = $impactAssessmentRepository->findActiveByTeamPath($teamPath);
+        $vvtDsfa = $impactAssessmentRepository->findActiveByTeam($currentTeam);
         $kontakte = $contactRepository->findActiveByTeamPath($teamPath);
         $tom = $tomRepository->findActiveByTeamPath($teamPath);
         $forms = $formRepository->findPublicByTeam($currentTeam);

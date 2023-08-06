@@ -222,7 +222,7 @@ class AssignController extends AbstractController
     #[Route(path: '', name: '')]
     public function index(CurrentTeamService        $currentTeamService,
                           DatenweitergabeRepository $transferRepository,
-                          VVTRepository             $processingRepository,
+                          VVTRepository             $processRepository,
                           AuditTomRepository        $auditRepository,
                           VVTDsfaRepository         $impactAssessmentRepository,
                           FormsRepository           $formRepository,
@@ -234,9 +234,9 @@ class AssignController extends AbstractController
         $user = $this->getUser();
         $currentTeam = $currentTeamService->getCurrentTeam($user);
         $assignedDataTransfers = $transferRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignedProcessings = $processingRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedProcesses = $processRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedAudits = $auditRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignImpactAssessments = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedImpactAssessments = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedForms = $formRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedPolicies = $policyRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedSoftware = $softwareRepository->findActiveByTeamAndUser($currentTeam, $user);
@@ -245,9 +245,9 @@ class AssignController extends AbstractController
         return $this->render('assign/index.html.twig', [
             'currentTeam' => $currentTeam,
             'dataTransfers' => $assignedDataTransfers,
-            'processings' => $assignedProcessings,
+            'processes' => $assignedProcesses,
             'audits' => $assignedAudits,
-            'impactAssessments' => $assignImpactAssessments,
+            'impactAssessments' => $assignedImpactAssessments,
             'forms' => $assignedForms,
             'policies' => $assignedPolicies,
             'software' => $assignedSoftware,
