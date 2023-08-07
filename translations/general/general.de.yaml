@@ -105,6 +105,7 @@ inheritance:
   fromTeam: Geerbt von
   isActive: Aktiv
   infoText:
+    inherited: Dieses Element ist eine Abhängigkeit einer Verarbeitung, die vererbt wird. Es kann von Kind-Teams verwendet aber nicht bearbeitet werden.
     fromTeam: Abhängigkeit einer geerbten Vearbeitung (kann nicht bearbeitet werden)
     active:
       short: Gerbtes Element - für dieses Team aktiv

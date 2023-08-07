@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Team;
 use App\Entity\Tom;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,59 +16,47 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TomRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly TeamRepository $teamRepository,
+    )
     {
         parent::__construct($registry, Tom::class);
     }
 
-    // /**
-    //  * @return Tom[] Returns an array of Tom objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findActiveByTeam(Team $team)
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $queryBuilder = $this->getBaseQueryBuilder($team);
+        $this->excludeIgnored($team, $queryBuilder);
+        return $queryBuilder->getQuery()->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Tom
+    public function findAllByTeam(Team $team)
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $queryBuilder = $this->getBaseQueryBuilder($team);
+        return $queryBuilder->getQuery()->getResult();
     }
-    */
 
-    public function findActiveByTeam($value)
+    private function excludeIgnored(Team $team, QueryBuilder $queryBuilder) :void
     {
+        $ignored = $team->getIgnoredInheritances();
+        if (count($ignored)) {
+            $queryBuilder
+                ->andWhere('process NOT IN (:ignored)')
+                ->setParameter('ignored', $ignored);
+        }
+    }
+
+    private function getBaseQueryBuilder(Team $team) :QueryBuilder
+    {
+        $teamPath = $this->teamRepository->getPath($team);
+
         return $this->createQueryBuilder('a')
-            ->andWhere('a.team = :val AND a.activ = 1')
-            ->setParameter('val', $value)
-            ->orderBy('a.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function findActiveByTeamPath(array $teamPath)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team IN (:teamPath) AND a.activ = 1')
+            ->innerJoin('a.vvts', 'process')
+            ->andWhere('a.team = :team OR (process.team = :team OR process.inherited = 1) AND process.activ = 1 AND process.team IN (:teamPath)')
             ->setParameter('teamPath', $teamPath)
+            ->setParameter('team', $team)
             ->orderBy('a.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult()
             ;
     }
 }
