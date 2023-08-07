@@ -18,6 +18,11 @@
     <h2 class="h2-responsive">{{ tom.titel }} - {{ title }}</h2>
     {{ include('base/__approvedBy.html.twig', {'data':tom}) }}
 
+    {% set inherited = tomInherited(tom) %}
+    {% set used = teamUsesTom(currentTeam, tom) %}
+    {% include 'base/__inheritanceInfo.html.twig' with {team:tom.team, currentTeam:currentTeam, used:used, inherited:inherited} %}
+    {% include 'base/__flashMessage.html.twig' with {app:app} %}
+
     <div class="card card-body">
         {{ include('tom/__form.html.twig') }}
     </div>

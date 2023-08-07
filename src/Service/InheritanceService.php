@@ -21,14 +21,12 @@ class InheritanceService
 
     public function checkSoftwareIsInherited(Software $software): bool
     {
-        // TODO: implement
-        return true;
+        return  $this->softwareRepository->findIsInheritedById($software->getId());
     }
 
     public function checkTeamUsesSoftware(Team $team, Software $software): bool
     {
-        // TODO: implement
-        return true;
+        return $this->softwareRepository->findIsUsedByTeamAndId($team, $software->getId());
     }
 
     public function checkTomIsInherited(Tom $tom): bool
@@ -73,6 +71,7 @@ class InheritanceService
         return $this->isUsedByTeamInCollection(team: $team, processes: $transfer->getVerfahren());
     }
 
+    // if there is a process in this collection which is inherited, return true
     private function isInheritedProcessInCollection(Collection $processes): bool
     {
         foreach($processes as $process) {
@@ -83,13 +82,14 @@ class InheritanceService
         return false;
     }
 
+    // if there is a process in the collection which is not ignored, return true
     private function isUsedByTeamInCollection(Team $team, Collection $processes): bool
     {
         foreach($processes as $process) {
-            if ($team->getIgnoredInheritances()->contains($process)) {
-                return false;
+            if ($process->getActiv() && !$team->getIgnoredInheritances()->contains($process)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }

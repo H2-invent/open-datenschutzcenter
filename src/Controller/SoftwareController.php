@@ -290,7 +290,6 @@ class SoftwareController extends AbstractController
         Request            $request,
         CurrentTeamService $currentTeamService,
         SoftwareRepository $softwareRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         //Request: snack: Snack Notice
@@ -298,8 +297,7 @@ class SoftwareController extends AbstractController
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $teamPath = $teamRepository->getPath($team);
-        $software = $softwareRepository->findActiveByTeamPath($teamPath);
+        $software = $softwareRepository->findAllByTeam($team);
 
         return $this->render('software/index.html.twig', [
             'data' => $software,

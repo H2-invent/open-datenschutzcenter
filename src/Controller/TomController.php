@@ -215,7 +215,6 @@ class TomController extends AbstractController
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
         TomRepository      $tomRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -223,8 +222,7 @@ class TomController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $teamPath = $teamRepository->getPath($team);
-        $tom = $tomRepository->findActiveByTeamPath($teamPath);
+        $tom = $tomRepository->findAllByTeam($team);
 
         return $this->render('tom/index.html.twig', [
             'tom' => $tom,

@@ -87,10 +87,10 @@ class DashboardController extends AbstractController
         $processes = $processRepository->findActiveByTeam($currentTeam);
         $vvtDsfa = $impactAssessmentRepository->findActiveByTeam($currentTeam);
         $kontakte = $contactRepository->findActiveByTeamPath($teamPath);
-        $tom = $tomRepository->findActiveByTeamPath($teamPath);
+        $tom = $tomRepository->findActiveByTeam($currentTeam);
         $forms = $formRepository->findPublicByTeam($currentTeam);
         $policies = $policyRepository->findPublicByTeamPath($teamPath);
-        $software = $softwareRepository->findActiveByTeamPath($teamPath);
+        $software = $softwareRepository->findActiveByTeam($currentTeam);
         $tasks = $taskRepository->findActiveAndOpenByTeam($currentTeam);
         $loeschkonzepte = $deletionConceptRepository->findByTeam($currentTeam);
         $vvtdatenkategorien = $dataCategoryRepository->findByTeam($currentTeam);

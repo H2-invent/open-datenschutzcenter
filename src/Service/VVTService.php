@@ -24,6 +24,8 @@ use App\Entity\VVTPersonen;
 use App\Entity\VVTRisiken;
 use App\Entity\VVTStatus;
 use App\Form\Type\VVTType;
+use App\Repository\SoftwareRepository;
+use App\Repository\TomRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -31,13 +33,13 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class VVTService
 {
-    private $em;
-    private $formBuilder;
-
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder)
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly FormFactoryInterface $formBuilder,
+        private TomRepository $tomRepository,
+        private SoftwareRepository $softwareRepository,
+    )
     {
-        $this->em = $entityManager;
-        $this->formBuilder = $formBuilder;
     }
 
     function cloneDsfa(VVTDsfa $dsfa, User $user)
@@ -71,10 +73,8 @@ class VVTService
             $risiken = $this->em->getRepository(VVTRisiken::class)->findByTeam($team);
             $grundlagen = $this->em->getRepository(VVTGrundlage::class)->findByTeam($team);
             $daten = $this->em->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true));
-            $tom = $this->em->getRepository(Tom::class)->findBy(array('team' => $team, 'activ' => true));
             $abteilung = $this->em->getRepository(AuditTomAbteilung::class)->findBy(array('team' => $team, 'activ' => true));
             $produkte = $this->em->getRepository(Produkte::class)->findActiveByTeam($team);
-            $software = $this->em->getRepository(Software::class)->findActiveByTeam($team);
         } else {
             $teamPath = $this->em->getRepository(Team::class)->getPath($team);
             $status = $this->em->getRepository(VVTStatus::class)->findActiveByTeamPath($teamPath);
@@ -83,11 +83,11 @@ class VVTService
             $risiken = $this->em->getRepository(VVTRisiken::class)->findByTeamPath($teamPath);
             $grundlagen = $this->em->getRepository(VVTGrundlage::class)->findByTeamPath($teamPath);
             $daten = $this->em->getRepository(Datenweitergabe::class)->findActiveByTeamPath($teamPath);
-            $tom = $this->em->getRepository(Tom::class)->findActiveByTeamPath($teamPath);
             $abteilung = $this->em->getRepository(AuditTomAbteilung::class)->findActiveByTeamPath($teamPath);
             $produkte = $this->em->getRepository(Produkte::class)->findActiveByTeamPath($teamPath);
-            $software = $this->em->getRepository(Software::class)->findActiveByTeamPath($teamPath);
         }
+        $tom = $this->tomRepository->findActiveByTeam($team);
+        $software = $this->softwareRepository->findActiveByTeam($team);
 
         return $this->formBuilder->create(VVTType::class, $VVT, array_merge(
             [
