@@ -20,6 +20,9 @@
 {% block body %}
     {{ include('tom/__form.html.twig') }}
     <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ tom.user.email }}</p>
+    {% set inherited = tomInherited(tom) %}
+    {% set used = teamUsesTom(currentTeam, tom) %}
+    {% include 'base/__inheritanceInfo.html.twig' with {team:tom.team, currentTeam:currentTeam, used:used, inherited:inherited} %}
     {% if tom.previous %}
         <h3 class="mt-10">{% trans from 'general' %}history{% endtrans %}</h3>
         <ol class="item-history" reversed>

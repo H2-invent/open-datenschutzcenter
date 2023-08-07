@@ -18,6 +18,7 @@ use App\Entity\User;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Form\Type\DatenweitergabeType;
+use App\Repository\SoftwareRepository;
 use App\Repository\VVTRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,6 +36,7 @@ class DatenweitergabeService
         private readonly FormFactoryInterface   $formBuilder,
         private readonly CurrentTeamService     $currentTeamService,
         private readonly VVTRepository          $processRepository,
+        private readonly SoftwareRepository     $softwareRepository,
     )
     {
     }
@@ -67,14 +69,13 @@ class DatenweitergabeService
             $teamPath = $this->em->getRepository(Team::class)->getPath($team);
             $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeamPath($teamPath);
             $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeamPath($teamPath);
-            $software = $this->em->getRepository(Software::class)->findActiveByTeamPath($teamPath);
         } else {
             $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeam($team);
             $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeam($team);
-            $software = $this->em->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true));
         }
 
         $processes = $this->processRepository->findActiveByTeam($team);
+        $software = $this->softwareRepository->findActiveByTeam($team);
 
         return $this->formBuilder->create(DatenweitergabeType::class, $datenweitergabe, array_merge([
             'stand' => $stand,
