@@ -27,6 +27,12 @@
                 {{ include('assign/__assign.html.twig',{'data':policy,'path':'assign_policy'}) }}
             {% endif %}
         </div>
+        <div class="col-12">
+            {% set inherited = policyInherited(policy) %}
+            {% set used = teamUsesPolicy(currentTeam, policy) %}
+            {% include 'base/__inheritanceInfo.html.twig' with {team:policy.team, currentTeam:currentTeam, used:used, inherited:inherited} %}
+            {% include 'base/__flashMessage.html.twig' with {app:app} %}
+        </div>
     </div>
 
 

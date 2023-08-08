@@ -89,7 +89,7 @@ class DashboardController extends AbstractController
         $kontakte = $contactRepository->findActiveByTeamPath($teamPath);
         $tom = $tomRepository->findActiveByTeam($currentTeam);
         $forms = $formRepository->findPublicByTeam($currentTeam);
-        $policies = $policyRepository->findPublicByTeamPath($teamPath);
+        $policies = $policyRepository->findPublicByTeam($currentTeam);
         $software = $softwareRepository->findActiveByTeam($currentTeam);
         $tasks = $taskRepository->findActiveAndOpenByTeam($currentTeam);
         $loeschkonzepte = $deletionConceptRepository->findByTeam($currentTeam);

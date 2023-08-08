@@ -220,6 +220,7 @@ class PoliciesController extends AbstractController
             'activ' => $policy->getActiv(),
             'snack' => $request->get('snack'),
             'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -228,7 +229,6 @@ class PoliciesController extends AbstractController
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
         PoliciesRepository $policiesRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -236,8 +236,7 @@ class PoliciesController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $teamPath = $teamRepository->getPath($team);
-        $policies = $policiesRepository->findActiveByTeamPath($teamPath);
+        $policies = $policiesRepository->findAllByTeam($team);
 
         return $this->render('policies/index.html.twig', [
             'data' => $policies,
