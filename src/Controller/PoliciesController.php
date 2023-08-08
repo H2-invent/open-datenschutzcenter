@@ -224,6 +224,7 @@ class PoliciesController extends BaseController
             'policy' => $policy,
             'activ' => $policy->getActiv(),
             'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -232,7 +233,6 @@ class PoliciesController extends BaseController
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
         PoliciesRepository $policiesRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -240,8 +240,7 @@ class PoliciesController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $teamPath = $teamRepository->getPath($team);
-        $policies = $policiesRepository->findActiveByTeamPath($teamPath);
+        $policies = $policiesRepository->findAllByTeam($team);
 
         return $this->render('policies/index.html.twig', [
             'data' => $policies,

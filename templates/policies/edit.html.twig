@@ -21,6 +21,11 @@
 
 {% block body %}
     {{ include('base/__approvedBy.html.twig', {'data':policy}) }}
+
+    {% set inherited = policyInherited(policy) %}
+    {% set used = teamUsesPolicy(currentTeam, policy) %}
+    {% include 'base/__inheritanceInfo.html.twig' with {team:policy.team, currentTeam:currentTeam, used:used, inherited:inherited} %}
+
     {{ include('policies/__form.html.twig') }}
     <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ policy.user.email }}</p>
     {% if policy.previous %}

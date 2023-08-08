@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Policies;
+use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,52 +16,67 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PoliciesRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly TeamRepository $teamRepository,
+    )
     {
         parent::__construct($registry, Policies::class);
     }
 
-    public function findActiveByTeam($value)
+    public function findActiveByTeam(Team $team)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team = :val')
-            ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult();
+        $queryBuilder = $this->getBaseQueryBuilder(team: $team);
+        $this->excludeIgnored(team: $team, queryBuilder: $queryBuilder);
+        return $queryBuilder->getQuery()->getResult();
     }
 
-    public function findActiveByTeamPath(array $teamPath)
+    public function findAllByTeam(Team $team)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team IN (:teamPath)')
-            ->andWhere('a.activ = 1')
-            ->setParameter('teamPath', $teamPath)
-            ->getQuery()
-            ->getResult();
+        $queryBuilder = $this->getBaseQueryBuilder(team: $team);
+        return $queryBuilder->getQuery()->getResult();
     }
 
-    public function findPublicByTeamPath(array $teamPath)
+    public function findPublicByTeam(Team $team)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team IN (:teamPath)')
-            ->andWhere('a.activ = 1')
-            ->andWhere('a.status != 4')
-            ->setParameter('teamPath', $teamPath)
-            ->getQuery()
-            ->getResult();
+        $queryBuilder = $this->getBaseQueryBuilder(team: $team);
+        $this->excludeIgnored(team: $team, queryBuilder: $queryBuilder);
+        $queryBuilder->andWhere('a.status != 4');
+        return $queryBuilder->getQuery()->getResult();
     }
 
     public function findActiveByTeamAndUser($team, $user)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team = :team')
+        $queryBuilder = $this->getBaseQueryBuilder(team: $team);
+        $this->excludeIgnored(team: $team, queryBuilder: $queryBuilder);
+        $queryBuilder
             ->andWhere('a.assignedUser = :user')
-            ->andWhere('a.activ = 1')
-            ->setParameter('team', $team)
             ->setParameter('user', $user)
+        ;
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    private function excludeIgnored(Team $team, QueryBuilder $queryBuilder) :void
+    {
+        $ignored = $team->getIgnoredInheritances();
+        if (count($ignored)) {
+            $queryBuilder
+                ->andWhere('process NOT IN (:ignored)')
+                ->setParameter('ignored', $ignored);
+        }
+    }
+
+    private function getBaseQueryBuilder(Team $team) :QueryBuilder
+    {
+        $teamPath = $this->teamRepository->getPath($team);
+
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.processes', 'process')
+            ->andWhere('a.team = :team OR (process.team = :team OR process.inherited = 1) AND process.activ = 1 AND process.team IN (:teamPath)')
+            ->andWhere('a.activ = 1')
+            ->setParameter('teamPath', $teamPath)
+            ->setParameter('team', $team)
             ->orderBy('a.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult();
+        ;
     }
 }
