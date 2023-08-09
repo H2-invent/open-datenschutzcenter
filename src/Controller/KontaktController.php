@@ -162,8 +162,9 @@ class KontaktController extends BaseController
             'form' => $form->createView(),
             'kontakt' => $kontakt,
             'errors' => $errors,
-            'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
+            'title' => $this->translator->trans(id: 'contact.edit', domain: 'kontakt'),
             'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -172,7 +173,6 @@ class KontaktController extends BaseController
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
         KontakteRepository $contactRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -180,11 +180,10 @@ class KontaktController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $teamPath = $teamRepository->getPath($team);
-        $kontakte = $contactRepository->findActiveByTeamPath($teamPath);
+        $contacts = $contactRepository->findAllByTeam($team);
 
         return $this->render('kontakt/index.html.twig', [
-            'kontakte' => $kontakte,
+            'kontakte' => $contacts,
             'title' => $this->translator->trans(id: 'contact', domain: 'general'),
             'currentTeam' => $team,
         ]);

@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Kontakte;
+use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,59 +16,84 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class KontakteRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly TeamRepository $teamRepository,
+    )
     {
         parent::__construct($registry, Kontakte::class);
     }
 
-    // /**
-    //  * @return Kontakte[] Returns an array of Kontakte objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findActiveByTeam(Team $team)
     {
-        return $this->createQueryBuilder('k')
-            ->andWhere('k.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('k.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $queryBuilder = $this->getBaseQueryBuilder();
+        $this->filterByTeam(queryBuilder: $queryBuilder, team: $team);
+        return $queryBuilder->getQuery()->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Kontakte
+    public function findAllByTeam(Team $team)
     {
-        return $this->createQueryBuilder('k')
-            ->andWhere('k.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $queryBuilder = $this->getBaseQueryBuilder();
+        $this->filterByTeam(queryBuilder: $queryBuilder, team: $team, all: true);
+        return $queryBuilder->getQuery()->getResult();
     }
-    */
 
-    public function findActiveByTeam($value)
+    public function findIsInheritedById(string $id) : bool
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team = :val')
-            ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult()
+        $queryBuilder = $this->getBaseQueryBuilder();
+        $this->filterById(queryBuilder: $queryBuilder, id: $id);
+        $this->filterByInherited(queryBuilder: $queryBuilder);
+        $result = $queryBuilder->getQuery()->getResult();
+        return count($result) > 0;
+    }
+
+    public function findIsUsedByTeamAndId(Team $team, string $id) : bool
+    {
+        $queryBuilder = $this->getBaseQueryBuilder();
+        $this->filterByTeam(queryBuilder: $queryBuilder, team: $team);
+        $this->filterById(queryBuilder: $queryBuilder, id: $id);
+        $result = $queryBuilder->getQuery()->getResult();
+        return count($result) > 0;
+    }
+
+    private function getBaseQueryBuilder() :QueryBuilder
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.datenweitergaben', 'dw')
+            ->leftJoin('dw.verfahren', 'process')
+            ->andWhere('c.activ = 1')
             ;
     }
 
-    public function findActiveByTeamPath(array $teamPath)
+    private function filterByTeam(QueryBuilder $queryBuilder, Team $team, bool $all = false) :void
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team IN (:teamPath)')
-            ->andWhere('a.activ = 1')
+        $teamPath = $this->teamRepository->getPath($team);
+        $queryBuilder
+            ->andWhere('c.team = :team OR (process.activ = 1 AND process.inherited = 1 AND process.team IN (:teamPath))')
             ->setParameter('teamPath', $teamPath)
-            ->getQuery()
-            ->getResult()
-            ;
+            ->setParameter('team', $team)
+        ;
+
+        if (!$all) {
+            $ignored = $team->getIgnoredInheritances();
+            if (count($ignored)) {
+                $queryBuilder
+                    ->andWhere('process NOT IN (:ignored) OR c.team = :team')
+                    ->setParameter('ignored', $ignored);
+            }
+        }
+    }
+
+    private function filterById(QueryBuilder $queryBuilder, string $id) :void
+    {
+        $queryBuilder
+            ->andWhere('c.id = :id')
+            ->setParameter('id', $id);
+    }
+
+    private function filterByInherited(QueryBuilder $queryBuilder) :void
+    {
+        $queryBuilder
+            ->andWhere('process.activ = 1 AND process.inherited = 1');
     }
 }
