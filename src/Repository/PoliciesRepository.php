@@ -72,7 +72,7 @@ class PoliciesRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('a')
             ->innerJoin('a.processes', 'process')
-            ->andWhere('a.team = :team OR (process.team = :team OR process.inherited = 1) AND process.activ = 1 AND process.team IN (:teamPath)')
+            ->andWhere('a.team = :team OR process.inherited = 1 AND process.activ = 1 AND process.team IN (:teamPath)')
             ->andWhere('a.activ = 1')
             ->setParameter('teamPath', $teamPath)
             ->setParameter('team', $team)
