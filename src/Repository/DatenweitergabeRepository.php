@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Datenweitergabe;
+use App\Entity\Team;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,77 +17,65 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class DatenweitergabeRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly TeamRepository $teamRepository,
+    )
     {
         parent::__construct($registry, Datenweitergabe::class);
     }
 
-    public function findActiveByTeam($value)
+    public function findActiveByTeam(Team $team)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team = :val')
-            ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function findActiveByTeamPath(array $teamPath)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team IN (:teamPath)')
-            ->andWhere('a.activ = 1')
-            ->setParameter('teamPath', $teamPath)
-            ->getQuery()
-            ->getResult()
-            ;
+        $queryBuilder = $this->getBaseQueryBuilder($team);
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**
-     * @param array $teamPath
+     * @param Team $team
      * @return int|mixed|string
      * find transfers of type Datenweitergabe
      */
-    public function findActiveTransfersByTeamPath(array $teamPath): mixed
+    public function findActiveTransfersByTeam(Team $team): mixed
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team IN (:teamPath)')
-            ->andWhere('a.activ = 1')
-            ->andWhere('a.art = 1')
-            ->setParameter('teamPath', $teamPath)
-            ->getQuery()
-            ->getResult()
-            ;
+        $queryBuilder = $this->getBaseQueryBuilder($team);
+        $queryBuilder->andWhere('a.art = 1');
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**
-     * @param array $teamPath
+     * @param Team $team
      * @return int|mixed|string
      * find transfers of type Auftragsverarbeitung
      */
-    public function findActiveOrderProcessingsByTeamPath(array $teamPath): mixed
+    public function findActiveOrderProcessingsByTeam(Team $team): mixed
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team IN (:teamPath)')
-            ->andWhere('a.activ = 1')
-            ->andWhere('a.art = 2')
-            ->setParameter('teamPath', $teamPath)
-            ->getQuery()
-            ->getResult()
-            ;
+        $queryBuilder = $this->getBaseQueryBuilder($team);
+        $queryBuilder->andWhere('a.art = 2');
+        return $queryBuilder->getQuery()->getResult();
     }
 
-    public function findActiveByTeamAndUser($team, $user)
+    public function findActiveByTeamAndUser(Team $team, User $user)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team = :team')
+        $queryBuilder = $this->getBaseQueryBuilder($team);
+        $queryBuilder
             ->andWhere('a.assignedUser = :user')
-            ->andWhere('a.activ = 1')
-            ->setParameter('team', $team)
             ->setParameter('user', $user)
+        ;
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    private function getBaseQueryBuilder(Team $team) :QueryBuilder
+    {
+        $teamPath = $this->teamRepository->getPath($team);
+
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.verfahren', 'process')
+            ->andWhere('a.team = :team OR process.inherited = 1 AND process.activ = 1 AND process.team IN (:teamPath)')
+            ->andWhere('a.activ = 1')
+            ->setParameter('teamPath', $teamPath)
+            ->setParameter('team', $team)
             ->orderBy('a.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ;
     }
 }

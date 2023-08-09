@@ -275,6 +275,7 @@ class DatenweitergabeController extends BaseController
         $form->remove('nummer');
         $form->handleRequest($request);
         $assign = $assignService->createForm($daten, $team, ['disabled' => !$isEditable]);
+        $title = $daten->getArt() == 1 ? 'dataTransfer.edit' : 'orderProcessing.edit';
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid() && $daten->getActiv() && !$daten->getApproved() && $isEditable) {
@@ -314,11 +315,12 @@ class DatenweitergabeController extends BaseController
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
             'errors' => $errors,
-            'title' => $this->translator->trans(id: 'dataTransfer.edit', domain: 'datenweitergabe'),
+            'title' => $this->translator->trans(id: $title, domain: 'datenweitergabe'),
             'daten' => $daten,
             'activ' => $daten->getActiv(),
             'activNummer' => false,
-            'isEditable' => $isEditable
+            'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -326,8 +328,7 @@ class DatenweitergabeController extends BaseController
     public function indexAuftragsverarbeitung(
         SecurityService           $securityService,
         CurrentTeamService        $currentTeamService,
-        DatenweitergabeRepository $dataTransferRepository,
-        TeamRepository            $teamRepository,
+        DatenweitergabeRepository $transferRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -335,8 +336,7 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $teamPath = $teamRepository->getPath($team);
-        $daten = $dataTransferRepository->findActiveOrderProcessingsByTeamPath($teamPath);
+        $daten = $transferRepository->findActiveOrderProcessingsByTeam($team);
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
             'table' => $daten,
             'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
@@ -348,8 +348,7 @@ class DatenweitergabeController extends BaseController
     public function indexDataTransfer(
         SecurityService           $securityService,
         CurrentTeamService        $currentTeamService,
-        DatenweitergabeRepository $dataTransferRepository,
-        TeamRepository            $teamRepository,
+        DatenweitergabeRepository $transferRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -357,8 +356,7 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $teamPath = $teamRepository->getPath($team);
-        $daten = $dataTransferRepository->findActiveTransfersByTeamPath($teamPath);
+        $daten = $transferRepository->findActiveTransfersByTeam($team);
         return $this->render('datenweitergabe/index.html.twig', [
             'table' => $daten,
             'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
