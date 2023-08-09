@@ -269,6 +269,7 @@ class DatenweitergabeController extends AbstractController
         $form->remove('nummer');
         $form->handleRequest($request);
         $assign = $assignService->createForm($daten, $team, ['disabled' => !$isEditable]);
+        $title = $daten->getArt() == 1 ? 'dataTransfer.edit' : 'orderProcessing.edit';
 
         $errors = array();
         if ($form->isSubmitted() && $form->isValid() && $daten->getActiv() && !$daten->getApproved() && $isEditable) {
@@ -305,12 +306,13 @@ class DatenweitergabeController extends AbstractController
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
             'errors' => $errors,
-            'title' => $this->translator->trans(id: 'dataTransfer.edit', domain: 'datenweitergabe'),
+            'title' => $this->translator->trans(id: $title, domain: 'datenweitergabe'),
             'daten' => $daten,
             'activ' => $daten->getActiv(),
             'activNummer' => false,
             'snack' => $request->get('snack'),
-            'isEditable' => $isEditable
+            'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -318,8 +320,7 @@ class DatenweitergabeController extends AbstractController
     public function indexAuftragsverarbeitung(
         SecurityService           $securityService,
         CurrentTeamService        $currentTeamService,
-        DatenweitergabeRepository $dataTransferRepository,
-        TeamRepository            $teamRepository,
+        DatenweitergabeRepository $transferRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -327,8 +328,7 @@ class DatenweitergabeController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $teamPath = $teamRepository->getPath($team);
-        $daten = $dataTransferRepository->findActiveOrderProcessingsByTeamPath($teamPath);
+        $daten = $transferRepository->findActiveOrderProcessingsByTeam($team);
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
             'table' => $daten,
             'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
@@ -340,8 +340,7 @@ class DatenweitergabeController extends AbstractController
     public function indexDataTransfer(
         SecurityService           $securityService,
         CurrentTeamService        $currentTeamService,
-        DatenweitergabeRepository $dataTransferRepository,
-        TeamRepository            $teamRepository,
+        DatenweitergabeRepository $transferRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -349,8 +348,7 @@ class DatenweitergabeController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $teamPath = $teamRepository->getPath($team);
-        $daten = $dataTransferRepository->findActiveTransfersByTeamPath($teamPath);
+        $daten = $transferRepository->findActiveTransfersByTeam($team);
         return $this->render('datenweitergabe/index.html.twig', [
             'table' => $daten,
             'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),

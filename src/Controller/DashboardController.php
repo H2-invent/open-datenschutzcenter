@@ -79,11 +79,10 @@ class DashboardController extends AbstractController
                 return $this->redirectToRoute('no_team');
             }
         }
-        $teamPath = $teamRepository->getPath($currentTeam);
 
         $audit = $auditRepository->findAllByTeam($currentTeam);
-        $daten = $transferRepository->findActiveTransfersByTeamPath($teamPath);
-        $av = $transferRepository->findActiveOrderProcessingsByTeamPath($teamPath);
+        $daten = $transferRepository->findActiveTransfersByTeam($currentTeam);
+        $av = $transferRepository->findActiveOrderProcessingsByTeam($currentTeam);
         $processes = $processRepository->findActiveByTeam($currentTeam);
         $vvtDsfa = $impactAssessmentRepository->findActiveByTeam($currentTeam);
         $contacts = $contactRepository->findActiveByTeam($currentTeam);
