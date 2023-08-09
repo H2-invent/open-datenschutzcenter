@@ -7,13 +7,15 @@ use App\Entity\Policies;
 use App\Entity\Software;
 use App\Entity\Team;
 use App\Entity\Tom;
+use App\Repository\KontakteRepository;
 use App\Repository\SoftwareRepository;
 use Doctrine\Common\Collections\Collection;
 
 class InheritanceService
 {
     public function __construct(
-        private readonly SoftwareRepository $softwareRepository
+        private readonly SoftwareRepository $softwareRepository,
+        private readonly KontakteRepository $contactRepository,
     )
     {
 
@@ -51,14 +53,12 @@ class InheritanceService
 
     public function checkContactIsInherited(Kontakte $contact): bool
     {
-        // TODO: implement
-        return true;
+        return $this->contactRepository->findIsInheritedById($contact->getId());
     }
 
     public function checkTeamUsesContact(Team $team, Kontakte $contact): bool
     {
-        // TODO: implement
-        return true;
+        return $this->contactRepository->findIsUsedByTeamAndId($team, $contact->getId());
     }
 
     public function checkTransferIsInherited(Datenweitergabe $transfer): bool
