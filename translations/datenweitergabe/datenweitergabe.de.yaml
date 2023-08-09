@@ -39,6 +39,20 @@ dataTransfer:
   info:
     title: Erklärung Datenweitergabe
     text: Die Verarbeitung von Daten im Auftrag kommt in nahezu jedem Unternehmen vor. Sei es durch die Nutzung eines externen Rechenzentrums, die Nutzung einer Dienstleistung, die als sog. Software-as-a-Service (SaaS) erbracht wird, Cloud Computing oder bestimmte Wartungen von IT-Systemen durch technische Dienstleister. In diesen Fällen liegt in der Regel eine Datenweitergabe vor. Und da gilt es besondere Maßnahmen zu treffen, um die Vorgaben der Datenschutz-Grundverordnung (DSGVO) einzuhalten.
+orderProcessing:
+  edit: Auftragsverarbeitung bearbeiten
+  basics: Grundlage für die Auftragsverarbeitung
+  type: Art der Auftragsverarbeitung
+  count: Nummer der Auftragsverarbeitung
+  create: Auftragsverarbeitung anlegen
+  object: Gegenstand der Auftragsverarbeitung
+  word: Auftragsverarbeitung
+  responsible: Verantwortlich für die Auftragsverarbeitung (Intern)
+  disclaimer: Alle Auftragsverarbeitung nach DSGVO Art. 30(1)
+  info:
+    title: Erklärung Auftragsverarbeitung
+    text: Die Verarbeitung von Daten im Auftrag kommt in nahezu jedem Unternehmen vor. Sei es durch die Nutzung eines externen Rechenzentrums, die Nutzung einer Dienstleistung, die als sog. Software-as-a-Service (SaaS) erbracht wird, Cloud Computing oder bestimmte Wartungen von IT-Systemen durch technische Dienstleister. In diesen Fällen liegt in der Regel eine Datenweitergabe vor. Und da gilt es besondere Maßnahmen zu treffen, um die Vorgaben der Datenschutz-Grundverordnung (DSGVO) einzuhalten.
+
 info: Info
 approved: Freigegebene
 approval: Freigabe

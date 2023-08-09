@@ -23,6 +23,9 @@
 {% endblock %}
 
 {% block body %}
+    {% set inherited = transferInherited(daten) %}
+    {% set used = teamUsesTransfer(currentTeam, daten) %}
+    {% include 'base/__inheritanceInfo.html.twig' with {team:daten.team, currentTeam:currentTeam, used:used, inherited:inherited} %}
     {{ include('datenweitergabe/__form.html.twig') }}
     <p class="created-by">{% trans from 'general' %}createdAt{% endtrans %}: {{ daten.user.email }}</p>
     {% if daten.previous %}
