@@ -18,6 +18,8 @@ use App\Entity\User;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Form\Type\DatenweitergabeType;
+use App\Repository\DatenweitergabeGrundlagenRepository;
+use App\Repository\DatenweitergabeStandRepository;
 use App\Repository\SoftwareRepository;
 use App\Repository\VVTRepository;
 use DateTime;
@@ -32,11 +34,12 @@ class DatenweitergabeService
     const PREFIX_TRANSFER = 'DW-';
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly FormFactoryInterface   $formBuilder,
-        private readonly CurrentTeamService     $currentTeamService,
-        private readonly VVTRepository          $processRepository,
-        private readonly SoftwareRepository     $softwareRepository,
+        private readonly FormFactoryInterface                $formBuilder,
+        private readonly CurrentTeamService                  $currentTeamService,
+        private readonly VVTRepository                       $processRepository,
+        private readonly SoftwareRepository                  $softwareRepository,
+        private readonly DatenweitergabeStandRepository      $transferStatusRepository,
+        private readonly DatenweitergabeGrundlagenRepository $transferBasisRepository,
     )
     {
     }
@@ -63,23 +66,16 @@ class DatenweitergabeService
         return $newDsfa;
     }
 
-    function createForm(Datenweitergabe $datenweitergabe, Team $team, array $options = []): FormInterface
+    function createForm(Datenweitergabe $transfer, Team $team, array $options = []): FormInterface
     {
-        if (isset($options['disabled']) && $options['disabled']) {
-            $teamPath = $this->em->getRepository(Team::class)->getPath($team);
-            $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeamPath($teamPath);
-            $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeamPath($teamPath);
-        } else {
-            $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeam($team);
-            $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeam($team);
-        }
-
         $processes = $this->processRepository->findActiveByTeam($team);
         $software = $this->softwareRepository->findActiveByTeam($team);
+        $transferStatuses = $this->transferStatusRepository->findActiveByTeam($team);
+        $transferReasons = $this->transferBasisRepository->findActiveByTeam($team);
 
-        return $this->formBuilder->create(DatenweitergabeType::class, $datenweitergabe, array_merge([
-            'stand' => $stand,
-            'grundlage' => $grundlagen,
+        return $this->formBuilder->create(DatenweitergabeType::class, $transfer, array_merge([
+            'stand' => $transferStatuses,
+            'grundlage' => $transferReasons,
             'kontakt' => $team->getKontakte(),
             'verfahren' => $processes,
             'software' => $software

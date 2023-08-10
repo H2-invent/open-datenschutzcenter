@@ -64,7 +64,7 @@ class AuditTomController extends BaseController
         $audit->setUser($this->getUser());
         $status = $auditTomStatusRepository->findAll();
         $ziele = $auditTomZieleRepository->findByTeam($team);
-        $abteilungen = $auditTomAbteilungRepository->findAllByTeam($team);
+        $abteilungen = $auditTomAbteilungRepository->findActiveByTeam($team);
 
         $form = $this->createForm(
             AuditTomType::class,
@@ -158,7 +158,7 @@ class AuditTomController extends BaseController
 
         $today = new DateTime();
         $status = $auditTomStatusRepository->findAll();
-        $abteilungen = $auditTomAbteilungRepository->findAllByTeam($team);
+        $abteilungen = $auditTomAbteilungRepository->findActiveByTeam($team);
         $ziele = $auditTomZieleRepository->findByTeam($team);
 
 

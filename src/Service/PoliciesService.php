@@ -16,6 +16,8 @@ use App\Entity\VVT;
 use App\Entity\VVTDatenkategorie;
 use App\Entity\VVTPersonen;
 use App\Form\Type\PolicyType;
+use App\Repository\VVTDatenkategorieRepository;
+use App\Repository\VVTPersonenRepository;
 use App\Repository\VVTRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,9 +27,10 @@ use Symfony\Component\Form\FormFactoryInterface;
 class PoliciesService
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly FormFactoryInterface   $formBuilder,
-        private readonly VVTRepository          $processRepository,
+        private readonly FormFactoryInterface        $formBuilder,
+        private readonly VVTRepository               $processRepository,
+        private readonly VVTPersonenRepository       $processPeopleRepository,
+        private readonly VVTDatenkategorieRepository $processCategoryRepository,
     )
     {
     }
@@ -46,20 +49,13 @@ class PoliciesService
 
     function createForm(Policies $policies, Team $team, array $options = [])
     {
-        if (isset($options['disabled']) && $options['disabled']) {
-            $teamPath = $this->em->getRepository(Team::class)->getPath($team);
-            $personen = $this->em->getRepository(VVTPersonen::class)->findByTeamPath($teamPath);
-            $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeamPath($teamPath);
-        } else {
-            $personen = $this->em->getRepository(VVTPersonen::class)->findByTeam($team);
-            $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
-        }
-
         $processes = $this->processRepository->findActiveByTeam($team);
+        $people = $this->processPeopleRepository->findByTeam($team);
+        $categories = $this->processCategoryRepository->findByTeam($team);
 
         return $this->formBuilder->create(PolicyType::class, $policies, array_merge([
-            'personen' => $personen,
-            'kategorien' => $kategorien,
+            'personen' => $people,
+            'kategorien' => $categories,
             'user' => $team->getMembers(),
             'processes' => $processes
         ], $options));
