@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Software;
 use App\Entity\SoftwareConfig;
+use App\Entity\Team;
 use App\Repository\SoftwareConfigRepository;
 use App\Repository\SoftwareRepository;
 use App\Repository\TeamRepository;
@@ -228,16 +230,14 @@ class SoftwareController extends AbstractController
         SecurityService    $securityService,
         AssignService      $assignService,
         CurrentTeamService $currentTeamService,
-        SoftwareRepository $softwareRepository,
-        TeamRepository     $teamRepository,
+        SoftwareRepository $softwareRepository
     ): Response
     {
         //Request: id: SoftwareID, snack:Snack Notice
         $team = $currentTeamService->getCurrentTeam($this->getUser());
-        $teamPath = $team ? $teamRepository->getPath($team) : null;
         $software = $softwareRepository->find($request->get('id'));
 
-        if ($securityService->teamPathDataCheck($software, $teamPath) === false) {
+        if (!$this->checkAccess($securityService, $software, $team)) {
             return $this->redirectToRoute('software');
         }
         $newSoftware = $softwareService->cloneSoftware($software, $this->getUser());
@@ -305,5 +305,20 @@ class SoftwareController extends AbstractController
             'snack' => $request->get('snack'),
             'currentTeam' => $team,
         ]);
+    }
+
+    private function checkAccess(SecurityService $securityService, ?Software $software, Team $team): bool
+    {
+        if (!$software) {
+            $this->addFlash('danger', 'elementDoesNotExistError');
+            return false;
+        }
+
+        if (!$securityService->checkTeamAccessToSoftware($software, $team)) {
+            $this->addFlash('danger', 'accessDeniedError');
+            return false;
+        }
+
+        return true;
     }
 }

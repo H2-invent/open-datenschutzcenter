@@ -220,15 +220,14 @@ class VvtController extends AbstractController
         AssignService            $assignService,
         VVTDatenkategorieService $VVTDatenkategorieService,
         CurrentTeamService       $currentTeamService,
-        VVTRepository            $vvtRepository,
-        TeamRepository           $teamRepository
+        VVTRepository            $vvtRepository
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vvt = $vvtRepository->find($request->get('id'));
-        $teamPath = $team ? $teamRepository->getPath($team) : null;
 
-        if ($securityService->teamPathDataCheck($vvt, $teamPath) === false) {
+        if ($securityService->checkTeamAccessToProcess($vvt, $team) === false) {
+            $this->addFlash('danger', 'accessDeniedError');
             return $this->redirectToRoute('vvt');
         }
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
@@ -316,9 +315,8 @@ class VvtController extends AbstractController
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
         $dsfa = $vvtDsfaRepository->find($request->get('dsfa'));
-        $teamPath = $team ? $teamRepository->getPath($team) : null;
 
-        if ($securityService->teamPathDataCheck($dsfa->getVvt(), $teamPath) === false) {
+        if (!$securityService->checkTeamAccessToProcess(process: $dsfa->getVvt(), team: $team)) {
             return $this->redirectToRoute('vvt');
         }
 
@@ -401,7 +399,7 @@ class VvtController extends AbstractController
             return $this->redirectToRoute('vvt');
         }
 
-        $dsfa = $VVTService->newDsfa($team, $this->getUser(), $vvt);
+        $dsfa = $VVTService->newDsfa($this->getUser(), $vvt);
 
         $form = $this->createForm(VvtDsfaType::class, $dsfa);
         $form->handleRequest($request);

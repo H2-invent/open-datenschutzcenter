@@ -121,19 +121,18 @@ class KontaktController extends AbstractController
         Request            $request,
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
-        KontakteRepository $contactRepository,
-        TeamRepository     $teamRepository,
+        KontakteRepository $contactRepository
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
-        $teamPath = $team ? $teamRepository->getPath($team) : null;
-        $kontakt = $contactRepository->find($request->get('id'));
-        if ($securityService->teamPathDataCheck($kontakt, $teamPath) === false) {
-            return $this->redirectToRoute('kurse');
+        $contact = $contactRepository->find($request->get('id'));
+        if (!$securityService->checkTeamAccessToContact($contact, $team)) {
+            $this->addFlash('danger', 'accessDeniedError');
+            return $this->redirectToRoute('kontakt');
         }
 
-        $isEditable = $kontakt->getTeam() === $team;
-        $form = $this->createForm(KontaktType::class, $kontakt, ['disabled' => !$isEditable]);
+        $isEditable = $contact->getTeam() === $team;
+        $form = $this->createForm(KontaktType::class, $contact, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
 
         $errors = array();
@@ -146,7 +145,7 @@ class KontaktController extends AbstractController
                 return $this->redirectToRoute(
                     'kontakt_edit',
                     [
-                        'id' => $kontakt->getId(),
+                        'id' => $contact->getId(),
                         'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
@@ -154,7 +153,7 @@ class KontaktController extends AbstractController
         }
         return $this->render('kontakt/edit.html.twig', [
             'form' => $form->createView(),
-            'kontakt' => $kontakt,
+            'kontakt' => $contact,
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'contact.edit', domain: 'kontakt'),
             'snack' => $request->get('snack'),

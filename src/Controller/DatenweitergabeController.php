@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Entity\Datenweitergabe;
+use App\Entity\Team;
 use App\Repository\DatenweitergabeRepository;
 use App\Repository\TeamRepository;
 use App\Service\ApproveService;
@@ -248,19 +249,14 @@ class DatenweitergabeController extends AbstractController
         AssignService             $assignService,
         CurrentTeamService        $currentTeamService,
         DatenweitergabeRepository $dataTransferRepository,
-        TeamRepository            $teamRepository,
     ): Response
     {
         set_time_limit(600);
         $team = $currentTeamService->getCurrentTeam($this->getUser());
-        $teamPath = $team ? $teamRepository->getPath($team) : null;
         $daten = $dataTransferRepository->find($request->get('id'));
-
-        if ($securityService->teamPathDataCheck($daten, $teamPath) === false) {
-            if ($daten->getArt() === 1) {
-                return $this->redirectToRoute('datenweitergabe');
-            }
-            return $this->redirectToRoute('auftragsverarbeitung');
+        if (!$this->checkAccess($securityService, $daten, $team)) {
+            $redirectRoute = $daten->getArt() === 1 ? 'datenweitergabe' : 'auftragsverarbeitung';
+            return $this->redirectToRoute($redirectRoute);
         }
 
         $newDaten = $datenweitergabeService->cloneDatenweitergabe($daten, $this->getUser());
@@ -354,5 +350,20 @@ class DatenweitergabeController extends AbstractController
             'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
             'currentTeam' => $team,
         ]);
+    }
+
+    private function checkAccess(SecurityService $securityService, ?Datenweitergabe $transfer, Team $team): bool
+    {
+        if (!$transfer) {
+            $this->addFlash('danger', 'elementDoesNotExistError');
+            return false;
+        }
+
+        if (!$securityService->checkTeamAccessToTransfer($transfer, $team)) {
+            $this->addFlash('danger', 'accessDeniedError');
+            return false;
+        }
+
+        return true;
     }
 }

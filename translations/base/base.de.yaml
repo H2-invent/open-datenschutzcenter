@@ -49,3 +49,5 @@ manageTeams: Teams verwalten
 teamAdminArea: Team Adminbereich
 superAdminArea: ODC Adminbereich
 assignError: Die Zuweisung ist fehlgeschlagen. Wenden Sie sich an Ihren Admin wenn das Problem bestehen bleibt.
+accessDeniedError: Sie haben versucht, auf ein Element zuzugreifen, das für Ihr Team nicht freigegeben ist.
+elementDoesNotExistError: Sie haben versucht, auf ein Element zuzugreifen, das nicht existiert.

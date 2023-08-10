@@ -176,14 +176,13 @@ class PoliciesController extends AbstractController
         AssignService      $assignService,
         CurrentTeamService $currentTeamService,
         PoliciesRepository $policiesRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
-        $teamPath = $team ? $teamRepository->getPath($team) : null;
         $policy = $policiesRepository->find($request->get('id'));
 
-        if ($securityService->teamPathDataCheck($policy, $teamPath) === false) {
+        if (!$securityService->checkTeamAccessToPolicy($policy, $team)) {
+            $this->addFlash('danger', 'accessDeniedError');
             return $this->redirectToRoute('policies');
         }
         $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());

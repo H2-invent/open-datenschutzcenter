@@ -1,5 +1,6 @@
 {% trans_default_domain 'datenweitergabe' %}
 <h2 class="h2-responsive">{{ titel }}</h2>
+{% include 'base/__flashMessage.html.twig' with {app:app} %}
 <div class="card card-body">
     <div class="table-responsive">
         <table id="data-table" class="table display table-striped">
