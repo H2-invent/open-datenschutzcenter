@@ -168,10 +168,10 @@ class TomController extends BaseController
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
-        $teamPath = $team ? $teamRepository->getPath($team) : null;
         $tom = $tomRepository->find($request->get('tom'));
 
-        if ($securityService->teamPathDataCheck($tom, $teamPath) === false) {
+        if ($securityService->checkTeamAccessToTom($tom, $team) === false) {
+            $this->addFlash('danger', 'accessDeniedError');
             return $this->redirectToRoute('tom');
         }
 
