@@ -8,6 +8,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Team;
 use App\Entity\VVTDatenkategorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,7 +22,10 @@ use function Doctrine\ORM\QueryBuilder;
  */
 class VVTDatenkategorieRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry                 $registry,
+        private readonly TeamRepository $teamRepository,
+    )
     {
         parent::__construct($registry, VVTDatenkategorie::class);
     }
@@ -38,49 +42,10 @@ class VVTDatenkategorieRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return VVTDatenkategorie[] Returns an array of VVTDatenkategorie objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByTeam(Team $team)
     {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $teamPath = $this->teamRepository->getPath($team);
 
-    /*
-    public function findOneBySomeField($value): ?VVTDatenkategorie
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findByTeam($value)
-    {
-        $qb = $this->createQueryBuilder('a');
-        return $qb
-            ->andWhere('a.team is null OR a.team = :val')
-            ->andWhere($qb->expr()->isNull('a.cloneOf'))
-            ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findByTeamPath(array $teamPath)
-    {
         $qb = $this->createQueryBuilder('a');
         return $qb
             ->andWhere('a.team is null OR a.team IN (:teamPath)')

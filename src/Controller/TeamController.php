@@ -55,7 +55,7 @@ class TeamController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $departments = $departmentRepository->findAllByTeam($team);
+        $departments = $departmentRepository->findActiveByTeam($team);
 
         if ($request->get('id')) {
             $department = $departmentRepository->find($request->get('id'));

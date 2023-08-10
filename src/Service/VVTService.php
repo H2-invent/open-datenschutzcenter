@@ -24,22 +24,36 @@ use App\Entity\VVTPersonen;
 use App\Entity\VVTRisiken;
 use App\Entity\VVTStatus;
 use App\Form\Type\VVTType;
+use App\Repository\AuditTomAbteilungRepository;
 use App\Repository\DatenweitergabeRepository;
+use App\Repository\ProdukteRepository;
 use App\Repository\SoftwareRepository;
 use App\Repository\TomRepository;
+use App\Repository\VVTDatenkategorieRepository;
+use App\Repository\VVTGrundlageRepository;
+use App\Repository\VVTPersonenRepository;
+use App\Repository\VVTRisikenRepository;
+use App\Repository\VVTStatusRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 
 class VVTService
 {
     public function __construct(
-        private readonly EntityManagerInterface    $em,
-        private readonly FormFactoryInterface      $formBuilder,
-        private readonly TomRepository             $tomRepository,
-        private readonly SoftwareRepository        $softwareRepository,
-        private readonly DatenweitergabeRepository $transferRepository,
+        private readonly FormFactoryInterface        $formBuilder,
+        private readonly TomRepository               $tomRepository,
+        private readonly SoftwareRepository          $softwareRepository,
+        private readonly DatenweitergabeRepository   $transferRepository,
+        private readonly VVTStatusRepository         $processStatusRepository,
+        private readonly VVTPersonenRepository       $processPeopleRepository,
+        private readonly VVTDatenkategorieRepository $processCategoryRepository,
+        private readonly VVTGrundlageRepository      $processBasisRepository,
+        private readonly VVTRisikenRepository        $processRiskRepository,
+        private readonly AuditTomAbteilungRepository $departmentRepository,
+        private readonly ProdukteRepository          $productRepository,
     )
     {
     }
@@ -66,43 +80,31 @@ class VVTService
         return $newVvt;
     }
 
-    function createForm(VVT $VVT, Team $team, array $options = [])
+    function createForm(VVT $VVT, Team $team, array $options = []): FormInterface
     {
-        if (!isset($options['disabled']) || $options['disabled'] === false) {
-            $status = $this->em->getRepository(VVTStatus::class)->findActiveByTeam($team);
-            $personen = $this->em->getRepository(VVTPersonen::class)->findByTeam($team);
-            $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
-            $risiken = $this->em->getRepository(VVTRisiken::class)->findByTeam($team);
-            $grundlagen = $this->em->getRepository(VVTGrundlage::class)->findByTeam($team);
-            $abteilung = $this->em->getRepository(AuditTomAbteilung::class)->findBy(array('team' => $team, 'activ' => true));
-            $produkte = $this->em->getRepository(Produkte::class)->findActiveByTeam($team);
-        } else {
-            $teamPath = $this->em->getRepository(Team::class)->getPath($team);
-            $status = $this->em->getRepository(VVTStatus::class)->findActiveByTeamPath($teamPath);
-            $personen = $this->em->getRepository(VVTPersonen::class)->findByTeamPath($teamPath);
-            $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeamPath($teamPath);
-            $risiken = $this->em->getRepository(VVTRisiken::class)->findByTeamPath($teamPath);
-            $grundlagen = $this->em->getRepository(VVTGrundlage::class)->findByTeamPath($teamPath);
-
-            $abteilung = $this->em->getRepository(AuditTomAbteilung::class)->findActiveByTeamPath($teamPath);
-            $produkte = $this->em->getRepository(Produkte::class)->findActiveByTeamPath($teamPath);
-        }
         $transfers = $this->transferRepository->findActiveByTeam($team);
         $tom = $this->tomRepository->findActiveByTeam($team);
         $software = $this->softwareRepository->findActiveByTeam($team);
+        $statuses = $this->processStatusRepository->findActiveByTeam($team);
+        $people = $this->processPeopleRepository->findByTeam($team);
+        $categories = $this->processCategoryRepository->findByTeam($team);
+        $bases = $this->processBasisRepository->findByTeam($team);
+        $risks = $this->processRiskRepository->findByTeam($team);
+        $departments = $this->departmentRepository->findActiveByTeam($team);
+        $products = $this->productRepository->findActiveByTeam($team);
 
         return $this->formBuilder->create(VVTType::class, $VVT, array_merge(
             [
-                'personen' => $personen,
-                'kategorien' => $kategorien,
-                'risiken' => $risiken,
-                'status' => $status,
-                'grundlage' => $grundlagen,
+                'personen' => $people,
+                'kategorien' => $categories,
+                'risiken' => $risks,
+                'status' => $statuses,
+                'grundlage' => $bases,
                 'user' => $team->getMembers(),
                 'daten' => $transfers,
                 'tom' => $tom,
-                'abteilung' => $abteilung,
-                'produkte' => $produkte,
+                'abteilung' => $departments,
+                'produkte' => $products,
                 'software' => $software
             ],
             $options
