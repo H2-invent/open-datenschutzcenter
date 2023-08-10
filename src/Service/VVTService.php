@@ -24,6 +24,7 @@ use App\Entity\VVTPersonen;
 use App\Entity\VVTRisiken;
 use App\Entity\VVTStatus;
 use App\Form\Type\VVTType;
+use App\Repository\DatenweitergabeRepository;
 use App\Repository\SoftwareRepository;
 use App\Repository\TomRepository;
 use DateTime;
@@ -34,10 +35,11 @@ use Symfony\Component\Form\FormFactoryInterface;
 class VVTService
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly FormFactoryInterface $formBuilder,
-        private TomRepository $tomRepository,
-        private SoftwareRepository $softwareRepository,
+        private readonly EntityManagerInterface    $em,
+        private readonly FormFactoryInterface      $formBuilder,
+        private readonly TomRepository             $tomRepository,
+        private readonly SoftwareRepository        $softwareRepository,
+        private readonly DatenweitergabeRepository $transferRepository,
     )
     {
     }
@@ -72,7 +74,6 @@ class VVTService
             $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
             $risiken = $this->em->getRepository(VVTRisiken::class)->findByTeam($team);
             $grundlagen = $this->em->getRepository(VVTGrundlage::class)->findByTeam($team);
-            $daten = $this->em->getRepository(Datenweitergabe::class)->findBy(array('team' => $team, 'activ' => true));
             $abteilung = $this->em->getRepository(AuditTomAbteilung::class)->findBy(array('team' => $team, 'activ' => true));
             $produkte = $this->em->getRepository(Produkte::class)->findActiveByTeam($team);
         } else {
@@ -82,10 +83,11 @@ class VVTService
             $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeamPath($teamPath);
             $risiken = $this->em->getRepository(VVTRisiken::class)->findByTeamPath($teamPath);
             $grundlagen = $this->em->getRepository(VVTGrundlage::class)->findByTeamPath($teamPath);
-            $daten = $this->em->getRepository(Datenweitergabe::class)->findActiveByTeamPath($teamPath);
+
             $abteilung = $this->em->getRepository(AuditTomAbteilung::class)->findActiveByTeamPath($teamPath);
             $produkte = $this->em->getRepository(Produkte::class)->findActiveByTeamPath($teamPath);
         }
+        $transfers = $this->transferRepository->findActiveByTeam($team);
         $tom = $this->tomRepository->findActiveByTeam($team);
         $software = $this->softwareRepository->findActiveByTeam($team);
 
@@ -97,7 +99,7 @@ class VVTService
                 'status' => $status,
                 'grundlage' => $grundlagen,
                 'user' => $team->getMembers(),
-                'daten' => $daten,
+                'daten' => $transfers,
                 'tom' => $tom,
                 'abteilung' => $abteilung,
                 'produkte' => $produkte,
@@ -107,7 +109,7 @@ class VVTService
         ));
     }
 
-    function newDsfa(Team $team, User $user, VVT $vvt)
+    function newDsfa(User $user, VVT $vvt): VVTDsfa
     {
         $dsfa = new VVTDsfa();
         $dsfa->setVvt($vvt);
@@ -118,7 +120,7 @@ class VVTService
         return $dsfa;
     }
 
-    function newVvt(Team $team, User $user)
+    function newVvt(Team $team, User $user): VVT
     {
         $vvt = new VVT();
         $vvt->setTeam($team);

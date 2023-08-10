@@ -36,8 +36,5 @@
                     {% set inherited = tomInherited(t) %}
                     {% set used = teamUsesTom(currentTeam, t) %}
                     {% include 'base/__inheritanceTCols.html.twig' with {team:t.team, currentTeam:currentTeam, inherited:inherited, used:used} %}
-                </tr>
-            {% endfor %}
-        </tbody>
     </table>
 {% endblock %}
