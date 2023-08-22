@@ -1,4 +1,4 @@
-# general
+#general
 save: Save
 comment: Comment
 comments: Comments
@@ -14,23 +14,20 @@ contact: Contact
 assign: Assign
 send: Send
 appoint: Appoint
-
-# settings
+#settings
 useKeycloakGroups: Use Keycloak groups
 useKeycloakGroupsHelp: If this option is activated, users will be mapped to teams in Keycloak rather than in the ODC. For this to work properly, the Keycloak client must have a mapper named 'groups' with the option 'full group path' set to false.
-
-# status
+#status
 status: Status
 created: Created
 inProgress: In Progress
 inReview: In Review
 submitted: Submitted for approval
 outdated: Outdated
-
-# team
+#team
 teamName: Team descriptor
-teamNameHelp: If a Keycloak group should be connected to this team,import  the team descriptor must be identical to the group name. For Keycloak to pass the group membership, the client must have a mapper named 'groups' with the option 'full group path' set to false.
-displayName: Display name (if different from team descriptor)
+keycloakGroup: Keycloak Gruppe (falls abweichend vom Teamnamen)
+keycloakGroupHelp: Die Teamzuweisung erfolgt in diesem ODC über Keycloak Gruppen. Falls das Team im ODC einen anderen Bezeichner hat als in Keycloak, muss hier der Name der Keycloak Gruppe eingetragen werden. Damit Keycloak die Gruppen übergibt, muss für den Keycloak Client ein Mapper namens 'groups' existieren, bei dem die Option 'Full group path' deaktiviert ist.
 dsb: Data protection official
 ceo: CEO
 industry: Sector
@@ -42,8 +39,7 @@ externalLink: External link to communication platform
 externalLinkHelp: Here you can incorporate an external page in the ODC, such as a wiki or intranet. This page can then be reached via navigation -> external.
 jitsiLink: External link to Jitsi installation
 jitsiLinkHelp: Here you can incorporate a Jitsi installation in the ODC. Jitsi Meet is a privacy friendly alternative to Zoom and Microsoft Teams.
-
-# task
+#task
 title: Title
 taskDescription: Task description
 endDate: End date
@@ -54,11 +50,10 @@ normalPriority: Normal
 highPriority: Important
 veryHighPriority: Very important
 assignTask: Aufgabe zuweisen
-
-# audit
+#audit
 question: Question
 auditTomNumber: Audit TOM number
-recommendation:	Recommendation
+0: recommendation:	Recommendation
 category: Category
 nothingSelected: Nothing selected
 privacyManagement: Privacy management
@@ -107,14 +102,12 @@ assignmentControl: Assignment control
 availabilityControl: Availability control
 recoverability: Recoverability
 evaluation: Evaluation
-
-# data category
+#data category
 dataCategoryName: Name
 dataCategoryNameHelp: The name of the data category, which encapsulates the data types.
 dataTypes: Data types
 dataTypesHelp: All data types which should be included in the data category.
-
-# tom
+#tom
 tomTitle: Title, application, processing
 descriptionOfMeasures: Description of technical and organisational measures
 tomEncryption: Pseudonymised encryption (Art. 32 Abs. 1 lit. a) DSGVO)
@@ -133,8 +126,7 @@ tomAssignmentControl: Assignment control -> Integrity (Art. 32 Abs. 1 lit. c) DS
 tomAvailabilityControl: Availability control -> Availability (Art. 32 Abs. 1 lit. c) DSGVO)
 tomRecoverability: Recoverability -> Availability (Art. 32 Abs. 1 lit. c) DSGVO)
 tomAuditProcedure: Procedure for regular review, assessment and evaluation (Art. 32 Abs. 1 lit. c) DSGVO)
-
-# processing activity
+#processing activity
 procedureNumber: Processing activity number
 procedureDenomination: Processing activity name
 isContractHelp: Check this if your organisation processes data for another organisation, usually in the form of a service. Your organisation only uses the data in the name of the client and for no other purpose.
@@ -182,7 +174,7 @@ procedureRiskDamage: Potential damage
 procedureRiskDamageHelp: According to  ISO 27001, the potential damage caused by a risk must be documented.
 littleDamage: Little damage (hardly any consequences)
 someDamage: Some damage
-significantDamage: Significant damage
+significantDamage: Significant probability
 criticalDamage: Critical damage (existence of organaisation is threatened)
 procedureDataCollection: Where and how data is collected
 procedureDataCollectionHelp: The data can be collected in different ways. Direct survey, e.g. newsletter or website, and third party collection, e.g. through an address dealer, are two possible methods.
@@ -190,38 +182,35 @@ informationObligation: Duty to inform
 informationObligationHelp: Document when and how the duty to inform is fulfilled. This could be by referencing the privacy notice, by including it a contract, by adding a disclaimer to forms etc.
 dsbComment: Comment by the DPO
 dsbCommentHelp: In addition to the mandatory recording of the purpose of processing, the legal basis, including any necessary considerations, consent clauses and test notes, should be taken into account in order to fulfill the accountability obligations in accordance with article 5.
-
-# delete concept
+#delete concept
 dataCategories: Data categories
 standardDeleteDeadline: Standard storage period
 standardDeleteDeadlineHelp: Enter the storage period (i.e. period after which data must be deleted) which is used within the organisation for the selected data categories. It may be shorter, but not longer than the legal deadline. If there is a legal minimum storage period, the delete deadline may also not be shorter than this.
 legalDeleteDeadline: Legal storage period
-LegalDeleteDeadlineHelp: If there is a legal basis for a maximum or minimum storage period, it should be entered here.
+legalDeleteDeadlineHelp: Sollte es eine gesetzliche Grundlage zur maximalen oder minimalen Speicherdauer geben, ist diese maximale oder minimale Löschfrist hier einzutragen.
 dataStorageLocations: Storage locations
 dataStorageLocationsHelp: Here all locations, where data of the affected categories is saved, must be listed. Contractors may also be entered as storage locations.
 deleteOfficial: Deletion official
 deleteOfficialHelp: Here a person or group / department can be named as responsible party.
 deleteDescription: Description
 deleteDescriptionHelp: The description should contain deletion procedures, reasons for max/min storage periods, exemptions, special cases and other relevant information.
-
-# policy
+#policy
 policyName: Policy name
 fileNumber: Reference / file number
 policyScope: Scope definition
 responsibilitiesForSafetyMeasures: Responsibilities for safety / security measures
 affectedProcesses: Affected processes
 affectedDataCategories: Affected data categories
-affectedPersons: Affect persons
+affectedPersons: The people whose data is processed
 policyPotentialDangers: Motivation (IT risks to be averted, existing dangers and possible consequences)
 policyLegislation: Relation to laws, regulations and standards
 policySafetyMeasures: Protective measures to be taken
 policyTrainingOffer: Training offers
 policyNoncomplianceConsequences: Konsequenzen bei Nichtbeachtung der Sicherheitsrichtlinie
 policyContacts: Contact data of IT security and privacy officials
-policyDocument: Upload document
+1: documentedInstructions:	Processing according to documented instructions from the responsible party
 delete: Delete
-
-# contact
+#contact
 contactFunction: Function
 client: Client
 contractor: Contractor
@@ -230,8 +219,7 @@ company: Company
 salutation: Salutation
 firstName: First name
 lastName: Last name
-
-# data transfer
+#data transfer
 dataTransferNumber: Number
 contractObject: Contract object
 contractObjectHelp: Enter the object of the data transfer or order processing here. In most contracts, the object is already described in one of the first paragraphs and only needs to be adopted.
@@ -248,7 +236,7 @@ dataTransferBasis: Basis for data transfer
 dataTransferBasisHelp: On what basis is the contract concluded? According to the GDPR, different options are available, which must be viewed and evaluated differently.
 dataTransferParameters: Subject and duration of processing, type and purpose of processing.
 personalDataType: Type of personal data
-documentedInstructions:	Processing according to documented instructions from the responsible party
+2: managedService:	Managed service
 technicalAndOrganisationalMeasures: Taking necessary technical and organisational measures
 subcontractors: Use of subcontractors according to Art. 28 Abs. 2 and Abs. 4 GDPR
 privacyObligation: Confidentiality obligation
@@ -258,25 +246,22 @@ handlingOfDataAfterProcessing: Handling of personal data after completion of ord
 resources: Providing resources and facilitating audits
 dutyToInform: Duty to inform
 dataTransferDocument: Upload document
-
-# new member
+#new member
 newMemberEmail: Enter e-mail address of new team member
 newMemberEmailHelp: You can add several members at once. Each e-mail address must be entered in a new line. If the e-mail address doesn't exist in this data center yet, a new account will be created.
 addMembers: Add member(s)
-
-# form
+#form
 relatedDepartments: Related departments
 relatedProducts: Related products / services
 uploadForm: Upload form
-
-# software
+#software
 softwareNumber: Software number
-softwareReference: Reference or file name
+softwareReference: Reference / file number
 softwareName: Software name
 softwareDescription: Software description
 softwareStatusHelp: Software with the status inactive will not be visible in the flow chart.
 inactive: Inaktive
-version: Version
+Version: version
 licenceType: Licence type
 notSpecified: Not specified
 openSource: Free and Open Source (FOSS)
@@ -284,7 +269,7 @@ closedSource: Free and Closed Source
 userLicence: User licence
 deviceLicence: Device licence
 serverLicence: Server licence
-managedService:	Managed service
+3: managedService:	Managed Service
 mixedLicence: Mixed licence
 otherLicence: Other licence
 licenceDescription: Licence description
@@ -299,8 +284,8 @@ expirationDate: Licence expiration date
 purchaseDate: Purchase date
 relatedProcesses: Processes relating to this software
 relatedDataTransfers: Data transfers relating to this software
-
-# incident
+version: Version
+#incident
 incidentFacts: Facts about the incident
 incidentDiscovered: Incident discovered
 incidentConsequences: Consequences of the incident
@@ -308,8 +293,7 @@ incidentMeasures: Implemented measures
 incidentReportedToStateAgency: Incident reported to State Data Protection Authority (If so, include the person who reported the incident in the implemented measures section)
 incidentReportedToAffectedPersons: Incident reported to affected persons
 incidentReportedToClients: Incident reported to clients
-
-# activity
+#activity
 user: User
 date: Date
 startTime: Start time
@@ -320,19 +304,15 @@ billableTime: Billable time in minutes
 billed: Billed
 showInReport: Show in report
 onSite: On site
-
-# import
+#import
 importFile: Import file
 uploadFile: Upload file
-
-# admin - departments
+#admin - departments
 newDepartment: Add new department
-
-# admin - dpo
+#admin - dpo
 dpoEmail: Email address of DPO
 dpoEmailHelp: If this email address doesn't exist yet, a new account will be created and the user will be informed via email. If users are managed via Keycloak user groups, add the user there, instead.
-
-# admin - delete team
+#admin - delete team
 confirmTeamName: Confirm team name
 confirmTeamNameHelp: Enter the name of the team you want to delete. This helps to avoid accidentally deleting the wrong team.
 deleteTeam: Delete team
