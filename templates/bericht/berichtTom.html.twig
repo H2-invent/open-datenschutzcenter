@@ -68,57 +68,57 @@
 
             <h3>{% trans %}lawParagraph.pseudo.title{% endtrans %}</h3>
             <p></p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 1}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomZutrittskontrolle}) }}
 
             <h3>{% trans %}lawParagraph.confidentiality.title{% endtrans %}</h3>
             <h4>{% trans %}lawParagraph.entryControl.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.entryControl.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 2}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomZutrittskontrolle}) }}
 
             <h4>{% trans %}lawParagraph.entranceControl.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.entranceControl.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 3}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomZugriffskontrolle}) }}
 
             <h4>{% trans %}lawParagraph.accessControl.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.accessControl.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 4}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomBenutzerkontrolle}) }}
 
             <h4>{% trans %}lawParagraph.userControl.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.userControl.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 5}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomSpeicherkontrolle}) }}
 
             <h4>{% trans %}lawParagraph.saveControl.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.saveControl.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 6}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomTrennbarkeit}) }}
 
             <h4>{% trans %}lawParagraph.separability.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.separability.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 7}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomDatenintegritaet}) }}
 
             <h3>{% trans %}lawParagraph.integrity.title{% endtrans %}</h3>
             <h4>{% trans %}lawParagraph.dataIntegrity.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.dataIntegrity.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 8}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomtransportkontrolle}) }}
 
             <h4>{% trans %}lawParagraph.transportControl.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.transportControl.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 9}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomUebertragungskontrolle}) }}
 
             <h4>{% trans %}lawParagraph.transmissionControl.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.transmissionControl.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 10}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomEingabekontrolle}) }}
 
             <h4>{% trans %}lawParagraph.inputControl.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.inputControl.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 11}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomZuverlaessigkeit}) }}
 
             <h4>{% trans %}lawParagraph.reliability.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.reliability.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 12}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomAuftragskontrolle}) }}
 
             <h4>{% trans %}lawParagraph.requestControl.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.requestControl.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 13}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomVerfuegbarkeitskontrolle}) }}
 
             <h3>{% trans %}lawParagraph.availability.title{% endtrans %}</h3>
             <h4>{% trans %}lawParagraph.availabilityControl.title{% endtrans %}</h4>
@@ -127,10 +127,10 @@
 
             <h4>{% trans %}lawParagraph.recoverability.title{% endtrans %}</h4>
             <p>{% trans %}lawParagraph.recoverability.excerpt{% endtrans %}:</p>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 15}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomWiederherstellbarkeit}) }}
 
             <h3>{% trans %}lawParagraph.evaluation.title{% endtrans %}</h3>
-            {{ include('bericht/__berichtTomItems.html.twig', {'item': 16}) }}
+            {{ include('bericht/__berichtTomItems.html.twig', {'item': daten.tomAudit}) }}
 
 
             {{ daten.createdAt|date('d.m.Y H:i') }} by {{ daten.user.email }}
