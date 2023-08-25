@@ -660,7 +660,7 @@ class BerichtController extends AbstractController
 
         if ($req) {
             $vvt = $vvtRepository->findBy(array('id' => $req));
-            $title = $this->translator->trans(id: 'processing.export', domain: 'vvt') . $vvt[0]->getName();
+            $title = $this->translator->trans(id: 'processing.export', domain: 'vvt') . ' ' . $vvt[0]->getName();
             $doc = $vvt[0]->getName();
         } else {
             $vvt = $vvtRepository->findBy(array('team' => $team, 'activ' => true));
