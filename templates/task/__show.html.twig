@@ -18,14 +18,14 @@
                 {% trans from 'general' %}createdBy{% endtrans %}:
             </div>
             <div class="col-md-6">
-                {{ task.user.username }}
+                {{ task.user.email }}
             </div>
             {% if task.updatedBy %}
                 <div class="col-md-6">
                     {% trans from 'general' %}editedBy{% endtrans %}:
                 </div>
                 <div class="col-md-6">
-                    {{ task.updatedBy.username }}
+                    {{ task.updatedBy.email }}
                 </div>
             {% endif %}
         </div>
