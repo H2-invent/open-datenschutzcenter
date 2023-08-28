@@ -1,0 +1,7 @@
+/* make tooltip visible for required fields */
+textarea.summernote {
+    display: block !important;
+    position: absolute;
+    opacity: 0;
+    height: 100%;
+}
