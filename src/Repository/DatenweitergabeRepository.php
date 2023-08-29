@@ -70,7 +70,7 @@ class DatenweitergabeRepository extends ServiceEntityRepository
         $teamPath = $this->teamRepository->getPath($team);
 
         return $this->createQueryBuilder('a')
-            ->innerJoin('a.verfahren', 'process')
+            ->leftJoin('a.verfahren', 'process')
             ->andWhere('a.team = :team OR process.inherited = 1 AND process.activ = 1 AND process.team IN (:teamPath)')
             ->andWhere('a.activ = 1')
             ->setParameter('teamPath', $teamPath)
