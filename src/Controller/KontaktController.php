@@ -127,7 +127,7 @@ class KontaktController extends AbstractController
         $team = $currentTeamService->getCurrentTeam($this->getUser());
         $contact = $contactRepository->find($request->get('id'));
         if (!$securityService->checkTeamAccessToContact($contact, $team)) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addFlash('danger', 'error.accessDenied');
             return $this->redirectToRoute('kontakt');
         }
 

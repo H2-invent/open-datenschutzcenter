@@ -39,7 +39,7 @@ class AssignController extends AbstractController
 
         $success = $assignService->assignAudit($request, $audit);
         if (!$success) {
-            $this->addFlash('danger', 'assignError');
+            $this->addFlash('danger', 'error.assign');
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -61,7 +61,7 @@ class AssignController extends AbstractController
 
         $success = $assignService->assignDatenweitergabe($request, $daten);
         if (!$success) {
-            $this->addFlash('danger', 'assignError');
+            $this->addFlash('danger', 'error.assign');
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -80,7 +80,7 @@ class AssignController extends AbstractController
         if ($securityService->teamDataCheck($impactAssessment->getVvt(), $team)) {
             $success = $assignService->assignDsfa($request, $impactAssessment);
             if (!$success) {
-                $this->addFlash('danger', 'assignError');
+                $this->addFlash('danger', 'error.assign');
             }
             return $this->redirect($request->headers->get('referer'));
         }
@@ -104,7 +104,7 @@ class AssignController extends AbstractController
 
         $success = $assignService->assignForm($request, $form);
         if (!$success) {
-            $this->addFlash('danger', 'assignError');
+            $this->addFlash('danger', 'error.assign');
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -126,7 +126,7 @@ class AssignController extends AbstractController
 
         $success = $assignService->assignPolicy($request, $policy);
         if (!$success) {
-            $this->addFlash('danger', 'assignError');
+            $this->addFlash('danger', 'error.assign');
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -148,7 +148,7 @@ class AssignController extends AbstractController
 
         $success = $assignService->assignSoftware($request, $software);
         if (!$success) {
-            $this->addFlash('danger', 'assignError');
+            $this->addFlash('danger', 'error.assign');
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -170,7 +170,7 @@ class AssignController extends AbstractController
 
         $success = $assignService->assignTask($request, $task);
         if (!$success) {
-            $this->addFlash('danger', 'assignError');
+            $this->addFlash('danger', 'error.assign');
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -192,7 +192,7 @@ class AssignController extends AbstractController
 
         $success = $assignService->assignVorfall($request, $vorfall);
         if (!$success) {
-            $this->addFlash('danger', 'assignError');
+            $this->addFlash('danger', 'error.assign');
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -214,7 +214,7 @@ class AssignController extends AbstractController
 
         $success = $assignService->assignVvt($request, $vvt);
         if (!$success) {
-            $this->addFlash('danger', 'assignError');
+            $this->addFlash('danger', 'error.assign');
         }
         return $this->redirect($request->headers->get('referer'));
     }

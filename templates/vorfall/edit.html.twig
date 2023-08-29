@@ -15,8 +15,18 @@
 
 {% block body %}
 
-    <h2 class="h2-responsive">{{ title }} ({% trans from 'general' %}number{% endtrans %}: {{ vorfall.id }})</h2>
-    {{ include('base/__approvedBy.html.twig', {'data':vorfall}) }}
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="h2-responsive">{{ title }} ({% trans from 'general' %}number{% endtrans %}: {{ vorfall.id }})</h2>
+            {{ include('base/__approvedBy.html.twig', {'data':vorfall}) }}
+        </div>
+        <div class="col-md-4 text-md-right">
+            {% if assignForm is defined %}{{ include('assign/__assign.html.twig',{'data':vorfall,'path':'assign_vorfall'}) }}{% endif %}
+        </div>
+        <div class="col-12">
+            {% include 'base/__flashMessage.html.twig' with {app:app} %}
+        </div>
+    </div>
 
     <div class="card card-body">
         {{ include('vorfall/__form.html.twig') }}

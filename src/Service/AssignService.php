@@ -149,7 +149,6 @@ class AssignService
                 $this->notificationService->sendNotificationAssign($content, $user);
             }
             $this->em->persist($dsfa);
-            $this->em->persist($dsfa);
             $this->em->flush();
             return true;
         } catch (Exception $exception) {

@@ -6,16 +6,19 @@ use App\Form\Type\TasksType;
 use App\Repository\TaskRepository;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
+use App\Service\NotificationService;
 use App\Service\SecurityService;
 use App\Service\TaskService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 class TaskController extends AbstractController
 {
@@ -119,12 +122,14 @@ class TaskController extends AbstractController
 
     #[Route(path: '/task/edit', name: 'task_edit')]
     public function editTask(
-        ValidatorInterface $validator,
-        Request            $request,
-        SecurityService    $securityService,
-        AssignService      $assignService,
-        CurrentTeamService $currentTeamService,
-        TaskRepository     $taskRepository,
+        ValidatorInterface     $validator,
+        Request                $request,
+        SecurityService        $securityService,
+        AssignService          $assignService,
+        CurrentTeamService     $currentTeamService,
+        TaskRepository         $taskRepository,
+        NotificationService    $notificationService,
+        Environment            $twig,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -139,21 +144,32 @@ class TaskController extends AbstractController
         $assign = $assignService->createForm($task, $team);
         $errors = array();
         if ($form->isSubmitted() && $form->isValid() && $task->getActiv() === 1) {
-
+            $userChanged = $task->getAssignedUser() && !$task->getAssignedUser()->getTasks()->contains($task);
             $task = $form->getData();
             $task->setUpdatedBy($this->getUser());
             $errors = $validator->validate($task);
             if (count($errors) == 0) {
+                if ($userChanged) {
+                    $content = $twig->render(
+                        'email/assignementTask.html.twig',
+                        [
+                            'assign' => $task->getTitle(),
+                            'data' => $task,
+                            'team' => $task->getTeam(),
+                        ],
+                    );
+                    try {
+                        $notificationService->sendNotificationAssign($content, $task->getAssignedUser());
+                    } catch (Exception $exception) {
+                        $this->addFlash('danger', 'error.mailSend');
+                    }
+                }
                 $this->em->persist($task);
                 $this->em->flush();
 
-                return $this->redirectToRoute(
-                    'task_edit',
-                    [
-                        'id' => $task->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
-                    ],
-                );
+                $this->addFlash('success', 'save.successful');
+
+                return $this->redirectToRoute('task_edit', ['id' => $task->getId()]);
             }
         }
         return $this->render('task/edit.html.twig', [

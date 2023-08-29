@@ -1,4 +1,4 @@
-{% trans_default_domain domain|default('base') %}
+{% trans_default_domain domain|default('general') %}
 {% if app.request.hasPreviousSession %}
     {% for type, messages in app.session.flashbag.all() %}
         {% for message in messages %}

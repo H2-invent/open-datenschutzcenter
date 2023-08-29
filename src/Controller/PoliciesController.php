@@ -182,7 +182,7 @@ class PoliciesController extends AbstractController
         $policy = $policiesRepository->find($request->get('id'));
 
         if (!$securityService->checkTeamAccessToPolicy($policy, $team)) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addFlash('danger', 'error.accessDenied');
             return $this->redirectToRoute('policies');
         }
         $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());

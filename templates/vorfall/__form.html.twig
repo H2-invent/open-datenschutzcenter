@@ -1,12 +1,5 @@
 {% trans_default_domain 'vorfall' %}
-<div class="row">
-    <div class="col-md-3">
-        <p>{% trans %}incident.assign{% endtrans %}</p>
-    </div>
-    <div class="col-md-9">
-        {% if assignForm is defined %}{{ include('assign/__assign.html.twig',{'data':vorfall,'path':'assign_vorfall'}) }}{% endif %}
-    </div>
-</div>
+
 {{ form_start(form) }}
 <div class="{% if not activ or vorfall.approved %}disabled{% endif %}">
     <div class="row mt-4">

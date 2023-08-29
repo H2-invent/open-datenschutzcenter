@@ -310,12 +310,12 @@ class SoftwareController extends AbstractController
     private function checkAccess(SecurityService $securityService, ?Software $software, Team $team): bool
     {
         if (!$software) {
-            $this->addFlash('danger', 'elementDoesNotExistError');
+            $this->addFlash('danger', 'error.elementDoesNotExist');
             return false;
         }
 
         if (!$securityService->checkTeamAccessToSoftware($software, $team)) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addFlash('danger', 'error.accessDenied');
             return false;
         }
 

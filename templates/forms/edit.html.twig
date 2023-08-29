@@ -11,8 +11,11 @@
             <h2 class="h2-responsive">{{ title }}</h2>
             {{ include('base/__approvedBy.html.twig', {'data':daten}) }}
         </div>
-        <div class="col-md-4 text-right">
+        <div class="col-md-4 text-md-right">
             {{ include('assign/__assign.html.twig',{'data':daten,'path':'assign_form'}) }}
+        </div>
+        <div class="col-12">
+            {% include 'base/__flashMessage.html.twig' with {app:app} %}
         </div>
     </div>
 

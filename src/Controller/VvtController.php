@@ -227,7 +227,7 @@ class VvtController extends AbstractController
         $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->checkTeamAccessToProcess($vvt, $team) === false) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addFlash('danger', 'error.accessDenied');
             return $this->redirectToRoute('vvt');
         }
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());

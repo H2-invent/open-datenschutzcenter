@@ -168,7 +168,7 @@ class TomController extends AbstractController
         $tom = $tomRepository->find($request->get('tom'));
 
         if ($securityService->checkTeamAccessToTom($tom, $team) === false) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addFlash('danger', 'error.accessDenied');
             return $this->redirectToRoute('tom');
         }
 

@@ -355,12 +355,12 @@ class DatenweitergabeController extends AbstractController
     private function checkAccess(SecurityService $securityService, ?Datenweitergabe $transfer, Team $team): bool
     {
         if (!$transfer) {
-            $this->addFlash('danger', 'elementDoesNotExistError');
+            $this->addFlash('danger', 'error.elementDoesNotExist');
             return false;
         }
 
         if (!$securityService->checkTeamAccessToTransfer($transfer, $team)) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addFlash('danger', 'error.accessDenied');
             return false;
         }
 
