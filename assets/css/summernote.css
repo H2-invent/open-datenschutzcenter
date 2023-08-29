@@ -2,6 +2,11 @@
 textarea.summernote {
     display: block !important;
     position: absolute;
-    opacity: 0;
+    opacity: 0 !important;
     height: 100%;
+}
+
+/* for positioning of textarea */
+.form-group {
+    position: relative;
 }
