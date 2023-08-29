@@ -53,12 +53,18 @@ class InheritanceService
 
     public function checkContactIsInherited(Kontakte $contact): bool
     {
-        return $this->contactRepository->findIsInheritedById($contact->getId());
+        if ($contact->getId()) {
+            return $this->contactRepository->findIsInheritedById($contact->getId());
+        }
+        return false;
     }
 
     public function checkTeamUsesContact(Team $team, Kontakte $contact): bool
     {
-        return $this->contactRepository->findIsUsedByTeamAndId($team, $contact->getId());
+        if ($contact->getId()) {
+            return $this->contactRepository->findIsUsedByTeamAndId($team, $contact->getId());
+        }
+        return false;
     }
 
     public function checkTransferIsInherited(Datenweitergabe $transfer): bool

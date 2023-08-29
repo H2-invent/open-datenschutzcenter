@@ -70,6 +70,7 @@ class KontaktController extends AbstractController
             'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
             'new' => true,
             'isEditable' => true,
+            'currentTeam' => $team,
         ]);
     }
 
