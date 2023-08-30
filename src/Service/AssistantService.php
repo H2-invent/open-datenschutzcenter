@@ -254,17 +254,23 @@ class AssistantService
             $item->addSoftware($software);
         }
         $procedure = $this->getPropertyForStep(step: $step, key: self::PROPERTY_PROCEDURE);
-        $item->addVerfahren($procedure);
+        if ($procedure) {
+            $item->addVerfahren($procedure);
+        }
     }
 
     private function addDependenciesToProcedure(VVT $procedure, $step): void {
         $softwareArray = $this->getPropertyForStep(step: $step, key: self::PROPERTY_SOFTWARE);
         $categoryArray = $this->getPropertyForStep(step: $step, key: self::PROPERTY_CATEGORY);
-        foreach($softwareArray as $software) {
-            $procedure->addSoftware($software);
+        if ($softwareArray) {
+            foreach ($softwareArray as $software) {
+                $procedure->addSoftware($software);
+            }
         }
-        foreach ($categoryArray as $category) {
-            $procedure->addKategorien($category);
+        if ($categoryArray) {
+            foreach ($categoryArray as $category) {
+                $procedure->addKategorien($category);
+            }
         }
     }
 }
