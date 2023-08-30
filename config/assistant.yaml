@@ -23,6 +23,7 @@ steps:
     title: 'contact.source.title'
     info: 'contact.source.info'
     newTitle: 'new.contact'
+    skip: true
   4:
     type: 'App\Form\Type\DatenweitergabeType'
     title: 'processing.title'
@@ -33,29 +34,22 @@ steps:
     procedure: 2
     contact: 3
   5:
-    type: 'App\Form\Type\SoftwareType'
-    title: 'software.transfer.title'
-    info: 'software.transfer.info'
-    newTitle: 'new.software'
-    skip: true
-  6:
     type: 'App\Form\Type\VVTDatenkategorieType'
     title: 'category.transfer.title'
     info: 'category.transfer.info'
     newTitle: 'new.category'
     skip: true
-  7:
+  6:
     type: 'App\Form\Type\VVTType'
     title: 'procedure.transfer.title'
     info: 'procedure.transfer.info'
     newTitle: 'new.procedure'
-    software: 5
-  8:
+  7:
     type: 'App\Form\Type\KontaktType'
     title: 'contact.dest.title'
     info: 'contact.dest.info'
     newTitle: 'new.contact'
-  9:
+  8:
     type: 'App\Form\Type\DatenweitergabeType'
     title: 'transfer.title'
     info: 'transfer.info'
