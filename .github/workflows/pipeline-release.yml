@@ -40,6 +40,7 @@ jobs:
           prerelease: false
           release_name: Release ${{ steps.version.outputs.version }}
           tag_name: ${{ steps.version.outputs.version }}
+          body_path: RELEASE_NOTE.md
 
       - uses: actions/download-artifact@v3
         with:
