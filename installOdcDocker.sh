@@ -1,3 +1,5 @@
+#! /bin/bash
+
 echo Welcome to the installer:
 FILE=docker.conf
 if [ -f "$FILE" ]; then
@@ -76,7 +78,6 @@ fi
   sed -i '/smtpFrom/d' $FILE
   echo "smtpFrom=$smtpFrom" >> $FILE
 
-
   echo -------------------------------------------------------------
   echo -----------------we build the KEycloak-----------------------
   echo -------------------------------------------------------------
@@ -123,13 +124,11 @@ export registerEmailAdress=$smtpFrom
 RANDOMTAG=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1);
 export RANDOMTAG
 
-chmod +x dockerupdate.sh
-
 if [ "$ENVIRONMENT" == 'dev' ]; then
   docker-compose -f docker-compose.test.yml build
   docker-compose -f docker-compose.test.yml up -d
 elif [ "$ENVIRONMENT" == 'cluster' ]; then
-  docker-compose -f docker-compose.test.yml build
+  docker-compose -f docker-compose.cluster.yml build
   docker-compose -f docker-compose.cluster.yml up -d
 else
    docker-compose -f docker-compose.yml build

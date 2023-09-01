@@ -1,8 +1,8 @@
 lawParagraph:
   pseudo:
-    title: A. Pseudonymisierung Verschlüsselung (Art. 32 Abs. 1 lit. a) DSGVO)
+    title: A. Pseudonymisierung Verschlüsselung (§ 27 Abs.1 Nr.1 DSG EKD)
   confidentiality:
-    title: B. Vertraulichkeit (Art. 32 Abs. 1 lit. b) DSGVO)
+    title: B. Vertraulichkeit (§ 27 Abs.1 Nr.2 DSG EKD)
   entryControl:
     title: 1. Zutrittskontrolle
     excerpt: Gewährleistung, dass der Zutritt zu den Betriebsarealen und deren Bereichen nur berechtigten Personen möglich sind
@@ -22,7 +22,7 @@ lawParagraph:
     title: 6. Trennbarkeit
     excerpt: Gewährleistung, dass zu unterschiedlichen Zwecken erhobene personenbezogene Daten getrennt verarbeitet werden
   integrity:
-    title: C. Integrität (Art. 32 Abs. 1 lit. c) DSGVO)
+    title: C. Integrität (§ 27 Abs.1 Nr.3 DSG EKD)
   dataIntegrity:
     title: 7. Datenintegrität
     excerpt: Gewährleistung, dass gespeicherte personenbezogene Daten nicht durch Fehlfunktionen des Systems beschädigt werden können
@@ -42,7 +42,7 @@ lawParagraph:
     title: 12. Auftragskontrolle
     excerpt: ' Gewährleistung, dass personenbezogene Daten, die im Auftrag verarbeitet werden, nur entsprechend den Weisungen des Auftraggebers verarbeitet werden können'
   availability:
-    title: D. Verfügbarkeit und Belastbarkeit (Art. 32 Abs. 1 lit. c) DSGVO)
+    title: D. Verfügbarkeit und Belastbarkeit (§ 27 Abs.1 Nr. 3 DSG EKD)
   availabilityControl:
     title: 13. Verfügbarkeitskontrolle
     excerpt: Gewährleistung, dass personenbezogene Daten gegen Zerstörung oder Verlust geschützt sind
@@ -50,9 +50,9 @@ lawParagraph:
     title: 14. Wiederherstellbarkeit
     excerpt: Gewährleistung, dass eingesetzte Systeme im Störungsfall wiederhergestellt werden können
   evaluation:
-    title: E. Verfahren zur regelmässigen Überprüfung, Bewertung und Evaluierung (Art. 32 Abs. 1 lit. c) DSGVO)
+    title: E. Verfahren zur regelmässigen Überprüfung, Bewertung und Evaluierung (§ 27 Abs.1 Nr.4 DSG EKD)
   technicalAndOrganizationalMeasures:
-    title: Technisch und organisatorische Massnahmen nach Art. 32 DSGVO, § 62 BDSG
+    title: Technisch und organisatorische Massnahmen nach § 27 DSG EKD
     excerpt: ' Im Folgenden werden die technischen und organisatorischen Maßnahmen zur Gewährleistung von Datenschutz und Datensicherheit festgelegt, die der Auftragnehmer mindestens einzurichten und laufend aufrecht zu erhalten hat.'
 tom:
   edit: TOM bearbeiten

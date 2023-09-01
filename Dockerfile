@@ -2,6 +2,7 @@ FROM thecodingmachine/php:8.2-v4-apache-node16
 ENV PHP_EXTENSION_LDAP=1
 ENV PHP_EXTENSION_INTL=1
 ENV TZ=Europe/Berlin
+ENV COMPOSER_ALLOW_SUPERUSER=1
 USER root
 RUN usermod -a -G www-data docker
 #Do npm install
@@ -18,6 +19,7 @@ RUN rm -rf node_modules/
 #copy all the rest of the app
 COPY . /var/www/html
 #install all php dependencies
+
 RUN chown -R docker:docker secretStorage
 USER docker
 RUN composer install

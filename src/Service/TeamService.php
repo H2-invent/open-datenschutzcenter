@@ -167,12 +167,13 @@ class TeamService
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         $data[$id]['type'] = $id;
         foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
+            if ($item->getTeam() === $team ) {
                 $data[$id]['data'][$item->getId()]['id'] = $item->getId();
                 $data[$id]['data'][$item->getId()]['name'] = $item->getName();
                 $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['default'] = false;
+                $data[$id]['data'][$item->getId()]['object'] = $item;
                 if ($item->getTeam() === null) {
                     $data[$id]['data'][$item->getId()]['default'] = true;
                 }
@@ -186,12 +187,13 @@ class TeamService
         $data[$id]['titleEdit'] = $this->translator->trans(id: 'risk.edit', domain: 'service');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
+            if ($item->getTeam() === $team ) {
                 $data[$id]['data'][$item->getId()]['id'] = $item->getId();
                 $data[$id]['data'][$item->getId()]['name'] = $item->getName();
                 $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['default'] = false;
+                $data[$id]['data'][$item->getId()]['object'] = $item;
                 if ($item->getTeam() === null) {
                     $data[$id]['data'][$item->getId()]['default'] = true;
                 }
@@ -205,12 +207,13 @@ class TeamService
         $data[$id]['titleEdit'] = $this->translator->trans(id: 'legalBase.edit', domain: 'service');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
+            if ($item->getTeam() === $team ) {
                 $data[$id]['data'][$item->getId()]['id'] = $item->getId();
                 $data[$id]['data'][$item->getId()]['name'] = $item->getName();
                 $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['default'] = false;
+                $data[$id]['data'][$item->getId()]['object'] = $item;
                 if ($item->getTeam() === null) {
                     $data[$id]['data'][$item->getId()]['default'] = true;
                 }
@@ -224,12 +227,13 @@ class TeamService
         $data[$id]['titleEdit'] = $this->translator->trans(id: 'product.edit', domain: 'service');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
+            if ($item->getTeam() === $team ) {
                 $data[$id]['data'][$item->getId()]['id'] = $item->getId();
                 $data[$id]['data'][$item->getId()]['name'] = $item->getName();
                 $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['default'] = false;
+                $data[$id]['data'][$item->getId()]['object'] = $item;
                 if ($item->getTeam() === null) {
                     $data[$id]['data'][$item->getId()]['default'] = true;
                 }
@@ -244,12 +248,13 @@ class TeamService
         $data[$id]['titleEdit'] = $this->translator->trans(id: 'processingState.edit', domain: 'service');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
+            if ($item->getTeam() === $team ) {
                 $data[$id]['data'][$item->getId()]['id'] = $item->getId();
                 $data[$id]['data'][$item->getId()]['name'] = $item->getName();
                 $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['default'] = false;
+                $data[$id]['data'][$item->getId()]['object'] = $item;
                 if ($item->getTeam() === null) {
                     $data[$id]['data'][$item->getId()]['default'] = true;
                 }
@@ -263,12 +268,13 @@ class TeamService
         $data[$id]['titleEdit'] = $this->translator->trans(id: 'dataTransfer.base.edit', domain: 'service');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
+            if ($item->getTeam() === $team ) {
                 $data[$id]['data'][$item->getId()]['id'] = $item->getId();
                 $data[$id]['data'][$item->getId()]['name'] = $item->getName();
                 $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['default'] = false;
+                $data[$id]['data'][$item->getId()]['object'] = $item;
                 if ($item->getTeam() === null) {
                     $data[$id]['data'][$item->getId()]['default'] = true;
                 }
@@ -282,12 +288,13 @@ class TeamService
         $data[$id]['titleEdit'] = $this->translator->trans(id: 'dataTransfer.state.edit', domain: 'service');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
+            if ($item->getTeam() === $team ) {
                 $data[$id]['data'][$item->getId()]['id'] = $item->getId();
                 $data[$id]['data'][$item->getId()]['name'] = $item->getName();
                 $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['default'] = false;
+                $data[$id]['data'][$item->getId()]['object'] = $item;
                 if ($item->getTeam() === null) {
                     $data[$id]['data'][$item->getId()]['default'] = true;
                 }
@@ -302,12 +309,13 @@ class TeamService
         $data[$id]['titleEdit'] = $this->translator->trans(id: 'auditGoal.edit', domain: 'service');
         $data[$id]['newLink'] = $this->router->generate('team_custom_create', ['title' => $data[$id]['titleNew'], 'type' => $id]);
         foreach ($data1 as $item) {
-            if ($item->getTeam() === $team || $item->getTeam() === null) {
+            if ($item->getTeam() === $team) {
                 $data[$id]['data'][$item->getId()]['id'] = $item->getId();
                 $data[$id]['data'][$item->getId()]['name'] = $item->getName();
                 $data[$id]['data'][$item->getId()]['deactivate'] = $this->router->generate('team_custom_deativate', ['id' => $item->getId(), 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['edit'] = $this->router->generate('team_custom_create', ['id' => $item->getId(), 'title' => $data[$id]['titleEdit'], 'type' => $id]);
                 $data[$id]['data'][$item->getId()]['default'] = false;
+                $data[$id]['data'][$item->getId()]['object'] = $item;
                 if ($item->getTeam() === null) {
                     $data[$id]['data'][$item->getId()]['default'] = true;
                 }

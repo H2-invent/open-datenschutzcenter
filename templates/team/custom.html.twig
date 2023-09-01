@@ -27,12 +27,37 @@
                                 {% for d in dd.data|sort((a, b) => a.name <=> b.name) %}
                                     <li class="list-group-item {% if d.default %}disabled{% endif %}">
                                         {{ d.name }}{% if not d.default %}
-                                        <a href="{{ d.edit }}" class="btn btn-sm btn-info float-md-right loadContent">
-                                            {% trans from 'general' %}edit{% endtrans %}
-                                        </a>
-                                        <a href="{{ d.deactivate }}" class="btn btn-sm btn-danger float-md-right">
-                                            {% trans from 'general' %}delete{% endtrans %}
-                                        </a>
+                                            <a href="{{ d.edit }}"
+                                               class="btn btn-sm btn-info float-md-right loadContent">
+                                                {% trans from 'general' %}edit{% endtrans %}
+                                            </a>
+
+                                                {% if checkClass(d.object,'App\\Entity\\VVTStatus') %}
+                                                    <a href="{{ path('team_custom_network_vvtstatus',{'id':d.id}) }}"
+                                                       class="btn  {% if d.object.network %} btn-success {% else%}btn-danger {% endif%} btn-sm float-md-right">
+                                                        {% if d.object.network %}
+                                                            {% trans from 'general' %}network.show.remove{% endtrans %}
+                                                        {% else %}
+                                                            {% trans from 'general' %}network.show.add{% endtrans %}
+                                                        {% endif %}
+                                                    </a>
+                                                {% endif %}
+
+                                            {% if checkClass(d.object,'App\\Entity\\DatenweitergabeStand') %}
+                                                <a href="{{ path('team_custom_network_datenweitergabestatus',{'id':d.id}) }}"
+                                                   class="btn btn-sm {% if d.object.network %} btn-success {% else%}btn-danger {% endif%} float-md-right">
+                                                    {% if d.object.network %}
+                                                        {% trans from 'general' %}network.show.remove{% endtrans %}
+                                                    {% else %}
+                                                        {% trans from 'general' %}network.show.add{% endtrans %}
+                                                    {% endif %}
+                                                </a>
+                                            {% endif %}
+
+
+                                            <a href="{{ d.deactivate }}" class="btn btn-sm btn-danger float-md-right">
+                                                {% trans from 'general' %}delete{% endtrans %}
+                                            </a>
                                         {% else %} ({% trans %}default{% endtrans %}){% endif %}
                                     </li>
                                 {% endfor %}
