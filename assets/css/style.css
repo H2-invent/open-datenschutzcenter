@@ -178,6 +178,7 @@ a:focus {
     margin-left: .5rem;
 }
 
+#sidebar .dropdown-toggle:after,
 .bootstrap-select .dropdown-toggle:after {
     position: absolute;
     border-right: .375rem solid transparent;
@@ -186,6 +187,10 @@ a:focus {
     right: 1rem;
     top: 50%;
     transform: translateY(-50%);
+}
+
+#sidebar .dropdown-toggle:after {
+    border-top-color: #212529;
 }
 
 /* ----------------------- .navbar-nav .nav-item .nav-link:hover {----------------------------
