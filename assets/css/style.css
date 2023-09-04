@@ -171,16 +171,19 @@ a:focus {
     padding-right: 1.5rem;
 }
 
-.team-select:after {
-    content: '';
-    position: absolute;
-    display: block;
-    width: 0;
-    height: 0;
+.team-select .dropdown-toggle:after {
     border-right: .325rem solid transparent;
     border-left: .325rem solid transparent;
     border-top: .325rem solid #212529;
-    right: .75rem;
+    margin-left: .5rem;
+}
+
+.bootstrap-select .dropdown-toggle:after {
+    position: absolute;
+    border-right: .375rem solid transparent;
+    border-left: .375rem solid transparent;
+    border-top: .375rem solid #555;
+    right: 1rem;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -296,14 +299,6 @@ a[aria-expanded="true"] {
 
 a[data-toggle="collapse"] {
     position: relative;
-}
-
-.dropdown-toggle::after {
-    display: block;
-    position: absolute;
-    top: 50%;
-    right: 20px;
-    transform: translateY(-50%);
 }
 
 ul ul a {
@@ -465,10 +460,6 @@ label:not(.form-check-label).required:after {
         bottom: 0;
         opacity: 0;
     }
-}
-
-.dropdown-toggle::after {
-    content: none !important;
 }
 
 #mynetwork {
