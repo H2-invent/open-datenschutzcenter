@@ -28,6 +28,9 @@
             {% endif %}
         </div>
         <div class="col-12">
+            {% set inherited = softwareInherited(software) %}
+            {% set used = teamUsesSoftware(currentTeam, software) %}
+            {% include 'base/__inheritanceInfo.html.twig' with {team:software.team, currentTeam:currentTeam, used:used, inherited:inherited} %}
             {% include 'base/__flashMessage.html.twig' with {app:app} %}
         </div>
     </div>

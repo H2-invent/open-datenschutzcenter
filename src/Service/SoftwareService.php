@@ -28,10 +28,10 @@ class SoftwareService
 {
 
     public function __construct(
-        private readonly EntityManagerInterface $em,
-        private readonly FormFactoryInterface   $formBuilder,
-        private readonly VVTRepository          $processRepository,
-        private DatenweitergabeRepository $transferRepository,
+        private readonly EntityManagerInterface    $em,
+        private readonly FormFactoryInterface      $formBuilder,
+        private readonly VVTRepository             $processRepository,
+        private readonly DatenweitergabeRepository $transferRepository,
     )
     {
     }
@@ -55,8 +55,13 @@ class SoftwareService
 
     public function createForm(Software $software, Team $team, array $options = []): FormInterface
     {
-        $processes = $this->processRepository->findActiveByTeam($team);
-        $transfers = $this->transferRepository->findActiveByTeam($team);
+        if (array_key_exists('disabled', $options) && $options['disabled']) {
+            $processes = $this->processRepository->findAllByTeam($team);
+            $transfers = $this->transferRepository->findAllByTeam($team);
+        } else {
+            $processes = $this->processRepository->findActiveByTeam($team);
+            $transfers = $this->transferRepository->findActiveByTeam($team);
+        }
 
         return $this->formBuilder->create(SoftwareType::class, $software, array_merge([
             'processes' => $processes,

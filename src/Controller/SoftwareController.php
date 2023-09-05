@@ -281,6 +281,7 @@ class SoftwareController extends AbstractController
             'activ' => $software->getActiv(),
             'snack' => $request->get('snack'),
             'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
