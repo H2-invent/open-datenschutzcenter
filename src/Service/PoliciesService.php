@@ -49,7 +49,12 @@ class PoliciesService
 
     function createForm(Policies $policies, Team $team, array $options = [])
     {
-        $processes = $this->processRepository->findActiveByTeam($team);
+        if (array_key_exists('disabled', $options) && $options['disabled']) {
+            $processes = $this->processRepository->findAllByTeam($team);
+        } else {
+            $processes = $this->processRepository->findActiveByTeam($team);
+        }
+
         $people = $this->processPeopleRepository->findByTeam($team);
         $categories = $this->processCategoryRepository->findByTeam($team);
 

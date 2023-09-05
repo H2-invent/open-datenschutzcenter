@@ -164,7 +164,6 @@ class TomController extends BaseController
         TomService         $tomService,
         CurrentTeamService $currentTeamService,
         TomRepository      $tomRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());

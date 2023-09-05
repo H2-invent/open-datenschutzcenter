@@ -284,6 +284,7 @@ class SoftwareController extends BaseController
             'software' => $software,
             'activ' => $software->getActiv(),
             'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 

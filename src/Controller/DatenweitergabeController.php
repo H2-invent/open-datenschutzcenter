@@ -332,10 +332,10 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $transferRepository->findActiveOrderProcessingsByTeam($team);
+        $daten = $transferRepository->findAllOrderProcessingsByTeam($team);
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
             'table' => $daten,
-            'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
+            'title' => $this->translator->trans(id: 'orderProcessing.disclaimer', domain: 'datenweitergabe'),
             'currentTeam' => $team,
         ]);
     }
@@ -352,10 +352,10 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $transferRepository->findActiveTransfersByTeam($team);
+        $daten = $transferRepository->findAllTransfersByTeam($team);
         return $this->render('datenweitergabe/index.html.twig', [
             'table' => $daten,
-            'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
+            'title' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
             'currentTeam' => $team,
         ]);
     }
