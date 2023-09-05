@@ -90,7 +90,7 @@ class SoftwareRepository extends ServiceEntityRepository
             $ignored = $team->getIgnoredInheritances();
             if (count($ignored)) {
                 $queryBuilder
-                    ->andWhere('sp NOT IN (:ignored) OR dp NOT IN (:ignored) OR sw.team = :team')
+                    ->andWhere('(sp.activ = 1 AND sp.inherited = 1 AND sp NOT IN (:ignored)) OR (dp.activ = 1 AND dp.inherited = 1 AND dp NOT IN (:ignored)) OR sw.team = :team')
                     ->setParameter('ignored', $ignored);
             }
         }

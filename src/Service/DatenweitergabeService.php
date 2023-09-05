@@ -20,6 +20,7 @@ use App\Entity\VVTDsfa;
 use App\Form\Type\DatenweitergabeType;
 use App\Repository\DatenweitergabeGrundlagenRepository;
 use App\Repository\DatenweitergabeStandRepository;
+use App\Repository\KontakteRepository;
 use App\Repository\SoftwareRepository;
 use App\Repository\VVTRepository;
 use DateTime;
@@ -40,6 +41,7 @@ class DatenweitergabeService
         private readonly SoftwareRepository                  $softwareRepository,
         private readonly DatenweitergabeStandRepository      $transferStatusRepository,
         private readonly DatenweitergabeGrundlagenRepository $transferBasisRepository,
+        private readonly KontakteRepository                  $contactRepository,
     )
     {
     }
@@ -68,15 +70,23 @@ class DatenweitergabeService
 
     function createForm(Datenweitergabe $transfer, Team $team, array $options = []): FormInterface
     {
-        $processes = $this->processRepository->findActiveByTeam($team);
-        $software = $this->softwareRepository->findActiveByTeam($team);
+        if (array_key_exists('disabled', $options) && $options['disabled']) {
+            $processes = $this->processRepository->findAllByTeam($team);
+            $software = $this->softwareRepository->findAllByTeam($team);
+            $contacts = $this->contactRepository->findAllByTeam($team);
+        } else {
+            $processes = $this->processRepository->findActiveByTeam($team);
+            $software = $this->softwareRepository->findActiveByTeam($team);
+            $contacts = $this->contactRepository->findActiveByTeam($team);
+        }
+
         $transferStatuses = $this->transferStatusRepository->findActiveByTeam($team);
         $transferReasons = $this->transferBasisRepository->findActiveByTeam($team);
 
         return $this->formBuilder->create(DatenweitergabeType::class, $transfer, array_merge([
             'stand' => $transferStatuses,
             'grundlage' => $transferReasons,
-            'kontakt' => $team->getKontakte(),
+            'kontakt' => $contacts,
             'verfahren' => $processes,
             'software' => $software
         ], $options));

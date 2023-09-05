@@ -148,7 +148,7 @@ class SecurityService
 
     public function checkTeamAccessToTransfer(Datenweitergabe $transfer, Team $team): bool
     {
-        if (in_array($transfer, $this->transferRepository->findActiveByTeam($team))) {
+        if (in_array($transfer, $this->transferRepository->findAllByTeam($team))) {
             return true;
         }
 
@@ -158,7 +158,7 @@ class SecurityService
 
     public function checkTeamAccessToTom(Tom $tom, Team $team): bool
     {
-        if (in_array($tom, $this->tomRepository->findActiveByTeam($team))) {
+        if (in_array($tom, $this->tomRepository->findAllByTeam($team))) {
             return true;
         }
 
@@ -168,7 +168,7 @@ class SecurityService
 
     public function checkTeamAccessToSoftware(Software $software, Team $team): bool
     {
-        if (in_array($software, $this->softwareRepository->findActiveByTeam($team))) {
+        if (in_array($software, $this->softwareRepository->findAllByTeam($team))) {
             return true;
         }
 
@@ -178,7 +178,7 @@ class SecurityService
 
     public function checkTeamAccessToContact(Kontakte $contact, Team $team): bool
     {
-        if (in_array($contact, $this->contactRepository->findActiveByTeam($team))) {
+        if (in_array($contact, $this->contactRepository->findAllByTeam($team))) {
             return true;
         }
 
@@ -188,7 +188,7 @@ class SecurityService
 
     public function checkTeamAccessToPolicy(Policies $policy, Team $team): bool
     {
-        if (in_array($policy, $this->policyRepository->findActiveByTeam($team))) {
+        if (in_array($policy, $this->policyRepository->findAllByTeam($team))) {
             return true;
         }
 

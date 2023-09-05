@@ -82,9 +82,16 @@ class VVTService
 
     function createForm(VVT $VVT, Team $team, array $options = []): FormInterface
     {
-        $transfers = $this->transferRepository->findActiveByTeam($team);
-        $tom = $this->tomRepository->findActiveByTeam($team);
-        $software = $this->softwareRepository->findActiveByTeam($team);
+        if (array_key_exists('disabled', $options) && $options['disabled']) {
+            $tom = $this->tomRepository->findAllByTeam($team);
+            $software = $this->softwareRepository->findAllByTeam($team);
+            $transfers = $this->transferRepository->findAllByTeam($team);
+        } else {
+            $tom = $this->tomRepository->findActiveByTeam($team);
+            $software = $this->softwareRepository->findActiveByTeam($team);
+            $transfers = $this->transferRepository->findActiveByTeam($team);
+        }
+
         $statuses = $this->processStatusRepository->findActiveByTeam($team);
         $people = $this->processPeopleRepository->findByTeam($team);
         $categories = $this->processCategoryRepository->findByTeam($team);
