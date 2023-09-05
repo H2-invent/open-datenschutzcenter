@@ -31,6 +31,12 @@ class DatenweitergabeRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    public function findAllByTeam(Team $team)
+    {
+        $queryBuilder = $this->getBaseQueryBuilder(team: $team, all: true);
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     /**
      * @param Team $team
      * @return int|mixed|string
@@ -38,7 +44,14 @@ class DatenweitergabeRepository extends ServiceEntityRepository
      */
     public function findActiveTransfersByTeam(Team $team): mixed
     {
-        $queryBuilder = $this->getBaseQueryBuilder($team);
+        $queryBuilder = $this->getBaseQueryBuilder(team: $team);
+        $queryBuilder->andWhere('a.art = 1');
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findAllTransfersByTeam(Team $team): mixed
+    {
+        $queryBuilder = $this->getBaseQueryBuilder(team: $team, all: true);
         $queryBuilder->andWhere('a.art = 1');
         return $queryBuilder->getQuery()->getResult();
     }
@@ -50,14 +63,21 @@ class DatenweitergabeRepository extends ServiceEntityRepository
      */
     public function findActiveOrderProcessingsByTeam(Team $team): mixed
     {
-        $queryBuilder = $this->getBaseQueryBuilder($team);
+        $queryBuilder = $this->getBaseQueryBuilder(team: $team);
+        $queryBuilder->andWhere('a.art = 2');
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findAllOrderProcessingsByTeam(Team $team): mixed
+    {
+        $queryBuilder = $this->getBaseQueryBuilder(team: $team, all: true);
         $queryBuilder->andWhere('a.art = 2');
         return $queryBuilder->getQuery()->getResult();
     }
 
     public function findActiveByTeamAndUser(Team $team, User $user)
     {
-        $queryBuilder = $this->getBaseQueryBuilder($team);
+        $queryBuilder = $this->getBaseQueryBuilder(team: $team);
         $queryBuilder
             ->andWhere('a.assignedUser = :user')
             ->setParameter('user', $user)
@@ -65,11 +85,11 @@ class DatenweitergabeRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
-    private function getBaseQueryBuilder(Team $team) :QueryBuilder
+    private function getBaseQueryBuilder(Team $team, bool $all = false) :QueryBuilder
     {
-        $teamPath = $this->teamRepository->getPath($team);
+        $teamPath = $this->teamRepository->getPath(node: $team);
 
-        return $this->createQueryBuilder('a')
+        $queryBuilder = $this->createQueryBuilder('a')
             ->leftJoin('a.verfahren', 'process')
             ->andWhere('a.team = :team OR process.inherited = 1 AND process.activ = 1 AND process.team IN (:teamPath)')
             ->andWhere('a.activ = 1')
@@ -77,5 +97,16 @@ class DatenweitergabeRepository extends ServiceEntityRepository
             ->setParameter('team', $team)
             ->orderBy('a.createdAt', 'DESC')
             ;
+
+        if (!$all) {
+            $ignored = $team->getIgnoredInheritances();
+            if (count($ignored)) {
+                $queryBuilder
+                    ->andWhere('process NOT IN (:ignored) OR a.team = :team')
+                    ->setParameter('ignored', $ignored);
+            }
+        }
+
+        return $queryBuilder;
     }
 }
