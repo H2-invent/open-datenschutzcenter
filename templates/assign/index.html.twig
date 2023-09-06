@@ -81,159 +81,145 @@
             </div>
             <div class="tab-pane fade" id="audit" role="tabpanel" aria-labelledby="home-tab">
                 {% for a in audits %}
-                    {% if a.activ %}
-                        <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
-                            <div class="btn btn-block bg-audit text-xl-left mt-1">
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img style="width: 30px" src="{{ asset('images/pruefung.png') }}">
-                                    </div>
-                                    <div class="col-md-7">
-                                        {{ a.team.name }}: {{ a.frage }}
-                                    </div>
-                                    <div class="col-md-4">
-                                        {{ a.status.name }}
-                                    </div>
+                    <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
+                        <div class="btn btn-block bg-audit text-xl-left mt-1">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img style="width: 30px" src="{{ asset('images/pruefung.png') }}">
+                                </div>
+                                <div class="col-md-7">
+                                    {{ a.team.name }}: {{ a.frage }}
+                                </div>
+                                <div class="col-md-4">
+                                    {{ a.status.name }}
                                 </div>
                             </div>
-                        </a>
-                    {% endif %}
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="vvt" role="tabpanel" aria-labelledby="profile-tab">
-                {% for a in processings %}
-                    {% if a.activ %}
-                        <a href="{{ path('vvt_edit',{'id':a.id}) }}">
-                            <div class="btn btn-block bg-vvt text-xl-left mt-1">
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img style="width: 30px" src="{{ asset('images/prozess.png') }}">
-                                    </div>
-                                    <div class="col-md-7">
-                                        {{ a.team.name }}: {{ a.name }}
-                                    </div>
-                                    <div class="col-md-2">
-                                        {{ a.status.name }}
-                                    </div>
-                                    <div class="col-md-2">
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
+                {% for a in processes %}
+                    <a href="{{ path('vvt_edit',{'id':a.id}) }}">
+                        <div class="btn btn-block bg-vvt text-xl-left mt-1">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img style="width: 30px" src="{{ asset('images/prozess.png') }}">
+                                </div>
+                                <div class="col-md-7">
+                                    {{ a.team.name }}: {{ a.name }}
+                                </div>
+                                <div class="col-md-2">
+                                    {{ a.status.name }}
+                                </div>
+                                <div class="col-md-2">
+                                    {{ a.createdAt|date('d.m.Y') }}
                                 </div>
                             </div>
-                        </a>
-                    {% endif %}
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="dsfa" role="tabpanel" aria-labelledby="contact-tab">
                 {% for a in impactAssessments %}
-                    {% if a.vvt.team == currentTeam %}
-                        <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
-                            <div class="btn btn-block bg-dsfa text-xl-left mt-1">
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img style="width: 30px" src="{{ asset('images/dsta.png') }}">
-                                    </div>
-                                    <div class="col-md-7">
-                                        {{ a.vvt.team.name }}: {{ a.beschreibung }}
-                                    </div>
-                                    <div class="col-md-2">
-                                        {{ a.vvt.name }}
-                                    </div>
-                                    <div class="col-md-2">
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
+                    <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
+                        <div class="btn btn-block bg-dsfa text-xl-left mt-1">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img style="width: 30px" src="{{ asset('images/dsta.png') }}">
+                                </div>
+                                <div class="col-md-7">
+                                    {{ a.vvt.team.name }}: {{ a.beschreibung }}
+                                </div>
+                                <div class="col-md-2">
+                                    {{ a.vvt.name }}
+                                </div>
+                                <div class="col-md-2">
+                                    {{ a.createdAt|date('d.m.Y') }}
                                 </div>
                             </div>
-                        </a>
-                    {% endif %}
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="daten" role="tabpanel" aria-labelledby="contact-tab">
                 {% for a in dataTransfers %}
-                    {% if a.activ %}
-                        <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">
-                            <div class="btn btn-block {% if a.art == 1 %}bg-daten{% else %}bg-av{% endif %} text-xl-left mt-1">
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img style="width: 30px" src="{{ asset('images/data.png') }}">
-                                    </div>
-                                    <div class="col-md-9">
-                                        {{ a.team.name }}: {{ a.gegenstand }}
-                                    </div>
-                                    <div class="col-md-2">
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
+                    <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">
+                        <div class="btn btn-block {% if a.art == 1 %}bg-daten{% else %}bg-av{% endif %} text-xl-left mt-1">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img style="width: 30px" src="{{ asset('images/data.png') }}">
+                                </div>
+                                <div class="col-md-9">
+                                    {{ a.team.name }}: {{ a.gegenstand }}
+                                </div>
+                                <div class="col-md-2">
+                                    {{ a.createdAt|date('d.m.Y') }}
                                 </div>
                             </div>
-                        </a>
-                    {% endif %}
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="forms" role="tabpanel" aria-labelledby="contact-tab">
                 {% for a in forms %}
-                    {% if a.activ %}
-                        <a href="{{ path('forms_edit',{'id':a.id}) }}">
-                            <div class="btn btn-block bg-forms text-xl-left mt-1">
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img style="width: 30px" src="{{ asset('images/information.png') }}">
-                                    </div>
-                                    <div class="col-md-9">
-                                        {{ a.team.name }}: {{ a.title }}
-                                    </div>
-                                    <div class="col-md-2">
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
+                    <a href="{{ path('forms_edit',{'id':a.id}) }}">
+                        <div class="btn btn-block bg-forms text-xl-left mt-1">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img style="width: 30px" src="{{ asset('images/information.png') }}">
+                                </div>
+                                <div class="col-md-9">
+                                    {{ a.team.name }}: {{ a.title }}
+                                </div>
+                                <div class="col-md-2">
+                                    {{ a.createdAt|date('d.m.Y') }}
                                 </div>
                             </div>
-                        </a>
-                    {% endif %}
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
             <div class="tab-pane fade" id="policies" role="tabpanel" aria-labelledby="contact-tab">
                 {% for a in policies %}
-                    {% if a.activ %}
-                        <a href="{{ path('policy_edit',{'id':a.id}) }}">
-                            <div class="btn btn-block bg-policy text-xl-left mt-1">
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img style="width: 30px" src="{{ asset('images/contract.png') }}">
-                                    </div>
-                                    <div class="col-md-9">
-                                        {{ a.team.name }}: {{ a.title }}
-                                    </div>
-                                    <div class="col-md-2">
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
+                    <a href="{{ path('policy_edit',{'id':a.id}) }}">
+                        <div class="btn btn-block bg-policy text-xl-left mt-1">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img style="width: 30px" src="{{ asset('images/contract.png') }}">
+                                </div>
+                                <div class="col-md-9">
+                                    {{ a.team.name }}: {{ a.title }}
+                                </div>
+                                <div class="col-md-2">
+                                    {{ a.createdAt|date('d.m.Y') }}
                                 </div>
                             </div>
-                        </a>
-                    {% endif %}
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
 
             <div class="tab-pane fade" id="software" role="tabpanel" aria-labelledby="contact-tab">
                 {% for a in software %}
-                    {% if a.activ %}
-                        <a href="{{ path('software_edit',{'id':a.id}) }}">
-                            <div class="btn btn-block bg-software text-xl-left mt-1">
-                                <div class="row">
-                                    <div class="col-md-1">
-                                        <img style="width: 30px" src="{{ asset('images/monitor.png') }}">
-                                    </div>
-                                    <div class="col-md-5">
-                                        {{ a.team.name }}: {{ a.name }}
-                                    </div>
-                                    <div class="col-md-4">
-                                        {% trans %}configurations{% endtrans %}: {{ a.config|length }}
-                                    </div>
-                                    <div class="col-md-2">
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
+                    <a href="{{ path('software_edit',{'id':a.id}) }}">
+                        <div class="btn btn-block bg-software text-xl-left mt-1">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <img style="width: 30px" src="{{ asset('images/monitor.png') }}">
+                                </div>
+                                <div class="col-md-5">
+                                    {{ a.team.name }}: {{ a.name }}
+                                </div>
+                                <div class="col-md-4">
+                                    {% trans %}configurations{% endtrans %}: {{ a.config|length }}
+                                </div>
+                                <div class="col-md-2">
+                                    {{ a.createdAt|date('d.m.Y') }}
                                 </div>
                             </div>
-                        </a>
-                    {% endif %}
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
         </div>

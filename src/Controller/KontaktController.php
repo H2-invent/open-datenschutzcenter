@@ -70,6 +70,7 @@ class KontaktController extends AbstractController
             'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
             'new' => true,
             'isEditable' => true,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -121,19 +122,18 @@ class KontaktController extends AbstractController
         Request            $request,
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
-        KontakteRepository $contactRepository,
-        TeamRepository     $teamRepository,
+        KontakteRepository $contactRepository
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
-        $teamPath = $team ? $teamRepository->getPath($team) : null;
-        $kontakt = $contactRepository->find($request->get('id'));
-        if ($securityService->teamPathDataCheck($kontakt, $teamPath) === false) {
-            return $this->redirectToRoute('kurse');
+        $contact = $contactRepository->find($request->get('id'));
+        if (!$securityService->checkTeamAccessToContact($contact, $team)) {
+            $this->addFlash('danger', 'error.accessDenied');
+            return $this->redirectToRoute('kontakt');
         }
 
-        $isEditable = $kontakt->getTeam() === $team;
-        $form = $this->createForm(KontaktType::class, $kontakt, ['disabled' => !$isEditable]);
+        $isEditable = $contact->getTeam() === $team;
+        $form = $this->createForm(KontaktType::class, $contact, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
 
         $errors = array();
@@ -146,7 +146,7 @@ class KontaktController extends AbstractController
                 return $this->redirectToRoute(
                     'kontakt_edit',
                     [
-                        'id' => $kontakt->getId(),
+                        'id' => $contact->getId(),
                         'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
@@ -154,11 +154,12 @@ class KontaktController extends AbstractController
         }
         return $this->render('kontakt/edit.html.twig', [
             'form' => $form->createView(),
-            'kontakt' => $kontakt,
+            'kontakt' => $contact,
             'errors' => $errors,
-            'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
+            'title' => $this->translator->trans(id: 'contact.edit', domain: 'kontakt'),
             'snack' => $request->get('snack'),
             'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -167,7 +168,6 @@ class KontaktController extends AbstractController
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
         KontakteRepository $contactRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -175,11 +175,10 @@ class KontaktController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $teamPath = $teamRepository->getPath($team);
-        $kontakte = $contactRepository->findActiveByTeamPath($teamPath);
+        $contacts = $contactRepository->findAllByTeam($team);
 
         return $this->render('kontakt/index.html.twig', [
-            'kontakte' => $kontakte,
+            'kontakte' => $contacts,
             'title' => $this->translator->trans(id: 'contact', domain: 'general'),
             'currentTeam' => $team,
         ]);

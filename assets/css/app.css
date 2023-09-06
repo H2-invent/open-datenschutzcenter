@@ -5,6 +5,7 @@
 @import "~vis-network/styles/vis-network.css";
 @import "style.css";
 @import "select-css.css";
+@import "summernote.css";
 @import "~summernote/dist/summernote-bs4.min.css";
 @import "~bootstrap-select/dist/css/bootstrap-select.min.css";
 @import "~h2-invent-apps/css/h2-invent-apps.css";

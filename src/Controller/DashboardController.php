@@ -43,7 +43,7 @@ class DashboardController extends AbstractController
                               SecurityService             $securityService,
                               TeamRepository              $teamRepository,
                               DatenweitergabeRepository   $transferRepository,
-                              VVTRepository               $procedureRepository,
+                              VVTRepository               $processRepository,
                               AuditTomRepository          $auditRepository,
                               VVTDsfaRepository           $impactAssessmentRepository,
                               FormsRepository             $formRepository,
@@ -79,27 +79,26 @@ class DashboardController extends AbstractController
                 return $this->redirectToRoute('no_team');
             }
         }
-        $teamPath = $teamRepository->getPath($currentTeam);
 
         $audit = $auditRepository->findAllByTeam($currentTeam);
-        $daten = $transferRepository->findActiveTransfersByTeamPath($teamPath);
-        $av = $transferRepository->findActiveOrderProcessingsByTeamPath($teamPath);
-        $vvt = $procedureRepository->findActiveByTeamPath($teamPath);
-        $vvtDsfa = $impactAssessmentRepository->findActiveByTeamPath($teamPath);
-        $kontakte = $contactRepository->findActiveByTeamPath($teamPath);
-        $tom = $tomRepository->findActiveByTeamPath($teamPath);
+        $daten = $transferRepository->findActiveTransfersByTeam($currentTeam);
+        $av = $transferRepository->findActiveOrderProcessingsByTeam($currentTeam);
+        $processes = $processRepository->findActiveByTeam($currentTeam);
+        $vvtDsfa = $impactAssessmentRepository->findActiveByTeam($currentTeam);
+        $contacts = $contactRepository->findActiveByTeam($currentTeam);
+        $tom = $tomRepository->findActiveByTeam($currentTeam);
         $forms = $formRepository->findPublicByTeam($currentTeam);
-        $policies = $policyRepository->findPublicByTeamPath($teamPath);
-        $software = $softwareRepository->findActiveByTeamPath($teamPath);
+        $policies = $policyRepository->findPublicByTeam($currentTeam);
+        $software = $softwareRepository->findActiveByTeam($currentTeam);
         $tasks = $taskRepository->findActiveAndOpenByTeam($currentTeam);
         $loeschkonzepte = $deletionConceptRepository->findByTeam($currentTeam);
         $vvtdatenkategorien = $dataCategoryRepository->findByTeam($currentTeam);
         $kritischeAudits = $auditRepository->findCriticalByTeam($currentTeam);
-        $kritischeVvts = $procedureRepository->findCriticalByTeamPath($teamPath);
+        $criticalProcesses = $processRepository->findCriticalByTeam($currentTeam);
         $openDsfa = $impactAssessmentRepository->findActiveAndOpenByTeam($currentTeam);
         $buchungen = $bookingRepository->findActiveByUser($user);
 
-        $assignVvt = $procedureRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignVvt = $processRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignAudit = $auditRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignDsfa = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignDatenweitergabe = $transferRepository->findActiveByTeamAndUser($currentTeam, $user);
@@ -109,11 +108,11 @@ class DashboardController extends AbstractController
             'currentTeam' => $currentTeam,
             'audit' => $audit,
             'daten' => $daten,
-            'vvt' => $vvt,
+            'vvt' => $processes,
             'dsfa' => $vvtDsfa,
-            'kontakte' => $kontakte,
+            'kontakte' => $contacts,
             'kAudit' => $kritischeAudits,
-            'kVvt' => $kritischeVvts,
+            'kVvt' => $criticalProcesses,
             'openDsfa' => $openDsfa,
             'tom' => $tom,
             'av' => $av,

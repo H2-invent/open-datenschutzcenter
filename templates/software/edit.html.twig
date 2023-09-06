@@ -22,26 +22,32 @@
             <h2 class="h2-responsive">{{ software.name }}: {{ title }}</h2>
             {{ include('base/__approvedBy.html.twig', {'data':software}) }}
         </div>
-        <div class="col-md-4 text-right">
+        <div class="col-md-4 text-md-right">
             {% if isEditable %}
                 {{ include('assign/__assign.html.twig',{'data':software,'path':'assign_software'}) }}
             {% endif %}
         </div>
+        <div class="col-12">
+            {% set inherited = softwareInherited(software) %}
+            {% set used = teamUsesSoftware(currentTeam, software) %}
+            {% include 'base/__inheritanceInfo.html.twig' with {team:software.team, currentTeam:currentTeam, used:used, inherited:inherited} %}
+            {% include 'base/__flashMessage.html.twig' with {app:app} %}
+        </div>
     </div>
 
-    <div class="accordion" id="accordionExample">
+    <div class="accordion" id="softwareAccordion">
         <div class="card z-depth-0 bordered">
-            <div class="card-header" id="headingOne">
+            <div class="card-header p-0" id="headingOne">
                 <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
                             data-target="#collapseOne"
                             aria-expanded="false" aria-controls="collapseOne">
-                        <h4 class="h4-responsive">{% trans %}software.baseData{% endtrans %}</h4>
+                        <span class="h4-responsive">{% trans %}software.baseData{% endtrans %}</span>
                     </button>
                 </h5>
             </div>
             <div id="collapseOne" class="collapse{% if not isEditable %} show{% endif %}" aria-labelledby="headingOne"
-                 data-parent="#accordionExample">
+                 data-parent="#softwareAccordion">
                 <div class="card-body {% if not activ or software.approved %}disabled{% endif %}">
                     {{ include('software/__form.html.twig') }}
                     <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ software.user.email }}</p>
@@ -50,15 +56,15 @@
         </div>
         {% if isEditable %}
             <div class="card z-depth-0 bordered">
-                <div class="card-header" id="headingTwo">
+                <div class="card-header p-0" id="headingTwo">
                     <h5 class="mb-0">
-                        <button class="btn btn-link " type="button" data-toggle="collapse"
+                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
                                 data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                            <h4 class="h4-responsive">{% trans %}config.attached{% endtrans %}</h4>
+                            <span class="h4-responsive">{% trans %}config.attached{% endtrans %}</span>
                         </button>
                     </h5>
                 </div>
-                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#softwareAccordion">
                     <div class="card-body {% if not activ or software.approved %}disabled{% endif %}">
                         {{ include('software/__config.html.twig') }}
                     </div>

@@ -15,7 +15,16 @@
                 </div>
             </div>
         {% endif %}
+        <div class="mt-4 row">
+            <div class="col-md-3">
+                {{ form_label(form.inherited) }}
+                {{ form_help(form.inherited) }}
+            </div>
+            <div class="col-md-9">
+                {{ form_widget(form.inherited) }}
+            </div>
 
+        </div>
         <div class="mt-4 row">
             <div class="col-md-3">
                 {{ form_label(form.name) }}

@@ -191,6 +191,23 @@ informationObligationHelp: Document when and how the duty to inform is fulfilled
 dsbComment: Comment by the DPO
 dsbCommentHelp: In addition to the mandatory recording of the purpose of processing, the legal basis, including any necessary considerations, consent clauses and test notes, should be taken into account in order to fulfill the accountability obligations in accordance with article 5.
 
+# dpia/dsfa
+dpiaDescription:
+  label: Systematic description of the planned processes
+  help: Which process is planned? What responsibilities exist for the process? Are there norms or standards for the process? Which data is processed? What is the life cycle of the data and processes? What resources are used for processing data?
+needAssessment:
+  label: Need assessment
+  help: Are the processing purposes clearly defined and legitimate? What is the legal basis for processing this data? Is all the collected data necessary and relevant for the process? Is the data correct and up-to-date?
+riskAssessment:
+  label: Risk assessment
+  help: What are the main threats? What are the risk sources? How are people affected by the risk?
+correctiveActions:
+  label: Corrective actions to help deal with the risk (guarantees, backups,...)
+  help: Data separation, backups, encryption, anonymization, access control, logging, archiving,...
+positionOtherInstitutions: Position of other institutions (e.g. employee organization)
+positionDataProtectionOfficer: Position of data protection officer
+dpiaResult: Result of the data protection impact assessment
+
 # delete concept
 dataCategories: Data categories
 standardDeleteDeadline: Standard storage period

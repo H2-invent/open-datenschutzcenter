@@ -176,14 +176,13 @@ class PoliciesController extends AbstractController
         AssignService      $assignService,
         CurrentTeamService $currentTeamService,
         PoliciesRepository $policiesRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
-        $teamPath = $team ? $teamRepository->getPath($team) : null;
         $policy = $policiesRepository->find($request->get('id'));
 
-        if ($securityService->teamPathDataCheck($policy, $teamPath) === false) {
+        if (!$securityService->checkTeamAccessToPolicy($policy, $team)) {
+            $this->addFlash('danger', 'error.accessDenied');
             return $this->redirectToRoute('policies');
         }
         $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());
@@ -220,6 +219,7 @@ class PoliciesController extends AbstractController
             'activ' => $policy->getActiv(),
             'snack' => $request->get('snack'),
             'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -228,7 +228,6 @@ class PoliciesController extends AbstractController
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
         PoliciesRepository $policiesRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -236,8 +235,7 @@ class PoliciesController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $teamPath = $teamRepository->getPath($team);
-        $policies = $policiesRepository->findActiveByTeamPath($teamPath);
+        $policies = $policiesRepository->findAllByTeam($team);
 
         return $this->render('policies/index.html.twig', [
             'data' => $policies,

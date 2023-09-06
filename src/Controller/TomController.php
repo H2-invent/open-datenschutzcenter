@@ -161,14 +161,13 @@ class TomController extends AbstractController
         TomService         $tomService,
         CurrentTeamService $currentTeamService,
         TomRepository      $tomRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
-        $teamPath = $team ? $teamRepository->getPath($team) : null;
         $tom = $tomRepository->find($request->get('tom'));
 
-        if ($securityService->teamPathDataCheck($tom, $teamPath) === false) {
+        if ($securityService->checkTeamAccessToTom($tom, $team) === false) {
+            $this->addFlash('danger', 'error.accessDenied');
             return $this->redirectToRoute('tom');
         }
 
@@ -215,7 +214,6 @@ class TomController extends AbstractController
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
         TomRepository      $tomRepository,
-        TeamRepository     $teamRepository,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -223,8 +221,7 @@ class TomController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $teamPath = $teamRepository->getPath($team);
-        $tom = $tomRepository->findActiveByTeamPath($teamPath);
+        $tom = $tomRepository->findAllByTeam($team);
 
         return $this->render('tom/index.html.twig', [
             'tom' => $tom,

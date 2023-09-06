@@ -40,6 +40,10 @@ error:
   userNotInTeamAccessDenied: Benutzer*in nicht in Team und nicht berechtigt
   userNotAuthorizedToManageTeam: Benutzer*in ist nicht berechtigt, Teams zu verwalten
   signature: Die Signatur ist ungültig. Bitte kontaktieren Sie die Personen, die Ihnen die Datei überlassen hat.
+  assign: Die Zuweisung ist fehlgeschlagen. Wenden Sie sich an Ihren Admin wenn das Problem bestehen bleibt.
+  accessDenied: Sie haben versucht, auf ein Element zuzugreifen, das für Ihr Team nicht freigegeben ist.
+  elementDoesNotExist: Sie haben versucht, auf ein Element zuzugreifen, das nicht existiert.
+  mailSend: Die E-Mail konnte nicht verschickt werden. Wenden Sie sich an Ihren Admin wenn das Problem bestehen bleibt.
   file: '
     Die Datei ist fehlerhaft und kann nicht eingelesen werden. 
     Es können jedoch bereits Daten in Ihren Datenstamm eingetragen worden sein. 
@@ -97,5 +101,15 @@ version: Version
 versionApproved: (Diese Version war freigegeben)
 yes: Ja
 inheritance:
-  fromTeam: Von Team vererbt
-  infoText: Dieses Element wurde durch Team-Vererbung übertragen und ist daher nicht bearbeitbar.
+  isInherited: Wird vererbt
+  fromTeam: Geerbt von
+  isActive: Aktiv
+  infoText:
+    inherited: Dieses Element ist eine Abhängigkeit einer Verarbeitung, die vererbt wird. Es kann von Kind-Teams verwendet aber nicht bearbeitet werden.
+    fromTeam: Abhängigkeit einer geerbten Vearbeitung (kann nicht bearbeitet werden)
+    active:
+      short: Gerbtes Element - für dieses Team aktiv
+      long: Dieses Element ist eine Abhängigkeit einer Verarbeitung, die von einem übergeordneten Team vererbt wurde. Es kann in diesem Team verwendet aber nicht bearbeitet werden.
+    inactive:
+      short: Gerbtes Element - für dieses Team deaktiviert
+      long: Dieses Element ist eine Abhängigkeit einer Verarbeitung, die von einem übergeordneten Team vererbt wurde. Diese ist jedoch für dieses Team deaktiviert.

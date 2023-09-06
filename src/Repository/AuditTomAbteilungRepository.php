@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\AuditTomAbteilung;
+use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,53 +15,18 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AuditTomAbteilungRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry                 $registry,
+        private readonly TeamRepository $teamRepository,
+    )
     {
         parent::__construct($registry, AuditTomAbteilung::class);
     }
 
-    // /**
-    //  * @return AuditTomAbteilung[] Returns an array of AuditTomAbteilung objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findActiveByTeam(Team $team)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $teamPath = $this->teamRepository->getPath($team);
 
-    /*
-    public function findOneBySomeField($value): ?AuditTomAbteilung
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findAllByTeam($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->Where('a.team = :val')
-            ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function findActiveByTeamPath(array $teamPath)
-    {
         return $this->createQueryBuilder('a')
             ->where('a.team IN (:teamPath)')
             ->andWhere('a.activ = 1')

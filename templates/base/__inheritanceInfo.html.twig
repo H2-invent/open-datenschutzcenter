@@ -1,0 +1,16 @@
+{% trans_default_domain domain|default('general') %}
+{% if inherited %}
+    {% if currentTeam.children.count and team == currentTeam %}
+        <div class="alert alert-info" role="alert">
+            {% trans %}inheritance.infoText.inherited{% endtrans %}
+        </div>
+    {% elseif team != currentTeam and used %}
+        <div class="alert alert-info" role="alert">
+            {% trans %}inheritance.infoText.active.long{% endtrans %}
+        </div>
+    {% elseif team != currentTeam %}
+        <div class="alert alert-danger" role="alert">
+            {% trans %}inheritance.infoText.inactive.long{% endtrans %}
+        </div>
+    {% endif %}
+{% endif %}

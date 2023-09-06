@@ -37,7 +37,10 @@ class AssignController extends AbstractController
             return $this->redirectToRoute('audit_tom');
         }
 
-        $assignService->assignAudit($request, $audit);
+        $success = $assignService->assignAudit($request, $audit);
+        if (!$success) {
+            $this->addFlash('danger', 'error.assign');
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -56,7 +59,10 @@ class AssignController extends AbstractController
             return $this->redirectToRoute('datenweitergabe');
         }
 
-        $assignService->assignDatenweitergabe($request, $daten);
+        $success = $assignService->assignDatenweitergabe($request, $daten);
+        if (!$success) {
+            $this->addFlash('danger', 'error.assign');
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -72,10 +78,12 @@ class AssignController extends AbstractController
         $team = $currentTeamService->getCurrentTeam($this->getUser());
         $impactAssessment = $impactAssessmentRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($impactAssessment->getVvt(), $team)) {
-            $assignService->assignDsfa($request, $impactAssessment);
+            $success = $assignService->assignDsfa($request, $impactAssessment);
+            if (!$success) {
+                $this->addFlash('danger', 'error.assign');
+            }
             return $this->redirect($request->headers->get('referer'));
         }
-
         return $this->redirectToRoute('vvt');
     }
 
@@ -94,7 +102,10 @@ class AssignController extends AbstractController
             return $this->redirectToRoute('forms');
         }
 
-        $res = $assignService->assignForm($request, $form);
+        $success = $assignService->assignForm($request, $form);
+        if (!$success) {
+            $this->addFlash('danger', 'error.assign');
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -113,7 +124,10 @@ class AssignController extends AbstractController
             return $this->redirectToRoute('policies');
         }
 
-        $assignService->assignPolicy($request, $policy);
+        $success = $assignService->assignPolicy($request, $policy);
+        if (!$success) {
+            $this->addFlash('danger', 'error.assign');
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -132,7 +146,10 @@ class AssignController extends AbstractController
             return $this->redirectToRoute('software');
         }
 
-        $assignService->assignSoftware($request, $software);
+        $success = $assignService->assignSoftware($request, $software);
+        if (!$success) {
+            $this->addFlash('danger', 'error.assign');
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -151,7 +168,10 @@ class AssignController extends AbstractController
             return $this->redirectToRoute('tasks');
         }
 
-        $assignService->assignTask($request, $task);
+        $success = $assignService->assignTask($request, $task);
+        if (!$success) {
+            $this->addFlash('danger', 'error.assign');
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -170,7 +190,10 @@ class AssignController extends AbstractController
             return $this->redirectToRoute('vorfall');
         }
 
-        $assignService->assignVorfall($request, $vorfall);
+        $success = $assignService->assignVorfall($request, $vorfall);
+        if (!$success) {
+            $this->addFlash('danger', 'error.assign');
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -189,14 +212,17 @@ class AssignController extends AbstractController
             return $this->redirectToRoute('vvt');
         }
 
-        $assignService->assignVvt($request, $vvt);
+        $success = $assignService->assignVvt($request, $vvt);
+        if (!$success) {
+            $this->addFlash('danger', 'error.assign');
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
     #[Route(path: '', name: '')]
     public function index(CurrentTeamService        $currentTeamService,
                           DatenweitergabeRepository $transferRepository,
-                          VVTRepository             $processingRepository,
+                          VVTRepository             $processRepository,
                           AuditTomRepository        $auditRepository,
                           VVTDsfaRepository         $impactAssessmentRepository,
                           FormsRepository           $formRepository,
@@ -208,9 +234,9 @@ class AssignController extends AbstractController
         $user = $this->getUser();
         $currentTeam = $currentTeamService->getCurrentTeam($user);
         $assignedDataTransfers = $transferRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignedProcessings = $processingRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedProcesses = $processRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedAudits = $auditRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignImpactAssessments = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedImpactAssessments = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedForms = $formRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedPolicies = $policyRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedSoftware = $softwareRepository->findActiveByTeamAndUser($currentTeam, $user);
@@ -219,9 +245,9 @@ class AssignController extends AbstractController
         return $this->render('assign/index.html.twig', [
             'currentTeam' => $currentTeam,
             'dataTransfers' => $assignedDataTransfers,
-            'processings' => $assignedProcessings,
+            'processes' => $assignedProcesses,
             'audits' => $assignedAudits,
-            'impactAssessments' => $assignImpactAssessments,
+            'impactAssessments' => $assignedImpactAssessments,
             'forms' => $assignedForms,
             'policies' => $assignedPolicies,
             'software' => $assignedSoftware,

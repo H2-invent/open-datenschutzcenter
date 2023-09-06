@@ -27,53 +27,53 @@ class VvtDsfaType extends AbstractType
         $builder
             ->add('beschreibung', TextareaType::class, [
                 'attr' => ['class' => $summernoteClass],
-                'label' => 'Systematische Beschreibung der geplanten Verarbeitungsvorgänge',
+                'label' => 'dpiaDescription.label',
                 'required' => true,
-                'help' => 'Welche Verarbeitung ist geplant?, Welche Zuständigkeiten bestehen für die Verarbeitung?, Gibt es Normen oder Standards für die Verarbeitung?, Welche Daten werden verarbeitetet?, Wie verläuft der Lebenszyklus von Daten und Prozessen?, Mit Hilfe welcher Betriebsmittel erfolgt die Datenverarbeitung?',
+                'help' => 'dpiaDescription.help',
                 'translation_domain' => 'form'
             ])
             ->add('notwendigkeit', TextareaType::class, [
                 'attr' => ['class' => $summernoteClass],
-                'label' => 'Bewertung der Notwendigkeit',
+                'label' => 'needAssessment.label',
                 'required' => true,
-                'help' => 'Sind die Verarbeitungszwecke eindeutig definiert und rechtmäßig?, Aufgrund welcher Rechtsgrundlage erfolgt die Verarbeitung?, Sind die erhobenen Daten erforderlich, relevant und auf das für die Datenverarbeitung Notwendige beschränkt?, Sind die Daten korrekt und auf dem neuesten Stand?',
+                'help' => 'needAssessment.help',
                 'translation_domain' => 'form'
             ])
             ->add('risiko', TextareaType::class, [
                 'attr' => ['class' => $summernoteClass],
-                'label' => 'Bewertung der Risiken',
+                'label' => 'riskAssessment.label',
                 'required' => true,
-                'help' => 'Was sind die Hauptbedrohungen, die zu dem Risiko führen könnten?, Was sind die Risikoquellen?, Was könnten die wesentlichen Auswirkungen für die betroffenen Personen sein, wenn das Risiko eintritt?',
+                'help' => 'riskAssessment.help',
                 'translation_domain' => 'form'
             ])
             ->add('abhilfe', TextareaType::class, [
                 'attr' => ['class' => $summernoteClass],
-                'label' => 'Zur Bewältigung der Risiken geplante Abhilfemaßnahmen (Garantie, Sicherheitskopien,...)',
+                'label' => 'correctiveActions.label',
                 'required' => true,
-                'help' => 'Datentrennung, Datensicherung, Verschlüsselung, Anonymisierung, Datentrennung, Zugangskontrolle, Zugriffskontrolle, Protokollierung, Archivierung, Datenminimierung, Betriebssicherheit, Papierdokumentensicherung',
+                'help' => 'correctiveActions.help',
                 'translation_domain' => 'form'
             ])
             ->add('standpunkt', TextareaType::class, [
                 'attr' => ['class' => $summernoteClass],
-                'label' => 'Standpunkt von weiteren Organen (z.B. Betriebsrat)',
+                'label' => 'positionOtherInstitutions',
                 'required' => true,
                 'translation_domain' => 'form'
             ])
             ->add('dsb', TextareaType::class, [
                 'attr' => ['class' => $summernoteClass],
-                'label' => 'Standpunkt des Datenschutzbeauftragten',
+                'label' => 'positionDataProtectionOfficer',
                 'required' => false,
                 'translation_domain' => 'form'
             ])
             ->add('ergebnis', TextareaType::class, [
                 'attr' => ['class' => $summernoteClass],
-                'label' => 'Ergebnis der Datenschutz-Folgenabschätzung',
+                'label' => 'dpiaResult',
                 'required' => false,
                 'translation_domain' => 'form'
             ])
             ->add('save', SubmitType::class, [
                 'attr' => array('class' => 'btn btn-primary'),
-                'label' => 'Speichern',
+                'label' => 'save',
                 'translation_domain' => 'form'
             ]);
     }
