@@ -29,27 +29,113 @@ class DatenweitergabeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $summernoteClass = 'summernote';
+        if ($options['disabled']) {
+            $summernoteClass .= ' summernote-disable';
+        }
 
         $builder
-            ->add('gegenstand', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'contractObject', 'required' => true, 'translation_domain' => 'form', 'help' => 'contractObjectHelp'])
-            ->add('notes', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'comments', 'required' => false, 'translation_domain' => 'form'])
-            ->add('nummer', TextType::class, ['label' => 'dataTransferNumber', 'required' => true, 'translation_domain' => 'form'])
-            ->add('verantwortlich', TextType::class, ['label' => 'responsibleParty', 'required' => true, 'translation_domain' => 'form'])
-            ->add('vertragsform', TextType::class, ['label' => 'contractType', 'required' => true, 'translation_domain' => 'form'])
-            ->add('reference', TextType::class, ['label' => 'reference', 'required' => false, 'translation_domain' => 'form', 'help' => 'referenceHelp'])
-            ->add('zeichnungsdatum', DateType::class, ['label' => 'signDate', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text', 'help' => 'signDateHelp'])
-            ->add('checkItems', CheckboxType::class, ['label' => 'dataTransferParameters', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkPeople', CheckboxType::class, ['label' => 'personalDataType', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkData', CheckboxType::class, ['label' => 'affectedPersons', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkDocumentation', CheckboxType::class, ['label' => 'documentedInstructions', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkTom', CheckboxType::class, ['label' => 'technicalAndOrganisationalMeasures', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkSubcontractor', CheckboxType::class, ['label' => 'subcontractors', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkTrust', CheckboxType::class, ['label' => 'privacyObligation', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkSupport', CheckboxType::class, ['label' => 'supportWithInquiries', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkSupport3236', CheckboxType::class, ['label' => 'supportWithObligations', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkNotes', CheckboxType::class, ['label' => 'dutyToInform', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkEnding', CheckboxType::class, ['label' => 'handlingOfDataAfterProcessing', 'required' => false, 'translation_domain' => 'form'])
-            ->add('checkAudit', CheckboxType::class, ['label' => 'resources', 'required' => false, 'translation_domain' => 'form'])
+            ->add('gegenstand', TextareaType::class, [
+                'attr' => ['rows' => 8],
+                'label' => 'contractObject',
+                'required' => true,
+                'translation_domain' => 'form',
+                'help' => 'contractObjectHelp'
+            ])
+            ->add('notes', TextareaType::class, [
+                'attr' => ['class' => $summernoteClass],
+                'label' => 'comments',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('nummer', TextType::class, [
+                'label' => 'dataTransferNumber',
+                'required' => true,
+                'translation_domain' => 'form'
+            ])
+            ->add('verantwortlich', TextType::class, [
+                'label' => 'responsibleParty',
+                'required' => true,
+                'translation_domain' => 'form'
+            ])
+            ->add('vertragsform', TextType::class, [
+                'label' => 'contractType',
+                'required' => true,
+                'translation_domain' => 'form'
+            ])
+            ->add('reference', TextType::class, [
+                'label' => 'reference',
+                'required' => false,
+                'translation_domain' => 'form',
+                'help' => 'referenceHelp'
+            ])
+            ->add('zeichnungsdatum', DateType::class, [
+                'label' => 'signDate',
+                'required' => true,
+                'translation_domain' => 'form',
+                'widget' => 'single_text',
+                'help' => 'signDateHelp'
+            ])
+            ->add('checkItems', CheckboxType::class, [
+                'label' => 'dataTransferParameters',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('checkPeople', CheckboxType::class, [
+                'label' => 'personalDataType',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('checkData', CheckboxType::class, [
+                'label' => 'affectedPersons',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('checkDocumentation', CheckboxType::class, [
+                'label' => 'documentedInstructions',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('checkTom', CheckboxType::class, [
+                'label' => 'technicalAndOrganisationalMeasures',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('checkSubcontractor', CheckboxType::class, [
+                'label' => 'subcontractors',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('checkTrust', CheckboxType::class, [
+                'label' => 'privacyObligation',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('checkSupport', CheckboxType::class, [
+                'label' => 'supportWithInquiries',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('checkSupport3236', CheckboxType::class, [
+                'label' => 'supportWithObligations',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('checkNotes', CheckboxType::class, [
+                'label' => 'dutyToInform',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('checkEnding', CheckboxType::class, [
+                'label' => 'handlingOfDataAfterProcessing',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
+            ->add('checkAudit', CheckboxType::class, [
+                'label' => 'resources',
+                'required' => false,
+                'translation_domain' => 'form'
+            ])
             ->add('kontakt', EntityType::class, [
                 'choice_label' => 'firma',
                 'class' => Kontakte::class,
@@ -121,7 +207,11 @@ class DatenweitergabeType extends AbstractType
                 'translation_domain' => 'form',
                 'download_label' => false
             ])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block'), 'label' => 'save', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, [
+                'attr' => array('class' => 'btn btn-primary btn-block'),
+                'label' => 'save',
+                'translation_domain' => 'form'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

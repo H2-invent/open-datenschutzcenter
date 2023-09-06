@@ -1372,6 +1372,14 @@ class Team
         return $this->children;
     }
 
+    public function getLevel(): int {
+        return $this->lvl;
+    }
+
+    public function hasTreeMultipleNodes(): bool {
+        return $this->rgt > 2;
+    }
+
     /**
      * @return Collection
      */

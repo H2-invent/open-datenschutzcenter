@@ -14,6 +14,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Loeschkonzept;
+use App\Entity\VVTDatenkategorie;
 use App\Repository\AkademieBuchungenRepository;
 use App\Repository\AuditTomRepository;
 use App\Repository\DatenweitergabeRepository;
@@ -91,8 +93,13 @@ class DashboardController extends AbstractController
         $policies = $policyRepository->findPublicByTeam($currentTeam);
         $software = $softwareRepository->findActiveByTeam($currentTeam);
         $tasks = $taskRepository->findActiveAndOpenByTeam($currentTeam);
-        $loeschkonzepte = $deletionConceptRepository->findByTeam($currentTeam);
-        $vvtdatenkategorien = $dataCategoryRepository->findByTeam($currentTeam);
+        $loeschkonzepte = array_values(array_filter(
+            $deletionConceptRepository->findActiveByTeam($currentTeam),
+            function (Loeschkonzept $loeschkonzept) use ($currentTeam) {
+                return $loeschkonzept->getTeam() === $currentTeam;
+            }
+        ));
+        $vvtdatenkategorien = $dataCategoryRepository->findActiveByTeam($currentTeam);
         $kritischeAudits = $auditRepository->findCriticalByTeam($currentTeam);
         $criticalProcesses = $processRepository->findCriticalByTeam($currentTeam);
         $openDsfa = $impactAssessmentRepository->findActiveAndOpenByTeam($currentTeam);

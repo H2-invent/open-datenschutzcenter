@@ -69,11 +69,9 @@ class VVTDatenkategorieService
         return $childVVTDatenkategorie;
     }
 
-    function createForm(VVTDatenkategorie $vVTDatenkategorie, Team $team)
+    function createForm(VVTDatenkategorie $vVTDatenkategorie, Team $team, array $options = [])
     {
-        $form = $this->formBuilder->create(VVTDatenkategorieType::class, $vVTDatenkategorie);
-
-        return $form;
+        return $this->formBuilder->create(VVTDatenkategorieType::class, $vVTDatenkategorie, $options);
     }
 
     function findLatestKategorie(VVTDatenkategorie $VVTDatenkategorie): ?VVTDatenkategorie

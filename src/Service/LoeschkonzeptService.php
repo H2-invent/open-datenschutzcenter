@@ -9,6 +9,7 @@ use App\Entity\Team;
 use App\Entity\User;
 use App\Entity\VVTDatenkategorie;
 use App\Form\Type\LoeschkonzeptType;
+use App\Repository\VVTDatenkategorieRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -35,13 +36,18 @@ class LoeschkonzeptService
         return $newLoeschkonzept;
     }
 
-    function createForm(Loeschkonzept $loeschkonzept, Team $team): FormInterface
+    function createForm(Loeschkonzept $loeschkonzept, Team $team, array $options = []): FormInterface
     {
-        $vvtdatenkategories = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
+        /** @var VVTDatenkategorieRepository $categoryRepository */
+        $categoryRepository = $this->em->getRepository(VVTDatenkategorie::class);
+        if ((array_key_exists('disabled', $options) && $options['disabled'])) {
+            $categories = $categoryRepository->findAllByTeam($team);
+        } else {
+            $categories = $categoryRepository->findLatestActiveByTeam($team);
+        }
+        $options['vvtdatenkategories'] = $categories;
 
-        $form = $this->formBuilder->create(LoeschkonzeptType::class, $loeschkonzept, ['vvtdatenkategories' => $vvtdatenkategories]);
-
-        return $form;
+        return $this->formBuilder->create(LoeschkonzeptType::class, $loeschkonzept, $options);
     }
 
     function newLoeschkonzept(Team $team, User $user): Loeschkonzept

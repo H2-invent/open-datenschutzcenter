@@ -20,38 +20,39 @@
                     <th scope="col">{% trans %}deletion.deadline{% endtrans %}</th>
                     <th scope="col">{% trans %}deletion.concept{% endtrans %}</th>
                     <th scope="col">{% trans from 'general' %}overview{% endtrans %}</th>
-
+                    {% include 'base/__inheritanceTHeaders.html.twig' with {currentTeam:currentTeam} %}
                 </tr>
                 </thead>
                 <tbody>
-                {% for d in vvtdatenkategories %}
-                    <tr class="clickable-row" data-href='{{ path('app_vvtdatenkategorie_edit', {'id': d.id}) }}'>
-                        <td>{{ d.id }}</td>
-                        <td>{{ d.name }}</td>
-                        <td>{{ d.datenarten }}</td>
-                        <td>{% if d.loeschkonzept %}
-                                {{ d.loeschkonzept|last }}
+                {% for d in annotatedCategories %}
+                    <tr class="clickable-row" data-href='{{ path('app_vvtdatenkategorie_edit', {'id': d.entity.id}) }}'>
+                        <td>{{ d.entity.id }}</td>
+                        <td>{{ d.entity.name }}</td>
+                        <td>{{ d.entity.datenarten }}</td>
+                        <td>{% if d.entity.loeschkonzept %}
+                                {{ d.entity.loeschkonzept|last }}
                             {% else %}
                                 {{ 'X' }}
                             {% endif %}
                         </td>
                         <td>
-                            {% if d.loeschkonzept %}
-                                {% if d.loeschkonzept|last %}
-                                    <a href="{{ path('app_loeschkonzept_show', {'id': d.loeschkonzept|last.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
+                            {% if d.entity.loeschkonzept %}
+                                {% if d.entity.loeschkonzept|last %}
+                                    <a href="{{ path('app_loeschkonzept_show', {'id': d.entity.loeschkonzept|last.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
                                 {% else %}
-                                    {% for l in d.loeschkonzept %}
+                                    {% for l in d.entity.loeschkonzept %}
                                     <a href="{{ path('app_loeschkonzept_show', {'id': l.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
                                     {% endfor %}
                                 {% endif %}
                             {% else %}
                                 {{ 'X' }}
                             {% endif %}
-                            
+
                         </td>
                         <td>
-                            <a href="{{ path('app_vvtdatenkategorie_show', {'id': d.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
+                            <a href="{{ path('app_vvtdatenkategorie_show', {'id': d.entity.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
                         </td>
+                        {% include 'base/__inheritanceTCols.html.twig' with {team:d.entity.team, currentTeam:currentTeam, inherited:d.isVvtInheriting, used:d.isVvtInheritanceEnabled} %}
                     </tr>
                 {% endfor %}
                 </tbody>

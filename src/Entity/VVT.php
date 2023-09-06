@@ -55,7 +55,7 @@ class VVT
     #[Assert\NotBlank]
     private $personengruppen;
 
-    #[ORM\ManyToMany(targetEntity: VVTDatenkategorie::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: VVTDatenkategorie::class, inversedBy: 'vvts', cascade: ['persist', 'remove'])]
     #[Assert\NotBlank]
     private $kategorien;
 

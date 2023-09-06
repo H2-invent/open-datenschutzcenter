@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LoeschkonzeptRepository::class)]
-class Loeschkonzept
+class Loeschkonzept implements Revisionable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -267,6 +267,35 @@ class Loeschkonzept
         }
 
         return $this;
+    }
+
+    public function isVvtInheriting(Team $team): array {
+        if ($this->getVvtdatenkategories()->isEmpty()) {
+            return [
+                'isVvtInheriting' => false,
+                'isVvtInheritanceEnabled' => false,
+            ];
+        }
+        return $this->getVvtdatenkategories()->reduce(
+            function (array $accumulator, VVTDatenkategorie $category) use ($team) {
+                if ($category->getLastLoeschkonzept() !== $this) {
+                    return $accumulator;
+                } elseif (!$accumulator['isVvtInheriting'] || !$accumulator['isVvtInheritanceEnabled']) {
+                    return $category->isVvtInheriting($team);
+                }
+                return $accumulator;
+            },
+            [
+                'isVvtInheriting' => false,
+                'isVvtInheritanceEnabled' => false,
+            ]
+        );
+    }
+
+    public function getVisibleCategories(): Collection {
+        return $this->getVvtdatenkategories()->filter(function (VVTDatenkategorie $category) {
+            return $category->getActiv() && $category->getLastLoeschkonzept() === $this;
+        });
     }
 
     

@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\VVTDatenkategorie;
 use App\Form\Type\VVTDatenkategorieType;
+use App\Repository\TeamRepository;
 use App\Repository\VVTDatenkategorieRepository;
 use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
@@ -48,7 +49,7 @@ class VVTDatenkategorieController extends AbstractController
     #[Route(path: '/edit/{id}', name: 'app_vvtdatenkategorie_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request                  $request,
-        VVTDatenkategorie        $vVTDatenkategorie,
+        VVTDatenkategorie        $vvtDatenkategorie,
         EntityManagerInterface   $entityManager,
         SecurityService          $securityService,
         VVTDatenkategorieService $vVTDatenkategorieService,
@@ -60,19 +61,20 @@ class VVTDatenkategorieController extends AbstractController
             return $this->redirectToRoute('app_vvtdatenkategorie_index');
         }
 
-        $newVVTDatenkategorie = $vVTDatenkategorieService->cloneVVTDatenkategorie($vVTDatenkategorie);
-        $form = $vVTDatenkategorieService->createForm($newVVTDatenkategorie, $team);
+        $isEditable = $vvtDatenkategorie->getTeam() === $team;
+        $newVVTDatenkategorie = $vVTDatenkategorieService->cloneVVTDatenkategorie($vvtDatenkategorie);
+        $form = $vVTDatenkategorieService->createForm($newVVTDatenkategorie, $team, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $isEditable) {
 
-            $vVTDatenkategorie->setActiv(false);
-            $entityManager->persist($vVTDatenkategorie);
+            $vvtDatenkategorie->setActiv(false);
+            $entityManager->persist($vvtDatenkategorie);
 
             $entityManager->persist($newVVTDatenkategorie);
 
 
-            foreach ($vVTDatenkategorie->getLoeschkonzept() as $loeschkonzept) {
+            foreach ($vvtDatenkategorie->getLoeschkonzept() as $loeschkonzept) {
                 $loeschkonzept->addVvtdatenkategory($newVVTDatenkategorie);
                 $entityManager->persist($loeschkonzept);
             }
@@ -83,14 +85,15 @@ class VVTDatenkategorieController extends AbstractController
         }
 
         return $this->render('vvt_datenkategorie/edit.html.twig', [
-            'vvtdatenkategorie' => $vVTDatenkategorie,
+            'vvtdatenkategorie' => $vvtDatenkategorie,
             'form' => $form,
+            'isEditable' => $isEditable,
         ]);
     }
 
     #[Route(path: '/', name: 'app_vvtdatenkategorie_index', methods: ['GET'])]
     public function index(
-        VVTDatenkategorieRepository $vVTDatenkategorieRepository,
+        VVTDatenkategorieRepository $categoryRepository,
         SecurityService             $securityService,
         CurrentTeamService          $currentTeamService,
     ): Response
@@ -99,8 +102,10 @@ class VVTDatenkategorieController extends AbstractController
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
+        $annotatedCategories = $categoryRepository->findLatestByTeam($team);
+
         return $this->render('vvt_datenkategorie/index.html.twig', [
-            'vvtdatenkategories' => $vVTDatenkategorieRepository->findByTeam($team),
+            'annotatedCategories' => $annotatedCategories,
             'currentTeam' => $team,
         ]);
     }

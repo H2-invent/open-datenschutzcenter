@@ -8,6 +8,8 @@ use App\Entity\Policies;
 use App\Entity\Software;
 use App\Entity\Team;
 use App\Entity\Tom;
+use App\Entity\VVTDatenkategorie;
+use App\Repository\VVTDatenkategorieRepository;
 use App\Service\InheritanceService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -15,7 +17,8 @@ use Twig\TwigFunction;
 class InheritanceExtension extends AbstractExtension
 {
     public function __construct(
-        private readonly InheritanceService $inheritanceService
+        private readonly InheritanceService $inheritanceService,
+        private readonly VVTDatenkategorieRepository $categoryRepository
     )
     {
 
@@ -34,6 +37,7 @@ class InheritanceExtension extends AbstractExtension
             new TwigFunction('teamUsesContact', [$this, 'checkTeamUsesContact']),
             new TwigFunction('transferInherited', [$this, 'checkTransferIsInherited']),
             new TwigFunction('teamUsesTransfer', [$this, 'checkTeamUsesTransfer']),
+            new TwigFunction('findLatestCategory', [$this, 'findLatestCategory']),
         ];
     }
 

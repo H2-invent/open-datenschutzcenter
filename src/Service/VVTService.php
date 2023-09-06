@@ -70,7 +70,7 @@ class VVTService
         return $newDsfa;
     }
 
-    function cloneVvt(VVT $vvt, User $user)
+    function cloneVvt(VVT $vvt, User $user): VVT
     {
         $newVvt = clone $vvt;
         $newVvt->setPrevious($vvt);
@@ -86,15 +86,16 @@ class VVTService
             $tom = $this->tomRepository->findAllByTeam($team);
             $software = $this->softwareRepository->findAllByTeam($team);
             $transfers = $this->transferRepository->findAllByTeam($team);
+            $categories = $this->processCategoryRepository->findLatestByTeam($team, false);
         } else {
             $tom = $this->tomRepository->findActiveByTeam($team);
             $software = $this->softwareRepository->findActiveByTeam($team);
             $transfers = $this->transferRepository->findActiveByTeam($team);
+            $categories = $this->processCategoryRepository->findLatestActiveByTeam($team);
         }
 
         $statuses = $this->processStatusRepository->findActiveByTeam($team);
         $people = $this->processPeopleRepository->findByTeam($team);
-        $categories = $this->processCategoryRepository->findByTeam($team);
         $bases = $this->processBasisRepository->findByTeam($team);
         $risks = $this->processRiskRepository->findByTeam($team);
         $departments = $this->departmentRepository->findActiveByTeam($team);

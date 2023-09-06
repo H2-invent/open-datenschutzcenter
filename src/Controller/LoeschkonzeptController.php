@@ -9,6 +9,8 @@
 namespace App\Controller;
 
 use App\Entity\Loeschkonzept;
+use App\Entity\VVTDatenkategorie;
+use App\Form\Type\LoeschkonzeptType;
 use App\Repository\LoeschkonzeptRepository;
 use App\Repository\VVTDatenkategorieRepository;
 use App\Service\CurrentTeamService;
@@ -16,6 +18,7 @@ use App\Service\LoeschkonzeptService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -59,7 +62,7 @@ class LoeschkonzeptController extends AbstractController
         }
 
         # remove datenkategory from loeschkonzept if it is not the newest relation
-        $vvtDatenkategories = $VvtDatenkategorieRepository->findByTeam($team);
+        $vvtDatenkategories = $VvtDatenkategorieRepository->findAllByTeam($team);
         foreach ($vvtDatenkategories as $vvtDatenkategorie) {
             if ($vvtDatenkategorie->getLoeschkonzept()->last() != $loeschkonzept) {
                 $loeschkonzept->removeVvtdatenkategory($vvtDatenkategorie);
@@ -70,10 +73,11 @@ class LoeschkonzeptController extends AbstractController
         foreach ($loeschkonzept->getVvtdatenkategories() as $datenkategorie) {
             $newloeschkonzept->addVvtdatenkategory($datenkategorie);
         }
-        $form = $loeschkonzeptService->createForm($newloeschkonzept, $team);
+        $isEditable = $loeschkonzept->getTeam() === $team;
+        $form = $loeschkonzeptService->createForm($newloeschkonzept, $team, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $isEditable) {
 
             $loeschkonzeptRepository->add($newloeschkonzept);
 
@@ -91,6 +95,7 @@ class LoeschkonzeptController extends AbstractController
         return $this->render('loeschkonzept/edit.html.twig', [
             'loeschkonzept' => $newloeschkonzept,
             'form' => $form,
+            'isEditable' => $isEditable,
         ]);
     }
 
@@ -107,24 +112,7 @@ class LoeschkonzeptController extends AbstractController
             return $this->redirectToRoute('dashboard');
         }
 
-        $loeschkonzepte = $loeschkonzeptRepository->findByTeam($team);
-
-        # remove all kategories from loeschkonzepte
-        foreach ($loeschkonzepte as $loeschkonzept) {
-            $datenkategories = $loeschkonzept->getVvtdatenkategories();
-            foreach ($datenkategories as $datenkategorie) {
-                $loeschkonzept->removeVvtdatenkategory($datenkategorie);
-            }
-        }
-
-        # add datenkategory to loeschkonzept if it is the newest relation
-        $vvtDatenkategories = $vvtDatenkategorieRepository->findByTeam($team);
-        foreach ($vvtDatenkategories as $vvtDatenkategorie) {
-            $loeschkonzept = $vvtDatenkategorie->getLoeschkonzept()->last();
-            if ($loeschkonzept != false) {
-                $loeschkonzept->addVvtdatenkategory($vvtDatenkategorie);
-            }
-        }
+        $loeschkonzepte = $loeschkonzeptRepository->findLatestByTeam($team);
 
         return $this->render('loeschkonzept/index.html.twig', [
             'loeschkonzepte' => $loeschkonzepte,
@@ -134,12 +122,14 @@ class LoeschkonzeptController extends AbstractController
 
     #[Route(path: '/new', name: 'app_loeschkonzept_new', methods: ['GET', 'POST'])]
     public function new(
-        Request                 $request,
-        LoeschkonzeptRepository $loeschkonzeptRepository,
-        EntityManagerInterface  $entityManager,
-        SecurityService         $securityService,
-        LoeschkonzeptService    $loeschkonzeptService,
-        CurrentTeamService      $currentTeamService,
+        Request                     $request,
+        LoeschkonzeptRepository     $loeschkonzeptRepository,
+        EntityManagerInterface      $entityManager,
+        SecurityService             $securityService,
+        LoeschkonzeptService        $loeschkonzeptService,
+        CurrentTeamService          $currentTeamService,
+        VVTDatenkategorieRepository $categoryRepository,
+        FormFactoryInterface        $formBuilder
     ): Response
     {
         $user = $this->getUser();
@@ -148,9 +138,12 @@ class LoeschkonzeptController extends AbstractController
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
+        $categories = $categoryRepository->findLatestActiveByTeam($team);
+        $options['vvtdatenkategories'] = $categories;
 
         $loeschkonzept = $loeschkonzeptService->newLoeschkonzept($team, $user);
-        $form = $loeschkonzeptService->createForm($loeschkonzept, $team);
+        $form = $formBuilder->create(LoeschkonzeptType::class, $loeschkonzept, $options);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

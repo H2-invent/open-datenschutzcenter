@@ -12,8 +12,8 @@ use App\Entity\Loeschkonzept;
 use App\Entity\VVTDatenkategorie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -66,7 +66,12 @@ class LoeschkonzeptType extends AbstractType
                 'required' => false,
                 'translation_domain' => 'form',
                 'help' => 'deleteDescriptionHelp'
-                ])
+            ])
+            ->add('save', SubmitType::class, [
+                'attr' => array('class' => 'btn btn-success btn-block btn waves-effect waves-light'),
+                'label' => 'save',
+                'translation_domain' => 'form'
+            ]);
         ;
     }
 

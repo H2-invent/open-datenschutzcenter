@@ -22,21 +22,24 @@
                     <th scope="col">{% trans %}data.storageLocations{% endtrans %}</th>
                     <th scope="col">{% trans %}deletionConcept.official{% endtrans %}</th>
                     <th scope="col">{% trans from 'general' %}overview{% endtrans %}</th>
+                    {% include 'base/__inheritanceTHeaders.html.twig' with {currentTeam:currentTeam} %}
                 </tr>
                 </thead>
                 <tbody>
                 {% for l in loeschkonzepte %}
-                    <tr class="clickable-row" data-href='{{ path('app_loeschkonzept_edit', {'id': l.id}) }}'>
-                        <td>{{ l.id }}</td>
-                        <td>{% for vv in l.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</td>
-                        <td>{% for vv in l.vvtdatenkategories %}{{ vv.datenarten }}<br>{% endfor %}</td>
-                        <td>{{ l.standartlf }}</td>
-                        <td>{{ l.loeschfrist }}</td>
-                        <td>{{ l.speicherorte }}</td>
-                        <td>{{ l.loeschbeauftragter }}</td>
+                    {% set visibleCategories = l.entity.getVisibleCategories %}
+                    <tr class="clickable-row" data-href='{{ path('app_loeschkonzept_edit', {'id': l.entity.id}) }}'>
+                        <td>{{ l.entity.id }}</td>
+                        <td>{% for vv in visibleCategories %}{{ vv.name }}<br>{% endfor %}</td>
+                        <td>{% for vv in visibleCategories %}{{ vv.datenarten }}<br>{% endfor %}</td>
+                        <td>{{ l.entity.standartlf }}</td>
+                        <td>{{ l.entity.loeschfrist }}</td>
+                        <td>{{ l.entity.speicherorte }}</td>
+                        <td>{{ l.entity.loeschbeauftragter }}</td>
                         <td>
-                    <a href="{{ path('app_loeschkonzept_show', {'id': l.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
-                </td>
+                            <a href="{{ path('app_loeschkonzept_show', {'id': l.entity.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
+                        </td>
+                        {% include 'base/__inheritanceTCols.html.twig' with {team:l.entity.team, currentTeam:currentTeam, inherited:l.isVvtInheriting, used:l.isVvtInheritanceEnabled} %}
                     </tr>
                 {% endfor %}
                 </tbody>

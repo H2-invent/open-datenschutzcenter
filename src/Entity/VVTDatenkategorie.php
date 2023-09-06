@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VVTDatenkategorieRepository::class)]
-class VVTDatenkategorie
+class VVTDatenkategorie implements Revisionable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -56,10 +56,14 @@ class VVTDatenkategorie
     #[ORM\OneToMany(targetEntity: VVTDatenkategorie::class, mappedBy: 'cloneOf')]
     private $parentOf;
 
+    #[ORM\ManyToMany(targetEntity: VVT::class, mappedBy: 'kategorien')]
+    private $vvts;
+
     public function __construct()
     {
         $this->loeschkonzept = new ArrayCollection();
         $this->parentOf = new ArrayCollection();
+        $this->vvts = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -246,4 +250,58 @@ class VVTDatenkategorie
        }
        return  null;
     }
+
+    /**
+     * @return Collection|VVT[]
+     */
+    public function getVvts(): Collection
+    {
+        return $this->vvts;
+    }
+
+    /**
+     * Traverses the version list to find a versions clone that is referenced by an active vvt
+     * and returns if that vvt has enabled inheritance and the current team is not ignoring
+     * inherited entities
+     *
+     * @param Team $team
+     * @return array
+     */
+    public function isVvtInheriting(Team $team): array {
+        if ($this->getParentOf()->isEmpty() && is_null($this->getPrevious())) {
+            return [
+                'isVvtInheriting' => false,
+                'isVvtInheritanceEnabled' => false,
+            ];
+        } elseif ($this->getParentOf()->isEmpty()) {
+            return $this->getPrevious()->isVvtInheriting($team);
+        }
+
+        $vvt = $this->getParentOf()->reduce(function (?VVT $accumulator, VVTDatenkategorie $clone) {
+            if (is_null($accumulator)) {
+                $vvt = $clone->getVvts()->findFirst(function ($key, VVT $vvt) {
+                    return $vvt->getActiv() && $vvt->isInherited();
+                });
+                return $vvt ?? null;
+            }
+            return $accumulator;
+        });
+
+        if ($vvt instanceof VVT) {
+            return [
+                'isVvtInheriting' => $vvt->isInherited(),
+                'isVvtInheritanceEnabled' => !$vvt->getIgnoredInTeams()->contains($team),
+            ];
+        }
+
+        if (is_null($this->getPrevious())) {
+            return [
+                'isVvtInheriting' => false,
+                'isVvtInheritanceEnabled' => false,
+            ];
+        }
+
+        return $this->getPrevious()->isVvtInheriting($team);
+    }
+
 }
