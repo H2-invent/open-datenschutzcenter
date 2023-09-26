@@ -73,6 +73,8 @@ php bin/console app:migrate:defaultTeam
 # Kooperation
 In Kooperation mit der [Professur "Datenschutz und Compliance"](https://www.unibw.de/datcom) des Forschungsinstituts Cyber Defence (CODE) der [Universität der Bundeswehr München](https://www.unibw.de/home) wurde das Open Datenschutzcenter im Rahmen der [Masterarbeit](docs/Masterarbeit_loeschkonzepte.pdf) von Herrn Juister um die Funktion zum Dokumentieren von Löschkonzepten ergänzt.
 
+Durch die Mitarbeitenden von @verdigado wurde der VVT Assistent und die Vererbung implemntiert. 
+
 # Lizenz
 Die aktuelle Version von Open Datenschutzcenter wird unter der AGPL-3.0 License bereitgestellt. Weitere Informationen finden Sie in der LICENSE Datei in diesem Repo.
 Copyright (c) 2020 H2 invent
