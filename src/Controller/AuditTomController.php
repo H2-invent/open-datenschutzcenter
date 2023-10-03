@@ -83,9 +83,9 @@ class AuditTomController extends AbstractController
             $data = $form->getData();
             $errors = $validator->validate($data);
             if (count($errors) == 0) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($data);
-                $em->flush();
+
+                $this->em->persist($data);
+                $this->em->flush();
                 return $this->redirectToRoute('audit_tom');
             }
         }
