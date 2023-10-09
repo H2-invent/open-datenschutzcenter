@@ -123,7 +123,7 @@ class AssistantController extends AbstractController
                 }
                 $entityManager->persist($data);
                 $entityManager->flush();
-                $assistantService->saveToSession(step: $step, id: $data->getId());
+                $assistantService->saveToSession(step: $step, data: $data->getId());
                 return $this->redirectToRoute('assistant_step', ['step' => $step + 1]);
             }
         }
@@ -141,8 +141,8 @@ class AssistantController extends AbstractController
         ]);
     }
 
-    #[Route('/contact/select', name: '_select')]
-    public function selectContact(Request $request,
+    #[Route('/select', name: '_select')]
+    public function select(Request $request,
                                   SecurityService $securityService,
                                   CurrentTeamService $currentTeamService,
                                   AssistantService $assistantService,
@@ -155,7 +155,16 @@ class AssistantController extends AbstractController
 
         $step = $assistantService->getStep();
         $selected = $request->get('assistant_select');
-        $assistantService->saveToSession(step: $step, id: $selected);
+
+        if ($selected) {
+            $assistantService->saveToSession(step: $step, data: $selected);
+        } elseif (!$assistantService->getPropertyForStep($step, AssistantService::PROPERTY_SKIP)) {
+            $this->addFlash(
+                'danger',
+                'assistant.noneSelected'
+            );
+            return $this->redirectToRoute('assistant_step', ['step' => $step]);
+        }
         return $this->redirectToRoute('assistant_step', ['step' => $step + 1]);
     }
 }

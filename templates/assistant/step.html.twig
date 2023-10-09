@@ -8,33 +8,39 @@
             <div class="alert alert-info" role="alert">
                 <p>{{ info }}</p>
             </div>
+            {% if app.request.hasPreviousSession %}
+                {% for type, messages in app.session.flashbag.all() %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ type }}" role="alert">
+                            {{ message | trans }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
             {% if select %}
                 <form name="select" method="post" action="{{ path('assistant_select') }}" class="select-container row mb-2">
                     <div class="col-md-4 pt-3 mb-3">
-                        <label for="assistant_select">{{ select.label }}:</label>
+                        <label for="assistant_select" {% if not skip %}class="required"{% endif %}>
+                            {{ select.label }}:
+                        </label>
                     </div>
                     <div class="col-md-8">
-                        <select id="assistant_select" name="assistant_select" class="selectpicker" {% if select.multiple %}multiple="multiple"{% endif %} data-live-search="true" data-width="auto">
+                        <select id="assistant_select" title="{% trans from 'general' %}nothingSelected{% endtrans%}" name="assistant_select[]" class="selectpicker" {% if select.multiple %}multiple="multiple"{% endif %} >
                             {% for item in select.items %}
-                                <option {% if item.id == select.selected %}selected="selected"{% endif %} value="{{ item.id }}">{{ item.name }}</option>
+                                <option {% if item.id in select.selected %}selected="selected"{% endif %} value="{{ item.id }}">{{ item.name }}</option>
                             {% endfor %}
                             <option value="new">{% trans %}new.word{% endtrans %}</option>
                         </select>
                     </div>
                     <div class="col-12 mt-2 button-container">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-6">
                                 {% if step > 0 %}
                                     <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step - 1) }) }}">{% trans from 'general' %}back{% endtrans %}</a>
                                 {% endif %}
                             </div>
-                            <div class="col-md-4 text-center">
-                                <button type="submit" class="btn btn-primary">{% trans from 'general' %}save.word{% endtrans %}</button>
-                            </div>
-                            <div class="col-md-4 text-right">
-                                {% if skip %}
-                                    <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step + 1) }) }}">{% trans from 'general' %}skip{% endtrans %}</a>
-                                {% endif %}
+                            <div class="col-6 text-right">
+                                <button type="submit" class="btn btn-primary">{% trans from 'general' %}continue{% endtrans %}</button>
                             </div>
                         </div>
                     </div>
