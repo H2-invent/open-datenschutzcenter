@@ -2,7 +2,7 @@
 {% trans_default_domain 'team' %}
 
 {% block CTA %}
-    <h4 class="h4-responsive ml-4 mb-0 d-none d-md-block">
+    <h4>
         {% trans %}adminArea{% endtrans %}
         {% if currentTeam is defined and currentTeam %}{{ currentTeam.name }}{% endif %}
     </h4>
@@ -10,10 +10,10 @@
 
 {% block title %}{{ title }}{% endblock %}
 {% block body %}
-    <div class="container">
-        <h2 class="h2-responsive">{{ title }}</h2>
+    <div>
+        <h2>{{ title }}</h2>
 
-        <div class="card card-body ">
+        <div>
             <div>
                 {{ form_start(form) }}
                 {{ form_widget(form) }}

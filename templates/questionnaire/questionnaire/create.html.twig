@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'questionnaire' %}
 {% block body %}
-    <div class="container">
-        <div class="card">
-            <h5 class="card-header">{% trans %}questionnaire.create{% endtrans %}</h5>
+    <div>
+        <div>
+            <h5>{% trans %}questionnaire.create{% endtrans %}</h5>
             {{ form_start(form) }}
-            <div class="card-body">
+            <div>
                 {{ form_row(form.label) }}
                 {{ form_row(form.description) }}
                 {{ form_row(form.percentageToPass) }}
             </div>
-            <div class="card-footer">
+            <div>
                 {{ form_row(form.save) }}
             </div>
             {{ form_end(form) }}

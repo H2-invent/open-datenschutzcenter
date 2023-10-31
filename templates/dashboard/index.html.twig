@@ -4,33 +4,33 @@
 {% block title %}{{ currentTeam.name }}{% endblock %}
 
 {% block CTA %}
-    <h4 class="h4-responsive ml-4 mb-0 d-none d-md-block">{% trans %}privacyCenter{% endtrans %} {{ currentTeam.name }}</h4>
+    <h4>{% trans %}privacyCenter{% endtrans %} {{ currentTeam.name }}</h4>
 {% endblock %}
 {% block body %}
-    <div class="row wow fadeIn mt-5">
+    <div>
 
         <!--Grid column-->
-        <div class="col-xl-6 col-lg-4 mb-4">
+        <div>
             {{ include ('dashboard/__cards.html.twig') }}
         </div>
         <!--Grid column-->
 
         <!--Grid column-->
-        <div class="col-xl-6 col-lg-8 mb-4">
+        <div>
 
             {{ include('dashboard/__assign.html.twig') }}
 
 
         </div>
     </div>
-    <div class="card">
-        <div class="card-header text-center">
-            <h4 class="h4-responsive">{% trans %}flowChart{% endtrans %}</h4>
+    <div>
+        <div>
+            <h4>{% trans %}flowChart{% endtrans %}</h4>
         </div>
-        <div class="card-body">
+        <div>
             <label>
 
-                <select id="nodeFilterSelect" class="selectpicker" data-live-search="true"
+                <select id="nodeFilterSelect" data-live-search="true"
                         data-width="auto">
                     <!-- TODO: Make select work for multiple teams -->
                     {% for team in app.user.teams %}

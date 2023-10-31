@@ -2,91 +2,91 @@
 {{ form_start(form) }}
 <div {% if not activ or daten.approved %}class="disabled"{% endif %}>
     {% if activNummer %}
-        <div class="row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.nummer) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.nummer) }}
             </div>
         </div>
     {% endif %}
-    <div class="mt-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.gegenstand) }}
             {{ form_help(form.gegenstand) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.gegenstand) }}
         </div>
     </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.stand) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.stand) }}
         </div>
     </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.reference) }}
             {{ form_help(form.reference) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.reference) }}
         </div>
     </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.verantwortlich) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.verantwortlich) }}
         </div>
     </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.vertragsform) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.vertragsform) }}
         </div>
     </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.zeichnungsdatum) }}
             {{ form_help(form.zeichnungsdatum) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.zeichnungsdatum) }}
         </div>
     </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.kontakt) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.kontakt) }}
         </div>
     </div>
 
-    <div class="mt-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.verfahren) }}
             {{ form_help(form.verfahren) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.verfahren) }}
         </div>
     </div>
 
-    <div class="mt-4 {% if daten.art != 1 %}disabled{% endif %} row"
+    <div
          {% if daten.art != 1 %}style="visibility: hidden"{% endif %}>
-        <div class="col-md-3">
+        <div>
             {{ form_label(form.software) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {% if daten.art != 1 %}
                 <p>requestProcessing.noSoftware</p>
             {% else %}
@@ -96,28 +96,28 @@
         </div>
     </div>
 
-    <div class="mt-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.grundlage) }}
             {{ form_help(form.grundlage) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.grundlage) }}
         </div>
     </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.notes) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.notes) }}
         </div>
     </div>
-    <div class="mt-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {% trans %}requestProcessing.disclaimer{% endtrans %}
         </div>
-        <div class="col-md-9 ">
+        <div>
             {{ form_widget(form.checkItems) }}
             {{ form_widget(form.checkPeople) }}
             {{ form_widget(form.checkData) }}
@@ -133,16 +133,16 @@
         </div>
     </div>
 </div>
-<div class="mt-4 mb-4 row">
-    <div class="col-md-3">
+<div>
+    <div>
         {{ form_label(form.uploadFile) }}
     </div>
-    <div class="col-md-9">
-        <span class="{% if not activ or daten.approved %}disabled{% endif %}">
+    <div>
+        <span>
             {{ form_widget(form.uploadFile) }}
         </span>
         {% if daten.upload %}
-            <a href="{{ path('datenweitergabe_download_file', {'id':daten.id}) }}" download class="btn btn-amber">{% trans %}avvDownload{% endtrans %}</a>
+            <a href="{{ path('datenweitergabe_download_file', {'id':daten.id}) }}" download>{% trans %}avvDownload{% endtrans %}</a>
         {% endif %}
     </div>
 </div>

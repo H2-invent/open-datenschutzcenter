@@ -2,11 +2,11 @@
 {% trans_default_domain 'policies' %}
 
 {% block body %}
-    <h2 class="h2-responsive">{{ title }}</h2>
+    <h2>{{ title }}</h2>
     {{ include('policies/__form.html.twig') }}
     <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ vvt.user.email }}</p>
     {% if vvt.previous %}
-        <div class="card card-body mt-2">
+        <div>
             <h2>{% trans from 'general' %}history{% endtrans %}</h2>
             {{ include('policies/__history.html.twig', {'p':vvt.previous}) }}
         </div>

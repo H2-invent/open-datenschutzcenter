@@ -2,11 +2,11 @@
 {% trans_default_domain 'academy' %}
 
 {% block body %}
-    <h2 class="h2-responsive">{{ kurs.title }}</h2>
-    <div class="card card-body text-center">
+    <h2>{{ kurs.title }}</h2>
+    <div>
         {% if kurs.type == 0 %}
-            {% if not buchung.abgeschlossen %}<p class="alert-info">{% trans %}video.uninterruptible{% endtrans %}</p>{% endif %}
-            <div class="offset-md-2 col-md-8">
+            {% if not buchung.abgeschlossen %}<p>{% trans %}video.uninterruptible{% endtrans %}</p>{% endif %}
+            <div>
                 <video style="width: 100%; text-align: center" {% if buchung.abgeschlossen %}
                     controls{% else %}autoplay{% endif %} id="akademie_video_kurs">
                     <source src="{{ kurs.video }}" type="video/mp4">
@@ -14,28 +14,28 @@
                 </video>
             </div>
         {% elseif kurs.type == 1 %}
-            <p class="alert-warning">{% trans %}video.vimeo{% endtrans %}</p>
-            <div class="btn-block">
-                <a class="btn btn-sm btn-primary startBtn">{% trans %}video.start{% endtrans %}</a>
-                <a class="btn btn-sm btn-secondary pauseBtn disabled">{% trans %}video.pause{% endtrans %}</a>
+            <p>{% trans %}video.vimeo{% endtrans %}</p>
+            <div>
+                <a>{% trans %}video.start{% endtrans %}</a>
+                <a>{% trans %}video.pause{% endtrans %}</a>
             </div>
-            <div class="offset-md-2 col-md-8" id="vimeoVideo"></div>
+            <div id="vimeoVideo"></div>
 
         {% endif %}
 
         {% if not buchung.abgeschlossen %}
             <!-- Modal -->
-            <div class="modal fade" id="finishModal" tabindex="-1" role="dialog" aria-labelledby="finishModal"
+            <div id="finishModal" tabindex="-1" role="dialog" aria-labelledby="finishModal"
                  aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content note-warning">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="finishModalLabel">{% trans %}lesson.finish{% endtrans %}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <div role="document">
+                    <div>
+                        <div>
+                            <h5 id="finishModalLabel">{% trans %}lesson.finish{% endtrans %}</h5>
+                            <button type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
+                        <div>
                             <p>
                                 {% trans %}lesson.disclaimer.finish{% endtrans %}
                             </p>
@@ -44,8 +44,8 @@
                             </p>
 
                         </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-lg btn-primary sendButton"
+                        <div>
+                            <button
                                     disabled>{% trans from 'questionnaire' %}participation.start{% endtrans %}</button>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
         {% endif %}
 
 
-        <p class="mt-4 text-left">{{ kurs.beschreibung|nl2br }}</p>
+        <p>{{ kurs.beschreibung|nl2br }}</p>
     </div>
 {% endblock %}
 

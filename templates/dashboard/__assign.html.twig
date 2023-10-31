@@ -1,66 +1,66 @@
 {% trans_default_domain 'dashboard' %}
 <!--Card-->
-<div class="card">
+<div>
     <!-- Card header -->
-    <div class="card-header text-center">
+    <div>
         {% trans %}myAssignment{% endtrans %}
     </div>
     <!--Card content-->
-    <div class="card-body">
-        <ul class="nav nav-tabs" id="audit-tab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active text-center" id="tasks-tab" data-toggle="tab" href="#tasks" role="tab"
+    <div>
+        <ul id="audit-tab" role="tablist">
+            <li>
+                <a id="tasks-tab" data-toggle="tab" href="#tasks" role="tab"
                    aria-controls="home"
                    aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/task.png') }}">
                     <span
-                            class="d-none d-xl-block">{% trans %}tasks{% endtrans %}</span></a>
+                           >{% trans %}tasks{% endtrans %}</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-center" id="home-tab" data-toggle="tab" href="#akademie" role="tab"
+            <li>
+                <a id="home-tab" data-toggle="tab" href="#akademie" role="tab"
                    aria-controls="home"
                    aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/online-learning.png') }}">
                     <span
-                            class="d-none d-xl-block">{% trans %}academy{% endtrans %}</span></a>
+                           >{% trans %}academy{% endtrans %}</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-center" id="home-tab" data-toggle="tab" href="#audit" role="tab"
+            <li>
+                <a id="home-tab" data-toggle="tab" href="#audit" role="tab"
                    aria-controls="home"
                    aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/pruefung.png') }}"> <span
-                            class="d-none d-xl-block">{% trans %}audit{% endtrans %}</span></a>
+                           >{% trans %}audit{% endtrans %}</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-center" id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
+            <li>
+                <a id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
                    aria-controls="profile"
                    aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/prozess.png') }}"> <span
-                            class="d-none d-xl-block">{% trans %}vvt{% endtrans %}</span></a>
+                           >{% trans %}vvt{% endtrans %}</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-center" id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
+            <li>
+                <a id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
                    aria-controls="contact"
                    aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/dsta.png') }}"> <span
-                            class="d-none d-xl-block">{% trans %}dsfa{% endtrans %}</span></a>
+                           >{% trans %}dsfa{% endtrans %}</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-center" id="daten-tab" data-toggle="tab" href="#daten" role="tab"
+            <li>
+                <a id="daten-tab" data-toggle="tab" href="#daten" role="tab"
                    aria-controls="contact"
                    aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/data.png') }}"> <span
-                            class="d-none d-xl-block">{% trans %}dw{% endtrans %}</span></a>
+                           >{% trans %}dw{% endtrans %}</span></a>
             </li>
         </ul>
 
-        <div class="tab-content " id="myTabContent">
-            <div class="tab-pane fade show active" id="tasks" role="tabpanel" aria-labelledby="home-tab">
+        <div id="myTabContent">
+            <div id="tasks" role="tabpanel" aria-labelledby="home-tab">
                 {% for a in assignTasks %}
                     <a href="{{ path('task_edit',{'id':a.id}) }}">
-                        <div class="btn btn-block bg-tasks text-md-left mt-1">
-                            <div class="row">
-                                <div class="col-xl-1 d-none d-xl-block">
+                        <div>
+                            <div>
+                                <div>
                                     <img style="width: 21px" src="{{ asset('images/task.png') }}">
                                 </div>
-                                <div class="col-xl-6 col-md-7">
+                                <div>
                                     {{ a.team.name }}: {{ a.title }}
                                 </div>
-                                <div class="col-xl-3 col-md-5">
+                                <div>
                                     {{ a.createdAt|date('d.m.Y') }}
                                 </div>
                             </div>
@@ -68,18 +68,18 @@
                     </a>
                 {% endfor %}
             </div>
-            <div class="tab-pane fade show" id="akademie" role="tabpanel" aria-labelledby="home-tab">
+            <div id="akademie" role="tabpanel" aria-labelledby="home-tab">
                 {% for a in akademie %}
                     <a href="{{ path('akademie_kurs',{'kurs':a.id}) }}">
-                        <div class="btn btn-block bg-akademie text-md-left mt-1">
-                            <div class="row">
-                                <div class="col-xl-1 d-none d-xl-block">
+                        <div>
+                            <div>
+                                <div>
                                     <img style="width: 21px" src="{{ asset('images/online-learning.png') }}">
                                 </div>
-                                <div class="col-xl-6 col-md-7">
+                                <div>
                                     {{ a.kurs.title }}
                                 </div>
-                                <div class="col-xl-3 col-md-5">
+                                <div>
                                     {{ a.zugewiesen|date('d.m.Y') }}
                                 </div>
                             </div>
@@ -87,19 +87,19 @@
                     </a>
                 {% endfor %}
             </div>
-            <div class="tab-pane fade show" id="audit" role="tabpanel" aria-labelledby="home-tab">
+            <div id="audit" role="tabpanel" aria-labelledby="home-tab">
                 {% for a in assignAudit %}
                     {% if a.activ %}
                         <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
-                            <div class="btn btn-block bg-audit text-md-left mt-1">
-                                <div class="row">
-                                    <div class="col-lg-1 d-none d-xl-block">
+                            <div>
+                                <div>
+                                    <div>
                                         <img style="width: 21px" src="{{ asset('images/pruefung.png') }}">
                                     </div>
-                                    <div class="col-lg-6 col-md-6">
+                                    <div>
                                         {{ a.team.name }}: {{ a.frage }}
                                     </div>
-                                    <div class="col-lg-5 col-md-6">
+                                    <div>
                                         {{ a.status.name }}
                                     </div>
                                 </div>
@@ -108,22 +108,22 @@
                     {% endif %}
                 {% endfor %}
             </div>
-            <div class="tab-pane fade" id="vvt" role="tabpanel" aria-labelledby="profile-tab">
+            <div id="vvt" role="tabpanel" aria-labelledby="profile-tab">
                 {% for a in assignVvt %}
                     {% if a.activ %}
                         <a href="{{ path('vvt_edit',{'id':a.id}) }}">
-                            <div class="btn btn-block bg-vvt text-md-left mt-1">
-                                <div class="row">
-                                    <div class="col-1 d-none d-xl-block">
+                            <div>
+                                <div>
+                                    <div>
                                         <img style="width: 21px" src="{{ asset('images/prozess.png') }}">
                                     </div>
-                                    <div class="col-xl-5 col-md-7">
+                                    <div>
                                         {{ a.team.name }}: {{ a.name }}
                                     </div>
-                                    <div class="col-xl-3 d-none d-xl-block">
+                                    <div>
                                         {{ a.status.name }}
                                     </div>
-                                    <div class="col-xl-3 col-md-5">
+                                    <div>
                                         {{ a.createdAt|date('d.m.Y') }}
                                     </div>
                                 </div>
@@ -132,19 +132,19 @@
                     {% endif %}
                 {% endfor %}
             </div>
-            <div class="tab-pane fade" id="dsfa" role="tabpanel" aria-labelledby="contact-tab">
+            <div id="dsfa" role="tabpanel" aria-labelledby="contact-tab">
                 {% for a in assignDsfa %}
                     {% if a.activ %}
                         <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
-                            <div class="btn btn-block bg-dsfa text-md-left mt-1">
-                                <div class="row">
-                                    <div class="col-xl-1 d-none d-xl-block">
+                            <div>
+                                <div>
+                                    <div>
                                         <img style="width: 21px" src="{{ asset('images/dsta.png') }}">
                                     </div>
-                                    <div class="col-xl-6 col-md-6">
+                                    <div>
                                         {{ a.vvt.team.name }}: {{ a.beschreibung }}
                                     </div>
-                                    <div class="col-xl-3 col-md-6">
+                                    <div>
                                         {{ a.createdAt|date('d.m.Y') }}
                                     </div>
                                 </div>
@@ -153,19 +153,19 @@
                     {% endif %}
                 {% endfor %}
             </div>
-            <div class="tab-pane fade" id="daten" role="tabpanel" aria-labelledby="contact-tab">
+            <div id="daten" role="tabpanel" aria-labelledby="contact-tab">
                 {% for a in assignDaten %}
                     {% if a.activ %}
                         <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">
-                            <div class="btn btn-block {% if a.art == 1 %}bg-daten{% else %}bg-av{% endif %} text-md-left mt-1">
-                                <div class="row">
-                                    <div class="col-lg-1 d-none d-xl-block">
+                            <div>
+                                <div>
+                                    <div>
                                         <img style="width: 21px" src="{{ asset('images/data.png') }}">
                                     </div>
-                                    <div class="col-xl-6 col-md-6">
+                                    <div>
                                         {{ a.team.name }}: {{ a.gegenstand }}
                                     </div>
-                                    <div class="col-xl-3 col-md-6">
+                                    <div>
                                         {{ a.createdAt|date('d.m.Y') }}
                                     </div>
                                 </div>
@@ -175,7 +175,7 @@
                 {% endfor %}
             </div>
         </div>
-        <a class="btn btn-primary btn-block mt-3" href="{{ path('assign') }}">{% trans %}showAllAssignments{% endtrans %}</a>
+        <a href="{{ path('assign') }}">{% trans %}showAllAssignments{% endtrans %}</a>
 
     </div>
 

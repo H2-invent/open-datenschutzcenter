@@ -2,10 +2,10 @@
 {% trans_default_domain 'loeschkonzept' %}
 
  {% block CTA %}
-    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_loeschkonzept_index') }}">
+    <a href="{{ path('app_loeschkonzept_index') }}">
         <span>{% trans from 'general' %}back{% endtrans %}</span>
     </a>
-    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_loeschkonzept_edit',{'id': loeschkonzept.id}) }}">
+    <a href="{{ path('app_loeschkonzept_edit',{'id': loeschkonzept.id}) }}">
         <span>{% trans from 'general' %}edit{% endtrans %}</span>
     </a>
     {{ include('loeschkonzept/_delete_form.html.twig') }}
@@ -16,7 +16,7 @@
 {% block body %}
     <h1>{% trans %}deletionConcept.word{% endtrans %} {{loeschkonzept.id}}</h1>
 
-    <table class="table">
+    <table>
         <tbody>
              <tr>
                 <th>{% trans %}data.categories{% endtrans %}</th>

@@ -1,141 +1,141 @@
 {% trans_default_domain 'vvt' %}
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}dataForProcessing{% endtrans %}</h4>
+<div>
+    <h4>{% trans %}dataForProcessing{% endtrans %}</h4>
 
-    <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
+    <div>
         {% if activNummer %}
-            <div class="mt-4 row">
-                <div class="col-md-3">
+            <div>
+                <div>
                     {{ form_label(form.nummer) }}
                 </div>
-                <div class="col-md-9">
+                <div>
                     {{ form_widget(form.nummer) }}
                 </div>
             </div>
         {% endif %}
 
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.name) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.name) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.auftragsverarbeitung) }}
                 {{ form_help(form.auftragsverarbeitung) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.auftragsverarbeitung) }}
             </div>
 
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.status) }}
                 {{ form_help(form.status) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.status) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.abteilung) }}
                 {{ form_help(form.abteilung) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.abteilung) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.produkt) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.produkt) }}
                 {{ form_help(form.produkt) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.userContract) }}
                 {{ form_help(form.userContract) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.userContract) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.verantwortlich) }}
 
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.verantwortlich) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.grundlage) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.grundlage) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.zweck) }}
                 {{ form_help(form.zweck) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.zweck) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.speicherung) }}
                 {{ form_help(form.speicherung) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.speicherung) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.loeschfrist) }}
                 {{ form_help(form.loeschfrist) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.loeschfrist) }}
             </div>
         </div>
     </div>
 </div>
 
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}collectedData{% endtrans %}</h4>
+<div>
+    <h4>{% trans %}collectedData{% endtrans %}</h4>
 
-    <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
-        <div class="mt-4 row">
-            <div class="col-md-3">
+    <div>
+        <div>
+            <div>
                 {{ form_label(form.personengruppen) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.personengruppen) }}
             </div>
 
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.kategorien) }}
                 {{ form_help(form.kategorien) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.kategorien) }}
             </div>
         </div>
@@ -143,39 +143,39 @@
     </div>
 </div>
 
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}orderProcessing{% endtrans %}</h4>
+<div>
+    <h4>{% trans %}orderProcessing{% endtrans %}</h4>
 
-    <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
-        <div class="mt-4 row">
-            <div class="col-md-3">
+    <div>
+        <div>
+            <div>
                 {{ form_label(form.jointControl) }}
                 {{ form_help(form.jointControl) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.jointControl) }}
             </div>
 
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.weitergabe) }}
                 {{ form_help(form.weitergabe) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.weitergabe) }}
             </div>
         </div>
 
-        <div class="mt-4 row">
+        <div>
 
-            <div class="col-md-3">
+            <div>
                 {{ form_label(form.datenweitergaben) }}
             </div>
-            <div class="col-md-5">
+            <div>
                 {{ form_widget(form.datenweitergaben) }}
             </div>
-            <div class="col-md-4">
+            <div>
                 {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
                     <b>{% trans %}associatedDataTransfer{% endtrans %}</b><br>
                     <ul>
@@ -202,12 +202,12 @@
                 {% endif %}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.eu) }}
                 {{ form_help(form.eu) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.eu) }}
             </div>
         </div>
@@ -215,34 +215,34 @@
     </div>
 </div>
 
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}technicalOrganizationalActions{% endtrans %}</h4>
+<div>
+    <h4>{% trans %}technicalOrganizationalActions{% endtrans %}</h4>
 
-    <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
-        <div class="mt-4 row">
-            <div class="col-md-3">
+    <div>
+        <div>
+            <div>
                 {{ form_label(form.software) }}
                 {{ form_help(form.software) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.software) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.tomLink) }}
                 {{ form_help(form.tomLink) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.tomLink) }}
             </div>
         </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.tom) }}
                 {{ form_help(form.tom) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.tom) }}
             </div>
         </div>
@@ -250,27 +250,27 @@
     </div>
 </div>
 
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}riskAssessment{% endtrans %}</h4>
+<div>
+    <h4>{% trans %}riskAssessment{% endtrans %}</h4>
 
-    <div class="card-body">
-        <div class="mt-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
+    <div>
+        <div>
+            <div>
                 {{ form_label(form.risiko) }}
                 {{ form_help(form.risiko) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.risiko) }}
             </div>
         </div>
 
 
-        <div class="row mt-4 {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.beurteilungEintritt) }}
                 {{ form_help(form.beurteilungEintritt) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.beurteilungEintritt) }}
                 <p>
                 <ul>
@@ -290,14 +290,14 @@
                 </p>
             </div>
         </div>
-        <div class="row mt-4 {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.beurteilungSchaden) }}
                 {{ form_help(form.beurteilungSchaden) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.beurteilungSchaden) }}
-                <div class="mt-4">
+                <div>
                     {% trans %}riskAssessmentDisclaimer{% endtrans %}
                 </div>
 
@@ -308,50 +308,50 @@
 </div>
 
 
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}dutyToInform{% endtrans %}</h4>
+<div>
+    <h4>{% trans %}dutyToInform{% endtrans %}</h4>
 
-    <div class="card-body">
-        <div class="mt-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
+    <div>
+        <div>
+            <div>
                 {{ form_label(form.source) }}
                 {{ form_help(form.source) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.source) }}
             </div>
         </div>
-        <div class="mt-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.informationspflicht) }}
                 {{ form_help(form.informationspflicht) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.informationspflicht) }}
             </div>
         </div>
-        <div class="mt-4 mb-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
+        <div>
+            <div>
                 {{ form_label(form.dsb) }}
                 {{ form_help(form.dsb) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.dsb) }}
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-3">
+        <div>
+            <div>
                 <p>
                     {% trans %}processing.disclaimer{% endtrans %}
                 </p>
             </div>
-            <div class="col-md-9">
+            <div>
                 {% for p in vvt.policies | filter(p => p.activ) %}
-                    <a href="{{ path('policy_edit',{'id':p.id}) }}" class="btn bg-policy">{{ p.title }}</a>
+                    <a href="{{ path('policy_edit',{'id':p.id}) }}">{{ p.title }}</a>
                 {% endfor %}
             </div>
         </div>
-        <div class="{% if not activ or vvt.approved %} disabled{% endif %}">
+        <div>
             {{ form_widget(form.save) }}
         </div>
     </div>

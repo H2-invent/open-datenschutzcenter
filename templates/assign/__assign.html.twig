@@ -2,29 +2,29 @@
     {% trans_default_domain 'assign' %}
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#assignModal">
+    <button type="button" data-toggle="modal" data-target="#assignModal">
         {% trans from 'general' %}assign{% endtrans %}
     </button>
 
     <!-- Modal -->
-    <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModal"
+    <div id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModal"
          aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="assignModalLabel">{% trans %}assignFurtherEditing{% endtrans %}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div role="document">
+            <div>
+                <div>
+                    <h5 id="assignModalLabel">{% trans %}assignFurtherEditing{% endtrans %}</h5>
+                    <button type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 {{ form_start(assignForm,{'action': path(path,{'id':data.id})}) }}
                 {% if data.activ %}
-                    <div class="modal-body">
+                    <div>
 
                         {{ form_widget(assignForm.user) }}
 
                     </div>
-                    <div class="modal-footer">
+                    <div>
                         {{ form_widget(assignForm.submit) }}
                     </div>
                 {% endif %}
@@ -34,7 +34,7 @@
     </div>
 {% else %}
     <h4>{% trans from 'general' %}assignedTo{% endtrans %}: </h4>
-    <span class="small">{{ data.assignedUser.email }}</span>  <a class="btn btn-danger btn-sm rounded-circle"
+    <span>{{ data.assignedUser.email }}</span>  <a
                                                                  title="{{ 'removeAssign'|trans }}"
                                                                  href="{{ path(path,{'id':data.id}) }}">X</a>
 {% endif %}

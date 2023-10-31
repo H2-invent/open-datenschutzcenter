@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'datenweitergabe' %}
 {% block CTA %}
-    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('datenweitergabe_new') }}">
+    <a href="{{ path('datenweitergabe_new') }}">
         <span>{% trans %}dataTransfer.create{% endtrans %}</span>
     </a>
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-elegant btn-sm" data-toggle="modal" data-target="#centralModalMd">
+    <button type="button" data-toggle="modal" data-target="#centralModalMd">
         {% trans %}info{% endtrans %}
     </button>
 {% endblock %}
@@ -14,24 +14,24 @@
     {{ include('datenweitergabe/__indexTable.html.twig') }}
 
     <!-- Central Modal Medium -->
-    <div class="modal fade" id="centralModalMd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div id="centralModalMd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
 
         <!-- Change class .modal-sm to change the size of the modal -->
-        <div class="modal-dialog modal-md" role="document">
+        <div role="document">
 
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title w-100" id="myModalLabel">{% trans %}dataTransfer.info.title{% endtrans %}</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div>
+                <div>
+                    <h4 id="myModalLabel">{% trans %}dataTransfer.info.title{% endtrans %}</h4>
+                    <button type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div>
                     {% trans %}dataTransfer.info.text{% endtrans %}
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm"
+                <div>
+                    <button type="button"
                             data-dismiss="modal">{% trans from 'general' %}close{% endtrans %}</button>
                 </div>
             </div>

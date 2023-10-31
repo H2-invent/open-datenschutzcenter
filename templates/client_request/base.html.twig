@@ -7,24 +7,24 @@
 <body>
 {% block back %}{% endblock %}
 <div style="background-image: url('{{ asset('images/login.jpg') }}'); background-size: cover; min-height: 100vh">
-    <div class="container">
-        <div class="pt-5">
+    <div>
+        <div>
             {% block content %}{% endblock %}
         </div>
-        <div class="card card-body mt-4 text-center">
-            <div class="row">
-                <div class="col-md-3 text-md-left">
-                    <a href="https://open-datenschutzcenter.de" target="_blank" class="small"><img
+        <div>
+            <div>
+                <div>
+                    <a href="https://open-datenschutzcenter.de" target="_blank"><img
                                 src="{{ asset('logo.png') }}" style="height: 50px"></a>
                 </div>
-                <div class="col-md-6">
-                    <a href="{{ dataPrivacy }}" target="_blank" class="small">{% trans %}dataPrivacyDisclaimer{% endtrans %}</a><br>
-                    <a href="https://open-datenschutzcenter.de" target="_blank" class="small">{% trans %}poweredBy{% endtrans %}</a><br>
-                    <a href="https://h2-invent.com" target="_blank" class="small">{% trans %}salutation{% endtrans %} •
+                <div>
+                    <a href="{{ dataPrivacy }}" target="_blank">{% trans %}dataPrivacyDisclaimer{% endtrans %}</a><br>
+                    <a href="https://open-datenschutzcenter.de" target="_blank">{% trans %}poweredBy{% endtrans %}</a><br>
+                    <a href="https://h2-invent.com" target="_blank">{% trans %}salutation{% endtrans %} •
                         2019-{{ 'now'|date('Y') }}
                         • v{{ laf_version }}</a>
                 </div>
-                <div class="col-md-3 text-md-right d-none d-sm-block">
+                <div>
                     <img src="{{ asset('images/open-source-logo.png') }}" style="height: 50px">
                 </div>
             </div>

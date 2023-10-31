@@ -8,9 +8,9 @@
 {% block content %}
     <div>
         <a href="{{ path('client_index', {'slug':team.slug}) }}"
-           class="btn btn-primary btn-sm">{% trans %}backToPortal{% endtrans %}</a>
-        <div class="card card-body">
-            <h1 class="h1-responsive text-center">{% trans %}request.create.link{% endtrans %}</h1>
+          >{% trans %}backToPortal{% endtrans %}</a>
+        <div>
+            <h1>{% trans %}request.create.link{% endtrans %}</h1>
             {{ form_start(form) }}
             {{ form_row(form.title) }}
             {{ form_row(form.item) }}
@@ -21,12 +21,12 @@
             {{ form_row(form.pgp) }}
 
 
-            <div class="card mb-3">
-                <div class="card-header">
-                    <h4 class="h4-responsive">{% trans %}request.additionalInformation{% endtrans %}</h4>
+            <div>
+                <div>
+                    <h4>{% trans %}request.additionalInformation{% endtrans %}</h4>
                 </div>
 
-                <div class="card-body">
+                <div>
                     <p>
                         {% trans %}askForVerification{% endtrans %}:
                     </p>

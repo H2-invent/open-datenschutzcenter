@@ -3,31 +3,31 @@
 
 {% block CTA %}
     {% if audit.activ %}
-        <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_audit', {'id':audit.id}) }}">
+        <a href="{{ path('bericht_audit', {'id':audit.id}) }}">
             <span>{% trans %}pdf.create{% endtrans %}</span>
         </a>
-        <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_audit', {'id':audit.id, 'all':1}) }}">
+        <a href="{{ path('bericht_audit', {'id':audit.id, 'all':1}) }}">
             <span>{% trans %}pdf.createWithHistory{% endtrans %}</span>
         </a>
     {% endif %}
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-md-8">
-            <h2 class="h2-responsive">{{ title }} ({% trans from 'general' %}number{% endtrans %}: {{ audit.nummer }})</h2>
+    <div>
+        <div>
+            <h2>{{ title }} ({% trans from 'general' %}number{% endtrans %}: {{ audit.nummer }})</h2>
         </div>
-        <div class="col-md-4 text-right">
+        <div>
             {{ include('assign/__assign.html.twig',{'data':audit,'path':'assign_audit'}) }}
         </div>
     </div>
 
-    <div class="card card-body">
+    <div>
         {{ include('audit_tom/__form.html.twig') }}
     </div>
     <p>{% trans %}createdBy{% endtrans %}: {{ audit.user.email }}</p>
     {% if audit.previous %}
-        <div class="card card-body mt-2">
+        <div>
             <h2>{% trans %}history{% endtrans %}</h2>
             {{ include('audit_tom/__history.html.twig', {'p':audit.previous}) }}
         </div>

@@ -3,14 +3,14 @@
 
 {% block content %}
 
-    <div class="card text-center mt-5">
-        <div class="card-header">
-            <h2 class="h2-responsive">{% trans %}noTeam{% endtrans %}</h2>
+    <div>
+        <div>
+            <h2>{% trans %}noTeam{% endtrans %}</h2>
         </div>
-        <div class="card-body ">
+        <div>
             <p>{% trans %}noTeamHelp{% endtrans %}</p>
-            <a class="btn btn-elegant" href="mailto:{{ supportMail }}">{% trans %}supportRequest{% endtrans %}</a>
-            <a class="btn btn-secondary" href="{{ path('logout_keycloak') }}">{% trans %}logout{% endtrans %}</a>
+            <a href="mailto:{{ supportMail }}">{% trans %}supportRequest{% endtrans %}</a>
+            <a href="{{ path('logout_keycloak') }}">{% trans %}logout{% endtrans %}</a>
         </div>
     </div>
 

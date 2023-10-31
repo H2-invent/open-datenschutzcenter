@@ -18,19 +18,19 @@
         }
     </style>
 
-    <div class="card card-body">
-        <h1 class="h1-responsive text-center">{% trans %}customerPortalOf{% endtrans%} {{ team.name }}</h1>
+    <div>
+        <h1>{% trans %}customerPortalOf{% endtrans%} {{ team.name }}</h1>
         <hr>
-        <div class="text-center">
-            <h4 class="h4-responsive">{{ team.name }}</h4>
+        <div>
+            <h4>{{ team.name }}</h4>
             <p>
                 {{ team.strasse }}<br>
                 {{ team.plz }} {{ team.stadt }}<br>
             </p>
             <hr>
         </div>
-        <div class="row mb-5">
-            <div class="col-md-6">
+        <div>
+            <div>
                 <p>{% trans %}request.create.disclaimer{% endtrans%}
                 </p>
                 <ul>
@@ -50,9 +50,9 @@
                         {% trans %}request.response{% endtrans%}
                     </li>
                 </ul>
-                <a href="{{ path('client_new', {'slug':team.slug}) }}" class="btn btn-primary">{% trans %}request.create.link{% endtrans %}</a>
+                <a href="{{ path('client_new', {'slug':team.slug}) }}">{% trans %}request.create.link{% endtrans %}</a>
             </div>
-            <div class="col-md-6">
+            <div>
                 <p>
                     {% trans %}request.find{% endtrans%}
                 </p>

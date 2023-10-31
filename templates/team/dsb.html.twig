@@ -2,19 +2,19 @@
 {% trans_default_domain 'team' %}
 
 {% block body %}
-    <div class="container">
-        <h2 class="h2-responsive">{{ title }}</h2>
+    <div>
+        <h2>{{ title }}</h2>
 
-        <div class="card card-body">
+        <div>
 
             {% if data %}
-                <div class="row">
-                    <div class="col-md-6">
+                <div>
+                    <div>
                         {% trans from 'general' %}email{% endtrans %}: {{ data.email }}<br>
                         {% trans from 'general' %}username{% endtrans %}: {{ data.username }}
                     </div>
-                    <div class="col-md-6">
-                        <a href="{{ path('team_dsb_remove', {'id':data.id}) }}" class="btn btn-sm btn-danger"
+                    <div>
+                        <a href="{{ path('team_dsb_remove', {'id':data.id}) }}"
                            onClick="return confirm('{% trans %}removeDsb{% endtrans %}')">
                                 {% trans from 'general' %}remove{% endtrans %}
                         </a>
@@ -24,7 +24,7 @@
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
-                <p class="alert-danger mt-5 text-center">
+                <p>
                     {% trans %}addExternalDsbInfo{% endtrans %}
                 </p>
             {% endif %}

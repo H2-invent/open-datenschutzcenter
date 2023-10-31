@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'questionnaire' %}
 {% block body %}
-    <div class="container">
-        <div class="card">
-            <h5 class="card-header">
+    <div>
+        <div>
+            <h5>
                 {{ questionnaire.label }}
             </h5>
-            <div class="card-body">
+            <div>
                 <p>{{ questionnaire.description }}</p>
                 <h3>{% trans %}question.words{% endtrans %}</h3>
-                <div class="table-responsive">
-                    <table class="table display table-striped data-table">
+                <div>
+                    <table>
                         <thead>
                         <tr>
                             <th scope="col">{% trans %}question.label{% endtrans %}</th>
@@ -25,12 +25,12 @@
                                 <td>{{ questionnaireQuestion.step }}</td>
                                 <td>
                                     <a href="{{ path('question_details', {'id': questionnaireQuestion.question.id}) }}"
-                                       class="btn btn-sm btn-primary">
+                                      >
                                         {% trans from 'general' %}view{% endtrans %}
                                     </a>
                                     <a href="{{ path('question_edit', {'id': questionnaireQuestion.question.id}) }}"
                                     <a href="{{ path('question_delete', {'id': questionnaireQuestion.question.id}) }}"
-                                       class="btn btn-sm btn-danger">
+                                      >
                                         {% trans from 'general' %}remove{% endtrans %}
                                     </a>
                                 </td>
@@ -41,8 +41,8 @@
                 </div>
 
             </div>
-            <div class="card-footer">
-                <a class="btn btn-primary" href="{{ path('question_create', {'id': questionnaire.id}) }}">
+            <div>
+                <a href="{{ path('question_create', {'id': questionnaire.id}) }}">
                     {% trans %}question.create{% endtrans %}
                 </a>
             </div>

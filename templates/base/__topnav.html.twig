@@ -1,54 +1,54 @@
 {% trans_default_domain 'base' %}
-<ul class="nav navbar-nav ml-auto">
+<ul>
     {{ include('base/__teamToggle.html.twig') }}
 
     <!-- Button trigger modal -->
-    <li class="nav-item mr-2">
+    <li>
         <a type="button"
            data-toggle="modal"
            data-target="#sideModalTR">
-            <img class="mt-1" alt="profile icon" src="{{ asset('images/profil.svg') }}" style="max-height: 30px">
+            <img alt="profile icon" src="{{ asset('images/profil.svg') }}" style="max-height: 30px">
         </a>
     </li>
-    <li class="nav-item">
+    <li>
         <a href="{{ path('logout_keycloak') }}">
-            <img class="mt-1" alt="logout icon" src="{{ asset('images/logout.svg') }}" style="max-height: 30px">
+            <img alt="logout icon" src="{{ asset('images/logout.svg') }}" style="max-height: 30px">
         </a>
     </li>
 </ul>
 
 <!-- To change the direction of the modal animation change .right class -->
-<div class="modal fade right" id="sideModalTR" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id="sideModalTR" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
 
     <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
-    <div class="modal-dialog modal-side modal-top-right" role="document">
+    <div role="document">
 
 
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title w-100" id="myModalLabel">{% trans %}profile{% endtrans %}</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div>
+            <div>
+                <h4 id="myModalLabel">{% trans %}profile{% endtrans %}</h4>
+                <button type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div>
                 <p>
                     {% trans %}name{% endtrans %}: {{ app.user.firstName }} {{ app.user.lastName }}<br>
                     {% trans %}email{% endtrans %}: {{ app.user.email }}
                 </p>
                 {% if demo == 'prod' %}
-                    <a class="btn btn-primary btn-sm"
+                    <a
                        href="{{ path('connect_keycloak_edit') }}"
                        target="_blank">{% trans %}editProfile{% endtrans %}</a>
-                    <a class="btn btn-primary btn-sm"
+                    <a
                        href="{{ path('connect_keycloak_edit') }}"
                        target="_blank">{% trans %}changePassword{% endtrans %}</a>
                 {% endif %}
             </div>
-            <div class="modal-footer">
+            <div>
                 <a href="{{ path('logout_keycloak') }}"
-                   class="btn btn-danger btn-sm">{% trans %}logout{% endtrans %}</a>
+                  >{% trans %}logout{% endtrans %}</a>
             </div>
         </div>
     </div>

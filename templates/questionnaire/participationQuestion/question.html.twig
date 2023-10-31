@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <div class="container">
-        <div class="card">
+    <div>
+        <div>
             {{ form_start(form) }}
-            <h5 class="card-header">{{ question.label }}</h5>
-            <div class="card-body">
+            <h5>{{ question.label }}</h5>
+            <div>
                 {{ form_row( attribute(form, question.id)) }}
             </div>
-            <div class="card-footer">
+            <div>
                 {{ form_row(form.continue) }}
             </div>
             {{ form_end(form) }}

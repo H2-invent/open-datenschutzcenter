@@ -1,171 +1,171 @@
 {% trans_default_domain 'tom' %}
 {{ form_start(form) }}
 <div {% if not activ or tom.approved %}class="disabled"{% endif %}>
-    <div class="mb-4 row">
+    <div>
         {% if activTitel %}
-            <div class="col-md-3">
+            <div>
                 {{ form_label(form.titel) }}
             </div>
-            <div class="col-md-9">
+            <div>
                 {{ form_widget(form.titel) }}
             </div>
         {% endif %}
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.beschreibung) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.beschreibung) }}
         </div>
     </div>
 
     <h3>{% trans %}lawParagraph.pseudo.title{% endtrans %}</h3>
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomPseudo) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomPseudo) }}
         </div>
     </div>
 
     <h3>{% trans %}lawParagraph.confidentiality.title{% endtrans %}</h3>
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomZutrittskontrolle) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomZutrittskontrolle) }}
         </div>
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomZugangskontrolle) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomZugangskontrolle) }}
         </div>
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomZugriffskontrolle) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomZugriffskontrolle) }}
         </div>
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomBenutzerkontrolle) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomBenutzerkontrolle) }}
         </div>
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomSpeicherkontrolle) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomSpeicherkontrolle) }}
         </div>
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomTrennbarkeit) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomTrennbarkeit) }}
         </div>
     </div>
 
     <h3>{% trans %}lawParagraph.integrity.title{% endtrans %}</h3>
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomDatenintegritaet) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomDatenintegritaet) }}
         </div>
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomTransportkontrolle) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomTransportkontrolle) }}
         </div>
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomUebertragungskontrolle) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomUebertragungskontrolle) }}
         </div>
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomEingabekontrolle) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomEingabekontrolle) }}
         </div>
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomZuverlaessigkeit) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomZuverlaessigkeit) }}
         </div>
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomAuftragskontrolle) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomAuftragskontrolle) }}
         </div>
     </div>
 
     <h3>{% trans %}lawParagraph.availability.title{% endtrans %}</h3>
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomVerfuegbarkeitskontrolle) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomVerfuegbarkeitskontrolle) }}
         </div>
     </div>
 
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomWiederherstellbarkeit) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomWiederherstellbarkeit) }}
         </div>
     </div>
 
     <h3>{% trans %}lawParagraph.evaluation.title{% endtrans %}</h3>
-    <div class="mb-4 row">
-        <div class="col-md-3">
+    <div>
+        <div>
             {{ form_label(form.tomAudit) }}
         </div>
-        <div class="col-md-9">
+        <div>
             {{ form_widget(form.tomAudit) }}
         </div>
     </div>

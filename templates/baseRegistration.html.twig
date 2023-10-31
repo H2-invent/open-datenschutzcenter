@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html>
-
-{{ include('base/__head.html.twig') }}
-
-<body>
-{% block back %}{% endblock %}
-<div class="wrapper" {% block background %}style="background-color: #545b62"{% endblock %}>
-    <div id="content">
-        {% block content %}{% endblock %}
-    </div>
-
-    {{ include('base/__script.html.twig') }}
-
-
-</body>
-
+    {{ include('base/__head.html.twig') }}
+    <body>
+        <main>
+            {% block back %}{% endblock %}
+            <div id="content">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </body>
 </html>

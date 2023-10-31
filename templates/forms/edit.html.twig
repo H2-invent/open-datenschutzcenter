@@ -6,22 +6,22 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-md-8">
-            <h2 class="h2-responsive">{{ title }}</h2>
+    <div>
+        <div>
+            <h2>{{ title }}</h2>
             {{ include('base/__approvedBy.html.twig', {'data':daten}) }}
         </div>
-        <div class="col-md-4 text-right">
+        <div>
             {{ include('assign/__assign.html.twig',{'data':daten,'path':'assign_form'}) }}
         </div>
     </div>
 
-    <div class="card card-body">
+    <div>
         {{ include('forms/__form.html.twig') }}
     </div>
     <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ daten.user.email }}</p>
     {% if daten.previous %}
-        <div class="card card-body mt-2">
+        <div>
             <h2>{% trans from 'general' %}history{% endtrans %}</h2>
             {{ include('forms/__history.html.twig', {'p':daten.previous}) }}
         </div>

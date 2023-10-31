@@ -4,38 +4,38 @@
 {% block CTA %}
     {% if data.team in app.user.adminRoles %}
         <a href="{{ path('client_valid_user',{'id':data.id}) }}"
-           class="btn btn-sm btn-success">{{ (data.validUser?'user.undoValidation':'user.validate') |trans }}</a>
+          >{{ (data.validUser?'user.undoValidation':'user.validate') |trans }}</a>
         <a href="{{ path('client_request_close',{'id':data.id}) }}"
-           class="btn btn-sm btn-danger">{{ data.activ?'archive':'restore' |trans([], 'general') }}</a>
+          >{{ data.activ?'archive':'restore' |trans([], 'general') }}</a>
         {% if not data.activ %}
             <a href="{{ path('client_request_make_internal',{'id':data.id}) }}"
-               class="btn btn-sm btn-danger">{{ (data.open?'request.publish.private':'request.publish.public') |trans }}</a>
+              >{{ (data.open?'request.publish.private':'request.publish.public') |trans }}</a>
         {% endif %}
         <a href="{{ path('client_requests_edit',{'id':data.id}) }}"
-           class="btn btn-sm btn-primary">{% trans from 'general' %}edit{% endtrans %}</a>
+          >{% trans from 'general' %}edit{% endtrans %}</a>
     {% endif %}
     <a href="{{ path('client_requests_internal_note',{'id':data.id}) }}"
-       class="btn btn-sm btn-primary">{% trans %}editInternalAnnotation{% endtrans %}</a>
-    <a class="btn btn-amber ml-1 btn-sm " href="{{ path('bericht_request', {'id':data.id}) }}">
+      >{% trans %}editInternalAnnotation{% endtrans %}</a>
+    <a href="{{ path('bericht_request', {'id':data.id}) }}">
         <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
     </a>
 {% endblock %}
 
 {% block body %}
-    <div class="card card-body">
-        <h1 class="h1-responsive text-center">{{ data.title }}</h1>
+    <div>
+        <h1>{{ data.title }}</h1>
         {% if not data.activ %}
-            <div class="note-info text-center">
+            <div>
                 {% trans %}request.closed{% endtrans %}
             </div>
         {% endif %}
         {% if not data.open %}
-            <div class="note-warning text-center mt-2">
+            <div>
                 {% trans %}request.internal{% endtrans %}
             </div>
         {% endif %}
         {% if data.pgp %}
-            <div class="note-success text-center mt-2">
+            <div>
                 {% trans %}openPGP.disclaimer{% endtrans %}
             </div>
         {% endif %}
@@ -65,23 +65,23 @@
             {{ data.notes|raw }}
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
+    <div>
+        <div>
             {% if data.activ == 1 %}
-                <div class="card-body card mt-2">
+                <div>
                     {{ form_start(form,{'action': path('client_request_comment',{'clientRequest':data.id})}) }}
                     {{ form_widget(form) }}
                     {{ form_end(form) }}
                 </div>
             {% else %}
-                <div class="note-info text-center mt-2">
+                <div>
                     {% trans %}request.closed{% endtrans %}
                 </div>
             {% endif %}
         </div>
-        <div class="col-md-6">
+        <div>
             {% for c in data.clientComments|sort((b, a) => a.createdAt <=> b.createdAt) %}
-                <div class="card-body card mt-2"
+                <div
                      style="{% if c.internal %}border-left-style: solid; border-left-width: 17px;{% else %}border-right-style: solid; border-right-width: 17px;{% endif %}">
                     {{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}<br>
                     <hr>

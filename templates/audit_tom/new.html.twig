@@ -3,14 +3,14 @@
 
 {% block body %}
 
-    <h2 class="h2-responsive">{{ title }}</h2>
-<div class="card card-body">
+    <h2>{{ title }}</h2>
+<div>
     {{ include('audit_tom/__form.html.twig') }}
 </div>
 
     <p>{% trans %}createdBy{% endtrans %}: {{ audit.user.email }}</p>
     {% if audit.previous %}
-        <div class="card card-body mt-2">
+        <div>
             <h2>{% trans %}history{% endtrans %}</h2>
             {{ include('audit_tom/__history.html.twig', {'p':audit.previous}) }}
         </div>

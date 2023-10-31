@@ -3,14 +3,14 @@
 
 {% block CTA %}{% endblock %}
 {% block body %}
-    <h2 class="h2-responsive">
+    <h2>
         {{ title }} {% if not activNummer %}
-        <span class="small"> {% trans from 'general' %}id{% endtrans %}: {{ vvt.nummer }}{% endif %}</span>
+        <span> {% trans from 'general' %}id{% endtrans %}: {{ vvt.nummer }}{% endif %}</span>
     </h2>
     {{ include('vvt/__form.html.twig') }}
     <p>{% trans from 'general' %}createdAt{% endtrans %}: {{ vvt.user.email }}</p>
     {% if vvt.previous %}
-        <div class="card card-body mt-2">
+        <div>
             <h2>{% trans from 'general' %}history{% endtrans %}</h2>
             {{ include('vvt/__history.html.twig', {'p':vvt.previous}) }}
         </div>

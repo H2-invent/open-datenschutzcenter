@@ -4,7 +4,7 @@
 {% block CTA %}
     {% if not edit %}
         <a href="{{ path('task_edit', {'id':task.id,'edit':1}) }}"
-           class="btn btn-outline-elegant btn-sm">{% trans %}task.edit{% endtrans %}</a>
+          >{% trans %}task.edit{% endtrans %}</a>
     {% endif %}
     <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
        href='{{ path('task_disable',{'id':task.id}) }}' type='button'
@@ -17,15 +17,15 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-md-8">
-            <h2 class="h2-responsive">{% if edit %}{{ title }}{% else %}{{ task.title }}{% endif %}</h2>
+    <div>
+        <div>
+            <h2>{% if edit %}{{ title }}{% else %}{{ task.title }}{% endif %}</h2>
         </div>
-        <div class="col-md-4 text-right">
+        <div>
             {{ include('assign/__assign.html.twig',{'data':task,'path':'assign_task'}) }}
         </div>
     </div>
-    <div class="card card-body">
+    <div>
         {% if edit %}
             {{ include('task/__form.html.twig') }}
         {% else %}

@@ -1,68 +1,68 @@
 {% trans_default_domain 'report' %}
-<div class="row">
-    <div class="col-md-5">
-        <div class="row">
-            <div class="col-md-6">
+<div>
+    <div>
+        <div>
+            <div>
                 {% trans from 'general' %}editor{% endtrans %}:
             </div>
-            <div class="col-md-6">
+            <div>
                 {{ report.user.email }}
             </div>
-            <div class="col-md-6">
+            <div>
                 {% trans from 'general' %}createAt{% endtrans %}:
             </div>
-            <div class="col-md-6">
+            <div>
                 {{ report.createdAt|date('d.m.Y') }}
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-md-6">
+        <div>
+            <div>
                 {% trans from 'general' %}date{% endtrans %}:
             </div>
-            <div class="col-md-6">
+            <div>
                 {{ report.date|date('d.m.Y') }}
             </div>
-            <div class="col-md-6">
+            <div>
                 {% trans from 'general' %}start{% endtrans %}:
             </div>
-            <div class="col-md-6">
+            <div>
                 {{ report.start|date('H:i') }} {% trans %}clock{% endtrans %}
             </div>
-            <div class="col-md-6">
+            <div>
                 {% trans from 'general' %}end{% endtrans %}:
             </div>
-            <div class="col-md-6">
+            <div>
                 {{ report.end|date('H:i') }} {% trans %}clock{% endtrans %}
             </div>
-            <div class="col-md-6">
+            <div>
                 {% trans %}billedTime{% endtrans %}:
             </div>
-            <div class="col-md-6">
+            <div>
                 {{ report.calcTime }} {% trans %}minutes{% endtrans %}
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-md-6">
+        <div>
+            <div>
                 {% trans %}alreadyBilled{% endtrans %}:
             </div>
-            <div class="col-md-6">
+            <div>
                 {{ report.invoice?'yes':'no' | trans([],'general') }}
             </div>
-            <div class="col-md-6">
+            <div>
                 {% trans %}work.present{% endtrans %}:
             </div>
-            <div class="col-md-6">
+            <div>
                 {{ report.inReport?'yes':'no' | trans([],'general') }}
             </div>
-            <div class="col-md-6">
+            <div>
                 {% trans %}work.onSight{% endtrans %}:
             </div>
-            <div class="col-md-6">
+            <div>
                 {{ report.onsite?'yes':'no' | trans([],'general') }}
             </div>
         </div>
     </div>
-    <div class="col-md-7 mt-5 mt-md-0"
+    <div
          style="border-left-color: #3f4e5e; border-left-width: 1px; border-left-style: dashed">
         {% trans from 'general' %}description{% endtrans %}:<br>
         {{ report.description|nl2br }}

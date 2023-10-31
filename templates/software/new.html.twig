@@ -2,8 +2,8 @@
 {% trans_default_domain 'software' %}
 
 {% block body %}
-    <h2 class="h2-responsive">{{ title }}</h2>
-    <div class="card card-body">
+    <h2>{{ title }}</h2>
+    <div>
         {{ include('software/__form.html.twig') }}
     </div>
     <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ vvt.user.email }}</p>

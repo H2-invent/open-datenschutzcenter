@@ -5,13 +5,13 @@
 
 {% block body %}
 
-    <h2 class="h2-responsive">{{ title }}</h2>
-    <div class="card card-body">
+    <h2>{{ title }}</h2>
+    <div>
         {{ include('datenweitergabe/__form.html.twig') }}
     </div>
     <p>{% trans from 'general' %}createdAt{% endtrans %}: {{ daten.user.email }}</p>
     {% if daten.previous %}
-        <div class="card card-body mt-2">
+        <div>
             <h2>{% trans from 'general' %}history{% endtrans %}</h2>
             {{ include('datenweitergabe/__history.html.twig', {'p':daten.previous}) }}
         </div>

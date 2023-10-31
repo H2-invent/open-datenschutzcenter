@@ -2,22 +2,22 @@
 {% trans_default_domain 'task' %}
 
 {% block CTA %}
-    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('task_new') }}">
+    <a href="{{ path('task_new') }}">
         <span>{% trans %}task.create{% endtrans %}</span>
     </a>
     {% if all == false %}
-        <a class="btn btn-sm btn-secondary" href="{{ path('tasks',{'all':1}) }}">{% trans %}task.show.all{% endtrans %}</a>
+        <a href="{{ path('tasks',{'all':1}) }}">{% trans %}task.show.all{% endtrans %}</a>
     {% else %}
-        <a class="btn btn-sm btn-secondary" href="{{ path('tasks') }}">{% trans %}task.show.open{% endtrans %}</a>
+        <a href="{{ path('tasks') }}">{% trans %}task.show.open{% endtrans %}</a>
     {% endif %}
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}task.overview{% endtrans %}</h2>
-    <div class="card card-body">
+    <h2>{% trans %}task.overview{% endtrans %}</h2>
+    <div>
 
-    <div class="table-responsive">
-            <table id="data-table" class="table display table-striped">
+    <div>
+            <table id="data-table">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -30,7 +30,7 @@
                 </thead>
                 <tbody>
                 {% for t in task %}
-                    <tr class="clickable-row"
+                    <tr
                         style="{% if t.done %}background-color: #00e676;{% elseif t.prio == 4 and not t.done %}background-color: #e23317{% endif %}"
                         data-href='{{ path('task_edit',{'id':t.id}) }}'>
                         <th scope="row">{{ t.id }}</th>

@@ -2,71 +2,71 @@
 {% trans_default_domain 'assistant' %}
 
 {% block body %}
-    <div class="container">
-        <h2 class="h2-responsive">{% trans %}step.word{% endtrans %} {{ step + 1}}: {{ title }}</h2>
-        <div class="card card-body">
-            <div class="alert alert-info" role="alert">
+    <div>
+        <h2>{% trans %}step.word{% endtrans %} {{ step + 1}}: {{ title }}</h2>
+        <div>
+            <div role="alert">
                 <p>{{ info }}</p>
             </div>
             {% if app.request.hasPreviousSession %}
                 {% for type, messages in app.session.flashbag.all() %}
                     {% for message in messages %}
-                        <div class="alert alert-{{ type }}" role="alert">
+                        <div role="alert">
                             {{ message | trans }}
                         </div>
                     {% endfor %}
                 {% endfor %}
             {% endif %}
             {% if select %}
-                <form name="select" method="post" action="{{ path('assistant_select') }}" class="select-container row mb-2">
-                    <div class="col-md-4 pt-3 mb-3">
+                <form name="select" method="post" action="{{ path('assistant_select') }}">
+                    <div>
                         <label for="assistant_select" {% if not skip %}class="required"{% endif %}>
                             {{ select.label }}:
                         </label>
                     </div>
-                    <div class="col-md-8">
-                        <select id="assistant_select" title="{% trans from 'general' %}nothingSelected{% endtrans%}" name="assistant_select[]" class="selectpicker" {% if select.multiple %}multiple="multiple"{% endif %} >
+                    <div>
+                        <select id="assistant_select" title="{% trans from 'general' %}nothingSelected{% endtrans%}" name="assistant_select[]" {% if select.multiple %}multiple="multiple"{% endif %} >
                             {% for item in select.items %}
                                 <option {% if item.id in select.selected %}selected="selected"{% endif %} value="{{ item.id }}">{{ item.name }}</option>
                             {% endfor %}
                             <option value="new">{% trans %}new.word{% endtrans %}</option>
                         </select>
                     </div>
-                    <div class="col-12 mt-2 button-container">
-                        <div class="row">
-                            <div class="col-6">
+                    <div>
+                        <div>
+                            <div>
                                 {% if step > 0 %}
-                                    <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step - 1) }) }}">{% trans from 'general' %}back{% endtrans %}</a>
+                                    <a href="{{ path('assistant_step',{'step': (step - 1) }) }}">{% trans from 'general' %}back{% endtrans %}</a>
                                 {% endif %}
                             </div>
-                            <div class="col-6 text-right">
-                                <button type="submit" class="btn btn-primary">{% trans from 'general' %}continue{% endtrans %}</button>
+                            <div>
+                                <button type="submit">{% trans from 'general' %}continue{% endtrans %}</button>
                             </div>
                         </div>
                     </div>
                 </form>
             {% else %}
-                <div class="d-flex justify-content-between">
-                    <div class="d-inline-block">
+                <div>
+                    <div>
                         {% if step > 0 %}
-                            <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step - 1) }) }}">{% trans from 'general' %}back{% endtrans %}</a>
+                            <a href="{{ path('assistant_step',{'step': (step - 1) }) }}">{% trans from 'general' %}back{% endtrans %}</a>
                         {% endif %}
                     </div>
-                    <div class="d-inline-block">
+                    <div>
                         {% if skip %}
-                            <a class="btn btn-outline-primary" href="{{ path('assistant_step',{'step': (step + 1) }) }}">{% trans from 'general' %}skip{% endtrans %}</a>
+                            <a href="{{ path('assistant_step',{'step': (step + 1) }) }}">{% trans from 'general' %}skip{% endtrans %}</a>
                         {% endif %}
                     </div>
                 </div>
             {% endif %}
-            <div class="form-container {% if select %}d-none{% endif %}">
-                <h3 class="mt-4">{{ newTitle }}</h3>
+            <div>
+                <h3>{{ newTitle }}</h3>
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
                 {{ form_end(form) }}
             </div>
-            <p class="text-right">
-                <a class="btn btn-outline-danger" href="{{ path('assistant_cancel') }}">{% trans from 'general' %}abort{% endtrans %}</a>
+            <p>
+                <a href="{{ path('assistant_cancel') }}">{% trans from 'general' %}abort{% endtrans %}</a>
             </p>
         </div>
     </div>

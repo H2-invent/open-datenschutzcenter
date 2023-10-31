@@ -2,39 +2,39 @@
 {% trans_default_domain 'team' %}
 
 {% block body %}
-    <div class="container">
-        <h2 class="h2-responsive">{{ title }}</h2>
+    <div>
+        <h2>{{ title }}</h2>
         <!-- Basic dropdown -->
-        <a class="btn btn-sm dropdown-toggle btn-cyan" data-toggle="dropdown"
+        <a data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false">{% trans %}select{% endtrans %}</a>
 
-        <div class="dropdown-menu">
+        <div>
             {% for key,d in data %}
-                <a class="dropdown-item" href="#{{ key }}">{{ d.title }}</a>
+                <a href="#{{ key }}">{{ d.title }}</a>
             {% endfor %}
         </div>
         <!-- Basic dropdown -->
 
 
         {% for key,dd in data %}
-            <div class="card card-body mt-3" id="{{ key }}">
-                <div class="row">
-                    <div class="col-md-12 mb-2">
-                        <h4 class="h4-responsive">{{ dd.title }}</h4>
-                        <a href="{{ dd.newLink }}" class="btn btn-primary btn-sm loadContent">{{ dd.titleNew }}</a>
-                        <ul class="list-group">
+            <div id="{{ key }}">
+                <div>
+                    <div>
+                        <h4>{{ dd.title }}</h4>
+                        <a href="{{ dd.newLink }}">{{ dd.titleNew }}</a>
+                        <ul>
                             {% if dd.data is defined %}
                                 {% for d in dd.data|sort((a, b) => a.name <=> b.name) %}
-                                    <li class="list-group-item {% if d.default %}disabled{% endif %}">
+                                    <li>
                                         {{ d.name }}{% if not d.default %}
                                             <a href="{{ d.edit }}"
-                                               class="btn btn-sm btn-info float-md-right loadContent">
+                                              >
                                                 {% trans from 'general' %}edit{% endtrans %}
                                             </a>
 
                                                 {% if checkClass(d.object,'App\\Entity\\VVTStatus') %}
                                                     <a href="{{ path('team_custom_network_vvtstatus',{'id':d.id}) }}"
-                                                       class="btn  {% if d.object.network %} btn-success {% else%}btn-danger {% endif%} btn-sm float-md-right">
+                                                      >
                                                         {% if d.object.network %}
                                                             {% trans from 'general' %}network.show.remove{% endtrans %}
                                                         {% else %}
@@ -45,7 +45,7 @@
 
                                             {% if checkClass(d.object,'App\\Entity\\DatenweitergabeStand') %}
                                                 <a href="{{ path('team_custom_network_datenweitergabestatus',{'id':d.id}) }}"
-                                                   class="btn btn-sm {% if d.object.network %} btn-success {% else%}btn-danger {% endif%} float-md-right">
+                                                  >
                                                     {% if d.object.network %}
                                                         {% trans from 'general' %}network.show.remove{% endtrans %}
                                                     {% else %}
@@ -55,14 +55,14 @@
                                             {% endif %}
 
 
-                                            <a href="{{ d.deactivate }}" class="btn btn-sm btn-danger float-md-right">
+                                            <a href="{{ d.deactivate }}">
                                                 {% trans from 'general' %}delete{% endtrans %}
                                             </a>
                                         {% else %} ({% trans %}default{% endtrans %}){% endif %}
                                     </li>
                                 {% endfor %}
                             {% else %}
-                                <p class="note-info text-center p-2 mt-2">{% trans %}noEntry{% endtrans %}</p>
+                                <p>{% trans %}noEntry{% endtrans %}</p>
                             {% endif %}
                         </ul>
 

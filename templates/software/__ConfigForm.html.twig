@@ -1,21 +1,21 @@
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-<div class="mt-4">
+<div>
     {{ form_label(form.name) }}
     {{ form_widget(form.name) }}
 </div>
-<div class="mt-4">
+<div>
     {{ form_label(form.config) }}
     {{ form_widget(form.config) }}
 </div>
-<div class="mt-4">
+<div>
     {{ form_label(form.activ) }}
     {{ form_widget(form.activ) }}
 </div>
-<div class="mt-4 mb-4 ">
+<div>
     {{ form_label(form.uploadFile) }}
     {{ form_widget(form.uploadFile) }}
     {% if config.upload %}
-        <div><img class="img-fluid z-depth-2" src="{{ path('software_config_download_file', {'id': config.id}) }}"
+        <div><img src="{{ path('software_config_download_file', {'id': config.id}) }}"
                   alt="Anhang" style="max-width: 100%"/></div>
     {% endif %}
 </div>

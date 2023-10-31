@@ -1,8 +1,8 @@
 {% trans_default_domain 'datenweitergabe' %}
-<h2 class="h2-responsive">{{ titel }}</h2>
-<div class="card card-body">
-    <div class="table-responsive">
-        <table id="data-table" class="table display table-striped">
+<h2>{{ titel }}</h2>
+<div>
+    <div>
+        <table id="data-table">
             <thead>
             <tr>
                 <th scope="col">#</th>
@@ -16,7 +16,7 @@
             </thead>
             <tbody>
             {% for t in table %}
-                <tr class="clickable-row" data-href='{{ path('datenweitergabe_edit',{'id':t.id}) }}'>
+                <tr data-href='{{ path('datenweitergabe_edit',{'id':t.id}) }}'>
                     <th scope="row">{{ t.nummer }}</th>
                     <td>{{ t.reference }}</td>
                     <td>{{ t.gegenstand }}</td>

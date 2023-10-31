@@ -5,30 +5,30 @@
 
 {% block content %}
     <div>
-        <a href="{{ path('client_index', {'slug':team.slug}) }}" class="btn btn-primary btn-sm">{% trans %}backToPortal{% endtrans %}</a>
-        <div class="card card-body">
-            <h1 class="h1-responsive text-center">{{ data.title }}</h1>
+        <a href="{{ path('client_index', {'slug':team.slug}) }}">{% trans %}backToPortal{% endtrans %}</a>
+        <div>
+            <h1>{{ data.title }}</h1>
             {% if not data.activ %}
-                <div class="note-info text-center">
+                <div>
                     {% trans %}request.closed{% endtrans %}
                 </div>
             {% endif %}
             {% if not data.emailValid %}
-                <div class="note-warning text-center mt-2">
+                <div>
                     {% trans %}emailVerificationDisclaimer{% endtrans %}
                 </div>
             {% endif %}
             {% if not data.validUser %}
-                <div class="note-danger text-center mt-2">
+                <div>
                     {% trans %}cannotVerify{% endtrans %}
                 </div>
             {% endif %}
             {% if data.pgp %}
-                <div class="note-success text-center">
+                <div>
                     {% trans %}openPGP.disclaimer{% endtrans %}
                 </div>
             {% endif %}
-            <p class="mt-3">
+            <p>
                 {% trans %}issueId{% endtrans %}: {{ data.uuid }}<br>
                 {% trans from 'general' %}email{% endtrans %}
                 : {{ data.email }} {% if data.pgp %}🔒 {% endif %}{% if data.emailValid %}✅{% endif %}<br>
@@ -48,28 +48,28 @@
             </p>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
+    <div>
+        <div>
             {% if data.activ == 1 %}
-                <div class="card-body card mt-2">
+                <div>
                     {{ form_start(form,{'action': path('client_comment',{'slug':data.team.slug, 'token':data.token})}) }}
                     {{ form_widget(form) }}
                     {{ form_end(form) }}
                 </div>
             {% else %}
-                <div class="note-info text-center mt-2">
+                <div>
                     {% trans %}request.closed{% endtrans %}
                 </div>
             {% endif %}
         </div>
-        <div class="col-md-6 mb-4">
-            <div class="card card-body mt-2">
-                <h2 class="h2-responsive">
+        <div>
+            <div>
+                <h2>
                     {% trans from 'general' %}comments{% endtrans %}
                 </h2>
             </div>
             {% for c in data.clientComments|sort((b, a) => a.createdAt <=> b.createdAt) %}
-                <div class="card-body card mt-2"
+                <div
                      style="{% if c.internal %}border-left-style: solid; border-left-width: 17px;{% else %}border-right-style: solid; border-right-width: 17px;{% endif %}">
                     {{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}<br>
                     <hr>

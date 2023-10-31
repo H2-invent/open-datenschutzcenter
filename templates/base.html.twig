@@ -1,43 +1,21 @@
 <!DOCTYPE html>
 <html>
-
-{{ include('base/__head.html.twig') }}
-
-<body>
-
-<div id="mainContent" class="wrapper">
-    {{ include('base/__sidenav.html.twig') }}
-
-    <!-- Page Content  -->
-    <div id="content">
-        <nav class="navbar navbar-expand navbar-light bg-light">
-            <div class="container-fluid">
-
-                <button type="button" id="sidebarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                {% block CTA %}{% endblock %}
-
-                {{ include('base/__topnav.html.twig') }}
-
+    {{ include('base/__head.html.twig') }}
+    <body>
+        <header>
+            {% block CTA %}{% endblock %}
+            {{ include('base/__topnav.html.twig') }}
+        </header>
+        <main>
+            <aside>
+                {{ include('base/__sidenav.html.twig') }}
+            </aside>
+            <div id="content">
+                {% block body %}{% endblock %}
             </div>
-        </nav>
-        {% block body %}{% endblock %}
-
-        {{ include('base/__footer.html.twig') }}
-    </div>
-
-
-    <div class="modal fade" id="loadContentModal" tabindex="-1" role="dialog" aria-labelledby="loadContentModal"
-         aria-hidden="true">
-
-    </div>
-</div>
-<!-- Dark Overlay element -->
-<div class="overlay"></div>
-{{ include('base/__script.html.twig') }}
-{% block javascripts %}{% endblock %}
-</body>
-
+        </main>
+        <footer>
+            {{ include('base/__footer.html.twig') }}
+        </footer>
+    </body>
 </html>

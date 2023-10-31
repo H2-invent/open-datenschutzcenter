@@ -7,32 +7,32 @@
 {% endblock %}
 {% block body %}
 
-    <h2 class="h2-responsive">{{ title }}</h2>
+    <h2>{{ title }}</h2>
     {{ include('base/__approvedBy.html.twig', {'data':kontakt}) }}
 
-    <div class="card card-body {% if kontakt.approved or not kontakt.activ == 1 %}disabled{% endif %}">
+    <div>
         {{ form_start(form) }}
-        <div class="row">
-            <div class="col-md-4">{{ form_row(form.art) }}</div>
-            <div class="col-md-2">{{ form_row(form.nummer) }}</div>
-            <div class="col-md-6">{{ form_row(form.firma) }}</div>
+        <div>
+            <div>{{ form_row(form.art) }}</div>
+            <div>{{ form_row(form.nummer) }}</div>
+            <div>{{ form_row(form.firma) }}</div>
         </div>
-        <div class="row">
-            <div class="col-md-2">{{ form_row(form.anrede) }}</div>
-            <div class="col-md-4">{{ form_row(form.vorname) }}</div>
-            <div class="col-md-6">{{ form_row(form.nachname) }}</div>
+        <div>
+            <div>{{ form_row(form.anrede) }}</div>
+            <div>{{ form_row(form.vorname) }}</div>
+            <div>{{ form_row(form.nachname) }}</div>
         </div>
-        <div class="row">
-            <div class="col-md-6">{{ form_row(form.strase) }}</div>
-            <div class="col-md-2">{{ form_row(form.plz) }}</div>
-            <div class="col-md-4">{{ form_row(form.ort) }}</div>
+        <div>
+            <div>{{ form_row(form.strase) }}</div>
+            <div>{{ form_row(form.plz) }}</div>
+            <div>{{ form_row(form.ort) }}</div>
         </div>
-        <div class="row">
-            <div class="col-md-6">{{ form_row(form.email) }}</div>
-            <div class="col-md-6">{{ form_row(form.telefon) }}</div>
+        <div>
+            <div>{{ form_row(form.email) }}</div>
+            <div>{{ form_row(form.telefon) }}</div>
         </div>
-        <div class="row">
-            <div class="col-md-12">{{ form_row(form.bemerkung) }}</div>
+        <div>
+            <div>{{ form_row(form.bemerkung) }}</div>
         </div>
         {{ form_widget(form.save) }}
         {{ form_end(form) }}

@@ -127,10 +127,10 @@
 {%- endblock form_widget_simple %}
 
 {% block form_row %}
-    <div class="md-form">
+    <div>
         {{ form_widget(form) }}
         {{ form_label(form) }}
-        <small class="form-text text-muted">
+        <small>
             {{ form_errors(form) }} {{ form_help(form) }}
         </small>
     </div>

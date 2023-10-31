@@ -3,7 +3,7 @@
 
 {% block CTA %}
     {% if tom.activ %}
-        <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_tom', {'id':tom.id}) }}">
+        <a href="{{ path('bericht_tom', {'id':tom.id}) }}">
             <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
         </a>
         {{ include('base/__approveBtn.html.twig',{'data':tom,'dataLink':'tom_approve'}) }}
@@ -13,15 +13,15 @@
 
 {% block body %}
 
-    <h2 class="h2-responsive">{{ tom.titel }} - {{ title }}</h2>
+    <h2>{{ tom.titel }} - {{ title }}</h2>
     {{ include('base/__approvedBy.html.twig', {'data':tom}) }}
 
-    <div class="card card-body">
+    <div>
         {{ include('tom/__form.html.twig') }}
     </div>
     <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ tom.user.email }}</p>
     {% if tom.previous %}
-        <div class="card card-body mt-2">
+        <div>
             <h2>{% trans from 'general' %}history{% endtrans %}</h2>
             {{ include('tom/__history.html.twig', {'p':tom.previous}) }}
         </div>
