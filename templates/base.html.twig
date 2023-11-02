@@ -10,12 +10,15 @@
             <aside>
                 {{ include('base/__sidenav.html.twig') }}
             </aside>
-            <div id="content">
+            <article>
                 {% block body %}{% endblock %}
-            </div>
+            </article>
         </main>
         <footer>
             {{ include('base/__footer.html.twig') }}
         </footer>
+{#        {% block javascripts %}#}
+            {{ encore_entry_script_tags('app') }}
+{#        {% endblock %}#}
     </body>
 </html>

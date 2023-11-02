@@ -129,8 +129,7 @@ class DashboardController extends AbstractController
             'snack' => $request->get('snack'),
             'loeschkonzepte' => $loeschkonzepte,
             'vvtdatenkategorien' => $vvtdatenkategorien,
-
-
+            'tabsAssignments' => $this->getTabsAssignments(),
         ]);
     }
 
@@ -151,5 +150,17 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/noteam.html.twig', [
             'user' => $this->getUser(),
         ]);
+    }
+
+    private function getTabsAssignments(): array
+    {
+        return [
+            'tasks' => ['image' => 'images/task.png'],
+            'academy' => ['image' => 'images/online-learning.png'],
+            'audit' => ['image' => 'images/pruefung.png'],
+            'vvt' => ['image' => 'images/prozess.png'],
+            'dsfa' => ['image' => 'images/dsta.png'],
+            'dw' => ['image' => 'images/data.png'],
+        ];
     }
 }

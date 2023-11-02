@@ -7,20 +7,12 @@
     <h4>{% trans %}privacyCenter{% endtrans %} {{ currentTeam.name }}</h4>
 {% endblock %}
 {% block body %}
-    <div>
-
-        <!--Grid column-->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div>
-            {{ include ('dashboard/__cards.html.twig') }}
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div>
-
             {{ include('dashboard/__assign.html.twig') }}
-
-
+        </div>
+        <div>
+            {{ include ('dashboard/__quickAccess.html.twig') }}
         </div>
     </div>
     <div>

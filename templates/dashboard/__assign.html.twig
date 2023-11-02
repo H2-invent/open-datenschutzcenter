@@ -1,55 +1,21 @@
 {% trans_default_domain 'dashboard' %}
-<!--Card-->
-<div>
-    <!-- Card header -->
-    <div>
-        {% trans %}myAssignment{% endtrans %}
-    </div>
-    <!--Card content-->
-    <div>
-        <ul id="audit-tab" role="tablist">
-            <li>
-                <a id="tasks-tab" data-toggle="tab" href="#tasks" role="tab"
-                   aria-controls="home"
-                   aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/task.png') }}">
-                    <span
-                           >{% trans %}tasks{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="home-tab" data-toggle="tab" href="#akademie" role="tab"
-                   aria-controls="home"
-                   aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/online-learning.png') }}">
-                    <span
-                           >{% trans %}academy{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="home-tab" data-toggle="tab" href="#audit" role="tab"
-                   aria-controls="home"
-                   aria-selected="true"><img style="height: 1.5rem" src="{{ asset('images/pruefung.png') }}"> <span
-                           >{% trans %}audit{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
-                   aria-controls="profile"
-                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/prozess.png') }}"> <span
-                           >{% trans %}vvt{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
-                   aria-controls="contact"
-                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/dsta.png') }}"> <span
-                           >{% trans %}dsfa{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="daten-tab" data-toggle="tab" href="#daten" role="tab"
-                   aria-controls="contact"
-                   aria-selected="false"><img style="width: 1.5rem" src="{{ asset('images/data.png') }}"> <span
-                           >{% trans %}dw{% endtrans %}</span></a>
-            </li>
-        </ul>
-
-        <div id="myTabContent">
-            <div id="tasks" role="tabpanel" aria-labelledby="home-tab">
+<h3>{% trans %}myAssignment{% endtrans %}</h3>
+<div class="card-outlined mb-5">
+    <div class="tabs flex flex-col w-full">
+        <div class="tabs-nav">
+            {% for tab, data in tabsAssignments %}
+                <button data-type="tabs" data-target="#tab-{{ tab }}" class="{{ loop.first ? ' active' }}">
+                <span>
+                    <img src="{{ asset(data.image) }}" alt="">
+                </span>
+                    <p>{{ tab|trans }}</p>
+                </button>
+            {% endfor %}
+            <div role="indicator" class="tabs-indicator"></div>
+        </div>
+        <hr>
+        <div class="tabs-content">
+            <div id="tab-tasks" role="tabpanel" class="tab-content active">
                 {% for a in assignTasks %}
                     <a href="{{ path('task_edit',{'id':a.id}) }}">
                         <div>
@@ -68,7 +34,7 @@
                     </a>
                 {% endfor %}
             </div>
-            <div id="akademie" role="tabpanel" aria-labelledby="home-tab">
+            <div id="tab-academy" role="tabpanel" class="tab-content">
                 {% for a in akademie %}
                     <a href="{{ path('akademie_kurs',{'kurs':a.id}) }}">
                         <div>
@@ -87,7 +53,7 @@
                     </a>
                 {% endfor %}
             </div>
-            <div id="audit" role="tabpanel" aria-labelledby="home-tab">
+            <div id="tab-audit" role="tabpanel" class="tab-content">
                 {% for a in assignAudit %}
                     {% if a.activ %}
                         <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
@@ -108,7 +74,7 @@
                     {% endif %}
                 {% endfor %}
             </div>
-            <div id="vvt" role="tabpanel" aria-labelledby="profile-tab">
+            <div id="tab-vvt" role="tabpanel" class="tab-content">
                 {% for a in assignVvt %}
                     {% if a.activ %}
                         <a href="{{ path('vvt_edit',{'id':a.id}) }}">
@@ -132,7 +98,7 @@
                     {% endif %}
                 {% endfor %}
             </div>
-            <div id="dsfa" role="tabpanel" aria-labelledby="contact-tab">
+            <div id="tab-dsfa" role="tabpanel" class="tab-content">
                 {% for a in assignDsfa %}
                     {% if a.activ %}
                         <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
@@ -153,7 +119,7 @@
                     {% endif %}
                 {% endfor %}
             </div>
-            <div id="daten" role="tabpanel" aria-labelledby="contact-tab">
+            <div id="tab-dw" role="tabpanel" class="tab-content">
                 {% for a in assignDaten %}
                     {% if a.activ %}
                         <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">
@@ -175,9 +141,6 @@
                 {% endfor %}
             </div>
         </div>
-        <a href="{{ path('assign') }}">{% trans %}showAllAssignments{% endtrans %}</a>
-
     </div>
-
 </div>
-<!--/.Card-->
+<a href="{{ path('assign') }}" class="btn btn-elevated">{% trans %}showAllAssignments{% endtrans %}</a>

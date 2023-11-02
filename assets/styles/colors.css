@@ -1,0 +1,49 @@
+@import "./tailmater.css";
+
+.card-vvt, .btn-vvt {
+    @apply bg-vvt-50 hover:bg-vvt-100 text-vvt-800;
+}
+
+.card-dsfa, .btn-dsfa {
+    @apply bg-dsfa-50 hover:bg-dsfa-100 text-dsfa-800;
+}
+
+.card-tom, .btn-tom {
+    @apply bg-tom-50 hover:bg-tom-100 text-tom-800;
+}
+
+.card-kontakt, .btn-kontakt {
+    @apply bg-kontakt-50 hover:bg-kontakt-100 text-kontakt-800;
+}
+
+.card-datenweitergabe, .btn-datenweitergabe {
+    @apply bg-datenweitergabe-50 hover:bg-datenweitergabe-100 text-datenweitergabe-800;
+}
+
+.card-av, .btn-av {
+    @apply bg-av-50 hover:bg-av-100 text-av-800;
+}
+
+.card-form, .btn-form {
+    @apply bg-form-50 hover:bg-form-100 text-form-800;
+}
+
+.card-policy, .btn-policy {
+    @apply bg-policy-50 hover:bg-policy-100 text-policy-800;
+}
+
+.card-software, .btn-software {
+    @apply bg-software-50 hover:bg-software-100 text-software-800;
+}
+
+.card-tasks, .btn-tasks {
+    @apply bg-task-50 hover:bg-task-100 text-task-800;
+}
+
+.card-loeschkonzept, .btn-loeschkonzept {
+    @apply bg-loeschkonzept-100 hover:bg-loeschkonzept-200 text-loeschkonzept-800;
+}
+
+.card-datenkategorie, .btn-datenkatekorie {
+    @apply bg-datenkategorie-100 hover:bg-datenkategorie-200 text-datenkategorie-800;
+}
