@@ -2,21 +2,21 @@
 <html>
     {{ include('base/__head.html.twig') }}
     <body>
-        <header>
+        {#<header>
             {% block CTA %}{% endblock %}
             {{ include('base/__topnav.html.twig') }}
-        </header>
-        <main>
-            <aside>
+        </header>#}
+        <main class="flex">
+            <aside class="flex-none">
                 {{ include('base/__sidenav.html.twig') }}
             </aside>
-            <article>
+            <article class="grow p-5">
                 {% block body %}{% endblock %}
             </article>
         </main>
-        <footer>
+        {#<footer>
             {{ include('base/__footer.html.twig') }}
-        </footer>
+        </footer>#}
 {#        {% block javascripts %}#}
             {{ encore_entry_script_tags('app') }}
 {#        {% endblock %}#}

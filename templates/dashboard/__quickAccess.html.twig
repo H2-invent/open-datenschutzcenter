@@ -7,23 +7,26 @@
             | <u>kritisch ({{ kVvt|length }})</u>
         {% endif %}
     </a>
-    <a href="{{ path('vvt') }}" class="btn btn-dsfa">
-        DSFA ({{ dsfa|length }})
-        {% if openDsfa|length > 0 %}
-            | <u>offen ({{ openDsfa|length }})</u>
-        {% endif %}
-    </a>
     <a href="{{ path('tom') }}" class="btn btn-tom">
         TOMs ({{ tom|length }})
-    </a>
-    <a href="{{ path('kontakt') }}" class="btn btn-kontakt">
-        Kontakte ({{ kontakte|length }})
     </a>
     <a href="{{ path('datenweitergabe') }}" class="btn btn-datenweitergabe">
         Datenweitergaben ({{ daten|length }})
     </a>
     <a href="{{ path('auftragsverarbeitung') }}" class="btn btn-av">
         Auftragsverarbeitungen ({{ av|length }})
+    </a>
+</div>
+<hr class="my-5">
+<div class="grid grid-cols-2 gap-4 dashboard-links">
+    <a href="{{ path('vvt') }}" class="btn btn-dsfa">
+        DSFA ({{ dsfa|length }})
+        {% if openDsfa|length > 0 %}
+            | <u>offen ({{ openDsfa|length }})</u>
+        {% endif %}
+    </a>
+    <a href="{{ path('kontakt') }}" class="btn btn-kontakt">
+        Kontakte ({{ kontakte|length }})
     </a>
     <a href="{{ path('forms') }}" class="btn btn-form">
         Formulare ({{ forms|length }})
@@ -32,7 +35,7 @@
         Richtlinien ({{ policies|length }})
     </a>
     <a href="{{ path('software') }}" class="btn btn-software">
-        Verarbeitungen ({{ vvt|length }})
+        Software ({{ software|length }})
     </a>
     <a href="{{ path('tasks') }}" class="btn btn-tasks">
         Offene Aufgaben ({{ tasks|length }})

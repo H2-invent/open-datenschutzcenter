@@ -1,136 +1,133 @@
 {% trans_default_domain 'base' %}
 
 <!-- Sidebar  -->
-<nav id="sidebar">
-    <div>
+<nav class="p-3 h-full overflow-y-auto">
+    <div class="mx-3 mb-8 mt-3">
         <a href="{{ path('dashboard') }}">
-            <img alt="logo" src="{{ asset('logo.png') }}" />
+            <img alt="logo" src="{{ asset('logo.png') }}"/>
         </a>
     </div>
-{% if app.user is defined and app.user is not null %}
-    <ul>
-        {% if app.user.TeamDsb is not empty %}
-            <li>
-                <a href="{{ path('dsb') }}">{% trans %}externalDsb{% endtrans %}</a>
-            </li>
-        {% endif %}
-        {% if app.user.team %}
-            <li>
-                <a href="{{ path('dashboard') }}">{% trans %}dashboard{% endtrans %}</a>
-            </li>
-            <li>
-                <a href="{{ path('assign') }}">{% trans %}myAssignments{% endtrans %}</a>
-            </li>
-            <li>
-                <a href="{{ path('tasks') }}">{% trans %}tasks{% endtrans %}</a>
-            </li>
-            <li>
-                <a href="#elementsSubmenu" data-toggle="collapse" aria-expanded="false">{% trans %}elements{% endtrans %}</a>
-                <ul id="elementsSubmenu">
-                    <li>
-                        <a href="{{ path('audit_tom') }}">{% trans %}auditQuestions{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_vvtdatenkategorie_index') }}">{% trans %}dataCategories{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('tom') }}">{% trans %}toms{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('vvt') }}">{% trans %}processings{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_loeschkonzept_index') }}">{% trans %}deleteConcepts{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('policies') }}">{% trans %}policies{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('kontakt') }}">{% trans %}contacts{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('datenweitergabe') }}">{% trans %}dataTransfers{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('auftragsverarbeitung') }}">{% trans %}orderProcessing{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('software') }}">{% trans %}software{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('forms') }}">{% trans %}forms{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('vorfall') }}">{% trans %}incidents{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('client_requests') }}">{% trans %}customerQuestions{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('report') }}">{% trans %}activities{% endtrans %}</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="{{ path('assistant') }}">{% trans %}assistant{% endtrans %}</a>
-            </li>
-            <li>
-                <a href="{{ path('bericht') }}">{% trans %}reports{% endtrans %}</a>
-            </li>
-{#            <li>#}
-{#                <a href="{{ path('external') }}">{% trans %}external{% endtrans %}</a>#}
-{#            </li>#}
-        {% endif %}
-        {% if app.user.akademieUser %}
-            <li>
-                <a href="{{ path('akademie') }}">{% trans %}academy{% endtrans %}</a>
-            </li>
-        {% endif %}
-        {% if app.user.adminRole or 'ROLE_ADMIN' in app.user.roles  %}
-            <li><hr></li>
-        {% endif %}
-        {% if app.user.adminRole %}
-            <li>
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">{% trans %}teamAdminArea{% endtrans %}</a>
-                <ul id="homeSubmenu">
-                    <li>
-                        <a href="{{ path('team_edit') }}">{% trans %}teamData{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('team_custom') }}">{% trans %}presets{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('team_abteilungen') }}">{% trans %}departments{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('team_mitglieder') }}">{% trans %}users{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('akademie_admin') }}">{% trans %}academy{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('team_dsb') }}">{% trans %}externalDsb{% endtrans %}</a>
-                    </li>
-{#                    <li>#}
-{#                        <a href="{{ path('upload_new') }}">{% trans %}import{% endtrans %}</a>#}
-{#                    </li>#}
-                </ul>
-            </li>
-        {% endif %}
-        {% if 'ROLE_ADMIN' in app.user.roles %}
-            <li>
-                <a href="#superAdminSubmenu" data-toggle="collapse" aria-expanded="false">{% trans %}superAdminArea{% endtrans %}</a>
-                <ul id="superAdminSubmenu">
-                    <li>
-                        <a href="{{ path('manage_settings') }}">{% trans %}manageOdc{% endtrans %}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('manage_teams') }}">{% trans %}manageTeams{% endtrans %}</a>
-                    </li>
-                </ul>
-            </li>
-        {% endif %}
-    </ul>
-{% endif %}
-</nav>
+    {% if app.user is defined and app.user is not null %}
+        <ul class="flex flex-col">
+            {% if app.user.TeamDsb is not empty %}
+                <li>
+                    <a href="{{ path('dsb') }}">{% trans %}externalDsb{% endtrans %}</a>
+                </li>
+            {% endif %}
+            {% if app.user.team %}
+                <li>
+                    <a href="{{ path('dashboard') }}" class="active">{% trans %}dashboard{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('assign') }}">{% trans %}myAssignments{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('tasks') }}">{% trans %}tasks{% endtrans %}</a>
+                </li>
+            {% endif %}
+        </ul>
 
+        <hr>
+
+        <div class="label">{% trans %}elements{% endtrans %}</div>
+
+        <ul class="flex flex-col">
+            <li>
+                <a href="{{ path('audit_tom') }}">{% trans %}auditQuestions{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('app_vvtdatenkategorie_index') }}">{% trans %}dataCategories{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('tom') }}">{% trans %}toms{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('vvt') }}">{% trans %}processings{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('app_loeschkonzept_index') }}">{% trans %}deleteConcepts{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('policies') }}">{% trans %}policies{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('kontakt') }}">{% trans %}contacts{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('datenweitergabe') }}">{% trans %}dataTransfers{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('auftragsverarbeitung') }}">{% trans %}orderProcessing{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('software') }}">{% trans %}software{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('forms') }}">{% trans %}forms{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('vorfall') }}">{% trans %}incidents{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('client_requests') }}">{% trans %}customerQuestions{% endtrans %}</a>
+            </li>
+            <li>
+                <a href="{{ path('report') }}">{% trans %}activities{% endtrans %}</a>
+            </li>
+        </ul>
+
+        {% if app.user.akademieUser %}
+            <hr>
+            <div class="label">{% trans %}academy{% endtrans %}</div>
+            <ul class="flex flex-col">
+                <li class="{{ app.request.attributes.get('_route') == 'akademie' ? 'active' }}">
+                    <a href="{{ path('akademie') }}">{% trans %}kurse{% endtrans %}</a>
+                </li>
+            </ul>
+        {% endif %}
+
+        {% if app.user.adminRole or 'ROLE_ADMIN' in app.user.roles  %}
+            <hr>
+
+        {% endif %}
+
+        {% if app.user.adminRole %}
+            <div class="label">{% trans %}teamAdminArea{% endtrans %}</div>
+
+            <ul class="flex flex-col">
+                <li>
+                    <a href="{{ path('team_edit') }}">{% trans %}teamData{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('team_custom') }}">{% trans %}presets{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('team_abteilungen') }}">{% trans %}departments{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('team_mitglieder') }}">{% trans %}users{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('akademie_admin') }}">{% trans %}academy{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('team_dsb') }}">{% trans %}externalDsb{% endtrans %}</a>
+                </li>
+            </ul>
+        {% endif %}
+
+        {% if 'ROLE_ADMIN' in app.user.roles %}
+            <div class="label">{% trans %}superAdminArea{% endtrans %}</div>
+
+            <ul class="flex flex-col">
+                <li>
+                    <a href="{{ path('manage_settings') }}">{% trans %}manageOdc{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('manage_teams') }}">{% trans %}manageTeams{% endtrans %}</a>
+                </li>
+            </ul>
+        {% endif %}
+
+    {% endif %}
+</nav>

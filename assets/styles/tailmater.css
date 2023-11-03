@@ -710,12 +710,42 @@ td, th {
 }
 
 /* Insert your css in here */
-body {
-    @apply font-sans text-base font-normal text-gray-700 dark:text-gray-200 bg-surface-100 dark:bg-surfacedark-100;
+@layer base {
+    .shadow-material {
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+    }
 }
 
-main > article {
-    @apply container mx-auto;
+html, body, main {
+    @apply h-full;
+}
+
+body {
+    @apply font-sans text-base font-normal text-gray-700 dark:text-gray-200 bg-surface-50 dark:bg-surfacedark-100;
+}
+
+aside {
+    @apply hover:shadow-material bg-surface-100 dark:bg-surfacedark-300 hover:shadow-material w-60 rounded-r-2xl h-full overflow-hidden;
+}
+
+aside > nav {
+    @apply overflow-y-auto;
+}
+
+aside > nav > .label {
+    @apply p-4 text-sm tracking-[.00714em] font-light;
+}
+
+aside > nav > ul > li > a {
+    @apply flex flex-row items-center text-sm gap-3 py-3.5 px-4 rounded-full hover-icon hover:bg-secondary-300 dark:hover:bg-secondary-700 hover:bg-opacity-30 dark:hover:bg-opacity-30;
+}
+
+aside > nav > ul > li > a.active {
+    @apply bg-primary-100 hover:bg-primary-100;
+}
+
+aside > nav > hr {
+    @apply mx-4;
 }
 
 footer {
@@ -731,7 +761,7 @@ footer > ul > li {
 }
 
 .card-outlined {
-    @apply card bg-neutral-10 dark:bg-neutral-900 border border-gray-200 dark:border-gray-700;
+    @apply card bg-white dark:bg-neutral-900 border border-gray-200 dark:border-gray-700;
 }
 
 .card-elevated {
@@ -747,7 +777,7 @@ footer > ul > li {
 }
 
 .tabs-nav button {
-    @apply w-1/3 md:w-[120px] h-16 px-4 py-2 flex flex-col justify-end items-center gap-1 hover:bg-surface-100 dark:hover:bg-surfacedark-100;
+    @apply w-1/3 md:w-[120px] h-16 px-4 flex flex-col justify-end items-center gap-1 relative py-2 hover:bg-surface-100 dark:hover:bg-surfacedark-100;
 }
 
 .tabs-nav span {
@@ -763,7 +793,7 @@ footer > ul > li {
 }
 
 .tabs-indicator {
-    @apply absolute left-0 bottom-0 transition-all duration-200 ease-in-out bg-primary-600 dark:bg-primary-200 w-[40px] ml-[10%] md:ml-[40px] h-0.5 rounded-t-full;
+    @apply absolute left-0 bottom-0 transition-all duration-200 ease-in-out bg-primary-600 dark:bg-primary-200 w-1/3 md:w-[120px] h-0.5 rounded-t-full;
 }
 
 .tab-content {
@@ -779,7 +809,7 @@ h2 {
 }
 
 h3 {
-    @apply text-2xl font-normal mb-2;
+    @apply text-xl font-normal mb-2;
 }
 
 hr {
@@ -788,6 +818,10 @@ hr {
 
 .btn {
     @apply relative flex flex-row items-center justify-center gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm tracking-[.00714em] font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-400 text-primary-600 dark:bg-surfacedark-100 dark:hover:bg-surfacedark-200 dark:focus:bg-surfacedark-400 dark:text-primary-200;
+}
+
+main > article a {
+    @apply text-primary-600;
 }
 
 .dashboard-links > a.btn {

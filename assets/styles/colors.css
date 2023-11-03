@@ -41,9 +41,9 @@
 }
 
 .card-loeschkonzept, .btn-loeschkonzept {
-    @apply bg-loeschkonzept-100 hover:bg-loeschkonzept-200 text-loeschkonzept-800;
+    @apply bg-loeschkonzept-50 hover:bg-loeschkonzept-100 text-loeschkonzept-800;
 }
 
 .card-datenkategorie, .btn-datenkatekorie {
-    @apply bg-datenkategorie-100 hover:bg-datenkategorie-200 text-datenkategorie-800;
+    @apply bg-datenkategorie-50 hover:bg-datenkategorie-100 text-datenkategorie-800;
 }
