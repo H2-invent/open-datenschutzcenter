@@ -1,22 +1,31 @@
+{% trans_default_domain 'base' %}
 <!DOCTYPE html>
 <html>
     {{ include('base/__head.html.twig') }}
     <body>
-        {#<header>
-            {% block CTA %}{% endblock %}
-            {{ include('base/__topnav.html.twig') }}
-        </header>#}
         <main class="flex">
-            <aside class="flex-none">
+            <aside class="flex-none fixed">
                 {{ include('base/__sidenav.html.twig') }}
             </aside>
-            <article class="grow p-5">
-                {% block body %}{% endblock %}
+            <article class="grow p-3 ml-60">
+                <div id="topbar" class="flex mb-3">
+                    {{ include('base/__teamToggle.html.twig') }}
+                    <h2 class="flex flex-grow justify-start text-[1.375rem] leading-7 mb-0">{% block title %}{% endblock %}</h2>
+                    {{ include('base/__topnav.html.twig') }}
+                </div>
+                <div>
+                    <div id="bock-cta" class="mb-5 flex flex-row rounded flex gap-2 items-center justify-start">
+                        {% block CTA %}{% endblock %}
+                    </div>
+                    <div id="content">
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
             </article>
         </main>
-        {#<footer>
+        <footer>
             {{ include('base/__footer.html.twig') }}
-        </footer>#}
+        </footer>
 {#        {% block javascripts %}#}
             {{ encore_entry_script_tags('app') }}
 {#        {% endblock %}#}

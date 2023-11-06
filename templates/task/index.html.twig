@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'task' %}
 
+{% block title %}{% trans %}task.overview{% endtrans %}{% endblock %}
+
 {% block CTA %}
-    <a href="{{ path('task_new') }}">
-        <span>{% trans %}task.create{% endtrans %}</span>
+    <a href="{{ path('task_new') }}" class="btn btn-create">
+        <span class="material-symbols-outlined">add</span>
+        {% trans %}task.create{% endtrans %}
     </a>
     {% if all == false %}
-        <a href="{{ path('tasks',{'all':1}) }}">{% trans %}task.show.all{% endtrans %}</a>
+        <a href="{{ path('tasks',{'all':1}) }}" class="btn">{% trans %}task.show.all{% endtrans %}</a>
     {% else %}
-        <a href="{{ path('tasks') }}">{% trans %}task.show.open{% endtrans %}</a>
+        <a href="{{ path('tasks') }}" class="btn">{% trans %}task.show.open{% endtrans %}</a>
     {% endif %}
 {% endblock %}
 
 {% block body %}
-    <h2>{% trans %}task.overview{% endtrans %}</h2>
     <div>
 
     <div>

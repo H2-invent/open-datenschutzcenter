@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'audit_tom' %}
 
+{% block title %}
+    {% trans %}allTomAuditQuestions{% endtrans %}
+{% endblock %}
+
 {% block CTA %}
     <a href="{{ path('audit_tom_new') }}">
         <span>{% trans %}newAudit{% endtrans %}</span>
@@ -12,7 +16,6 @@
 {% endblock %}
 
 {% block body %}
-    <h2>{% trans %}allTomAuditQuestions{% endtrans %}</h2>
     <div>
         <div>
             <table id="data-table">

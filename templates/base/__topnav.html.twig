@@ -1,56 +1,28 @@
 {% trans_default_domain 'base' %}
-<ul>
-    {{ include('base/__teamToggle.html.twig') }}
-
-    <!-- Button trigger modal -->
-    <li>
-        <a type="button"
-           data-toggle="modal"
-           data-target="#sideModalTR">
-            <img alt="profile icon" src="{{ asset('images/profil.svg') }}" style="max-height: 30px">
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('logout_keycloak') }}">
-            <img alt="logout icon" src="{{ asset('images/logout.svg') }}" style="max-height: 30px">
-        </a>
-    </li>
-</ul>
-
-<!-- To change the direction of the modal animation change .right class -->
-<div id="sideModalTR" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-
-    <!-- Add class .modal-side and then add class .modal-top-right (or other classes from list above) to set a position to the modal -->
-    <div role="document">
-
-
-        <div>
-            <div>
-                <h4 id="myModalLabel">{% trans %}profile{% endtrans %}</h4>
-                <button type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div>
-                <p>
-                    {% trans %}name{% endtrans %}: {{ app.user.firstName }} {{ app.user.lastName }}<br>
-                    {% trans %}email{% endtrans %}: {{ app.user.email }}
-                </p>
-                {% if demo == 'prod' %}
-                    <a
-                       href="{{ path('connect_keycloak_edit') }}"
-                       target="_blank">{% trans %}editProfile{% endtrans %}</a>
-                    <a
-                       href="{{ path('connect_keycloak_edit') }}"
-                       target="_blank">{% trans %}changePassword{% endtrans %}</a>
-                {% endif %}
-            </div>
-            <div>
-                <a href="{{ path('logout_keycloak') }}"
-                  >{% trans %}logout{% endtrans %}</a>
-            </div>
-        </div>
-    </div>
+<div class="flex flex-row justify-end items-center">
+    <button data-type="dropdown" data-target="#topnav-menu" class="material-symbols-outlined text-xl relative !inline-flex !items-center justify-center w-10 h-10 gap-x-2 p-3 rounded-[6.25rem] text-sm tracking-[.00714em] text-center font-medium hover:bg-surface-300 focus:bg-surface-400 dark:text-primary-200 dark:hover:bg-surfacedark-300 dark:focus:bg-surfacedark-400">
+        more_vert
+    </button>
+    <ul id="topnav-menu" role="dropdownmenu" class="[&.show]:!opacity-100 [&.show]:!visible opacity-0 invisible absolute top-[3.6rem] mr-8 z-30 transition duration-400 ease-in-out left-0 md:left-auto md:right-0 min-w-[200px] inline-flex flex-col py-0 rounded bg-surface-200 dark:bg-surfacedark-200 shadow-md dark:shadow-gray-50/10">
+        {% if demo == 'prod' %}
+            <li class="relative">
+                <a href="{{ path('connect_keycloak_edit') }}">
+                    <span class="material-symbols-outlined">person</span>
+                    {% trans %}editProfile{% endtrans %}
+                </a>
+            </li>
+            <li class="relative">
+                <a href="{{ path('connect_keycloak_edit') }}">
+                    <span class="material-symbols-outlined">lock</span>
+                    {% trans %}changePassword{% endtrans %}
+                </a>
+            </li>
+        {% endif %}
+        <li class="relative border-t-gray-300 border-t">
+            <a href="{{ path('logout_keycloak') }}">
+                <span class="material-symbols-outlined">logout</span>
+                {% trans %}Logout{% endtrans %}
+            </a>
+        </li>
+    </ul>
 </div>
-<!-- Side Modal Top Right -->

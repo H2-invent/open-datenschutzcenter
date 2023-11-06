@@ -1,11 +1,8 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'dashboard' %}
 
-{% block title %}{{ currentTeam.name }}{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
-{% block CTA %}
-    <h4>{% trans %}privacyCenter{% endtrans %} {{ currentTeam.name }}</h4>
-{% endblock %}
 {% block body %}
     <div class="grid grid-cols-1 lg:grid-cols-7 gap-10 mb-10">
         <div class="lg:col-span-4">

@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'assign' %}
 
-{% block CTA %}
-{% endblock %}
+{% block title %}{% trans %}myAssignments{% endtrans %}{% endblock %}
 
 {% block body %}
-    <h2>{% trans %}myAssignments{% endtrans %}</h2>
     <div>
         <ul id="audit-tab" role="tablist">
             <li>

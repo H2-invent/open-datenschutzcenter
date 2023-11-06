@@ -7,6 +7,9 @@ module.exports = {
     "./templates/**/*.html.twig",
   ],
   theme: {
+    fontFamily: {
+      'sans': ['Roboto', 'ui-sans-serif', 'system-ui'],
+    },
     extend: {
       colors: {
         primary: colors.blue,
