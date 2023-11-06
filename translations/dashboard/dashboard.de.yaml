@@ -6,7 +6,7 @@ vvt: VVT
 vvts: VVTs
 dsfa: DSFA
 dw: DW
-showAllAssignments: Alle Zuweisungen anzeigen
+showAllAssignments: Alle anzeigen
 criticalProcesses: Kritische Vorgänge
 auditQuestions: Auditfragen
 openDsfa: Offene DSFA
