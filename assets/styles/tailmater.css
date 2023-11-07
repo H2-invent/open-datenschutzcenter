@@ -732,6 +732,10 @@ body {
     @apply min-h-[3rem] flex flex-row items-center gap-4 py-2 px-3 hover-icon hover:bg-secondary-100 dark:hover:bg-secondary-700 hover:bg-opacity-30 dark:hover:bg-opacity-30;
 }
 
+#bock-cta .btn {
+    @apply mb-5;
+}
+
 aside {
     @apply hover:shadow-material hover:shadow-material w-60 rounded-r-2xl h-full overflow-hidden;
 }
@@ -761,7 +765,7 @@ aside > nav > hr {
 }
 
 footer {
-    @apply p-4 md:py-6 ml-60 md:mb-0 flex flex-col md:flex-row justify-center text-center;
+    @apply p-4 md:py-6 ml-60 md:mb-0 flex flex-col md:flex-row justify-center text-center text-gray-600 text-sm font-normal;
 }
 
 footer > ul > li {
@@ -782,6 +786,10 @@ footer > ul > li {
 
 .card-filled {
     @apply card bg-gray-100 dark:bg-gray-700;
+}
+
+.card-form {
+    @apply card-outlined w-full max-w-2xl;
 }
 
 .tabs-nav {
@@ -829,7 +837,7 @@ hr {
 }
 
 .btn {
-    @apply relative flex flex-row items-center justify-center gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm tracking-[.00714em] font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-400 text-primary-600 dark:bg-surfacedark-100 dark:hover:bg-surfacedark-200 dark:focus:bg-surfacedark-400 dark:text-primary-200;
+    @apply relative flex flex-row items-center justify-center gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm tracking-[.00714em] font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-300 text-primary-600 dark:bg-surfacedark-100 dark:hover:bg-surfacedark-200 dark:focus:bg-surfacedark-400 dark:text-primary-200;
 }
 
 .btn .material-symbols-outlined {
@@ -850,4 +858,36 @@ main > article > #content a {
 
 .dashboard-links > a.btn {
     @apply btn-elevated;
+}
+
+form {
+    @apply w-full;
+}
+
+.form-group {
+    @apply mb-4;
+}
+
+.form-group label {
+    @apply block text-sm mb-1;
+}
+
+.form-group label.required {
+    @apply font-medium;
+}
+
+.form-group label.required::after {
+    content: " *";
+}
+
+.form-group.form-buttons {
+    @apply pt-3 mb-0;
+}
+
+input[type='text'], input[type='password'], input[type='email'], input[type='number'], input[type='url'], input[type='date'], input[type='datetime-local'], input[type='month'], input[type='week'], input[type='time'], input[type='search'], input[type='tel'], input[type='checkbox'], input[type='radio'], select, select[multiple], textarea {
+    @apply w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+}
+
+.form-group textarea {
+    @apply -mb-2;
 }

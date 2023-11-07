@@ -25,7 +25,7 @@ module.exports = {
         kontakt: colors.purple,
         datenweitergabe: colors.violet,
         av: colors.fuchsia,
-        form: colors.amber,
+        formular: colors.amber,
         policy: colors.zinc,
         software: colors.blue,
         task: colors.cyan,
@@ -35,6 +35,7 @@ module.exports = {
     },
   },
   plugins: [
+    require('@tailwindcss/forms'),
   ],
 }
 

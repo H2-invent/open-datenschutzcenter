@@ -1,50 +1,9 @@
-{{ form_start(form) }}
-<div {% if not activ %}class="disabled"{% endif %}>
-    <div>
-        <div>
-            {{ form_label(form.title) }}
-        </div>
-        <div>
-            {{ form_widget(form.title) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.task) }}
-        </div>
-        <div>
-            {{ form_widget(form.task) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.endDate) }}
-        </div>
-        <div>
-            {{ form_widget(form.endDate) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.prio) }}
-        </div>
-        <div>
-            {{ form_widget(form.prio) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.assignedUser) }}
-        </div>
-        <div>
-            {{ form_widget(form.assignedUser) }}
-        </div>
-    </div>
-
-    {{ form_widget(form.save) }}
-</div>
+{{ form_start(form, {attr: {class: not activ ? 'disabled'}}) }}
+    {{ form_row(form.title, {attr: {autofocus: true}}) }}
+    {{ form_row(form.task) }}
+    {{ form_row(form.endDate) }}
+    {{ form_row(form.prio) }}
+    {{ form_row(form.assignedUser) }}
+    {{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
+    {{ form_rest(form) }}
 {{ form_end(form) }}

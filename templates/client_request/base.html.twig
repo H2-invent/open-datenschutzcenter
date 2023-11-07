@@ -6,7 +6,6 @@
 
 <body>
 {% block back %}{% endblock %}
-<div style="background-image: url('{{ asset('images/login.jpg') }}'); background-size: cover; min-height: 100vh">
     <div>
         <div>
             {% block content %}{% endblock %}
@@ -31,17 +30,13 @@
         </div>
     </div>
 
-</div>
 
-<script type="text/javascript" src="{{ asset('build/js/jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('build/js/popper.min.js') }}"></script>
 
-{% block webpack %}
-    {{ encore_entry_script_tags('frontend') }}
-{% endblock %}
 
-<script type="text/javascript" src="{{ asset('build/js/bootstrap.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('build/js/mdb.min.js') }}"></script>
+    {{ encore_entry_script_tags('app') }}
+
+
+
 
 </body>
 

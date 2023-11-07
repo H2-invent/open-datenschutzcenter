@@ -24,8 +24,8 @@
     @apply bg-av-50 hover:bg-av-100 text-av-800;
 }
 
-.card-form, .btn-form {
-    @apply bg-form-50 hover:bg-form-100 text-form-800;
+.card-formular, .btn-formular {
+    @apply bg-formular-50 hover:bg-formular-100 text-formular-800;
 }
 
 .card-policy, .btn-policy {
