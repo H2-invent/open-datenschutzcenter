@@ -1,35 +1,8 @@
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-<div>
-    <div>
-        <div>
-            <div>
-            {{ form_label(form.name) }}
-            {{ form_help(form.name) }}
-            </div>
-            <div>
-            {{ form_widget(form.name) }}
-            </div>
-        </div>
-
-        <div>
-            <div>
-                {{ form_label(form.datenarten) }}
-                {{ form_help(form.datenarten) }}
-            </div>
-            <div>
-                {{ form_widget(form.datenarten) }}
-            </div>
-        </div>
-                <div>
-            <div>
-                <p>
-                </p>
-            </div>
-        </div>
-
-        <div>
-            {{ form_widget(form) }}
-        </div>
-    </div>
-</div>
+    <fieldset>
+        {{ form_row(form.name) }}
+        {{ form_row(form.datenarten) }}
+    </fieldset>
+    {{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
+    {{ form_rest(form) }}
 {{ form_end(form) }}

@@ -1,14 +1,17 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'vvt_datenkategorie' %}
 
+{% block title %}
+    {% trans %}dataCategory.overview{% endtrans %}
+{% endblock %}
+
 {% block CTA %}
-    <a href="{{ path('app_vvtdatenkategorie_new') }}">
-        <span>{% trans %}dataCategory.create{% endtrans %}</span>
+    <a href="{{ path('app_vvtdatenkategorie_new') }}" class="btn btn-create">
+        {% trans %}dataCategory.create{% endtrans %}
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2>{% trans %}dataCategory.overview{% endtrans %}</h2>
     <div>
         <div>
             <table id="data-table">

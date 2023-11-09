@@ -1,175 +1,42 @@
 {% trans_default_domain 'tom' %}
-{{ form_start(form) }}
-<div {% if not activ or tom.approved %}class="disabled"{% endif %}>
-    <div>
+{{ form_start(form, {attr: {class: not activ or tom.approved ? 'disabled'}}) }}
+    <fieldset>
         {% if activTitel %}
-            <div>
-                {{ form_label(form.titel) }}
-            </div>
-            <div>
-                {{ form_widget(form.titel) }}
-            </div>
+            {{ form_row(form.titel) }}
         {% endif %}
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.beschreibung) }}
-        </div>
-        <div>
-            {{ form_widget(form.beschreibung) }}
-        </div>
-    </div>
-
-    <h3>{% trans %}lawParagraph.pseudo.title{% endtrans %}</h3>
-    <div>
-        <div>
-            {{ form_label(form.tomPseudo) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomPseudo) }}
-        </div>
-    </div>
-
-    <h3>{% trans %}lawParagraph.confidentiality.title{% endtrans %}</h3>
-    <div>
-        <div>
-            {{ form_label(form.tomZutrittskontrolle) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomZutrittskontrolle) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.tomZugangskontrolle) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomZugangskontrolle) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.tomZugriffskontrolle) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomZugriffskontrolle) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.tomBenutzerkontrolle) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomBenutzerkontrolle) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.tomSpeicherkontrolle) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomSpeicherkontrolle) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.tomTrennbarkeit) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomTrennbarkeit) }}
-        </div>
-    </div>
-
-    <h3>{% trans %}lawParagraph.integrity.title{% endtrans %}</h3>
-    <div>
-        <div>
-            {{ form_label(form.tomDatenintegritaet) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomDatenintegritaet) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.tomTransportkontrolle) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomTransportkontrolle) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.tomUebertragungskontrolle) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomUebertragungskontrolle) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.tomEingabekontrolle) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomEingabekontrolle) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.tomZuverlaessigkeit) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomZuverlaessigkeit) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.tomAuftragskontrolle) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomAuftragskontrolle) }}
-        </div>
-    </div>
-
-    <h3>{% trans %}lawParagraph.availability.title{% endtrans %}</h3>
-    <div>
-        <div>
-            {{ form_label(form.tomVerfuegbarkeitskontrolle) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomVerfuegbarkeitskontrolle) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.tomWiederherstellbarkeit) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomWiederherstellbarkeit) }}
-        </div>
-    </div>
-
-    <h3>{% trans %}lawParagraph.evaluation.title{% endtrans %}</h3>
-    <div>
-        <div>
-            {{ form_label(form.tomAudit) }}
-        </div>
-        <div>
-            {{ form_widget(form.tomAudit) }}
-        </div>
-    </div>
-
-    {{ form_widget(form.save) }}
-</div>
+        {{ form_row(form.beschreibung) }}
+    </fieldset>
+    <fieldset>
+        <legend>{% trans %}lawParagraph.pseudo.title{% endtrans %}</legend>
+        {{ form_row(form.tomPseudo) }}
+    </fieldset>
+    <fieldset>
+        <legend>{% trans %}lawParagraph.confidentiality.title{% endtrans %}</legend>
+        {{ form_row(form.tomZutrittskontrolle) }}
+        {{ form_row(form.tomZugangskontrolle) }}
+        {{ form_row(form.tomZugriffskontrolle) }}
+        {{ form_row(form.tomBenutzerkontrolle) }}
+        {{ form_row(form.tomSpeicherkontrolle) }}
+        {{ form_row(form.tomTrennbarkeit) }}
+    </fieldset>
+    <fieldset>
+        <legend>{% trans %}lawParagraph.integrity.title{% endtrans %}</legend>
+        {{ form_row(form.tomDatenintegritaet) }}
+        {{ form_row(form.tomTransportkontrolle) }}
+        {{ form_row(form.tomUebertragungskontrolle) }}
+        {{ form_row(form.tomEingabekontrolle) }}
+        {{ form_row(form.tomZuverlaessigkeit) }}
+        {{ form_row(form.tomAuftragskontrolle) }}
+    </fieldset>
+    <fieldset>
+        <legend>{% trans %}lawParagraph.availability.title{% endtrans %}</legend>
+        {{ form_row(form.tomVerfuegbarkeitskontrolle) }}
+        {{ form_row(form.tomWiederherstellbarkeit) }}
+    </fieldset>
+    <fieldset>
+        <legend>{% trans %}lawParagraph.evaluation.title{% endtrans %}</legend>
+        {{ form_row(form.tomAudit) }}
+    </fieldset>
+    {{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
+    {{ form_rest(form) }}
 {{ form_end(form) }}

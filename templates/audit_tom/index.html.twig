@@ -6,12 +6,11 @@
 {% endblock %}
 
 {% block CTA %}
-    <a href="{{ path('audit_tom_new') }}">
-        <span>{% trans %}newAudit{% endtrans %}</span>
+    <a href="{{ path('audit_tom_new') }}" class="btn btn-create">
+        {% trans %}newAudit{% endtrans %}
     </a>
-    <a href="{{ path('audit_tom_clone') }}"
-       title="{{ 'dsgvoDisclaimer'|trans }}">
-        <span>{% trans %}cloneDefault{% endtrans %}</span>
+    <a href="{{ path('audit_tom_clone') }}" title="{{ 'dsgvoDisclaimer'|trans }}" class="btn">
+        {% trans %}cloneDefault{% endtrans %}
     </a>
 {% endblock %}
 

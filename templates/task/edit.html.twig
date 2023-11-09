@@ -14,6 +14,11 @@
            href='{{ path('task_done',{'id':task.id}) }}' type='button'
            class='btn btn-success ml-1 btn-sm'>{% trans %}finish{% endtrans %}</a>
     {% endif %}
+    {% if nextAudit is defined %}
+        <a href="{{ path('audit_tom_edit',{'tom':nextAudit.id}) }}">
+            {% trans %}nextQuestion{% endtrans %}
+        </a>
+    {% endif %}
 {% endblock %}
 
 {% block body %}

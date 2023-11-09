@@ -777,7 +777,7 @@ footer > ul > li {
 }
 
 .card {
-    @apply rounded-xl w-full p-3;
+    @apply rounded-xl w-full p-5;
 }
 
 .card-outlined {
@@ -792,8 +792,16 @@ footer > ul > li {
     @apply card bg-gray-100 dark:bg-gray-700;
 }
 
-.card-form {
-    @apply card-outlined w-full max-w-2xl;
+form > fieldset {
+    @apply card-filled !bg-surface-100 dark:bg-surfacedark-300 w-full max-w-2xl mb-5;
+}
+
+form > fieldset > legend {
+    @apply bg-surface-200 rounded-xl px-3 py-1 text-base;
+}
+
+.form-help {
+    @apply text-muted text-sm mt-3;
 }
 
 .tabs-nav {
@@ -885,7 +893,11 @@ form {
 }
 
 .form-group.form-buttons {
-    @apply pt-3 mb-0;
+    @apply pt-3 mb-0 -mt-3;
+}
+
+.form-group.form-buttons .btn {
+    @apply btn-elevated;
 }
 
 input[type='text'], input[type='password'], input[type='email'], input[type='number'], input[type='url'], input[type='date'], input[type='datetime-local'], input[type='month'], input[type='week'], input[type='time'], input[type='search'], input[type='tel'], input[type='checkbox'], input[type='radio'], select, select[multiple], textarea {

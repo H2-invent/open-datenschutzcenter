@@ -1,21 +1,18 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'tom' %}
 
+{% block title %}
+    {{ title }}
+{% endblock %}
+
 {% block body %}
-
-    <h2>{{ title }}</h2>
-<div>
     {{ include('tom/__form.html.twig') }}
-</div>
-
-    <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ tom.user.email }}</p>
+    <p class="form-help">{% trans from 'general' %}createdBy{% endtrans %}: {{ tom.user.email }}</p>
     {% if tom.previous %}
+        <h3>{% trans from 'general' %}history{% endtrans %}</h3>
         <div>
-            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
+
             {{ include('tom/__history.html.twig', {'p':audit.previous}) }}
         </div>
     {% endif %}
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

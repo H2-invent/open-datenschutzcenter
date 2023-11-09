@@ -1,9 +1,11 @@
 {{ form_start(form, {attr: {class: not activ ? 'disabled'}}) }}
-    {{ form_row(form.title, {attr: {autofocus: true}}) }}
-    {{ form_row(form.task) }}
-    {{ form_row(form.endDate) }}
-    {{ form_row(form.prio) }}
-    {{ form_row(form.assignedUser) }}
+    <fieldset>
+        {{ form_row(form.title) }}
+        {{ form_row(form.task) }}
+        {{ form_row(form.endDate) }}
+        {{ form_row(form.prio) }}
+        {{ form_row(form.assignedUser) }}
+    </fieldset>
     {{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
     {{ form_rest(form) }}
 {{ form_end(form) }}

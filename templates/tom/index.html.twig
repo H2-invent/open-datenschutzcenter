@@ -1,14 +1,17 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'tom' %}
 
+{% block title %}
+    {% trans %}tom.overview{% endtrans %}
+{% endblock %}
+
 {% block CTA %}
-    <a href="{{ path('tom_new') }}">
-        <span>{% trans %}tom.create{% endtrans %}</span>
+    <a href="{{ path('tom_new') }}" class="btn btn-create">
+        {% trans %}tom.create{% endtrans %}
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2>{% trans %}tom.overview{% endtrans %}</h2>
     <div>
         <div>
             <table id="data-table">
