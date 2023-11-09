@@ -716,8 +716,12 @@ td, th {
     }
 }
 
-html, body, main {
+html, body {
     @apply h-full;
+}
+
+main {
+    @apply min-h-full;
 }
 
 body {
@@ -765,7 +769,7 @@ aside > nav > hr {
 }
 
 footer {
-    @apply p-4 md:py-6 ml-60 md:mb-0 flex flex-col md:flex-row justify-center text-center text-gray-600 text-sm font-normal;
+    @apply p-4 md:py-6 mt-24 ml-60 md:mb-0 flex flex-col md:flex-row justify-center text-center text-gray-600 text-sm font-normal;
 }
 
 footer > ul > li {
