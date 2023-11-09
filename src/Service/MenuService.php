@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Team;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -14,7 +15,7 @@ class MenuService
     private ?UserInterface $user = null;
     private ?Team $currentTeam = null;
 
-    public function __construct(private FactoryInterface $factory, private TranslatorInterface $translator, private Security $security, private CurrentTeamService $currentTeamService)
+    public function __construct(private FactoryInterface $factory, private TranslatorInterface $translator, private Security $security, private CurrentTeamService $currentTeamService, private RequestStack $requestStack)
     {
         $this->user = $this->security->getUser();
         $this->currentTeam = $this->currentTeamService->getTeamFromSession($this->user);
@@ -33,6 +34,8 @@ class MenuService
             $menu->addChild($this->trans('myAssignments'), ['route' => 'assign']);
             $menu->addChild($this->trans('tasks'), ['route' => 'tasks']);
         }
+
+        $this->handleCurrentItem($menu);
 
         return $menu;
     }
@@ -56,6 +59,8 @@ class MenuService
         $menu->addChild($this->trans('customerQuestions'), ['route' => 'client_requests']);
         $menu->addChild($this->trans('activities'), ['route' => 'report']);
 
+        $this->handleCurrentItem($menu);
+
         return $menu;
     }
 
@@ -66,6 +71,8 @@ class MenuService
         if ($this->user->getAkademieUser()) {
             $menu->addChild($this->trans('kurse'), ['route' => 'akademie']);
         }
+
+        $this->handleCurrentItem($menu);
 
         return $menu;
     }
@@ -83,6 +90,8 @@ class MenuService
             $menu->addChild($this->trans('externalDsb'), ['route' => 'team_dsb']);
         }
 
+        $this->handleCurrentItem($menu);
+
         return $menu;
     }
 
@@ -95,11 +104,55 @@ class MenuService
             $menu->addChild($this->trans('manageTeams'), ['route' => 'manage_teams']);
         }
 
+        $this->handleCurrentItem($menu);
+
         return $menu;
     }
 
     private function trans(string $id, array $parameters = []): string
     {
         return $this->translator->trans($id, $parameters, 'base');
+    }
+
+    /**
+     * This sets the current item when we are on a subpage that is not in the menu tree.
+     *
+     * @param ItemInterface $menu
+     * @return void
+     */
+    private function handleCurrentItem(ItemInterface &$menu): void
+    {
+        $currentRoutePrefix = $this->getRoutePrefix($this->requestStack->getCurrentRequest()->get('_route'));
+
+        foreach ($menu->getChildren() as &$child) {
+            $route = $this->standardizeRouteName($child->getExtra('routes')[0]['route']);
+            if (\preg_match("/^$currentRoutePrefix\_/", $route . '_')) {
+                $child->setCurrent(true);
+            }
+        }
+    }
+
+    private function getRoutePrefix(string $route): string
+    {
+        $parts = \explode('_', $this->standardizeRouteName($route));
+
+        return $parts[0];
+    }
+
+    /**
+     * Standardizes the route names.
+     *
+     * This method is intended to be temporarily. We should eventually standardize the route names.
+     *
+     * @param string $route
+     * @return string
+     */
+    private function standardizeRouteName(string $route): string
+    {
+        $route = \preg_replace('/^tasks/', 'task', $route);
+        $route = \preg_replace('/^policies/', 'policy', $route);
+        $route = \preg_replace('/^app_/', '', $route);
+
+        return $route;
     }
 }
