@@ -10,6 +10,7 @@
     "doctrine/doctrine-bundle": "^2.5",
     "doctrine/doctrine-migrations-bundle": "^3.2",
     "doctrine/orm": "^2.10",
+    "knplabs/knp-menu-bundle": "^3.2",
     "knpuniversity/oauth2-client-bundle": "^2.5",
     "laminas/laminas-code": "^4.5",
     "laminas/laminas-escaper": "^2.6",

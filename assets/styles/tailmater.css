@@ -756,11 +756,19 @@ aside > nav > .label {
     @apply p-4 text-sm tracking-[.00714em] font-light;
 }
 
+aside > nav > ul {
+    @apply pb-1 border-b;
+}
+
+aside > nav > ul:last-of-type {
+    @apply border-0;
+}
+
 aside > nav > ul > li > a {
     @apply flex flex-row items-center text-sm gap-3 py-3.5 px-4 rounded-full hover-icon hover:bg-secondary-300 dark:hover:bg-secondary-700 hover:bg-opacity-30 dark:hover:bg-opacity-30;
 }
 
-aside > nav > ul > li > a.active {
+aside > nav > ul > li.current > a {
     @apply bg-primary-100 hover:bg-primary-100;
 }
 

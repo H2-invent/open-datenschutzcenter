@@ -102,6 +102,9 @@
     "jms/metadata": {
         "version": "2.1.0"
     },
+    "knplabs/knp-menu-bundle": {
+        "version": "v3.2.0"
+    },
     "knpuniversity/oauth2-client-bundle": {
         "version": "1.20",
         "recipe": {
