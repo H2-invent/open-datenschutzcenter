@@ -71,7 +71,8 @@ class TomController extends AbstractController
             'title' => $this->translator->trans(id: 'tom.create', domain: 'tom'),
             'tom' => $tom,
             'activ' => $tom->getActiv(),
-            'activTitel' => true
+            'activTitel' => true,
+            'urlBack' => $this->generateUrl('tom'),
         ]);
     }
 

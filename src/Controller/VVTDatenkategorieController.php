@@ -133,6 +133,7 @@ class VVTDatenkategorieController extends AbstractController
         return $this->render('vvt_datenkategorie/new.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
             'form' => $form,
+            'urlBack' => $this->generateUrl('app_vvtdatenkategorie_index'),
         ]);
     }
 

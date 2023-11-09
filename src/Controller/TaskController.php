@@ -63,6 +63,7 @@ class TaskController extends AbstractController
             'title' => $this->translator->trans(id: 'task.create', domain: 'task'),
             'task' => $task,
             'activ' => $task->getActiv(),
+            'urlBack' => $this->generateUrl('tasks'),
         ]);
     }
 

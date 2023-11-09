@@ -95,7 +95,8 @@ class AuditTomController extends AbstractController
             'title' => 'A-Frage erstellen',
             'audit' => $audit,
             'activNummer' => true,
-            'activ' => $audit->getActiv()
+            'activ' => $audit->getActiv(),
+            'urlBack' => $this->generateUrl('audit_tom'),
         ]);
     }
 

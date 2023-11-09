@@ -5,12 +5,6 @@
     {% trans %}dataCategory.create{% endtrans %}
 {% endblock %}
 
-{% block CTA %}
-    <a href="{{ path('app_vvtdatenkategorie_index') }}" class="btn">
-        <span>{% trans from 'general' %}back{% endtrans %}</span>
-    </a>
-{% endblock %}
-
 {% block body %}
     {{ include('vvt_datenkategorie/_form.html.twig') }}
 {% endblock %}
