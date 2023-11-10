@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\AkademieBuchungen;
 use App\Service\NotificationService;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,6 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CronController extends AbstractController
 {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+    )
+    {
+    }
+
     #[Route(path: '/cron/akademie_update', name: 'cron_akademie')]
     public function updateCronAkademie(NotificationService $notificationService, Request $request, LoggerInterface $logger)
     {
@@ -30,9 +37,9 @@ class CronController extends AbstractController
             return new JsonResponse($message);
         }
 
-        $buchungen = $this->getDoctrine()->getRepository(AkademieBuchungen::class)->findOffenByDate($today);
+        $buchungen = $this->entityManager->getRepository(AkademieBuchungen::class)->findOffenByDate($today);
 
-        $em = $this->getDoctrine()->getManager();
+
         $countNeu = 0;
         $countWdh = 0;
 
@@ -41,7 +48,7 @@ class CronController extends AbstractController
             if (!$buchung->getInvitation()) {
                 $content = $this->renderView('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()->get(0)]);
                 $buchung->setInvitation(true);
-                $em->persist($buchung);
+                $this->entityManager->persist($buchung);
                 ++$countNeu;
             } else {
                 $content = $this->renderView('email/errinnerungKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()->get(0)]);
@@ -49,7 +56,7 @@ class CronController extends AbstractController
             }
             $notificationService->sendNotificationAkademie($buchung, $content);
         }
-        $em->flush();
+        $this->entityManager->flush();
         $message = ['error' => false, 'hinweis' => 'Email mit Benachrichtigung zu offenen Kursen in der Akademie verschickt', 'neu' => $countNeu, 'wdh' => $countWdh];
 
         $logger->info($message['hinweis'], $message);
