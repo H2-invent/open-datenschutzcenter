@@ -1,0 +1,91 @@
+@import "./tailmater.css";
+
+td, th {
+    @apply border-0;
+}
+
+.dataTables_wrapper {
+    @apply rounded-xl border;
+}
+
+.dataTables_wrapper::after {
+    content: "";
+    @apply clear-both block;
+}
+
+.dataTables_length {
+    @apply p-0 float-left px-2 py-2;
+}
+
+.dataTables_filter {
+    @apply p-0 float-right px-2 py-2;
+}
+
+.dataTables_info {
+    @apply p-5 float-left text-muted;
+}
+
+.dataTables_paginate {
+    @apply p-5 float-right;
+}
+
+.dataTables_filter input {
+    @apply w-auto ml-2 px-2 py-1 text-sm;
+}
+
+.dataTables_paginate a {
+    @apply btn inline cursor-pointer text-gray-700;
+}
+
+.dataTables_paginate a.paginate_button.current {
+    @apply bg-primary-100;
+}
+
+.dataTables_paginate a.paginate_button.disabled {
+    @apply cursor-default bg-surface-50 hover:bg-surface-50 text-muted;
+}
+
+table.dataTable {
+    @apply min-w-full divide-y divide-surface-300 border-y;
+}
+
+table.dataTable > thead {
+    @apply bg-white;
+}
+
+table.dataTable > thead > tr > th {
+    @apply px-3 py-3 text-left text-xs font-medium uppercase tracking-wide;
+}
+
+table.dataTable > thead > tr > th:first-child {
+    @apply py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide sm:pl-6;
+}
+
+table.dataTable > thead > tr > th:last-child {
+    @apply relative py-3 pl-3 pr-4 sm:pr-6;
+}
+
+table.dataTable > tbody {
+    @apply divide-y divide-surface-200 bg-white;
+}
+
+table.dataTable > tbody > tr:nth-child(odd) > td {
+    @apply bg-surface-50;
+
+}
+
+table.dataTable > tbody > tr:nth-child(even) > td {
+    @apply bg-white;
+}
+
+table.dataTable > tbody > tr > td {
+    @apply px-3 py-4 text-base;
+}
+
+table.dataTable > tbody > tr > td:first-child {
+    @apply whitespace-nowrap py-4 pl-4 pr-3 text-base sm:pl-6;
+}
+
+table.dataTable > tbody > tr > td:last-child {
+    @apply relative whitespace-nowrap py-4 pl-3 pr-4 text-base sm:pr-6;
+}

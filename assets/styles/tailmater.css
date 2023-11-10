@@ -753,7 +753,7 @@ aside > nav {
 }
 
 aside > nav > .label {
-    @apply p-4 text-sm tracking-[.00714em] font-light;
+    @apply pt-4 pb-2 px-4 text-xs tracking-[.00714em] font-light uppercase;
 }
 
 aside > nav > ul {
@@ -784,20 +784,26 @@ footer > ul > li {
     @apply float-left px-5;
 }
 
-.card {
-    @apply rounded-xl w-full p-5;
-}
+@layer components {
+    .card {
+        @apply rounded-xl w-full p-5;
+    }
 
-.card-outlined {
-    @apply card bg-white dark:bg-neutral-900 border border-gray-200 dark:border-gray-700;
-}
+    .card-outlined {
+        @apply card bg-white dark:bg-neutral-900 border border-gray-200 dark:border-gray-700;
+    }
 
-.card-elevated {
-    @apply card bg-surface-100 dark:bg-surfacedark-100 flex shadow-lg dark:shadow-gray-50/10;
-}
+    .card-elevated {
+        @apply card bg-surface-100 dark:bg-surfacedark-100 flex shadow-lg dark:shadow-gray-50/10;
+    }
 
-.card-filled {
-    @apply card bg-gray-100 dark:bg-gray-700;
+    .card-filled {
+        @apply card bg-gray-100 dark:bg-gray-700;
+    }
+
+    .btn {
+        @apply relative flex flex-row items-center justify-center gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm tracking-[.00714em] font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-300 text-primary-600 dark:bg-surfacedark-100 dark:hover:bg-surfacedark-200 dark:focus:bg-surfacedark-400 dark:text-primary-200;
+    }
 }
 
 form > fieldset {
@@ -856,10 +862,6 @@ hr {
     @apply border-gray-200 dark:border-gray-700;
 }
 
-.btn {
-    @apply relative flex flex-row items-center justify-center gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm tracking-[.00714em] font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-300 text-primary-600 dark:bg-surfacedark-100 dark:hover:bg-surfacedark-200 dark:focus:bg-surfacedark-400 dark:text-primary-200;
-}
-
 .btn .material-symbols-outlined {
     @apply text-sm;
 }
@@ -868,8 +870,10 @@ hr {
     @apply bg-emerald-50 hover:bg-emerald-100 text-emerald-600 hover:text-emerald-700 focus:bg-emerald-200 btn-elevated;
 }
 
-.text-muted {
-    @apply text-gray-400;
+@layer base {
+    .text-muted {
+        @apply text-gray-400;
+    }
 }
 
 main > article > #content a {
@@ -914,4 +918,12 @@ input[type='text'], input[type='password'], input[type='email'], input[type='num
 
 .form-group textarea {
     @apply -mb-2;
+}
+
+.important, .important > * {
+    @apply !bg-red-50 !text-red-700;
+}
+
+.success, .success > * {
+    @apply !bg-green-50 !text-green-700;
 }

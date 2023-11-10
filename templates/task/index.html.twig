@@ -16,37 +16,33 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-
-    <div>
-            <table id="data-table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
-                    <th scope="col">{% trans %}priority{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}date{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}assignedTo{% endtrans %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for t in task %}
-                    <tr
-                        style="{% if t.done %}background-color: #00e676;{% elseif t.prio == 4 and not t.done %}background-color: #e23317{% endif %}"
-                        data-href='{{ path('task_edit',{'id':t.id}) }}'>
-                        <th scope="row">{{ t.id }}</th>
-                        <td>{{ t.title }}</td>
-                        <td>{{ t.task|raw }}</td>
-                        <td>{{ t.prioString }}</td>
-                        <td>{% trans from 'general' %}createdAt{% endtrans %}: {{ t.createdAt|date('d.m.Y') }}{% if t.endDate %}
-                                <br>{% trans %}deadlineDue{% endtrans %}: {{ t.endDate|date('d.m.Y') }}{% endif %}{% if t.doneDate %}
-                                <br>{% trans %}finishedAt{% endtrans %}: {{ t.doneDate|date('d.m.Y') }}{% endif %}</td>
-                        <td>{% if t.assignedUser %}{{ t.assignedUser.username }}{% endif %}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
+                <th scope="col">{% trans %}priority{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}date{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}assignedTo{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for t in task %}
+            {% set rowClass = t.done ? 'success' : (t.prio == 4 and not t.done ? 'important' : '') %}
+            <tr class="{{ rowClass }}" data-href="{{ path('task_edit', {'id': t.id}) }}">
+                <td>{{ t.id }}</td>
+                <td>{{ t.title }}</td>
+                <td>{{ t.task|raw }}</td>
+                <td>{{ t.prioString }}</td>
+                <td>
+                    {% trans from 'general' %}createdAt{% endtrans %}: {{ t.createdAt|date('d.m.Y') }}{% if t.endDate %}
+                    <br>{% trans %}deadlineDue{% endtrans %}: {{ t.endDate|date('d.m.Y') }}{% endif %}{% if t.doneDate %}
+                    <br>{% trans %}finishedAt{% endtrans %}: {{ t.doneDate|date('d.m.Y') }}{% endif %}
+                </td>
+                <td>{% if t.assignedUser %}{{ t.assignedUser.username }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
