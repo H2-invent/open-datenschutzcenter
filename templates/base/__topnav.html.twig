@@ -3,7 +3,7 @@
     <button data-type="dropdown" data-target="#topnav-menu" class="material-symbols-outlined text-xl relative !inline-flex !items-center justify-center w-10 h-10 gap-x-2 p-3 rounded-[6.25rem] text-sm tracking-[.00714em] text-center font-medium hover:bg-surface-300 focus:bg-surface-400 dark:text-primary-200 dark:hover:bg-surfacedark-300 dark:focus:bg-surfacedark-400">
         more_vert
     </button>
-    <ul id="topnav-menu" role="dropdownmenu" class="[&.show]:!opacity-100 [&.show]:!visible opacity-0 invisible absolute top-[3.6rem] mr-8 z-30 transition duration-400 ease-in-out left-0 md:left-auto md:right-0 min-w-[200px] inline-flex flex-col py-0 rounded bg-surface-200 dark:bg-surfacedark-200 shadow-md dark:shadow-gray-50/10">
+    <ul id="topnav-menu" role="dropdownmenu" class="dropdown">
         {% if demo == 'prod' %}
             <li class="relative">
                 <a href="{{ path('connect_keycloak_edit') }}">

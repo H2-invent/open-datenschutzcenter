@@ -1,22 +1,19 @@
-{% if adminArea is defined and adminArea %}
-    {% set teams = app.user.adminRoles %}
-{% else %}
-    {% set teams = app.user.teams %}
-{% endif %}
+{% set teams = adminArea is defined and adminArea ? app.user.adminRoles : app.user.teams %}
 
 {% if teams|length > 1 and currentTeam is defined and currentTeam %}
-    <li>
-        <a href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="flex flex-row justify-end items-center">
+        <button data-type="dropdown" data-target="#teamtoggle-menu" class="relative !inline-flex !items-center justify-center h-10 gap-x-2 p-3 rounded-[6.25rem] text-sm tracking-[.00714em] text-center font-medium hover:bg-surface-300 focus:bg-surface-400 dark:text-primary-200 dark:hover:bg-surfacedark-300 dark:focus:bg-surfacedark-400">
+            <span class="material-symbols-outlined">group</span>
             {{ currentTeam.name }}
-        </a>
-        <div aria-labelledby="navbarDropdownMenuLink">
+        </button>
+        <ul id="teamtoggle-menu" role="dropdownmenu" class="dropdown">
             {% for team in teams %}
-                {% if currentTeam == team %}
-                    <a disabled>{{ team.name }}</a>
-                {% else %}
+                {% if team != currentTeam %}
+                <li class="relative">
                     <a href="{{ path('team_switch',{'team':team.id}) }}">{{ team.name }}</a>
+                </li>
                 {% endif %}
             {% endfor %}
-        </div>
-    </li>
+        </ul>
+    </div>
 {% endif %}

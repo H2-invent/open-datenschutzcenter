@@ -732,10 +732,6 @@ body {
     @apply rounded-full w-full h-12 px-5 flex flex-row items-center justify-between gap-1.5;
 }
 
-#topnav-menu a {
-    @apply min-h-[3rem] flex flex-row items-center gap-4 py-2 px-3 hover-icon hover:bg-secondary-100 dark:hover:bg-secondary-700 hover:bg-opacity-30 dark:hover:bg-opacity-30;
-}
-
 #bock-cta .btn {
     @apply mb-5;
 }
@@ -782,6 +778,14 @@ footer {
 
 footer > ul > li {
     @apply float-left px-5;
+}
+
+.dropdown {
+    @apply [&.show]:!opacity-100 [&.show]:!visible opacity-0  absolute top-[3.6rem] mr-8 z-30 transition duration-300 ease-in-out left-0 md:left-auto md:right-0 min-w-[200px] inline-flex flex-col py-0 rounded bg-surface-200 dark:bg-surfacedark-200 shadow-md dark:shadow-gray-50/10;
+}
+
+.dropdown a {
+    @apply min-h-[3rem] flex flex-row items-center gap-4 py-2 px-3 hover-icon hover:bg-secondary-100 dark:hover:bg-secondary-700 hover:bg-opacity-30 dark:hover:bg-opacity-30;
 }
 
 @layer components {
