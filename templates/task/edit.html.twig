@@ -1,9 +1,14 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'task' %}
 
+{% block title %}
+    {{ edit ? title : task.title }}
+{% endblock %}
+
 {% block CTA %}
     {% if not edit %}
         <a href="{{ path('task_edit', {'id':task.id,'edit':1}) }}"
+           class="btn"
           >{% trans %}task.edit{% endtrans %}</a>
     {% endif %}
     <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"

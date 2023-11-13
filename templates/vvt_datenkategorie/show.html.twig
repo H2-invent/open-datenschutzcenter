@@ -1,21 +1,21 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'vvt_datenkategorie' %}
 
+{% block title %}
+    {% trans %}dataCategory.word{% endtrans %}
+{% endblock %}
+
  {% block CTA %}
-    <a href="{{ path('app_vvtdatenkategorie_index') }}">
+    <a href="{{ path('app_vvtdatenkategorie_index') }}" class="btn">
         <span>{% trans from 'general' %}back{% endtrans %}</span>
     </a>
-    <a href="{{ path('app_vvtdatenkategorie_edit',{'id': vvtdatenkategorie.id}) }}">
+    <a href="{{ path('app_vvtdatenkategorie_edit',{'id': vvtdatenkategorie.id}) }}" class="btn">
         <span>{% trans from 'general' %}edit{% endtrans %}</span>
     </a>
     {{ include('vvt_datenkategorie/_delete_form.html.twig') }}
-
-
 {% endblock %}
 
 {% block body %}
-    <h1>{% trans %}dataCategory.word{% endtrans %}</h1>
-
     <table>
         <tbody>
             <tr>

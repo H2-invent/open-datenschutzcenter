@@ -85,6 +85,7 @@ class VVTDatenkategorieController extends AbstractController
         return $this->render('vvt_datenkategorie/edit.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
             'form' => $form,
+            'urlBack' => $this->generateUrl('app_vvtdatenkategorie_index'),
         ]);
     }
 
@@ -143,6 +144,7 @@ class VVTDatenkategorieController extends AbstractController
 
         return $this->render('vvt_datenkategorie/show.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
+            'urlBack' => $this->generateUrl('app_vvtdatenkategorie_index'),
         ]);
     }
 }

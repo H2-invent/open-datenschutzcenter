@@ -157,6 +157,11 @@ class TaskController extends AbstractController
                 );
             }
         }
+
+        $urlBack = $request->get('edit') ?
+            $this->generateUrl('task_edit', ['id' => $request->get('id')]) :
+            $this->generateUrl('tasks');
+
         return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
@@ -166,6 +171,7 @@ class TaskController extends AbstractController
             'activ' => $task->getActiv(),
             'snack' => $request->get('snack'),
             'edit' => $request->get('edit'),
+            'urlBack' => $urlBack,
         ]);
     }
 
