@@ -878,6 +878,14 @@ hr {
     @apply bg-emerald-50 hover:bg-emerald-100 text-emerald-600 hover:text-emerald-700 focus:bg-emerald-200 btn-elevated;
 }
 
+.btn-warning {
+    @apply bg-amber-100 hover:bg-amber-500 text-amber-600 hover:text-white focus:bg-amber-600;
+}
+
+.btn-danger {
+    @apply bg-red-50 hover:bg-red-500 text-red-600 hover:text-white focus:bg-red-700;
+}
+
 @layer base {
     .text-muted {
         @apply text-gray-400;

@@ -3,5 +3,5 @@
       action="{{ path('app_vvtdatenkategorie_delete', {'id': vvtdatenkategorie.id}) }}"
       onsubmit="return confirm('{% trans from 'general' %}confirmAction{% endtrans %}');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ vvtdatenkategorie.id) }}">
-    <button color="red">{% trans from 'general' %}delete{% endtrans %}</button>
+    <button class="btn btn-danger">{% trans from 'general' %}delete{% endtrans %}</button>
 </form>
