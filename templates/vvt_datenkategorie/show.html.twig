@@ -6,9 +6,6 @@
 {% endblock %}
 
  {% block CTA %}
-    <a href="{{ path('app_vvtdatenkategorie_index') }}" class="btn">
-        <span>{% trans from 'general' %}back{% endtrans %}</span>
-    </a>
     <a href="{{ path('app_vvtdatenkategorie_edit',{'id': vvtdatenkategorie.id}) }}" class="btn">
         <span>{% trans from 'general' %}edit{% endtrans %}</span>
     </a>
@@ -16,20 +13,22 @@
 {% endblock %}
 
 {% block body %}
-    <table>
-        <tbody>
-            <tr>
-                <th>{% trans from 'general' %}name{% endtrans %}</th>
-                <td>{{ vvtdatenkategorie.name }}</td>
-            </tr>
-            <tr>
-                <th>{% trans %}dataType{% endtrans %}</th>
-                <td>{{ vvtdatenkategorie.datenarten }}</td>
-            </tr>
-            <tr>
-                <th>{% trans %}deletion.deadline{% endtrans %}</th>
-                <td>{{ vvtdatenkategorie.loeschkonzept|last }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="dl-wrapper">
+        <div class="dl-content">
+            <dl>
+                <div>
+                    <dt>{% trans from 'general' %}name{% endtrans %}</dt>
+                    <dd>{{ vvtdatenkategorie.name }}</dd>
+                </div>
+                <div>
+                    <dt>{% trans %}dataType{% endtrans %}</dt>
+                    <dd>{{ vvtdatenkategorie.datenarten }}</dd>
+                </div>
+                <div>
+                    <dt>{% trans %}deletion.deadline{% endtrans %}</dt>
+                    <dd>{{ vvtdatenkategorie.loeschkonzept|last }}</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
 {% endblock %}

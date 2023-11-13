@@ -943,3 +943,39 @@ input[type='text'], input[type='password'], input[type='email'], input[type='num
 .success, .success > * {
     @apply !bg-green-50 !text-green-700;
 }
+
+.dl-wrapper {
+    @apply card-outlined w-auto p-0;
+}
+
+.dl-wrapper > .dl-head {
+    @apply border-b border-gray-100 mb-1 pb-5 mt-5 px-5;
+}
+
+.dl-wrapper > .dl-head > h* {
+    @apply text-base font-semibold leading-7;
+}
+
+.dl-head > p {
+    @apply mt-1 max-w-2xl text-sm leading-6 text-muted;
+}
+
+.dl-content {
+
+}
+
+.dl-content > dl {
+    @apply divide-y divide-gray-100;
+}
+
+.dl-content > dl > div {
+    @apply py-6 sm:grid lg:grid-cols-4 xl:grid-cols-7 sm:gap-4;
+}
+
+.dl-content > dl > div > dt {
+    @apply text-sm font-medium leading-6 text-gray-900 pl-5;
+}
+
+.dl-content > dl > div > dd {
+    @apply mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 pl-5;
+}

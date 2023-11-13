@@ -1,64 +1,42 @@
 {% trans_default_domain 'task' %}
-<div>
-    <div>
-        <div>
+
+<div class="dl-wrapper">
+    <div class="dl-head">
+        <h3>{% trans %}task.word{% endtrans %}</h3>
+        <p>{{ task.task|raw }}</p>
+    </div>
+    <div class="dl-content">
+        <dl>
             <div>
-                {% trans from 'general' %}regard{% endtrans %}:
+                <dt>{% trans from 'general' %}regard{% endtrans %}</dt>
+                <dd>{{ task.title }}</dd>
             </div>
             <div>
-                {{ task.title }}
+                <dt>{% trans %}priority{% endtrans %}</dt>
+                <dd>{{ task.prioString }}</dd>
             </div>
             <div>
-                {% trans %}priority{% endtrans %}:
-            </div>
-            <div>
-                {{ task.prioString }}
-            </div>
-            <div>
-                {% trans from 'general' %}createdBy{% endtrans %}:
-            </div>
-            <div>
-                {{ task.user.email }}
+                <dt>{% trans from 'general' %}createdBy{% endtrans %}</dt>
+                <dd>{{ task.user.email }}</dd>
             </div>
             {% if task.updatedBy %}
                 <div>
-                    {% trans from 'general' %}editedBy{% endtrans %}:
-                </div>
-                <div>
-                    {{ task.updatedBy.email }}
+                    <dt>{% trans from 'general' %}editedBy{% endtrans %}</dt>
+                    <dd>{{ task.updatedBy.email }}</dd>
                 </div>
             {% endif %}
-        </div>
-        <div>
             <div>
-                {% trans from 'general' %}createdAt{% endtrans %}:
+                <dt>{% trans from 'general' %}createdAt{% endtrans %}</dt>
+                <dd>{{ task.createdAt|date('d.m.Y') }}</dd>
             </div>
             <div>
-                {{ task.createdAt|date('d.m.Y') }}
-            </div>
-
-            <div>
-                {% trans %}deadlineDue{% endtrans %}:
+                <dt>{% trans %}deadlineDue{% endtrans %}</dt>
+                <dd>{{ task.endDate ? task.endDate|date('d.m.Y') }}</dd>
             </div>
             <div>
-                {% if task.endDate %}
-                    {{ task.endDate|date('d.m.Y') }}
-                {% endif %}
+                <dt>{% trans %}finishedAt{% endtrans %}</dt>
+                <dd>{{ task.doneDate ? task.doneDate|date('d.m.Y') }}</dd>
             </div>
-
-            <div>
-                {% trans %}finishedAt{% endtrans %}:
-            </div>
-            <div>
-                {% if task.doneDate %}
-                    {{ task.doneDate|date('d.m.Y') }}
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    <div
-         style="border-left-color: #3f4e5e; border-left-width: 1px; border-left-style: dashed">
-        <p>{% trans %}task.word{% endtrans %}:</p>
-        {{ task.task|raw }}
+        </dl>
     </div>
 </div>
