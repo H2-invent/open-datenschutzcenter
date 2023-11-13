@@ -23,3 +23,10 @@ Array.prototype.forEach.call(document.getElementsByClassName('dataTable'), funct
         ]
     });
 });
+
+document.querySelectorAll('[data-href]').forEach(function (element) {
+    const link = element.getAttribute('data-href');
+    element.addEventListener('click', function() {
+        window.location.href = link;
+    })
+});

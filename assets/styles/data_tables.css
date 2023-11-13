@@ -71,7 +71,6 @@ table.dataTable > tbody {
 
 table.dataTable > tbody > tr:nth-child(odd) > td {
     @apply bg-surface-50;
-
 }
 
 table.dataTable > tbody > tr:nth-child(even) > td {
@@ -88,4 +87,8 @@ table.dataTable > tbody > tr > td:first-child {
 
 table.dataTable > tbody > tr > td:last-child {
     @apply relative whitespace-nowrap py-4 pl-3 pr-4 text-base sm:pr-6;
+}
+
+table.dataTable > tbody > tr[data-href] > td {
+    @apply cursor-pointer;
 }
