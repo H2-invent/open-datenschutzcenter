@@ -15,33 +15,29 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        <div>
-            <table id="data-table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">{% trans %}question{% endtrans %}</th>
-                    <th scope="col">{% trans %}department{% endtrans %}</th>
-                    <th scope="col">{% trans %}category{% endtrans %}</th>
-                    <th scope="col">{% trans %}auditGoals{% endtrans %}</th>
-                    <th scope="col">{% trans %}status{% endtrans %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for a in audit %}
-                    <tr data-href='{{ path('audit_tom_edit',{'tom':a.id}) }}'
-                        style="background-color: {{ a.status.color }}">
-                        <th scope="row">{{ a.nummer }}</th>
-                        <td>{{ a.frage }}</td>
-                        <td>{% for ab in a.abteilung %}{{ ab.name }}<br>{% endfor %}</td>
-                        <td>{{ a.kategorie | trans }}</td>
-                        <td>{% for z in a.ziele %}{{ z.name }}<br>{% endfor %}</td>
-                        <td>{{ a.status.name }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table id="data-table" class="dataTable">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">{% trans %}question{% endtrans %}</th>
+            <th scope="col">{% trans %}department{% endtrans %}</th>
+            <th scope="col">{% trans %}category{% endtrans %}</th>
+            <th scope="col">{% trans %}auditGoals{% endtrans %}</th>
+            <th scope="col">{% trans %}status{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for a in audit %}
+            <tr data-href='{{ path('audit_tom_edit',{'tom':a.id}) }}'
+                style="background-color: {{ a.status.color }}">
+                <th scope="row">{{ a.nummer }}</th>
+                <td>{{ a.frage }}</td>
+                <td>{% for ab in a.abteilung %}{{ ab.name }}<br>{% endfor %}</td>
+                <td>{{ a.kategorie | trans }}</td>
+                <td>{% for z in a.ziele %}{{ z.name }}<br>{% endfor %}</td>
+                <td>{{ a.status.name }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

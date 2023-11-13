@@ -12,30 +12,26 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        <div>
-            <table id="data-table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">{% trans %}processingActivities{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}createdAt{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{% trans %}processingActivities{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}createdAt{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in tom %}
+                <tr data-href='{{ path('tom_edit',{'tom':t.id}) }}'>
+                    <th scope="row">{{ t.id }}</th>
+                    <td>{% for vv in t.Vvts | filter(vv => vv.activ) %}{{ vv.name }}<br>{% endfor %}</td>
+                    <td>{{ t.createdAt|date('d.m.Y') }}</td>
+                    <td>{{ t.titel }}</td>
+                    <td>{{ t.beschreibung }}</td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for t in tom %}
-                    <tr data-href='{{ path('tom_edit',{'tom':t.id}) }}'>
-                        <th scope="row">{{ t.id }}</th>
-                        <td>{% for vv in t.Vvts | filter(vv => vv.activ) %}{{ vv.name }}<br>{% endfor %}</td>
-                        <td>{{ t.createdAt|date('d.m.Y') }}</td>
-                        <td>{{ t.titel }}</td>
-                        <td>{{ t.beschreibung }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
