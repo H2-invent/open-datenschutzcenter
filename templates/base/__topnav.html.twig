@@ -1,9 +1,9 @@
 {% trans_default_domain 'base' %}
-<div class="flex flex-row justify-end items-center">
+<div class="flex flex-row justify-end items-center relative">
     <button data-type="dropdown" data-target="#topnav-menu" class="material-symbols-outlined text-xl relative !inline-flex !items-center justify-center w-10 h-10 gap-x-2 p-3 rounded-[6.25rem] text-sm tracking-[.00714em] text-center font-medium hover:bg-surface-300 focus:bg-surface-400 dark:text-primary-200 dark:hover:bg-surfacedark-300 dark:focus:bg-surfacedark-400">
         more_vert
     </button>
-    <ul id="topnav-menu" role="dropdownmenu" class="dropdown">
+    <ul id="topnav-menu" role="dropdownmenu" class="dropdown hidden top-10">
         {% if demo == 'prod' %}
             <li class="relative">
                 <a href="{{ path('connect_keycloak_edit') }}">

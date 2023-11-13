@@ -781,7 +781,11 @@ footer > ul > li {
 }
 
 .dropdown {
-    @apply [&.show]:!opacity-100 [&.show]:!visible opacity-0  absolute top-[3.6rem] mr-8 z-30 transition duration-300 ease-in-out left-0 md:left-auto md:right-0 min-w-[200px] inline-flex flex-col py-0 rounded bg-surface-200 dark:bg-surfacedark-200 shadow-md dark:shadow-gray-50/10;
+    @apply absolute z-30 transition duration-300 ease-in-out left-0 md:left-auto md:right-0 min-w-[200px] flex-col py-0 rounded bg-surface-200 dark:bg-surfacedark-200 shadow-md dark:shadow-gray-50/10;
+}
+
+.dropdown.show {
+    @apply block transition duration-300 ease-in-out;
 }
 
 .dropdown a {
