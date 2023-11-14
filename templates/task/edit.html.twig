@@ -11,9 +11,6 @@
            class="btn"
           >{% trans %}task.edit{% endtrans %}</a>
     {% endif %}
-    <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
-       href='{{ path('task_disable',{'id':task.id}) }}' type='button'
-       class='btn btn-danger ml-1 btn-sm'>{% if task.activ == 1 %}{% trans from 'general' %}delete{% endtrans %}{% else %}{% trans from 'general' %}restore{% endtrans %}{% endif %}</a>
     {% if task.activ and not task.done %}
         <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
            href='{{ path('task_done',{'id':task.id}) }}' type='button'
@@ -24,16 +21,17 @@
             {% trans %}nextQuestion{% endtrans %}
         </a>
     {% endif %}
+    {% if not task.assignedUser %}
+        <button class="btn" data-type="dialogs" data-target="#assignModal">{% trans from 'general' %}assign{% endtrans %}</button>
+    {% endif %}
+    <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
+       href='{{ path('task_disable',{'id':task.id}) }}' type='button'
+       class='btn btn-danger ml-1 btn-sm'>{% if task.activ == 1 %}{% trans from 'general' %}delete{% endtrans %}{% else %}{% trans from 'general' %}restore{% endtrans %}{% endif %}</a>
 {% endblock %}
 
 {% block body %}
-    <div>
-        <div>
-            <h2>{% if edit %}{{ title }}{% else %}{{ task.title }}{% endif %}</h2>
-        </div>
-        <div>
-            {{ include('assign/__assign.html.twig',{'data':task,'path':'assign_task'}) }}
-        </div>
+    <div id="task-assign">
+        {{ include('assign/__assign.html.twig',{'data':task,'path':'assign_task'}) }}
     </div>
     <div>
         {% if edit %}

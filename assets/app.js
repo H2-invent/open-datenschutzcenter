@@ -1,6 +1,7 @@
 import './styles/tailmater.css';
 import './styles/colors.css';
 import './styles/data_tables.css';
+import './styles/app.css';
 import './scripts/tailmater.js';
 import DataTable from "datatables.net-dt";
 

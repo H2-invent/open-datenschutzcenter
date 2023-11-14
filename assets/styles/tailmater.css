@@ -979,3 +979,35 @@ input[type='text'], input[type='password'], input[type='email'], input[type='num
 .dl-content > dl > div > dd {
     @apply mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 pl-5;
 }
+
+.modal {
+    @apply [&.show]:opacity-100 [&.show]:h-full [&.show]:inset-0 duration-300 opacity-0 w-full h-0 z-50 overflow-auto fixed left-0 top-0 flex items-center justify-center;
+}
+
+.modal-close {
+    @apply backDialog z-40 overflow-auto fixed bg-black opacity-50;
+}
+
+.modal-inner {
+    @apply z-50 flex flex-col w-11/12 sm:w-[480px] h-auto bg-surface-200 dark:bg-surfacedark-300 rounded-[28px];
+}
+
+.modal-content {
+    @apply flex flex-col gap-4 justify-start px-8 pt-8 pb-0;
+}
+
+.modal-content > h* {
+    @apply text-2xl font-normal text-gray-900 dark:text-gray-100;
+}
+
+.modal-footer {
+    @apply flex flex-row justify-end gap-2 px-8 py-8;
+}
+
+.modal-footer .btn-close {
+    @apply bg-transparent;
+}
+
+.modal-footer .btn-submit {
+    @apply bg-primary-600 text-white;
+}
