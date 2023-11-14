@@ -1,43 +1,26 @@
 {% trans_default_domain 'client_request' %}
 <!DOCTYPE html>
 <html>
-
-{{ include('base/__head.html.twig') }}
-
-<body>
-{% block back %}{% endblock %}
-    <div>
-        <div>
+    {{ include('base/__head.html.twig') }}
+    <body>
+        {% block back %}{% endblock %}
+        <div class="text-center my-10">
+            <a href="https://open-datenschutzcenter.de" target="_blank" class="inline-block w-60">
+                <img src="{{ asset('logo.png') }}" title="ODC"/>
+            </a>
+        </div>
+        <div id="content">
             {% block content %}{% endblock %}
         </div>
-        <div>
-            <div>
-                <div>
-                    <a href="https://open-datenschutzcenter.de" target="_blank"><img
-                                src="{{ asset('logo.png') }}" style="height: 50px"></a>
-                </div>
-                <div>
-                    <a href="{{ dataPrivacy }}" target="_blank">{% trans %}dataPrivacyDisclaimer{% endtrans %}</a><br>
-                    <a href="https://open-datenschutzcenter.de" target="_blank">{% trans %}poweredBy{% endtrans %}</a><br>
-                    <a href="https://h2-invent.com" target="_blank">{% trans %}salutation{% endtrans %} •
-                        2019-{{ 'now'|date('Y') }}
-                        • v{{ laf_version }}</a>
-                </div>
-                <div>
-                    <img src="{{ asset('images/open-source-logo.png') }}" style="height: 50px">
-                </div>
-            </div>
+
+        <div class="text-center justify-center mt-10 text-muted text-sm leading-6">
+            <a href="{{ dataPrivacy }}" target="_blank">{% trans %}dataPrivacyDisclaimer{% endtrans %}</a> •
+            <a href="https://open-datenschutzcenter.de" target="_blank">{% trans %}poweredBy{% endtrans %}</a>
+            <br>
+            <a href="https://h2-invent.com" target="_blank">{% trans %}salutation{% endtrans %} • 2019-{{ 'now'|date('Y') }} • v{{ laf_version }}</a>
+            <br>
+            <img src="{{ asset('images/open-source-logo.png') }}" class="inline-block w-10 mt-5">
         </div>
-    </div>
-
-
-
-
-    {{ encore_entry_script_tags('app') }}
-
-
-
-
-</body>
-
+        {{ encore_entry_script_tags('app') }}
+    </body>
 </html>
