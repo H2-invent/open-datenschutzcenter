@@ -8,7 +8,7 @@
         </button>
         <ul id="teamtoggle-menu" role="dropdownmenu" class="dropdown hidden top-10">
             {% for team in teams %}
-                {% if team == currentTeam %}
+                {% if team != currentTeam %}
                     <li class="relative">
                         <a href="{{ path('team_switch',{'team':team.id}) }}">{{ team.name }}</a>
                     </li>
