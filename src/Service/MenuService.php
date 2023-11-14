@@ -69,7 +69,7 @@ class MenuService
         $menu = $this->factory->createItem('root');
 
         if ($this->user->getAkademieUser()) {
-            $menu->addChild($this->trans('kurse'), ['route' => 'akademie']);
+            $menu->addChild($this->trans('academyCourses', [], 'academy'), ['route' => 'akademie']);
         }
 
         $this->handleCurrentItem($menu);
@@ -109,9 +109,9 @@ class MenuService
         return $menu;
     }
 
-    private function trans(string $id, array $parameters = []): string
+    private function trans(string $id, array $parameters = [], $domain = 'base'): string
     {
-        return $this->translator->trans($id, $parameters, 'base');
+        return $this->translator->trans($id, $parameters, $domain);
     }
 
     /**

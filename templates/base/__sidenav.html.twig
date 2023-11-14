@@ -14,7 +14,7 @@
 
     {% if app.user.akademieUser %}
         <div class="label">{% trans %}academy{% endtrans %}</div>
-        {{ knp_menu_render('elements') }}
+        {{ knp_menu_render('academy') }}
     {% endif %}
 
     {% if app.user.adminRole %}
