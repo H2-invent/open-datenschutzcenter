@@ -31,3 +31,5 @@ document.querySelectorAll('[data-href]').forEach(function (element) {
         window.location.href = link;
     })
 });
+
+document.getElementById('snackbar-trigger')?.click();
