@@ -7,39 +7,26 @@
     <a href="{{ path('datenweitergabe_new') }}" class="btn btn-create">
         {% trans %}dataTransfer.create{% endtrans %}
     </a>
-
-    <button type="button" data-toggle="modal" data-target="#centralModalMd" class="btn">
+    <button type="button" data-type="dialogs" data-target="#centralModalMd" class="btn">
         {% trans %}info{% endtrans %}
     </button>
 {% endblock %}
 
 {% block body %}
     {{ include('datenweitergabe/__indexTable.html.twig') }}
-
-    <!-- Central Modal Medium -->
-    <div id="centralModalMd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-
-        <!-- Change class .modal-sm to change the size of the modal -->
-        <div role="document">
-
-            <div>
-                <div>
-                    <h4 id="myModalLabel">{% trans %}dataTransfer.info.title{% endtrans %}</h4>
-                    <button type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div>
-                    {% trans %}dataTransfer.info.text{% endtrans %}
-                </div>
-                <div>
-                    <button type="button"
-                            data-dismiss="modal">{% trans from 'general' %}close{% endtrans %}</button>
-                </div>
+    <div id="centralModalMd" class="modal">
+        <div data-close="#centralModalMd" class="modal-close"></div>
+        <div class="modal-inner">
+            <div class="modal-content">
+                <h3>{% trans %}dataTransfer.info.title{% endtrans %}</h3>
+                {% trans %}dataTransfer.info.text{% endtrans %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-close="#centralModalMd" class="btn btn-close">
+                    {% trans from 'general' %}close{% endtrans %}
+                </button>
             </div>
         </div>
     </div>
-    <!-- Central Modal Medium -->
 {% endblock %}
 
