@@ -1,47 +1,46 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'loeschkonzept' %}
 
+{% block title %}
+    {% trans %}deletionConcept.overview{% endtrans %}
+{% endblock %}
+
 {% block CTA %}
-    <a href="{{ path('app_loeschkonzept_new') }}">
-        <span>{% trans %}deletionConcept.new{% endtrans %}</span>
+    <a href="{{ path('app_loeschkonzept_new') }}" class="btn btn-create">
+        {% trans %}deletionConcept.new{% endtrans %}
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2>{% trans %}deletionConcept.overview{% endtrans %}</h2>
-    <div>
-        <div>
-            <table id="data-table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">{% trans %}data.categories{% endtrans %}</th>
-                    <th scope="col">{% trans %}data.dataTypes{% endtrans %}</th>
-                    <th scope="col">{% trans %}deletionConcept.deadline.standard{% endtrans %}</th>
-                    <th scope="col">{% trans %}deletionConcept.deadline.legal{% endtrans %}</th>
-                    <th scope="col">{% trans %}data.storageLocations{% endtrans %}</th>
-                    <th scope="col">{% trans %}deletionConcept.official{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}overview{% endtrans %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for l in loeschkonzepte %}
-                    <tr data-href='{{ path('app_loeschkonzept_edit', {'id': l.id}) }}'>
-                        <td>{{ l.id }}</td>
-                        <td>{% for vv in l.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</td>
-                        <td>{% for vv in l.vvtdatenkategories %}{{ vv.datenarten }}<br>{% endfor %}</td>
-                        <td>{{ l.standartlf }}</td>
-                        <td>{{ l.loeschfrist }}</td>
-                        <td>{{ l.speicherorte }}</td>
-                        <td>{{ l.loeschbeauftragter }}</td>
-                        <td>
-                    <a href="{{ path('app_loeschkonzept_show', {'id': l.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
-                </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{% trans %}data.categories{% endtrans %}</th>
+                <th scope="col">{% trans %}data.dataTypes{% endtrans %}</th>
+                <th scope="col">{% trans %}deletionConcept.deadline.standard{% endtrans %}</th>
+                <th scope="col">{% trans %}deletionConcept.deadline.legal{% endtrans %}</th>
+                <th scope="col">{% trans %}data.storageLocations{% endtrans %}</th>
+                <th scope="col">{% trans %}deletionConcept.official{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}overview{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for l in loeschkonzepte %}
+            <tr data-href='{{ path('app_loeschkonzept_edit', {'id': l.id}) }}'>
+                <td>{{ l.id }}</td>
+                <td>{% for vv in l.vvtdatenkategories %}{{ vv.name }}<br>{% endfor %}</td>
+                <td>{% for vv in l.vvtdatenkategories %}{{ vv.datenarten }}<br>{% endfor %}</td>
+                <td>{{ l.standartlf }}</td>
+                <td>{{ l.loeschfrist }}</td>
+                <td>{{ l.speicherorte }}</td>
+                <td>{{ l.loeschbeauftragter }}</td>
+                <td>
+            <a href="{{ path('app_loeschkonzept_show', {'id': l.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
+        </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 

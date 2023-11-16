@@ -1,41 +1,39 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'policies' %}
 
+{% block title %}
+    {% trans %}policies.internal{% endtrans %}
+{% endblock %}
+
 {% block CTA %}
-    <a href="{{ path('policy_new') }}">
-        <span>{% trans %}policies.new{% endtrans %}</span>
+    <a href="{{ path('policy_new') }}" class="btn btn-create">
+        {% trans %}policies.new{% endtrans %}
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2>{% trans %}policies.internal{% endtrans %}</h2>
-
-    <div>
-        <div>
-            <table id="data-table">
-                <thead>
-                <tr>
-                    <th scope="col">{% trans from 'general' %}fileNumber{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
-                    <th scope="col">{% trans %}scopes{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}processings{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for d in data %}
-                    <tr data-href='{{ path('policy_edit',{'id':d.id}) }}'>
-                        <th scope="row">{{ d.reference }}</th>
-                        <td>{{ d.title }}</td>
-                        <td>{{ d.scope|raw }}</td>
-                        <td>{% for p in d.processes | filter(p => p.activ) %}{{ p.name }}<br>{% endfor %}</td>
-                        <td>{% if d.approved %}<span
-                                   >{% trans from 'general' %}approved{% endtrans %}</span>{% else %}{{ d.statusString }}{% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">{% trans from 'general' %}fileNumber{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
+                <th scope="col">{% trans %}scopes{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}processings{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for d in data %}
+            <tr data-href='{{ path('policy_edit',{'id':d.id}) }}'>
+                <td>{{ d.reference }}</td>
+                <td>{{ d.title }}</td>
+                <td>{{ d.scope|raw }}</td>
+                <td>{% for p in d.processes | filter(p => p.activ) %}{{ p.name }}<br>{% endfor %}</td>
+                <td>{% if d.approved %}<span
+                           >{% trans from 'general' %}approved{% endtrans %}</span>{% else %}{{ d.statusString }}{% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

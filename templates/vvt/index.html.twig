@@ -1,56 +1,53 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'vvt' %}
 
+{% block title %}
+    {% trans %}processing.directory{% endtrans %}
+{% endblock %}
+
 {% block CTA %}
-    <a href="{{ path('vvt_new') }}">
-        <span>{% trans %}processing.create{% endtrans %}</span>
-    </a>
+    <a href="{{ path('vvt_new') }}" class="btn btn-create">{% trans %}processing.create{% endtrans %}</a>
 {% endblock %}
 
 {% block body %}
-    <h2>{% trans %}processing.directory{% endtrans %}</h2>
 
-    <div>
-        <div>
-            <table id="data-table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col" title="{% trans %}processing.typeHelp{% endtrans %}">{% trans from 'general' %}type{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}name{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}basic{% endtrans %}</th>
-                    <th scope="col" title="{% trans %}dataProtectionImpactAssessment.word{% endtrans %}">{% trans %}dsfa.exists{% endtrans %}</th>
-                    <th scope="col">{% trans %}deleteDeadlineCategory{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}department.word{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}product{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
-                    <th scope="col">{% trans %}assessment{% endtrans %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for v in vvt %}
-                    <tr data-href='{{ path('vvt_edit',{'id':v.id}) }}'>
-                        <th scope="row">{{ v.nummer }}</th>
-                        <td>{{ v.auftragsverarbeitung? 'AV':'' }}<br>{{ v.jointControl? 'GV':'' }}</td>
-                        <td>{{ v.name }}</td>
-                        <td>{% for g in v.grundlage %}- {{ g.name }}<br>{% endfor %}</td>
-                        <td>{{ v.activDsfa?'yes':'no' | trans([], 'general') }}</a></td>
-                        <td>{% for k in v.kategorien %}{{k}}<br>{% endfor %}</td>
-                        <td>{% if v.abteilung %}{{ v.abteilung.name }}{% endif %}</td>
-                        <td>{% if v.produkt %}{% for p in v.produkt %}{{ p.name }}<br>{% endfor %}{% endif %}</td>
-                        <td>
-                            {% if v.approved %}
-                                <span>{% trans from 'general' %}approved{% endtrans %}</span>
-                            {% else %}
-                                {{ v.status.name }}
-                            {% endif %}
-                        </td>
-                        <td>| E: {{ v.beurteilungEintrittString }}<br>| S: {{ v.beurteilungSchadenString }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table id="data-table" class="dataTable">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" title="{% trans %}processing.typeHelp{% endtrans %}">{% trans from 'general' %}type{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}name{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}basic{% endtrans %}</th>
+            <th scope="col" title="{% trans %}dataProtectionImpactAssessment.word{% endtrans %}">{% trans %}dsfa.exists{% endtrans %}</th>
+            <th scope="col">{% trans %}deleteDeadlineCategory{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}department.word{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}product{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
+            <th scope="col">{% trans %}assessment{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for v in vvt %}
+            <tr data-href='{{ path('vvt_edit',{'id':v.id}) }}'>
+                <td>{{ v.nummer }}</td>
+                <td>{{ v.auftragsverarbeitung? 'AV':'' }}<br>{{ v.jointControl? 'GV':'' }}</td>
+                <td>{{ v.name }}</td>
+                <td>{% for g in v.grundlage %}- {{ g.name }}<br>{% endfor %}</td>
+                <td>{{ v.activDsfa?'yes':'no' | trans([], 'general') }}</a></td>
+                <td>{% for k in v.kategorien %}{{k}}<br>{% endfor %}</td>
+                <td>{% if v.abteilung %}{{ v.abteilung.name }}{% endif %}</td>
+                <td>{% if v.produkt %}{% for p in v.produkt %}{{ p.name }}<br>{% endfor %}{% endif %}</td>
+                <td>
+                    {% if v.approved %}
+                        <span>{% trans from 'general' %}approved{% endtrans %}</span>
+                    {% else %}
+                        {{ v.status.name }}
+                    {% endif %}
+                </td>
+                <td>| E: {{ v.beurteilungEintrittString }}<br>| S: {{ v.beurteilungSchadenString }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
     {{ include('base/__snack.html.twig') }}
 {% endblock %}

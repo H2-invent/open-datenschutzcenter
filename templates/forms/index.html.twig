@@ -1,8 +1,13 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'forms' %}
+
+{% block title %}
+    {{ titel }}
+{% endblock %}
+
 {% block CTA %}
-    <a href="{{ path('forms_new') }}">
-        <span>{% trans %}newForm{% endtrans %}</span>
+    <a href="{{ path('forms_new') }}" class="btn btn-create">
+        {% trans %}newForm{% endtrans %}
     </a>
 {% endblock %}
 

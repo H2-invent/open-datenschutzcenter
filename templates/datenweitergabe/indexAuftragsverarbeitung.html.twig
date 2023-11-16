@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'datenweitergabe' %}
+
+{% block title %}{{ titel }}{% endblock %}
+
 {% block CTA %}
-    <a href="{{ path('auftragsverarbeitung_new') }}">
-        <span>{% trans %}requestProcessing.create{% endtrans %}</span>
+    <a href="{{ path('auftragsverarbeitung_new') }}" class="btn btn-create">
+        {% trans %}requestProcessing.create{% endtrans %}
     </a>
     <!-- Button trigger modal -->
-    <button type="button" data-toggle="modal" data-target="#centralModalMd">
+    <button type="button" data-toggle="modal" data-target="#centralModalMd" class="btn">
         {% trans %}info{% endtrans %}
     </button>
 {% endblock %}

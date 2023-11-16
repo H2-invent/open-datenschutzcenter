@@ -29,8 +29,9 @@
         <tbody>
         {% for a in audit %}
             <tr data-href='{{ path('audit_tom_edit',{'tom':a.id}) }}'
-                style="background-color: {{ a.status.color }}">
-                <th scope="row">{{ a.nummer }}</th>
+                style="background-color: {{ a.status.color }}"
+                class="row-color">
+                <td>{{ a.nummer }}</td>
                 <td>{{ a.frage }}</td>
                 <td>{% for ab in a.abteilung %}{{ ab.name }}<br>{% endfor %}</td>
                 <td>{{ a.kategorie | trans }}</td>

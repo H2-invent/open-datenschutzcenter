@@ -1,45 +1,43 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'vorfall' %}
 
+{% block title %}
+    {% trans %}incident.title{% endtrans %}
+{% endblock %}
+
 {% block CTA %}
-    <a href="{{ path('vorfall_new') }}">
-        <span>{% trans %}incident.create{% endtrans %}</span>
+    <a href="{{ path('vorfall_new') }}" class="btn btn-create">
+        {% trans %}incident.create{% endtrans %}
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2>{% trans %}incident.title{% endtrans %}</h2>
-
-    <div>
-        <div>
-            <table id="data-table">
-                <thead>
-                <tr>
-                    <th scope="col">{% trans from 'general' %}date{% endtrans %}</th>
-                    <th scope="col">{% trans %}uid{% endtrans %}</th>
-                    <th scope="col">{% trans %}facts{% endtrans %}</th>
-                    <th scope="col">{% trans %}consequences{% endtrans %}</th>
-                    <th scope="col">{% trans %}measures{% endtrans %}</th>
-                    <th scope="col">{% trans %}stateAgency{% endtrans %}</th>
-                    <th scope="col">{% trans %}affected.word{% endtrans %}</th>
-                    <th scope="col">{% trans %}client{% endtrans %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for a in vorfall %}
-                    <tr data-href='{{ path('vorfall_edit',{'id':a.id}) }}'>
-                        <th scope="row">{{ a.datum|date('d.m.Y H:i') }}</th>
-                        <td>{{ a.nummer }}</td>
-                        <td>{{ a.fakten }}</td>
-                        <td>{{ a.auswirkung }}</td>
-                        <td>{{ a.massnahmen }}</td>
-                        <td>{{ a.gemeldet ? 'yes':'no' |trans([], 'general') }}</td>
-                        <td>{{ a.betroffeneGemeldet ? 'yes':'no' |trans ([], 'general') }}</td>
-                        <td>{{ a.auftraggeberGemeldet ? 'yes':'no' |trans ([], 'general') }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">{% trans from 'general' %}date{% endtrans %}</th>
+                <th scope="col">{% trans %}uid{% endtrans %}</th>
+                <th scope="col">{% trans %}facts{% endtrans %}</th>
+                <th scope="col">{% trans %}consequences{% endtrans %}</th>
+                <th scope="col">{% trans %}measures{% endtrans %}</th>
+                <th scope="col">{% trans %}stateAgency{% endtrans %}</th>
+                <th scope="col">{% trans %}affected.word{% endtrans %}</th>
+                <th scope="col">{% trans %}client{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for a in vorfall %}
+            <tr data-href="{{ path('vorfall_edit',{'id':a.id}) }}">
+                <td>{{ a.datum|date('d.m.Y H:i') }}</td>
+                <td>{{ a.nummer }}</td>
+                <td>{{ a.fakten }}</td>
+                <td>{{ a.auswirkung }}</td>
+                <td>{{ a.massnahmen }}</td>
+                <td>{{ a.gemeldet ? 'yes':'no' |trans([], 'general') }}</td>
+                <td>{{ a.betroffeneGemeldet ? 'yes':'no' |trans ([], 'general') }}</td>
+                <td>{{ a.auftraggeberGemeldet ? 'yes':'no' |trans ([], 'general') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -1,43 +1,41 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'kontakt' %}
+
 {% block title %}{{ title }}{% endblock %}
+
 {% block CTA %}
-    <a href="{{ path('kontakt_new') }}">
-        <span>{{ title }} {% trans %}create{% endtrans %}</span>
+    <a href="{{ path('kontakt_new') }}" class="btn btn-create">
+        {{ title }} {% trans %}create{% endtrans %}
     </a>
 {% endblock %}
+
 {% block body %}
-    <h2>{{ title }}</h2>
-    <div>
-        <div>
-            <table id="data-table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">{% trans %}company{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}name{% endtrans %}</th>
-                    <th scope="col">{% trans %}location{% endtrans %}</th>
-                    <th scope="col">{% trans %}function{% endtrans %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for k in kontakte %}
-                    <tr data-href='{{ path('kontakt_edit',{'id':k.id}) }}'>
-                        <th scope="row">{{ k.nummer }}</th>
-                        <td>{{ k.firma }}</td>
-                        <td>{{ k.nachname }}</td>
-                        <td>{{ k.ort }}</td>
-                        <td>
-                            {% if k.art == 1 %}
-                                {% trans %}client{% endtrans %}
-                            {% elseif k.art == 2 %}
-                                {% trans %}contractor{% endtrans %}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table id="data-table" class="dataTable">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">{% trans %}company{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}name{% endtrans %}</th>
+            <th scope="col">{% trans %}location{% endtrans %}</th>
+            <th scope="col">{% trans %}function{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for k in kontakte %}
+            <tr data-href='{{ path('kontakt_edit',{'id':k.id}) }}'>
+                <td>{{ k.nummer }}</td>
+                <td>{{ k.firma }}</td>
+                <td>{{ k.nachname }}</td>
+                <td>{{ k.ort }}</td>
+                <td>
+                    {% if k.art == 1 %}
+                        {% trans %}client{% endtrans %}
+                    {% elseif k.art == 2 %}
+                        {% trans %}contractor{% endtrans %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

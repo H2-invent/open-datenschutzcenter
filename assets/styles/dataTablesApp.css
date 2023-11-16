@@ -69,11 +69,11 @@ table.dataTable > tbody {
     @apply divide-y divide-surface-200 bg-white;
 }
 
-table.dataTable > tbody > tr:nth-child(odd) > td {
+table.dataTable > tbody > tr:not(.row-color):nth-child(odd) > td {
     @apply bg-surface-50;
 }
 
-table.dataTable > tbody > tr:nth-child(even) > td {
+table.dataTable > tbody > tr:not(.row-color):nth-child(even) > td {
     @apply bg-white;
 }
 

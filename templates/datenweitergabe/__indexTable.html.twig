@@ -1,32 +1,27 @@
 {% trans_default_domain 'datenweitergabe' %}
-<h2>{{ titel }}</h2>
-<div>
-    <div>
-        <table id="data-table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">{% trans from 'general' %}fileNumber{% endtrans %}</th>
-                <th scope="col">{% trans from 'general' %}object{% endtrans %}</th>
-                <th scope="col">{% trans from 'general' %}responsible{% endtrans %}</th>
-                <th scope="col">{% trans from 'general' %}contact{% endtrans %}</th>
-                <th scope="col">{% trans from 'general' %}subscriptionDate{% endtrans %}</th>
-                <th scope="col">{% trans from 'general' %}approved{% endtrans %}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for t in table %}
-                <tr data-href='{{ path('datenweitergabe_edit',{'id':t.id}) }}'>
-                    <th scope="row">{{ t.nummer }}</th>
-                    <td>{{ t.reference }}</td>
-                    <td>{{ t.gegenstand }}</td>
-                    <td>{{ t.verantwortlich }}</td>
-                    <td>{{ t.kontakt.firma }} (id:{{ t.kontakt.id }})</td>
-                    <td>{{ t.zeichnungsdatum|date('Y.m.d') }}</td>
-                    <td>{{ t.approved?'yes':'no' | trans( [], 'general') }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+<table id="data-table" class="dataTable">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">{% trans from 'general' %}fileNumber{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}object{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}responsible{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}contact{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}subscriptionDate{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}approved{% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for t in table %}
+        <tr data-href='{{ path('datenweitergabe_edit',{'id':t.id}) }}'>
+            <td>{{ t.nummer }}</td>
+            <td>{{ t.reference }}</td>
+            <td>{{ t.gegenstand }}</td>
+            <td>{{ t.verantwortlich }}</td>
+            <td>{{ t.kontakt.firma }} (id:{{ t.kontakt.id }})</td>
+            <td>{{ t.zeichnungsdatum|date('Y.m.d') }}</td>
+            <td>{{ t.approved?'yes':'no' | trans( [], 'general') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
