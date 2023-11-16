@@ -136,6 +136,10 @@ class MenuService
     {
         $parts = \explode('_', $this->standardizeRouteName($route));
 
+        if (\str_starts_with($route, 'team')) {
+            return $route;
+        }
+
         return $parts[0];
     }
 
