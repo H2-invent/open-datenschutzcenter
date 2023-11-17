@@ -1,27 +1,16 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'team' %}
 
-{% block CTA %}
-    <h4>
-        {% trans %}adminArea{% endtrans %}
-        {% if currentTeam is defined and currentTeam %}{{ currentTeam.name }}{% endif %}
-    </h4>
+{% block title %}
+    {% trans %}adminArea{% endtrans %}
+    {{ currentTeam is defined and currentTeam ? currentTeam.name }}
+    {{ title is defined ? ': ' ~ title }}
 {% endblock %}
 
-{% block title %}{{ title }}{% endblock %}
 {% block body %}
-    <div>
-        <h2>{{ title }}</h2>
-
-        <div>
-            <div>
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
-            </div>
-        </div>
+    <div id="content-team-admin">
+        {{ form_start(form) }}
+        {{ form_row(form) }}
+        {{ form_end(form) }}
     </div>
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

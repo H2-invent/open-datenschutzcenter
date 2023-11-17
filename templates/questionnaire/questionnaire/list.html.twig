@@ -1,39 +1,26 @@
 {% trans_default_domain 'questionnaire' %}
-<div>
-    <a href="{{ path('questionnaire_create') }}">
-        {% trans %}questionnaire.create{% endtrans %}
-    </a>
-    <div>
-        <table>
-            <thead>
+<a href="{{ path('questionnaire_create') }}" class="btn btn-create mb-5">
+    {% trans %}questionnaire.create{% endtrans %}
+</a>
+<table class="dataTable">
+    <thead>
+        <tr>
+            <th scope="col">{% trans %}questionnaire.label{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}createdAt{% endtrans %}</th>
+            <th scope="col">{% trans from 'general' %}action.word{% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for questionnaire in questionnaires %}
             <tr>
-                <th scope="col">{% trans %}questionnaire.label{% endtrans %}</th>
-                <th scope="col">{% trans from 'general' %}createdAt{% endtrans %}</th>
-                <th scope="col">{% trans from 'general' %}action.word{% endtrans %}</th>
+                <td>{{ questionnaire.label }}</td>
+                <td>{{ questionnaire.createdAt | date('Y-m-d H:i:s') }}</td>
+                <td>
+                    <a href="{{ path('questionnaire_details', {'id': questionnaire.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
+                    <a href="{{ path('questionnaire_edit', {'id': questionnaire.id}) }}">{% trans from 'general' %}edit{% endtrans %}</a>
+                    <a href="{{ path('questionnaire_delete', {'id': questionnaire.id}) }}">{% trans from 'general' %}remove{% endtrans %}</a>
+                </td>
             </tr>
-            </thead>
-            <tbody>
-            {% for questionnaire in questionnaires %}
-                <tr>
-                    <td>{{ questionnaire.label }}</td>
-                    <td>{{ questionnaire.createdAt | date('Y-m-d H:i:s') }}</td>
-                    <td>
-                        <a href="{{ path('questionnaire_details', {'id': questionnaire.id}) }}"
-                          >
-                            {% trans from 'general' %}show{% endtrans %}
-                        </a>
-                        <a href="{{ path('questionnaire_edit', {'id': questionnaire.id}) }}"
-                          >
-                            {% trans from 'general' %}edit{% endtrans %}
-                        </a>
-                        <a href="{{ path('questionnaire_delete', {'id': questionnaire.id}) }}"
-                          >
-                            {% trans from 'general' %}remove{% endtrans %}
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+        {% endfor %}
+    </tbody>
+</table>

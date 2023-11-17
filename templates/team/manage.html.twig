@@ -1,53 +1,52 @@
 {% extends 'team/index.html.twig' %}
 {% trans_default_domain 'team' %}
 
-{% block body %}
-    <h2>{% trans %}team.manage{% endtrans %}</h2>
-    <a href="{{ path('team_create')}}">
+{% set title = 'team.manage'|trans %}
+
+{% block CTA %}
+    <a href="{{ path('team_create')}}" class="btn btn-create">
         {% trans %}team.create{% endtrans %}
     </a>
+{% endblock %}
 
-    <div>
-        <div>
-            <table id="data-table">
-                <thead>
-                <tr>
-                    <th scope="col">{% trans from 'general' %}name{% endtrans %}</th>
-                    {% if useKeycloakGroups %}
-                        <th scope="col">{% trans %}keycloakGroup{% endtrans %}</th>
-                    {% endif %}
-                    <th scope="col">{% trans %}memberCount{% endtrans %}</th>
-                    <th scope="col">{% trans %}admins{% endtrans %}</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for t in teams %}
-                    <tr>
-                        <td>{{ t.name }}</td>
-                        {% if useKeycloakGroups %}
-                            <td>{{ t.keycloakGroup }}</td>
-                        {% endif %}
-                        <td>{{ t.members | length }}</td>
-                        <td>
-                            {% for a in t.admins %}
-                                {{ a.firstName }} {{ a.lastName }} ({{ a.email }})<br/>
-                            {% endfor %}
-                        </td>
-                        <td>
-                            <a href='{{ path('team_edit',{'id':t.id}) }}'>
-                                {% trans %}team.manageData{% endtrans %}
-                            </a>
-                            <a href='{{ path('team_mitglieder',{'id':t.id}) }}'>
-                                {% trans %}team.manageMembers{% endtrans %}
-                            </a>
-                            <a href="{{ path('team_delete', {'id':t.id}) }}"
-                              >{% trans from 'general' %}delete{% endtrans %}</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+{% block body %}
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">{% trans from 'general' %}name{% endtrans %}</th>
+                {% if useKeycloakGroups %}
+                    <th scope="col">{% trans %}keycloakGroup{% endtrans %}</th>
+                {% endif %}
+                <th scope="col">{% trans %}memberCount{% endtrans %}</th>
+                <th scope="col">{% trans %}admins{% endtrans %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for t in teams %}
+            <tr>
+                <td>{{ t.name }}</td>
+                {% if useKeycloakGroups %}
+                    <td>{{ t.keycloakGroup }}</td>
+                {% endif %}
+                <td>{{ t.members | length }}</td>
+                <td>
+                    {% for a in t.admins %}
+                        {{ a.firstName }} {{ a.lastName }} ({{ a.email }})<br/>
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href='{{ path('team_edit',{'id':t.id}) }}'>
+                        {% trans %}team.manageData{% endtrans %}
+                    </a>
+                    <a href='{{ path('team_mitglieder',{'id':t.id}) }}'>
+                        {% trans %}team.manageMembers{% endtrans %}
+                    </a>
+                    <a href="{{ path('team_delete', {'id':t.id}) }}"
+                      >{% trans from 'general' %}delete{% endtrans %}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

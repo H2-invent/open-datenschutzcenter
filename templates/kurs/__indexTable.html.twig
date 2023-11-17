@@ -1,34 +1,36 @@
 {% trans_default_domain 'kurs' %}
-<div>
-    <a href="{{ path('akademie_kurs_new') }}">
-        <span>{% trans %}addCourse{% endtrans %}</span>
-    </a>
-    <div>
-        <table>
+
+<a href="{{ path('akademie_kurs_new') }}" class="btn btn-create">
+    {% trans %}addCourse{% endtrans %}
+</a>
+
+{% if kurse|length %}
+    <div class="mt-5">
+        <table class="dataTable">
             <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
-                <th scope="col">{% trans %}createdUpdatedAt{% endtrans %}</th>
-                <th scope="col">{% trans from 'general'%}action.words{% endtrans %}</th>
-            </tr>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
+                    <th scope="col">{% trans %}createdUpdatedAt{% endtrans %}</th>
+                    <th scope="col">{% trans from 'general'%}action.words{% endtrans %}</th>
+                </tr>
             </thead>
             <tbody>
-            {% for t in kurse %}
-                <tr>
-                    <th scope="row">{{ t.id }}</th>
-                    <td>{{ t.title }}</td>
-                    <td>{{ t.createdAt|date('d.m.Y') }}</td>
-                    <td>
-                        <a href="{{ path('kurs_anmelden',{'id':t.id}) }}">{% trans from 'general' %}login{% endtrans %}</a>
-                        {% if app.user == t.user %}<a href="{{ path('akademie_kurs_edit',{'id':t.id}) }}"
-                                                     >{% trans from 'general' %}edit{% endtrans %}</a>{% endif %}
-                        <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
-                           href="{{ path('kurs_deaktivieren',{'id':t.id}) }}">{% trans from 'general' %}delete{% endtrans %}</a>
-                    </td>
-                </tr>
-            {% endfor %}
+                {% for t in kurse %}
+                    <tr>
+                        <td>{{ t.id }}</td>
+                        <td>{{ t.title }}</td>
+                        <td>{{ t.createdAt|date('d.m.Y') }}</td>
+                        <td>
+                            <a href="{{ path('kurs_anmelden',{'id':t.id}) }}">{% trans from 'general' %}login{% endtrans %}</a>
+                            {% if app.user == t.user %}<a href="{{ path('akademie_kurs_edit',{'id':t.id}) }}"
+                                                         >{% trans from 'general' %}edit{% endtrans %}</a>{% endif %}
+                            <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
+                               href="{{ path('kurs_deaktivieren',{'id':t.id}) }}">{% trans from 'general' %}delete{% endtrans %}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
-</div>
+{% endif %}

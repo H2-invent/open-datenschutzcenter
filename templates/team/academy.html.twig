@@ -2,63 +2,57 @@
 {% trans_default_domain 'team' %}
 
 {% block body %}
-
-    <div>
-        <h2>{{ title }}</h2>
-        <ul id="myTab" role="tablist">
-            <li>
-                <a id="home-tab" data-toggle="tab" href="#courses" role="tab"
-                   aria-controls="home"
-                   aria-selected="true">{% trans %}dataPrivacyLessons{% endtrans %}</a>
-            </li>
-            <li>
-                <a id="profile-tab" data-toggle="tab" href="#user" role="tab" aria-controls="profile"
-                   aria-selected="false">{% trans %}academy.users{% endtrans %}</a>
-            </li>
-            <li>
-                <a
-                   id="questionnaire-tab"
-                   data-toggle="tab"
-                   href="#questionnaire"
-                   aria-controls="questionnaire"
-                   aria-selected="false">
-                    {% trans from 'questionnaire' %}questionnaire.words{% endtrans %}
-                </a>
-            </li>
-        </ul>
-        <div id="myTabContent">
-            <div id="courses" role="tabpanel" aria-labelledby="home-tab">
-
-                {{ include('kurs/__indexTable.html.twig') }}
+    <div class="card-outlined mb-5">
+        <div class="tabs flex flex-col w-full">
+            <div class="tabs-nav">
+                <button data-type="tabs" data-target="#tab-courses" class="active">
+                    <p>{% trans %}dataPrivacyLessons{% endtrans %}</p>
+                </button>
+                <button data-type="tabs" data-target="#tab-user">
+                    <p>{% trans %}academy.users{% endtrans %}</p>
+                </button>
+                <button data-type="tabs" data-target="#tab-questionnaire">
+                    <p>{% trans from 'questionnaire' %}questionnaire.words{% endtrans %}</p>
+                </button>
+                <div role="indicator" class="tabs-indicator"></div>
             </div>
-            <div id="user" role="tabpanel" aria-labelledby="profile-tab">
-
-                <div>
+            <hr>
+            <div class="tabs-content">
+                <div id="tab-courses" role="tabpanel" class="tab-content active">
+                    {{ include('kurs/__indexTable.html.twig') }}
+                </div>
+                <div id="tab-user" role="tabpanel" class="tab-content">
                     <a href="{{ path('team_mitglieder_create', {'title':'Akademiemitglied hinzufügen', 'type':'academy'}) }}"
-                      >{% trans %}academy.addUser{% endtrans %}</a>
-                    <ul>
-                        {% for d in data %}
-                            <li>{{ d.email }}
-                                <a
-                                    onClick="return confirm('{% trans from 'general' %}confirmAction{% endtrans %}')"
-                                    href="{{ path('team_mitglieder_remove',{'memberId':d.id, 'teamId':team.id, 'type':'academy'}) }}">
-                                    {% trans from 'general' %}remove{% endtrans %}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                       class="btn btn-create"
+                    >{% trans %}academy.addUser{% endtrans %}</a>
+                    {% if data|length %}
+                        <ul class="stacked-list mt-5">
+                            {% for d in data %}
+                                <li>
+                                    <div>
+                                        <p>{{ d.email }}</p>
+                                    </div>
+                                    <div>
+                                        <a href="{{ path('team_mitglieder_remove',{'memberId':d.id, 'teamId':team.id, 'type':'academy'}) }}"
+                                           onclick="return confirm('{% trans from 'general' %}confirmAction{% endtrans %}')">
+                                            {% trans from 'general' %}remove{% endtrans %}
+                                        </a>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div id="tab-questionnaire" role="tabpanel" class="tab-content">
+                    {% include 'questionnaire/questionnaire/list.html.twig' with {'questionnaires': questionnaires} %}
                 </div>
             </div>
-            <div id="questionnaire" role="tabpanel" aria-labelledby="questionnaire-tab">
-                {% include 'questionnaire/questionnaire/list.html.twig' with {'questionnaires': questionnaires} %}
-            </div>
         </div>
-
     </div>
 
 {% endblock %}
 
-{% block javascripts %}
+{# {% block javascripts %}
     <script>
         var url = document.location.toString();
         if (url.match('#')) {
@@ -69,4 +63,4 @@
             window.location.hash = e.target.hash;
         });
     </script>
-{% endblock %}
+{% endblock %} #}

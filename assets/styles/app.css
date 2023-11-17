@@ -1,3 +1,19 @@
 #task-assign #btn-assign {
     @apply hidden;
 }
+
+#content-team-admin {
+    @apply w-full lg:w-2/3 xl:w-1/2 mx-auto;
+}
+
+#cards-reports h3 {
+    @apply mb-5;
+}
+
+#cards-reports a {
+    @apply inline-block mb-1;
+}
+
+#cards-reports a:before {
+    content: "» ";
+}

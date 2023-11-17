@@ -732,6 +732,10 @@ body {
     @apply rounded-full w-full h-12 px-5 flex flex-row items-center justify-between gap-1.5;
 }
 
+#topbar a {
+    @apply text-gray-700;
+}
+
 #bock-cta .btn {
     @apply mb-5;
 }
@@ -772,6 +776,10 @@ aside > nav > hr {
     @apply mx-4;
 }
 
+article a {
+    @apply text-primary-600 hover:text-primary-900;
+}
+
 footer {
     @apply p-4 md:py-6 mt-24 ml-60 md:mb-0 flex flex-col md:flex-row justify-center text-center text-gray-600 text-sm font-normal;
 }
@@ -789,7 +797,7 @@ footer > ul > li {
 }
 
 .dropdown a {
-    @apply min-h-[3rem] flex flex-row items-center gap-4 py-2 px-3 hover-icon hover:bg-secondary-100 dark:hover:bg-secondary-700 hover:bg-opacity-30 dark:hover:bg-opacity-30;
+    @apply !text-gray-800 min-h-[3rem] flex flex-row items-center gap-4 py-2 px-3 hover-icon hover:bg-secondary-100 dark:hover:bg-secondary-700 hover:bg-opacity-30 dark:hover:bg-opacity-30;
 }
 
 @layer components {
@@ -806,11 +814,11 @@ footer > ul > li {
     }
 
     .card-filled {
-        @apply card bg-gray-100 dark:bg-gray-700;
+        @apply card bg-surface-100 dark:bg-gray-700;
     }
 
     .btn {
-        @apply relative items-center justify-center gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm tracking-[.00714em] font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-300 text-primary-600 dark:bg-surfacedark-100 dark:hover:bg-surfacedark-200 dark:focus:bg-surfacedark-400 dark:text-primary-200;
+        @apply relative inline-block items-center justify-center gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm tracking-[.00714em] font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-300 text-primary-600 dark:bg-surfacedark-100 dark:hover:bg-surfacedark-200 dark:focus:bg-surfacedark-400 dark:text-primary-200;
     }
 }
 
@@ -820,6 +828,10 @@ form > fieldset {
 
 form > fieldset > legend {
     @apply bg-surface-200 rounded-xl px-3 py-1 text-base;
+}
+
+form > fieldset .btn-primary {
+    @apply bg-primary-500 hover:bg-primary-600 text-white btn-elevated;
 }
 
 .form-help {
@@ -870,8 +882,11 @@ hr {
     @apply border-gray-200 dark:border-gray-700;
 }
 
+.btn-icon {
+    @apply flex flex-row;
+}
+
 .btn .material-symbols-outlined {
-    @apply text-sm;
 }
 
 .btn-create {
@@ -884,6 +899,10 @@ hr {
 
 .btn-danger {
     @apply bg-red-50 hover:bg-red-500 text-red-600 hover:text-white focus:bg-red-700;
+}
+
+.text-danger {
+    @apply text-red-600 hover:text-red-800;
 }
 
 @layer base {
@@ -906,6 +925,10 @@ form {
 
 .form-group {
     @apply mb-4;
+}
+
+.form-group:last-of-type {
+    @apply mb-0;
 }
 
 .form-group label {
@@ -932,8 +955,20 @@ input[type='text'], input[type='password'], input[type='email'], input[type='num
     @apply w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
 }
 
+input[type='checkbox'] {
+    @apply w-5 h-5;
+}
+
 .form-group textarea {
     @apply -mb-2;
+}
+
+.form-check {
+    @apply flex;
+}
+
+.form-check input[type='checkbox'] {
+    @apply mr-2;
 }
 
 .important, .important > * {
@@ -973,11 +1008,11 @@ input[type='text'], input[type='password'], input[type='email'], input[type='num
 }
 
 .dl-content > dl > div > dt {
-    @apply text-sm font-medium leading-6 text-gray-900 pl-5;
+    @apply text-sm font-medium leading-6 text-gray-900 pl-5 sm:col-span-2;
 }
 
 .dl-content > dl > div > dd {
-    @apply mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 pl-5;
+    @apply mt-1 text-sm leading-6 text-gray-700 sm:col-span-5 sm:mt-0 pl-5;
 }
 
 .modal {
@@ -1010,4 +1045,28 @@ input[type='text'], input[type='password'], input[type='email'], input[type='num
 
 .modal-footer .btn-submit {
     @apply bg-primary-600 text-white;
+}
+
+ul.stacked-list {
+    @apply divide-y divide-surface-200 bg-surface-100 mb-5 rounded-2xl;
+}
+
+ul.stacked-list > li {
+    @apply flex justify-between gap-x-6 py-5 px-5;
+}
+
+ul.stacked-list > li > div:first-child {
+
+}
+
+ul.stacked-list > li > div:first-child > p:nth-child(1) {
+    @apply text-base leading-6 text-gray-900 block;
+}
+
+ul.stacked-list > li > div:first-child > p:nth-child(2) {
+    @apply mt-1 truncate text-sm leading-5 text-gray-500 block;
+}
+
+ul.stacked-list > li > div:last-child {
+    @apply shrink-0 sm:flex sm:flex-col sm:items-end text-sm;
 }

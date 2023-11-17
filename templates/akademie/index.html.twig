@@ -1,70 +1,69 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'academy' %}
 
+{% block title %}
+    {% trans %}academyCourses{% endtrans %}
+{% endblock %}
+
 {% block body %}
-    <h2>{% trans %}academyCourses{% endtrans %}</h2>
-    <div>
-        <div>
-            <table id="data-table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
-                    <th scope="col">{% trans %}assigned{% endtrans %}</th>
-                    <th scope="col">{% trans %}startDate{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}action.words{% endtrans %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for b in buchungen %}
-                    <tr>
-                        <th scope="row">{{ b.id }}</th>
-                        <th>
-                            {% if b.zugewiesen > today %}
-                                {% trans %}noAutomaticResubmission{% endtrans %}
-                            {% else %}
-                                {{ b.kurs.title }} (id: {{ b.kurs.id }})
-                            {% endif %}
-                        </th>
-                        <td>{{ b.zugewiesen|date('d.m.Y') }}</td>
-                        <td>{{ b.start|date('d.m.Y') }}</td>
-                        <td>
-                            {% if b.participations[0].state == 'finished' %}
-                                {% if b.participations[0].passed %}
-                                    <a href="{{ path('akademie_kurs_zertifikat', {'id':b.id}) }}"
-                                      >
-                                        {% trans from 'questionnaire' %}passed{% endtrans %}
-                                    </a>
-                                {% else %}
-                                    <a href="{{ path('participation_reset', {'id': b.participations[0].id }) }}"
-                                      >
-                                        {% trans from 'questionnaire' %}retry{% endtrans %}
-                                    </a>
-                                {% endif %}
-                            {% else %}
-                                {{ b.participations[0].state }}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if b.participations[0].state == 'ongoing' %}
-                                <a href="{{ path('participation_continue', {'id': b.participations[0].id}) }}"
-                                  >{% trans from 'general' %}continue{% endtrans %}</a>
-                            {% else %}
-                                 {% if b.zugewiesen < today and b.user.akademieUser in b.kurs.team and b.participations[0].state == 'assigned' %}
-                                     <a href="{{ path('akademie_kurs',{'kurs':b.id}) }}"
-                                       >
-                                         {% trans from 'general' %}start{% endtrans %}
-                                     </a>
-                                 {% else %}
-                                    <a href="#">{% trans from 'general' %}finished{% endtrans %}</a>
-                                {% endif %}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
+                <th scope="col">{% trans %}assigned{% endtrans %}</th>
+                <th scope="col">{% trans %}startDate{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}action.words{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for b in buchungen %}
+            <tr>
+                <td>{{ b.id }}</td>
+                <th>
+                    {% if b.zugewiesen > today %}
+                        {% trans %}noAutomaticResubmission{% endtrans %}
+                    {% else %}
+                        {{ b.kurs.title }} (id: {{ b.kurs.id }})
+                    {% endif %}
+                </th>
+                <td>{{ b.zugewiesen|date('d.m.Y') }}</td>
+                <td>{{ b.start|date('d.m.Y') }}</td>
+                <td>
+                    {% if b.participations[0].state == 'finished' %}
+                        {% if b.participations[0].passed %}
+                            <a href="{{ path('akademie_kurs_zertifikat', {'id':b.id}) }}"
+                              >
+                                {% trans from 'questionnaire' %}passed{% endtrans %}
+                            </a>
+                        {% else %}
+                            <a href="{{ path('participation_reset', {'id': b.participations[0].id }) }}"
+                              >
+                                {% trans from 'questionnaire' %}retry{% endtrans %}
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        {{ b.participations[0].state }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if b.participations[0].state == 'ongoing' %}
+                        <a href="{{ path('participation_continue', {'id': b.participations[0].id}) }}"
+                          >{% trans from 'general' %}continue{% endtrans %}</a>
+                    {% else %}
+                         {% if b.zugewiesen < today and b.user.akademieUser in b.kurs.team and b.participations[0].state == 'assigned' %}
+                             <a href="{{ path('akademie_kurs',{'kurs':b.id}) }}"
+                               >
+                                 {% trans from 'general' %}start{% endtrans %}
+                             </a>
+                         {% else %}
+                            <a href="#">{% trans from 'general' %}finished{% endtrans %}</a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

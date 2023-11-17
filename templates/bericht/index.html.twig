@@ -1,150 +1,151 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'bericht' %}
 
-{% block CTA %}
+{% block title %}
+    {% trans %}report.create{% endtrans %}
 {% endblock %}
+
 {% block body %}
-    <h1>{% trans %}report.create{% endtrans %}</h1>
-    <div>
-        <div>
-            <div>
-                <h4>{% trans %}vvt{% endtrans %}</h4>
+    <div id="cards-reports">
+        <div class="grid grid-cols-2 gap-4">
+            <div class="card-vvt">
+                <h3>{% trans %}vvt{% endtrans %}</h3>
 
                 <a href="{{ path('bericht_vvt') }}">
                     <span>{% trans with {'{target}': 'VVTs'} %}pdf.create{% endtrans %}</span>
-                </a>
+                </a><br>
+
                 <a href="{{ path('bericht_vvt', {'all':1}) }}">
                     <span>{% trans with {'{target}': 'VVTs'} %}pdf.createWithHistory{% endtrans %}</span>
-                </a>
+                </a><br>
             </div>
 
 
-            <div>
-                <h4>{% trans %}dw{% endtrans %}</h4>
+            <div class="card-datenweitergabe">
+                <h3>{% trans %}dw{% endtrans %}</h3>
                 <a href="{{ path('bericht_weitergabe', {'art':1}) }}">
                     <span>{% trans with {'{target}': 'DWs'} %}pdf.create{% endtrans %}</span>
-                </a>
+                </a><br>
                 <a href="{{ path('bericht_weitergabe', {'all':1, 'art':1}) }}">
                     <span>{% trans with {'{target}': 'DWs'} %}pdf.createWithHistory{% endtrans %}</span>
-                </a>
+                </a><br>
             </div>
 
 
-            <div>
-                <h4>{% trans %}avv{% endtrans %}</h4>
+            <div class="card-av">
+                <h3>{% trans %}avv{% endtrans %}</h3>
                 <a href="{{ path('bericht_weitergabe', {'art':2}) }}">
                     <span>{% trans with {'{target}': 'AVVs'} %}pdf.create{% endtrans %}</span>
-                </a>
+                </a><br>
                 <a href="{{ path('bericht_weitergabe', {'all':1, 'art':2}) }}">
                     <span>{% trans with {'{target}': 'AVVs'} %}pdf.createWithHistory{% endtrans %}</span>
-                </a>
+                </a><br>
             </div>
 
 
-            <div>
-                <h4>{% trans %}auditQuestions.word{% endtrans %}</h4>
+            <div class="card-tom">
+                <h3>{% trans %}auditQuestions.word{% endtrans %}</h3>
                 <a href="{{ path('bericht_audit') }}"
                    title="{% trans %}auditQuestions.exportCurrent{% endtrans %}">
                     <span>{% trans with {'{target}': 'Audit-Fragen'} %}pdf.create{% endtrans %}</span>
-                </a>
+                </a><br>
                 <a href="{{ path('bericht_audit', {'all':1}) }}"
                    title="{% trans %}auditQuestions.exportCurrentWithRevisions{% endtrans %}">
                     <span>{% trans with {'{target}': 'Audit-Fragen'} %}pdf.createWithHistory{% endtrans %}</span>
-                </a>
+                </a><br>
                 <a href="{{ path('bericht_audit', {'activ':1}) }}"
                    title="{% trans %}auditQuestions.exportRelevant.title{% endtrans %}">
                     <span>{% trans %}auditQuestions.exportRelevant.all{% endtrans %}</span>
-                </a>
+                </a><br>
                 <a href="{{ path('bericht_audit', {'open':1}) }}"
                    title="{% trans %}auditQuestions.exportUnedited.title{% endtrans %}">
                     <span>{% trans %}auditQuestions.exportUnedited.all{% endtrans %}</span>
-                </a>
+                </a><br>
             </div>
 
-            <div>
-                <h4>{% trans %}tom.word{% endtrans %}</h4>
+            <div class="card-tom">
+                <h3>{% trans %}tom.word{% endtrans %}</h3>
                 <a href="{{ path('bericht_global_tom') }}"
                    title="{% trans %}tom.create.general.export{% endtrans %}">
                     <span>{% trans %}tom.create.general.word{% endtrans %}</span>
-                </a>
+                </a><br>
                 <a href="{{ path('bericht_tom') }}"
                    title="{% trans %}tom.create.all.export{% endtrans %}">
                     <span>{% trans %}tom.create.all.word{% endtrans %}</span>
-                </a>
+                </a><br>
             </div>
 
-            <div>
-                <h4>{% trans %}dataProtection.word{% endtrans %}</h4>
+            <div class="card-datenkategorie">
+                <h3>{% trans %}dataProtection.word{% endtrans %}</h3>
                 <a href="{{ path('bericht_vorfall') }}"
                    title="{% trans %}dataProtection.create.all.export{% endtrans %}">
                     <span>{% trans %}dataProtection.create.all.word{% endtrans %}</span>
-                </a>
+                </a><br>
                 <a href="{{ path('bericht_vorfall', {'all':1}) }}"
                    title="{% trans %}dataProtection.create.allWithHistory.export{% endtrans %}">
                     <span>{% trans %}dataProtection.create.allWithHistory.word{% endtrans %}</span>
-                </a>
+                </a><br>
             </div>
 
-            <div>
-                <h4>{% trans %}software.word{% endtrans %}</h4>
+            <div class="card-software">
+                <h3>{% trans %}software.word{% endtrans %}</h3>
                 <a href="{{ path('bericht_software') }}"
                    title="{% trans %}software.export.config.title{% endtrans %}">
                     <span>{% trans %}software.export.config.export{% endtrans %}</span>
-                </a>
+                </a><br>
                 <a href="{{ path('bericht_software', {'all':1}) }}"
                    title="{% trans %}software.export.history.title{% endtrans %}">
                     <span>{% trans %}software.export.history.export{% endtrans %}</span>
-                </a>
+                </a><br>
                 <a href="{{ path('bericht_backupconcept') }}"
                    title="{% trans %}software.export.archiveConcept.title{% endtrans %}">
                     <span>{% trans %}software.export.archiveConcept.export{% endtrans %}</span>
-                </a>
+                </a><br>
                 <a href="{{ path('bericht_recoveryconcept') }}"
                    title="{% trans %}software.export.recoveryConcept.title{% endtrans %}">
                     <span>{% trans %}software.export.recoveryConcept.export{% endtrans %}</span>
-                </a>
+                </a><br>
             </div>
 
             {% if currentTeam in app.user.adminRoles %}
-                <div>
-                    <h4>{% trans %}academy.word{% endtrans %}</h4>
+                <div class="card-akademie">
+                    <h3>{% trans %}academy.word{% endtrans %}</h3>
                     <a href="{{ path('bericht_akademie') }}">
                         <span>{% trans %}academy.allDoneBills{% endtrans %}</span>
-                    </a>
+                    </a><br>
                 </div>
             {% endif %}
 
-            <div>
-                <h4>{% trans %}dataProtectionGuideline.word{% endtrans %}</h4>
+            <div class="card-policy">
+                <h3>{% trans %}dataProtectionGuideline.word{% endtrans %}</h3>
                 <a href="{{ path('bericht_policy') }}">
                     <span>{% trans %}dataProtectionGuideline.export{% endtrans %}</span>
-                </a>
+                </a><br>
             </div>
 
-            <div>
-                <h4>Kundenanfragen</h4>
+            <div class="card-filled">
+                <h3>Kundenanfragen</h3>
                 <a href="{{ path('bericht_request') }}">
                     <span>Alle Anfragen exportieren</span>
-                </a>
+                </a><br>
             </div>
 
-            <div>
-                <h4>{% trans %}customerRequest.word{% endtrans %}</h4>
+            <div class="card-filled">
+                <h3>{% trans %}customerRequest.word{% endtrans %}</h3>
                 <a
                    href="{{ path('bericht_reports', {'team':currentTeam.id}) }}">
                     <span>{% trans %}customerRequest.create{% endtrans %}</span>
-                </a>
+                </a><br>
             </div>
 
-           <div>
-                <h4>{% trans %}deletionConcept{% endtrans %}</h4>
-
+            <div class="card-loeschkonzept">
+                <h3>{% trans %}deletionConcept{% endtrans %}</h3>
                 <a href="{{ path('bericht_loeschkonzept') }}">
                     <span>{% trans with {'{target}': 'deletionConcept'|trans} %}pdf.create{% endtrans %}</span>
-                </a>
+                </a><br>
                 <a href="{{ path('bericht_loeschkonzept', {'all':1}) }}">
                     <span>{% trans with {'{target}': 'deletionConcept'|trans} %}pdf.createWithHistory{% endtrans %}</span>
-                </a>
+                </a><br>
             </div>
         </div>
     </div>

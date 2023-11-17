@@ -33,6 +33,7 @@ class MenuService
             $menu->addChild($this->trans('dashboard'), ['route' => 'dashboard']);
             $menu->addChild($this->trans('myAssignments'), ['route' => 'assign']);
             $menu->addChild($this->trans('tasks'), ['route' => 'tasks']);
+            $menu->addChild($this->trans('reports'), ['route' => 'bericht']);
         }
 
         $this->handleCurrentItem($menu);
@@ -136,7 +137,19 @@ class MenuService
     {
         $parts = \explode('_', $this->standardizeRouteName($route));
 
+        if ('team_create' === $route) {
+            return 'manage_teams';
+        }
+
         if (\str_starts_with($route, 'team')) {
+            return $route;
+        }
+
+        if (\str_starts_with($route, 'akademie')) {
+            return $route . '_';
+        }
+
+        if (\str_starts_with($route, 'manage')) {
             return $route;
         }
 

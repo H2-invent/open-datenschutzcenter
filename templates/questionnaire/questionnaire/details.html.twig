@@ -1,51 +1,47 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'questionnaire' %}
-{% block body %}
-    <div>
-        <div>
-            <h5>
-                {{ questionnaire.label }}
-            </h5>
-            <div>
-                <p>{{ questionnaire.description }}</p>
-                <h3>{% trans %}question.words{% endtrans %}</h3>
-                <div>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th scope="col">{% trans %}question.label{% endtrans %}</th>
-                            <th scope="col">{% trans %}step{% endtrans %}</th>
-                            <th scope="col">{% trans from 'general' %}action.word{% endtrans %}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for questionnaireQuestion in questionnaire.questionnaireQuestions %}
-                            <tr>
-                                <td>{{ questionnaireQuestion.question.label }}</td>
-                                <td>{{ questionnaireQuestion.step }}</td>
-                                <td>
-                                    <a href="{{ path('question_details', {'id': questionnaireQuestion.question.id}) }}"
-                                      >
-                                        {% trans from 'general' %}view{% endtrans %}
-                                    </a>
-                                    <a href="{{ path('question_edit', {'id': questionnaireQuestion.question.id}) }}"
-                                    <a href="{{ path('question_delete', {'id': questionnaireQuestion.question.id}) }}"
-                                      >
-                                        {% trans from 'general' %}remove{% endtrans %}
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
 
-            </div>
-            <div>
-                <a href="{{ path('question_create', {'id': questionnaire.id}) }}">
-                    {% trans %}question.create{% endtrans %}
-                </a>
-            </div>
-        </div>
+{% block title %}
+    {{ questionnaire.label }}
+{% endblock %}
+
+{% block CTA %}
+    <a href="{{ path('question_create', {'id': questionnaire.id}) }}" class="btn btn-create">
+        {% trans %}question.create{% endtrans %}
+    </a>
+{% endblock %}
+
+{% block body %}
+    <div class="card-filled mb-5">
+        <p>{{ questionnaire.description }}</p>
     </div>
+    <h3>{% trans %}question.words{% endtrans %}</h3>
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">{% trans %}question.label{% endtrans %}</th>
+                <th scope="col">{% trans %}step{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}action.word{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for questionnaireQuestion in questionnaire.questionnaireQuestions %}
+            <tr>
+                <td>{{ questionnaireQuestion.question.label }}</td>
+                <td>{{ questionnaireQuestion.step }}</td>
+                <td>
+                    <a href="{{ path('question_details', {'id': questionnaireQuestion.question.id}) }}">
+                        {% trans from 'general' %}view{% endtrans %}
+                    </a>
+                    <a href="{{ path('question_edit', {'id': questionnaireQuestion.question.id}) }}">
+                        {% trans from 'general' %}edit{% endtrans %}
+                    </a>
+                    <a href="{{ path('question_delete', {'id': questionnaireQuestion.question.id}) }}">
+                        {% trans from 'general' %}remove{% endtrans %}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

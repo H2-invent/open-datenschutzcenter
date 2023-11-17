@@ -1,49 +1,153 @@
 @import "./tailmater.css";
 
-.card-vvt, .btn-vvt {
+.btn-vvt {
     @apply bg-vvt-50 hover:bg-vvt-100 text-vvt-800;
 }
 
-.card-dsfa, .btn-dsfa {
+.btn-dsfa {
     @apply bg-dsfa-50 hover:bg-dsfa-100 text-dsfa-800;
 }
 
-.card-tom, .btn-tom {
+.btn-tom {
     @apply bg-tom-50 hover:bg-tom-100 text-tom-800;
 }
 
-.card-kontakt, .btn-kontakt {
+.btn-kontakt {
     @apply bg-kontakt-50 hover:bg-kontakt-100 text-kontakt-800;
 }
 
-.card-datenweitergabe, .btn-datenweitergabe {
+.btn-datenweitergabe {
     @apply bg-datenweitergabe-50 hover:bg-datenweitergabe-100 text-datenweitergabe-800;
 }
 
-.card-av, .btn-av {
+.btn-av {
     @apply bg-av-50 hover:bg-av-100 text-av-800;
 }
 
-.card-formular, .btn-formular {
+.btn-formular {
     @apply bg-formular-50 hover:bg-formular-100 text-formular-800;
 }
 
-.card-policy, .btn-policy {
+.btn-policy {
     @apply bg-policy-50 hover:bg-policy-100 text-policy-800;
 }
 
-.card-software, .btn-software {
+.btn-software {
     @apply bg-software-50 hover:bg-software-100 text-software-800;
 }
 
-.card-tasks, .btn-tasks {
+.btn-tasks {
     @apply bg-task-50 hover:bg-task-100 text-task-800;
 }
 
-.card-loeschkonzept, .btn-loeschkonzept {
+.btn-loeschkonzept {
     @apply bg-loeschkonzept-50 hover:bg-loeschkonzept-100 text-loeschkonzept-800;
 }
 
-.card-datenkategorie, .btn-datenkatekorie {
+.btn-datenkatekorie {
     @apply bg-datenkategorie-50 hover:bg-datenkategorie-100 text-datenkategorie-800;
+}
+
+/* .card */
+
+.card-element {
+    @apply card border;
+}
+
+.card-vvt {
+    @apply card-element bg-vvt-50 text-vvt-800 border-vvt-100;
+}
+
+.card-dsfa {
+    @apply card-element bg-dsfa-50 text-dsfa-800 border-dsfa-100;
+}
+
+.card-tom {
+    @apply card-element bg-tom-50 text-tom-800 border-tom-100;
+}
+
+.card-kontakt {
+    @apply card-element bg-kontakt-50 text-kontakt-800 border-kontakt-100;
+}
+
+.card-datenweitergabe {
+    @apply card-element bg-datenweitergabe-50 text-datenweitergabe-800 border-datenweitergabe-100;
+}
+
+.card-av {
+    @apply card-element bg-av-50 text-av-800 border-av-100;
+}
+
+.card-formular {
+    @apply card-element bg-formular-50 text-formular-800 border-formular-100;
+}
+
+.card-policy {
+    @apply card-element bg-policy-50 text-policy-800 border-policy-100;
+}
+
+.card-software {
+    @apply card-element bg-software-50 text-software-800 border-software-100;
+}
+
+.card-tasks {
+    @apply card-element bg-task-50 text-task-800 border-task-100;
+}
+
+.card-loeschkonzept {
+    @apply card-element bg-loeschkonzept-50 text-loeschkonzept-800 border-loeschkonzept-100;
+}
+
+.card-datenkategorie {
+    @apply card-element bg-datenkategorie-50 text-datenkategorie-800 border-datenkategorie-100;
+}
+
+/* .card links */
+
+.card-vvt a {
+    @apply hover:text-vvt-950 text-vvt-800;
+}
+
+.card-dsfa a {
+    @apply hover:text-dsfa-950 text-dsfa-800;
+}
+
+.card-tom a {
+    @apply hover:text-tom-950 text-tom-800;
+}
+
+.card-kontakt a {
+    @apply hover:text-kontakt-950 text-kontakt-800;
+}
+
+.card-datenweitergabe a {
+    @apply hover:text-datenweitergabe-950 text-datenweitergabe-800;
+}
+
+.card-av a {
+    @apply hover:text-av-950 text-av-800;
+}
+
+.card-formular a {
+    @apply hover:text-formular-950 text-formular-800;
+}
+
+.card-policy a {
+    @apply hover:text-policy-950 text-policy-800;
+}
+
+.card-software a {
+    @apply hover:text-software-950 text-software-800;
+}
+
+.card-tasks a {
+    @apply hover:text-task-950 text-task-800;
+}
+
+.card-loeschkonzept a {
+    @apply hover:text-loeschkonzept-950 text-loeschkonzept-800;
+}
+
+.card-datenkategorie a {
+    @apply hover:text-datenkategorie-950 text-datenkategorie-800;
 }

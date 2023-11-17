@@ -1,19 +1,12 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'questionnaire' %}
+
+{% block title %}
+    {% trans %}questionnaire.create{% endtrans %}
+{% endblock %}
+
 {% block body %}
-    <div>
-        <div>
-            <h5>{% trans %}questionnaire.create{% endtrans %}</h5>
-            {{ form_start(form) }}
-            <div>
-                {{ form_row(form.label) }}
-                {{ form_row(form.description) }}
-                {{ form_row(form.percentageToPass) }}
-            </div>
-            <div>
-                {{ form_row(form.save) }}
-            </div>
-            {{ form_end(form) }}
-        </div>
-    </div>
+    {{ form_start(form) }}
+    {{ form_row(form) }}
+    {{ form_end(form) }}
 {% endblock %}
