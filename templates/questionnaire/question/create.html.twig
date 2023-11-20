@@ -20,33 +20,26 @@
         {% if error %}
             <div class="text-error-600">{% trans %}question.error{% endtrans %}</div>
         {% endif %}
-        <ul data-prototype="
-                                <div class='d-flex flex-column'>
-                                    {{ form_widget(form.answers.vars.prototype.label)|e('html_attr') }}
-                                    {{ form_widget(form.answers.vars.prototype.isCorrect)|e('html_attr') }}
-                                </div>
+        <ul class="answers dynamic-list freeField mb-2"
+            data-prototype="
+                    <div>{{ form_widget(form.answers.vars.prototype.label)|e('html_attr') }}</div>
+                    <div>{{ form_widget(form.answers.vars.prototype.isCorrect)|e('html_attr') }}</div>
                         ">
             {% for answerItem in form.answers %}
                 <li>
-                    <div>
-                        <div>{{ form_widget(answerItem.label) }}</div>
-                        <div>{{ form_widget(answerItem.isCorrect) }}</div>
-                    </div>
+                    <div>{{ form_widget(answerItem.label) }}</div>
+                    <div>{{ form_widget(answerItem.isCorrect) }}</div>
                 </li>
             {% endfor %}
         </ul>
-        <button type="button"
-                id="add_item_link"
-                class="btn"
-                data-collection-holder-class="answers">{% trans %}question.answer.add{% endtrans %}
+        <button type="button" id="add_item_link" class="btn" data-collection-holder-class="answers">
+            {% trans %}question.answer.add{% endtrans %}
         </button>
     </fieldset>
-    <fieldset>
-        <legend>Answers</legend>
-        {{ form_row(form.answers) }}
-    </fieldset>
     {{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
-
+    <div class="hidden">
+        {{ form_rest(form) }}
+    </div>
     {{ form_end(form) }}
 
 {% endblock %}

@@ -130,7 +130,7 @@ class QuestionController extends AbstractController
         $this->em->remove($question);
         $this->em->flush();
 
-        return $this->redirectToRoute('question');
+        return $this->redirectToRoute('akademie_admin');
     }
 
     private function handleForm(FormInterface $form, ?Question $originalQuestion = null): ?Question
