@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "datatables.net-dt": "^1.13.7",
-        "h2-invent-apps": "^2.2.0"
+        "h2-invent-apps": "^2.2.0",
+        "trix": "^2.0.8"
     }
 }

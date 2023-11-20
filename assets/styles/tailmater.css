@@ -1076,3 +1076,35 @@ ul.stacked-list > li > div:last-child {
 ul.dynamic-list > li {
     @apply flex pb-3 gap-x-5;
 }
+
+.trix-wrapper {
+    @apply bg-white shadow-sm rounded border border-gray-300;
+}
+
+trix-toolbar {
+    @apply border-b border-gray-300 px-2 pt-2.5;
+}
+
+trix-editor {
+    @apply border-none p-2;
+}
+
+trix-toolbar .trix-button.trix-active {
+    @apply bg-primary-100;
+}
+
+trix-toolbar .trix-button-group.trix-button-group--file-tools {
+    @apply hidden;
+}
+
+trix-editor ol, trix-editor ul {
+    margin-left: 25px;
+}
+
+trix-editor ul {
+    list-style: disc;
+}
+
+trix-editor ol {
+    list-style: decimal;
+}
