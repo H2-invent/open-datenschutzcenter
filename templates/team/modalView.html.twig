@@ -1,14 +1,9 @@
-<div>
-    <div>
-
-        <div>
-            <h5>{{ title }}</h5>
-
-        </div>
-        <div>
-            {{ form_start(form, {'attr': {'action': path('team_custom_create', {'type':type, 'id':id}), 'method': 'POST'}}) }}
-            {{ form_widget(form.name) }}
-            {{ form_end(form) }}
-        </div>
-    </div>
+{{ form_start(form, {'attr': {'action': path('team_custom_create', {'type':type, 'id':id}), 'method': 'POST'}}) }}
+<div class="modal-content">
+    <h3>{{ title }}</h3>
+    {{ form_row(form.name) }}
 </div>
+<div class="modal-footer">
+    {{ form_row(form.save) }}
+</div>
+{{ form_end(form) }}

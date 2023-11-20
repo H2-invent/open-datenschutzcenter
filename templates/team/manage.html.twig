@@ -43,6 +43,9 @@
                         {% trans %}team.manageMembers{% endtrans %}
                     </a>
                     <a href="{{ path('team_delete', {'id':t.id}) }}"
+                       data-type="dialogs"
+                       data-target="#modal-remote-content"
+                       data-action="click->appUi#loadContentModal"
                       >{% trans from 'general' %}delete{% endtrans %}</a>
                 </td>
             </tr>

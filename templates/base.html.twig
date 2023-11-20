@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     {{ include('base/__head.html.twig') }}
-    <body>
+    <body {{ stimulus_controller('appUi') }}>
         <main class="flex">
             <aside class="flex-none fixed">
                 {{ include('base/__sidenav.html.twig') }}
@@ -31,8 +31,10 @@
         <footer>
             {{ include('base/__footer.html.twig') }}
         </footer>
-{#        {% block javascripts %}#}
-            {{ encore_entry_script_tags('app') }}
-{#        {% endblock %}#}
+        <div id="modal-remote-content" class="modal">
+            <div data-close="#modal-remote-content" class="modal-close"></div>
+            <div class="modal-inner"></div>
+        </div>
+        {{ encore_entry_script_tags('app') }}
     </body>
 </html>

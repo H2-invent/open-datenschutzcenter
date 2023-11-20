@@ -23,6 +23,9 @@
                 </div>
                 <div id="tab-user" role="tabpanel" class="tab-content">
                     <a href="{{ path('team_mitglieder_create', {'title':'Akademiemitglied hinzufügen', 'type':'academy'}) }}"
+                       data-type="dialogs"
+                       data-target="#modal-remote-content"
+                       data-action="click->appUi#loadContentModal"
                        class="btn btn-create"
                     >{% trans %}academy.addUser{% endtrans %}</a>
                     {% if data|length %}
@@ -51,16 +54,3 @@
     </div>
 
 {% endblock %}
-
-{# {% block javascripts %}
-    <script>
-        var url = document.location.toString();
-        if (url.match('#')) {
-            $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
-        }
-
-        $('.nav-tabs a').on('shown.bs.tab', function (e) {
-            window.location.hash = e.target.hash;
-        });
-    </script>
-{% endblock %} #}

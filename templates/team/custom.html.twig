@@ -18,7 +18,11 @@
                         <h3>{{ dd.title }}</h3>
                     </div>
                     <div class="text-right pt-1">
-                        <a href="{{ dd.newLink }}" class="btn btn-create">{{ dd.titleNew }}</a>
+                        <a href="{{ dd.newLink }}"
+                           class="btn btn-create"
+                           data-type="dialogs"
+                           data-target="#modal-remote-content"
+                           data-action="click->appUi#loadContentModal">{{ dd.titleNew }}</a>
                     </div>
                 </div>
                 <ul class="stacked-list">
@@ -31,7 +35,10 @@
                                     </p>
                                 </div>
                                 <div>
-                                    <a href="{{ d.edit }}">
+                                    <a href="{{ d.edit }}"
+                                       data-type="dialogs"
+                                       data-target="#modal-remote-content"
+                                       data-action="click->appUi#loadContentModal">
                                         {% trans from 'general' %}edit{% endtrans %}
                                     </a>
 

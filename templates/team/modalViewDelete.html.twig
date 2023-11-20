@@ -1,14 +1,9 @@
-{% trans_default_domain 'team' %}
-<div>
-    <div>
-
-        <div>
-            <h5>{% trans with {'{teamName}': team.name} %}team.delete{% endtrans %}</h5>
-        </div>
-        <div>
-            {{ form_start(form, {'attr': {'action': path('team_delete', {'id':team.id}), 'method': 'POST'}}) }}
-            {{ form_widget(form) }}
-            {{ form_end(form) }}
-        </div>
-    </div>
+{{ form_start(form, {'attr': {'action': path('team_delete', {'id':team.id}), 'method': 'POST'}}) }}
+<div class="modal-content">
+    <h3>{% trans with {'{teamName}': team.name} %}team.delete{% endtrans %}</h3>
+    {{ form_row(form.name) }}
 </div>
+<div class="modal-footer">
+    {{ form_row(form.save) }}
+</div>
+{{ form_end(form) }}

@@ -4,12 +4,18 @@
 {% block CTA %}
     {% if useKeycloakGroups %}
         <a href="{{ path('team_mitglieder_create', {'title':'Admin hinzufügen', 'type':'admin', 'id':team.id}) }}"
-           class="btn btn-create">{% trans %}admin.create{% endtrans %}</a>
+           class="btn btn-create"
+           data-type="dialogs"
+           data-target="#modal-remote-content"
+           data-action="click->appUi#loadContentModal">{% trans %}admin.create{% endtrans %}</a>
     {% else %}
         <a href="{{ path('team_mitglieder_create', {'title':'Mitglied hinzufügen', 'type':'odc', 'id':team.id}) }}"
-           class="btn btn-create">{% trans %}user.create{% endtrans %}</a>
+           class="btn btn-create"
+           data-type="dialogs"
+           data-target="#modal-remote-content"
+           data-action="click->appUi#loadContentModal">{% trans %}user.create{% endtrans %}</a>
     {% endif %}
-    <a href="{{ path('akademie_admin') }}#user" class="btn">{% trans %}academy.users{% endtrans %}</a>
+    <a href="{{ path('akademie_admin') }}#tab-user" class="btn">{% trans %}academy.users{% endtrans %}</a>
 {% endblock %}
 
 {% block body %}

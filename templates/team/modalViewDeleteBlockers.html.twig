@@ -1,17 +1,9 @@
-{% trans_default_domain 'team' %}
-<div>
-    <div>
-
-        <div>
-            <h5>{% trans with {'{teamName}': team.name} %}team.delete{% endtrans %}</h5>
-        </div>
-        <div>
-            <p>{% trans %}team.deletionBlocked{% endtrans %}</p>
-            <ul>
-                {% for blocker in team.deleteBlockers %}
-                    <li>{{ blocker | trans }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
+<div class="modal-content">
+    <h3>{% trans with {'{teamName}': team.name} %}team.delete{% endtrans %}</h3>
+    <p>{% trans %}team.deletionBlocked{% endtrans %}</p>
+    <ul>
+        {% for blocker in team.deleteBlockers %}
+            <li>{{ blocker | trans }}</li>
+        {% endfor %}
+    </ul>
 </div>

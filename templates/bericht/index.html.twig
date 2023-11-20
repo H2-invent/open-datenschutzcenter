@@ -132,8 +132,10 @@
 
             <div class="card-filled">
                 <h3>{% trans %}customerRequest.word{% endtrans %}</h3>
-                <a
-                   href="{{ path('bericht_reports', {'team':currentTeam.id}) }}">
+                <a href="{{ path('bericht_reports', {'team':currentTeam.id}) }}"
+                   data-type="dialogs"
+                   data-target="#modal-remote-content"
+                   data-action="click->appUi#loadContentModal">
                     <span>{% trans %}customerRequest.create{% endtrans %}</span>
                 </a><br>
             </div>
