@@ -1,21 +1,18 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'vvt' %}
 
-{% block CTA %}{% endblock %}
+{% block title %}
+    {{ title }} {% if not activNummer %}
+    <span> {% trans from 'general' %}id{% endtrans %}: {{ vvt.nummer }}{% endif %}</span>
+{% endblock %}
+
 {% block body %}
-    <h2>
-        {{ title }} {% if not activNummer %}
-        <span> {% trans from 'general' %}id{% endtrans %}: {{ vvt.nummer }}{% endif %}</span>
-    </h2>
     {{ include('vvt/__form.html.twig') }}
-    <p>{% trans from 'general' %}createdAt{% endtrans %}: {{ vvt.user.email }}</p>
+    <p class="text-muted text-sm mt-5">{% trans from 'general' %}createdAt{% endtrans %}: {{ vvt.user.email }}</p>
     {% if vvt.previous %}
         <div>
             <h2>{% trans from 'general' %}history{% endtrans %}</h2>
             {{ include('vvt/__history.html.twig', {'p':vvt.previous}) }}
         </div>
     {% endif %}
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

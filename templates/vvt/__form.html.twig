@@ -1,359 +1,114 @@
 {% trans_default_domain 'vvt' %}
+
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-<div>
-    <h4>{% trans %}dataForProcessing{% endtrans %}</h4>
+<fieldset>
+    <legend>{% trans %}dataForProcessing{% endtrans %}</legend>
+    {% if activNummer %}
+        {{ form_row(form.nummer) }}
+    {% endif %}
+    {{ form_row(form.name) }}
+    {{ form_row(form.auftragsverarbeitung) }}
+    {{ form_row(form.status) }}
+    {{ form_row(form.abteilung) }}
+    {{ form_row(form.produkt) }}
+    {{ form_row(form.userContract) }}
+    {{ form_row(form.verantwortlich) }}
+    {{ form_row(form.grundlage) }}
+    {{ form_row(form.zweck) }}
+    {{ form_row(form.speicherung) }}
+    {{ form_row(form.loeschfrist) }}
+</fieldset>
 
-    <div>
-        {% if activNummer %}
-            <div>
-                <div>
-                    {{ form_label(form.nummer) }}
-                </div>
-                <div>
-                    {{ form_widget(form.nummer) }}
-                </div>
-            </div>
-        {% endif %}
+<fieldset>
+    <legend>{% trans %}collectedData{% endtrans %}</legend>
+    {{ form_row(form.personengruppen) }}
+    {{ form_row(form.kategorien) }}
+</fieldset>
 
-        <div>
-            <div>
-                {{ form_label(form.name) }}
-            </div>
-            <div>
-                {{ form_widget(form.name) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.auftragsverarbeitung) }}
-                {{ form_help(form.auftragsverarbeitung) }}
-            </div>
-            <div>
-                {{ form_widget(form.auftragsverarbeitung) }}
-            </div>
+<fieldset>
+    <legend>{% trans %}orderProcessing{% endtrans %}</legend>
+    {{ form_row(form.jointControl) }}
+    {{ form_row(form.weitergabe) }}
+    {{ form_row(form.datenweitergaben) }}
 
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.status) }}
-                {{ form_help(form.status) }}
-            </div>
-            <div>
-                {{ form_widget(form.status) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.abteilung) }}
-                {{ form_help(form.abteilung) }}
-            </div>
-            <div>
-                {{ form_widget(form.abteilung) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.produkt) }}
-            </div>
-            <div>
-                {{ form_widget(form.produkt) }}
-                {{ form_help(form.produkt) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.userContract) }}
-                {{ form_help(form.userContract) }}
-            </div>
-            <div>
-                {{ form_widget(form.userContract) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.verantwortlich) }}
-
-            </div>
-            <div>
-                {{ form_widget(form.verantwortlich) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.grundlage) }}
-            </div>
-            <div>
-                {{ form_widget(form.grundlage) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.zweck) }}
-                {{ form_help(form.zweck) }}
-            </div>
-            <div>
-                {{ form_widget(form.zweck) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.speicherung) }}
-                {{ form_help(form.speicherung) }}
-            </div>
-            <div>
-                {{ form_widget(form.speicherung) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.loeschfrist) }}
-                {{ form_help(form.loeschfrist) }}
-            </div>
-            <div>
-                {{ form_widget(form.loeschfrist) }}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div>
-    <h4>{% trans %}collectedData{% endtrans %}</h4>
-
-    <div>
-        <div>
-            <div>
-                {{ form_label(form.personengruppen) }}
-            </div>
-            <div>
-                {{ form_widget(form.personengruppen) }}
-            </div>
-
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.kategorien) }}
-                {{ form_help(form.kategorien) }}
-            </div>
-            <div>
-                {{ form_widget(form.kategorien) }}
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div>
-    <h4>{% trans %}orderProcessing{% endtrans %}</h4>
-
-    <div>
-        <div>
-            <div>
-                {{ form_label(form.jointControl) }}
-                {{ form_help(form.jointControl) }}
-            </div>
-            <div>
-                {{ form_widget(form.jointControl) }}
-            </div>
-
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.weitergabe) }}
-                {{ form_help(form.weitergabe) }}
-            </div>
-            <div>
-                {{ form_widget(form.weitergabe) }}
-            </div>
-        </div>
-
-        <div>
-
-            <div>
-                {{ form_label(form.datenweitergaben) }}
-            </div>
-            <div>
-                {{ form_widget(form.datenweitergaben) }}
-            </div>
-            <div>
-                {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
-                    <b>{% trans %}associatedDataTransfer{% endtrans %}</b><br>
-                    <ul>
-                        {% for d in vvt.datenweitergaben %}
-                            {% if d.activ == 1 %}
-                                {% if d.art == 1 %}
-                                    <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
-                                    </li>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                    <b>{% trans %}associatedOrderProcessing{% endtrans %}</b><br>
-                    <ul>
-                        {% for d in vvt.datenweitergaben %}
-                            {% if d.activ == 1 %}
-                                {% if d.art == 2 %}
-                                    <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
-                                    </li>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
+    {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
+        <h4>{% trans %}associatedDataTransfer{% endtrans %}</h4>
+        <ul class="initial mb-5">
+            {% for d in vvt.datenweitergaben %}
+                {% if d.activ == 1 %}
+                    {% if d.art == 1 %}
+                        <li>
+                            <a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
+                        </li>
+                    {% endif %}
                 {% endif %}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.eu) }}
-                {{ form_help(form.eu) }}
-            </div>
-            <div>
-                {{ form_widget(form.eu) }}
-            </div>
-        </div>
+            {% endfor %}
+        </ul>
+        <hr class="my-5">
+        <h4>{% trans %}associatedOrderProcessing{% endtrans %}</h4>
+        <ul class="initial mb-5">
+            {% for d in vvt.datenweitergaben %}
+                {% if d.activ == 1 %}
+                    {% if d.art == 2 %}
+                        <li>
+                            <a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <hr class="my-5">
+    {% endif %}
 
-    </div>
-</div>
+    {{ form_row(form.eu) }}
+</fieldset>
 
-<div>
-    <h4>{% trans %}technicalOrganizationalActions{% endtrans %}</h4>
+<fieldset>
+    <legend>{% trans %}technicalOrganizationalActions{% endtrans %}</legend>
+    {{ form_row(form.software) }}
+    {{ form_row(form.tomLink) }}
+    {{ form_row(form.tom) }}
+</fieldset>
 
-    <div>
-        <div>
-            <div>
-                {{ form_label(form.software) }}
-                {{ form_help(form.software) }}
-            </div>
-            <div>
-                {{ form_widget(form.software) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.tomLink) }}
-                {{ form_help(form.tomLink) }}
-            </div>
-            <div>
-                {{ form_widget(form.tomLink) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.tom) }}
-                {{ form_help(form.tom) }}
-            </div>
-            <div>
-                {{ form_widget(form.tom) }}
-            </div>
-        </div>
+<fieldset>
+    <legend>{% trans %}riskAssessment{% endtrans %}</legend>
+    {{ form_row(form.risiko) }}
+    {{ form_row(form.beurteilungEintritt) }}
+    <ul class="initial mb-5">
+        <li>
+            {% trans %}probability.highest{% endtrans %}
+        </li>
+        <li>
+            {% trans %}probability.high{% endtrans %}
+        </li>
+        <li>
+            {% trans %}probability.low{% endtrans %}
+        </li>
+        <li>
+            {% trans %}probability.lowest{% endtrans %}
+        </li>
+    </ul>
+    {{ form_row(form.beurteilungSchaden) }}
+    <p class="mt-5">
+        {% trans %}riskAssessmentDisclaimer{% endtrans %}
+    </p>
+</fieldset>
 
-    </div>
-</div>
+<fieldset>
+    <legend>{% trans %}dutyToInform{% endtrans %}</legend>
+    {{ form_row(form.source) }}
+    {{ form_row(form.informationspflicht) }}
+    {{ form_row(form.dsb) }}
 
-<div>
-    <h4>{% trans %}riskAssessment{% endtrans %}</h4>
+    <p class="mt-5">
+        {% trans %}processing.disclaimer{% endtrans %}
+    </p>
 
-    <div>
-        <div>
-            <div>
-                {{ form_label(form.risiko) }}
-                {{ form_help(form.risiko) }}
-            </div>
-            <div>
-                {{ form_widget(form.risiko) }}
-            </div>
-        </div>
+    {% for p in vvt.policies | filter(p => p.activ) %}
+        <a href="{{ path('policy_edit',{'id':p.id}) }}">{{ p.title }}</a>
+    {% endfor %}
+</fieldset>
 
-
-        <div>
-            <div>
-                {{ form_label(form.beurteilungEintritt) }}
-                {{ form_help(form.beurteilungEintritt) }}
-            </div>
-            <div>
-                {{ form_widget(form.beurteilungEintritt) }}
-                <p>
-                <ul>
-                    <li>
-                        {% trans %}probability.highest{% endtrans %}
-                    </li>
-                    <li>
-                        {% trans %}probability.high{% endtrans %}
-                    </li>
-                    <li>
-                        {% trans %}probability.low{% endtrans %}
-                    </li>
-                    <li>
-                        {% trans %}probability.lowest{% endtrans %}
-                    </li>
-                </ul>
-                </p>
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.beurteilungSchaden) }}
-                {{ form_help(form.beurteilungSchaden) }}
-            </div>
-            <div>
-                {{ form_widget(form.beurteilungSchaden) }}
-                <div>
-                    {% trans %}riskAssessmentDisclaimer{% endtrans %}
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
-<div>
-    <h4>{% trans %}dutyToInform{% endtrans %}</h4>
-
-    <div>
-        <div>
-            <div>
-                {{ form_label(form.source) }}
-                {{ form_help(form.source) }}
-            </div>
-            <div>
-                {{ form_widget(form.source) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.informationspflicht) }}
-                {{ form_help(form.informationspflicht) }}
-            </div>
-            <div>
-                {{ form_widget(form.informationspflicht) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {{ form_label(form.dsb) }}
-                {{ form_help(form.dsb) }}
-            </div>
-            <div>
-                {{ form_widget(form.dsb) }}
-            </div>
-        </div>
-        <div>
-            <div>
-                <p>
-                    {% trans %}processing.disclaimer{% endtrans %}
-                </p>
-            </div>
-            <div>
-                {% for p in vvt.policies | filter(p => p.activ) %}
-                    <a href="{{ path('policy_edit',{'id':p.id}) }}">{{ p.title }}</a>
-                {% endfor %}
-            </div>
-        </div>
-        <div>
-            {{ form_widget(form.save) }}
-        </div>
-    </div>
-</div>
+{{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
 {{ form_end(form) }}

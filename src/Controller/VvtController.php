@@ -86,6 +86,7 @@ class VvtController extends AbstractController
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'CTA' => false,
+            'urlBack' => $this->generateUrl('vvt'),
         ]);
     }
 

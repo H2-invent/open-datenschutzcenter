@@ -1097,14 +1097,14 @@ trix-toolbar .trix-button-group.trix-button-group--file-tools {
     @apply hidden;
 }
 
-trix-editor ol, trix-editor ul, .editor-output ol, .editor-output ul {
+trix-editor ol, trix-editor ul, .editor-output ol, .editor-output ul, ul.initial, ol.initial {
     margin-left: 25px;
 }
 
-trix-editor ul, .editor-output ul {
+trix-editor ul, .editor-output ul, ul.initial {
     list-style: disc;
 }
 
-trix-editor ol, .editor-output ol {
+trix-editor ol, .editor-output ol, ol.initial {
     list-style: decimal;
 }
