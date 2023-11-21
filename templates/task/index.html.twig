@@ -32,7 +32,7 @@
             <tr class="{{ rowClass }}" data-href="{{ path('task_edit', {'id': t.id}) }}">
                 <td>{{ t.id }}</td>
                 <td>{{ t.title }}</td>
-                <td>{{ t.task|striptags|replace({'&nbsp;' : ' '})|u.truncate(20, '...') }}</td>
+                <td>{{ t.task|striptags|replace({'&nbsp;' : ' '})|u.truncate(50, '...') }}</td>
                 <td>{{ t.prioString }}</td>
                 <td>
                     {% trans from 'general' %}createdAt{% endtrans %}: {{ t.createdAt|date('d.m.Y') }}{% if t.endDate %}
