@@ -51,7 +51,7 @@
 /* .card */
 
 .card-element {
-    @apply card border;
+    @apply rounded-xl w-full p-5 border;
 }
 
 .card-vvt {

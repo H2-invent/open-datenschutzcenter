@@ -22,7 +22,7 @@ td, th {
 }
 
 .dataTables_info {
-    @apply p-5 float-left text-muted;
+    @apply p-5 float-left text-gray-500;
 }
 
 .dataTables_paginate {
@@ -42,7 +42,7 @@ td, th {
 }
 
 .dataTables_paginate a.paginate_button.disabled {
-    @apply cursor-default bg-surface-50 hover:bg-surface-50 text-muted;
+    @apply cursor-default bg-surface-50 hover:bg-surface-50 text-gray-500;
 }
 
 table.dataTable {
