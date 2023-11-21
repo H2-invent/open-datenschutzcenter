@@ -224,7 +224,8 @@ class AuditTomController extends AbstractController
                 'activ' => $audit->getActiv(),
                 'activNummer' => false,
                 'nextAudit' => $nextAudit,
-                'snack' => $request->get('snack')
+                'snack' => $request->get('snack'),
+                'urlBack' => $this->generateUrl('audit_tom'),
             ]
         );
     }

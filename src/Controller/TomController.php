@@ -201,7 +201,8 @@ class TomController extends AbstractController
             'activ' => $tom->getActiv(),
             'activTitel' => false,
             'snack' => $request->get('snack'),
-            'currentTeam' => $team
+            'currentTeam' => $team,
+            'urlBack' => $this->generateUrl('tom'),
         ]);
     }
 

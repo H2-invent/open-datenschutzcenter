@@ -1,31 +1,25 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'audit_tom' %}
 
+{% block title %}
+    {{ title }} ({% trans from 'general' %}number{% endtrans %}: {{ audit.nummer }})
+{% endblock %}
+
 {% block CTA %}
     {% if audit.activ %}
-        <a href="{{ path('bericht_audit', {'id':audit.id}) }}">
-            <span>{% trans %}pdf.create{% endtrans %}</span>
+        <a href="{{ path('bericht_audit', {'id':audit.id}) }}" class="btn">
+            {% trans %}pdf.create{% endtrans %}
         </a>
-        <a href="{{ path('bericht_audit', {'id':audit.id, 'all':1}) }}">
-            <span>{% trans %}pdf.createWithHistory{% endtrans %}</span>
+        <a href="{{ path('bericht_audit', {'id':audit.id, 'all':1}) }}" class="btn">
+            {% trans %}pdf.createWithHistory{% endtrans %}
         </a>
     {% endif %}
 {% endblock %}
 
 {% block body %}
-    <div>
-        <div>
-            <h2>{{ title }} ({% trans from 'general' %}number{% endtrans %}: {{ audit.nummer }})</h2>
-        </div>
-        <div>
-            {{ include('assign/__assign.html.twig',{'data':audit,'path':'assign_audit'}) }}
-        </div>
-    </div>
-
-    <div>
-        {{ include('audit_tom/__form.html.twig') }}
-    </div>
-    <p>{% trans %}createdBy{% endtrans %}: {{ audit.user.email }}</p>
+    {{ include('assign/__assign.html.twig',{'data':audit,'path':'assign_audit'}) }}
+    {{ include('audit_tom/__form.html.twig') }}
+    <p class="text-muted mt-5 text-sm">{% trans %}createdBy{% endtrans %}: {{ audit.user.email }}</p>
     {% if audit.previous %}
         <div>
             <h2>{% trans %}history{% endtrans %}</h2>
@@ -33,7 +27,4 @@
         </div>
     {% endif %}
     {{ include('base/__snack.html.twig') }}
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}
