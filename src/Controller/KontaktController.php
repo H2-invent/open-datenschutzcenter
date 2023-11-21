@@ -68,6 +68,7 @@ class KontaktController extends AbstractController
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
             'new' => true,
+            'urlBack' => $this->generateUrl('kontakt'),
         ]);
     }
 
@@ -152,7 +153,8 @@ class KontaktController extends AbstractController
             'kontakt' => $kontakt,
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
-            'snack' => $request->get('snack')
+            'snack' => $request->get('snack'),
+            'urlBack' => $this->generateUrl('kontakt'),
         ]);
     }
 
