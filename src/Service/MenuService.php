@@ -41,26 +41,30 @@ class MenuService
         return $menu;
     }
 
-    public function createElementsMenu(array $options): ItemInterface
+    public function createElementsMenu(array $options): ?ItemInterface
     {
         $menu = $this->factory->createItem('root');
+        
+        if (!$this->user->getTeams()->isEmpty()) {
+            $menu->addChild($this->trans('auditQuestions'), ['route' => 'audit_tom']);
+            $menu->addChild($this->trans('dataCategories'), ['route' => 'app_vvtdatenkategorie_index']);
+            $menu->addChild($this->trans('toms'), ['route' => 'tom']);
+            $menu->addChild($this->trans('processings'), ['route' => 'vvt']);
+            $menu->addChild($this->trans('deleteConcepts'), ['route' => 'app_loeschkonzept_index']);
+            $menu->addChild($this->trans('policies'), ['route' => 'policies']);
+            $menu->addChild($this->trans('contacts'), ['route' => 'kontakt']);
+            $menu->addChild($this->trans('dataTransfers'), ['route' => 'datenweitergabe']);
+            $menu->addChild($this->trans('orderProcessing'), ['route' => 'auftragsverarbeitung']);
+            $menu->addChild($this->trans('software'), ['route' => 'software']);
+            $menu->addChild($this->trans('forms'), ['route' => 'forms']);
+            $menu->addChild($this->trans('incidents'), ['route' => 'vorfall']);
+            $menu->addChild($this->trans('customerQuestions'), ['route' => 'client_requests']);
+            $menu->addChild($this->trans('activities'), ['route' => 'report']);
 
-        $menu->addChild($this->trans('auditQuestions'), ['route' => 'audit_tom']);
-        $menu->addChild($this->trans('dataCategories'), ['route' => 'app_vvtdatenkategorie_index']);
-        $menu->addChild($this->trans('toms'), ['route' => 'tom']);
-        $menu->addChild($this->trans('processings'), ['route' => 'vvt']);
-        $menu->addChild($this->trans('deleteConcepts'), ['route' => 'app_loeschkonzept_index']);
-        $menu->addChild($this->trans('policies'), ['route' => 'policies']);
-        $menu->addChild($this->trans('contacts'), ['route' => 'kontakt']);
-        $menu->addChild($this->trans('dataTransfers'), ['route' => 'datenweitergabe']);
-        $menu->addChild($this->trans('orderProcessing'), ['route' => 'auftragsverarbeitung']);
-        $menu->addChild($this->trans('software'), ['route' => 'software']);
-        $menu->addChild($this->trans('forms'), ['route' => 'forms']);
-        $menu->addChild($this->trans('incidents'), ['route' => 'vorfall']);
-        $menu->addChild($this->trans('customerQuestions'), ['route' => 'client_requests']);
-        $menu->addChild($this->trans('activities'), ['route' => 'report']);
+            $this->handleCurrentItem($menu);
 
-        $this->handleCurrentItem($menu);
+            return $menu;
+        }
 
         return $menu;
     }

@@ -9,8 +9,10 @@
 
     {{ knp_menu_render('main') }}
 
-    <div class="label">{% trans %}elements{% endtrans %}</div>
-    {{ knp_menu_render('elements') }}
+    {% if app.user.teams|length %}
+        <div class="label">{% trans %}elements{% endtrans %}</div>
+        {{ knp_menu_render('elements') }}
+    {% endif %}
 
     {% if app.user.akademieUser %}
         <div class="label">{% trans %}academy{% endtrans %}</div>
