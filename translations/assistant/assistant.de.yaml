@@ -8,13 +8,13 @@ assistant:
 category:
   processing:
     title: Datenkategorie für Auftragsverarbeitung
-    info: Welche Datenkategorie/Löschfrist soll für die zur Auftragsverarbeitung zugehörigen Verarbeitstätigkeit gelten? Sie können diesen Punkt leer lassen, falls Sie eine bereits angelegte Verarbeitungstätigkeit verwenden wollen.
+    info: Welche Datenkategorie wird im Rahmen der Auftragsverarbeitung bzw. Verarbeitungstätigkeit verarbeitet? Beispiele können allgemein "personenbezogene Daten" sein oder spezifisch "Zeiterfassungsdaten". Sie können diesen Punkt leer lassen, falls Sie eine bereits angelegte Verarbeitungstätigkeit verwenden wollen.
   transfer:
     title: Datenkategorie für Datenweitergabe
     info: Welche Datenkategorie/Löschfrist soll für die zur Datenweitergabe zugehörigen Verarbeitstätigkeit gelten? Sie können diesen Punkt leer lassen, falls Sie eine bereits angelegte Verarbeitungstätigkeit verwenden wollen.
 contact:
   source:
-    title: Eingangskontakt
+    title: Datenherkunft
     info: Wo kommen die Daten für die Auftragsverarbeitung her?
   dest:
     title: Ausgangskontakt
