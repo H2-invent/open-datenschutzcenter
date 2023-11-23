@@ -1,0 +1,397 @@
+{% trans_default_domain 'dashboard' %}
+<h3>{% trans %}flowChart{% endtrans %}</h3>
+<div class="card-outlined mb-5">
+    <select id="nodeFilterSelect" class="w-auto">
+        <!-- TODO: Make select work for multiple teams -->
+        {% for team in app.user.teams %}
+            <optgroup label="{{ team.name }}" data-max-options="1">
+                {% if team == currentTeam %}
+                    <option selected value>{{ team.name }}: {% trans %}departments.all{% endtrans %}</option>
+                    {% for a in team.abteilungen|filter(a => a.activ) %}
+                        <option value="ab{{ a.id }}">{{ team.name }} {{ a.name }}</option>
+                    {% endfor %}
+                {% endif %}
+            </optgroup>
+        {% endfor %}
+    </select>
+    <hr class="my-5">
+    <div id="mynetwork"></div>
+</div>
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/vis-network.min.js') }}"></script>
+    <script type="text/javascript">
+        const nodeFilterSelector = document.getElementById("nodeFilterSelect");
+
+        function startNetwork(data) {
+            const container = document.getElementById("mynetwork");
+            const options = {
+                interaction: {hover: true},
+                hoverConnectedEdges: true,
+                layout: {
+                    hierarchical: {
+                        direction: "UD",
+                        sortMethod: "directed",
+                        parentCentralization: false
+                    }
+                },
+                autoResize: true,
+                physics: {
+                    hierarchicalRepulsion: {
+                        gravitationalConstant: -26,
+                        centralGravity: 0.005,
+                        springLength: 600,
+                        springConstant: 0.18,
+                        avoidOverlap: 3
+                    }
+                },
+            };
+            var network = new vis.Network(container, data, options);
+
+
+            network.on("click", function (params) {
+                if (params.nodes.length === 1) {
+                    var node = nodes.get(params.nodes[0]);
+                    if (node.url != null) {
+                        window.open(node.url, "_self");
+                    }
+                }
+            });
+            network.on("hoverNode", function (params) {
+                network.canvas.body.container.style.cursor = 'pointer'
+            });
+            network.on("blurNode", function (params) {
+                network.canvas.body.container.style.cursor = 'default'
+            });
+        }
+
+        const nodes = new vis.DataSet([
+
+                    {% for n in vvt | filter(n => n.status.network) %}
+                {
+                    id: 'vvt{{ n.id }}',
+                    {% if n.abteilung %}
+                    ab{{ n.abteilung.id }}:
+                        '{{ n.abteilung.id }}',
+                    {% endif %}
+                    title
+                        :
+                        '{% if n.approved %}{% trans %}approvedBy{% endtrans%} {{ n.approvedBy.username }}<br>{% endif %}{% trans from 'general' %}state{% endtrans %}: {{ n.status.name }}<br>{{ n.name }}',
+                    label
+                        :
+                        '{% if n.approved %}✔ {% endif %}{{ n.name|slice(0,28) }}',
+                    color
+                        :
+                        '#34ce57',
+                    font
+                        :
+                        {
+                            face: "Monospace"
+                        }
+                    ,
+                    shape: "box",
+                    url
+                        :
+                        "{{ path('vvt_edit', {'id':n.id}) }}"
+                },
+                    {% endfor %}
+
+                    {% for s in software | filter(s => s.status != 60) %}
+                {
+                    id: 'software{{ s.id }}',
+                    {% for n in s.vvts %}
+                    {% if n.abteilung %}
+                    ab{{ n.abteilung.id }}:
+                        '{{ n.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
+                    title
+                        :
+                        '{% if s.licenseExpiration < date() and s.licenseExpiration is not null %}{% trans %}licenseExpired{% endtrans %} <br>{% endif %}{% if s.approved %}{% trans %}approvedBy{% endtrans %} {{ s.approvedBy.username }}<br>{% endif %}{% if s.licenseExpiration %}{% trans %}license{% endtrans %}: {{ s.licenseExpiration|date('d.m.Y') }}<br>{% endif %}{{ s.name }}',
+                    label
+                        :
+                        '{% if s.licenseExpiration < date() and s.licenseExpiration is not null %}{% trans %}expired{% endtrans %} \n{% endif %}{% if s.approved %}✔ {% endif %}{% trans %}software{% endtrans %} \n{{ s.name|slice(0,28) }}',
+                    color
+                        :
+                        '#2E9AFE',
+                    font
+                        :
+                        {
+                            face: "Monospace"
+                        }
+                    ,
+                    shape: "box",
+                    url
+                        :
+                        "{{ path('software_edit', {'id':s.id}) }}"
+                }
+                ,
+                    {% endfor %}
+
+
+
+
+                    {% for n in daten | filter(n => n.stand.network) %}
+                {
+                    id: 'daten{{ n.id }}',
+                    {% for v in n.verfahren | filter(v => v.activ) %}
+                    {% if v.abteilung %}
+                    ab{{ v.abteilung.id }}:
+                        '{{ v.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
+                    {% for s in n.software | filter(s => s.activ) %}
+                    {% for v in s.vvts | filter(v => v.activ) %}
+                    {% if v.abteilung %}
+                    ab{{ v.abteilung.id }}:
+                        '{{ v.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                    label
+                        :
+                        '{% if n.approved %}✔ {% endif %}{% trans %}dw{% endtrans %} \n{{ n.gegenstand }}',
+                    color
+                        :
+                        '#6f42c1',
+                    font
+                        :
+                        {
+                            face: "Monospace", color
+                                :
+                                'white'
+                        }
+                    ,
+                    shape: "box",
+                    url
+                        :
+                        "{{ path('datenweitergabe_edit', {'id':n.id}) }}"
+                }
+                ,
+                    {% endfor %}
+
+
+                    {% for n in av | filter(n => n.stand.network) %}
+                {
+                    id: 'daten{{ n.id }}',
+                    {% for v in n.verfahren | filter(v => v.activ) %}
+                    {% if v.abteilung %}
+                    ab{{ v.abteilung.id }}:
+                        '{{ v.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
+                    {% for s in n.software | filter(s => s.activ) %}
+                    {% for v in s.vvts | filter(v => v.activ) %}
+                    {% if v.abteilung %}
+                    ab{{ v.abteilung.id }}:
+                        '{{ v.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                    label
+                        :
+                        '{% if n.approved %}✔ {% endif %}{% trans %}av{% endtrans %} \n{{ n.gegenstand }}',
+                    color
+                        :
+                        '#7e57c2',
+                    font
+                        :
+                        {
+                            face: "Monospace", color
+                                :
+                                'white'
+                        }
+                    ,
+                    shape: "box",
+                    url
+                        :
+                        "{{ path('datenweitergabe_edit', {'id':n.id}) }}"
+                }
+                ,
+                    {% endfor %}
+                    {% for n in tom %}
+                {
+                    id: 'tom{{ n.id }}',
+                    {% for v in n.vvts | filter(v => v.activ) %}
+                    {% if v.abteilung %}
+                    ab{{ v.abteilung.id }}:
+                        '{{ v.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
+                    label
+                        :
+                        '{% if n.approved %}✔ {% endif %}{% trans %}tom{% endtrans %} \n{{ n.titel }}',
+                    color
+                        :
+                        '#0e4377',
+                    font
+                        :
+                        {
+                            face: "Monospace", color
+                                :
+                                'white'
+                        }
+                    ,
+                    shape: "box",
+                    url
+                        :
+                        "{{ path('tom_edit', {'tom':n.id}) }}",
+                }
+                ,
+                    {% endfor %}
+
+
+                    {% for n in policies %}
+                {
+                    id: 'pol{{ n.id }}',
+                    label
+                        :
+                        '{% if n.approved %}✔ {% endif %}{% trans %}guideline{% endtrans %} \n{{ n.title }}',
+                    color
+                        :
+                        '#4b515d',
+                    font
+                        :
+                        {
+                            face: "Monospace", color
+                                :
+                                'white'
+                        }
+                    ,
+                    shape: "box",
+                    url
+                        :
+                        "{{ path('policy_edit', {'id':n.id}) }}",
+                    {% for v in n.processes | filter(v => v.activ) %}
+                    {% if v.abteilung %}
+                    ab{{ v.abteilung.id }}:
+                        '{{ v.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
+                }
+                ,
+                    {% endfor %}
+
+
+
+                    {% for n in kontakte %}
+                {
+                    id: 'kon{{ n.id }}',
+                    label
+                        :
+                        '{% if n.approved %}✔ {% endif %}{% trans %}contact{% endtrans %} \n{{ n.firma }}',
+                    color
+                        :
+                        '#6a1b9a',
+                    font
+                        :
+                        {
+                            face: "Monospace", color
+                                :
+                                'white'
+                        }
+                    ,
+                    shape: "box",
+                    url
+                        :
+                        "{{ path('kontakt_edit', {'id':n.id}) }}",
+                    {% for d in n.datenweitergaben | filter(d => d.activ) %}
+                    {% for v in d.verfahren | filter(v => v.activ) %}
+                    {% if v.abteilung and d.stand.network %}
+                    ab{{ v.abteilung.id }}:
+                        '{{ v.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
+                    {% for s in d.software | filter(s => s.activ) %}
+                    {% for v in s.vvts | filter(v => v.activ) %}
+                    {% if v.abteilung and d.stand.network %}
+                    ab{{ v.abteilung.id }}:
+                        '{{ v.abteilung.id }}',
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                    {% endfor %}
+                }
+                ,
+                    {% endfor %}
+            ])
+        ;
+
+        const edges = new vis.DataSet([
+
+            {% for ee in vvt %}
+            {% for e in ee.datenweitergaben | filter(e => e.activ) %}
+            {% if e.art == 2 %}
+            {from: 'vvt{{ ee.id }}', to: 'daten{{ e.id }}'},
+            {% else %}
+            {from: 'daten{{ e.id }}', to: 'vvt{{ ee.id }}'},
+            {% endif %}
+            {% endfor %}
+            {% if ee.tomLink is not null %}
+            {from: 'vvt{{ ee.id }}', to: 'tom{{ ee.tomLink.id }}'},
+            {% endif %}
+
+            {% for e in ee.software | filter(e => e.activ) %}
+            {from: 'software{{ e.id }}', to: 'vvt{{ ee.id }}'},
+            {% for d in e.datenweitergabe | filter(d => d.activ) %}
+            {from: 'daten{{ d.id }}', to: 'software{{ e.id }}'},
+            {% endfor %}
+            {% endfor %}
+
+            {% for e in ee.policies | filter(e => e.activ) %}
+            {from: 'vvt{{ ee.id }}', to: 'pol{{ e.id }}'},
+            {% endfor %}
+            {% endfor %}
+
+            {% for ee in kontakte %}
+            {% for e in ee.datenweitergaben | filter(e => e.activ) %}
+            {% if e.art == 2 %}
+            {from: 'daten{{ e.id }}', to: 'kon{{ ee.id }}'},
+            {% else %}
+            {from: 'kon{{ ee.id }}', to: 'daten{{ e.id }}'},
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        ]);
+
+        /**
+         * filter values are updated in the outer scope.
+         * in order to apply filters to new values, DataView.refresh() should be called
+         */
+        let nodeFilterValue = "";
+
+        /*
+        filter function should return true or false
+        based on whether item in DataView satisfies a given condition.
+        */
+        {# todo add filters on products and teams #}
+        const nodesFilter = node => {
+            if (nodeFilterValue === "") {
+                return true;
+            }
+            switch (nodeFilterValue) {
+                    {% for a in currentTeam.abteilungen | filter(a => a.activ) %}
+                case "ab{{ a.id }}":
+                    return node.ab{{ a.id }} === "{{ a.id }}";
+                    {% endfor %}
+                default:
+                    return true;
+            }
+        };
+
+        const nodesView = new vis.DataView(nodes, {filter: nodesFilter});
+
+        nodeFilterSelector.addEventListener("change", e => {
+            // set new value to filter variable
+            nodeFilterValue = e.target.value;
+            /*
+                  refresh DataView,
+                  so that its filter function is re-calculated with the new variable
+                */
+            nodesView.refresh();
+        });
+
+        startNetwork({nodes: nodesView, edges: edges});
+    </script>
+
+{% endblock %}
