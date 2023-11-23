@@ -15,7 +15,7 @@ export default class extends Controller {
             });
         });
         if (document.location.toString().match('#')) {
-            document.querySelector('[data-target="#' + document.location.toString().split('#')[1] + '"]').click();
+            document.querySelector('[data-target="#' + document.location.toString().split('#')[1] + '"]')?.click();
         }
     }
 

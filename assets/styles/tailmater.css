@@ -957,8 +957,16 @@ input[type='text'], input[type='password'], input[type='email'], input[type='num
     @apply w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
 }
 
-input[type='checkbox'] {
+input[type='checkbox'], input[type='radio'] {
     @apply w-5 h-5;
+}
+
+input[type='radio'] {
+    @apply rounded-full;
+}
+
+button:disabled {
+    @apply cursor-not-allowed;
 }
 
 .form-group textarea {
@@ -966,10 +974,10 @@ input[type='checkbox'] {
 }
 
 .form-check {
-    @apply flex;
+    @apply flex mb-2;
 }
 
-.form-check input[type='checkbox'] {
+.form-check input[type='checkbox'], .form-check input[type='radio'] {
     @apply mr-2;
 }
 
@@ -1107,4 +1115,12 @@ trix-editor ul, .editor-output ul, ul.initial {
 
 trix-editor ol, .editor-output ol, ol.initial {
     list-style: decimal;
+}
+
+.alert {
+    @apply rounded-full block px-5 py-1;
+}
+
+.alert-warning {
+    @apply alert bg-amber-200 text-amber-800;
 }

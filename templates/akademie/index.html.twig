@@ -21,13 +21,13 @@
         {% for b in buchungen %}
             <tr>
                 <td>{{ b.id }}</td>
-                <th>
+                <td>
                     {% if b.zugewiesen > today %}
                         {% trans %}noAutomaticResubmission{% endtrans %}
                     {% else %}
                         {{ b.kurs.title }} (id: {{ b.kurs.id }})
                     {% endif %}
-                </th>
+                </td>
                 <td>{{ b.zugewiesen|date('d.m.Y') }}</td>
                 <td>{{ b.start|date('d.m.Y') }}</td>
                 <td>
@@ -58,7 +58,7 @@
                                  {% trans from 'general' %}start{% endtrans %}
                              </a>
                          {% else %}
-                            <a href="#">{% trans from 'general' %}finished{% endtrans %}</a>
+                            {% trans from 'general' %}finished{% endtrans %}
                         {% endif %}
                     {% endif %}
                 </td>

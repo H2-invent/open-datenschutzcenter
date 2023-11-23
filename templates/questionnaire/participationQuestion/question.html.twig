@@ -1,16 +1,14 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ question.label }}
+{% endblock %}
+
 {% block body %}
-    <div>
-        <div>
-            {{ form_start(form) }}
-            <h5>{{ question.label }}</h5>
-            <div>
-                {{ form_row( attribute(form, question.id)) }}
-            </div>
-            <div>
-                {{ form_row(form.continue) }}
-            </div>
-            {{ form_end(form) }}
-        </div>
-    </div>
+    {{ form_start(form) }}
+    <fieldset>
+        {{ form_row( attribute(form, question.id)) }}
+    </fieldset>
+    {{ form_row(form.continue, {row_attr: {class: 'form-buttons'}}) }}
+    {{ form_end(form) }}
 {% endblock %}
