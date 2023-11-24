@@ -785,7 +785,7 @@ article a {
 }
 
 footer {
-    @apply p-4 md:py-6 mt-24 ml-60 md:mb-0 flex flex-col md:flex-row justify-center text-center text-gray-600 text-sm font-normal;
+    @apply p-4 md:py-6 mt-24 ml-60 md:mb-0 flex flex-col md:flex-row justify-center text-center text-gray-400 text-sm font-normal;
 }
 
 footer > ul > li {

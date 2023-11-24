@@ -1,6 +1,6 @@
 {% trans_default_domain 'dashboard' %}
 <h3>{% trans %}quickAccess{% endtrans %}</h3>
-<div class="grid grid-cols-2 gap-4 dashboard-links">
+<div class="grid grid-cols-1 gap-4 dashboard-links">
     <a href="{{ path('vvt') }}" class="btn btn-vvt">
         Verarbeitungen ({{ vvt|length }})
         {% if kVvt|length > 0 %}
@@ -17,8 +17,8 @@
         Auftragsverarbeitungen ({{ av|length }})
     </a>
 </div>
-<hr class="my-5">
-<div class="grid grid-cols-2 gap-4 dashboard-links">
+{# <hr class="my-5">
+<div class="grid grid-cols-1 gap-4 dashboard-links">
     <a href="{{ path('vvt') }}" class="btn btn-dsfa">
         DSFA ({{ dsfa|length }})
         {% if openDsfa|length > 0 %}
@@ -46,4 +46,4 @@
     <a href="{{ path('app_vvtdatenkategorie_index') }}" class="btn btn-datenkatekorie">
         Datenkategorien ({{ vvtdatenkategorien|length }})
     </a>
-</div>
+</div> #}

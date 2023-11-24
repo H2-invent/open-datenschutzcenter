@@ -34,7 +34,7 @@ td, th {
 }
 
 .dataTables_paginate a {
-    @apply btn inline cursor-pointer text-gray-700;
+    @apply gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-300 text-primary-600 inline cursor-pointer;
 }
 
 .dataTables_paginate a.paginate_button.current {
