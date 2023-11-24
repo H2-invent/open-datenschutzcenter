@@ -122,10 +122,10 @@
 
 /* sidebar menu  */
 .setCollapse.active, ul li a.active, .group.active > .hover-icon {
-    @apply hover:bg-secondary-100 bg-secondary-100 dark:hover:bg-secondary-700 dark:bg-secondary-700
+    @apply hover:bg-secondary-100 bg-secondary-100
 }
 .setCollapse.active, .setCollapse.hover-icon.active {
-    @apply bg-opacity-30 dark:bg-opacity-30;
+    @apply bg-opacity-30;
 }
 .icon-active {
     @apply transform transition duration-300;
@@ -177,19 +177,19 @@
 
 /* input disabled & invalid  */
 input[disabled] {
-    @apply bg-neutral-900 dark:bg-neutral-100 border-neutral-300 dark:border-neutral-600 bg-opacity-[0.04] dark:bg-opacity-[0.04];
+    @apply bg-neutral-900 border-neutral-300 bg-opacity-[0.04];
 }
 input[disabled] + label {
-    @apply text-neutral-300 dark:text-neutral-600 bg-transparent dark:bg-transparent;
+    @apply text-neutral-300 bg-transparent;
 }
 input {
-    @apply invalid:border-error-600 dark:invalid:border-error-200 focus:invalid:border-error-600 dark:focus:invalid:border-error-200
+    @apply invalid:border-error-600 focus:invalid:border-error-600
 }
 
 /* checkbox  */
 input[type="checkbox"]:hover:before, input[type="radio"]:hover:before {
     content: "";
-    @apply absolute -translate-x-[.7rem] -translate-y-[.7rem] w-10 h-10 rounded-full bg-primary-500 opacity-10 dark:opacity-20
+    @apply absolute -translate-x-[.7rem] -translate-y-[.7rem] w-10 h-10 rounded-full bg-primary-500 opacity-10 
 }
 label:hover > input[type="checkbox"][disabled]:before, label:hover > input[type="radio"][disabled]:before {
     @apply bg-transparent;
@@ -197,18 +197,18 @@ label:hover > input[type="checkbox"][disabled]:before, label:hover > input[type=
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    @apply rounded-full cursor-pointer w-5 h-5 bg-primary-600 dark:bg-primary-200;
+    @apply rounded-full cursor-pointer w-5 h-5 bg-primary-600 ;
 }
 input[type="range"]:hover::-webkit-slider-thumb {
-    @apply ring-8 ring-primary-500 dark:ring-primary-900 ring-opacity-10 dark:ring-opacity-20
+    @apply ring-8 ring-primary-500 ring-opacity-10 
 }
 input[type="range"]::-moz-range-thumb {
     -webkit-appearance: none;
     appearance: none;
-    @apply rounded-full cursor-pointer w-5 h-5 bg-primary-600 dark:bg-primary-200;
+    @apply rounded-full cursor-pointer w-5 h-5 bg-primary-600 ;
 }
 input[type="range"]:hover::-moz-range-thumb {
-    @apply ring-8 ring-primary-500 dark:ring-primary-900 ring-opacity-10 dark:ring-opacity-20
+    @apply ring-8 ring-primary-500 ring-opacity-10 
 }
 .range-count {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='34' viewBox='0 0 28 34' fill='none'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M14 34L4.1005 24.0416C-1.36684 18.5418 -1.36684 9.62475 4.1005 4.12489C9.56784 -1.37496 18.4322 -1.37496 23.8995 4.12489C29.3668 9.62475 29.3668 18.5418 23.8995 24.0416L14 34Z' fill='%236750A4'/%3E%3C/svg%3E");
@@ -240,10 +240,10 @@ input[type="search"]::-webkit-search-cancel-button {
     @apply absolute block w-6 h-6 bg-gray-500 bg-center bg-no-repeat rounded-full transition-transform duration-150 ease-out translate-x-0 shadow;
 }
 .toggle-switch:hover .toggle-icon:before, .toggle-switch:hover .toggle-default:before {
-    @apply ring-8 ring-primary-200 dark:ring-primary-600 ring-opacity-30 dark:ring-opacity-30;
+    @apply ring-8 ring-primary-200 ring-opacity-30;
 }
 .toggle-checkbox:checked + .toggle-icon:before, .toggle-checkbox:checked + .toggle-default:before {
-    @apply translate-x-4 bg-white dark:bg-primary-600;
+    @apply translate-x-4 bg-white;
     background-size: 70%;
 }
 .toggle-icon:before {
@@ -260,10 +260,10 @@ input[type="search"]::-webkit-search-cancel-button {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='%23E7E0EC' class='bi bi-check-lg' viewBox='0 0 16 16'%3E%3Cpath d='M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z'/%3E%3C/svg%3E");
 }
 .toggle-switch .toggle-icon, .toggle-switch .toggle-default {
-    @apply bg-gray-100 border-2 border-gray-500 dark:bg-gray-700
+    @apply bg-gray-100 border-2 border-gray-500 
 }
 .toggle-switch .toggle-checkbox:checked + .toggle-icon, .toggle-switch .toggle-checkbox:checked + .toggle-default {
-    @apply bg-primary-600 border-2 border-primary-600 dark:bg-primary-200 dark:border-primary-200
+    @apply bg-primary-600 border-2 border-primary-600 
 }
 
 /* dialogs  */
@@ -601,10 +601,10 @@ input[type="search"]::-webkit-search-cancel-button {
 
 /* nav  */
 .nav>.active, .nav > *:hover {
-    @apply text-primary-600 dark:text-primary-200
+    @apply text-primary-600 
 }
 .nav>.active .indicator, .nav > *:hover .indicator {
-    @apply bg-primary-600 dark:bg-primary-200
+    @apply bg-primary-600
 }
 
 /* tables  */
@@ -614,7 +614,7 @@ table {
     width: 100%;
 }
 td, th {
-    @apply border border-gray-200 dark:border-gray-700 text-left p-4;
+    @apply border border-gray-200 text-left p-4;
 }
 
 /*Simple scrollbar*/
@@ -729,7 +729,7 @@ main {
 }
 
 body {
-    @apply font-sans text-base font-normal text-gray-700 dark:text-gray-200 bg-surface-50 dark:bg-surfacedark-100;
+    @apply font-sans text-base font-normal text-gray-700 bg-surface-50;
 }
 
 #topbar {
@@ -749,7 +749,7 @@ aside {
 }
 
 #topbar, aside {
-    @apply bg-surface-100 dark:bg-surfacedark-300;
+    @apply bg-surface-100;
 }
 
 aside > nav {
@@ -769,7 +769,7 @@ aside > nav > ul:last-of-type {
 }
 
 aside > nav > ul > li > a {
-    @apply flex flex-row items-center text-sm gap-3 py-3.5 px-4 rounded-full hover-icon hover:bg-secondary-300 dark:hover:bg-secondary-700 hover:bg-opacity-30 dark:hover:bg-opacity-30;
+    @apply flex flex-row items-center text-sm gap-3 py-3.5 px-4 rounded-full hover-icon hover:bg-secondary-300 hover:bg-opacity-30;
 }
 
 aside > nav > ul > li.current > a {
@@ -793,7 +793,7 @@ footer > ul > li {
 }
 
 .dropdown {
-    @apply absolute z-30 transition duration-300 ease-in-out left-0 md:left-auto md:right-0 min-w-[200px] flex-col py-0 rounded bg-surface-200 dark:bg-surfacedark-200 shadow-md dark:shadow-gray-50/10;
+    @apply absolute z-30 transition duration-300 ease-in-out left-0 md:left-auto md:right-0 min-w-[200px] flex-col py-0 rounded bg-surface-200 shadow-md;
 }
 
 .dropdown.show {
@@ -801,7 +801,7 @@ footer > ul > li {
 }
 
 .dropdown a {
-    @apply !text-gray-800 min-h-[3rem] flex flex-row items-center gap-4 py-2 px-3 hover-icon hover:bg-secondary-100 dark:hover:bg-secondary-700 hover:bg-opacity-30 dark:hover:bg-opacity-30;
+    @apply !text-gray-800 min-h-[3rem] flex flex-row items-center gap-4 py-2 px-3 hover-icon hover:bg-secondary-100 hover:bg-opacity-30;
 }
 
 @layer components {
@@ -810,19 +810,19 @@ footer > ul > li {
     }
 
     .card-outlined {
-        @apply card bg-white dark:bg-neutral-900 border border-gray-200 dark:border-gray-700;
+        @apply card bg-white border border-gray-200 ;
     }
 
     .card-elevated {
-        @apply card bg-surface-100 dark:bg-surfacedark-100 flex shadow-lg dark:shadow-gray-50/10;
+        @apply card bg-surface-100 flex shadow-lg;
     }
 
     .card-filled {
-        @apply card bg-surface-100 dark:bg-gray-700;
+        @apply card bg-surface-100 ;
     }
 
     .btn {
-        @apply relative inline-block items-center justify-center gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm tracking-[.00714em] font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-300 text-primary-600 dark:bg-surfacedark-100 dark:hover:bg-surfacedark-200 dark:focus:bg-surfacedark-400 dark:text-primary-200;
+        @apply relative inline-block items-center justify-center gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm tracking-[.00714em] font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-300 text-primary-600;
     }
 }
 
@@ -831,7 +831,7 @@ form > fieldset .btn {
 }
 
 form > fieldset {
-    @apply card-filled !bg-surface-100 dark:bg-surfacedark-300 w-full max-w-2xl mb-5;
+    @apply card-filled !bg-surface-100 w-full max-w-2xl mb-5;
 }
 
 form > fieldset > legend {
@@ -851,7 +851,7 @@ form > fieldset .btn-primary {
 }
 
 .tabs-nav button {
-    @apply w-1/3 md:w-[120px] h-16 px-4 flex flex-col justify-end items-center gap-1 relative py-2 hover:bg-surface-100 dark:hover:bg-surfacedark-100;
+    @apply w-1/3 md:w-[120px] h-16 px-4 flex flex-col justify-end items-center gap-1 relative py-2 hover:bg-surface-100;
 }
 
 .tabs-nav span {
@@ -867,7 +867,7 @@ form > fieldset .btn-primary {
 }
 
 .tabs-indicator {
-    @apply absolute left-0 bottom-0 transition-all duration-200 ease-in-out bg-primary-600 dark:bg-primary-200 w-1/3 md:w-[120px] h-0.5 rounded-t-full;
+    @apply absolute left-0 bottom-0 transition-all duration-200 ease-in-out bg-primary-600 w-1/3 md:w-[120px] h-0.5 rounded-t-full;
 }
 
 .tab-content {
@@ -887,7 +887,7 @@ h3 {
 }
 
 hr {
-    @apply border-gray-200 dark:border-gray-700;
+    @apply border-gray-200 ;
 }
 
 .btn-icon {
@@ -1034,7 +1034,7 @@ button:disabled {
 }
 
 .modal-inner {
-    @apply z-50 flex flex-col w-11/12 sm:w-[480px] h-auto bg-surface-200 dark:bg-surfacedark-300 rounded-[28px];
+    @apply z-50 flex flex-col w-11/12 sm:w-[480px] h-auto bg-surface-200 rounded-[28px];
 }
 
 .modal-content {
@@ -1042,7 +1042,7 @@ button:disabled {
 }
 
 .modal-content > h* {
-    @apply text-2xl font-normal text-gray-900 dark:text-gray-100;
+    @apply text-2xl font-normal text-gray-900 ;
 }
 
 .modal-footer {
