@@ -94,5 +94,5 @@ table.dataTable > tbody > tr[data-href] > td {
 }
 
 table.dataTable > tbody > tr > td > a {
-    @apply text-primary-600 hover:underline;
+    @apply hover:underline;
 }

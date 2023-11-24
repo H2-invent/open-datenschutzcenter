@@ -25,8 +25,8 @@
                            data-action="click->appUi#loadContentModal">{{ dd.titleNew }}</a>
                     </div>
                 </div>
-                <ul class="stacked-list">
-                    {% if dd.data is defined %}
+                {% if dd.data is defined %}
+                    <ul class="stacked-list">
                         {% for d in dd.data|sort((a, b) => a.name <=> b.name) %}
                             <li>
                                 <div>
@@ -69,10 +69,10 @@
                                 </div>
                             </li>
                         {% endfor %}
-                    {% else %}
-                        <p>{% trans %}noEntry{% endtrans %}</p>
-                    {% endif %}
-                </ul>
+                    </ul>
+                {% else %}
+                    <p class="mb-5 italic text-muted">{% trans %}noEntry{% endtrans %}</p>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

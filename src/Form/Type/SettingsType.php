@@ -29,7 +29,7 @@ class SettingsType extends AbstractType
     {
         $builder
             ->add('useKeycloakGroups', CheckboxType::class, ['label' => 'useKeycloakGroups', 'help'=> 'useKeycloakGroupsHelp', 'required' => false, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'save', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn'),'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

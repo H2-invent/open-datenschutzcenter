@@ -835,7 +835,7 @@ form > fieldset {
 }
 
 form > fieldset > legend {
-    @apply bg-surface-200 rounded-xl px-3 py-1 text-base;
+    @apply bg-surface-200 rounded-xl px-3 py-1 text-lg;
 }
 
 form > fieldset .btn-primary {

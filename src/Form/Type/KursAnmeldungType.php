@@ -53,7 +53,7 @@ class KursAnmeldungType extends AbstractType
             ])
             ->add('invite', CheckboxType::class, ['label' => 'Einladungs-EMail an alle Nutzer senden (Wenn nicht ausgewählt wird die Einladung automatisch am nächsten Tag verschickt)', 'required' => false, 'translation_domain' => 'form'])
 
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Kurse zuweisen', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn'),'label' => 'Kurse zuweisen', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

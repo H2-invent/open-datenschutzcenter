@@ -12,8 +12,9 @@
           >{% trans %}task.edit{% endtrans %}</a>
     {% endif %}
     {% if task.activ and not task.done %}
-        <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
-           href='{{ path('task_done',{'id':task.id}) }}' type='button'
+        <a data-click-confirm
+           href='{{ path('task_done',{'id':task.id}) }}'
+           type='button'
            class='btn btn-success ml-1 btn-sm'>{% trans %}finish{% endtrans %}</a>
     {% endif %}
     {% if nextAudit is defined %}
@@ -24,8 +25,7 @@
     {% if not task.assignedUser %}
         <button class="btn" data-type="dialogs" data-target="#assignModal">{% trans from 'general' %}assign{% endtrans %}</button>
     {% endif %}
-    <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
-       href='{{ path('task_disable',{'id':task.id}) }}' type='button'
+    <a href='{{ path('task_disable',{'id':task.id}) }}' type='button'
        class='btn btn-danger ml-1 btn-sm'>{% if task.activ == 1 %}{% trans from 'general' %}delete{% endtrans %}{% else %}{% trans from 'general' %}restore{% endtrans %}{% endif %}</a>
 {% endblock %}
 

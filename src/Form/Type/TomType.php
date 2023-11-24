@@ -48,7 +48,7 @@ class TomType extends AbstractType
             ->add('tomWiederherstellbarkeit', TextareaType::class, ['attr' => ['class' => 'summernote', 'rows' => 8],'label' => 'tomRecoverability', 'required' => true, 'translation_domain' => 'form'])
             ->add('tomAudit', TextareaType::class, ['attr' => ['class' => 'summernote', 'rows' => 8],'label' => 'tomAuditProcedure', 'required' => true, 'translation_domain' => 'form'])
 
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'save', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn'),'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

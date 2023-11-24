@@ -91,7 +91,7 @@ class KursType extends BaseType
             [
                 'label' => 'save',
                 'translation_domain' => 'general',
-                'attr' => ['class' => 'btn btn-primary'],
+                'attr' => ['class' => 'btn'],
             ],
         );
     }

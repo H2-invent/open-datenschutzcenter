@@ -36,8 +36,7 @@
                                         <p>{{ d.email }}</p>
                                     </div>
                                     <div>
-                                        <a href="{{ path('team_mitglieder_remove',{'memberId':d.id, 'teamId':team.id, 'type':'academy'}) }}"
-                                           onclick="return confirm('{% trans from 'general' %}confirmAction{% endtrans %}')">
+                                        <a href="{{ path('team_mitglieder_remove',{'memberId':d.id, 'teamId':team.id, 'type':'academy'}) }}" class="text-danger">
                                             {% trans from 'general' %}remove{% endtrans %}
                                         </a>
                                     </div>

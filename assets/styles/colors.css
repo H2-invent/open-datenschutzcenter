@@ -102,6 +102,18 @@
     @apply card-element bg-datenkategorie-50 text-datenkategorie-800 border-datenkategorie-100;
 }
 
+.card-akademie {
+    @apply card-element bg-indigo-50 text-indigo-800 border-indigo-100;
+}
+
+.card-client {
+    @apply card-element bg-pink-50 text-pink-800 border-pink-100;
+}
+
+.card-customer {
+    @apply card-element bg-teal-50 text-teal-800 border-teal-100;
+}
+
 /* .card links */
 
 .card-vvt a {
@@ -150,4 +162,16 @@
 
 .card-datenkategorie a {
     @apply hover:text-datenkategorie-950 text-datenkategorie-800;
+}
+
+.card-akademie a {
+    @apply hover:text-indigo-950 text-indigo-800;
+}
+
+.card-client a {
+    @apply hover:text-pink-950 text-pink-800;
+}
+
+.card-customer a {
+    @apply hover:text-teal-950 text-teal-800;
 }

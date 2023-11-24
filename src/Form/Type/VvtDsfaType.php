@@ -28,7 +28,7 @@ class VvtDsfaType extends AbstractType
             ->add('standpunkt', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Standpunkt von weiteren Organen (z.B. Betriebsrat)', 'required' => true, 'translation_domain' => 'form'])
             ->add('dsb', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Standpunkt des Datenschutzbeauftragten', 'required' => false, 'translation_domain' => 'form'])
             ->add('ergebnis', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Ergebnis der Datenschutz-Folgenabschätzung', 'required' => false, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn'),'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

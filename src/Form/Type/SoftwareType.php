@@ -92,7 +92,7 @@ class SoftwareType extends AbstractType
             ->add('archiving', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'backupPolicy', 'required' => false, 'translation_domain' => 'form', 'help' => 'backupPolicyHelp'])
             ->add('recovery', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'emergencyPlan', 'required' => false, 'translation_domain' => 'form', 'help' => 'emergencyPlanHelp'])
             ->add('permissions', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'privilegePolicy', 'required' => false, 'translation_domain' => 'form', 'help' => 'privilegePolicyHelp'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'save', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn'), 'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -36,6 +36,11 @@
             <div class="modal-inner"></div>
         </div>
         {{ encore_entry_script_tags('app') }}
+        <script>
+            window.translations = {
+                'confirmAction': '{{ 'confirmAction'|trans }}',
+            }
+        </script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

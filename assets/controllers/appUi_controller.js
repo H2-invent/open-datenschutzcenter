@@ -3,6 +3,20 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     connect() {
         this.initTabs();
+        this.initClickListeners();
+    }
+
+    initClickListeners() {
+        const selectorConfirm = '.text-danger, .btn-danger, .btw-warning, [data-click-confirm]';
+        Array.prototype.forEach.call(document.querySelectorAll(selectorConfirm), function (element) {
+            element.addEventListener('click', function(event) {
+                if (confirm(window.translations.confirmAction)) {
+                    return true;
+                }
+                event.preventDefault();
+                return false;
+            });
+        });
     }
 
     initTabs() {

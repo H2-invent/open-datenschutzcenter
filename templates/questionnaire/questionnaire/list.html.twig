@@ -18,7 +18,7 @@
                 <td>
                     <a href="{{ path('questionnaire_details', {'id': questionnaire.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
                     <a href="{{ path('questionnaire_edit', {'id': questionnaire.id}) }}">{% trans from 'general' %}edit{% endtrans %}</a>
-                    <a href="{{ path('questionnaire_delete', {'id': questionnaire.id}) }}">{% trans from 'general' %}remove{% endtrans %}</a>
+                    <a href="{{ path('questionnaire_delete', {'id': questionnaire.id}) }}" class="text-danger">{% trans from 'general' %}remove{% endtrans %}</a>
                 </td>
             </tr>
         {% endfor %}
