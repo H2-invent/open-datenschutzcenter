@@ -1,94 +1,65 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'client_request' %}
 
+{% block title %}
+    Ticket: {{ data.title }}
+{% endblock %}
+
 {% block CTA %}
     {% if data.team in app.user.adminRoles %}
-        <a href="{{ path('client_valid_user',{'id':data.id}) }}"
-          >{{ (data.validUser?'user.undoValidation':'user.validate') |trans }}</a>
-        <a href="{{ path('client_request_close',{'id':data.id}) }}"
-          >{{ data.activ?'archive':'restore' |trans([], 'general') }}</a>
+        <a href="{{ path('client_valid_user',{'id':data.id}) }}" class="btn btn-create">{{ (data.validUser?'user.undoValidation':'user.validate') |trans }}</a>
+        <a href="{{ path('client_request_close',{'id':data.id}) }}" class="btn btn-danger">{{ data.activ?'archive':'restore' |trans([], 'general') }}</a>
         {% if not data.activ %}
-            <a href="{{ path('client_request_make_internal',{'id':data.id}) }}"
-              >{{ (data.open?'request.publish.private':'request.publish.public') |trans }}</a>
+            <a href="{{ path('client_request_make_internal',{'id':data.id}) }}" class="btn btn-danger">{{ (data.open?'request.publish.private':'request.publish.public') |trans }}</a>
         {% endif %}
-        <a href="{{ path('client_requests_edit',{'id':data.id}) }}"
-          >{% trans from 'general' %}edit{% endtrans %}</a>
+        <a href="{{ path('client_requests_edit',{'id':data.id}) }}" class="btn">{% trans from 'general' %}edit{% endtrans %}</a>
     {% endif %}
-    <a href="{{ path('client_requests_internal_note',{'id':data.id}) }}"
-      >{% trans %}editInternalAnnotation{% endtrans %}</a>
-    <a href="{{ path('bericht_request', {'id':data.id}) }}">
-        <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
-    </a>
+    <a href="{{ path('client_requests_internal_note',{'id':data.id}) }}" class="btn">{% trans %}editInternalAnnotation{% endtrans %}</a>
+    <a href="{{ path('bericht_request', {'id':data.id}) }}" class="btn">{% trans from 'general' %}pdf.create{% endtrans %}</a>
 {% endblock %}
 
 {% block body %}
-    <div>
-        <h1>{{ data.title }}</h1>
-        {% if not data.activ %}
-            <div>
-                {% trans %}request.closed{% endtrans %}
-            </div>
-        {% endif %}
-        {% if not data.open %}
-            <div>
-                {% trans %}request.internal{% endtrans %}
-            </div>
-        {% endif %}
-        {% if data.pgp %}
-            <div>
-                {% trans %}openPGP.disclaimer{% endtrans %}
-            </div>
-        {% endif %}
-        <p>
-            {% trans %}issueId{% endtrans %}: {{ data.uuid }}<br>
-            {% trans from 'general' %}email{% endtrans %}
-            : {{ data.email }} {% if data.pgp %}🔒 {% endif %}{% if data.emailValid %}✅{% endif %}<br>
-            {% trans from 'general' %}name{% endtrans %}
-            : {{ data.name }} {% if data.validUser %}✅ by {{ data.userValidBy.username }}{% endif %}<br>
-            {% trans from 'general' %}createdAt{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
-            {% trans %}request.reason{% endtrans %}: {{ data.itemstring }}
-        </p>
+    {% if not data.activ %}
+        <div class="card-outlined mb-5">
+            {% trans %}request.closed{% endtrans %}
+        </div>
+    {% endif %}
+    {% if not data.open %}
+        <div class="card-outlined mb-5">
+            {% trans %}request.internal{% endtrans %}
+        </div>
+    {% endif %}
+    {% if data.pgp %}
+        <div class="card-outlined mb-5">
+            {% trans %}openPGP.disclaimer{% endtrans %}
+        </div>
+    {% endif %}
 
-        <p>
-            <i>{% trans from 'general' %}additionalInformation{% endtrans %}</i><br>
-            {% trans from 'general' %}name{% endtrans %}: {{ data.firstname }} {{ data.lastname }}<br>
-            {% trans from 'general' %}address{% endtrans %}: {{ data.street }}, {{ data.city }}<br>
-            {% if data.birthday %}{% trans from 'general' %}birthday{% endtrans %}: {{ data.birthday|date('d.m.Y') }}<br>{% endif %}
-        </p>
-        <div>
-            <b>{% trans from 'general' %}description{% endtrans %}:</b><br>
-            {{ data.description|nl2br }}
-        </div>
-        <hr>
-        <div>
-            <b>{% trans %}internalAnnotation{% endtrans %}:</b><br>
-            {{ data.notes|raw }}
-        </div>
+    {% include 'client_request/__show.html.twig' %}
+
+    <div class="card-filled mb-5">
+        <b>{% trans %}internalAnnotation{% endtrans %}:</b><br>
+        {{ data.notes ? data.notes|raw : '-' }}
     </div>
-    <div>
-        <div>
-            {% if data.activ == 1 %}
-                <div>
-                    {{ form_start(form,{'action': path('client_request_comment',{'clientRequest':data.id})}) }}
-                    {{ form_widget(form) }}
-                    {{ form_end(form) }}
-                </div>
-            {% else %}
-                <div>
-                    {% trans %}request.closed{% endtrans %}
-                </div>
-            {% endif %}
+
+    <h2>{% trans from 'general' %}comments{% endtrans %}</h2>
+
+    {% if data.activ == 1 %}
+        {{ form_start(form,{'action': path('client_request_comment',{'clientRequest':data.id})}) }}
+        <fieldset>
+            {{ form_row(form.comment) }}
+            {{ form_row(form.save) }}
+        </fieldset>
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    {% else %}
+        <div class="card-outlined mb-5">
+            {% trans %}request.closed{% endtrans %}
         </div>
-        <div>
-            {% for c in data.clientComments|sort((b, a) => a.createdAt <=> b.createdAt) %}
-                <div
-                     style="{% if c.internal %}border-left-style: solid; border-left-width: 17px;{% else %}border-right-style: solid; border-right-width: 17px;{% endif %}">
-                    {{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}<br>
-                    <hr>
-                    {{ c.comment|nl2br }}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-    {{ include('base/__snack.html.twig') }}
+    {% endif %}
+
+    {% include 'client_request/__comments.html.twig' %}
+    {% include 'base/__snack.html.twig' %}
+
+
 {% endblock %}

@@ -7,7 +7,7 @@
 
 {% block CTA %}
     {% if currentTeam.slug %}
-        <a href="{{ path('client_new',{'slug':currentTeam.slug}) }}" class="btn btn-create">
+        <a target="_blank" href="{{ path('client_new',{'slug':currentTeam.slug}) }}" class="btn btn-create">
             {% trans %}request.create.link{% endtrans %}
         </a>
         <a target="_blank" href="{{ path('client_index',{'slug':currentTeam.slug}) }}" class="btn">

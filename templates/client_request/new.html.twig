@@ -2,45 +2,43 @@
 {% trans_default_domain 'client_request' %}
 
 {% block title %}
-    <title>{% trans %}dataPrivacyCenter{% endtrans%} {% trans %}customerPortal{% endtrans %}</title>
+    <title>{% trans %}dataPrivacyCenter{% endtrans %} {% trans %}customerPortal{% endtrans %}</title>
+{% endblock %}
+
+{% block back %}
+    <a href="{{ path('client_index', {'slug':team.slug}) }}" class="flex">
+        <span class="material-symbols-outlined">arrow_left_alt</span>
+        {% trans %}backToPortal{% endtrans %}
+    </a>
 {% endblock %}
 
 {% block content %}
-    <div>
-        <a href="{{ path('client_index', {'slug':team.slug}) }}"
-          >{% trans %}backToPortal{% endtrans %}</a>
-        <div>
-            <h1>{% trans %}request.create.link{% endtrans %}</h1>
-            {{ form_start(form) }}
-            {{ form_row(form.title) }}
-            {{ form_row(form.item) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.name) }}
-            {{ form_row(form.password) }}
-            {{ form_row(form.description) }}
-            {{ form_row(form.pgp) }}
-
-
-            <div>
-                <div>
-                    <h4>{% trans %}request.additionalInformation{% endtrans %}</h4>
-                </div>
-
-                <div>
-                    <p>
-                        {% trans %}askForVerification{% endtrans %}:
-                    </p>
-                    {{ form_row(form.firstname) }}
-                    {{ form_row(form.lastname) }}
-                    {{ form_row(form.street) }}
-                    {{ form_row(form.city) }}
-                    {{ form_row(form.birthday) }}
-                </div>
-
-            </div>
-            {{ form_row(form.gdpr) }}
-            {{ form_row(form.save) }}
-            {{ form_end(form) }}
-        </div>
-    </div>
+    <h1>{% trans %}request.create.link{% endtrans %}</h1>
+    {{ form_start(form) }}
+    <fieldset>
+        {{ form_row(form.title) }}
+        {{ form_row(form.item) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.password) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.pgp) }}
+    </fieldset>
+    <fieldset>
+        <legend>{% trans %}request.additionalInformation{% endtrans %}</legend>
+        <p class="mb-5">
+            {% trans %}askForVerification{% endtrans %}:
+        </p>
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.lastname) }}
+        {{ form_row(form.street) }}
+        {{ form_row(form.city) }}
+        {{ form_row(form.birthday) }}
+    </fieldset>
+    <fieldset>
+        {{ form_row(form.gdpr) }}
+    </fieldset>
+    {{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
 {% endblock %}

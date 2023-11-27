@@ -4,64 +4,45 @@
 {% block title %}{% trans %}greeting{% endtrans %}{% endblock %}
 
 {% block content %}
-    <style>
-        .example-wrapper {
-            margin: 1em auto;
-            max-width: 800px;
-            width: 95%;
-            font: 18px/1.5 sans-serif;
-        }
-
-        .example-wrapper code {
-            background: #F5F5F5;
-            padding: 2px 6px;
-        }
-    </style>
-
-    <div>
-        <h1>{% trans %}customerPortalOf{% endtrans%} {{ team.name }}</h1>
-        <hr>
-        <div>
-            <h4>{{ team.name }}</h4>
-            <p>
-                {{ team.strasse }}<br>
-                {{ team.plz }} {{ team.stadt }}<br>
-            </p>
-            <hr>
-        </div>
-        <div>
-            <div>
-                <p>{% trans %}request.create.disclaimer{% endtrans%}
-                </p>
-                <ul>
-                    <li>
-                        {% trans %}fillInForm{% endtrans%}
-                    </li>
-                    <li>
-                        {% trans %}confirmEmail{% endtrans%}
-                    </li>
-                    <li>
-                        {% trans with {'{teamName}': team.name} %}identify{% endtrans%}
-                    </li>
-                    <li>
-                        {% trans with {'{teamName}': team.name} %}encryptedConnection{% endtrans%}
-                    </li>
-                    <li>
-                        {% trans %}request.response{% endtrans%}
-                    </li>
-                </ul>
-                <a href="{{ path('client_new', {'slug':team.slug}) }}">{% trans %}request.create.link{% endtrans %}</a>
-            </div>
-            <div>
-                <p>
-                    {% trans %}request.find{% endtrans%}
-                </p>
-
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
-            </div>
-        </div>
+    <h1>{% trans %}customerPortalOf{% endtrans %} {{ team.name }}</h1>
+    <div class="card-filled mb-5">
+        <h4>{{ team.name }}</h4>
+        <p>
+            {{ team.strasse }}<br>
+            {{ team.plz }} {{ team.stadt }}<br>
+        </p>
+    </div>
+    <div class="card-outlined mb-5">
+        <p class="mb-5">
+            {% trans %}request.create.disclaimer{% endtrans %}
+        </p>
+        <ul class="initial">
+            <li>
+                {% trans %}fillInForm{% endtrans %}
+            </li>
+            <li>
+                {% trans %}confirmEmail{% endtrans %}
+            </li>
+            <li>
+                {% trans with {'{teamName}': team.name} %}identify{% endtrans %}
+            </li>
+            <li>
+                {% trans with {'{teamName}': team.name} %}encryptedConnection{% endtrans %}
+            </li>
+            <li>
+                {% trans %}request.response{% endtrans %}
+            </li>
+        </ul>
+    </div>
+    <a href="{{ path('client_new', {'slug':team.slug}) }}" class="btn btn-create">{% trans %}request.create.link{% endtrans %}</a>
+    <hr class="my-10">
+    <h3 class="mb-5">
+        {% trans %}request.find{% endtrans %}
+    </h3>
+    {{ form_start(form) }}
+    {{ form_row(form) }}
+    {{ form_end(form) }}
+    <div class="card-outlined mt-5 editor-output">
         {% trans with {'{teamName}': team.name} | raw %}gdpr{% endtrans %}
     </div>
     {{ include('base/__snack.html.twig') }}

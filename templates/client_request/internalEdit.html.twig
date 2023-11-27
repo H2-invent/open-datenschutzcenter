@@ -1,18 +1,12 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'client_request' %}
 
-{% block CTA %}
-    <a href="{{ path('client_requests_show',{'id':data.id}) }}">{% trans from 'general' %}back{% endtrans %}</a>
+{% block title %}
+    {% trans %}editInternalAnnotation{% endtrans %}
 {% endblock %}
 
 {% block body %}
-
-    <div>
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
-    </div>
-{% endblock %}
-
-{% block javascript %}
+    {{ form_start(form) }}
+    {{ form_row(form) }}
+    {{ form_end(form) }}
 {% endblock %}

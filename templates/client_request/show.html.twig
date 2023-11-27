@@ -3,79 +3,52 @@
 
 {% block title %}{% trans %}greeting{% endtrans %}{% endblock %}
 
+{% block back %}
+    <a href="{{ path('client_index', {'slug':team.slug}) }}" class="flex">
+        <span class="material-symbols-outlined">arrow_left_alt</span>
+        {% trans %}backToPortal{% endtrans %}
+    </a>
+{% endblock %}
+
 {% block content %}
-    <div>
-        <a href="{{ path('client_index', {'slug':team.slug}) }}">{% trans %}backToPortal{% endtrans %}</a>
-        <div>
-            <h1>{{ data.title }}</h1>
-            {% if not data.activ %}
-                <div>
-                    {% trans %}request.closed{% endtrans %}
-                </div>
-            {% endif %}
-            {% if not data.emailValid %}
-                <div>
-                    {% trans %}emailVerificationDisclaimer{% endtrans %}
-                </div>
-            {% endif %}
-            {% if not data.validUser %}
-                <div>
-                    {% trans %}cannotVerify{% endtrans %}
-                </div>
-            {% endif %}
-            {% if data.pgp %}
-                <div>
-                    {% trans %}openPGP.disclaimer{% endtrans %}
-                </div>
-            {% endif %}
-            <p>
-                {% trans %}issueId{% endtrans %}: {{ data.uuid }}<br>
-                {% trans from 'general' %}email{% endtrans %}
-                : {{ data.email }} {% if data.pgp %}🔒 {% endif %}{% if data.emailValid %}✅{% endif %}<br>
-                {% trans from 'general' %}name{% endtrans %}: {{ data.name }} {% if data.validUser %}✅{% endif %}<br>
-                {% trans from 'general' %}createdAt{% endtrans %}: {{ data.createdAt|date('d.m.Y H:i') }}<br>
-                {% trans from 'general' %}reason{% endtrans %}: {{ data.itemstring }}
-            </p>
-            <p>
-                <i>{% trans from 'general' %}additionalInformation{% endtrans %}</i><br>
-                {% trans from 'general' %}name{% endtrans %}: {{ data.firstname }} {{ data.lastname }}<br>
-                {% trans from 'general' %}address{% endtrans %}: {{ data.street }}, {{ data.city }}<br>
-                {% if data.birthday %}{% trans from 'general' %}birthday{% endtrans %}: {{ data.birthday|date('d.m.Y') }}
-                    <br>{% endif %}
-            </p>
-            <p>
-                {% trans from 'general' %}description{% endtrans %}:<br> {{ data.description|nl2br }}
-            </p>
+    <h1>{{ data.title }}</h1>
+    {% if not data.activ %}
+        <div class="card-outlined mb-5">
+            {% trans %}request.closed{% endtrans %}
         </div>
-    </div>
-    <div>
-        <div>
-            {% if data.activ == 1 %}
-                <div>
-                    {{ form_start(form,{'action': path('client_comment',{'slug':data.team.slug, 'token':data.token})}) }}
-                    {{ form_widget(form) }}
-                    {{ form_end(form) }}
-                </div>
-            {% else %}
-                <div>
-                    {% trans %}request.closed{% endtrans %}
-                </div>
-            {% endif %}
+    {% endif %}
+    {% if not data.emailValid %}
+        <div class="card-outlined mb-5">
+            {% trans %}emailVerificationDisclaimer{% endtrans %}
         </div>
-        <div>
-            <div>
-                <h2>
-                    {% trans from 'general' %}comments{% endtrans %}
-                </h2>
-            </div>
-            {% for c in data.clientComments|sort((b, a) => a.createdAt <=> b.createdAt) %}
-                <div
-                     style="{% if c.internal %}border-left-style: solid; border-left-width: 17px;{% else %}border-right-style: solid; border-right-width: 17px;{% endif %}">
-                    {{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}<br>
-                    <hr>
-                    {{ c.comment|nl2br }}
-                </div>
-            {% endfor %}
+    {% endif %}
+    {% if not data.validUser %}
+        <div class="card-outlined mb-5">
+            {% trans %}cannotVerify{% endtrans %}
         </div>
-    </div>
+    {% endif %}
+    {% if data.pgp %}
+        <div class="card-outlined mb-5">
+            {% trans %}openPGP.disclaimer{% endtrans %}
+        </div>
+    {% endif %}
+
+    {% include 'client_request/__show.html.twig' %}
+
+    <h2>{% trans from 'general' %}comments{% endtrans %}</h2>
+
+    {% if data.activ == 1 %}
+        {{ form_start(form,{'action': path('client_comment',{'slug':data.team.slug, 'token':data.token})}) }}
+        <fieldset>
+            {{ form_row(form.comment) }}
+            {{ form_row(form.save) }}
+        </fieldset>
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+    {% else %}
+        <div class="card-outlined">{% trans %}request.closed{% endtrans %}</div>
+    {% endif %}
+
+    {% include 'client_request/__comments.html.twig' %}
+
 {% endblock %}

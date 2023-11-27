@@ -86,17 +86,23 @@ class ClientRequestController extends AbstractController
         ClientRequestRepository $clientRequestRepository,
     ): Response
     {
-        $data = $request->get('client_request_comment');
         $clientRequest = $clientRequestRepository->find($request->get('clientRequest'));
-
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
             return $this->redirectToRoute('client_requests');
         }
 
-        $content = $data['comment'];
-        $clientRequestService->newComment($clientRequest, $content, $team->getKeycloakGroup() . ' > ' . $this->getUser()->getUsername(), 1);
-        return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
+        $form = $this->createForm(ClientRequesCommentType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $clientRequestService->newComment($clientRequest, $form->getData()['comment'], $team->getKeycloakGroup() . ' > ' . $this->getUser()->getUsername(), 1);
+            $snack = $this->translator->trans(id: 'save.comment', domain: 'general');
+        } else {
+            $snack = null;
+        }
+
+        return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => $snack]);
     }
 
     #[Route(path: '/client-requests/close', name: 'client_request_close')]
@@ -254,6 +260,7 @@ class ClientRequestController extends AbstractController
                 'data' => $clientRequest,
                 'team' => $team,
                 'form' => $form->createView(),
+                'urlBack' => $this->generateUrl('client_requests_show', ['id' => $request->get('id')])
             ],
         );
     }
@@ -362,7 +369,8 @@ class ClientRequestController extends AbstractController
             'data' => $clientRequest,
             'team' => $team,
             'form' => $form->createView(),
-            'snack' => $request->get('snack')
+            'snack' => $request->get('snack'),
+            'urlBack' => $this->generateUrl('client_requests'),
         ]);
     }
 

@@ -1117,10 +1117,22 @@ trix-editor ol, .editor-output ol, ol.initial {
     list-style: decimal;
 }
 
+.editor-output p {
+    @apply mb-5;
+}
+
+.small, small {
+    @apply text-sm;
+}
+
 .alert {
     @apply rounded-full block px-5 py-1;
 }
 
 .alert-warning {
     @apply alert bg-amber-200 text-amber-800;
+}
+
+#client_request #back a {
+    @apply mb-5;
 }

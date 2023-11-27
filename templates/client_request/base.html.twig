@@ -2,18 +2,19 @@
 <!DOCTYPE html>
 <html>
     {{ include('base/__head.html.twig') }}
-    <body>
-        {% block back %}{% endblock %}
+    <body id="client_request">
         <div class="text-center my-10">
-            <a href="https://open-datenschutzcenter.de" target="_blank" class="inline-block w-60">
+            <a href="{{ path('client_index', {'slug':team.slug}) }}" class="inline-block w-48">
                 <img src="{{ asset('logo.png') }}" title="ODC"/>
             </a>
         </div>
-        <div id="content">
+        <div id="content" class="container mx-auto max-w-2xl">
+            <div id="back">
+                {% block back %}{% endblock %}
+            </div>
             {% block content %}{% endblock %}
         </div>
-
-        <div class="text-center justify-center mt-10 text-muted text-sm leading-6">
+        <div class="text-center justify-center p-10 mt-10 text-muted text-sm leading-6">
             <a href="{{ dataPrivacy }}" target="_blank">{% trans %}dataPrivacyDisclaimer{% endtrans %}</a> •
             <a href="https://open-datenschutzcenter.de" target="_blank">{% trans %}poweredBy{% endtrans %}</a>
             <br>
@@ -21,6 +22,8 @@
             <br>
             <img src="{{ asset('images/open-source-logo.png') }}" class="inline-block w-10 mt-5">
         </div>
+        {% include 'base/__snack.html.twig' with {snack: app.request.get('snack') }%}
         {{ encore_entry_script_tags('app') }}
+        {% block javascripts %}{% endblock %}
     </body>
 </html>
