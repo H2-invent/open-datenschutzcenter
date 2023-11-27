@@ -4,18 +4,19 @@
 {% block title %}{% trans %}myAssignments{% endtrans %}{% endblock %}
 
 {% block body %}
-<div class="card-filled mb-5">
+<div class="card-outlined mb-5">
+    {% set tabWidth = (1/tabs|length)*100|round(2) %}
     <div class="tabs flex flex-col w-full">
         <div class="tabs-nav">
             {% for tab, data in tabs %}
-                <button data-type="tabs" data-target="#tab-{{ tab }}" class="{{ loop.first ? ' active' }}">
-                <span>
-                    <img src="{{ asset(data.image) }}" alt="">
-                </span>
+                <button data-type="tabs" data-target="#tab-{{ tab }}" class="{{ loop.first ? ' active' }}" style="width: {{ tabWidth }}%">
+                    <span>
+                        <img src="{{ asset(data.image) }}" alt="" />
+                    </span>
                     <p>{{ tab|trans }}</p>
                 </button>
             {% endfor %}
-            <div role="indicator" class="tabs-indicator"></div>
+            <div role="indicator" class="tabs-indicator" style="width: {{ tabWidth }}%"></div>
         </div>
         <hr>
         <div class="tabs-content">

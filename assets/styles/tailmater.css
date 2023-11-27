@@ -810,7 +810,7 @@ footer > ul > li {
     }
 
     .card-outlined {
-        @apply card bg-white border border-gray-200 ;
+        @apply card bg-white border border-surface-200;
     }
 
     .card-elevated {
@@ -851,7 +851,11 @@ form > fieldset .btn-primary {
 }
 
 .tabs-nav button {
-    @apply w-1/3 md:w-[120px] h-16 px-4 flex flex-col justify-end items-center gap-1 relative py-2 hover:bg-surface-100;
+    @apply h-16 px-4 flex flex-col justify-end items-center gap-1 relative py-2 hover:bg-surface-100;
+}
+
+.card-filled .tabs-nav button {
+    @apply  hover:bg-surface-200;
 }
 
 .tabs-nav span {
@@ -867,7 +871,7 @@ form > fieldset .btn-primary {
 }
 
 .tabs-indicator {
-    @apply absolute left-0 bottom-0 transition-all duration-200 ease-in-out bg-primary-600 w-1/3 md:w-[120px] h-0.5 rounded-t-full;
+    @apply absolute left-0 bottom-0 transition-all duration-200 ease-in-out bg-primary-600 h-0.5 rounded-t-full;
 }
 
 .tab-content {
