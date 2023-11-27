@@ -4,236 +4,119 @@
 {% block title %}{% trans %}myAssignments{% endtrans %}{% endblock %}
 
 {% block body %}
-    <div>
-        <ul id="audit-tab" role="tablist">
-            <li>
-                <a id="tasks-tab" data-toggle="tab" href="#tasks" role="tab"
-                   aria-controls="home"
-                   aria-selected="true"><img style="height: 30px" src="{{ asset('images/task.png') }}">
-                    <span
-                           >{% trans %}tasks{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="home-tab" data-toggle="tab" href="#audit" role="tab"
-                   aria-controls="home"
-                   aria-selected="true"><img style="height: 30px" src="{{ asset('images/pruefung.png') }}"> <span
-                           >{% trans %}auditQuestions{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="vvt-tab" data-toggle="tab" href="#vvt" role="tab"
-                   aria-controls="profile"
-                   aria-selected="false"><img style="width: 30px" src="{{ asset('images/prozess.png') }}"> <span
-                           >{% trans %}processing{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="dsfa-tab" data-toggle="tab" href="#dsfa" role="tab"
-                   aria-controls="contact"
-                   aria-selected="false"><img style="width: 30px" src="{{ asset('images/dsta.png') }}"> <span
-                           >{% trans %}dataProtectionImpactAssessment{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="daten-tab" data-toggle="tab" href="#daten" role="tab"
-                   aria-controls="contact"
-                   aria-selected="false"><img style="width: 30px" src="{{ asset('images/data.png') }}"> <span
-                           >{% trans %}dataTransfers{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="daten-tab" data-toggle="tab" href="#forms" role="tab"
-                   aria-controls="contact"
-                   aria-selected="false"><img style="width: 30px" src="{{ asset('images/information.png') }}"> <span
-                           >{% trans %}forms{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="daten-tab" data-toggle="tab" href="#policies" role="tab"
-                   aria-controls="contact"
-                   aria-selected="false"><img style="width: 30px" src="{{ asset('images/contract.png') }}"> <span
-                           >{% trans %}policies{% endtrans %}</span></a>
-            </li>
-            <li>
-                <a id="daten-tab" data-toggle="tab" href="#software" role="tab"
-                   aria-controls="contact"
-                   aria-selected="false"><img style="width: 30px" src="{{ asset('images/monitor.png') }}"> <span
-                           >{% trans %}software{% endtrans %}</span></a>
-            </li>
-        </ul>
-
-        <div id="myTabContent">
-            <div id="tasks" role="tabpanel" aria-labelledby="home-tab">
-                {% for a in tasks %}
-                    <a href="{{ path('task_edit',{'id':a.id}) }}">
-                        <div>
-                            <div>
-                                <div>
-                                    <img style="width: 21px" src="{{ asset('images/task.png') }}">
-                                </div>
-                                <div>
-                                    {{ a.team.name }}: {{ a.title }}
-                                </div>
-                                <div>
-                                    {{ a.createdAt|date('d.m.Y') }}
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                {% endfor %}
+<div class="card-filled mb-5">
+    <div class="tabs flex flex-col w-full">
+        <div class="tabs-nav">
+            {% for tab, data in tabs %}
+                <button data-type="tabs" data-target="#tab-{{ tab }}" class="{{ loop.first ? ' active' }}">
+                <span>
+                    <img src="{{ asset(data.image) }}" alt="">
+                </span>
+                    <p>{{ tab|trans }}</p>
+                </button>
+            {% endfor %}
+            <div role="indicator" class="tabs-indicator"></div>
+        </div>
+        <hr>
+        <div class="tabs-content">
+            <div id="tab-tasks" role="tabpanel" class="tab-content active">
+                <ul class="stacked-list compressed">
+                    {% for a in tasks %}
+                        <li>
+                            <a href="{{ path('task_edit',{'id':a.id}) }}">{{ a.team.name }}: {{ a.title }}</a>
+                            <div>{{ a.createdAt|date('d.m.Y') }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
-            <div id="audit" role="tabpanel" aria-labelledby="home-tab">
-                {% for a in audits %}
-                    {% if a.activ %}
-                        <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
-                            <div>
-                                <div>
-                                    <div>
-                                        <img style="width: 30px" src="{{ asset('images/pruefung.png') }}">
-                                    </div>
-                                    <div>
-                                        {{ a.team.name }}: {{ a.frage }}
-                                    </div>
-                                    <div>
-                                        {{ a.status.name }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+            <div id="tab-auditQuestions" role="tabpanel" class="tab-content">
+                <ul class="stacked-list compressed">
+                    {% for a in audits %}
+                        {% if a.activ %}
+                            <li>
+                                <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">{{ a.team.name }}: {{ a.frage }}</a>
+                                <div>{{ a.status.name }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
-            <div id="vvt" role="tabpanel" aria-labelledby="profile-tab">
-                {% for a in processings %}
-                    {% if a.activ %}
-                        <a href="{{ path('vvt_edit',{'id':a.id}) }}">
-                            <div>
-                                <div>
-                                    <div>
-                                        <img style="width: 30px" src="{{ asset('images/prozess.png') }}">
-                                    </div>
-                                    <div>
-                                        {{ a.team.name }}: {{ a.name }}
-                                    </div>
-                                    <div>
-                                        {{ a.status.name }}
-                                    </div>
-                                    <div>
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+            <div id="tab-processing" role="tabpanel" class="tab-content">
+                <ul class="stacked-list compressed">
+                    {% for a in processings %}
+                        {% if a.activ %}
+                            <li>
+                                <a href="{{ path('vvt_edit',{'id':a.id}) }}">{{ a.team.name }}: {{ a.name }}</a>
+                                <div>{{ a.status.name }}</div>
+                                <div>{{ a.createdAt|date('d.m.Y') }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
-            <div id="dsfa" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in impactAssessments %}
-                    {% if a.vvt.team == currentTeam %}
-                        <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
-                            <div>
-                                <div>
-                                    <div>
-                                        <img style="width: 30px" src="{{ asset('images/dsta.png') }}">
-                                    </div>
-                                    <div>
-                                        {{ a.vvt.team.name }}: {{ a.beschreibung }}
-                                    </div>
-                                    <div>
-                                        {{ a.vvt.name }}
-                                    </div>
-                                    <div>
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+            <div id="tab-dataProtectionImpactAssessment" role="tabpanel" class="tab-content">
+                <ul class="stacked-list compressed">
+                    {% for a in impactAssessments %}
+                        {% if a.vvt.team == currentTeam %}
+                            <li>
+                                <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">{{ a.vvt.team.name }}: {{ a.beschreibung }}</a>
+                                <div>{{ a.vvt.name }}</div>
+                                <div>{{ a.createdAt|date('d.m.Y') }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
-            <div id="daten" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in dataTransfers %}
-                    {% if a.activ %}
-                        <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">
-                            <div>
-                                <div>
-                                    <div>
-                                        <img style="width: 30px" src="{{ asset('images/data.png') }}">
-                                    </div>
-                                    <div>
-                                        {{ a.team.name }}: {{ a.gegenstand }}
-                                    </div>
-                                    <div>
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+            <div id="tab-dataTransfers" role="tabpanel" class="tab-content">
+                <ul class="stacked-list compressed">
+                    {% for a in dataTransfers %}
+                        {% if a.activ %}
+                            <li>
+                                <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">{{ a.team.name }}: {{ a.gegenstand }}</a>
+                                <div>{{ a.createdAt|date('d.m.Y') }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
-            <div id="forms" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in forms %}
-                    {% if a.activ %}
-                        <a href="{{ path('forms_edit',{'id':a.id}) }}">
-                            <div>
-                                <div>
-                                    <div>
-                                        <img style="width: 30px" src="{{ asset('images/information.png') }}">
-                                    </div>
-                                    <div>
-                                        {{ a.team.name }}: {{ a.title }}
-                                    </div>
-                                    <div>
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+            <div id="tab-forms" role="tabpanel" class="tab-content">
+                <ul class="stacked-list compressed">
+                    {% for a in forms %}
+                        {% if a.activ %}
+                            <li>
+                                <a href="{{ path('forms_edit',{'id':a.id}) }}">{{ a.team.name }}: {{ a.title }}</a>
+                                <div>{{ a.createdAt|date('d.m.Y') }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
-            <div id="policies" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in policies %}
-                    {% if a.activ %}
-                        <a href="{{ path('policy_edit',{'id':a.id}) }}">
-                            <div>
-                                <div>
-                                    <div>
-                                        <img style="width: 30px" src="{{ asset('images/contract.png') }}">
-                                    </div>
-                                    <div>
-                                        {{ a.team.name }}: {{ a.title }}
-                                    </div>
-                                    <div>
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+            <div id="tab-policies" role="tabpanel" class="tab-content">
+                <ul class="stacked-list compressed">
+                    {% for a in policies %}
+                        {% if a.activ %}
+                            <li>
+                                <a href="{{ path('policy_edit',{'id':a.id}) }}">{{ a.team.name }}: {{ a.title }}</a>
+                                <div>{{ a.createdAt|date('d.m.Y') }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
-
-            <div id="software" role="tabpanel" aria-labelledby="contact-tab">
-                {% for a in software %}
-                    {% if a.activ %}
-                        <a href="{{ path('software_edit',{'id':a.id}) }}">
-                            <div>
-                                <div>
-                                    <div>
-                                        <img style="width: 30px" src="{{ asset('images/monitor.png') }}">
-                                    </div>
-                                    <div>
-                                        {{ a.team.name }}: {{ a.name }}
-                                    </div>
-                                    <div>
-                                        {% trans %}configurations{% endtrans %}: {{ a.config|length }}
-                                    </div>
-                                    <div>
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+            <div id="tab-software" role="tabpanel" class="tab-content">
+                <ul class="stacked-list compressed">
+                    {% for a in software %}
+                        {% if a.activ %}
+                            <li>
+                                <a href="{{ path('software_edit',{'id':a.id}) }}">{{ a.team.name }}: {{ a.name }}</a>
+                                <div>{% trans %}configurations{% endtrans %}: {{ a.config|length }}</div>
+                                <div>{{ a.createdAt|date('d.m.Y') }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

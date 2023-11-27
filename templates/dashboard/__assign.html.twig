@@ -1,6 +1,6 @@
 {% trans_default_domain 'dashboard' %}
 <h3>{% trans %}myAssignment{% endtrans %}</h3>
-<div class="card-outlined mb-5">
+<div class="card-filled mb-5">
     <div class="tabs flex flex-col w-full">
         <div class="tabs-nav">
             {% for tab, data in tabsAssignments %}
@@ -16,129 +16,73 @@
         <hr>
         <div class="tabs-content">
             <div id="tab-tasks" role="tabpanel" class="tab-content active">
-                {% for a in assignTasks %}
-                    <a href="{{ path('task_edit',{'id':a.id}) }}">
-                        <div>
-                            <div>
-                                <div>
-                                    <img style="width: 21px" src="{{ asset('images/task.png') }}">
-                                </div>
-                                <div>
-                                    {{ a.team.name }}: {{ a.title }}
-                                </div>
-                                <div>
-                                    {{ a.createdAt|date('d.m.Y') }}
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                {% endfor %}
+                <ul class="stacked-list compressed">
+                    {% for a in assignTasks %}
+                        <li>
+                            <a href="{{ path('task_edit',{'id':a.id}) }}">{{ a.team.name }}: {{ a.title }}</a>
+                            <div>{{ a.createdAt|date('d.m.Y') }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
             <div id="tab-academy" role="tabpanel" class="tab-content">
-                {% for a in akademie %}
-                    <a href="{{ path('akademie_kurs',{'kurs':a.id}) }}">
-                        <div>
-                            <div>
-                                <div>
-                                    <img style="width: 21px" src="{{ asset('images/online-learning.png') }}">
-                                </div>
-                                <div>
-                                    {{ a.kurs.title }}
-                                </div>
-                                <div>
-                                    {{ a.zugewiesen|date('d.m.Y') }}
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                {% endfor %}
+                <ul class="stacked-list compressed">
+                    {% for a in akademie %}
+                        <li>
+                            <a href="{{ path('akademie_kurs',{'kurs':a.id}) }}">{{ a.kurs.title }}</a>
+                            <div>{{ a.zugewiesen|date('d.m.Y') }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
             <div id="tab-audit" role="tabpanel" class="tab-content">
-                {% for a in assignAudit %}
-                    {% if a.activ %}
-                        <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
-                            <div>
-                                <div>
-                                    <div>
-                                        <img style="width: 21px" src="{{ asset('images/pruefung.png') }}">
-                                    </div>
-                                    <div>
-                                        {{ a.team.name }}: {{ a.frage }}
-                                    </div>
-                                    <div>
-                                        {{ a.status.name }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+                <ul class="stacked-list compressed">
+                    {% for a in assignAudit %}
+                        {% if a.activ %}
+                            <li>
+                                <a href="{{ path('audit_tom_edit',{'tom':a.id}) }}">{{ a.team.name }}: {{ a.frage }}</a>
+                                <div>{{ a.status.name }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
             <div id="tab-vvt" role="tabpanel" class="tab-content">
-                {% for a in assignVvt %}
-                    {% if a.activ %}
-                        <a href="{{ path('vvt_edit',{'id':a.id}) }}">
-                            <div>
-                                <div>
-                                    <div>
-                                        <img style="width: 21px" src="{{ asset('images/prozess.png') }}">
-                                    </div>
-                                    <div>
-                                        {{ a.team.name }}: {{ a.name }}
-                                    </div>
-                                    <div>
-                                        {{ a.status.name }}
-                                    </div>
-                                    <div>
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+                <ul class="stacked-list compressed">
+                    {% for a in assignVvt %}
+                        {% if a.activ %}
+                            <li>
+                                <a href="{{ path('vvt_edit',{'id':a.id}) }}">{{ a.team.name }}: {{ a.name }}</a>
+                                <div>{{ a.status.name }}</div>
+                                <div>{{ a.createdAt|date('d.m.Y') }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
             <div id="tab-dsfa" role="tabpanel" class="tab-content">
-                {% for a in assignDsfa %}
-                    {% if a.activ %}
-                        <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">
-                            <div>
-                                <div>
-                                    <div>
-                                        <img style="width: 21px" src="{{ asset('images/dsta.png') }}">
-                                    </div>
-                                    <div>
-                                        {{ a.vvt.team.name }}: {{ a.beschreibung }}
-                                    </div>
-                                    <div>
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+                <ul class="stacked-list compressed">
+                    {% for a in assignDsfa %}
+                        {% if a.activ %}
+                            <li>
+                                <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">{{ a.vvt.team.name }}: {{ a.beschreibung }}</a>
+                                <div>{{ a.createdAt|date('d.m.Y') }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
             <div id="tab-dw" role="tabpanel" class="tab-content">
-                {% for a in assignDaten %}
-                    {% if a.activ %}
-                        <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">
-                            <div>
-                                <div>
-                                    <div>
-                                        <img style="width: 21px" src="{{ asset('images/data.png') }}">
-                                    </div>
-                                    <div>
-                                        {{ a.team.name }}: {{ a.gegenstand }}
-                                    </div>
-                                    <div>
-                                        {{ a.createdAt|date('d.m.Y') }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    {% endif %}
-                {% endfor %}
+                <ul class="stacked-list compressed">
+                    {% for a in assignDaten %}
+                        {% if a.activ %}
+                            <li>
+                                <a href="{{ path('datenweitergabe_edit',{'id':a.id}) }}">{{ a.team.name }}: {{ a.gegenstand }}</a>
+                                <div>{{ a.createdAt|date('d.m.Y') }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>

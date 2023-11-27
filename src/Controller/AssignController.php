@@ -225,7 +225,22 @@ class AssignController extends AbstractController
             'forms' => $assignedForms,
             'policies' => $assignedPolicies,
             'software' => $assignedSoftware,
-            'tasks' => $assignedTasks
+            'tasks' => $assignedTasks,
+            'tabs' => $this->getTabs(),
         ]);
+    }
+
+    private function getTabs(): array
+    {
+        return [
+            'tasks' => ['image' => 'images/task.png'],
+            'auditQuestions' => ['image' => 'images/pruefung.png'],
+            'processing' => ['image' => 'images/prozess.png'],
+            'dataProtectionImpactAssessment' => ['image' => 'images/dsta.png'],
+            'dataTransfers' => ['image' => 'images/data.png'],
+            'forms' => ['image' => 'images/information.png'],
+            'policies' => ['image' => 'images/contract.png'],
+            'software' => ['image' => 'images/monitor.png'],
+        ];
     }
 }
