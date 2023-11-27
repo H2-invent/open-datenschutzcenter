@@ -5,7 +5,8 @@ td, th {
 }
 
 .dataTables_wrapper {
-    @apply rounded-xl border;
+    /* sub 17.5rem = article ml-60 (width: 15rem) + px-3 (width: 1.5rem) + 1rem */
+    @apply rounded-xl border max-w-[calc(100vw_-_17.5rem)] overflow-x-auto;
 }
 
 .dataTables_wrapper::after {
@@ -46,7 +47,7 @@ td, th {
 }
 
 table.dataTable {
-    @apply min-w-full divide-y divide-surface-300 border-y;
+    @apply w-full divide-y divide-surface-300 border-y;
 }
 
 table.dataTable > thead {

@@ -745,7 +745,7 @@ body {
 }
 
 aside {
-    @apply hover:shadow-material hover:shadow-material w-60 rounded-r-2xl h-full overflow-hidden;
+    @apply hover:shadow-material hover:shadow-material w-60 rounded-r-2xl h-full overflow-hidden z-50;
 }
 
 #topbar, aside {

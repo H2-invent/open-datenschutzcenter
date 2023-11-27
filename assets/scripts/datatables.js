@@ -2,6 +2,7 @@ import DataTable from "datatables.net-dt";
 
 Array.prototype.forEach.call(document.getElementsByClassName('dataTable'), function (element) {
     new DataTable('#' + element.getAttribute('id'), {
+        responsive: true,
         dom: 'Bfrtip',
         buttons: [
             {
