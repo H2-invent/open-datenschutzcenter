@@ -65,15 +65,15 @@ class ClientRequestController extends AbstractController
     {
         $form = $this->createForm(ClientRequesCommentType::class);
         $form->handleRequest($request);
+        $clientRequest = $clientRequestRepository->findOneBy(['token' => $request->get('token')]);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $clientRequest = $clientRequestRepository->findOneBy(['token' => $request->get('token')]);
             $clientRequestService->newComment($clientRequest, $form->getData()['comment'], $clientRequest->getName(), 0);
             $snack = $this->translator->trans(id: 'save.comment', domain: 'general');
         } else {
             $snack = null;
         }
-        
+
         return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken(), 'snack' => $snack]);
     }
 
