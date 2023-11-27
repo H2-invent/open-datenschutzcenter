@@ -63,13 +63,17 @@ class ClientRequestController extends AbstractController
         ClientRequestRepository $clientRequestRepository,
     ): Response
     {
-        $data = $request->get('client_request_comment');
-        $clientRequest = $clientRequestRepository->findOneBy(['token' => $request->get('token')]);
+        $form = $this->createForm(ClientRequesCommentType::class);
+        $form->handleRequest($request);
 
-        $content = $data['comment'];
-        $clientRequestService->newComment($clientRequest, $content, $clientRequest->getName(), 0);
-
-        $snack = $this->translator->trans(id: 'save.comment', domain: 'general');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $clientRequest = $clientRequestRepository->findOneBy(['token' => $request->get('token')]);
+            $clientRequestService->newComment($clientRequest, $form->getData()['comment'], $clientRequest->getName(), 0);
+            $snack = $this->translator->trans(id: 'save.comment', domain: 'general');
+        } else {
+            $snack = null;
+        }
+        
         return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken(), 'snack' => $snack]);
     }
 
