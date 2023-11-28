@@ -1,18 +1,14 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'loeschkonzept' %}
 
-{% block CTA %}
-    <a href="{{ path('app_loeschkonzept_index') }}">
-        <span>{% trans from 'general' %}back{% endtrans %}</span>
-    </a>
-    {{ include('loeschkonzept/_delete_form.html.twig') }}
+{% block title %}
+    {% trans %}deletionConcept.edit{% endtrans %}
+{% endblock %}
 
+{% block CTA %}
+    {{ include('loeschkonzept/_delete_form.html.twig') }}
 {% endblock %}
 
 {% block body %}
-    <h1>{% trans %}deletionConcept.edit{% endtrans %}</h1>
-
-
     {{ include('loeschkonzept/_form.html.twig', {'button_label': 'Update'}) }}
-
 {% endblock %}

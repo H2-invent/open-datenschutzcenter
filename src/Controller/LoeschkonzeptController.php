@@ -91,6 +91,7 @@ class LoeschkonzeptController extends AbstractController
         return $this->render('loeschkonzept/edit.html.twig', [
             'loeschkonzept' => $newloeschkonzept,
             'form' => $form,
+            'urlBack' => $this->generateUrl('app_loeschkonzept_index'),
         ]);
     }
 
@@ -170,6 +171,7 @@ class LoeschkonzeptController extends AbstractController
         return $this->render('loeschkonzept/new.html.twig', [
             'loeschkonzept' => $loeschkonzept,
             'form' => $form,
+            'urlBack' => $this->generateUrl('app_loeschkonzept_index'),
         ]);
     }
 
@@ -178,6 +180,7 @@ class LoeschkonzeptController extends AbstractController
     {
         return $this->render('loeschkonzept/show.html.twig', [
             'loeschkonzept' => $loeschkonzept,
+            'urlBack' => $this->generateUrl('app_loeschkonzept_index'),
         ]);
     }
 }
