@@ -1,157 +1,51 @@
 {% trans_default_domain 'datenweitergabe' %}
-{{ form_start(form) }}
-<div {% if not activ or daten.approved %}class="disabled"{% endif %}>
+{% set disabled = not activ or daten.approved %}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'disabled': disabled }}) }}
+<fieldset>
     {% if activNummer %}
-        <div>
-            <div>
-                {{ form_label(form.nummer) }}
-            </div>
-            <div>
-                {{ form_widget(form.nummer) }}
-            </div>
-        </div>
+        {{ form_row(form.nummer) }}
     {% endif %}
-    <div>
-        <div>
-            {{ form_label(form.gegenstand) }}
-            {{ form_help(form.gegenstand) }}
-        </div>
-        <div>
-            {{ form_widget(form.gegenstand) }}
-        </div>
-    </div>
-    <div>
-        <div>
-            {{ form_label(form.stand) }}
-        </div>
-        <div>
-            {{ form_widget(form.stand) }}
-        </div>
-    </div>
-    <div>
-        <div>
-            {{ form_label(form.reference) }}
-            {{ form_help(form.reference) }}
-        </div>
-        <div>
-            {{ form_widget(form.reference) }}
-        </div>
-    </div>
-    <div>
-        <div>
-            {{ form_label(form.verantwortlich) }}
-        </div>
-        <div>
-            {{ form_widget(form.verantwortlich) }}
-        </div>
-    </div>
-    <div>
-        <div>
-            {{ form_label(form.vertragsform) }}
-        </div>
-        <div>
-            {{ form_widget(form.vertragsform) }}
-        </div>
-    </div>
-    <div>
-        <div>
-            {{ form_label(form.zeichnungsdatum) }}
-            {{ form_help(form.zeichnungsdatum) }}
-        </div>
-        <div>
-            {{ form_widget(form.zeichnungsdatum) }}
-        </div>
-    </div>
-    <div>
-        <div>
-            {{ form_label(form.kontakt) }}
-        </div>
-        <div>
-            {{ form_widget(form.kontakt) }}
-        </div>
-    </div>
+    {{ form_row(form.gegenstand) }}
+    {{ form_row(form.stand) }}
+    {{ form_row(form.reference) }}
+    {{ form_row(form.verantwortlich) }}
+    {{ form_row(form.vertragsform) }}
+    {{ form_row(form.zeichnungsdatum) }}
+    {{ form_row(form.kontakt) }}
+    {{ form_row(form.verfahren) }}
 
-    <div>
-        <div>
-            {{ form_label(form.verfahren) }}
-            {{ form_help(form.verfahren) }}
-        </div>
-        <div>
-            {{ form_widget(form.verfahren) }}
-        </div>
-    </div>
+    {{ form_row(form.software, {row_attr: {class: daten.art != 1 ? 'hidden '}}) }}
 
-    <div
-         {% if daten.art != 1 %}style="visibility: hidden"{% endif %}>
-        <div>
-            {{ form_label(form.software) }}
-        </div>
-        <div>
-            {% if daten.art != 1 %}
-                <p>requestProcessing.noSoftware</p>
-            {% else %}
+    {{ form_row(form.grundlage) }}
+    {{ form_row(form.notes) }}
+</fieldset>
 
-            {% endif %}
-            {{ form_widget(form.software) }}
-        </div>
-    </div>
+<fieldset>
+    <legend>{% trans %}requestProcessing.disclaimer{% endtrans %}</legend>
+    {{ form_row(form.checkItems) }}
+    {{ form_row(form.checkPeople) }}
+    {{ form_row(form.checkData) }}
+    {{ form_row(form.checkDocumentation) }}
+    {{ form_row(form.checkTom) }}
+    {{ form_row(form.checkSubcontractor) }}
+    {{ form_row(form.checkTrust) }}
+    {{ form_row(form.checkSupport) }}
+    {{ form_row(form.checkSupport3236) }}
+    {{ form_row(form.checkEnding) }}
+    {{ form_row(form.checkAudit) }}
+    {{ form_row(form.checkNotes) }}
+</fieldset>
 
-    <div>
-        <div>
-            {{ form_label(form.grundlage) }}
-            {{ form_help(form.grundlage) }}
-        </div>
-        <div>
-            {{ form_widget(form.grundlage) }}
-        </div>
-    </div>
-    <div>
-        <div>
-            {{ form_label(form.notes) }}
-        </div>
-        <div>
-            {{ form_widget(form.notes) }}
-        </div>
-    </div>
-    <div>
-        <div>
-            {% trans %}requestProcessing.disclaimer{% endtrans %}
-        </div>
-        <div>
-            {{ form_widget(form.checkItems) }}
-            {{ form_widget(form.checkPeople) }}
-            {{ form_widget(form.checkData) }}
-            {{ form_widget(form.checkDocumentation) }}
-            {{ form_widget(form.checkTom) }}
-            {{ form_widget(form.checkSubcontractor) }}
-            {{ form_widget(form.checkTrust) }}
-            {{ form_widget(form.checkSupport) }}
-            {{ form_widget(form.checkSupport3236) }}
-            {{ form_widget(form.checkEnding) }}
-            {{ form_widget(form.checkAudit) }}
-            {{ form_widget(form.checkNotes) }}
-        </div>
-    </div>
-</div>
-<div>
-    <div>
-        {{ form_label(form.uploadFile) }}
-    </div>
-    <div>
-        <span>
-            {{ form_widget(form.uploadFile) }}
-        </span>
-        {% if daten.upload %}
-            <a href="{{ path('datenweitergabe_download_file', {'id':daten.id}) }}" download>{% trans %}avvDownload{% endtrans %}</a>
-        {% endif %}
-    </div>
-</div>
-
-
-{{ form_label(form.save) }}
-    {% if not activ or daten.approved %}
-        {{ form_widget(form.save, { 'disabled':'disabled' }) }}
-    {% else %}
-        {{ form_widget(form.save) }}
+<fieldset>
+    {{ form_label(form.uploadFile) }}
+    {{ form_widget(form.uploadFile) }}
+    {% if daten.upload %}
+        <a href="{{ path('datenweitergabe_download_file', {'id':daten.id}) }}">
+            {% trans %}avvDownload{% endtrans %}
+        </a>
     {% endif %}
+</fieldset>
+
+{{ form_row(form.save, { attr: {'disabled': disabled} }) }}
+{{ form_rest(form) }}
 {{ form_end(form) }}

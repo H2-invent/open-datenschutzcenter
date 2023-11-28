@@ -125,7 +125,8 @@ class DatenweitergabeController extends AbstractController
             'title' => $this->translator->trans(id: 'dataTransfer.create', domain: 'datenweitergabe'),
             'daten' => $daten,
             'activNummer' => true,
-            'activ' => $daten->getActiv()
+            'activ' => $daten->getActiv(),
+            'urlBack' => $this->generateUrl('datenweitergabe'),
         ]);
     }
 
@@ -305,7 +306,8 @@ class DatenweitergabeController extends AbstractController
             'daten' => $daten,
             'activ' => $daten->getActiv(),
             'activNummer' => false,
-            'snack' => $request->get('snack')
+            'snack' => $request->get('snack'),
+            'urlBack' => $this->generateUrl('datenweitergabe'),
         ]);
     }
 
