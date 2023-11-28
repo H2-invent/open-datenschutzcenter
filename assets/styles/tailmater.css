@@ -1144,3 +1144,17 @@ trix-editor ol, .editor-output ol, ol.initial {
 #client_request #back a {
     @apply mb-5;
 }
+
+ol.item-history {
+    @apply text-sm card-outlined w-full max-w-2xl;
+    list-style: decimal;
+    list-style-position: outside;
+}
+
+ol.item-history li {
+    @apply mb-1 pl-1 ml-4;
+}
+
+ol.item-history li:last-of-type {
+    @apply mb-0;
+}

@@ -19,10 +19,10 @@
     {{ include('tom/__form.html.twig') }}
     <p class="text-muted mt-5 text-sm">{% trans from 'general' %}createdBy{% endtrans %}: {{ tom.user.email }}</p>
     {% if tom.previous %}
-        <div>
-            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
+        <h3 class="mt-10">{% trans from 'general' %}history{% endtrans %}</h3>
+        <ol class="item-history" reversed>
             {{ include('tom/__history.html.twig', {'p':tom.previous}) }}
-        </div>
+        </ol>
     {% endif %}
     {{ include('base/__snack.html.twig') }}
 {% endblock %}
