@@ -1158,3 +1158,7 @@ ol.item-history li {
 ol.item-history li:last-of-type {
     @apply mb-0;
 }
+
+.created-by {
+    @apply text-muted mt-5 text-sm;
+}

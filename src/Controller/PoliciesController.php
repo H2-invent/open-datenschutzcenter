@@ -71,6 +71,7 @@ class PoliciesController extends AbstractController
             'vvt' => $policy,
             'activ' => $policy->getActiv(),
             'CTA' => false,
+            'urlBack' => $this->generateUrl('policies'),
         ]);
     }
 
@@ -214,7 +215,8 @@ class PoliciesController extends AbstractController
             'title' => $this->translator->trans(id: 'policies.edit', domain: 'policies'),
             'policy' => $policy,
             'activ' => $policy->getActiv(),
-            'snack' => $request->get('snack')
+            'snack' => $request->get('snack'),
+            'urlBack' => $this->generateUrl('policies'),
         ]);
     }
 
