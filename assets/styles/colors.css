@@ -1,51 +1,51 @@
 @import "./tailmater.css";
 
 .btn-vvt {
-    @apply bg-vvt-50 hover:bg-vvt-100 text-vvt-800;
+    @apply bg-vvt-50 hover:bg-vvt-100 text-vvt-800 hover:text-vvt-900;
 }
 
 .btn-dsfa {
-    @apply bg-dsfa-50 hover:bg-dsfa-100 text-dsfa-800;
+    @apply bg-dsfa-50 hover:bg-dsfa-100 text-dsfa-800 hover:text-dsfa-900;
 }
 
 .btn-tom {
-    @apply bg-tom-50 hover:bg-tom-100 text-tom-800;
+    @apply bg-tom-50 hover:bg-tom-100 text-tom-800 hover:text-tom-900;
 }
 
 .btn-kontakt {
-    @apply bg-kontakt-50 hover:bg-kontakt-100 text-kontakt-800;
+    @apply bg-kontakt-50 hover:bg-kontakt-100 text-kontakt-800 hover:text-kontakt-900;
 }
 
 .btn-datenweitergabe {
-    @apply bg-datenweitergabe-50 hover:bg-datenweitergabe-100 text-datenweitergabe-800;
+    @apply bg-datenweitergabe-50 hover:bg-datenweitergabe-100 text-datenweitergabe-800 hover:text-datenweitergabe-900;
 }
 
 .btn-av {
-    @apply bg-av-50 hover:bg-av-100 text-av-800;
+    @apply bg-av-50 hover:bg-av-100 text-av-800 hover:text-av-900;
 }
 
 .btn-formular {
-    @apply bg-formular-50 hover:bg-formular-100 text-formular-800;
+    @apply bg-formular-50 hover:bg-formular-100 text-formular-800 hover:text-formular-900;
 }
 
 .btn-policy {
-    @apply bg-policy-50 hover:bg-policy-100 text-policy-800;
+    @apply bg-policy-50 hover:bg-policy-100 text-policy-800 hover:text-policy-900;
 }
 
 .btn-software {
-    @apply bg-software-50 hover:bg-software-100 text-software-800;
+    @apply bg-software-50 hover:bg-software-100 text-software-800 hover:text-software-900;
 }
 
 .btn-tasks {
-    @apply bg-task-50 hover:bg-task-100 text-task-800;
+    @apply bg-task-50 hover:bg-task-100 text-task-800 hover:text-task-900;
 }
 
 .btn-loeschkonzept {
-    @apply bg-loeschkonzept-50 hover:bg-loeschkonzept-100 text-loeschkonzept-800;
+    @apply bg-loeschkonzept-50 hover:bg-loeschkonzept-100 text-loeschkonzept-800 hover:text-loeschkonzept-900;
 }
 
 .btn-datenkatekorie {
-    @apply bg-datenkategorie-50 hover:bg-datenkategorie-100 text-datenkategorie-800;
+    @apply bg-datenkategorie-50 hover:bg-datenkategorie-100 text-datenkategorie-800 hover:text-datenkategorie-900;
 }
 
 /* .card */
