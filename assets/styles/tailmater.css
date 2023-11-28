@@ -831,7 +831,7 @@ form > fieldset .btn {
 }
 
 form > fieldset {
-    @apply card-filled !bg-surface-100 w-full max-w-2xl mb-5;
+    @apply card-filled !bg-surface-100 w-full mb-5;
 }
 
 form > fieldset > legend {

@@ -8,7 +8,7 @@
                 {{ include('base/__sidenav.html.twig') }}
             </aside>
             <article class="grow p-3 ml-60">
-                <div id="topbar" class="flex mb-3">
+                <div id="topbar" class="flex mb-10">
                     {% if urlBack is defined %}
                         <a href="{{ urlBack }}" class="material-symbols-outlined">
                             arrow_left_alt
@@ -18,7 +18,7 @@
                     {{ include('base/__teamToggle.html.twig') }}
                     {{ include('base/__topnav.html.twig') }}
                 </div>
-                <div>
+                <div class="container mx-auto max-w-5xl">
                     <div id="bock-cta" class="flex flex-row rounded flex gap-2 items-center justify-start">
                         {% block CTA %}{% endblock %}
                     </div>
