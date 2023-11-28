@@ -79,7 +79,8 @@ class DatenweitergabeController extends AbstractController
             'title' => $this->translator->trans(id: 'requestProcessing.create', domain: 'datenweitergabe'),
             'daten' => $daten,
             'activNummer' => true,
-            'activ' => $daten->getActiv()
+            'activ' => $daten->getActiv(),
+            'urlBack' => $this->generateUrl('auftragsverarbeitung'),
         ]);
     }
 
@@ -307,7 +308,7 @@ class DatenweitergabeController extends AbstractController
             'activ' => $daten->getActiv(),
             'activNummer' => false,
             'snack' => $request->get('snack'),
-            'urlBack' => $this->generateUrl('datenweitergabe'),
+            'urlBack' => $daten->getArt() === 1 ? $this->generateUrl('datenweitergabe') : $this->generateUrl('auftragsverarbeitung'),
         ]);
     }
 
