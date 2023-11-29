@@ -107,3 +107,5 @@ inheritance:
     inactive:
       short: Gerbte Verarbeitung - für dieses Team deaktiviert
       long: Die Verarbeitung wurde mit allen zugehörigen Elementen von einem übergeordneten Team vererbt, diese sind jedoch für dieses Team deaktiviert.
+inheritedEntities: Vererbte Datenkategorien und Löschkonzepte
+noInheritedEntities: Keine vererbten Datenkategorien und Löschkonzepte verfügbar

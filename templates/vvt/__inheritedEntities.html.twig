@@ -1,0 +1,39 @@
+{% if not isEditable %}
+    <div class="card mt-4">
+        <h4 class="h4-responsive card-header">{% trans from 'vvt' %}inheritedEntities{% endtrans %}</h4>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{% trans from 'vvt_datenkategorie' %}dataCategory.word{% endtrans %}</th>
+                            <th>{% trans from 'vvt_datenkategorie' %}deletion.deadline{% endtrans %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for inherited in inheritedEntities %}
+                            <tr>
+                                <td>
+                                    <a class="badge badge-light" href="{{ path('app_vvtdatenkategorie_show', {id: inherited.category.id}) }}">
+                                        {{ inherited.category.name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if inherited.deletionConcept %}
+                                        <a class="badge badge-light" href="{{ path('app_loeschkonzept_show', {id: inherited.deletionConcept.id}) }}">
+                                            {{ inherited.deletionConcept.standartlf }}
+                                        </a>
+                                    {% else %}
+                                        {% trans from 'loeschkonzept' %}deletionConcept.notSet{% endtrans %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td>{% trans from 'vvt' %}noInheritedEntities{% endtrans %}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}
