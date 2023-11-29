@@ -67,6 +67,7 @@
 
     {{ include('vvt/__form.html.twig') }}
     <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ vvt.user.email }}</p>
+    {{ include('vvt/__inheritedEntities.html.twig') }}
     {% if vvt.previous %}
         <h3 class="mt-10">{% trans from 'general' %}history{% endtrans %}</h3>
         <ol class="item-history">

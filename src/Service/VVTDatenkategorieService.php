@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use App\DataTypes\InheritedEntity;
 use App\Entity\Loeschkonzept;
 use App\Entity\Team;
 use App\Entity\User;
@@ -98,6 +99,25 @@ class VVTDatenkategorieService
         $vVTDatenkategorie->setUser($user);
 
         return $vVTDatenkategorie;
+    }
+
+    /**
+     * @param VVTDatenkategorie[] $categories
+     * @return array
+     */
+    function getInheritedEntities(array $categories): array
+    {
+        $result = [];
+        foreach ($categories as $category) {
+            $inheritedEntity = new InheritedEntity();
+            $inheritedEntity->setCategory($category);
+            $latestDeletionConcept = $category->getLastLoeschkonzept();
+            if ($latestDeletionConcept && $latestDeletionConcept->getActiv()) {
+                $inheritedEntity->setDeletionConcept($latestDeletionConcept);
+            }
+            $result[] = $inheritedEntity;
+        }
+        return $result;
     }
 
 }
