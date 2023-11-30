@@ -1,14 +1,10 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'software' %}
 
-{% block body %}
-    <h2>{{ title }} {{ software.name }}</h2>
-    <a href="{{ path('software_edit', {'id':software.id}) }}"
-      >{% trans %}software.back{% endtrans %}</a>
-    <div>
-        {{ include('software/__ConfigForm.html.twig') }}
-    </div>
+{% block title %}
+    {{ title }} {{ software.name }}
 {% endblock %}
 
-{% block javascript %}
+{% block body %}
+    {{ include('software/__configForm.html.twig') }}
 {% endblock %}

@@ -94,6 +94,7 @@ class SoftwareController extends AbstractController
             'title' => $this->translator->trans(id: 'config.for', domain: 'software'),
             'activ' => $software->getActiv(),
             'software' => $software,
+            'urlBack' => $this->generateUrl('software_edit', ['id' => $software->getId()])
         ]);
     }
 

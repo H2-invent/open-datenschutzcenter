@@ -1,67 +1,62 @@
 {% trans_default_domain 'software' %}
-<a href="{{ path('software_config_new',{'id':software.id}) }}">
-    {% trans %}config.create{% endtrans %}
-</a>
-<!-- Button trigger modal -->
-<button type="button" data-toggle="modal" data-target="#centralModalMd">
-    {% trans from 'general' %}info{% endtrans %}
-</button>
+<div class="mb-5">
+    <a href="{{ path('software_config_new',{'id':software.id}) }}" class="btn">
+        {% trans %}config.create{% endtrans %}
+    </a>
+    <button class="btn" type="button" data-type="dialogs" data-target="#modal-software-config-info">
+        {% trans from 'general' %}info{% endtrans %}
+    </button>
+</div>
+<ul class="stacked-list">
 {% for c in software.config %}
     {% if not c.activ %}
-        <div>
-            <a
-               href="{{ path('software_config_new',{'id':software.id,'config':c.id}) }}">
-                <div>
-                    <del>
-                        {{ c.id }}: {{ c.name }}<br>
-                        {{ c.createdAt|date('d.m.Y') }}
-                    </del>
-                </div>
-            </a>
-            {% if software.team in app.user.adminRoles %}
-                <div>
-                    <a href="{{ path('software_config_delete',{'config':c.id}) }}"
-                      >{% trans %}config.delete{% endtrans %}
+        <li>
+            <div>
+                <p>
+                    <a href="{{ path('software_config_new',{'id':software.id,'config':c.id}) }}">
+                        {{ c.id }}: {{ c.name }}
                     </a>
-                </div>
-            {% endif %}
-        </div>
-    {% else %}
-        <div>
-            <a
-               href="{{ path('software_config_new',{'id':software.id,'config':c.id}) }}">
-                <div>
-                    <b>{{ c.id }}: {{ c.name }}</b><br>
-                    {{ c.config|raw }}
-                </div>
-                <div>
+                </p>
+                <p>
                     {% trans from 'general' %}createdAt{% endtrans %}: {{ c.createdAt|date('d.m.Y') }}
-                </div>
-            </a>
-        </div>
+                </p>
+            </div>
+            <div>
+                {% if software.team in app.user.adminRoles %}
+                    <a href="{{ path('software_config_delete',{'config':c.id}) }}" class="text-danger">
+                        {% trans %}config.delete{% endtrans %}
+                    </a>
+                {% endif %}
+            </div>
+        </li>
+    {% else %}
+        <li>
+            <div>
+                <p>
+                    <a href="{{ path('software_config_new',{'id':software.id,'config':c.id}) }}">{{ c.id }}: {{ c.name }}</a>
+                </p>
+                <p>
+                    {{ c.config|raw }}<br>
+                    {% trans from 'general' %}createdAt{% endtrans %}: {{ c.createdAt|date('d.m.Y') }}
+                </p>
+            </div>
+            <div>
+
+            </div>
+        </li>
     {% endif %}
 {% endfor %}
+</ul>
 
-<!-- Central Modal Medium -->
-<div id="centralModalMd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-    <!-- Change class .modal-sm to change the size of the modal -->
-    <div role="document">
-        <div>
-            <div>
-                <h4 id="myModalLabel">{% trans %}config.explanation{% endtrans %}</h4>
-                <button type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div>
-                {% trans %}config.disclaimer{% endtrans %}
-            </div>
-            <div>
-                <button type="button"
-                        data-dismiss="modal">{% trans from 'general' %}close{% endtrans %}</button>
-            </div>
+<div id="modal-software-config-info" class="modal">
+    <div data-close="#modal-software-config-info" class="modal-close"></div>
+    <div class="modal-inner">
+        <div class="modal-content">
+            <h3>{% trans %}config.explanation{% endtrans %}</h3>
+            <p>{% trans %}config.disclaimer{% endtrans %}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-close="#modal-software-config-info">{% trans from 'general' %}close{% endtrans %}</button>
         </div>
     </div>
 </div>
-<!-- Central Modal Medium -->

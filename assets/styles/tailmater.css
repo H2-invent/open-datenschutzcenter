@@ -740,7 +740,7 @@ body {
     @apply text-gray-700;
 }
 
-#bock-cta .btn {
+#bock-cta:not(:empty) {
     @apply mb-5;
 }
 

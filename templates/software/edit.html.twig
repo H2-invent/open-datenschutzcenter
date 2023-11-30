@@ -1,76 +1,46 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'software' %}
 
+{% block title %}
+    {{ title }}
+{% endblock %}
+
 {% block CTA %}
     {% if software.activ %}
-        <a href="{{ path('bericht_software', {'id':software.id}) }}">
+        <a href="{{ path('bericht_software', {'id':software.id}) }}" class="btn">
             <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
         </a>
-        <a href="{{ path('bericht_software', {'id':software.id, 'all':1}) }}">
+        <a href="{{ path('bericht_software', {'id':software.id, 'all':1}) }}" class="btn">
             <span>{% trans from 'general' %}pdf.createWithHistory{% endtrans %}</span>
         </a>
         {{ include('base/__approveBtn.html.twig',{'data':software,'dataLink':'software_approve'}) }}
+        {{ include('assign/__assign.html.twig',{'data':software,'path':'assign_software'}) }}
     {% endif %}
-
 {% endblock %}
 
 {% block body %}
-    <div>
-        <div>
-            <h2>{{ software.name }}: {{ title }}</h2>
-            {{ include('base/__approvedBy.html.twig', {'data':software}) }}
-        </div>
-        <div>
-            {{ include('assign/__assign.html.twig',{'data':software,'path':'assign_software'}) }}
-        </div>
-    </div>
 
-    <div id="accordionExample">
-        <div>
-            <div id="headingOne">
-                <h5>
-                    <button type="button" data-toggle="collapse"
-                            data-target="#collapseOne"
-                            aria-expanded="false" aria-controls="collapseOne">
-                        <h4>{% trans %}software.baseData{% endtrans %}</h4>
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseOne" aria-labelledby="headingOne"
-                 data-parent="#accordionExample">
-                <div>
-                    {{ include('software/__form.html.twig') }}
-                    <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ software.user.email }}</p>
-                </div>
-            </div>
+    {{ include('base/__approvedBy.html.twig', {'data':software}) }}
+
+    <div class="grid grid-cols-5 gap-4">
+        <div class="col-span-3">
+            <h3>{% trans %}software.baseData{% endtrans %}</h3>
+            {{ include('software/__form.html.twig') }}
+            <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ software.user.email }}</p>
         </div>
-        <div>
-            <div id="headingTwo">
-                <h5>
-                    <button type="button" data-toggle="collapse"
-                            data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                        <h4>{% trans %}config.attached{% endtrans %}</h4>
-                    </button>
-                </h5>
-            </div>
-            <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                <div>
-                    {{ include('software/__config.html.twig') }}
-                </div>
-            </div>
+        <div class="col-span-2">
+            <h3>{% trans %}config.attached{% endtrans %}</h3>
+            {{ include('software/__config.html.twig') }}
         </div>
     </div>
 
     {% if software.previous %}
-        <div>
-            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
+        <h3 class="mt-10">{% trans from 'general' %}history{% endtrans %}</h3>
+        <ol class="item-history" reversed>
             {{ include('software/__history.html.twig', {'p':software.previous}) }}
-        </div>
+        </ol>
     {% endif %}
 
     {{ include('base/__snack.html.twig') }}
 
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

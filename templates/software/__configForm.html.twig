@@ -1,0 +1,14 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<fieldset>
+    {{ form_row(form.name) }}
+    {{ form_row(form.config) }}
+    {{ form_row(form.activ) }}
+</fieldset>
+<fieldset>
+    {{ form_row(form.uploadFile) }}
+    {% if config.upload %}
+        <img src="{{ path('software_config_download_file', {'id': config.id}) }}" alt="Anhang" style="max-width: 100%"/>
+    {% endif %}
+</fieldset>
+{{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
+{{ form_end(form) }}

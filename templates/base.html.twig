@@ -19,9 +19,11 @@
                     {{ include('base/__topnav.html.twig') }}
                 </div>
                 <div class="container mx-auto max-w-5xl">
-                    <div id="bock-cta" class="flex flex-row rounded flex gap-2 items-center justify-start">
-                        {% block CTA %}{% endblock %}
-                    </div>
+                    {% apply spaceless %}
+                        <div id="bock-cta" class="flex flex-row flex-wrap rounded flex gap-2 items-center justify-start">
+                            {% block CTA %}{% endblock %}
+                        </div>
+                    {% endapply %}
                     <div id="content">
                         {% block body %}{% endblock %}
                     </div>
