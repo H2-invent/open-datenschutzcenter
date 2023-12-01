@@ -15,11 +15,11 @@ td, th {
 }
 
 .dataTables_length {
-    @apply p-0 float-left pb-5;
+    @apply p-0 float-left pb-5 text-gray-500 text-sm;
 }
 
 .dataTables_filter {
-    @apply p-0 float-right pb-5;
+    @apply p-0 float-right pb-5 text-gray-500 text-sm;
 }
 
 .dataTables_info {
@@ -55,7 +55,7 @@ table.dataTable > thead {
 }
 
 table.dataTable > thead > tr > th {
-    @apply px-3 py-3 text-left text-xs font-medium uppercase tracking-wide;
+    @apply px-3 py-3 text-left text-xs font-semibold uppercase tracking-wide;
 }
 
 table.dataTable > thead > tr > th:first-child {
