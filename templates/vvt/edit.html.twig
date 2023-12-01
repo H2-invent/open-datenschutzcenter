@@ -4,57 +4,51 @@
 {% block CTA %}
     {% if vvt.activDsfa is null %}
         <a href="{{ path('vvt_dsfa_new', {'vvt':vvt.id}) }}"
+           class="btn"
            title="{% trans %}dataProtectionImpactAssessment.create{% endtrans %}">
             <span>{% trans %}dsfa.create{% endtrans %}</span>
         </a>
     {% else %}
         <a href="{{ path('vvt_dsfa_edit', {'dsfa':vvt.activDsfa.id}) }}"
+           class="btn"
            title="{% trans %}dataProtectionImpactAssessment.show{% endtrans %}">
             <span>{% trans %}dsfa.show{% endtrans %}</span>
         </a>
     {% endif %}
     {% if vvt.activ %}
-        <a href="{{ path('vvt_clone', {'id':vvt.id}) }}">
+        <a href="{{ path('vvt_clone', {'id':vvt.id}) }}" class="btn">
             <span>{% trans %}processing.duplicate{% endtrans %}</span>
         </a>
-        <a href="{{ path('bericht_vvt', {'id':vvt.id}) }}">
+        <a href="{{ path('bericht_vvt', {'id':vvt.id}) }}" class="btn">
             <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
         </a>
-        <a href="{{ path('bericht_vvt', {'id':vvt.id, 'all':1}) }}">
+        <a href="{{ path('bericht_vvt', {'id':vvt.id, 'all':1}) }}" class="btn">
             <span>{% trans from 'general' %}pdf.createWithHistory{% endtrans %}</span>
         </a>
-        <a href="{{ path('bericht_vvt', {'id':vvt.id, 'min':1}) }}">
+        <a href="{{ path('bericht_vvt', {'id':vvt.id, 'min':1}) }}" class="btn">
             <span>{% trans %}pdf.createExternal{% endtrans %}</span>
         </a>
         {{ include('base/__approveBtn.html.twig',{'data':vvt,'dataLink':'vvt_approve'}) }}
         {{ include('base/__disableBtn.html.twig',{'data':vvt,'dataLink':'vvt_disable'}) }}
     {% endif %}
+    {{ include('base/__approvedBy.html.twig', {'data':vvt}) }}
+    {{ include('assign/__assign.html.twig',{'data':vvt,'path':'assign_vvt'}) }}
+{% endblock %}
+
+{% block title %}
+    {{ title }} {% if not activNummer %}<span> {% trans from 'general' %}id{% endtrans %}: {{ vvt.nummer }}{% endif %}</span>
 {% endblock %}
 
 {% block body %}
-    <div>
-        <div>
-            <h2>{{ title }} {% if not activNummer %}<span
-                       > {% trans from 'general' %}id{% endtrans %}: {{ vvt.nummer }}{% endif %}</span></h2>
-            {{ include('base/__approvedBy.html.twig', {'data':vvt}) }}
-
-            {% if vvt.activDsfa is not null %}<h3>{% trans %}dsfa.exists{% endtrans %}</h3>{% endif %}
-        </div>
-
-        <div>
-            {{ include('assign/__assign.html.twig',{'data':vvt,'path':'assign_vvt'}) }}
-        </div>
-    </div>
-
-
-
+    {% if vvt.activDsfa is not null %}<h3>{% trans %}dsfa.exists{% endtrans %}</h3>{% endif %}
     {{ include('vvt/__form.html.twig') }}
     <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ vvt.user.email }}</p>
     {% if vvt.previous %}
-        <div>
-            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
+
+        <h3 class="mt-10">{% trans from 'general' %}history{% endtrans %}</h3>
+        <ol class="item-history">
             {{ include('vvt/__history.html.twig', {'p':vvt.previous}) }}
-        </div>
+        </ol>
     {% endif %}
 
     {{ include('base/__snack.html.twig') }}
