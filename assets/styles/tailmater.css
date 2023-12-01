@@ -846,6 +846,18 @@ form > fieldset .btn-primary {
     @apply text-muted text-sm mt-3;
 }
 
+.form-inline {
+
+}
+
+.form-inline .sr-only {
+    @apply hidden;
+}
+
+.form-inline .form-control {
+    @apply h-auto w-auto;
+}
+
 .tabs-nav {
     @apply relative flex flex-row items-center;
 }
@@ -929,31 +941,35 @@ form {
     @apply w-full;
 }
 
-.form-group {
-    @apply mb-4;
+form > fieldset > div {
+    @apply mb-5;
 }
 
-.form-group:last-of-type {
+form > fieldset > div:last-of-type {
     @apply mb-0;
 }
 
-.form-group label {
+form > fieldset > div > .form-time > div {
+    @apply flex gap-1;
+}
+
+form label {
     @apply block text-sm mb-1;
 }
 
-.form-group label.required {
+form label.required {
     @apply font-medium;
 }
 
-.form-group label.required::after {
+form label.required::after {
     content: " *";
 }
 
-.form-group.form-buttons {
+form .form-buttons {
     @apply pt-3 mb-0 -mt-3;
 }
 
-.form-group.form-buttons .btn {
+form .form-buttons .btn {
     @apply btn-elevated;
 }
 

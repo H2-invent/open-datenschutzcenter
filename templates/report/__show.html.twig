@@ -1,71 +1,54 @@
 {% trans_default_domain 'report' %}
-<div>
-    <div>
-        <div>
+
+<div class="dl-wrapper mb-5">
+    <div class="dl-content">
+        <dl>
             <div>
-                {% trans from 'general' %}editor{% endtrans %}:
+                <dt>{% trans from 'general' %}editor{% endtrans %}</dt>
+                <dd>{{ report.user.email }}</dd>
             </div>
             <div>
-                {{ report.user.email }}
+                <dt>{% trans from 'general' %}createdAt{% endtrans %}</dt>
+                <dd>{{ report.createdAt|date('d.m.Y') }}</dd>
             </div>
             <div>
-                {% trans from 'general' %}createAt{% endtrans %}:
+                <dt>{% trans from 'general' %}date{% endtrans %}</dt>
+                <dd>
+                    {{ report.date|date('d.m.Y') }},
+                    {{ report.start|date('H:i') }} {% trans %}clock{% endtrans %}
+                    -
+                    {{ report.end|date('H:i') }} {% trans %}clock{% endtrans %}
+                </dd>
             </div>
             <div>
-                {{ report.createdAt|date('d.m.Y') }}
-            </div>
-        </div>
-        <div>
-            <div>
-                {% trans from 'general' %}date{% endtrans %}:
+                <dt>{% trans %}billedTime{% endtrans %}</dt>
+                <dd>{{ report.calcTime }} {% trans %}minutes{% endtrans %}</dd>
             </div>
             <div>
-                {{ report.date|date('d.m.Y') }}
+                <dt>{% trans from 'general' %}description{% endtrans %}</dt>
+                <dd class="editor-output">{{ report.description|nl2br }}</dd>
             </div>
-            <div>
-                {% trans from 'general' %}start{% endtrans %}:
-            </div>
-            <div>
-                {{ report.start|date('H:i') }} {% trans %}clock{% endtrans %}
-            </div>
-            <div>
-                {% trans from 'general' %}end{% endtrans %}:
-            </div>
-            <div>
-                {{ report.end|date('H:i') }} {% trans %}clock{% endtrans %}
-            </div>
-            <div>
-                {% trans %}billedTime{% endtrans %}:
-            </div>
-            <div>
-                {{ report.calcTime }} {% trans %}minutes{% endtrans %}
-            </div>
-        </div>
-        <div>
-            <div>
-                {% trans %}alreadyBilled{% endtrans %}:
-            </div>
-            <div>
-                {{ report.invoice?'yes':'no' | trans([],'general') }}
-            </div>
-            <div>
-                {% trans %}work.present{% endtrans %}:
-            </div>
-            <div>
-                {{ report.inReport?'yes':'no' | trans([],'general') }}
-            </div>
-            <div>
-                {% trans %}work.onSight{% endtrans %}:
-            </div>
-            <div>
-                {{ report.onsite?'yes':'no' | trans([],'general') }}
-            </div>
-        </div>
-    </div>
-    <div
-         style="border-left-color: #3f4e5e; border-left-width: 1px; border-left-style: dashed">
-        {% trans from 'general' %}description{% endtrans %}:<br>
-        {{ report.description|nl2br }}
+        </dl>
     </div>
 </div>
+
+<div class="dl-wrapper mb-5">
+    <div class="dl-content">
+        <dl>
+            <div>
+                <dt>{% trans %}alreadyBilled{% endtrans %}</dt>
+                <dd>{{ report.invoice?'yes':'no' | trans([],'general') }}</dd>
+            </div>
+            <div>
+                <dt>{% trans %}work.present{% endtrans %}</dt>
+                <dd>{{ report.inReport?'yes':'no' | trans([],'general') }}</dd>
+            </div>
+            <div>
+                <dt>{% trans %}work.onSight{% endtrans %}</dt>
+                <dd>{{ report.onsite?'yes':'no' | trans([],'general') }}</dd>
+            </div>
+        </dl>
+    </div>
 </div>
+
+

@@ -1,35 +1,34 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'vorfall' %}
 
+{% block title %}
+    {{ title }} ({% trans from 'general' %}number{% endtrans %}: {{ vorfall.id }})
+{% endblock %}
+
 {% block CTA %}
     {% if vorfall.activ %}
-        <a href="{{ path('bericht_vorfall', {'id':vorfall.id}) }}">
+        <a href="{{ path('bericht_vorfall', {'id':vorfall.id}) }}" class="btn">
             <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
         </a>
-        <a href="{{ path('bericht_vorfall', {'id':vorfall.id, 'all':1}) }}">
+        <a href="{{ path('bericht_vorfall', {'id':vorfall.id, 'all':1}) }}" class="btn" >
             <span>{% trans from 'general' %}pdf.createWithHistory{% endtrans %}</span>
         </a>
         {{ include('base/__approveBtn.html.twig',{'data':vorfall,'dataLink':'vorfall_approve'}) }}
     {% endif %}
+    {% if assignForm is defined %}
+        {{ include('assign/__assign.html.twig',{'data':vorfall,'path':'assign_vorfall'}) }}
+        {{ include('base/__approvedBy.html.twig', {'data':vorfall}) }}
+    {% endif %}
 {% endblock %}
 
 {% block body %}
-
-    <h2>{{ title }} ({% trans from 'general' %}number{% endtrans %}: {{ vorfall.id }})</h2>
-    {{ include('base/__approvedBy.html.twig', {'data':vorfall}) }}
-
-    <div>
-        {{ include('vorfall/__form.html.twig') }}
-    </div>
-    <p>{% trans from 'general' %}createdAt{% endtrans %}: {{ vorfall.user.email }}</p>
+    {{ include('vorfall/__form.html.twig') }}
+    <p class="created-by">{% trans from 'general' %}createdAt{% endtrans %}: {{ vorfall.user.email }}</p>
     {% if vorfall.previous %}
-        <div>
-            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
+        <h3 class="mt-10">{% trans from 'general' %}history{% endtrans %}</h3>
+        <ol class="item-history" reversed>
             {{ include('vorfall/__history.html.twig', {'p':vorfall.previous}) }}
-        </div>
+        </ol>
     {% endif %}
     {{ include('base/__snack.html.twig') }}
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

@@ -60,6 +60,7 @@ class ReportController extends AbstractController
             'title' => $this->translator->trans(id: 'task.create', domain: 'report'),
             'report' => $report,
             'activ' => $report->getActiv(),
+            'urlBack' => $this->generateUrl('report'),
         ]);
     }
 
@@ -120,14 +121,20 @@ class ReportController extends AbstractController
                 );
             }
         }
+
+        $title = $request->get('edit')
+            ? $this->translator->trans(id: 'work.edit', domain: 'report')
+            : $this->translator->trans(id: 'work.show', domain: 'report');
+
         return $this->render('report/edit.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => $this->translator->trans(id: 'work.edit', domain: 'report'),
+            'title' => $title,
             'report' => $report,
             'activ' => $report->getActiv(),
             'snack' => $request->get('snack'),
             'edit' => $request->get('edit'),
+            'urlBack' => $this->generateUrl('report'),
         ]);
     }
 

@@ -1,63 +1,29 @@
 {% trans_default_domain 'report' %}
-{{ form_start(form) }}
-<div {% if not activ or report.invoice %}class="disabled"{% endif %}>
-    <div>
-        <div>
-            {{ form_label(form.user) }}
-        </div>
-        <div>
-            {{ form_widget(form.user) }}
-        </div>
+{% set disabled = not activ or report.invoice %}
+{{ form_start(form, {'attr': {'disabled': disabled }}) }}
+<fieldset>
+    {{ form_row(form.user) }}
+</fieldset>
+<fieldset>
+    <legend>{% trans from 'general'%}times{% endtrans %}</legend>
+    <div class="flex flex-row gap-3">
+        {{ form_row(form.date) }}
+        {{ form_row(form.start, {row_attr: {class: 'form-time'}}) }}
+        {{ form_row(form.end, {row_attr: {class: 'form-time'}}) }}
     </div>
-
-    <div>
-        <div>
-            <p>{% trans from 'general'%}times{% endtrans %}</p>
-        </div>
-        <div>
-            {{ form_label(form.date) }}
-            {{ form_widget(form.date) }}
-        </div>
-        <div>
-            {{ form_label(form.start) }}
-            {{ form_widget(form.start) }}
-        </div>
-        <div>
-            {{ form_label(form.end) }}
-            {{ form_widget(form.end) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.calcTime) }}
-        </div>
-        <div>
-            {{ form_widget(form.calcTime) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {{ form_label(form.description) }}
-        </div>
-        <div>
-            {{ form_widget(form.description) }}
-        </div>
-    </div>
-
-    <div>
-        <div>
-            {% trans %}additionalOptions{% endtrans %}
-        </div>
-        <div>
-            {{ form_widget(form.invoice) }}
-            {{ form_widget(form.inReport) }}
-            {{ form_widget(form.onsite) }}
-        </div>
-    </div>
-
-
-    {{ form_widget(form.save) }}
-</div>
+</fieldset>
+<fieldset>
+    {{ form_row(form.calcTime) }}
+    {{ form_row(form.description) }}
+</fieldset>
+<fieldset>
+    <legend>
+        {% trans %}additionalOptions{% endtrans %}
+    </legend>
+    {{ form_row(form.invoice) }}
+    {{ form_row(form.inReport) }}
+    {{ form_row(form.onsite) }}
+</fieldset>
+{{ form_row(form.save, { row_attr: {class: 'form-buttons'}, attr: {'disabled': disabled} }) }}
+{{ form_rest(form) }}
 {{ form_end(form) }}

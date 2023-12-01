@@ -3,6 +3,7 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     exception_controller: null
+    #form_themes: ['tailwind_2_layout.html.twig']
     paths:
         '%kernel.project_dir%/public/mail/css': css
     globals:

@@ -1,35 +1,26 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'report' %}
 
+{% block title %}
+    {{ title }}
+{% endblock %}
+
 {% block CTA %}
     {% if not edit and report.user == app.user %}
-        <a href="{{ path('report_edit', {'id':report.id,'edit':1}) }}"
-          >{% trans %}work.edit{% endtrans %}</a>
-        <a href="{{ path('report_invoice', {'id':report.id}) }}"
-          >{% trans %}work.billed{% endtrans %}</a>
+        <a href="{{ path('report_edit', {'id':report.id,'edit':1}) }}" class="btn">{% trans %}work.edit{% endtrans %}</a>
+        <a href="{{ path('report_invoice', {'id':report.id}) }}" class="btn">{% trans %}work.billed{% endtrans %}</a>
     {% endif %}
 
     {% if report.team in app.user.adminRoles %}
-        <a href="{{ path('report_delete', {'id':report.id}) }}"
-          >{% trans %}work.delete{% endtrans %}</a>
+        <a href="{{ path('report_delete', {'id':report.id}) }}" class="btn">{% trans %}work.delete{% endtrans %}</a>
     {% endif %}
 {% endblock %}
 
 {% block body %}
-    <div>
-        <div>
-            <h2>{{ title }}</h2>
-        </div>
-    </div>
-    <div>
-        {% if edit %}
-            {{ include('report/__form.html.twig') }}
-        {% else %}
-            {{ include('report/__show.html.twig') }}
-        {% endif %}
-    </div>
+    {% if edit %}
+        {{ include('report/__form.html.twig') }}
+    {% else %}
+        {{ include('report/__show.html.twig') }}
+    {% endif %}
     {{ include('base/__snack.html.twig') }}
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

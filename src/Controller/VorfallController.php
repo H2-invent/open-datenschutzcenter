@@ -66,7 +66,8 @@ class VorfallController extends AbstractController
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'incident.register', domain: 'vorfall'),
             'vorfall' => $vorfall,
-            'activ' => $vorfall->getActiv()
+            'activ' => $vorfall->getActiv(),
+            'urlBack' => $this->generateUrl('vorfall'),
         ]);
     }
 
@@ -141,7 +142,8 @@ class VorfallController extends AbstractController
             'title' => $this->translator->trans(id: 'incident.edit', domain: 'vorfall'),
             'vorfall' => $vorgang,
             'activ' => $vorgang->getActiv(),
-            'snack' => $request->get('snack')
+            'snack' => $request->get('snack'),
+            'urlBack' => $this->generateUrl('vorfall'),
         ]);
     }
 

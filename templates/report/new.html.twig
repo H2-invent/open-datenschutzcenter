@@ -1,12 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-
-    <h2>{{ title }}</h2>
-    <div>
-        {{ include('report/__form.html.twig') }}
-    </div>
+{% block title %}
+    {{ title }}
 {% endblock %}
 
-{% block javascript %}
+{% block body %}
+    {{ include('report/__form.html.twig') }}
 {% endblock %}

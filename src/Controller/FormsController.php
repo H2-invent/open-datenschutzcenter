@@ -69,7 +69,8 @@ class FormsController extends AbstractController
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'form.create', domain: 'forms'),
             'daten' => $daten,
-            'activ' => $daten->getActiv()
+            'activ' => $daten->getActiv(),
+            'urlBack' => $this->generateUrl('forms'),
         ]);
     }
 
@@ -216,7 +217,8 @@ class FormsController extends AbstractController
             'title' => $this->translator->trans(id: 'form.edit', domain: 'forms'),
             'daten' => $forms,
             'activ' => $forms->getActiv(),
-            'snack' => $request->get('snack')
+            'snack' => $request->get('snack'),
+            'urlBack' => $this->generateUrl('forms'),
         ]);
     }
 
