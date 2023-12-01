@@ -90,13 +90,9 @@ table.dataTable > tbody > tr > td:last-child {
 }
 
 table.dataTable > tbody > tr > td > a {
-    @apply btn py-1 px-2;
+    @apply font-medium bg-surface-100 hover:bg-surface-200 py-1 px-2 rounded-[6.25rem] text-primary-600;
 }
 
 table.dataTable > tbody > tr[data-href] > td {
     @apply cursor-pointer;
-}
-
-table.dataTable > tbody > tr > td > a {
-    @apply hover:underline;
 }
