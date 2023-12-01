@@ -744,6 +744,10 @@ body {
     @apply mb-5;
 }
 
+#bock-cta form {
+    @apply w-auto;
+}
+
 aside {
     @apply hover:shadow-material hover:shadow-material w-60 rounded-r-2xl h-full overflow-hidden z-50;
 }
@@ -826,8 +830,12 @@ footer > ul > li {
     }
 }
 
-form > fieldset .btn {
-    @apply !bg-surface-200;
+form > fieldset > div > div .btn {
+    @apply !bg-surface-200 mt-5;
+}
+
+form .form-row {
+    @apply mb-5;
 }
 
 form > fieldset {
@@ -842,7 +850,7 @@ form > fieldset .btn-primary {
     @apply bg-primary-500 hover:bg-primary-600 text-white btn-elevated;
 }
 
-.form-help {
+form .help-text {
     @apply text-muted text-sm mt-3;
 }
 

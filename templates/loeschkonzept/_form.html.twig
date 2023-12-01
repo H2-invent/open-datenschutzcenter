@@ -1,6 +1,6 @@
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-{{ form_row(form) }}
-<div class="form-buttons form-group !mt-2">
-    <button type="submit" class="btn">{% trans from 'general' %}save.word{% endtrans %}</button>
-</div>
+    {{ form_row(form) }}
+    <div class="form-buttons form-row !mt-2">
+        <button type="submit" class="btn">{% trans from 'general' %}save.word{% endtrans %}</button>
+    </div>
 {{ form_end(form) }}

@@ -94,7 +94,7 @@ class SoftwareController extends AbstractController
             'title' => $this->translator->trans(id: 'config.for', domain: 'software'),
             'activ' => $software->getActiv(),
             'software' => $software,
-            'urlBack' => $this->generateUrl('software_edit', ['id' => $software->getId()])
+            'urlBack' => $this->generateUrl('software_edit', ['id' => $software->getId()]),
         ]);
     }
 
@@ -136,6 +136,7 @@ class SoftwareController extends AbstractController
             'activNummer' => true,
             'vvt' => $software,
             'activ' => $software->getActiv(),
+            'urlBack' => $this->generateUrl('software'),
         ]);
     }
 
@@ -277,6 +278,7 @@ class SoftwareController extends AbstractController
             'software' => $software,
             'activ' => $software->getActiv(),
             'snack' => $request->get('snack'),
+            'urlBack' => $this->generateUrl('software'),
         ]);
     }
 

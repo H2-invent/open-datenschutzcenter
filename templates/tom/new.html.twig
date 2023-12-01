@@ -7,7 +7,7 @@
 
 {% block body %}
     {{ include('tom/__form.html.twig') }}
-    <p class="form-help">{% trans from 'general' %}createdBy{% endtrans %}: {{ tom.user.email }}</p>
+    <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ tom.user.email }}</p>
     {% if tom.previous %}
         <h3>{% trans from 'general' %}history{% endtrans %}</h3>
         <div>

@@ -49,7 +49,7 @@
 
 
     {{ include('vvt/__form.html.twig') }}
-    <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ vvt.user.email }}</p>
+    <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ vvt.user.email }}</p>
     {% if vvt.previous %}
         <div>
             <h2>{% trans from 'general' %}history{% endtrans %}</h2>

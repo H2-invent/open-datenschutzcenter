@@ -19,7 +19,7 @@
                 <th scope="col">{% trans %}processingActivities{% endtrans %}</th>
                 <th scope="col">{% trans from 'general' %}createdAt{% endtrans %}</th>
                 <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
-                <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
+{#                <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>#}
             </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@
                     <td>{% for vv in t.Vvts | filter(vv => vv.activ) %}{{ vv.name }}<br>{% endfor %}</td>
                     <td>{{ t.createdAt|date('d.m.Y') }}</td>
                     <td>{{ t.titel }}</td>
-                    <td>{{ t.beschreibung }}</td>
+{#                    <td>{{ t.beschreibung }}</td>#}
                 </tr>
             {% endfor %}
         </tbody>

@@ -1,7 +1,6 @@
 {% trans_default_domain 'vvt_datenkategorie' %}
 <form method="post"
-      action="{{ path('app_vvtdatenkategorie_delete', {'id': vvtdatenkategorie.id}) }}"
-      onsubmit="return confirm('{% trans from 'general' %}confirmAction{% endtrans %}');">
+      action="{{ path('app_vvtdatenkategorie_delete', {'id': vvtdatenkategorie.id}) }}">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ vvtdatenkategorie.id) }}">
     <button class="btn btn-danger">{% trans from 'general' %}delete{% endtrans %}</button>
 </form>

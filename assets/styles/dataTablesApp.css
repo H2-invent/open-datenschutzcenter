@@ -6,7 +6,7 @@ td, th {
 
 .dataTables_wrapper {
     /* sub 17.5rem = article ml-60 (width: 15rem) + px-3 (width: 1.5rem) + 1rem */
-    @apply rounded-xl border max-w-[calc(100vw_-_17.5rem)] overflow-x-auto;
+    @apply rounded-xl border max-w-[calc(100vw_-_17.5rem)] overflow-x-auto p-5 bg-white;
 }
 
 .dataTables_wrapper::after {
@@ -15,19 +15,19 @@ td, th {
 }
 
 .dataTables_length {
-    @apply p-0 float-left px-2 py-2;
+    @apply p-0 float-left pb-5;
 }
 
 .dataTables_filter {
-    @apply p-0 float-right px-2 py-2;
+    @apply p-0 float-right pb-5;
 }
 
 .dataTables_info {
-    @apply p-5 float-left text-gray-500;
+    @apply mt-10 float-left text-gray-500 text-sm leading-7;
 }
 
 .dataTables_paginate {
-    @apply p-5 float-right;
+    @apply mt-10 float-right;
 }
 
 .dataTables_filter input {
@@ -35,7 +35,7 @@ td, th {
 }
 
 .dataTables_paginate a {
-    @apply gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-300 text-primary-600 inline cursor-pointer;
+    @apply ml-1 gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-300 text-primary-600 inline cursor-pointer;
 }
 
 .dataTables_paginate a.paginate_button.current {
@@ -47,7 +47,7 @@ td, th {
 }
 
 table.dataTable {
-    @apply w-full divide-y divide-surface-300 border-y;
+    @apply w-full divide-y divide-surface-200;
 }
 
 table.dataTable > thead {
@@ -67,27 +67,30 @@ table.dataTable > thead > tr > th:last-child {
 }
 
 table.dataTable > tbody {
-    @apply divide-y divide-surface-200 bg-white;
 }
 
-table.dataTable > tbody > tr:not(.row-color):nth-child(odd) > td {
-    @apply bg-surface-50;
+table.dataTable > tbody > tr:not(.row-color):nth-child(odd) {
+    @apply bg-white hover:bg-surface-100;
 }
 
-table.dataTable > tbody > tr:not(.row-color):nth-child(even) > td {
-    @apply bg-white;
+table.dataTable > tbody > tr:not(.row-color):nth-child(even) {
+    @apply bg-surface-50 hover:bg-surface-100;
 }
 
 table.dataTable > tbody > tr > td {
-    @apply px-3 py-4 text-base;
+    @apply px-3 py-4 text-sm;
 }
 
 table.dataTable > tbody > tr > td:first-child {
-    @apply whitespace-nowrap py-4 pl-4 pr-3 text-base sm:pl-6;
+    @apply whitespace-nowrap py-4 pl-4 pr-3 sm:pl-6;
 }
 
 table.dataTable > tbody > tr > td:last-child {
-    @apply relative whitespace-nowrap py-4 pl-3 pr-4 text-base sm:pr-6;
+    @apply relative whitespace-nowrap py-4 pl-3 pr-4 sm:pr-6;
+}
+
+table.dataTable > tbody > tr > td > a {
+    @apply btn py-1 px-2;
 }
 
 table.dataTable > tbody > tr[data-href] > td {

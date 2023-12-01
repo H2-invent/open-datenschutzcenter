@@ -14,12 +14,12 @@
             {% trans %}pdf.createWithHistory{% endtrans %}
         </a>
     {% endif %}
+    {{ include('assign/__assign.html.twig',{'data':audit,'path':'assign_audit'}) }}
 {% endblock %}
 
 {% block body %}
-    {{ include('assign/__assign.html.twig',{'data':audit,'path':'assign_audit'}) }}
     {{ include('audit_tom/__form.html.twig') }}
-    <p class="text-muted mt-5 text-sm">{% trans %}createdBy{% endtrans %}: {{ audit.user.email }}</p>
+    <p class="created-by">{% trans %}createdBy{% endtrans %}: {{ audit.user.email }}</p>
     {% if audit.previous %}
         <div>
             <h2>{% trans %}history{% endtrans %}</h2>

@@ -77,7 +77,7 @@
         {{ form_widget(form.save) }}
     </div>
     {{ form_end(form) }}
-    <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ dsfa.user.email }}</p>
+    <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ dsfa.user.email }}</p>
     {% if dsfa.previous %}
         <div>
             <h2>{% trans from 'general' %}history{% endtrans %}</h2>

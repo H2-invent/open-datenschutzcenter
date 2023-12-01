@@ -1,7 +1,7 @@
 {{ form_start(form, {attr: {class: not activ ? 'disabled'}}) }}
     <fieldset>
         {{ form_row(form.title) }}
-        <div class="form-group">
+        <div class="form-row">
             {{ form_label(form.task) }}
             <div class="hidden">{{ form_widget(form.task) }}</div>
             <div class="trix-wrapper">

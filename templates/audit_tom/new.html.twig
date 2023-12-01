@@ -7,7 +7,7 @@
 
 {% block body %}
     {{ include('audit_tom/__form.html.twig') }}
-    <p class="form-help">{% trans %}createdBy{% endtrans %}: {{ audit.user.email }}</p>
+    <p class="created-by">{% trans %}createdBy{% endtrans %}: {{ audit.user.email }}</p>
     {% if audit.previous %}
         <h3>{% trans %}history{% endtrans %}</h3>
         <div class="card card-pager">
