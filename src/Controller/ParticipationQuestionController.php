@@ -15,7 +15,6 @@ use App\Repository\QuestionnaireQuestionRepository;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: 'participation-question/{id}', name: 'participation_question')]
 #[ParamConverter(data: 'participation', class: Participation::class, options: ['mapping' => ['id' => 'id']])]
-class ParticipationQuestionController extends AbstractController
+class ParticipationQuestionController extends BaseController
 {
     private static string $TEMPLATE_DIR = 'questionnaire/participationQuestion/';
 

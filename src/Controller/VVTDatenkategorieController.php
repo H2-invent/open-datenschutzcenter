@@ -15,13 +15,12 @@ use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use App\Service\VVTDatenkategorieService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/vvtdatenkategorie')]
-class VVTDatenkategorieController extends AbstractController
+class VVTDatenkategorieController extends BaseController
 {
     #[Route(path: '/delete/{id}', name: 'app_vvtdatenkategorie_delete', methods: ['POST'])]
     public function delete(

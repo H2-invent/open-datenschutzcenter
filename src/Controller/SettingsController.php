@@ -9,13 +9,12 @@ use App\Form\Type\SettingsType;
 use App\Repository\SettingsRepository;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class SettingsController extends AbstractController
+class SettingsController extends BaseController
 {
     #[Route(path: '/manage_settings', name: 'manage_settings')]
     public function manage(

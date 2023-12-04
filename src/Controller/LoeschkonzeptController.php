@@ -15,13 +15,12 @@ use App\Service\CurrentTeamService;
 use App\Service\LoeschkonzeptService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/loeschkonzept')]
-class LoeschkonzeptController extends AbstractController
+class LoeschkonzeptController extends BaseController
 {
     #[Route(path: '/{id}/delete', name: 'app_loeschkonzept_delete', methods: ['POST'])]
     public function delete(

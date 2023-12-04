@@ -10,7 +10,6 @@ use App\Service\CurrentTeamService;
 use App\Service\AssistantService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/assistant', name: 'assistant')]
-class AssistantController extends AbstractController
+class AssistantController extends BaseController
 {
     #[Route('', name: '')]
     public function index(SecurityService $securityService,

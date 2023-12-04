@@ -14,13 +14,12 @@ use App\Repository\VVTRepository;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/assign', name: 'assign')]
-class AssignController extends AbstractController
+class AssignController extends BaseController
 {
     #[Route(path: '/audit', name: '_audit')]
     public function assignAudit(

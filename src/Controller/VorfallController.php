@@ -15,14 +15,13 @@ use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use App\Service\VorfallService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class VorfallController extends AbstractController
+class VorfallController extends BaseController
 {
 
 

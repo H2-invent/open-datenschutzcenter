@@ -6,12 +6,11 @@ use App\Entity\AkademieBuchungen;
 use App\Service\NotificationService;
 use DateTime;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CronController extends AbstractController
+class CronController extends BaseController
 {
     #[Route(path: '/cron/akademie_update', name: 'cron_akademie')]
     public function updateCronAkademie(NotificationService $notificationService, Request $request, LoggerInterface $logger)

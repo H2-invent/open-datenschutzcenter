@@ -13,7 +13,6 @@ use App\Repository\QuestionnaireRepository;
 use App\Service\CurrentTeamService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route(path: '/questionnaire', name: 'questionnaire')]
-class QuestionnaireController extends AbstractController
+class QuestionnaireController extends BaseController
 {
     private static string $TEMPLATE_DIR = 'questionnaire/questionnaire/';
 

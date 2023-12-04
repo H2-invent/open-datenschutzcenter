@@ -6,13 +6,12 @@ namespace App\Controller;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\Provider\Auth0Client;
 use Stevenmaguire\OAuth2\Client\Provider\Keycloak;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
-class LoginController extends AbstractController
+class LoginController extends BaseController
 {
     #[Route(path: '/login/auth0_login/check', name: 'connect_auth0_check')]
     public function check(

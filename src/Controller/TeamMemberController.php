@@ -19,13 +19,12 @@ use App\Service\CurrentTeamService;
 use App\Service\InviteService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class TeamMemberController extends AbstractController
+class TeamMemberController extends BaseController
 {
     public function __construct(private readonly TranslatorInterface $translator)
     {
