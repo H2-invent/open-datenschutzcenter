@@ -26,7 +26,6 @@
             <br>
             <img src="{{ asset('images/open-source-logo.png') }}" class="inline-block w-10 mt-5">
         </div>
-        {% include 'base/__snack.html.twig' with {snack: app.request.get('snack') }%}
         {{ encore_entry_script_tags('app') }}
         {% block javascripts %}{% endblock %}
     </body>
