@@ -1094,7 +1094,7 @@ ul.stacked-list > li {
 }
 
 ul.stacked-list.compressed > li {
-    @apply gap-x-3 py-2 px-2;
+    @apply gap-x-3 py-2 px-4;
 }
 
 ul.stacked-list > li > div:first-child {
