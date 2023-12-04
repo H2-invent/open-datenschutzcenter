@@ -61,13 +61,15 @@ class KontaktController extends BaseController
                 return $this->redirectToRoute('kontakt');
             }
         }
+
+        $this->setBackButton($this->generateUrl('kontakt'));
+
         return $this->render('kontakt/edit.html.twig', [
             'kontakt' => $kontakt,
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
             'new' => true,
-            'urlBack' => $this->generateUrl('kontakt'),
         ]);
     }
 
@@ -148,12 +150,14 @@ class KontaktController extends BaseController
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('kontakt'));
+
         return $this->render('kontakt/edit.html.twig', [
             'form' => $form->createView(),
             'kontakt' => $kontakt,
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
-            'urlBack' => $this->generateUrl('kontakt'),
         ]);
     }
 

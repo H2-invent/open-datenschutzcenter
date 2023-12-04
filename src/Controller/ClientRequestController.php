@@ -247,13 +247,14 @@ class ClientRequestController extends BaseController
             }
         }
 
+        $this->setBackButton($this->generateUrl('client_requests_show', ['id' => $request->get('id')]));
+
         return $this->render(
             'client_request/internalEdit.html.twig',
             [
                 'data' => $clientRequest,
                 'team' => $team,
                 'form' => $form->createView(),
-                'urlBack' => $this->generateUrl('client_requests_show', ['id' => $request->get('id')])
             ],
         );
     }
@@ -357,12 +358,12 @@ class ClientRequestController extends BaseController
         }
 
         $form = $this->createForm(ClientRequesCommentType::class);
+        $this->setBackButton($this->generateUrl('client_requests'));
 
         return $this->render('client_request/internalShow.html.twig', [
             'data' => $clientRequest,
             'team' => $team,
             'form' => $form->createView(),
-            'urlBack' => $this->generateUrl('client_requests'),
         ]);
     }
 

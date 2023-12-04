@@ -72,6 +72,9 @@ class DatenweitergabeController extends BaseController
                 return $this->redirectToRoute('auftragsverarbeitung');
             }
         }
+
+        $this->setBackButton($this->generateUrl('auftragsverarbeitung'));
+
         return $this->render('datenweitergabe/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -79,7 +82,6 @@ class DatenweitergabeController extends BaseController
             'daten' => $daten,
             'activNummer' => true,
             'activ' => $daten->getActiv(),
-            'urlBack' => $this->generateUrl('auftragsverarbeitung'),
         ]);
     }
 
@@ -119,6 +121,9 @@ class DatenweitergabeController extends BaseController
                 return $this->redirectToRoute('datenweitergabe');
             }
         }
+
+        $this->setBackButton($this->generateUrl('datenweitergabe'));
+
         return $this->render('datenweitergabe/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -126,7 +131,6 @@ class DatenweitergabeController extends BaseController
             'daten' => $daten,
             'activNummer' => true,
             'activ' => $daten->getActiv(),
-            'urlBack' => $this->generateUrl('datenweitergabe'),
         ]);
     }
 
@@ -299,6 +303,9 @@ class DatenweitergabeController extends BaseController
                 );
             }
         }
+
+        $this->setBackButton($daten->getArt() === 1 ? $this->generateUrl('datenweitergabe') : $this->generateUrl('auftragsverarbeitung'));
+
         return $this->render('datenweitergabe/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
@@ -307,7 +314,6 @@ class DatenweitergabeController extends BaseController
             'daten' => $daten,
             'activ' => $daten->getActiv(),
             'activNummer' => false,
-            'urlBack' => $daten->getArt() === 1 ? $this->generateUrl('datenweitergabe') : $this->generateUrl('auftragsverarbeitung'),
         ]);
     }
 

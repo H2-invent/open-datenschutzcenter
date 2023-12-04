@@ -81,10 +81,11 @@ class VVTDatenkategorieController extends BaseController
             return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $this->setBackButton($this->generateUrl('app_vvtdatenkategorie_index'));
+
         return $this->render('vvt_datenkategorie/edit.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
             'form' => $form,
-            'urlBack' => $this->generateUrl('app_vvtdatenkategorie_index'),
         ]);
     }
 
@@ -130,20 +131,21 @@ class VVTDatenkategorieController extends BaseController
             return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $this->setBackButton($this->generateUrl('app_vvtdatenkategorie_index'));
+
         return $this->render('vvt_datenkategorie/new.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
             'form' => $form,
-            'urlBack' => $this->generateUrl('app_vvtdatenkategorie_index'),
         ]);
     }
 
     #[Route(path: '/show/{id}', name: 'app_vvtdatenkategorie_show', methods: ['GET'])]
     public function show(VVTDatenkategorie $vVTDatenkategorie): Response
     {
+        $this->setBackButton($this->generateUrl('app_vvtdatenkategorie_index'));
 
         return $this->render('vvt_datenkategorie/show.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
-            'urlBack' => $this->generateUrl('app_vvtdatenkategorie_index'),
         ]);
     }
 }

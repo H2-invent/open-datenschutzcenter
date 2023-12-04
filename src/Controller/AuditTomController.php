@@ -88,6 +88,9 @@ class AuditTomController extends BaseController
                 return $this->redirectToRoute('audit_tom');
             }
         }
+
+        $this->setBackButton($this->generateUrl('audit_tom'));
+
         return $this->render('audit_tom/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -95,7 +98,6 @@ class AuditTomController extends BaseController
             'audit' => $audit,
             'activNummer' => true,
             'activ' => $audit->getActiv(),
-            'urlBack' => $this->generateUrl('audit_tom'),
         ]);
     }
 
@@ -212,6 +214,9 @@ class AuditTomController extends BaseController
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('audit_tom'));
+
         return $this->render(
             'audit_tom/edit.html.twig',
             [
@@ -223,7 +228,6 @@ class AuditTomController extends BaseController
                 'activ' => $audit->getActiv(),
                 'activNummer' => false,
                 'nextAudit' => $nextAudit,
-                'urlBack' => $this->generateUrl('audit_tom'),
             ]
         );
     }

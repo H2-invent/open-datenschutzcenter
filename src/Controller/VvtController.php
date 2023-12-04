@@ -75,6 +75,9 @@ class VvtController extends BaseController
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('vvt'));
+
         return $this->render('vvt/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -83,7 +86,6 @@ class VvtController extends BaseController
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'CTA' => false,
-            'urlBack' => $this->generateUrl('vvt'),
         ]);
     }
 

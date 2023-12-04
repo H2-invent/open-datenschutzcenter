@@ -63,6 +63,9 @@ class TomController extends BaseController
                 return $this->redirectToRoute('tom');
             }
         }
+
+        $this->setBackButton($this->generateUrl('tom'));
+
         return $this->render('tom/new.html.twig', [
             'currentTeam' => $team,
             'form' => $form->createView(),
@@ -71,7 +74,6 @@ class TomController extends BaseController
             'tom' => $tom,
             'activ' => $tom->getActiv(),
             'activTitel' => true,
-            'urlBack' => $this->generateUrl('tom'),
         ]);
     }
 
@@ -193,6 +195,9 @@ class TomController extends BaseController
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('tom'));
+
         return $this->render('tom/edit.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -201,7 +206,6 @@ class TomController extends BaseController
             'activ' => $tom->getActiv(),
             'activTitel' => false,
             'currentTeam' => $team,
-            'urlBack' => $this->generateUrl('tom'),
         ]);
     }
 

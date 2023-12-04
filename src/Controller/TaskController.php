@@ -56,13 +56,15 @@ class TaskController extends BaseController
                 return $this->redirectToRoute('tasks');
             }
         }
+
+        $this->setBackButton($this->generateUrl('tasks'));
+
         return $this->render('task/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'task.create', domain: 'task'),
             'task' => $task,
             'activ' => $task->getActiv(),
-            'urlBack' => $this->generateUrl('tasks'),
         ]);
     }
 
@@ -161,6 +163,8 @@ class TaskController extends BaseController
             $this->generateUrl('task_edit', ['id' => $request->get('id')]) :
             $this->generateUrl('tasks');
 
+        $this->setBackButton($urlBack);
+
         return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
@@ -169,7 +173,6 @@ class TaskController extends BaseController
             'task' => $task,
             'activ' => $task->getActiv(),
             'edit' => $request->get('edit'),
-            'urlBack' => $urlBack,
         ]);
     }
 

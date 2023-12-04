@@ -82,6 +82,9 @@ class SoftwareController extends BaseController
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('software_edit', ['id' => $software->getId()]));
+
         return $this->render('software/newConfig.html.twig', [
             'form' => $form->createView(),
             'config' => $config,
@@ -89,7 +92,6 @@ class SoftwareController extends BaseController
             'title' => $this->translator->trans(id: 'config.for', domain: 'software'),
             'activ' => $software->getActiv(),
             'software' => $software,
-            'urlBack' => $this->generateUrl('software_edit', ['id' => $software->getId()]),
         ]);
     }
 
@@ -124,6 +126,9 @@ class SoftwareController extends BaseController
                 return $this->redirectToRoute('software');
             }
         }
+
+        $this->setBackButton($this->generateUrl('software'));
+
         return $this->render('software/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -131,7 +136,6 @@ class SoftwareController extends BaseController
             'activNummer' => true,
             'vvt' => $software,
             'activ' => $software->getActiv(),
-            'urlBack' => $this->generateUrl('software'),
         ]);
     }
 
@@ -265,6 +269,8 @@ class SoftwareController extends BaseController
             }
         }
 
+        $this->setBackButton($this->generateUrl('software'));
+
         return $this->render('software/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
@@ -272,7 +278,6 @@ class SoftwareController extends BaseController
             'title' => $this->translator->trans(id: 'software.edit', domain: 'software'),
             'software' => $software,
             'activ' => $software->getActiv(),
-            'urlBack' => $this->generateUrl('software'),
         ]);
     }
 

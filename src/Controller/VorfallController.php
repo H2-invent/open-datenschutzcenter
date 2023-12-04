@@ -60,13 +60,15 @@ class VorfallController extends BaseController
                 return $this->redirectToRoute('vorfall');
             }
         }
+
+        $this->setBackButton($this->generateUrl('vorfall'));
+
         return $this->render('vorfall/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'incident.register', domain: 'vorfall'),
             'vorfall' => $vorfall,
             'activ' => $vorfall->getActiv(),
-            'urlBack' => $this->generateUrl('vorfall'),
         ]);
     }
 
@@ -135,6 +137,9 @@ class VorfallController extends BaseController
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('vorfall'));
+
         return $this->render('vorfall/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
@@ -142,7 +147,6 @@ class VorfallController extends BaseController
             'title' => $this->translator->trans(id: 'incident.edit', domain: 'vorfall'),
             'vorfall' => $vorgang,
             'activ' => $vorgang->getActiv(),
-            'urlBack' => $this->generateUrl('vorfall'),
         ]);
     }
 

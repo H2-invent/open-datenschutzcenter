@@ -87,10 +87,11 @@ class LoeschkonzeptController extends BaseController
             return $this->redirectToRoute('app_loeschkonzept_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $this->setBackButton($this->generateUrl('app_loeschkonzept_index'));
+
         return $this->render('loeschkonzept/edit.html.twig', [
             'loeschkonzept' => $newloeschkonzept,
             'form' => $form,
-            'urlBack' => $this->generateUrl('app_loeschkonzept_index'),
         ]);
     }
 
@@ -167,19 +168,21 @@ class LoeschkonzeptController extends BaseController
             return $this->redirectToRoute('app_loeschkonzept_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $this->setBackButton($this->generateUrl('app_loeschkonzept_index'));
+
         return $this->render('loeschkonzept/new.html.twig', [
             'loeschkonzept' => $loeschkonzept,
             'form' => $form,
-            'urlBack' => $this->generateUrl('app_loeschkonzept_index'),
         ]);
     }
 
     #[Route(path: '/{id}/details', name: 'app_loeschkonzept_show', methods: ['GET'])]
     public function show(Loeschkonzept $loeschkonzept): Response
     {
+        $this->setBackButton($this->generateUrl('app_loeschkonzept_index'));
+
         return $this->render('loeschkonzept/show.html.twig', [
             'loeschkonzept' => $loeschkonzept,
-            'urlBack' => $this->generateUrl('app_loeschkonzept_index'),
         ]);
     }
 }

@@ -53,13 +53,15 @@ class ReportController extends BaseController
                 return $this->redirectToRoute('report');
             }
         }
+
+        $this->setBackButton($this->generateUrl('report'));
+
         return $this->render('report/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'task.create', domain: 'report'),
             'report' => $report,
             'activ' => $report->getActiv(),
-            'urlBack' => $this->generateUrl('report'),
         ]);
     }
 
@@ -125,6 +127,8 @@ class ReportController extends BaseController
             ? $this->translator->trans(id: 'work.edit', domain: 'report')
             : $this->translator->trans(id: 'work.show', domain: 'report');
 
+        $this->setBackButton($this->generateUrl('report'));
+
         return $this->render('report/edit.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -132,7 +136,6 @@ class ReportController extends BaseController
             'report' => $report,
             'activ' => $report->getActiv(),
             'edit' => $request->get('edit'),
-            'urlBack' => $this->generateUrl('report'),
         ]);
     }
 

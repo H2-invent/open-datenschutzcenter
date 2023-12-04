@@ -61,6 +61,9 @@ class PoliciesController extends BaseController
                 return $this->redirectToRoute('policies');
             }
         }
+
+        $this->setBackButton($this->generateUrl('policies'));
+
         return $this->render('policies/new.html.twig', [
             'form' => $form->createView(),
             'policy' => $policy,
@@ -70,7 +73,6 @@ class PoliciesController extends BaseController
             'vvt' => $policy,
             'activ' => $policy->getActiv(),
             'CTA' => false,
-            'urlBack' => $this->generateUrl('policies'),
         ]);
     }
 
@@ -208,6 +210,8 @@ class PoliciesController extends BaseController
             }
         }
 
+        $this->setBackButton($this->generateUrl('policies'));
+
         return $this->render('policies/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
@@ -215,7 +219,6 @@ class PoliciesController extends BaseController
             'title' => $this->translator->trans(id: 'policies.edit', domain: 'policies'),
             'policy' => $policy,
             'activ' => $policy->getActiv(),
-            'urlBack' => $this->generateUrl('policies'),
         ]);
     }
 

@@ -63,13 +63,15 @@ class FormsController extends BaseController
                 return $this->redirectToRoute('forms');
             }
         }
+
+        $this->setBackButton($this->generateUrl('forms'));
+
         return $this->render('forms/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'form.create', domain: 'forms'),
             'daten' => $daten,
             'activ' => $daten->getActiv(),
-            'urlBack' => $this->generateUrl('forms'),
         ]);
     }
 
@@ -210,6 +212,9 @@ class FormsController extends BaseController
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('forms'));
+
         return $this->render('forms/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
@@ -217,7 +222,6 @@ class FormsController extends BaseController
             'title' => $this->translator->trans(id: 'form.edit', domain: 'forms'),
             'daten' => $forms,
             'activ' => $forms->getActiv(),
-            'urlBack' => $this->generateUrl('forms'),
         ]);
     }
 
