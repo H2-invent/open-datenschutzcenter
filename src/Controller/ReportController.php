@@ -111,11 +111,11 @@ class ReportController extends BaseController
             if (count($errors) == 0) {
                 $this->em->persist($data);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'report_edit',
                     [
                         'id' => $data->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general')
                     ],
                 );
             }
@@ -131,7 +131,6 @@ class ReportController extends BaseController
             'title' => $title,
             'report' => $report,
             'activ' => $report->getActiv(),
-            'snack' => $request->get('snack'),
             'edit' => $request->get('edit'),
             'urlBack' => $this->generateUrl('report'),
         ]);

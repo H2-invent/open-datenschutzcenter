@@ -56,12 +56,8 @@ class SoftwareController extends BaseController
         }
 
         if ($config->getSoftware() !== $software) {
-            return $this->redirectToRoute(
-                'software',
-                [
-                    'snack' => $this->translator->trans(id: 'config.mismatchSoftware', domain: 'software'),
-                ],
-            );
+            $this->addErrorMessage($this->translator->trans(id: 'config.mismatchSoftware', domain: 'software'));
+            return $this->redirectToRoute('software');
 
         }
 
@@ -77,11 +73,11 @@ class SoftwareController extends BaseController
                 $config->setCreatedAt(new DateTime());
                 $this->em->persist($config);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'software_edit',
                     [
                         'id' => $software->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
@@ -166,7 +162,8 @@ class SoftwareController extends BaseController
                 $this->em->persist($newSoftware);
                 $this->em->flush();
             }
-            return $this->redirectToRoute('software_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('software_edit', ['id' => $approve['data']]);
         }
 
         return $this->redirectToRoute('policies');
@@ -188,11 +185,11 @@ class SoftwareController extends BaseController
         if ($securityService->teamDataCheck($config->getSoftware(), $team) && $securityService->adminCheck($user, $team)) {
             $this->em->remove($config);
             $this->em->flush();
+            $this->addSuccess($this->translator->trans(id: 'config.delete', domain: 'software'));
             return $this->redirectToRoute(
                 'software_edit',
                 [
                     'id' => $config->getSoftware()->getId(),
-                    'snack' => $this->translator->trans(id: 'config.delete', domain: 'software'),
                 ],
             );
         }
@@ -231,7 +228,6 @@ class SoftwareController extends BaseController
         SoftwareRepository $softwareRepository,
     ): Response
     {
-        //Request: id: SoftwareID, snack:Snack Notice
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         $software = $softwareRepository->find($request->get('id'));
 
@@ -259,11 +255,11 @@ class SoftwareController extends BaseController
                 $this->em->persist($newSoftware);
                 $this->em->persist($software);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'software_edit',
                     [
                         'id' => $newSoftware->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
             }
@@ -276,7 +272,6 @@ class SoftwareController extends BaseController
             'title' => $this->translator->trans(id: 'software.edit', domain: 'software'),
             'software' => $software,
             'activ' => $software->getActiv(),
-            'snack' => $request->get('snack'),
             'urlBack' => $this->generateUrl('software'),
         ]);
     }
@@ -289,7 +284,6 @@ class SoftwareController extends BaseController
         SoftwareRepository $softwareRepository,
     ): Response
     {
-        //Request: snack: Snack Notice
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -299,7 +293,6 @@ class SoftwareController extends BaseController
         return $this->render('software/index.html.twig', [
             'data' => $software,
             'today' => new DateTime(),
-            'snack' => $request->get('snack'),
             'currentTeam' => $team,
         ]);
     }

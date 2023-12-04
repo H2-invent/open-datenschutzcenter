@@ -89,7 +89,8 @@ class PoliciesController extends BaseController
 
         if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($policy, $user);
-            return $this->redirectToRoute('policy_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('policy_edit', ['id' => $approve['data']]);
         }
 
         // if security check fails
@@ -197,11 +198,11 @@ class PoliciesController extends BaseController
                 $this->em->persist($newPolicy);
                 $this->em->persist($policy);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'policy_edit',
                     [
                         'id' => $newPolicy->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
@@ -214,7 +215,6 @@ class PoliciesController extends BaseController
             'title' => $this->translator->trans(id: 'policies.edit', domain: 'policies'),
             'policy' => $policy,
             'activ' => $policy->getActiv(),
-            'snack' => $request->get('snack'),
             'urlBack' => $this->generateUrl('policies'),
         ]);
     }

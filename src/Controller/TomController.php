@@ -90,7 +90,8 @@ class TomController extends BaseController
 
         if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($tom, $user);
-            return $this->redirectToRoute('tom_edit', ['tom' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('tom_edit', ['tom' => $approve['data']]);
         }
 
         // if security check fails
@@ -183,11 +184,11 @@ class TomController extends BaseController
                 $this->em->persist($newTom);
                 $this->em->persist($tom);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'tom_edit',
                     [
                         'tom' => $newTom->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
@@ -199,7 +200,6 @@ class TomController extends BaseController
             'tom' => $tom,
             'activ' => $tom->getActiv(),
             'activTitel' => false,
-            'snack' => $request->get('snack'),
             'currentTeam' => $team,
             'urlBack' => $this->generateUrl('tom'),
         ]);

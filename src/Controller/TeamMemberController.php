@@ -132,11 +132,9 @@ class TeamMemberController extends BaseController
             }
 
             $em->flush();
+            $this->addSuccessMessage($this->translator->trans(id: 'dsb.added', domain: 'team'));
             return $this->redirectToRoute(
                 'team_dsb',
-                [
-                    'snack' => $this->translator->trans(id: 'dsb.added', domain: 'team'),
-                ],
             );
         }
         return $this->render('team/dsb.html.twig', [
@@ -144,7 +142,6 @@ class TeamMemberController extends BaseController
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'dsb.manage', domain: 'team'),
             'data' => $team->getDsbUser(),
-            'snack' => $request->get('snack'),
             'currentTeam' => $team,
             'adminArea' => true,
         ]);
@@ -169,12 +166,13 @@ class TeamMemberController extends BaseController
         $user = $userRepository->findOneBy(array('id' => $request->get('id')));
 
         if ($team->getDsbUser() === $user) {
-            $snack = $this->translator->trans(id: 'dsb.error.selfRemove', domain: 'team');
             if ($this->getUser() !== $team->getDsbUser()) {
                 $user->removeTeam($team);
                 $team->removeAdmin($user);
                 $user->setAkademieUser(null);
-                $snack = $this->translator->trans(id: 'dsb.removed', domain: 'team');
+                $this->addSuccessMessage($this->translator->trans(id: 'dsb.removed', domain: 'team'));
+            } else {
+                $this->addErrorMessage($this->translator->trans(id: 'dsb.error.selfRemove', domain: 'team'));
             }
             $team->setDsbUser(null);
         }
@@ -182,7 +180,7 @@ class TeamMemberController extends BaseController
         $em->persist($user);
         $em->flush();
 
-        return $this->redirectToRoute('team_dsb', ['snack' => $snack]);
+        return $this->redirectToRoute('team_dsb');
     }
 
     #[Route(path: '/team_mitglieder', name: 'team_mitglieder')]

@@ -85,7 +85,8 @@ class VorfallController extends BaseController
 
         if ($securityService->teamDataCheck($vorfall, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($vorfall, $user);
-            return $this->redirectToRoute('vorfall_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('vorfall_edit', ['id' => $approve['data']]);
         }
 
         // if security check fails
@@ -125,11 +126,11 @@ class VorfallController extends BaseController
                 $this->em->persist($newVorgang);
                 $this->em->persist($vorgang);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'vorfall_edit',
                     [
                         'id' => $newVorgang->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
@@ -141,7 +142,6 @@ class VorfallController extends BaseController
             'title' => $this->translator->trans(id: 'incident.edit', domain: 'vorfall'),
             'vorfall' => $vorgang,
             'activ' => $vorgang->getActiv(),
-            'snack' => $request->get('snack'),
             'urlBack' => $this->generateUrl('vorfall'),
         ]);
     }

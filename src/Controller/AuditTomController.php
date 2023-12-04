@@ -203,11 +203,11 @@ class AuditTomController extends BaseController
                 $this->em->persist($newAudit);
                 $this->em->persist($audit);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'audit_tom_edit',
                     [
                         'tom' => $newAudit->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
             }
@@ -223,7 +223,6 @@ class AuditTomController extends BaseController
                 'activ' => $audit->getActiv(),
                 'activNummer' => false,
                 'nextAudit' => $nextAudit,
-                'snack' => $request->get('snack'),
                 'urlBack' => $this->generateUrl('audit_tom'),
             ]
         );

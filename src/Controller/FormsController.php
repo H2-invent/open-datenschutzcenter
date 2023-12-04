@@ -88,7 +88,8 @@ class FormsController extends BaseController
 
         if ($securityService->teamDataCheck($forms, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($forms, $user);
-            return $this->redirectToRoute('forms_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('forms_edit', ['id' => $approve['data']]);
         }
 
         // if security check fails
@@ -199,12 +200,12 @@ class FormsController extends BaseController
                 $this->em->persist($newForms);
                 $this->em->persist($forms);
                 $this->em->flush();
+                $this->addSuccess($this->translator->trans(id: 'save.successful', domain: 'general'));
 
                 return $this->redirectToRoute(
                     'forms_edit',
                     [
                         'id' => $newForms->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
             }
@@ -216,7 +217,6 @@ class FormsController extends BaseController
             'title' => $this->translator->trans(id: 'form.edit', domain: 'forms'),
             'daten' => $forms,
             'activ' => $forms->getActiv(),
-            'snack' => $request->get('snack'),
             'urlBack' => $this->generateUrl('forms'),
         ]);
     }

@@ -86,7 +86,8 @@ class KontaktController extends BaseController
 
         if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($kontakt, $user);
-            return $this->redirectToRoute('kontakt_edit', ['id' => $kontakt->getId(), 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('kontakt_edit', ['id' => $kontakt->getId()]);
         }
 
         // if security check fails
@@ -138,11 +139,11 @@ class KontaktController extends BaseController
             if (count($errors) == 0) {
                 $this->em->persist($data);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'kontakt_edit',
                     [
                         'id' => $kontakt->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
             }
@@ -152,7 +153,6 @@ class KontaktController extends BaseController
             'kontakt' => $kontakt,
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
-            'snack' => $request->get('snack'),
             'urlBack' => $this->generateUrl('kontakt'),
         ]);
     }

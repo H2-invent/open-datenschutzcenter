@@ -973,6 +973,10 @@ form label.required::after {
     content: " *";
 }
 
+form label.required ul {
+    @apply text-white bg-red-600 px-2 py-1 my-1 rounded;
+}
+
 form .form-buttons {
     @apply pt-3 mb-0 -mt-3;
 }
@@ -1185,4 +1189,20 @@ ol.item-history li:last-of-type {
 
 .created-by {
     @apply text-muted mt-5 text-sm;
+}
+
+#snackbar {
+    @apply text-neutral-50 bg-neutral-800;
+}
+
+#snackbar.success, #snackbar.success * {
+    @apply !text-neutral-50 !bg-neutral-800;
+}
+
+#snackbar.info, #snackbar.info * {
+    @apply !text-neutral-50 !bg-neutral-800;
+}
+
+#snackbar.error, #snackbar.error * {
+    @apply !text-white !bg-red-700;
 }

@@ -146,12 +146,12 @@ class TaskController extends BaseController
             if (count($errors) == 0) {
                 $this->em->persist($task);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
 
                 return $this->redirectToRoute(
                     'task_edit',
                     [
                         'id' => $task->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
@@ -168,7 +168,6 @@ class TaskController extends BaseController
             'title' => $this->translator->trans(id: 'task.edit', domain: 'task'),
             'task' => $task,
             'activ' => $task->getActiv(),
-            'snack' => $request->get('snack'),
             'edit' => $request->get('edit'),
             'urlBack' => $urlBack,
         ]);

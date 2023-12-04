@@ -159,7 +159,8 @@ class DatenweitergabeController extends BaseController
                 }
                 $this->em->flush();
             }
-            return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data']]);
         }
 
         // if security check fails
@@ -289,11 +290,11 @@ class DatenweitergabeController extends BaseController
                 $this->em->persist($newDaten);
                 $this->em->persist($daten);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'datenweitergabe_edit',
                     [
                         'id' => $newDaten->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
@@ -306,7 +307,6 @@ class DatenweitergabeController extends BaseController
             'daten' => $daten,
             'activ' => $daten->getActiv(),
             'activNummer' => false,
-            'snack' => $request->get('snack'),
             'urlBack' => $daten->getArt() === 1 ? $this->generateUrl('datenweitergabe') : $this->generateUrl('auftragsverarbeitung'),
         ]);
     }

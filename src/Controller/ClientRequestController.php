@@ -68,12 +68,10 @@ class ClientRequestController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $clientRequestService->newComment($clientRequest, $form->getData()['comment'], $clientRequest->getName(), 0);
-            $snack = $this->translator->trans(id: 'save.comment', domain: 'general');
-        } else {
-            $snack = null;
+            $this->addSuccessMessage($this->translator->trans(id: 'save.comment', domain: 'general'));
         }
 
-        return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken(), 'snack' => $snack]);
+        return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
     }
 
     #[Route(path: '/client-requests/comment', name: 'client_request_comment')]
@@ -96,12 +94,10 @@ class ClientRequestController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $clientRequestService->newComment($clientRequest, $form->getData()['comment'], $team->getKeycloakGroup() . ' > ' . $this->getUser()->getUsername(), 1);
-            $snack = $this->translator->trans(id: 'save.comment', domain: 'general');
-        } else {
-            $snack = null;
+            $this->addSuccessMessage($this->translator->trans(id: 'save.comment', domain: 'general'));
         }
 
-        return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => $snack]);
+        return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
     }
 
     #[Route(path: '/client-requests/close', name: 'client_request_close')]
@@ -167,8 +163,8 @@ class ClientRequestController extends BaseController
 
                     $clientRequestService->newComment($clientRequest, $content, $team->getKeycloakGroup() . ' > ' . $this->getUser()->getUsername(), 1);
 
-                    $snack = $this->translator->trans(id: 'save.changeSuccessful', domain: 'general');
-                    return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => $snack]);
+                    $this->addSuccessMessage($this->translator->trans(id: 'save.changeSuccessful', domain: 'general'));
+                    return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
                 }
             }
             return $this->render('client_request/internalEdit.html.twig', [
@@ -192,7 +188,6 @@ class ClientRequestController extends BaseController
     {
         $form = $this->createForm(ClientRequestViewType::class);
         $form->handleRequest($request);
-        $snack = $request->get('snack');
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $search = $form->getData();
@@ -207,13 +202,12 @@ class ClientRequestController extends BaseController
             if (count($errors) == 0 && $clientRequest) {
                 return $this->redirectToRoute('client_show', ['slug' => $team->getSlug(), 'token' => $clientRequest->getToken()]);
             }
-            $snack = $this->translator->trans(id: 'login.error.retry', domain: 'client_request');
+            $this->addErrorMessage($this->translator->trans(id: 'login.error.retry', domain: 'client_request'));
         }
 
         return $this->render('client_request/index.html.twig', [
             'form' => $form->createView(),
             'team' => $team,
-            'snack' => $snack
         ]);
     }
 
@@ -242,12 +236,12 @@ class ClientRequestController extends BaseController
             if (count($errors) == 0) {
                 $this->em->persist($clientRequest);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.changesSuccessful', domain: 'general'));
 
                 return $this->redirectToRoute(
                     'client_requests_show',
                     [
                         'id' => $clientRequest->getId(),
-                        'snack' => $this->translator->trans(id: 'save.changesSuccessful', domain: 'general'),
                     ],
                 );
             }
@@ -279,11 +273,11 @@ class ClientRequestController extends BaseController
 
         if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
             if ($clientRequestService->interalRequest($clientRequest)) {
-                $snack = $this->translator->trans(id: 'save.changesSuccessful', domain: 'general');
+                $this->addSuccessMessage($this->translator->trans(id: 'save.changesSuccessful', domain: 'general'));
             } else {
-                $snack = $this->translator->trans(id: 'error.retry', domain: 'general');
+                $this->addErrorMessage($this->translator->trans(id: 'error.retry', domain: 'general'));
             }
-            return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId(), 'snack' => $snack]);
+            return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
         }
 
         // if security check fails
@@ -368,7 +362,6 @@ class ClientRequestController extends BaseController
             'data' => $clientRequest,
             'team' => $team,
             'form' => $form->createView(),
-            'snack' => $request->get('snack'),
             'urlBack' => $this->generateUrl('client_requests'),
         ]);
     }
@@ -391,8 +384,8 @@ class ClientRequestController extends BaseController
                 'form' => $form->createView(),
             ]);
         }
-        $snack = $this->translator->trans(id: 'noTicketMatched', domain: 'client_request');
-        return $this->redirectToRoute('client_index', ['slug' => $team->getSlug(), 'snack' => $snack]);
+        $this->addInfoMessage($this->translator->trans(id: 'noTicketMatched', domain: 'client_request'));
+        return $this->redirectToRoute('client_index', ['slug' => $team->getSlug()]);
     }
 
     #[Route(path: '/client/{slug}/verify', name: 'client_valid')]
@@ -406,7 +399,6 @@ class ClientRequestController extends BaseController
     ): Response
     {
         $clientRequest = $clientRequestRepository->findOneBy(['uuid' => $request->get('token')]);
-        $snack = $this->translator->trans(id: 'noOpenTicket', domain: 'client_request');
         if ($clientRequest) {
             if (!$clientRequest->getEmailValid()) {
                 $clientRequest->setEmailValid(true);
@@ -419,12 +411,14 @@ class ClientRequestController extends BaseController
                 }
                 $content = $this->translator->trans(id: 'email.verify', domain: 'client_request');
                 $clientRequestService->newComment($clientRequest, $content, $clientRequest->getName(), 1);
-                $snack = $this->translator->trans(id: 'email.verify', domain: 'client_request');
+                $this->addSuccessMessage($this->translator->trans(id: 'email.verify', domain: 'client_request'));
             } else {
-                $snack = $this->translator->trans(id: 'email.alreadyVerified', domain: 'client_request');
+                $this->addInfoMessage($this->translator->trans(id: 'email.alreadyVerified', domain: 'client_request'));
             }
+        } else {
+            $this->addInfoMessage($this->translator->trans(id: 'noOpenTicket', domain: 'client_request'));
         }
-        return $this->redirectToRoute('client_index', ['slug' => $team->getSlug(), 'snack' => $snack]);
+        return $this->redirectToRoute('client_index', ['slug' => $team->getSlug()]);
     }
 
     #[Route(path: '/client-requests/userValidate', name: 'client_valid_user')]

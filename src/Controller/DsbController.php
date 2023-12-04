@@ -39,18 +39,14 @@ class DsbController extends BaseController
             $this->em->persist($team);
             $this->em->flush();
             $currentTeamService->switchToTeam(strval($team->getId()));
+            $this->addSuccessMessage($this->translator->trans(id: 'team.change.successful', domain: 'dsb'));
             return $this->redirectToRoute(
                 'dashboard',
-                [
-                    'snack' => $this->translator->trans(id: 'team.change.successful', domain: 'dsb'),
-                ],
             );
         }
+        $this->addErrorMessage($this->translator->trans(id: 'team.change.error', domain: 'dsb'));
         return $this->redirectToRoute(
             'dashboard',
-            [
-                'snack' => $this->translator->trans(id: 'team.change.error', domain: 'dsb'),
-            ],
         );
     }
 

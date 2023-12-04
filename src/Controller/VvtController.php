@@ -69,11 +69,9 @@ class VvtController extends BaseController
 
                 $this->em->persist($vvt);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'vvt',
-                    [
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
-                    ],
                 );
             }
         }
@@ -128,7 +126,10 @@ class VvtController extends BaseController
             $this->em->flush();
         }
 
-        return $this->redirectToRoute('vvt_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+        $this->addSuccessMessage($approve['snack']);
+
+
+        return $this->redirectToRoute('vvt_edit', ['id' => $approve['data']]);
 
     }
 
@@ -269,11 +270,11 @@ class VvtController extends BaseController
                 $this->em->persist($newVvt);
                 $this->em->persist($vvt);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'vvt_edit',
                     [
                         'id' => $newVvt->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
@@ -287,7 +288,6 @@ class VvtController extends BaseController
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'activNummer' => false,
-            'snack' => $request->get('snack')
         ]);
     }
 
@@ -325,12 +325,12 @@ class VvtController extends BaseController
                 $this->em->persist($newDsfa);
                 $this->em->persist($dsfa);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
 
                 return $this->redirectToRoute(
                     'vvt_dsfa_edit',
                     [
                         'dsfa' => $newDsfa->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
@@ -343,7 +343,6 @@ class VvtController extends BaseController
             'title' => $this->translator->trans(id: 'dataPrivacyFollowUpEstimation.edit', domain: 'vvt'),
             'dsfa' => $dsfa,
             'activ' => $dsfa->getActiv(),
-            'snack' => $request->get('snack')
         ]);
     }
 
@@ -363,7 +362,6 @@ class VvtController extends BaseController
 
         return $this->render('vvt/index.html.twig', [
             'vvt' => $vvt,
-            'snack' => $request->get('snack'),
             'currentTeam' => $team,
         ]);
     }
@@ -397,11 +395,11 @@ class VvtController extends BaseController
             if (count($errors) == 0) {
                 $this->em->persist($dsfa);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'dsfa.created', domain: 'vvt'));
                 return $this->redirectToRoute(
                     'vvt_edit',
                     [
                         'id' => $dsfa->getVvt()->getId(),
-                        'snack' => $this->translator->trans(id: 'dsfa.created', domain: 'vvt'),
                     ],
                 );
             }

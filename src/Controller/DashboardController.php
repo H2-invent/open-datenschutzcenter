@@ -125,7 +125,6 @@ class DashboardController extends BaseController
             'software' => $software,
             'assignTasks' => $assignTasks,
             'tasks' => $tasks,
-            'snack' => $request->get('snack'),
             'loeschkonzepte' => $loeschkonzepte,
             'vvtdatenkategorien' => $vvtdatenkategorien,
             'tabsAssignments' => $this->getTabsAssignments(),

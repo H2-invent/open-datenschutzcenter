@@ -137,7 +137,6 @@ class BerichtController extends BaseController
         }
 
         return $this->render('bericht/index.html.twig', [
-            'snack' => $request->get('snack'),
             'currentTeam' => $team,
         ]);
     }
@@ -813,11 +812,8 @@ class BerichtController extends BaseController
 
     private function redirectNoReport(): RedirectResponse
     {
-        return $this->redirectToRoute(
-            'bericht',
-            [
-                'snack' => $this->translator->trans(id: 'report.notAvailable', domain: 'bericht')
-            ]
-        );
+        $this->addErrorMessage($this->translator->trans(id: 'report.notAvailable', domain: 'bericht'));
+
+        return $this->redirectToRoute('bericht');
     }
 }
