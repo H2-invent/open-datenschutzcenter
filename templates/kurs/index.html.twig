@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'kurs' %}
 
+{% set fullWidthLayout = true %}
+
 {% block CTA %}
     <a href="{{ path('akademie_kurs_new') }}">
         <span>{% trans %}addCourse{% endtrans %}</span>

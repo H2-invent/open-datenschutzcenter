@@ -18,7 +18,7 @@
                     {{ include('base/__teamToggle.html.twig') }}
                     {{ include('base/__topnav.html.twig') }}
                 </div>
-                <div class="container mx-auto max-w-5xl">
+                <div class="container {{ fullWidthLayout is defined and fullWidthLayout ? 'max-w-full' : 'mx-auto max-w-5xl' }}">
                     {% apply spaceless %}
                         <div id="bock-cta" class="flex flex-row flex-wrap rounded flex gap-2 items-center justify-start">
                             {% block CTA %}{% endblock %}
