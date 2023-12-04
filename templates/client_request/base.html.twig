@@ -4,9 +4,13 @@
     {{ include('base/__head.html.twig') }}
     <body id="client_request">
         <div class="text-center my-10">
-            <a href="{{ path('client_index', {'slug':team.slug}) }}" class="inline-block w-48">
-                <img src="{{ asset('logo.png') }}" title="ODC"/>
-            </a>
+            {% if team is defined %}
+                <a href="{{ path('client_index', {'slug':team.slug}) }}" class="inline-block w-48">
+                    <img src="{{ asset('logo.png') }}" title="ODC" />
+                </a>
+            {% else %}
+                <img src="{{ asset('logo.png') }}" title="ODC" class="inline-block w-48" />
+            {% endif %}
         </div>
         <div id="content" class="container mx-auto max-w-2xl">
             <div id="back">
