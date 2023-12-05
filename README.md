@@ -71,7 +71,9 @@ php bin/console app:migrate:defaultTeam
 ````
 
 # Kooperation
-In Kooperation mit der [Professur "Datenschutz und Compliance"](https://www.unibw.de/datcom) des Forschungsinstituts Cyber Defence (CODE) der [Universität der Bundeswehr München](https://www.unibw.de/home) wurde das Open Datenschutzcenter im Rahmen der [Masterarbeit](docs/Masterarbeit_loeschkonzepte.pdf) von Herrn Juister um die Funktion zum Dokumentieren von Löschkonzepten ergänzt.
+In Kooperation mit der [Professur "Datenschutz und Compliance"](https://www.unibw.de/datcom) des Forschungsinstituts Cyber Defence (CODE) der [Universität der Bundeswehr München](https://www.unibw.de/home) wurden:
+* das Open Datenschutzcenter im Rahmen der [Masterarbeit](docs/Masterarbeit_loeschkonzepte.pdf) von Herrn Juister um die Funktion zum Dokumentieren von Löschkonzepten ergänzt.
+* das Open Datenschutzcenter im Rahmen der [Bachelorarbeit](docs/Bachelorarbeit%20DSFA%20ODC%20bereinigt.pdf) von Frau Wesenberg um die „Konzeption und Integration der Datenschutz-Folgenabschätzung in das Open Datenschutzcenter“ ergänzt
 
 Durch die Mitarbeitenden von @verdigado wurde der VVT Assistent und die Vererbung implemntiert. 
 
