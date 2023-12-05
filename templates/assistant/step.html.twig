@@ -18,53 +18,64 @@
             </a>
         </div>
     {% endif %}
-    <div>
-        <div class="card card-outlined mb-5">
-            <p>{{ info }}</p>
-        </div>
-        {% if app.request.hasPreviousSession %}
-            {% for type, messages in app.session.flashbag.all() %}
-                {% for message in messages %}
-                    <div class="card card-filled text-danger mb-5">
-                        {{ message | trans }}
-                    </div>
-                {% endfor %}
-            {% endfor %}
-        {% endif %}
-        {% if select %}
-            <form name="select" method="post" action="{{ path('assistant_select') }}" class="mb-20">
-                <fieldset>
-                    <div class="form-row">
-                        <label for="assistant_select" {% if not skip %}class="required"{% endif %}>
-                            {{ select.label }}:
-                        </label>
-                        <select id="assistant_select" title="{% trans from 'general' %}nothingSelected{% endtrans%}" name="assistant_select[]" {% if select.multiple %}multiple="multiple"{% endif %} >
-                            {% for item in select.items %}
-                                <option {% if item.id in select.selected %}selected="selected"{% endif %} value="{{ item.id }}">{{ item.name }}</option>
-                            {% endfor %}
-                            <option value="new">{% trans %}new.word{% endtrans %}</option>
-                        </select>
-                    </div>
-                </fieldset>
-                <div class="form-buttons flex">
-                    <button type="submit" class="btn btn-create relative flex flex-row">
-                        <span class="material-symbols-outlined">arrow_right_alt</span>
-                        {% trans from 'general' %}continue{% endtrans %}
-                    </button>
+    <div class="card card-outlined mb-5">
+        <p>{{ info }}</p>
+    </div>
+    {% if app.request.hasPreviousSession %}
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="card card-filled text-danger mb-5">
+                    {{ message | trans }}
                 </div>
-            </form>
-        {% else %}
-            <div class="form-buttons flex">
-                {% if skip %}
-                    <a href="{{ path('assistant_step',{'step': (step + 1) }) }}" class="btn">{% trans from 'general' %}skip{% endtrans %}</a>
-                {% endif %}
-            </div>
-        {% endif %}
-        {{ form_start(form) }}
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    {% if select %}
+        <form name="select" method="post" action="{{ path('assistant_select') }}" id="form-select" class="mb-20">
             <fieldset>
-                <legend>{{ newTitle }}</legend>
-                {{ form_widget(form) }}
+                <div class="form-row">
+                    <div class="flex flex-row mb-2 text-sm">
+                        <label for="assistant_select" {% if not skip %}class="required"{% endif %}>
+                            {{ select.label }}
+                        </label>&nbsp;
+                        (<a href="#" data-action="click->appUi#toggle" data-show="form-new" data-hide="form-select">
+                            +{% trans %}new.word{% endtrans %}
+                        </a>)
+                    </div>
+                    <select id="assistant_select" title="{% trans from 'general' %}nothingSelected{% endtrans%}" name="assistant_select[]" {% if select.multiple %}multiple="multiple"{% endif %} >
+                        {% for item in select.items %}
+                            <option {% if item.id in select.selected %}selected="selected"{% endif %} value="{{ item.id }}">{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </fieldset>
+            <div class="form-buttons flex">
+                <button type="submit" class="btn btn-create relative flex flex-row">
+                    <span class="material-symbols-outlined">arrow_right_alt</span>
+                    {% trans from 'general' %}continue{% endtrans %}
+                </button>
+            </div>
+        </form>
+    {% else %}
+        <div class="form-buttons flex">
+            {% if skip %}
+                <a href="{{ path('assistant_step',{'step': (step + 1) }) }}" class="btn">{% trans from 'general' %}skip{% endtrans %}</a>
+            {% endif %}
+        </div>
+    {% endif %}
+    <div id="form-new" class="{{ select ? 'hidden' }}">
+        <div class="card-filled">
+            {% if select %}
+                <a href="#" data-action="click->appUi#toggle" data-show="form-select" data-hide="form-new" class="text-sm">
+                    {{ select.label }}
+                </a>
+            {% endif %}
+        </div>
+        {{ form_start(form, {attr: {class: 'mt-5'}}) }}
+        <fieldset>
+            <legend>{{ newTitle }}</legend>
+            {{ form_widget(form) }}
+        </fieldset>
         {{ form_end(form) }}
     </div>
 {% endblock %}

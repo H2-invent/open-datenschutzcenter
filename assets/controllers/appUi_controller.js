@@ -59,4 +59,14 @@ export default class extends Controller {
 
         return null;
     }
+
+    toggle(event) {
+        event.preventDefault();
+        const containerShow = document.getElementById(this.getAttributeFromElementOrParents(event.target, 'data-show'));
+        const containerHide = document.getElementById(this.getAttributeFromElementOrParents(event.target, 'data-hide'));
+        const containerToggle = document.getElementById(this.getAttributeFromElementOrParents(event.target, 'data-toggle'));
+        containerShow?.classList.remove('hidden');
+        containerHide?.classList.add('hidden');
+        containerToggle?.classList.toggle('hidden');
+    }
 }
