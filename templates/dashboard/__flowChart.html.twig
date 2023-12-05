@@ -1,6 +1,6 @@
 {% trans_default_domain 'dashboard' %}
 <h3>{% trans %}flowChart{% endtrans %}</h3>
-<div class="card-outlined mb-5">
+<div class="card-outlined mb-5 min">
     <select id="nodeFilterSelect" class="w-auto">
         <!-- TODO: Make select work for multiple teams -->
         {% for team in app.user.teams %}
@@ -15,7 +15,7 @@
         {% endfor %}
     </select>
     <hr class="my-5">
-    <div id="mynetwork"></div>
+    <div id="mynetwork" style="height: 90vh;"></div>
 </div>
 
 {% block javascripts %}
