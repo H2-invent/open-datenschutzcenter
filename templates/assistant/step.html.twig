@@ -2,29 +2,42 @@
 {% trans_default_domain 'assistant' %}
 
 {% block body %}
-    <div>
-        <h2>{% trans %}step.word{% endtrans %} {{ step + 1}}: {{ title }}</h2>
+    <div class="flex mb-5">
         <div>
-            <div role="alert">
-                <p>{{ info }}</p>
-            </div>
-            {% if app.request.hasPreviousSession %}
-                {% for type, messages in app.session.flashbag.all() %}
-                    {% for message in messages %}
-                        <div role="alert">
-                            {{ message | trans }}
-                        </div>
-                    {% endfor %}
+            <h2>{% trans %}step.word{% endtrans %} {{ step + 1}}: {{ title }}</h2>
+        </div>
+        <div class="flex-grow text-right">
+            <a href="{{ path('assistant_cancel') }}" class="btn" data-click-confirm="true">{% trans from 'general' %}abort{% endtrans %}</a>
+        </div>
+    </div>
+    {% if step > 0 %}
+        <div class="flex mb-5">
+            <a href="{{ path('assistant_step',{'step': (step - 1) }) }}" class="relative flex flex-row inline-block text-gray-700">
+                <span class="material-symbols-outlined">arrow_left_alt</span>
+                {% trans from 'general' %}back{% endtrans %}
+            </a>
+        </div>
+    {% endif %}
+    <div>
+        <div class="card card-outlined mb-5">
+            <p>{{ info }}</p>
+        </div>
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="card card-filled text-danger mb-5">
+                        {{ message | trans }}
+                    </div>
                 {% endfor %}
-            {% endif %}
-            {% if select %}
-                <form name="select" method="post" action="{{ path('assistant_select') }}">
-                    <div>
+            {% endfor %}
+        {% endif %}
+        {% if select %}
+            <form name="select" method="post" action="{{ path('assistant_select') }}" class="mb-20">
+                <fieldset>
+                    <div class="form-row">
                         <label for="assistant_select" {% if not skip %}class="required"{% endif %}>
                             {{ select.label }}:
                         </label>
-                    </div>
-                    <div>
                         <select id="assistant_select" title="{% trans from 'general' %}nothingSelected{% endtrans%}" name="assistant_select[]" {% if select.multiple %}multiple="multiple"{% endif %} >
                             {% for item in select.items %}
                                 <option {% if item.id in select.selected %}selected="selected"{% endif %} value="{{ item.id }}">{{ item.name }}</option>
@@ -32,42 +45,26 @@
                             <option value="new">{% trans %}new.word{% endtrans %}</option>
                         </select>
                     </div>
-                    <div>
-                        <div>
-                            <div>
-                                {% if step > 0 %}
-                                    <a href="{{ path('assistant_step',{'step': (step - 1) }) }}">{% trans from 'general' %}back{% endtrans %}</a>
-                                {% endif %}
-                            </div>
-                            <div>
-                                <button type="submit">{% trans from 'general' %}continue{% endtrans %}</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            {% else %}
-                <div>
-                    <div>
-                        {% if step > 0 %}
-                            <a href="{{ path('assistant_step',{'step': (step - 1) }) }}">{% trans from 'general' %}back{% endtrans %}</a>
-                        {% endif %}
-                    </div>
-                    <div>
-                        {% if skip %}
-                            <a href="{{ path('assistant_step',{'step': (step + 1) }) }}">{% trans from 'general' %}skip{% endtrans %}</a>
-                        {% endif %}
-                    </div>
+                </fieldset>
+                <div class="form-buttons flex">
+                    <button type="submit" class="btn btn-create relative flex flex-row">
+                        <span class="material-symbols-outlined">arrow_right_alt</span>
+                        {% trans from 'general' %}continue{% endtrans %}
+                    </button>
                 </div>
-            {% endif %}
-            <div>
-                <h3>{{ newTitle }}</h3>
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
+            </form>
+        {% else %}
+            <div class="form-buttons flex">
+                {% if skip %}
+                    <a href="{{ path('assistant_step',{'step': (step + 1) }) }}" class="btn">{% trans from 'general' %}skip{% endtrans %}</a>
+                {% endif %}
             </div>
-            <p>
-                <a href="{{ path('assistant_cancel') }}">{% trans from 'general' %}abort{% endtrans %}</a>
-            </p>
-        </div>
+        {% endif %}
+        {{ form_start(form) }}
+            <fieldset>
+                <legend>{{ newTitle }}</legend>
+                {{ form_widget(form) }}
+            </fieldset>
+        {{ form_end(form) }}
     </div>
 {% endblock %}

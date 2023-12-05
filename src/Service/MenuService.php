@@ -33,6 +33,7 @@ class MenuService
             $menu->addChild($this->trans('dashboard'), ['route' => 'dashboard']);
             $menu->addChild($this->trans('myAssignments'), ['route' => 'assign']);
             $menu->addChild($this->trans('tasks'), ['route' => 'tasks']);
+            $menu->addChild($this->trans('assistant'), ['route' => 'assistant']);
             $menu->addChild($this->trans('reports'), ['route' => 'bericht']);
         }
 

@@ -838,6 +838,10 @@ form .form-row {
     @apply mb-5;
 }
 
+form .form-row-checkbox {
+    @apply mb-1;
+}
+
 form > fieldset {
     @apply card-filled !bg-surface-100 w-full mb-5;
 }
@@ -982,7 +986,7 @@ form .form-buttons {
 }
 
 form .form-buttons .btn {
-    @apply btn-elevated;
+    @apply btn-elevated mr-2;
 }
 
 input[type='text'], input[type='password'], input[type='email'], input[type='number'], input[type='url'], input[type='date'], input[type='datetime-local'], input[type='month'], input[type='week'], input[type='time'], input[type='search'], input[type='tel'], input[type='checkbox'], input[type='radio'], select, select[multiple], textarea {

@@ -1,5 +1,5 @@
 {%- block checkbox_row -%}
-    {%- set row_attr = row_attr|merge({ class: row_attr.class|default(row_class|default('row-checkbox')) }) -%}
+    {%- set row_attr = row_attr|merge({ class: row_attr.class|default(row_class|default('form-row-checkbox')) }) -%}
     {%- set widget_attr = {} -%}
     {%- if help is not empty -%}
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
