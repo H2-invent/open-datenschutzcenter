@@ -44,9 +44,9 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div id="tab-processing" role="tabpanel" class="tab-content">
+            <div id="tab-processes" role="tabpanel" class="tab-content">
                 <ul class="stacked-list compressed">
-                    {% for a in processings %}
+                    {% for a in processes %}
                         {% if a.activ %}
                             <li>
                                 <a href="{{ path('vvt_edit',{'id':a.id}) }}">{{ a.team.name }}: {{ a.name }}</a>
@@ -62,7 +62,8 @@
                     {% for a in impactAssessments %}
                         {% if a.vvt.team == currentTeam %}
                             <li>
-                                <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">{{ a.vvt.team.name }}: {{ a.beschreibung }}</a>
+                                <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">{{ a.vvt.team.name }}:</a>
+                                <div>{{ a.beschreibung|raw }}</div>
                                 <div>{{ a.vvt.name }}</div>
                                 <div>{{ a.createdAt|date('d.m.Y') }}</div>
                             </li>
