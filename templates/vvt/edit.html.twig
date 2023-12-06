@@ -18,7 +18,6 @@
         <a href="{{ path('vvt_clone', {'id':vvt.id}) }}" class="btn">
             <span>{% trans %}processing.duplicate{% endtrans %}</span>
         </a>
-        <a href="{{ path('bericht_vvt', {'id':vvt.id}) }}" class="btn">
         {% if isEditable %}
             <a class="btn" href="{{ path('vvt_clone', {'id':vvt.id}) }}">
                 <span>{% trans %}processing.duplicate{% endtrans %}</span>
