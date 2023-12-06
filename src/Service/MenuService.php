@@ -18,7 +18,7 @@ class MenuService
     public function __construct(private FactoryInterface $factory, private TranslatorInterface $translator, private Security $security, private CurrentTeamService $currentTeamService, private RequestStack $requestStack)
     {
         $this->user = $this->security->getUser();
-        $this->currentTeam = $this->currentTeamService->getTeamFromSession($this->user);
+        $this->currentTeam = $this->currentTeamService->getCurrentTeam($this->user);
     }
 
     public function createMainMenu(array $options): ItemInterface
@@ -45,7 +45,7 @@ class MenuService
     public function createElementsMenu(array $options): ?ItemInterface
     {
         $menu = $this->factory->createItem('root');
-        
+
         if (!$this->user->getTeams()->isEmpty()) {
             $menu->addChild($this->trans('auditQuestions'), ['route' => 'audit_tom']);
             $menu->addChild($this->trans('dataCategories'), ['route' => 'app_vvtdatenkategorie_index']);
