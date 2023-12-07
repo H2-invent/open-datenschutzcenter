@@ -21,9 +21,9 @@
     {{ include('audit_tom/__form.html.twig') }}
     <p class="created-by">{% trans %}createdBy{% endtrans %}: {{ audit.user.email }}</p>
     {% if audit.previous %}
-        <div>
-            <h2>{% trans %}history{% endtrans %}</h2>
+        <h3 class="mt-10">{% trans %}history{% endtrans %}</h3>
+        <ol class="item-history" reversed>
             {{ include('audit_tom/__history.html.twig', {'p':audit.previous}) }}
-        </div>
+        </ol>
     {% endif %}
 {% endblock %}

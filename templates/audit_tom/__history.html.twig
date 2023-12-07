@@ -1,4 +1,8 @@
-<a href="{{ path('audit_tom_edit',{'tom':p.id}) }}"><span style="color: {{ p.status.color }}">{{ p.createdAt|date('d.m.Y H:i') }} -- {{ p.status.name }} -- {{ p.frage }} -- {{ p.user.email }}</span></a>
+<li style="border-right: 5px solid {{ p.status.color }}">
+    <a href="{{ path('audit_tom_edit',{'tom':p.id}) }}">
+        {{ p.createdAt|date('d.m.Y H:i') }} -- {{ p.status.name }} -- {{ p.frage }} -- {{ p.user.email }}
+    </a>
+</li>
 {% if p.previous %}
     {{ include('audit_tom/__history.html.twig', {'p':p.previous}) }}
 {% endif %}

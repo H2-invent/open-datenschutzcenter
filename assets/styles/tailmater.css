@@ -1184,7 +1184,11 @@ ol.item-history {
 }
 
 ol.item-history li {
-    @apply mb-1 pl-1 ml-4;
+    @apply mb-2 pl-1 ml-4;
+}
+
+ol.item-history li a {
+    @apply text-gray-700 hover:underline;
 }
 
 ol.item-history li:last-of-type {

@@ -19,21 +19,21 @@
 {% block body %}
     <table id="data-table" class="dataTable">
         <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">{% trans %}question{% endtrans %}</th>
-            <th scope="col">{% trans %}department{% endtrans %}</th>
-            <th scope="col">{% trans %}category{% endtrans %}</th>
-            <th scope="col">{% trans %}auditGoals{% endtrans %}</th>
-            <th scope="col">{% trans %}status{% endtrans %}</th>
-        </tr>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{% trans %}question{% endtrans %}</th>
+                <th scope="col">{% trans %}department{% endtrans %}</th>
+                <th scope="col">{% trans %}category{% endtrans %}</th>
+                <th scope="col">{% trans %}auditGoals{% endtrans %}</th>
+                <th scope="col">{% trans %}status{% endtrans %}</th>
+            </tr>
         </thead>
         <tbody>
         {% for a in audit %}
-            <tr data-href='{{ path('audit_tom_edit',{'tom':a.id}) }}'
-                style="background-color: {{ a.status.color }}"
-                class="row-color">
-                <td>{{ a.nummer }}</td>
+            <tr data-href="{{ path('audit_tom_edit',{'tom':a.id}) }}">
+                <td>
+                    <span style="border-bottom: 5px solid {{ a.status.color }};">{{ a.nummer }}</span>
+                </td>
                 <td>{{ a.frage }}</td>
                 <td>{% for ab in a.abteilung %}{{ ab.name }}<br>{% endfor %}</td>
                 <td>{{ a.kategorie | trans }}</td>

@@ -69,11 +69,11 @@ table.dataTable > thead > tr > th:last-child {
 table.dataTable > tbody {
 }
 
-table.dataTable > tbody > tr:not(.row-color):nth-child(odd) {
+table.dataTable > tbody > tr:nth-child(odd) {
     @apply bg-white hover:bg-surface-100;
 }
 
-table.dataTable > tbody > tr:not(.row-color):nth-child(even) {
+table.dataTable > tbody > tr:nth-child(even) {
     @apply bg-surface-50 hover:bg-surface-100;
 }
 
@@ -103,4 +103,7 @@ table.dataTable > tbody > tr > td:last-child a {
 
 table.dataTable > tbody > tr[data-href] > td {
     @apply cursor-pointer;
+}
+
+.row-color {
 }
