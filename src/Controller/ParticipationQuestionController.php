@@ -67,7 +67,7 @@ class ParticipationQuestionController extends BaseController
         return $this->render(
             view: self::$TEMPLATE_DIR . 'question.html.twig',
             parameters: ['form' => $this->createForm(DynamicQuestionType::class, options: ['question' => $question]),
-                'question' => $question,],
+                'question' => $question, 'participation' => $participation],
         );
     }
 

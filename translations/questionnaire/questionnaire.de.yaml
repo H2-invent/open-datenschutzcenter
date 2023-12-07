@@ -26,6 +26,7 @@ questionnaire:
   description: 'Beschreibung'
   words: 'Fragebögen'
   create: 'Fragebogen hinzufügen'
+  edit: 'Fragebogen bearbeiten'
   show: 'Fragebogen anzeigen'
   percentageToPass: 'Benötigte Punktzahl zum Bestehen'
 participation:

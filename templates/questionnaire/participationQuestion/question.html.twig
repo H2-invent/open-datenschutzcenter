@@ -1,13 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ question.label }}
+    {{ participation.academyBilling.kurs.title }}
 {% endblock %}
 
 {% block body %}
     {{ form_start(form) }}
     <fieldset>
-        {{ form_row( attribute(form, question.id)) }}
+        <h3 class="mb-5">{{ question.label }}</h3>
+        {% for answer in attribute(form, question.id).children %}
+            <div class="form-row-checkbox">
+                <div class="form-check">
+                    {{ form_widget(answer) }}
+                    {{ form_label(answer) }}
+                </div>
+            </div>
+        {% endfor %}
     </fieldset>
     {{ form_row(form.continue, {row_attr: {class: 'form-buttons'}}) }}
     {{ form_end(form) }}

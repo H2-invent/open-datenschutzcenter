@@ -819,6 +819,7 @@ footer > ul > li {
 
     .card-elevated {
         @apply card bg-surface-100 flex shadow-lg;
+        @apply card bg-surface-100 flex shadow-lg;
     }
 
     .card-filled {
@@ -828,6 +829,10 @@ footer > ul > li {
     .btn {
         @apply relative inline-block items-center justify-center gap-x-2 py-2.5 px-6 rounded-[6.25rem] text-sm tracking-[.00714em] font-medium bg-surface-100 hover:bg-surface-200 focus:bg-surface-300 text-primary-600;
     }
+}
+
+.card-filled .btn:not(.btn-create) {
+    @apply bg-surface-200 hover:bg-surface-300;
 }
 
 form > fieldset > div > div .btn {

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% trans_default_domain 'academy' %}
+
+{% block title %}
+    {{ participation.academyBilling.kurs.title }}
+{% endblock %}
+
+{% block body %}
+    <div class="card-filled py-10">
+        {% if participation.passed %}
+            <svg viewBox="0 0 24 24" class="text-green-600 w-16 h-16 mx-auto my-6">
+                <path fill="currentColor"
+                      d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
+                </path>
+            </svg>
+            <div class="text-center">
+                <h2>{{ 'result.success.headline'|trans }}</h2>
+                <p class="mb-10">{{ 'result.success.description'|trans }}</p>
+                <a href="{{ path('akademie_kurs_zertifikat', {'id':participation.academyBilling.id}) }}" class="btn btn-create">
+                    {{ 'result.success.button_cert'|trans }}
+                </a>
+            </div>
+        {% else %}
+            <div class="text-center">
+                <h2>{{ 'result.failed.headline'|trans }}</h2>
+                <p class="mb-10">{{ 'result.failed.description'|trans }}</p>
+                <a href="{{ path('participation_start', {'id': participation.id }) }}" class="btn">
+                    {{ 'result.failed.button_retry'|trans }}
+                </a>
+            </div>
+        {% endif %}
+        <div class="text-center mt-5">
+            <a href="{{ path('akademie') }}" class="text-sm text-muted">&laquo; {{ 'result.button_back'|trans }}</a>
+        </div>
+    </div>
+{% endblock %}

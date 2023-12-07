@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/questionnaire', name: 'questionnaire')]
 class QuestionnaireController extends BaseController
@@ -28,6 +29,7 @@ class QuestionnaireController extends BaseController
     public function __construct(
         private EntityManagerInterface $em,
         private CurrentTeamService     $currentTeamService,
+        private TranslatorInterface $translator
     )
     {
     }
@@ -58,6 +60,7 @@ class QuestionnaireController extends BaseController
             [
                 'form' => $form,
                 'error' => $error,
+                'title' => $this->translator->trans(id: 'questionnaire.create', domain: 'questionnaire'),
             ],
         );
     }
@@ -88,6 +91,7 @@ class QuestionnaireController extends BaseController
             [
                 'form' => $form,
                 'success' => $success??true,
+                'title' => $this->translator->trans(id: 'questionnaire.edit', domain: 'questionnaire'),
             ],
         );
     }

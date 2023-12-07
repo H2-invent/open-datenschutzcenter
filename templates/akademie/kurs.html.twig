@@ -64,7 +64,7 @@
                 url: "{{ kurs.video }}",
                 loop: false,
                 {% if not buchung.abgeschlossen %}
-                controls: false,
+                controls: true,
                 title: false,
                 {% endif %}
                 responsive: true
