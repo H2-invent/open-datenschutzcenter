@@ -37,6 +37,7 @@ class QuestionnaireController extends BaseController
         Request $request,
     ): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-questionnaire');
         $form = $this->createForm(QuestionnaireType::class);
         $error = false;
 
@@ -68,6 +69,8 @@ class QuestionnaireController extends BaseController
         Request       $request,
     ): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-questionnaire');
+
         $form = $this->createForm(QuestionnaireType::class, $questionnaire);
 
         $form->handleRequest($request);
@@ -116,6 +119,8 @@ class QuestionnaireController extends BaseController
     #[ParamConverter('questionnaire', class: 'App\Entity\Questionnaire', options: ['mapping' => ['id' => 'id']])]
     public function details(Questionnaire $questionnaire): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-questionnaire');
+
         return $this->render(
             self::$TEMPLATE_DIR . 'details.html.twig',
             [

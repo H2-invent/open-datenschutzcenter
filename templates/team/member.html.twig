@@ -49,53 +49,60 @@
     {% endif %}
 
     <h3>{% trans from 'base' %}users{% endtrans %}</h3>
-    <ul class="stacked-list">
-        {% for member in members|filter(member => member.email) %}
-            <li>
-                <div>
-                    <p>
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">{% trans %}academy.user{% endtrans %}</th>
+                <th scope="col">{% trans %}academy.user.role{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}action.word{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members|filter(member => member.email) %}
+                <tr>
+                    <td>
                         {% if member.firstname or member.lastname %}
-                            {{ member.firstname }} {{ member.lastname }} <br>
+                            {{ member.firstname }} {{ member.lastname }}<br>
                         {% endif %}
                         {{ member.email }}
-                    </p>
-                    <p>
+                    </td>
+                    <td>
                         {% if team in member.teamDsb %}
-                            <span>{% trans %}extDsb{% endtrans %}</span>
+                            {% trans %}extDsb{% endtrans %}
                         {% endif %}
                         {% if team in member.adminRoles %}
-                            <span>{% trans %}admin.word{% endtrans %}</span>
+                            {% trans %}admin.word{% endtrans %}
                         {% endif %}
                         {% if member.akademieUser == team %}
-                            <span>{% trans %}academy.word{% endtrans %}</span>
+                            {% trans %}academy.word{% endtrans %}
                         {% endif %}
                         {% if team in member.teams %}
-                            <span>{% trans %}coordinator{% endtrans %}</span>
+                            {% trans %}coordinator{% endtrans %}
                         {% endif %}
-                    </p>
-                </div>
-                <div>
-                    {% if team in member.adminRoles %}
-                        <a href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':team.id}) }}" class="text-danger">
-                            {% trans %}admin.remove{% endtrans %}
-                        </a>
-                    {% else %}
-                        <a href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':team.id}) }}">
-                            {% trans %}admin.create{% endtrans %}
-                        </a>
-                    {% endif %}
-                    {# Hide this button if keycloak groups are used #}
-                    {% if not useKeycloakGroups %}
-                        <a href="{{ path('team_mitglieder_remove',{'memberId':member.id, 'teamId':team.id, 'type':'odc'}) }}" class="text-danger">
-                            {% trans from 'general' %}remove{% endtrans %}
-                        </a>
-                    {% endif %}
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+                    </td>
+                    <td>
+                        {% if team in member.adminRoles %}
+                            <a href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':team.id}) }}" class="text-danger">
+                                {% trans %}admin.remove{% endtrans %}
+                            </a>
+                        {% else %}
+                            <a href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':team.id}) }}">
+                                {% trans %}admin.create{% endtrans %}
+                            </a>
+                        {% endif %}
+                        {# Hide this button if keycloak groups are used #}
+                        {% if not useKeycloakGroups %}
+                            <a href="{{ path('team_mitglieder_remove',{'memberId':member.id, 'teamId':team.id, 'type':'odc'}) }}" class="text-danger">
+                                {% trans from 'general' %}remove{% endtrans %}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-    <div class="card-outlined mb-5 text-sm">
+    <div class="card-outlined my-5 text-sm">
         {% if useKeycloakGroups %}
             <p>
                 {% trans %}members.manageHint.keycloak{% endtrans %}

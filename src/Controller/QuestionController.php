@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/questionnaire/question', name: 'question')]
 class QuestionController extends BaseController
@@ -27,6 +28,7 @@ class QuestionController extends BaseController
 
     public function __construct(
         private EntityManagerInterface $em,
+        private TranslatorInterface $translator
     )
     {
     }
@@ -35,6 +37,10 @@ class QuestionController extends BaseController
     #[ParamConverter('questionnaire', class: 'App\Entity\Questionnaire', options: ['mapping' => ['id' => 'id']])]
     public function create(Request $request, Questionnaire $questionnaire): Response
     {
+        $this->setBackButton($this->generateUrl('questionnaire_details', [
+            'id' => $questionnaire->getId()
+        ]));
+
         $form = $this->createForm(QuestionType::class);
         $error = false;
         $form->handleRequest($request);
@@ -60,6 +66,7 @@ class QuestionController extends BaseController
             [
                 'form' => $form->createView(),
                 'error' => $error,
+                'title' => $this->translator->trans(id: 'question.create', domain: 'questionnaire'),
             ]
         );
     }
@@ -68,6 +75,9 @@ class QuestionController extends BaseController
     #[ParamConverter('question', class: 'App\Entity\Question', options: ['mapping' => ['id' => 'id']])]
     public function edit(Request $request, Question $question): Response
     {
+        $this->setBackButton($this->generateUrl('questionnaire_details', [
+            'id' => $question->getQuestionnaire()->getId()
+        ]));
         $form = $this->createForm(QuestionType::class, $question);
         $error = false;
 
@@ -88,6 +98,7 @@ class QuestionController extends BaseController
             [
                 'form' => $form->createView(),
                 'error' => $error,
+                'title' => $this->translator->trans(id: 'question.edit', domain: 'questionnaire'),
             ]
         );
     }
@@ -96,6 +107,10 @@ class QuestionController extends BaseController
     #[ParamConverter('question', class: 'App\Entity\Question', options: ['mapping' => ['id' => 'id']])]
     public function details(Question $question): Response
     {
+        $this->setBackButton($this->generateUrl('questionnaire_details', [
+            'id' => $question->getQuestionnaire()->getId()
+        ]));
+
         return $this->render(
             self::$TEMPLATE_DIR . 'details.html.twig',
             [

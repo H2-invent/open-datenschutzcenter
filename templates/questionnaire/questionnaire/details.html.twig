@@ -4,7 +4,7 @@
 {% set fullWidthLayout = true %}
 
 {% block title %}
-    {{ questionnaire.label }}
+    {{ 'questionnaire.show'|trans }}
 {% endblock %}
 
 {% block CTA %}
@@ -15,6 +15,7 @@
 
 {% block body %}
     <div class="card-filled mb-5">
+        <h3>{{ questionnaire.label }}</h3>
         <p>{{ questionnaire.description }}</p>
     </div>
     <h3>{% trans %}question.words{% endtrans %}</h3>
@@ -38,7 +39,7 @@
                     <a href="{{ path('question_edit', {'id': questionnaireQuestion.question.id}) }}">
                         {% trans from 'general' %}edit{% endtrans %}
                     </a>
-                    <a href="{{ path('question_delete', {'id': questionnaireQuestion.question.id}) }}">
+                    <a href="{{ path('question_delete', {'id': questionnaireQuestion.question.id}) }}" class="text-danger">
                         {% trans from 'general' %}remove{% endtrans %}
                     </a>
                 </td>

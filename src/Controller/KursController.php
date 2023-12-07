@@ -35,6 +35,7 @@ class KursController extends BaseController
         CurrentTeamService $currentTeamService,
     ): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-courses');
         $user = $this->getUser();
         $team = $currentTeamService->getCurrentAdminTeam($user);
 
@@ -83,6 +84,7 @@ class KursController extends BaseController
         AkademieKurseRepository $academyLessonRepository,
     ): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-courses');
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
@@ -127,6 +129,7 @@ class KursController extends BaseController
         AkademieKurseRepository $academyLessonRepository,
     ): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-courses');
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
         $kurs = $academyLessonRepository->find($request->get('id'));

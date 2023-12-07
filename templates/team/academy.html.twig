@@ -5,16 +5,16 @@
     <div class="card-outlined mb-5">
         <div class="tabs flex flex-col w-full">
             <div class="tabs-nav">
-                <button data-type="tabs" data-target="#tab-courses" class="active w-48">
+                <button data-type="tabs" data-target="#tab-courses" class="active w-1/3">
                     <p>{% trans %}dataPrivacyLessons{% endtrans %}</p>
                 </button>
-                <button data-type="tabs" data-target="#tab-user" class="w-48">
+                <button data-type="tabs" data-target="#tab-user" class="w-1/3">
                     <p>{% trans %}academy.users{% endtrans %}</p>
                 </button>
-                <button data-type="tabs" data-target="#tab-questionnaire" class="w-48">
+                <button data-type="tabs" data-target="#tab-questionnaire" class="w-1/3">
                     <p>{% trans from 'questionnaire' %}questionnaire.words{% endtrans %}</p>
                 </button>
-                <div role="indicator" class="tabs-indicator w-48"></div>
+                <div role="indicator" class="tabs-indicator w-1/3"></div>
             </div>
             <hr>
             <div class="tabs-content">
@@ -29,20 +29,30 @@
                        class="btn btn-create"
                     >{% trans %}academy.addUser{% endtrans %}</a>
                     {% if data|length %}
-                        <ul class="stacked-list mt-5">
-                            {% for d in data %}
-                                <li>
-                                    <div>
-                                        <p>{{ d.email }}</p>
-                                    </div>
-                                    <div>
-                                        <a href="{{ path('team_mitglieder_remove',{'memberId':d.id, 'teamId':team.id, 'type':'academy'}) }}" class="text-danger">
-                                            {% trans from 'general' %}remove{% endtrans %}
-                                        </a>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
+                    <div class="mt-5">
+                        <table class="dataTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{% trans %}academy.user{% endtrans %}</th>
+                                    <th scope="col">{% trans from 'general' %}action.word{% endtrans %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for d in data %}
+                                    <tr>
+                                        <td>
+                                            {{ d.email }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('team_mitglieder_remove',{'memberId':d.id, 'teamId':team.id, 'type':'academy'}) }}" class="text-danger">
+                                                {% trans from 'general' %}remove{% endtrans %}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                     {% endif %}
                 </div>
                 <div id="tab-questionnaire" role="tabpanel" class="tab-content">

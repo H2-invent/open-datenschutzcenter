@@ -37,7 +37,12 @@ class KursAnmeldungType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' =>true,
             ])
-            ->add('zugewiesen', DateType::class, ['label' => 'Zugewiesen am', 'required' => true, 'translation_domain' => 'form'])
+            ->add('zugewiesen', DateType::class, [
+                'label' => 'Zugewiesen am',
+                'required' => true,
+                'translation_domain' => 'form',
+                'widget' => 'single_text'
+            ])
             ->add('wiedervorlage', ChoiceType::class, [
                 'choices'  => [
                     'Keine Wiederholung' => null,
