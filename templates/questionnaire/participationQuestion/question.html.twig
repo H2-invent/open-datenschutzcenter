@@ -6,17 +6,17 @@
 
 {% block body %}
     {{ form_start(form) }}
-    <fieldset>
+    <fieldset data-controller="questionnaire">
         <h3 class="mb-5">{{ question.label }}</h3>
         {% for answer in attribute(form, question.id).children %}
             <div class="form-row-checkbox">
                 <div class="form-check">
-                    {{ form_widget(answer) }}
+                    {{ form_widget(answer, {attr: {'data-action': 'click->questionnaire#answer'}}) }}
                     {{ form_label(answer) }}
                 </div>
             </div>
         {% endfor %}
     </fieldset>
-    {{ form_row(form.continue, {row_attr: {class: 'form-buttons'}}) }}
+    {{ form_row(form.continue, {row_attr: {class: 'form-buttons'}, attr: {disabled: 'disabled'}}) }}
     {{ form_end(form) }}
 {% endblock %}

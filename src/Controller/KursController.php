@@ -61,6 +61,7 @@ class KursController extends BaseController
             if (count($errors) == 0) {
                 $this->em->persist($daten);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
 
                 return $this->redirectToRoute('kurs_anmelden', ['id' => $daten->getId()]);
             }
@@ -110,6 +111,7 @@ class KursController extends BaseController
             if (count($errors) == 0) {
                 $this->em->persist($daten);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.changesSuccessful', domain: 'general'));
                 return $this->redirectToRoute('kurs_anmelden', ['id' => $daten->getId()]);
             }
         }
@@ -146,6 +148,7 @@ class KursController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $daten = $form->getData();
             $akademieService->addUser($kurs, $daten);
+            $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
 
             return $this->redirectToRoute('akademie_admin');
         }
@@ -172,7 +175,13 @@ class KursController extends BaseController
             return $this->redirectToRoute('akademie_admin');
         }
 
-        $akademieService->removeKurs($team, $kurs);
+        if (!$kurs->isDeletable()) {
+            return $this->redirectToRoute('akademie_admin');
+        }
+
+        if ($akademieService->removeKurs($team, $kurs)) {
+            $this->addSuccessMessage($this->translator->trans(id: 'deleted', domain: 'general'));
+        }
 
         return $this->redirectToRoute('akademie_admin');
     }

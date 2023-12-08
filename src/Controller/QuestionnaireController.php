@@ -82,7 +82,8 @@ class QuestionnaireController extends BaseController
             $success = $this->handleForm($form);
 
             if($success){
-                return $this->redirectToRoute('akademie_admin');
+                $this->addSuccessMessage($this->translator->trans(id: 'save.changesSuccessful', domain: 'general'));
+                return $this->redirect($this->generateUrl('akademie_admin') . '#tab-questionnaire');
             }
         }
 
@@ -115,6 +116,7 @@ class QuestionnaireController extends BaseController
 
         $this->em->remove($questionnaire);
         $this->em->flush();
+        $this->addSuccessMessage($this->translator->trans(id: 'deleted', domain: 'general'));
 
         return $this->redirectToRoute('akademie_admin');
     }

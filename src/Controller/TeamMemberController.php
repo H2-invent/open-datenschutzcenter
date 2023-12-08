@@ -236,6 +236,7 @@ class TeamMemberController extends BaseController
                     $em->persist($newUser);
                 }
                 $em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 if ($teamId) {
                     return $this->redirectToRoute('team_mitglieder', ['id' => $teamId]);
                 }
@@ -277,7 +278,7 @@ class TeamMemberController extends BaseController
         switch ($request->get('type')) {
             case 'academy':
                 $member->setAkademieUser(null);
-                $target = $this->generateUrl('akademie_admin') . '#user';
+                $target = $this->generateUrl('akademie_admin') . '#tab-user';
                 break;
             default:
                 if ($member !== $user && $member->hasTeam($team)) {
@@ -294,6 +295,7 @@ class TeamMemberController extends BaseController
         $em->persist($member);
         $em->persist($team);
         $em->flush();
+        $this->addSuccessMessage($this->translator->trans(id: 'deleted', domain: 'general'));
         return $this->redirect($target);
     }
 
@@ -341,7 +343,7 @@ class TeamMemberController extends BaseController
                                 $user->setAkademieUser($team);
                                 $em->persist($user);
                             }
-                            $target = $this->generateUrl('akademie_admin') . '#user';
+                            $target = $this->generateUrl('akademie_admin') . '#tab-user';
                             break;
                         default:
                             if (!$user->hasTeam($team)) {
@@ -354,6 +356,7 @@ class TeamMemberController extends BaseController
                     }
                 }
             }
+            $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
             $em->flush();
             return $this->redirect($target);
         }

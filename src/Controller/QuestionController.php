@@ -87,6 +87,8 @@ class QuestionController extends BaseController
             $question = $this->handleForm($form, $question);
 
             if ($question !== null) {
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
+
                 return $this->redirectToRoute('question_details', ['id' => $question->getId()]);
             }
 

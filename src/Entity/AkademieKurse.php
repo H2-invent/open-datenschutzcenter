@@ -57,6 +57,11 @@ class AkademieKurse
         $this->buchungen = new ArrayCollection();
     }
 
+    public function isDeletable(): bool
+    {
+        return $this->getBuchungen()->isEmpty();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

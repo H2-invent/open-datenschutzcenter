@@ -11,22 +11,26 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
+                    <th scope="col">{% trans %}buchungen{% endtrans %}</th>
                     <th scope="col">{% trans %}createdUpdatedAt{% endtrans %}</th>
                     <th scope="col">{% trans from 'general'%}action.words{% endtrans %}</th>
                 </tr>
             </thead>
             <tbody>
-                {% for t in kurse %}
+                {% for kurs in kurse %}
                     <tr>
-                        <td>{{ t.id }}</td>
-                        <td>{{ t.title }}</td>
-                        <td>{{ t.createdAt|date('d.m.Y') }}</td>
+                        <td>{{ kurs.id }}</td>
+                        <td>{{ kurs.title }}</td>
+                        <td>{{ kurs.buchungen|length }}</td>
+                        <td>{{ kurs.createdAt|date('d.m.Y') }}</td>
                         <td>
-                            <a href="{{ path('kurs_anmelden',{'id':t.id}) }}">{% trans from 'general' %}login{% endtrans %}</a>
-                            {% if app.user == t.user %}
-                                <a href="{{ path('akademie_kurs_edit',{'id':t.id}) }}"> {% trans from 'general' %}edit{% endtrans %}</a>
+                            <a href="{{ path('kurs_anmelden',{'id':kurs.id}) }}">{% trans from 'general' %}login{% endtrans %}</a>
+                            {% if app.user == kurs.user %}
+                                <a href="{{ path('akademie_kurs_edit',{'id':kurs.id}) }}"> {% trans from 'general' %}edit{% endtrans %}</a>
                             {% endif %}
-                            <a class="text-danger" href="{{ path('kurs_deaktivieren',{'id':t.id}) }}">{% trans from 'general' %}delete{% endtrans %}</a>
+                            {% if kurs.isDeletable %}
+                                <a class="text-danger" href="{{ path('kurs_deaktivieren',{'id':kurs.id}) }}">{% trans from 'general' %}delete{% endtrans %}</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
