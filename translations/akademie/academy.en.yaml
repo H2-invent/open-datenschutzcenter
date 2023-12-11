@@ -31,13 +31,3 @@ certification:
   title: Zertifikat für den Abschluss einen Datenschutzkurses von der Open-Datenschutz Akademie
   disclaimer: ' Dieses Zertifikat wurde automatisch erstellt.<br> Die Gültigkeit kann über die Buchungs ID: -- {billingId} -- überprüft werden.'
   text: 'Hiermit bestätigen wir, dass {username} ({email}) den Kurs "{lessonTitle}" am {finishedAt} erfolgreich abgeschlossen hat.'
-result:
-  success:
-    headline: Kurs bestanden
-    description: Sie haben die erforderliche Punktzahl erreicht und somit den Kurs erfolgreich abgeschlossen.
-    button_cert: Zertifikat downloaden
-  failed:
-    headline: Kurs nicht bestanden
-    description: Sie haben die erforderliche Punktzahl leider nicht erreicht und somit den Kurs nicht bestanden.
-    button_retry: Nochmal versuchen
-  button_back: Zurück zur Übersicht
