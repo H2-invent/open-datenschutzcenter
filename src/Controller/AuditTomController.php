@@ -20,7 +20,6 @@ use App\Service\SecurityService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/audit-tom', name: 'audit_tom')]
-class AuditTomController extends AbstractController
+class AuditTomController extends BaseController
 {
 
 
@@ -89,13 +88,16 @@ class AuditTomController extends AbstractController
                 return $this->redirectToRoute('audit_tom');
             }
         }
+
+        $this->setBackButton($this->generateUrl('audit_tom'));
+
         return $this->render('audit_tom/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'A-Frage erstellen',
             'audit' => $audit,
             'activNummer' => true,
-            'activ' => $audit->getActiv()
+            'activ' => $audit->getActiv(),
         ]);
     }
 
@@ -203,15 +205,18 @@ class AuditTomController extends AbstractController
                 $this->em->persist($newAudit);
                 $this->em->persist($audit);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'audit_tom_edit',
                     [
                         'tom' => $newAudit->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('audit_tom'));
+
         return $this->render(
             'audit_tom/edit.html.twig',
             [
@@ -223,7 +228,6 @@ class AuditTomController extends AbstractController
                 'activ' => $audit->getActiv(),
                 'activNummer' => false,
                 'nextAudit' => $nextAudit,
-                'snack' => $request->get('snack')
             ]
         );
     }

@@ -14,7 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class FormsController extends AbstractController
+class FormsController extends BaseController
 {
 
 
@@ -64,12 +63,15 @@ class FormsController extends AbstractController
                 return $this->redirectToRoute('forms');
             }
         }
+
+        $this->setBackButton($this->generateUrl('forms'));
+
         return $this->render('forms/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'form.create', domain: 'forms'),
             'daten' => $daten,
-            'activ' => $daten->getActiv()
+            'activ' => $daten->getActiv(),
         ]);
     }
 
@@ -88,7 +90,8 @@ class FormsController extends AbstractController
 
         if ($securityService->teamDataCheck($forms, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($forms, $user);
-            return $this->redirectToRoute('forms_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('forms_edit', ['id' => $approve['data']]);
         }
 
         // if security check fails
@@ -199,16 +202,19 @@ class FormsController extends AbstractController
                 $this->em->persist($newForms);
                 $this->em->persist($forms);
                 $this->em->flush();
+                $this->addSuccess($this->translator->trans(id: 'save.successful', domain: 'general'));
 
                 return $this->redirectToRoute(
                     'forms_edit',
                     [
                         'id' => $newForms->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('forms'));
+
         return $this->render('forms/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
@@ -216,7 +222,6 @@ class FormsController extends AbstractController
             'title' => $this->translator->trans(id: 'form.edit', domain: 'forms'),
             'daten' => $forms,
             'activ' => $forms->getActiv(),
-            'snack' => $request->get('snack')
         ]);
     }
 

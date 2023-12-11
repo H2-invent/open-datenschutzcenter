@@ -15,13 +15,12 @@ use App\Service\CurrentTeamService;
 use App\Service\LoeschkonzeptService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/loeschkonzept')]
-class LoeschkonzeptController extends AbstractController
+class LoeschkonzeptController extends BaseController
 {
     #[Route(path: '/{id}/delete', name: 'app_loeschkonzept_delete', methods: ['POST'])]
     public function delete(
@@ -87,6 +86,8 @@ class LoeschkonzeptController extends AbstractController
 
             return $this->redirectToRoute('app_loeschkonzept_index', [], Response::HTTP_SEE_OTHER);
         }
+
+        $this->setBackButton($this->generateUrl('app_loeschkonzept_index'));
 
         return $this->render('loeschkonzept/edit.html.twig', [
             'loeschkonzept' => $newloeschkonzept,
@@ -167,6 +168,8 @@ class LoeschkonzeptController extends AbstractController
             return $this->redirectToRoute('app_loeschkonzept_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $this->setBackButton($this->generateUrl('app_loeschkonzept_index'));
+
         return $this->render('loeschkonzept/new.html.twig', [
             'loeschkonzept' => $loeschkonzept,
             'form' => $form,
@@ -176,6 +179,8 @@ class LoeschkonzeptController extends AbstractController
     #[Route(path: '/{id}/details', name: 'app_loeschkonzept_show', methods: ['GET'])]
     public function show(Loeschkonzept $loeschkonzept): Response
     {
+        $this->setBackButton($this->generateUrl('app_loeschkonzept_index'));
+
         return $this->render('loeschkonzept/show.html.twig', [
             'loeschkonzept' => $loeschkonzept,
         ]);

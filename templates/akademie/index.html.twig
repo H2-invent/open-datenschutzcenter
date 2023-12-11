@@ -1,70 +1,81 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'academy' %}
 
+{% set fullWidthLayout = true %}
+
+{% block title %}
+    {% trans %}academyCourses{% endtrans %}
+{% endblock %}
+
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}academyCourses{% endtrans %}</h2>
-    <div class="card card-body">
-        <div class="table-responsive">
-            <table id="data-table" class="table display table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
-                    <th scope="col">{% trans %}assigned{% endtrans %}</th>
-                    <th scope="col">{% trans %}startDate{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}action.words{% endtrans %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for b in buchungen %}
-                    <tr>
-                        <th scope="row">{{ b.id }}</th>
-                        <th>
-                            {% if b.zugewiesen > today %}
-                                {% trans %}noAutomaticResubmission{% endtrans %}
-                            {% else %}
-                                {{ b.kurs.title }} (id: {{ b.kurs.id }})
-                            {% endif %}
-                        </th>
-                        <td>{{ b.zugewiesen|date('d.m.Y') }}</td>
-                        <td>{{ b.start|date('d.m.Y') }}</td>
-                        <td>
-                            {% if b.participations[0].state == 'finished' %}
-                                {% if b.participations[0].passed %}
-                                    <a href="{{ path('akademie_kurs_zertifikat', {'id':b.id}) }}"
-                                       class="btn btn-sm bg-akademie">
-                                        {% trans from 'questionnaire' %}passed{% endtrans %}
-                                    </a>
-                                {% else %}
-                                    <a href="{{ path('participation_reset', {'id': b.participations[0].id }) }}"
-                                       class="btn btn-sm bg-akademie">
-                                        {% trans from 'questionnaire' %}retry{% endtrans %}
-                                    </a>
-                                {% endif %}
-                            {% else %}
-                                {{ b.participations[0].state }}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if b.participations[0].state == 'ongoing' %}
-                                <a href="{{ path('participation_continue', {'id': b.participations[0].id}) }}"
-                                   class="btn btn-sm btn-primary">{% trans from 'general' %}continue{% endtrans %}</a>
-                            {% else %}
-                                 {% if b.zugewiesen < today and b.user.akademieUser in b.kurs.team and b.participations[0].state == 'assigned' %}
-                                     <a href="{{ path('akademie_kurs',{'kurs':b.id}) }}"
-                                        class="btn btn-sm btn-primary">
-                                         {% trans from 'general' %}start{% endtrans %}
-                                     </a>
-                                 {% else %}
-                                    <a href="#" class="btn btn-sm btn-grey">{% trans from 'general' %}finished{% endtrans %}</a>
-                                {% endif %}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
+                <th scope="col">{% trans %}assigned{% endtrans %}</th>
+                <th scope="col">{% trans %}startDate{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
+                <th scope="col">{% trans from 'questionnaire' %}passed{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}action.words{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for b in buchungen %}
+            <tr>
+                <td>{{ b.id }}</td>
+                <td>
+                    {% if b.zugewiesen > today %}
+                        {% trans %}noAutomaticResubmission{% endtrans %}
+                    {% else %}
+                        {{ b.kurs.title }} (id: {{ b.kurs.id }})
+                    {% endif %}
+                </td>
+                <td>{{ b.zugewiesen|date('d.m.Y') }}</td>
+                <td>{{ b.start|date('d.m.Y') }}</td>
+                <td>
+                    {% if b.participations[0].state == 'finished' %}
+                        {% trans from 'general' %}finished{% endtrans %}
+                    {% else %}
+                        {{ b.participations[0].state|trans }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if b.participations[0].state == 'finished' and b.participations[0].passed %}
+                        <svg viewBox="0 0 24 24" class="text-green-600 w-5 h-5">
+                            <path fill="currentColor"
+                                  d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
+                            </path>
+                        </svg>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if b.participations[0].state == 'finished' %}
+                        {% if b.participations[0].passed %}
+                            <a href="{{ path('akademie_kurs_zertifikat', {'id':b.id}) }}">
+                                {{ 'result.success.button_cert'|trans }}
+                            </a>
+                        {% else %}
+                            <a href="{{ path('participation_reset', {'id': b.participations[0].id }) }}">
+                                {% trans from 'questionnaire' %}retry{% endtrans %}
+                            </a>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if b.participations[0].state == 'ongoing' %}
+                        <a href="{{ path('participation_continue', {'id': b.participations[0].id}) }}">
+                            {% trans from 'general' %}continue{% endtrans %}
+                        </a>
+                    {% else %}
+                         {% if b.zugewiesen < today and b.user.akademieUser in b.kurs.team and b.participations[0].state == 'assigned' %}
+                             <a href="{{ path('akademie_kurs',{'kurs':b.id}) }}">
+                                 {% trans from 'general' %}start{% endtrans %}
+                             </a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

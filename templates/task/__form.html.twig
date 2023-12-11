@@ -1,50 +1,17 @@
-{{ form_start(form) }}
-<div {% if not activ %}class="disabled"{% endif %}>
-    <div class="mb-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.title) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.title) }}
-        </div>
-    </div>
-
-    <div class="mb-4 row">
-        <div class="col-md-3">
+{{ form_start(form, {attr: {class: not activ ? 'disabled'}}) }}
+    <fieldset>
+        {{ form_row(form.title) }}
+        <div class="form-row">
             {{ form_label(form.task) }}
+            <div class="hidden">{{ form_widget(form.task) }}</div>
+            <div class="trix-wrapper">
+                <trix-editor input="tasks_task"></trix-editor>
+            </div>
         </div>
-        <div class="col-md-9">
-            {{ form_widget(form.task) }}
-        </div>
-    </div>
-
-    <div class="mb-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.endDate) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.endDate) }}
-        </div>
-    </div>
-
-    <div class="mb-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.prio) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.prio) }}
-        </div>
-    </div>
-
-    <div class="mb-4 row">
-        <div class="col-md-3">
-            {{ form_label(form.assignedUser) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.assignedUser) }}
-        </div>
-    </div>
-
-    {{ form_widget(form.save) }}
-</div>
+        {{ form_row(form.endDate) }}
+        {{ form_row(form.prio) }}
+        {{ form_row(form.assignedUser) }}
+    </fieldset>
+    {{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
+    {{ form_rest(form) }}
 {{ form_end(form) }}

@@ -1,38 +1,39 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'tom' %}
 
+{% set fullWidthLayout = true %}
+
+{% block title %}
+    {% trans %}tom.overview{% endtrans %}
+{% endblock %}
+
 {% block CTA %}
-    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('tom_new') }}">
-        <span>{% trans %}tom.create{% endtrans %}</span>
+    <a href="{{ path('tom_new') }}" class="btn btn-create">
+        {% trans %}tom.create{% endtrans %}
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}tom.overview{% endtrans %}</h2>
-    <div class="card card-body">
-        <div class="table-responsive">
-            <table id="data-table" class="table display table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">{% trans %}processingActivities{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}createdAt{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{% trans %}processingActivities{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}createdAt{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
+{#                <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>#}
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in tom %}
+                <tr data-href='{{ path('tom_edit',{'tom':t.id}) }}'>
+                    <td>{{ t.id }}</td>
+                    <td>{% for vv in t.Vvts | filter(vv => vv.activ) %}{{ vv.name }}<br>{% endfor %}</td>
+                    <td>{{ t.createdAt|date('d.m.Y') }}</td>
+                    <td>{{ t.titel }}</td>
+{#                    <td>{{ t.beschreibung }}</td>#}
                 </tr>
-                </thead>
-                <tbody>
-                {% for t in tom %}
-                    <tr class="clickable-row" data-href='{{ path('tom_edit',{'tom':t.id}) }}'>
-                        <th scope="row">{{ t.id }}</th>
-                        <td>{% for vv in t.Vvts | filter(vv => vv.activ) %}{{ vv.name }}<br>{% endfor %}</td>
-                        <td>{{ t.createdAt|date('d.m.Y') }}</td>
-                        <td>{{ t.titel }}</td>
-                        <td>{{ t.beschreibung }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

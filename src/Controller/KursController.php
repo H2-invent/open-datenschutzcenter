@@ -11,14 +11,13 @@ use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class KursController extends AbstractController
+class KursController extends BaseController
 {
 
 
@@ -36,6 +35,7 @@ class KursController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-courses');
         $user = $this->getUser();
         $team = $currentTeamService->getCurrentAdminTeam($user);
 
@@ -61,6 +61,7 @@ class KursController extends AbstractController
             if (count($errors) == 0) {
                 $this->em->persist($daten);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
 
                 return $this->redirectToRoute('kurs_anmelden', ['id' => $daten->getId()]);
             }
@@ -84,6 +85,7 @@ class KursController extends AbstractController
         AkademieKurseRepository $academyLessonRepository,
     ): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-courses');
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
@@ -109,6 +111,7 @@ class KursController extends AbstractController
             if (count($errors) == 0) {
                 $this->em->persist($daten);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.changesSuccessful', domain: 'general'));
                 return $this->redirectToRoute('kurs_anmelden', ['id' => $daten->getId()]);
             }
         }
@@ -128,6 +131,7 @@ class KursController extends AbstractController
         AkademieKurseRepository $academyLessonRepository,
     ): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-courses');
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
@@ -144,6 +148,7 @@ class KursController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $daten = $form->getData();
             $akademieService->addUser($kurs, $daten);
+            $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
 
             return $this->redirectToRoute('akademie_admin');
         }
@@ -170,7 +175,13 @@ class KursController extends AbstractController
             return $this->redirectToRoute('akademie_admin');
         }
 
-        $akademieService->removeKurs($team, $kurs);
+        if (!$kurs->isDeletable()) {
+            return $this->redirectToRoute('akademie_admin');
+        }
+
+        if ($akademieService->removeKurs($team, $kurs)) {
+            $this->addSuccessMessage($this->translator->trans(id: 'deleted', domain: 'general'));
+        }
 
         return $this->redirectToRoute('akademie_admin');
     }

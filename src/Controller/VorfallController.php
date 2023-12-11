@@ -15,14 +15,13 @@ use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use App\Service\VorfallService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class VorfallController extends AbstractController
+class VorfallController extends BaseController
 {
 
 
@@ -61,12 +60,15 @@ class VorfallController extends AbstractController
                 return $this->redirectToRoute('vorfall');
             }
         }
+
+        $this->setBackButton($this->generateUrl('vorfall'));
+
         return $this->render('vorfall/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'incident.register', domain: 'vorfall'),
             'vorfall' => $vorfall,
-            'activ' => $vorfall->getActiv()
+            'activ' => $vorfall->getActiv(),
         ]);
     }
 
@@ -85,7 +87,8 @@ class VorfallController extends AbstractController
 
         if ($securityService->teamDataCheck($vorfall, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($vorfall, $user);
-            return $this->redirectToRoute('vorfall_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('vorfall_edit', ['id' => $approve['data']]);
         }
 
         // if security check fails
@@ -125,15 +128,18 @@ class VorfallController extends AbstractController
                 $this->em->persist($newVorgang);
                 $this->em->persist($vorgang);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'vorfall_edit',
                     [
                         'id' => $newVorgang->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('vorfall'));
+
         return $this->render('vorfall/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
@@ -141,7 +147,6 @@ class VorfallController extends AbstractController
             'title' => $this->translator->trans(id: 'incident.edit', domain: 'vorfall'),
             'vorfall' => $vorgang,
             'activ' => $vorgang->getActiv(),
-            'snack' => $request->get('snack')
         ]);
     }
 

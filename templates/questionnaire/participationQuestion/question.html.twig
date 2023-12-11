@@ -1,16 +1,22 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ participation.academyBilling.kurs.title }}
+{% endblock %}
+
 {% block body %}
-    <div class="container">
-        <div class="card">
-            {{ form_start(form) }}
-            <h5 class="card-header">{{ question.label }}</h5>
-            <div class="card-body">
-                {{ form_row( attribute(form, question.id)) }}
+    {{ form_start(form) }}
+    <fieldset data-controller="questionnaire">
+        <h3 class="mb-5">{{ question.label }}</h3>
+        {% for answer in attribute(form, question.id).children %}
+            <div class="form-row-checkbox">
+                <div class="form-check">
+                    {{ form_widget(answer, {attr: {'data-action': 'click->questionnaire#answer'}}) }}
+                    {{ form_label(answer) }}
+                </div>
             </div>
-            <div class="card-footer">
-                {{ form_row(form.continue) }}
-            </div>
-            {{ form_end(form) }}
-        </div>
-    </div>
+        {% endfor %}
+    </fieldset>
+    {{ form_row(form.continue, {row_attr: {class: 'form-buttons'}, attr: {disabled: 'disabled'}}) }}
+    {{ form_end(form) }}
 {% endblock %}

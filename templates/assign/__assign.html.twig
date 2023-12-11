@@ -2,39 +2,36 @@
     {% trans_default_domain 'assign' %}
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#assignModal">
+    <button type="button" data-type="dialogs" data-target="#assignModal" id="btn-assign" class="btn">
         {% trans from 'general' %}assign{% endtrans %}
     </button>
 
-    <!-- Modal -->
-    <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModal"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="assignModalLabel">{% trans %}assignFurtherEditing{% endtrans %}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div id="assignModal" class="modal">
+        <div data-close="#assignModal" class="modal-close"></div>
+        <!-- dialogs -->
+        <div class="modal-inner">
+            {{ form_start(assignForm,{'action': path(path,{'id':data.id})}) }}
+                <div class="modal-content">
+                    <h3>{% trans %}assignFurtherEditing{% endtrans %}</h3>
+                    {{ form_widget(assignForm.user) }}
                 </div>
-                {{ form_start(assignForm,{'action': path(path,{'id':data.id})}) }}
-                {% if data.activ %}
-                    <div class="modal-body">
-
-                        {{ form_widget(assignForm.user) }}
-
-                    </div>
-                    <div class="modal-footer">
-                        {{ form_widget(assignForm.submit) }}
-                    </div>
-                {% endif %}
-                {{ form_end(assignForm) }}
-            </div>
+                <div class="modal-footer">
+                    <button type="button" data-close="#assignModal" class="btn btn-close">
+                        {% trans %}Cancel{% endtrans %}
+                    </button>
+                    {{ form_widget(assignForm.submit, {attr: {class: 'btn btn-submit'}}) }}
+                </div>
+            {{ form_end(assignForm) }}
         </div>
     </div>
 {% else %}
-    <h4>{% trans from 'general' %}assignedTo{% endtrans %}: </h4>
-    <span class="small">{{ data.assignedUser.email }}</span>  <a class="btn btn-danger btn-sm rounded-circle"
-                                                                 title="{{ 'removeAssign'|trans }}"
-                                                                 href="{{ path(path,{'id':data.id}) }}">X</a>
+    <div class="card card-outlined bg-primary-50 block flex-none">
+        <p class="text-sm">
+            <strong>{% trans from 'general' %}assignedTo{% endtrans %}:</strong>
+            <span>{{ data.assignedUser.email }}</span>
+            <a href="{{ path(path,{'id':data.id}) }}" title="{{ 'removeAssign'|trans }}" class="float-right underline">
+                {{ 'removeAssign'|trans }}
+            </a>
+        </p>
+    </div>
 {% endif %}

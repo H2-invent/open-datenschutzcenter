@@ -49,7 +49,7 @@ class TeamType extends AbstractType
             ->add('slug', TextType::class, ['label' => 'slug', 'required' => false, 'translation_domain' => 'form', 'help' => 'slugHelp'])
             ->add('externalLink', TextType::class, ['label' => 'externalLink', 'required' => false, 'translation_domain' => 'form', 'help' => 'externalLinkHelp'])
             ->add('video', TextType::class, ['label' => 'jitsiLink', 'required' => false, 'translation_domain' => 'form', 'help' => 'jitsiLinkHelp'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'save', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn'),'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

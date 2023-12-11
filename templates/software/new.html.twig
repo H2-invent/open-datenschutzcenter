@@ -1,13 +1,10 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'software' %}
 
-{% block body %}
-    <h2 class="h2-responsive">{{ title }}</h2>
-    <div class="card card-body">
-        {{ include('software/__form.html.twig') }}
-    </div>
-    <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ vvt.user.email }}</p>
+{% block title %}
+    {{ title }}
 {% endblock %}
 
-{% block javascript %}
+{% block body %}
+    {{ include('software/__form.html.twig') }}
 {% endblock %}

@@ -2,72 +2,77 @@
 {% trans_default_domain 'team' %}
 
 {% block body %}
-    <div class="container">
-        <h2 class="h2-responsive">{{ title }}</h2>
-        <!-- Basic dropdown -->
-        <a class="btn btn-sm dropdown-toggle btn-cyan" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">{% trans %}select{% endtrans %}</a>
-
-        <div class="dropdown-menu">
+    <div id="content-team-admin">
+        <ul class="my-5">
             {% for key,d in data %}
-                <a class="dropdown-item" href="#{{ key }}">{{ d.title }}</a>
+                <li class="relative text-sm py-0.5">
+                    &raquo; <a href="#{{ key }}" class="whitespace-nowrap">{{ d.title }}</a>
+                </li>
             {% endfor %}
-        </div>
-        <!-- Basic dropdown -->
-
+        </ul>
 
         {% for key,dd in data %}
-            <div class="card card-body mt-3" id="{{ key }}">
-                <div class="row">
-                    <div class="col-md-12 mb-2">
-                        <h4 class="h4-responsive">{{ dd.title }}</h4>
-                        <a href="{{ dd.newLink }}" class="btn btn-primary btn-sm loadContent">{{ dd.titleNew }}</a>
-                        <ul class="list-group">
-                            {% if dd.data is defined %}
-                                {% for d in dd.data|sort((a, b) => a.name <=> b.name) %}
-                                    <li class="list-group-item {% if d.default %}disabled{% endif %}">
-                                        {{ d.name }}{% if not d.default %}
-                                            <a href="{{ d.edit }}"
-                                               class="btn btn-sm btn-info float-md-right loadContent">
-                                                {% trans from 'general' %}edit{% endtrans %}
-                                            </a>
-
-                                                {% if checkClass(d.object,'App\\Entity\\VVTStatus') %}
-                                                    <a href="{{ path('team_custom_network_vvtstatus',{'id':d.id}) }}"
-                                                       class="btn  {% if d.object.network %} btn-success {% else%}btn-danger {% endif%} btn-sm float-md-right">
-                                                        {% if d.object.network %}
-                                                            {% trans from 'general' %}network.show.remove{% endtrans %}
-                                                        {% else %}
-                                                            {% trans from 'general' %}network.show.add{% endtrans %}
-                                                        {% endif %}
-                                                    </a>
-                                                {% endif %}
-
-                                            {% if checkClass(d.object,'App\\Entity\\DatenweitergabeStand') %}
-                                                <a href="{{ path('team_custom_network_datenweitergabestatus',{'id':d.id}) }}"
-                                                   class="btn btn-sm {% if d.object.network %} btn-success {% else%}btn-danger {% endif%} float-md-right">
-                                                    {% if d.object.network %}
-                                                        {% trans from 'general' %}network.show.remove{% endtrans %}
-                                                    {% else %}
-                                                        {% trans from 'general' %}network.show.add{% endtrans %}
-                                                    {% endif %}
-                                                </a>
-                                            {% endif %}
-
-
-                                            <a href="{{ d.deactivate }}" class="btn btn-sm btn-danger float-md-right">
-                                                {% trans from 'general' %}delete{% endtrans %}
-                                            </a>
-                                        {% else %} ({% trans %}default{% endtrans %}){% endif %}
-                                    </li>
-                                {% endfor %}
-                            {% else %}
-                                <p class="note-info text-center p-2 mt-2">{% trans %}noEntry{% endtrans %}</p>
-                            {% endif %}
-                        </ul>
-
+            <div id="{{ key }}" class="py-5">
+                <div class="grid grid-cols-2 mb-5">
+                    <div>
+                        <h3>{{ dd.title }}</h3>
+                    </div>
+                    <div class="text-right pt-1">
+                        <a href="{{ dd.newLink }}"
+                           class="btn btn-create"
+                           data-type="dialogs"
+                           data-target="#modal-remote-content"
+                           data-action="click->appUi#loadContentModal">{{ dd.titleNew }}</a>
                     </div>
                 </div>
+                {% if dd.data is defined %}
+                    <ul class="stacked-list">
+                        {% for d in dd.data|sort((a, b) => a.name <=> b.name) %}
+                            <li>
+                                <div>
+                                    <p>
+                                        {{ d.name }}{% if not d.default %}
+                                    </p>
+                                </div>
+                                <div>
+                                    <a href="{{ d.edit }}"
+                                       data-type="dialogs"
+                                       data-target="#modal-remote-content"
+                                       data-action="click->appUi#loadContentModal">
+                                        {% trans from 'general' %}edit{% endtrans %}
+                                    </a>
+
+                                    {% if checkClass(d.object,'App\\Entity\\VVTStatus') %}
+                                        <a href="{{ path('team_custom_network_vvtstatus',{'id':d.id}) }}">
+                                            {% if d.object.network %}
+                                                {% trans from 'general' %}network.show.remove{% endtrans %}
+                                            {% else %}
+                                                {% trans from 'general' %}network.show.add{% endtrans %}
+                                            {% endif %}
+                                        </a>
+                                    {% endif %}
+
+                                    {% if checkClass(d.object,'App\\Entity\\DatenweitergabeStand') %}
+                                        <a href="{{ path('team_custom_network_datenweitergabestatus',{'id':d.id}) }}">
+                                            {% if d.object.network %}
+                                                {% trans from 'general' %}network.show.remove{% endtrans %}
+                                            {% else %}
+                                                {% trans from 'general' %}network.show.add{% endtrans %}
+                                            {% endif %}
+                                        </a>
+                                    {% endif %}
+
+                                    <a href="{{ d.deactivate }}" class="text-danger">
+                                        {% trans from 'general' %}delete{% endtrans %}
+                                    </a>
+                                    {% else %} ({% trans %}default{% endtrans %}){% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="mb-5 italic text-muted">{% trans %}noEntry{% endtrans %}</p>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

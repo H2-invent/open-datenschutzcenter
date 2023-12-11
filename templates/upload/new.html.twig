@@ -2,14 +2,14 @@
 {% trans_default_domain 'upload' %}
 
 {% block body %}
-    <div class="container">
-        <h2 class="h2-responsive">{% trans %}import.word{% endtrans %}</h2>
-        <div class="card card-body">
+    <div>
+        <h2>{% trans %}import.word{% endtrans %}</h2>
+        <div>
             {{ form_start(form) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
 
-            <div class="note-warning text-center">
+            <div>
                 {% trans | raw %}import.warning{% endtrans %}
             </div>
         </div>

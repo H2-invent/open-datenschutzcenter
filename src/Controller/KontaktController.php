@@ -16,14 +16,13 @@ use App\Service\CurrentTeamService;
 use App\Service\DisableService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class KontaktController extends AbstractController
+class KontaktController extends BaseController
 {
 
 
@@ -62,6 +61,9 @@ class KontaktController extends AbstractController
                 return $this->redirectToRoute('kontakt');
             }
         }
+
+        $this->setBackButton($this->generateUrl('kontakt'));
+
         return $this->render('kontakt/edit.html.twig', [
             'kontakt' => $kontakt,
             'form' => $form->createView(),
@@ -86,7 +88,8 @@ class KontaktController extends AbstractController
 
         if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($kontakt, $user);
-            return $this->redirectToRoute('kontakt_edit', ['id' => $kontakt->getId(), 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('kontakt_edit', ['id' => $kontakt->getId()]);
         }
 
         // if security check fails
@@ -138,21 +141,23 @@ class KontaktController extends AbstractController
             if (count($errors) == 0) {
                 $this->em->persist($data);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'kontakt_edit',
                     [
                         'id' => $kontakt->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('kontakt'));
+
         return $this->render('kontakt/edit.html.twig', [
             'form' => $form->createView(),
             'kontakt' => $kontakt,
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
-            'snack' => $request->get('snack')
         ]);
     }
 

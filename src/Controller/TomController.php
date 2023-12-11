@@ -18,14 +18,13 @@ use App\Service\SecurityService;
 use App\Service\TomService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class TomController extends AbstractController
+class TomController extends BaseController
 {
 
 
@@ -64,6 +63,9 @@ class TomController extends AbstractController
                 return $this->redirectToRoute('tom');
             }
         }
+
+        $this->setBackButton($this->generateUrl('tom'));
+
         return $this->render('tom/new.html.twig', [
             'currentTeam' => $team,
             'form' => $form->createView(),
@@ -71,7 +73,7 @@ class TomController extends AbstractController
             'title' => $this->translator->trans(id: 'tom.create', domain: 'tom'),
             'tom' => $tom,
             'activ' => $tom->getActiv(),
-            'activTitel' => true
+            'activTitel' => true,
         ]);
     }
 
@@ -90,7 +92,8 @@ class TomController extends AbstractController
 
         if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($tom, $user);
-            return $this->redirectToRoute('tom_edit', ['tom' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('tom_edit', ['tom' => $approve['data']]);
         }
 
         // if security check fails
@@ -183,15 +186,18 @@ class TomController extends AbstractController
                 $this->em->persist($newTom);
                 $this->em->persist($tom);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'tom_edit',
                     [
                         'tom' => $newTom->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('tom'));
+
         return $this->render('tom/edit.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -199,8 +205,7 @@ class TomController extends AbstractController
             'tom' => $tom,
             'activ' => $tom->getActiv(),
             'activTitel' => false,
-            'snack' => $request->get('snack'),
-            'currentTeam' => $team
+            'currentTeam' => $team,
         ]);
     }
 

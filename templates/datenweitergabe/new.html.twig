@@ -1,22 +1,10 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'datenweitergabe' %}
-{% block CTA %}
+
+{% block title %}
+    {{ title }}
 {% endblock %}
 
 {% block body %}
-
-    <h2 class="h2-responsive">{{ title }}</h2>
-    <div class="card card-body">
-        {{ include('datenweitergabe/__form.html.twig') }}
-    </div>
-    <p>{% trans from 'general' %}createdAt{% endtrans %}: {{ daten.user.email }}</p>
-    {% if daten.previous %}
-        <div class="card card-body mt-2">
-            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
-            {{ include('datenweitergabe/__history.html.twig', {'p':daten.previous}) }}
-        </div>
-    {% endif %}
-{% endblock %}
-
-{% block javascript %}
+    {{ include('datenweitergabe/__form.html.twig') }}
 {% endblock %}

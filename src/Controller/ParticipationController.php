@@ -11,16 +11,17 @@ use App\Entity\Question;
 use App\Entity\Questionnaire;
 use App\Entity\Team;
 use App\Entity\User;
+use App\Form\Type\Questionnaire\Question\DynamicQuestionType;
 use App\Service\CurrentTeamService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route(path: '/participation', name: 'participation')]
-class ParticipationController extends AbstractController
+class ParticipationController extends BaseController
 {
     private static string $TEMPLATE_DIR = 'questionnaire/participation/';
 
@@ -73,15 +74,17 @@ class ParticipationController extends AbstractController
 
     #[Route(path: '/{id}/finish', name: '_finish', methods: ['GET', 'POST'])]
     #[ParamConverter(data: 'participation', class: Participation::class, options: ['mapping' => ['id' => 'id']])]
-    public function finish(Participation $participation): RedirectResponse
+    public function finish(Participation $participation): Response
     {
         $this->evaluate($participation);
         $this->removeParticipationAnswers($participation);
 
-        return $this->redirectToRoute('akademie');
+        return $this->render('questionnaire/result.html.twig', [
+            'participation' => $participation
+        ]);
     }
 
-    private function evaluate(Participation $participation): void
+    private function evaluate(Participation $participation): Participation
     {
         $questionnaire = $participation->getQuestionnaire();
 
@@ -103,6 +106,8 @@ class ParticipationController extends AbstractController
 
         $participation->setPassed($questionnaire->getPercentageToPass() <= ($achievedPoints/$overallPoints));
         $participation->setState(ParticipationStateTypes::$FINISHED);
+
+        return $participation;
     }
 
     private function evaluateQuestion(Question $question, Participation $participation): bool {

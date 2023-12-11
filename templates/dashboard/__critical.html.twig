@@ -1,15 +1,15 @@
 {% trans_default_domain 'dashboard' %}
 <!--Card-->
-<div class="card">
+<div>
     <!-- Card header -->
-    <div class="card-header text-center">
+    <div>
         {% trans %}criticalProcesses{% endtrans %}
     </div>
     <!--Card content-->
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-4">
-                <h5 class="h5-responsive">{% trans %}auditQuestions{% endtrans %}</h5>
+    <div>
+        <div>
+            <div>
+                <h5>{% trans %}auditQuestions{% endtrans %}</h5>
                 <ul>
                     {% for a in kAudit %}
                         <li>
@@ -19,8 +19,8 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="col-md-4">
-                <h5 class="h5-responsive">{% trans %}vvts{% endtrans %}</h5>
+            <div>
+                <h5>{% trans %}vvts{% endtrans %}</h5>
                 <ul>
                     {% for v in kVvt %}
                         <li>
@@ -30,8 +30,8 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="col-md-4">
-                <h5 class="h5-responsive">{% trans %}openDsfa{% endtrans %}</h5>
+            <div>
+                <h5>{% trans %}openDsfa{% endtrans %}</h5>
                 <ul>
                     {% for d in openDsfa %}
                         <li>

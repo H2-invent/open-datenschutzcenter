@@ -19,14 +19,13 @@ use App\Service\SecurityService;
 use App\Service\VVTDatenkategorieService;
 use App\Service\VVTService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class VvtController extends AbstractController
+class VvtController extends BaseController
 {
 
 
@@ -70,14 +69,15 @@ class VvtController extends AbstractController
 
                 $this->em->persist($vvt);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'vvt',
-                    [
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
-                    ],
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('vvt'));
+
         return $this->render('vvt/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -128,7 +128,10 @@ class VvtController extends AbstractController
             $this->em->flush();
         }
 
-        return $this->redirectToRoute('vvt_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+        $this->addSuccessMessage($approve['snack']);
+
+
+        return $this->redirectToRoute('vvt_edit', ['id' => $approve['data']]);
 
     }
 
@@ -269,11 +272,11 @@ class VvtController extends AbstractController
                 $this->em->persist($newVvt);
                 $this->em->persist($vvt);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'vvt_edit',
                     [
                         'id' => $newVvt->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
@@ -287,7 +290,6 @@ class VvtController extends AbstractController
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'activNummer' => false,
-            'snack' => $request->get('snack')
         ]);
     }
 
@@ -325,12 +327,12 @@ class VvtController extends AbstractController
                 $this->em->persist($newDsfa);
                 $this->em->persist($dsfa);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
 
                 return $this->redirectToRoute(
                     'vvt_dsfa_edit',
                     [
                         'dsfa' => $newDsfa->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
@@ -343,7 +345,6 @@ class VvtController extends AbstractController
             'title' => $this->translator->trans(id: 'dataPrivacyFollowUpEstimation.edit', domain: 'vvt'),
             'dsfa' => $dsfa,
             'activ' => $dsfa->getActiv(),
-            'snack' => $request->get('snack')
         ]);
     }
 
@@ -363,7 +364,6 @@ class VvtController extends AbstractController
 
         return $this->render('vvt/index.html.twig', [
             'vvt' => $vvt,
-            'snack' => $request->get('snack'),
             'currentTeam' => $team,
         ]);
     }
@@ -397,11 +397,11 @@ class VvtController extends AbstractController
             if (count($errors) == 0) {
                 $this->em->persist($dsfa);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'dsfa.created', domain: 'vvt'));
                 return $this->redirectToRoute(
                     'vvt_edit',
                     [
                         'id' => $dsfa->getVvt()->getId(),
-                        'snack' => $this->translator->trans(id: 'dsfa.created', domain: 'vvt'),
                     ],
                 );
             }

@@ -10,7 +10,7 @@ question:
     word: 'Art der Frage'
     checkbox: 'Mehrere Antworten auswählbar'
     radio: 'Eine Antwort auswählbar'
-  create: 'Neue Frage hinzufügen'
+  show: 'Frage anzeigen'
   answer:
     add: 'Antwort hinzufügen'
 answer:

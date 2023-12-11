@@ -30,7 +30,6 @@ use App\Service\CurrentTeamService;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +39,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/bericht', name: 'bericht')]
-class BerichtController extends AbstractController
+class BerichtController extends BaseController
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
@@ -138,7 +137,6 @@ class BerichtController extends AbstractController
         }
 
         return $this->render('bericht/index.html.twig', [
-            'snack' => $request->get('snack'),
             'currentTeam' => $team,
         ]);
     }
@@ -814,11 +812,8 @@ class BerichtController extends AbstractController
 
     private function redirectNoReport(): RedirectResponse
     {
-        return $this->redirectToRoute(
-            'bericht',
-            [
-                'snack' => $this->translator->trans(id: 'report.notAvailable', domain: 'bericht')
-            ]
-        );
+        $this->addErrorMessage($this->translator->trans(id: 'report.notAvailable', domain: 'bericht'));
+
+        return $this->redirectToRoute('bericht');
     }
 }

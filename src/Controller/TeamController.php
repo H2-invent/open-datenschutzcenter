@@ -24,7 +24,6 @@ use App\Service\SecurityService;
 use App\Service\TeamService;
 use Doctrine\ORM\EntityManagerInterface;
 use Proxies\__CG__\App\Entity\DatenweitergabeStand;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +32,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class TeamController extends AbstractController
+class TeamController extends BaseController
 {
     public function __construct(private readonly TranslatorInterface $translator)
     {

@@ -14,7 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PoliciesController extends AbstractController
+class PoliciesController extends BaseController
 {
 
 
@@ -62,6 +61,9 @@ class PoliciesController extends AbstractController
                 return $this->redirectToRoute('policies');
             }
         }
+
+        $this->setBackButton($this->generateUrl('policies'));
+
         return $this->render('policies/new.html.twig', [
             'form' => $form->createView(),
             'policy' => $policy,
@@ -89,7 +91,8 @@ class PoliciesController extends AbstractController
 
         if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($policy, $user);
-            return $this->redirectToRoute('policy_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('policy_edit', ['id' => $approve['data']]);
         }
 
         // if security check fails
@@ -197,15 +200,17 @@ class PoliciesController extends AbstractController
                 $this->em->persist($newPolicy);
                 $this->em->persist($policy);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'policy_edit',
                     [
                         'id' => $newPolicy->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('policies'));
 
         return $this->render('policies/edit.html.twig', [
             'form' => $form->createView(),
@@ -214,7 +219,6 @@ class PoliciesController extends AbstractController
             'title' => $this->translator->trans(id: 'policies.edit', domain: 'policies'),
             'policy' => $policy,
             'activ' => $policy->getActiv(),
-            'snack' => $request->get('snack')
         ]);
     }
 

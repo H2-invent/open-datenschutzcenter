@@ -307,7 +307,7 @@ class VVTType extends AbstractType
                 ],
             ])
             ->add('save', SubmitType::class, [
-                'attr' => array('class' => 'btn btn-primary btn-block'),
+                'attr' => array('class' => 'btn btn-block'),
                 'label' => 'save',
                 'translation_domain' => 'form'
             ]);

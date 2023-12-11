@@ -9,17 +9,17 @@
 ">
     <div
             {% if a.name is defined %}
-                class="card card-body bg-vvt mb-1"
+
             {% elseif a.frage is defined %}
-                class="card card-body bg-audit mb-1"
+
             {% elseif a.grundlage is defined %}
-                class="card card-body bg-daten mb-1"
+
             {% elseif a.beschreibung is defined %}
-                class="card card-body bg-dsfa mb-1"
+
             {% endif %}
     >
-        <div class="row">
-            <div class="col-md-1">
+        <div>
+            <div>
                 {% if a.name is defined %}
                     <img style="width: 30px" src="{{ asset('icons/prozess.svg') }}">
                 {% elseif a.frage is defined %}
@@ -30,7 +30,7 @@
                     <img style="width: 30px" src="{{ asset('icons/prozess.svg') }}">
                 {% endif %}
             </div>
-            <div class="col-md-4">
+            <div>
                 {% if a.name is defined %}
                     {{ a.name }}
                 {% elseif a.frage is defined %}
@@ -41,15 +41,15 @@
                     {{ a.beschreibung }}
                 {% endif %}
             </div>
-            <div class="col-md-3">
+            <div>
                 {% trans from 'general' %}createdAt{% endtrans %}: {{ a.createdAt|date('d.m.Y') }}
             </div>
-            <div class="col-md-2">
+            <div>
                 {% if a.nummer is defined %}
                     {{ a.nummer }}
                 {% endif %}
             </div>
-            <div class="col-md-2">
+            <div>
                 {% if a.status is defined %}
                     {{ a.status.name }}
                 {% endif %}

@@ -13,14 +13,13 @@ use App\Service\SoftwareService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class SoftwareController extends AbstractController
+class SoftwareController extends BaseController
 {
 
 
@@ -57,12 +56,8 @@ class SoftwareController extends AbstractController
         }
 
         if ($config->getSoftware() !== $software) {
-            return $this->redirectToRoute(
-                'software',
-                [
-                    'snack' => $this->translator->trans(id: 'config.mismatchSoftware', domain: 'software'),
-                ],
-            );
+            $this->addErrorMessage($this->translator->trans(id: 'config.mismatchSoftware', domain: 'software'));
+            return $this->redirectToRoute('software');
 
         }
 
@@ -78,15 +73,18 @@ class SoftwareController extends AbstractController
                 $config->setCreatedAt(new DateTime());
                 $this->em->persist($config);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'software_edit',
                     [
                         'id' => $software->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('software_edit', ['id' => $software->getId()]));
+
         return $this->render('software/newConfig.html.twig', [
             'form' => $form->createView(),
             'config' => $config,
@@ -128,6 +126,9 @@ class SoftwareController extends AbstractController
                 return $this->redirectToRoute('software');
             }
         }
+
+        $this->setBackButton($this->generateUrl('software'));
+
         return $this->render('software/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -165,7 +166,8 @@ class SoftwareController extends AbstractController
                 $this->em->persist($newSoftware);
                 $this->em->flush();
             }
-            return $this->redirectToRoute('software_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('software_edit', ['id' => $approve['data']]);
         }
 
         return $this->redirectToRoute('policies');
@@ -187,11 +189,11 @@ class SoftwareController extends AbstractController
         if ($securityService->teamDataCheck($config->getSoftware(), $team) && $securityService->adminCheck($user, $team)) {
             $this->em->remove($config);
             $this->em->flush();
+            $this->addSuccess($this->translator->trans(id: 'config.delete', domain: 'software'));
             return $this->redirectToRoute(
                 'software_edit',
                 [
                     'id' => $config->getSoftware()->getId(),
-                    'snack' => $this->translator->trans(id: 'config.delete', domain: 'software'),
                 ],
             );
         }
@@ -230,7 +232,6 @@ class SoftwareController extends AbstractController
         SoftwareRepository $softwareRepository,
     ): Response
     {
-        //Request: id: SoftwareID, snack:Snack Notice
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         $software = $softwareRepository->find($request->get('id'));
 
@@ -258,15 +259,17 @@ class SoftwareController extends AbstractController
                 $this->em->persist($newSoftware);
                 $this->em->persist($software);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'software_edit',
                     [
                         'id' => $newSoftware->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('software'));
 
         return $this->render('software/edit.html.twig', [
             'form' => $form->createView(),
@@ -275,7 +278,6 @@ class SoftwareController extends AbstractController
             'title' => $this->translator->trans(id: 'software.edit', domain: 'software'),
             'software' => $software,
             'activ' => $software->getActiv(),
-            'snack' => $request->get('snack'),
         ]);
     }
 
@@ -287,7 +289,6 @@ class SoftwareController extends AbstractController
         SoftwareRepository $softwareRepository,
     ): Response
     {
-        //Request: snack: Snack Notice
         $team = $currentTeamService->getTeamFromSession($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -297,7 +298,6 @@ class SoftwareController extends AbstractController
         return $this->render('software/index.html.twig', [
             'data' => $software,
             'today' => new DateTime(),
-            'snack' => $request->get('snack'),
             'currentTeam' => $team,
         ]);
     }

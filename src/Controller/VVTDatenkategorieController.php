@@ -15,13 +15,12 @@ use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use App\Service\VVTDatenkategorieService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/vvtdatenkategorie')]
-class VVTDatenkategorieController extends AbstractController
+class VVTDatenkategorieController extends BaseController
 {
     #[Route(path: '/delete/{id}', name: 'app_vvtdatenkategorie_delete', methods: ['POST'])]
     public function delete(
@@ -82,6 +81,8 @@ class VVTDatenkategorieController extends AbstractController
             return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $this->setBackButton($this->generateUrl('app_vvtdatenkategorie_index'));
+
         return $this->render('vvt_datenkategorie/edit.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
             'form' => $form,
@@ -130,6 +131,8 @@ class VVTDatenkategorieController extends AbstractController
             return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $this->setBackButton($this->generateUrl('app_vvtdatenkategorie_index'));
+
         return $this->render('vvt_datenkategorie/new.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
             'form' => $form,
@@ -139,6 +142,7 @@ class VVTDatenkategorieController extends AbstractController
     #[Route(path: '/show/{id}', name: 'app_vvtdatenkategorie_show', methods: ['GET'])]
     public function show(VVTDatenkategorie $vVTDatenkategorie): Response
     {
+        $this->setBackButton($this->generateUrl('app_vvtdatenkategorie_index'));
 
         return $this->render('vvt_datenkategorie/show.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,

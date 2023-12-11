@@ -20,7 +20,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class DatenweitergabeController extends AbstractController
+class DatenweitergabeController extends BaseController
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
@@ -73,13 +72,16 @@ class DatenweitergabeController extends AbstractController
                 return $this->redirectToRoute('auftragsverarbeitung');
             }
         }
+
+        $this->setBackButton($this->generateUrl('auftragsverarbeitung'));
+
         return $this->render('datenweitergabe/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'requestProcessing.create', domain: 'datenweitergabe'),
             'daten' => $daten,
             'activNummer' => true,
-            'activ' => $daten->getActiv()
+            'activ' => $daten->getActiv(),
         ]);
     }
 
@@ -119,13 +121,16 @@ class DatenweitergabeController extends AbstractController
                 return $this->redirectToRoute('datenweitergabe');
             }
         }
+
+        $this->setBackButton($this->generateUrl('datenweitergabe'));
+
         return $this->render('datenweitergabe/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'dataTransfer.create', domain: 'datenweitergabe'),
             'daten' => $daten,
             'activNummer' => true,
-            'activ' => $daten->getActiv()
+            'activ' => $daten->getActiv(),
         ]);
     }
 
@@ -158,7 +163,8 @@ class DatenweitergabeController extends AbstractController
                 }
                 $this->em->flush();
             }
-            return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('datenweitergabe_edit', ['id' => $approve['data']]);
         }
 
         // if security check fails
@@ -288,15 +294,18 @@ class DatenweitergabeController extends AbstractController
                 $this->em->persist($newDaten);
                 $this->em->persist($daten);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'datenweitergabe_edit',
                     [
                         'id' => $newDaten->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
         }
+
+        $this->setBackButton($daten->getArt() === 1 ? $this->generateUrl('datenweitergabe') : $this->generateUrl('auftragsverarbeitung'));
+
         return $this->render('datenweitergabe/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
@@ -305,7 +314,6 @@ class DatenweitergabeController extends AbstractController
             'daten' => $daten,
             'activ' => $daten->getActiv(),
             'activNummer' => false,
-            'snack' => $request->get('snack')
         ]);
     }
 
