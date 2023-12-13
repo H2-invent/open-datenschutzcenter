@@ -110,5 +110,10 @@
     {% endfor %}
 </fieldset>
 
+<fieldset>
+    <legend>{% trans %}inheritance.word{% endtrans %}</legend>
+    {{ form_row(form.inherited) }}
+</fieldset>
+
 {{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
 {{ form_end(form) }}
