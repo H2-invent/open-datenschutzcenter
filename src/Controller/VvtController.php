@@ -230,7 +230,7 @@ class VvtController extends BaseController
         $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->checkTeamAccessToProcess($vvt, $team) === false) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
             return $this->redirectToRoute('vvt');
         }
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());

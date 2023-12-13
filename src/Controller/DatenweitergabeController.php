@@ -363,12 +363,12 @@ class DatenweitergabeController extends BaseController
     private function checkAccess(SecurityService $securityService, ?Datenweitergabe $transfer, Team $team): bool
     {
         if (!$transfer) {
-            $this->addFlash('danger', 'elementDoesNotExistError');
+            $this->addErrorMessage($this->translator->trans(id: 'elementDoesNotExistError', domain: 'base'));
             return false;
         }
 
         if (!$securityService->checkTeamAccessToTransfer($transfer, $team)) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
             return false;
         }
 

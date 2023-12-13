@@ -313,12 +313,12 @@ class SoftwareController extends BaseController
     private function checkAccess(SecurityService $securityService, ?Software $software, Team $team): bool
     {
         if (!$software) {
-            $this->addFlash('danger', 'elementDoesNotExistError');
+            $this->addErrorMessage($this->translator->trans(id: 'elementDoesNotExistError', domain: 'base'));
             return false;
         }
 
         if (!$securityService->checkTeamAccessToSoftware($software, $team)) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addErrorMessage($this->translator->trans(id: 'elementDoesNotExistError', domain: 'base'));
             return false;
         }
 
