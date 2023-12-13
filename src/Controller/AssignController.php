@@ -45,7 +45,7 @@ class AssignController extends BaseController
 
         $success = $assignService->assignAudit($request, $audit);
         if (!$success) {
-            $this->addFlash('error', 'assignError');
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -67,7 +67,7 @@ class AssignController extends BaseController
 
         $success = $assignService->assignDatenweitergabe($request, $daten);
         if (!$success) {
-            $this->addFlash('error', $this->translator->trans(id: 'assignError', domain: 'base'));
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -86,7 +86,7 @@ class AssignController extends BaseController
         if ($securityService->teamDataCheck($impactAssessment->getVvt(), $team)) {
             $success = $assignService->assignDsfa($request, $impactAssessment);
             if (!$success) {
-                $this->addFlash('error', $this->translator->trans(id: 'assignError', domain: 'base'));
+                $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
             }
             return $this->redirect($request->headers->get('referer'));
         }
@@ -110,7 +110,7 @@ class AssignController extends BaseController
 
         $success = $assignService->assignForm($request, $form);
         if (!$success) {
-            $this->addFlash('error', $this->translator->trans(id: 'assignError', domain: 'base'));
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -132,7 +132,7 @@ class AssignController extends BaseController
 
         $success = $assignService->assignPolicy($request, $policy);
         if (!$success) {
-            $this->addFlash('error', $this->translator->trans(id: 'assignError', domain: 'base'));
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -154,7 +154,7 @@ class AssignController extends BaseController
 
         $success = $assignService->assignSoftware($request, $software);
         if (!$success) {
-            $this->addFlash('error', $this->translator->trans(id: 'assignError', domain: 'base'));
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -176,7 +176,7 @@ class AssignController extends BaseController
 
         $success = $assignService->assignTask($request, $task);
         if (!$success) {
-            $this->addFlash('error', $this->translator->trans(id: 'assignError', domain: 'base'));
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -198,7 +198,7 @@ class AssignController extends BaseController
 
         $success = $assignService->assignVorfall($request, $vorfall);
         if (!$success) {
-            $this->addFlash('error', $this->translator->trans(id: 'assignError', domain: 'base'));
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
         }
         return $this->redirect($request->headers->get('referer'));
     }
@@ -220,7 +220,7 @@ class AssignController extends BaseController
 
         $success = $assignService->assignVvt($request, $vvt);
         if (!$success) {
-            $this->addFlash('error', $this->translator->trans(id: 'assignError', domain: 'base'));
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
         }
         return $this->redirect($request->headers->get('referer'));
     }

@@ -131,7 +131,7 @@ class KontaktController extends BaseController
         $team = $currentTeamService->getCurrentTeam($this->getUser());
         $contact = $contactRepository->find($request->get('id'));
         if (!$securityService->checkTeamAccessToContact($contact, $team)) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
             return $this->redirectToRoute('kontakt');
         }
 

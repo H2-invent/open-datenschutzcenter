@@ -170,7 +170,7 @@ class TomController extends BaseController
         $tom = $tomRepository->find($request->get('tom'));
 
         if ($securityService->checkTeamAccessToTom($tom, $team) === false) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
             return $this->redirectToRoute('tom');
         }
 

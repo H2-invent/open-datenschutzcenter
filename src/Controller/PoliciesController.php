@@ -185,7 +185,7 @@ class PoliciesController extends BaseController
         $policy = $policiesRepository->find($request->get('id'));
 
         if (!$securityService->checkTeamAccessToPolicy($policy, $team)) {
-            $this->addFlash('danger', 'accessDeniedError');
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
             return $this->redirectToRoute('policies');
         }
         $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());
