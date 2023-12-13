@@ -221,7 +221,7 @@ class VvtController extends BaseController
         VVTService               $VVTService,
         SecurityService          $securityService,
         AssignService            $assignService,
-        VVTDatenkategorieService $VVTDatenkategorieService,
+        VVTDatenkategorieService $vvtDatenkategorieService,
         CurrentTeamService       $currentTeamService,
         VVTRepository            $vvtRepository
     ): Response
@@ -234,10 +234,13 @@ class VvtController extends BaseController
             return $this->redirectToRoute('vvt');
         }
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
+        $latestCategories = [];
 
         foreach ($vvt->getKategorien() as $category) {//hier haben wir die geklonten Kategorien
             $cloneOf = $category->getCloneOf() ?: $category; //wir hängen die neueste gültige Datenkategorie an den VVT clone an.
-            $newVvt->addKategorien($VVTDatenkategorieService->findLatestKategorie($cloneOf));
+            $latestCategory = $vvtDatenkategorieService->findLatestKategorie($cloneOf);
+            $newVvt->addKategorien($latestCategory);
+            $latestCategories[] = $latestCategory;
         }
 
         $isEditable = $vvt->getTeam() === $team;
@@ -247,6 +250,14 @@ class VvtController extends BaseController
         $assign = $assignService->createForm($vvt, $team);
 
         $errors = array();
+        $inheritedEntities = [];
+
+        if (!$isEditable) {
+            // This vvt was inherited by ancestor team.
+            // In this case we want inherited categories and deletion concepts available by links inside the vvt form.
+            $inheritedEntities = $vvtDatenkategorieService->getInheritedEntities($latestCategories);
+        }
+
         if ($form->isSubmitted() && $form->isValid() && $vvt->getActiv() && !$vvt->getApproved() && $isEditable) {
             $vvt->setActiv(false);
             $newVvt = $form->getData();
@@ -254,7 +265,7 @@ class VvtController extends BaseController
             $errors = $validator->validate($newVvt);
             if (count($errors) == 0) {
                 foreach ($newVvt->getKategorien() as $kategorie) { // wir haben die fiktiven neuesten Kategories
-                    $tmp = $VVTDatenkategorieService->createChild($kategorie);//wir klonen die kategorie damit diese revisionssicher ist
+                    $tmp = $vvtDatenkategorieService->createChild($kategorie);//wir klonen die kategorie damit diese revisionssicher ist
                     $newVvt->removeKategorien($kategorie);//wir entferenen die fiktive neues kategorie
                     $newVvt->addKategorien($tmp);//wir fügen die geklonte kategorie an
                 }
@@ -300,6 +311,7 @@ class VvtController extends BaseController
             'activNummer' => false,
             'isEditable' => $isEditable,
             'currentTeam' => $team,
+            'inheritedEntities' => $inheritedEntities,
         ]);
     }
 

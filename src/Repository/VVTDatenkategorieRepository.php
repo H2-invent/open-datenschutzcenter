@@ -24,7 +24,6 @@ class VVTDatenkategorieRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry                 $registry,
-        private readonly TeamRepository $teamRepository,
     )
     {
         parent::__construct($registry, VVTDatenkategorie::class);
@@ -44,14 +43,12 @@ class VVTDatenkategorieRepository extends ServiceEntityRepository
 
     public function findByTeam(Team $team)
     {
-        $teamPath = $this->teamRepository->getPath($team);
-
         $qb = $this->createQueryBuilder('a');
         return $qb
-            ->andWhere('a.team is null OR a.team IN (:teamPath)')
+            ->andWhere('a.team is null OR a.team = :team')
             ->andWhere($qb->expr()->isNull('a.cloneOf'))
             ->andWhere('a.activ = 1')
-            ->setParameter('teamPath', $teamPath)
+            ->setParameter('team', $team)
             ->getQuery()
             ->getResult();
     }
