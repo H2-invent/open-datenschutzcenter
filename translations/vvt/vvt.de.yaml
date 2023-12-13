@@ -98,6 +98,7 @@ dataPrivacyFollowUpEstimation:
 dsbStatement: Stellungnahme des DSB in der Datenschutzfolgeabschätzung
 additionalStands: Weitere Standpunkte (z.B. Betriebsrat)
 inheritance:
+  word: Vererbung
   setInactive: Für dieses Team deaktivieren
   setActive: Für dieses Team aktivieren
   infoText:

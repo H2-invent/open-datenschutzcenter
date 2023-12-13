@@ -9,8 +9,8 @@
             <span>{% trans %}dsfa.create{% endtrans %}</span>
         </a>
     {% elseif vvt.activDsfa is not null %}
-        <a href="{{ path('dsfa_new', {'vvt':vvt.id}) }}"
-           class="btn"
+        <a href="{{ path('dsfa_edit', {'dsfa':vvt.activDsfa.id}) }}"
+           class="btn text-gray-700"
            title="{% trans %}dataProtectionImpactAssessment.show{% endtrans %}">
             <span>{% trans %}dsfa.show{% endtrans %}</span>
         </a>
@@ -53,14 +53,6 @@
 {% endblock %}
 
 {% block body %}
-    {% if vvt.activDsfa is not null %}
-        <hr>
-        <div class="my-5">
-            <a href="{{ path('dsfa_edit', {'dsfa':vvt.activDsfa.id}) }}" class="btn text-gray-700">
-                &raquo; {% trans %}dsfa.exists{% endtrans %}
-            </a>
-        </div>
-    {% endif %}
     {% set used = vvt not in currentTeam.ignoredInheritances %}
     {% include 'base/__inheritanceInfo.html.twig' with {team:vvt.team, currentTeam:currentTeam, used:used, inherited:vvt.inherited, domain:'vvt'} %}
     {% include 'base/__flashMessage.html.twig' with {app:app} %}
