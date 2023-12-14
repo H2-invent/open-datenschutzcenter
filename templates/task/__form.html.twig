@@ -1,13 +1,7 @@
 {{ form_start(form, {attr: {class: not activ ? 'disabled'}}) }}
     <fieldset>
         {{ form_row(form.title) }}
-        <div class="form-row">
-            {{ form_label(form.task) }}
-            <div class="hidden">{{ form_widget(form.task) }}</div>
-            <div class="trix-wrapper">
-                <trix-editor input="tasks_task"></trix-editor>
-            </div>
-        </div>
+        {{ form_row(form.task) }}
         {{ form_row(form.endDate) }}
         {{ form_row(form.prio) }}
         {{ form_row(form.assignedUser) }}
