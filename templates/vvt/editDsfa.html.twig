@@ -11,13 +11,15 @@
 
 {% block body %}
     {{ form_start(form) }}
-    {{ form_row(form.beschreibung) }}
-    {{ form_row(form.notwendigkeit) }}
-    {{ form_row(form.risiko) }}
-    {{ form_row(form.abhilfe) }}
-    {{ form_row(form.standpunkt) }}
-    {{ form_row(form.dsb) }}
-    {{ form_row(form.ergebnis) }}
+    <fieldset>
+        {{ form_row(form.beschreibung) }}
+        {{ form_row(form.notwendigkeit) }}
+        {{ form_row(form.risiko) }}
+        {{ form_row(form.abhilfe) }}
+        {{ form_row(form.standpunkt) }}
+        {{ form_row(form.dsb) }}
+        {{ form_row(form.ergebnis) }}
+    </fieldset>
     {{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
     {{ form_end(form) }}
     <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ dsfa.user.email }}</p>
