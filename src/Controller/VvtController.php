@@ -282,6 +282,8 @@ class VvtController extends BaseController
             }
         }
 
+        $this->setBackButton($this->generateUrl('vvt_edit', ['id' => $vvt->getId()]));
+
         return $this->render('vvt/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
