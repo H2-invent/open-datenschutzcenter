@@ -14,6 +14,13 @@
     </div>
 {%- endblock checkbox_row -%}
 
+{% block textarea_widget %}
+    <div class="trix-wrapper">
+        <trix-editor input="{{ id }}"></trix-editor>
+    </div>
+    <div class="hidden">{{ form_widget(form) }}</div>
+{% endblock %}
+
 {% block form_label -%}
     {% if label is not same as(false) -%}
         {%- if compound is defined and compound -%}
