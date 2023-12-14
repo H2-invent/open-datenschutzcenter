@@ -15,10 +15,14 @@
 {%- endblock checkbox_row -%}
 
 {% block textarea_widget %}
-    <div class="trix-wrapper">
-        <trix-editor input="{{ id }}"></trix-editor>
-    </div>
-    <div class="hidden">{{ form_widget(form) }}</div>
+    {% if form.vars.attr.class is defined and 'summernote' in form.vars.attr.class %}
+        <div class="trix-wrapper">
+            <trix-editor input="{{ id }}"></trix-editor>
+        </div>
+        <div class="hidden">{{ form_widget(form) }}</div>
+    {% else %}
+        {{ form_widget(form) }}
+    {% endif %}
 {% endblock %}
 
 {% block form_label -%}
