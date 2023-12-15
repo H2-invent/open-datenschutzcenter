@@ -35,7 +35,7 @@
                 <ul>
                     {% for d in openDsfa %}
                         <li>
-                            <a href="{{ path('vvt_dsfa_edit', {'dsfa':d.id}) }}">{{ d.createdAt|date('d.m.Y H:i') }}
+                            <a href="{{ path('dsfa_edit', {'dsfa':d.id}) }}">{{ d.createdAt|date('d.m.Y H:i') }}
                                 - {{ d.vvt.name }}
                                 ({% trans %}{% if not d.dsb %}dsbMissing{% else %}resultMissing{% endif %}{% endtrans %}
                                 )</a></li>

@@ -51,6 +51,7 @@ class MenuService
             $menu->addChild($this->trans('dataCategories'), ['route' => 'app_vvtdatenkategorie_index']);
             $menu->addChild($this->trans('toms'), ['route' => 'tom']);
             $menu->addChild($this->trans('processings'), ['route' => 'vvt']);
+            $menu->addChild($this->trans('dsfa'), ['route' => 'dsfa']);
             $menu->addChild($this->trans('deleteConcepts'), ['route' => 'app_loeschkonzept_index']);
             $menu->addChild($this->trans('policies'), ['route' => 'policies']);
             $menu->addChild($this->trans('contacts'), ['route' => 'kontakt']);

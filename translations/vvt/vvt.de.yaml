@@ -36,9 +36,11 @@ oldDeletionDeadline: Alte Löschfrist (auf Verarbeitung bezogen)
 dataTransferTo: An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben.
 dataProtectionImpactAssessment:
   word: Datenschutz-Folgenabschätzung
+  word_plural: Datenschutz-Folgenabschätzungen
   show: Datenschutzfolgeabschätzung anzeigen
   create: Datenschutzfolgeabschätzung anlegen
 processing:
+  show: Verarbeitung anzeigen
   edit: Verarbeitung bearbeiten
   track: Verarbeitung erfassen
   export: Export der Verarbeitungstätigkeit
