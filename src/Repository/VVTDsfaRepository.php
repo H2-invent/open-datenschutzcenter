@@ -28,7 +28,6 @@ class VVTDsfaRepository extends ServiceEntityRepository
             ->andWhere('d.activ = 1')
             ->andWhere('v.activ = 1')
             ->setParameter('team', $team)
-            ->groupBy('d.vvt')
             ->orderBy('d.id', 'DESC')
             ->getQuery()
             ->getResult()
