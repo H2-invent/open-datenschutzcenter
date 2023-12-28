@@ -49,7 +49,7 @@ class DsfaController extends BaseController
         }
 
         $dsfa = $this->VVTService->newDsfa($team, $this->getUser(), $vvt);
-        $form = $this->createForm(VvtDsfaType::class, );
+        $form = $this->createForm(VvtDsfaType::class,$dsfa );
         $form->handleRequest($request);
         $errors = array();
 
