@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Team;
 use App\Form\Type\VvtDsfaType;
 use App\Repository\VVTDsfaRepository;
+use App\Repository\VVTRepository;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
@@ -21,6 +22,7 @@ class DsfaController extends BaseController
     public function __construct(
         private TranslatorInterface $translator,
         private VVTDsfaRepository $repo,
+        private  VVTRepository $VVTRepository,
         private EntityManagerInterface $em,
         private CurrentTeamService $currentTeamService,
         private VVTService $VVTService,
@@ -41,8 +43,7 @@ class DsfaController extends BaseController
     public function new(ValidatorInterface $validator, Request $request): Response
     {
         $team = $this->getTeam();
-        $vvt = $this->repo->find($request->get('vvt'));
-
+        $vvt = $this->VVTRepository->find($request->get('vvt'));
         if ($this->securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
         }
