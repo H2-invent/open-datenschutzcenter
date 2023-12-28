@@ -10,6 +10,12 @@
 {% endblock %}
 
 {% block body %}
+    <hr>
+    <div class="my-5">
+        <a href="{{ path('vvt_edit', {'id': dsfa.vvt.id}) }}" class="btn text-gray-700">
+            &raquo; {% trans from 'vvt' %}processing.show{% endtrans %}
+        </a>
+    </div>
     {{ form_start(form) }}
     <fieldset>
         {{ form_row(form.beschreibung) }}
@@ -26,8 +32,7 @@
     {% if dsfa.previous %}
         <h3 class="mt-10">{% trans from 'general' %}history{% endtrans %}</h3>
         <ol class="item-history">
-            {{ include('vvt/__dsfaHistory.html.twig', {'p':dsfa.previous}) }}
+            {{ include('dsfa/__history.html.twig', {'p':dsfa.previous}) }}
         </ol>
     {% endif %}
-
 {% endblock %}

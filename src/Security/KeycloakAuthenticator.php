@@ -85,6 +85,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         AuthenticationException $exception,
     ): ?Response
     {
+        $this->logger->error($exception->getMessage());
         return new RedirectResponse($this->router->generate('no_team'));
     }
 

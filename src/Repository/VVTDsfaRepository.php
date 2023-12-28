@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\VVTDsfa;
+use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,20 @@ class VVTDsfaRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, VVTDsfa::class);
+    }
+
+    public function findAllByTeam(Team $team): array
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.vvt', 'v')
+            ->andWhere('v.team = :team')
+            ->andWhere('d.activ = 1')
+            ->andWhere('v.activ = 1')
+            ->setParameter('team', $team)
+            ->orderBy('d.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     public function findActiveByTeam($value)

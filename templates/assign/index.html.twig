@@ -62,7 +62,7 @@
                     {% for a in impactAssessments %}
                         {% if a.vvt.team == currentTeam %}
                             <li>
-                                <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">{{ a.vvt.team.name }}: {{ a.beschreibung }}</a>
+                                <a href="{{ path('dsfa_edit',{'dsfa':a.id}) }}">{{ a.vvt.team.name }}: {{ a.beschreibung }}</a>
                                 <div>{{ a.vvt.name }}</div>
                                 <div>{{ a.createdAt|date('d.m.Y') }}</div>
                             </li>

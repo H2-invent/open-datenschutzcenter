@@ -1,11 +1,11 @@
 {% trans_default_domain 'vvt' %}
 <li>
-    <a href="{{ path('vvt_dsfa_edit',{'dsfa':p.id}) }}">
+    <a href="{{ path('dsfa_edit',{'dsfa':p.id}) }}">
         {{ p.createdAt|date('d.m.Y h:m') }} -- id: {{ p.id }} -- {% trans from 'general' %}createdBy{% endtrans %}: {{ p.user.email }}
         {% if not p.dsb %} --<span>{% trans %}dsbReviewMissing{% endtrans %}</span>{% endif %}
         {% if not p.ergebnis %} -- <span>{% trans %}resultMissing{% endtrans %}</span>{% endif %}
     </a>
 </li>
 {% if p.previous %}
-    {{ include('vvt/__dsfaHistory.html.twig', {'p':p.previous}) }}
+    {{ include('dsfa/__history.html.twig', {'p':p.previous}) }}
 {% endif %}

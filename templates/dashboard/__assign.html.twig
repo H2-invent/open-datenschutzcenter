@@ -66,7 +66,7 @@
                     {% for a in assignDsfa %}
                         {% if a.activ %}
                             <li>
-                                <a href="{{ path('vvt_dsfa_edit',{'dsfa':a.id}) }}">{{ a.vvt.team.name }}: {{ a.beschreibung }}</a>
+                                <a href="{{ path('dsfa_edit',{'dsfa':a.id}) }}">{{ a.vvt.team.name }}: {{ a.beschreibung }}</a>
                                 <div>{{ a.createdAt|date('d.m.Y') }}</div>
                             </li>
                         {% endif %}

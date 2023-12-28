@@ -3,16 +3,10 @@
 
 {% block CTA %}
     {% if vvt.activDsfa is null %}
-        <a href="{{ path('vvt_dsfa_new', {'vvt':vvt.id}) }}"
+        <a href="{{ path('dsfa_new', {'vvt':vvt.id}) }}"
            class="btn"
            title="{% trans %}dataProtectionImpactAssessment.create{% endtrans %}">
             <span>{% trans %}dsfa.create{% endtrans %}</span>
-        </a>
-    {% else %}
-        <a href="{{ path('vvt_dsfa_edit', {'dsfa':vvt.activDsfa.id}) }}"
-           class="btn"
-           title="{% trans %}dataProtectionImpactAssessment.show{% endtrans %}">
-            <span>{% trans %}dsfa.show{% endtrans %}</span>
         </a>
     {% endif %}
     {% if vvt.activ %}
@@ -36,11 +30,21 @@
 {% endblock %}
 
 {% block title %}
-    {{ title }} {% if not activNummer %}<span> {% trans from 'general' %}id{% endtrans %}: {{ vvt.nummer }}{% endif %}</span>
+    {{ title }}
+    {% if not activNummer %}
+        {% trans from 'general' %}id{% endtrans %}: {{ vvt.nummer }}
+    {% endif %}
 {% endblock %}
 
 {% block body %}
-    {% if vvt.activDsfa is not null %}<h3>{% trans %}dsfa.exists{% endtrans %}</h3>{% endif %}
+    {% if vvt.activDsfa is not null %}
+        <hr>
+        <div class="my-5">
+            <a href="{{ path('dsfa_edit', {'dsfa':vvt.activDsfa.id}) }}" class="btn text-gray-700">
+                &raquo; {% trans %}dsfa.exists{% endtrans %}
+            </a>
+        </div>
+    {% endif %}
     {{ include('vvt/__form.html.twig') }}
     <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ vvt.user.email }}</p>
     {% if vvt.previous %}
