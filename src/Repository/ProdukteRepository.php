@@ -13,26 +13,13 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Produkte[]    findAll()
  * @method Produkte[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProdukteRepository extends ServiceEntityRepository
+class ProdukteRepository extends PresetRepository
 {
     public function __construct(
-        ManagerRegistry                 $registry,
-        private readonly TeamRepository $teamRepository,
+        protected readonly ManagerRegistry    $registry,
+        protected readonly TeamRepository     $teamRepository,
     )
     {
-        parent::__construct($registry, Produkte::class);
-    }
-
-    public function findActiveByTeam(Team $team)
-    {
-        $teamPath = $this->teamRepository->getPath($team);
-
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team IN (:teamPath)')
-            ->andWhere('a.activ = 1')
-            ->setParameter('teamPath', $teamPath)
-            ->getQuery()
-            ->getResult()
-            ;
+        parent::__construct($this->registry, $this->teamRepository, Produkte::class);
     }
 }

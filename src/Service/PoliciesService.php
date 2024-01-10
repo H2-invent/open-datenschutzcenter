@@ -55,7 +55,7 @@ class PoliciesService
             $processes = $this->processRepository->findActiveByTeam($team);
         }
 
-        $people = $this->processPeopleRepository->findByTeam($team);
+        $people = $this->processPeopleRepository->findActiveByTeam($team);
         $categories = $this->processCategoryRepository->findByTeam($team);
 
         return $this->formBuilder->create(PolicyType::class, $policies, array_merge([

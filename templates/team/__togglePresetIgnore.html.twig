@@ -1,0 +1,11 @@
+{% trans_default_domain 'vvt' %}
+
+{% set used = team not in preset.ignoredInTeams %}
+<a href='{{ path('preset_set_ignored',{'preset': preset.id,'team':team.id, 'type': preset.class, 'set':used}) }}' type='button'
+   class='{% if used %}text-danger{% else %}text-success{% endif %}'>
+    {% if used %}
+        {% trans %}inheritance.setInactive{% endtrans %}
+    {% else %}
+        {% trans %}inheritance.setActive{% endtrans %}
+    {% endif %}
+</a>

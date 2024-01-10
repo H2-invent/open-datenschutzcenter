@@ -209,6 +209,30 @@ class Team
     #[ORM\ManyToMany(targetEntity: VVT::class, mappedBy: 'ignoredInTeams')]
     private $ignoredInheritances;
 
+    #[ORM\ManyToMany(targetEntity: VVTPersonen::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredVVTPersons;
+
+    #[ORM\ManyToMany(targetEntity: VVTRisiken::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredVVTRisks;
+
+    #[ORM\ManyToMany(targetEntity: VVTGrundlage::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredVVTGrounds;
+
+    #[ORM\ManyToMany(targetEntity: VVTStatus::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredVVTStates;
+
+    #[ORM\ManyToMany(targetEntity: Produkte::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredProducts;
+
+    #[ORM\ManyToMany(targetEntity: DatenweitergabeStand::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredDWStates;
+
+    #[ORM\ManyToMany(targetEntity: DatenweitergabeGrundlagen::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredDWGrounds;
+
+    #[ORM\ManyToMany(targetEntity: AuditTomZiele::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredAuditGoals;
+
     public function __construct()
     {
         $this->members = new ArrayCollection();
@@ -1395,6 +1419,230 @@ class Team
         if ($this->ignoredInheritances->contains($vvt)) {
             $this->ignoredInheritances->removeElement($vvt);
             $vvt->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredVVTPersons(): Collection
+    {
+        return $this->ignoredVVTPersons;
+    }
+
+    public function addIgnoredVVTPerson(VVTPersonen $person): self
+    {
+        if (!$this->ignoredVVTPersons->contains($person)) {
+            $this->ignoredVVTPersons[] = $person;
+            $person->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredVVTPerson(VVTPersonen $person): self
+    {
+        if ($this->ignoredVVTPersons->contains($person)) {
+            $this->ignoredVVTPersons->removeElement($person);
+            $person->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredVVTStates(): Collection
+    {
+        return $this->ignoredVVTStates;
+    }
+
+    public function addIgnoredVVTState(VVTStatus $state): self
+    {
+        if (!$this->ignoredVVTStates->contains($state)) {
+            $this->ignoredVVTStates[] = $state;
+            $state->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredVVTState(VVTStatus $state): self
+    {
+        if ($this->ignoredVVTStates->contains($state)) {
+            $this->ignoredVVTStates->removeElement($state);
+            $state->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredVVTGrounds(): Collection
+    {
+        return $this->ignoredVVTGrounds;
+    }
+
+    public function addIgnoredVVTGround(VVTGrundlage $ground): self
+    {
+        if (!$this->ignoredVVTGrounds->contains($ground)) {
+            $this->ignoredVVTGrounds[] = $ground;
+            $ground->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredVVTGround(VVTGrundlage $ground): self
+    {
+        if ($this->ignoredVVTGrounds->contains($ground)) {
+            $this->ignoredVVTGrounds->removeElement($ground);
+            $ground->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredVVTRisks(): Collection
+    {
+        return $this->ignoredVVTRisks;
+    }
+
+    public function addIgnoredVVTRisk(VVTRisiken $risk): self
+    {
+        if (!$this->ignoredVVTRisks->contains($risk)) {
+            $this->ignoredVVTRisks[] = $risk;
+            $risk->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredVVTRisk(VVTRisiken $risk): self
+    {
+        if ($this->ignoredVVTRisks->contains($risk)) {
+            $this->ignoredVVTRisks->removeElement($risk);
+            $risk->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredAuditGoals(): Collection
+    {
+        return $this->ignoredAuditGoals;
+    }
+
+    public function addIgnoredAuditGoal(AuditTomZiele $goal): self
+    {
+        if (!$this->ignoredAuditGoals->contains($goal)) {
+            $this->ignoredAuditGoals[] = $goal;
+            $goal->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredAuditGoal(AuditTomZiele $goal): self
+    {
+        if ($this->ignoredAuditGoals->contains($goal)) {
+            $this->ignoredAuditGoals->removeElement($goal);
+            $goal->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredDWGrounds(): Collection
+    {
+        return $this->ignoredDWGrounds;
+    }
+
+    public function addIgnoredDWGround(DatenweitergabeGrundlagen $ground): self
+    {
+        if (!$this->ignoredDWGrounds->contains($ground)) {
+            $this->ignoredDWGrounds[] = $ground;
+            $ground->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredDWGround(DatenweitergabeGrundlagen $ground): self
+    {
+        if ($this->ignoredDWGrounds->contains($ground)) {
+            $this->ignoredDWGrounds->removeElement($ground);
+            $ground->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredDWStates(): Collection
+    {
+        return $this->ignoredDWStates;
+    }
+
+    public function addIgnoredDWState(DatenweitergabeStand $state): self
+    {
+        if (!$this->ignoredDWStates->contains($state)) {
+            $this->ignoredDWStates[] = $state;
+            $state->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredDWState(DatenweitergabeStand $state): self
+    {
+        if ($this->ignoredDWStates->contains($state)) {
+            $this->ignoredDWStates->removeElement($state);
+            $state->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredProducts(): Collection
+    {
+        return $this->ignoredProducts;
+    }
+
+    public function addIgnoredProduct(Produkte $product): self
+    {
+        if (!$this->ignoredProducts->contains($product)) {
+            $this->ignoredProducts[] = $product;
+            $product->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredProduct(Produkte $product): self
+    {
+        if ($this->ignoredProducts->contains($product)) {
+            $this->ignoredProducts->removeElement($product);
+            $product->removeIgnoredInTeam($this);
         }
 
         return $this;

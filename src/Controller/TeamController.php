@@ -20,6 +20,7 @@ use App\Repository\SettingsRepository;
 use App\Repository\TeamRepository;
 use App\Repository\VVTStatusRepository;
 use App\Service\CurrentTeamService;
+use App\Service\InheritanceService;
 use App\Service\SecurityService;
 use App\Service\TeamService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -460,5 +461,38 @@ class TeamController extends BaseController
                 'type' => $request->get('type')
             ]);
         }
+    }
+
+    #[Route(path: '/team_custom/ignore', name: 'preset_set_ignored')]
+    public function setPresetIgnored(
+        Request                $request,
+        UrlGeneratorInterface  $urlGenerator,
+        TeamRepository         $teamRepository,
+        EntityManagerInterface $em,
+        InheritanceService     $inheritanceService
+    ): RedirectResponse
+    {
+        $team = $request->get('team');
+        $preset = $request->get('preset');
+        $type = $request->get('type');
+        $ignored = $request->get('set');
+
+        if (is_numeric($team)) {
+            $team = $teamRepository->find($team);
+        }
+
+        if (is_numeric($preset)) {
+            $preset = $em->getRepository($type)->find($preset);
+        }
+
+        if ($team && $preset) {
+            $inheritanceService->setIgnored($preset, $team, $ignored);
+            $em->persist($preset);
+            $em->persist($team);
+            $em->flush();
+        }
+
+        $referer = $request->headers->get('referer');
+        return new RedirectResponse($referer ?: $urlGenerator->generate('dashboard'));
     }
 }

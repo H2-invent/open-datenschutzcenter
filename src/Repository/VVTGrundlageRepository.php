@@ -13,25 +13,13 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method VVTGrundlage[]    findAll()
  * @method VVTGrundlage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VVTGrundlageRepository extends ServiceEntityRepository
+class VVTGrundlageRepository extends PresetRepository
 {
     public function __construct(
-        ManagerRegistry                 $registry,
-        private readonly TeamRepository $teamRepository,
+        protected readonly ManagerRegistry    $registry,
+        protected readonly TeamRepository     $teamRepository,
     )
     {
-        parent::__construct($registry, VVTGrundlage::class);
-    }
-
-    public function findByTeam(Team $team)
-    {
-        $teamPath = $this->teamRepository->getPath($team);
-
-        return $this->createQueryBuilder('a')
-            ->where('a.team is null OR a.team IN (:teamPath)')
-            ->andWhere('a.activ = 1')
-            ->setParameter('teamPath', $teamPath)
-            ->getQuery()
-            ->getResult();
+        parent::__construct($this->registry, $this->teamRepository,VVTGrundlage::class);
     }
 }
