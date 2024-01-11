@@ -64,7 +64,7 @@ abstract class PresetRepository extends ServiceEntityRepository
             $ignored = $this->getIgnored($team);
             if (count($ignored)) {
                 $queryBuilder
-                    ->andWhere('a.team NOT IN (:ignored)')
+                    ->andWhere('a NOT IN (:ignored)')
                     ->setParameter('ignored', $ignored);
             }
         }
