@@ -469,9 +469,11 @@ class TeamController extends BaseController
         UrlGeneratorInterface  $urlGenerator,
         TeamRepository         $teamRepository,
         EntityManagerInterface $em,
-        InheritanceService     $inheritanceService
+        InheritanceService     $inheritanceService,
+        SecurityService        $securityService
     ): RedirectResponse
     {
+        $user = $this->getUser();
         $team = $request->get('team');
         $preset = $request->get('preset');
         $type = $request->get('type');
@@ -483,6 +485,10 @@ class TeamController extends BaseController
 
         if (is_numeric($preset)) {
             $preset = $em->getRepository($type)->find($preset);
+        }
+
+        if ($securityService->adminCheck($user, $team) === false) {
+            return $this->redirectToRoute('dashboard');
         }
 
         if ($team && $preset) {
