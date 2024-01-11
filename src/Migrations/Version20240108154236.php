@@ -14,7 +14,7 @@ final class Version20240108154236 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add columns for inheritance and join tables for opt-out in child teams to preset types';
     }
 
     public function up(Schema $schema): void
