@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Team;
 use App\Entity\VVTStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -13,25 +14,13 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method VVTStatus[]    findAll()
  * @method VVTStatus[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VVTStatusRepository extends ServiceEntityRepository
+class VVTStatusRepository extends PresetRepository
 {
     public function __construct(
-        ManagerRegistry                 $registry,
-        private readonly TeamRepository $teamRepository,
+        protected readonly ManagerRegistry    $registry,
+        protected readonly TeamRepository     $teamRepository,
     )
     {
-        parent::__construct($registry, VVTStatus::class);
-    }
-
-    public function findActiveByTeam(Team $team)
-    {
-        $teamPath = $this->teamRepository->getPath($team);
-
-        return $this->createQueryBuilder('a')
-            ->where('a.team is null OR a.team IN (:teamPath)')
-            ->andWhere('a.activ = 1')
-            ->setParameter('teamPath', $teamPath)
-            ->getQuery()
-            ->getResult();
+        parent::__construct($this->registry, $this->teamRepository, VVTStatus::class);
     }
 }

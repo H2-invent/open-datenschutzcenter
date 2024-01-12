@@ -1,12 +1,21 @@
 <?php
 namespace App\Service;
 
+use App\Entity\AuditTomZiele;
 use App\Entity\Datenweitergabe;
+use App\Entity\DatenweitergabeGrundlagen;
+use App\Entity\DatenweitergabeStand;
 use App\Entity\Kontakte;
 use App\Entity\Policies;
+use App\Entity\Preset;
+use App\Entity\Produkte;
 use App\Entity\Software;
 use App\Entity\Team;
 use App\Entity\Tom;
+use App\Entity\VVTGrundlage;
+use App\Entity\VVTPersonen;
+use App\Entity\VVTRisiken;
+use App\Entity\VVTStatus;
 use App\Repository\KontakteRepository;
 use App\Repository\SoftwareRepository;
 use Doctrine\Common\Collections\Collection;
@@ -86,6 +95,73 @@ class InheritanceService
             }
         }
         return false;
+    }
+
+    public function setIgnored(Preset $preset, Team $team, bool $ignored)
+    {
+        if ($ignored) {
+            $preset->addIgnoredInTeam($team);
+            $this->addIgnoredPresetToTeam($preset, $team);
+        } else {
+            $preset->removeIgnoredInTeam($team);
+            $this->removeIgnoredPresetFromTeam($preset, $team);
+        }
+    }
+
+    private function addIgnoredPresetToTeam(Preset $preset, Team $team) {
+        switch ($preset->getClass()) {
+            case VVTStatus::class:
+                $team->addIgnoredVVTState($preset);
+                break;
+            case VVTRisiken::class:
+                $team->addIgnoredVVTRisk($preset);
+                break;
+            case DatenweitergabeGrundlagen::class:
+                $team->addIgnoredDWGround($preset);
+                break;
+            case DatenweitergabeStand::class:
+                $team->addIgnoredDWState($preset);
+                break;
+            case VVTPersonen::class:
+                $team->addIgnoredVVTPerson($preset);
+                break;
+            case VVTGrundlage::class:
+                $team->addIgnoredVVTGround($preset);
+                break;
+            case Produkte::class:
+                $team->addIgnoredProduct($preset);
+                break;
+            case AuditTomZiele::class:
+                $team->addIgnoredAuditGoal($preset);
+        }
+    }
+
+    private function removeIgnoredPresetFromTeam(Preset $preset, Team $team) {
+        switch ($preset->getClass()) {
+            case VVTStatus::class:
+                $team->removeIgnoredVVTState($preset);
+                break;
+            case VVTRisiken::class:
+                $team->removeIgnoredVVTRisk($preset);
+                break;
+            case DatenweitergabeGrundlagen::class:
+                $team->removeIgnoredDWGround($preset);
+                break;
+            case DatenweitergabeStand::class:
+                $team->removeIgnoredDWState($preset);
+                break;
+            case VVTPersonen::class:
+                $team->removeIgnoredVVTPerson($preset);
+                break;
+            case VVTGrundlage::class:
+                $team->removeIgnoredVVTGround($preset);
+                break;
+            case Produkte::class:
+                $team->removeIgnoredProduct($preset);
+                break;
+            case AuditTomZiele::class:
+                $team->removeIgnoredAuditGoal($preset);
+        }
     }
 
     // if there is a process in the collection which is not ignored, return true

@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProdukteRepository::class)]
-class Produkte
+class Produkte extends Preset
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,6 +27,9 @@ class Produkte
 
     #[ORM\ManyToMany(targetEntity: VVT::class, mappedBy: 'produkt')]
     private $Vvts;
+
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'ignoredProducts')]
+    protected $ignoredInTeams;
 
     public function __construct()
     {

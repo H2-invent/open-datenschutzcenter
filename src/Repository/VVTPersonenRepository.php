@@ -13,14 +13,14 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method VVTPersonen[]    findAll()
  * @method VVTPersonen[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VVTPersonenRepository extends ServiceEntityRepository
+class VVTPersonenRepository extends PresetRepository
 {
     public function __construct(
-        ManagerRegistry                 $registry,
-        private readonly TeamRepository $teamRepository,
+        protected readonly ManagerRegistry    $registry,
+        protected readonly TeamRepository     $teamRepository,
     )
     {
-        parent::__construct($registry, VVTPersonen::class);
+        parent::__construct($this->registry, $this->teamRepository, VVTPersonen::class);
     }
 
     public function findByTeam(Team $team)

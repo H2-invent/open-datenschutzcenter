@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\VVTRisikenRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VVTRisikenRepository::class)]
-class VVTRisiken
+class VVTRisiken extends Preset
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,6 +22,9 @@ class VVTRisiken
 
     #[ORM\Column(type: 'boolean')]
     private $activ;
+
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'ignoredVVTRisks')]
+    protected $ignoredInTeams;
 
     public function getId(): ?int
     {

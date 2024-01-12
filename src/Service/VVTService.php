@@ -93,10 +93,10 @@ class VVTService
         }
 
         $statuses = $this->processStatusRepository->findActiveByTeam($team);
-        $people = $this->processPeopleRepository->findByTeam($team);
+        $people = $this->processPeopleRepository->findActiveByTeam($team);
         $categories = $this->processCategoryRepository->findByTeam($team);
-        $bases = $this->processBasisRepository->findByTeam($team);
-        $risks = $this->processRiskRepository->findByTeam($team);
+        $bases = $this->processBasisRepository->findActiveByTeam($team);
+        $risks = $this->processRiskRepository->findActiveByTeam($team);
         $departments = $this->departmentRepository->findActiveByTeam($team);
         $products = $this->productRepository->findActiveByTeam($team);
 
