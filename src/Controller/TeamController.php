@@ -463,7 +463,7 @@ class TeamController extends BaseController
         }
     }
 
-    #[Route(path: '/team_custom/ignore', name: 'preset_set_ignored')]
+    #[Route(path: '/team_custom/ignore', name: 'preset_set_ignored', methods: 'PUT|POST')]
     public function setPresetIgnored(
         Request                $request,
         UrlGeneratorInterface  $urlGenerator,

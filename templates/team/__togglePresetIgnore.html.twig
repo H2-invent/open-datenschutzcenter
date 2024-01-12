@@ -1,11 +1,12 @@
 {% trans_default_domain 'vvt' %}
 
 {% set used = team not in preset.ignoredInTeams %}
-<a href='{{ path('preset_set_ignored',{'preset': preset.id,'team':team.id, 'type': preset.class, 'set':used}) }}' type='button'
-   class='{% if used %}text-danger{% else %}text-success{% endif %}'>
-    {% if used %}
-        {% trans %}inheritance.setInactive{% endtrans %}
-    {% else %}
-        {% trans %}inheritance.setActive{% endtrans %}
-    {% endif %}
-</a>
+<form name="toggle-ignored" method="post" action="{{ path('preset_set_ignored',{'preset': preset.id,'team':team.id, 'type': preset.class, 'set':used}) }}">
+    <button type="submit" class="{% if used %}text-danger{% endif %}">
+        {% if used %}
+            {% trans %}inheritance.setInactive{% endtrans %}
+        {% else %}
+            {% trans %}inheritance.setActive{% endtrans %}
+        {% endif %}
+    </button>
+</form>
