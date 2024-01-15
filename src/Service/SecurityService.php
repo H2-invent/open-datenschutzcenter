@@ -126,8 +126,9 @@ class SecurityService
         }
 
         //Sicherheitsfunktion, dass nur eigene Daten bearbeitet werden können
-        if ($team === $data->getTeam()) {
+        if ($team !== $data->getTeam()) {
             $this->logAccessDenied($team);
+            return false;
         }
 
         return true;
