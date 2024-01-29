@@ -189,7 +189,7 @@ class SoftwareController extends BaseController
         if ($securityService->teamDataCheck($config->getSoftware(), $team) && $securityService->adminCheck($user, $team)) {
             $this->em->remove($config);
             $this->em->flush();
-            $this->addSuccess($this->translator->trans(id: 'config.delete', domain: 'software'));
+            $this->addSuccessMessage($this->translator->trans(id: 'config.delete', domain: 'software'));
             return $this->redirectToRoute(
                 'software_edit',
                 [

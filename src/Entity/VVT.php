@@ -168,7 +168,7 @@ class VVT
     private $source;
 
     /**
-     * @Encrypted() 
+     * @Encrypted()
      */
     #[ORM\Column(type: 'text', nullable: true)]
     private $loeschfrist;
@@ -520,6 +520,8 @@ class VVT
     /**
      * @return Collection|VVTDsfa[]
      */
+    // TODO: Move method into App\Repository\VVTRepository
+    /*
     public function getLatestDsfa()
     {
         return $this->createQueryBuilder('d')
@@ -527,6 +529,7 @@ class VVT
             ->getQuery()
             ->getResult();
     }
+    */
 
     public function getUser(): ?User
     {
@@ -832,7 +835,7 @@ class VVT
         $this->loeschfrist = $loeschfrist;
 
         return $this;
-    } 
+    }
 
     public function __clone()
     {

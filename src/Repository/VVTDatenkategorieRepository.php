@@ -11,7 +11,6 @@ namespace App\Repository;
 use App\Entity\VVTDatenkategorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method VVTDatenkategorie|null find($id, $lockMode = null, $lockVersion = null)
