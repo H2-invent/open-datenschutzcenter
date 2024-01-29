@@ -26,6 +26,8 @@ class CronService
         private TranslatorInterface    $translator,
         private NotificationService    $notificationService,
         private Environment            $environment,
+        private string                 $cronIPAdress,
+        private string                 $cronToken,
     )
     {
     }
@@ -34,7 +36,7 @@ class CronService
     {
         $message = false;
 
-        if ($request->get('token') !== $this->getParameter('cronToken')) {
+        if ($request->get('token') !== $this->cronToken) {
             $message =
                 [
                     'error' => true,
@@ -45,7 +47,7 @@ class CronService
             $this->logger->error($message['hinweis'], $message);
         }
 
-        if ($this->getParameter('cronIPAdress') !== $request->getClientIp()) {
+        if ($this->cronIPAdress !== $request->getClientIp()) {
             $message = [
                 'error' => true,
                 'hinweis' => $this->translator->trans(id: 'cron.ip.unauthorized', domain: 'service'),
