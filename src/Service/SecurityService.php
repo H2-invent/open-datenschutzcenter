@@ -66,7 +66,7 @@ class SecurityService
         return false;
     }
 
-    public function teamArrayDataCheck($data, $team): bool
+    public function teamArrayDataCheck($data, $team, $user): bool
     {
         //Sicherheitsfunktion, dass ein Team vorhanden ist
         if ($team === null) {
@@ -85,7 +85,7 @@ class SecurityService
                 'typ' => 'LOGIN',
                 'error' => true,
                 'hinweis' => $this->translator->trans(id: 'error.userNotFoundInArray', domain: 'general'),
-                'user' => $this->getUser()->getUsername()];
+                'user' => $user->getUsername()];
             $this->logger->error($message['typ'], $message);
             return false;
         }
