@@ -2,9 +2,9 @@
 
 namespace App\Repository;
 
-use App\Entity\File;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @method File|null find($id, $lockMode = null, $lockVersion = null)
