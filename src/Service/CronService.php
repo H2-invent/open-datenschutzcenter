@@ -71,7 +71,7 @@ class CronService
             if (!$buchung->getInvitation()) {
                 $content = $this->environment->render('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()->get(0)]);
                 $buchung->setInvitation(true);
-                $em->persist($buchung);
+                $this->em->persist($buchung);
                 ++$countNeu;
             } else {
                 $content = $this->environment->render('email/errinnerungKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()->get(0)]);

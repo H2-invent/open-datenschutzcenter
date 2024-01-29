@@ -18,7 +18,7 @@ use Twig\Environment;
 
 class AkademieService
 {
-
+    private EntityManagerInterface $em;
     private CurrentTeamService $currentTeamService;
     private NotificationService $notificationService;
     private Environment $twig;
