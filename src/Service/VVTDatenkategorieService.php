@@ -87,6 +87,7 @@ class VVTDatenkategorieService
             $act = $next;
         }
 
+        return null;
     }
 
     function newVVTDatenkategorie(Team $team, User $user)
