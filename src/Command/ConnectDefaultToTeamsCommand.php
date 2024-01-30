@@ -5,11 +5,13 @@ namespace App\Command;
 use App\Entity\Team;
 use App\Service\ConnectDefaultToTeamsService;
 use Doctrine\ORM\EntityManagerInterface;
+use LogicException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -36,6 +38,10 @@ class ConnectDefaultToTeamsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$output instanceof ConsoleOutputInterface) {
+            throw new LogicException('This command accepts only an instance of "ConsoleOutputInterface".');
+        }
+
         $io = new SymfonyStyle($input, $output);
         $teams = $this->em->getRepository(Team::class)->findAll();
         $io->success(sprintf('We will connect %d Teams', sizeof($teams)));
