@@ -226,7 +226,7 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $datenFilesystem->getMimetype($datenweitergabe->getUpload());
+        $type = $datenFilesystem->mimeType($datenweitergabe->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(
