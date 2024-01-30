@@ -38,8 +38,8 @@ services:
 
     App\Service\CronService:
         arguments:
-            $cronIPAdress: '%cronIPAdress%':
-            $cronToken: '%cronToken%':
+            $cronIPAdress: '%cronIPAdress%'
+            $cronToken: '%cronToken%'
 
     app.menu.service:
         class: App\Service\MenuService
