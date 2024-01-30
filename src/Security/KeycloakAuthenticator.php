@@ -123,8 +123,9 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
 
     private function getEmailForKeycloakUser(ResourceOwnerInterface $keycloakUser): string {
         try {
-            // FIXME: ResourceOwnerInterface cannot have method getEmail()
-            return $keycloakUser->getEmail();
+            if ($keycloakUser instanceof User) {
+                return $keycloakUser->getEmail();
+            }
         } catch (\Exception $e) {
             try {
                 return $keycloakUser->toArray()['preferred_username'];
