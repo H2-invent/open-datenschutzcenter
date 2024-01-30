@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Entity\Datenweitergabe;
+use App\Entity\User;
 use App\Repository\DatenweitergabeRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
@@ -32,8 +33,7 @@ class DatenweitergabeController extends BaseController
     public function __construct(
         private readonly TranslatorInterface $translator,
         private EntityManagerInterface       $em,
-    )
-    {
+    ) {
     }
 
     #[Route(path: '/auftragsverarbeitung/new', name: 'auftragsverarbeitung_new')]
@@ -143,12 +143,13 @@ class DatenweitergabeController extends BaseController
         DatenweitergabeRepository $dataTransferRepository,
     ): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
         $daten = $dataTransferRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team)) {
-            $approve = $approveService->approve($daten, $this->getUser());
+            $approve = $approveService->approve($daten, $user);
             if ($approve['clone'] === true) {
                 $newDaten = $dataTransferRepository->find($approve['data']);
 
@@ -183,6 +184,7 @@ class DatenweitergabeController extends BaseController
         DatenweitergabeRepository $dataTransferRepository,
     ): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
         $daten = $dataTransferRepository->find($request->get('id'));
@@ -208,7 +210,9 @@ class DatenweitergabeController extends BaseController
     ): Response
     {
         $stream = $datenFilesystem->read($datenweitergabe->getUpload());
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
         if ($securityService->teamDataCheck($datenweitergabe, $team) === false) {
             $logger->error(
                 'DOWNLOAD',
@@ -217,7 +221,7 @@ class DatenweitergabeController extends BaseController
                     'error' => true,
                     'hinweis' => 'Fehlerhafter download. User nicht berechtigt!',
                     'dokument' => $datenweitergabe->getUpload(),
-                    'user' => $this->getUser()->getUsername()
+                    'user' => $user->getUsername()
                 ]);
             return $this->redirectToRoute('dashboard');
         }
@@ -238,7 +242,7 @@ class DatenweitergabeController extends BaseController
                 'error' => false,
                 'hinweis' => 'Download erfolgreich',
                 'dokument' => $datenweitergabe->getUpload(),
-                'user' => $this->getUser()->getUsername()
+                'user' => $user->getUsername()
             ],
         );
         return $response;

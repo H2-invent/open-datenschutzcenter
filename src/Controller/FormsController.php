@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Forms;
+use App\Entity\User;
 use App\Repository\FormsRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
@@ -23,12 +24,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormsController extends BaseController
 {
-
-
-    public function __construct(private readonly TranslatorInterface $translator,
-                                private EntityManagerInterface       $em,
-    )
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private EntityManagerInterface       $em,
+    ) {
     }
 
     #[Route(path: '/forms/new', name: 'forms_new')]
@@ -40,13 +39,15 @@ class FormsController extends BaseController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $team = $currentTeamService->getTeamFromSession($user);
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $formsService->newForm($this->getUser());
+        $daten = $formsService->newForm($user);
 
         $form = $formsService->createForm($daten, $team);
         $form->handleRequest($request);
@@ -129,8 +130,10 @@ class FormsController extends BaseController
     ): Response
     {
         $stream = $formsFilesystem->read($forms->getUpload());
+        /** @var User $user */
+        $user = $this->getUser();
 
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getTeamFromSession($user);
         if ($securityService->teamDataCheck($forms, $team) === false) {
             $logger->error(
                 'DOWNLOAD',
@@ -139,7 +142,7 @@ class FormsController extends BaseController
                     'error' => true,
                     'hinweis' => $this->translator->trans(id: 'user.unauthorized', domain: 'forms'),
                     'dokument' => $forms->getUpload(),
-                    'user' => $this->getUser()->getUsername(),
+                    'user' => $user->getUsername(),
                 ],
             );
             return $this->redirectToRoute('dashboard');
@@ -161,7 +164,7 @@ class FormsController extends BaseController
                 'error' => false,
                 'hinweis' => $this->translator->trans(id: 'download.successful', domain: 'general'),
                 'dokument' => $forms->getUpload(),
-                'user' => $this->getUser()->getUsername(),
+                'user' => $user->getUsername(),
             ],
         );
         return $response;

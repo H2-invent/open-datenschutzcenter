@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Team;
+use App\Entity\User;
 use App\Form\Type\ClientRequesCommentType;
 use App\Form\Type\ClientRequestInternalNoteType;
-use App\Form\Type\ClientRequestInternalType;
 use App\Form\Type\ClientRequestType;
 use App\Form\Type\ClientRequestViewType;
 use App\Repository\ClientRequestRepository;
@@ -24,13 +24,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ClientRequestController extends BaseController
 {
-
-
     public function __construct(
         private readonly TranslatorInterface $translator,
         private EntityManagerInterface       $em,
-    )
-    {
+    ) {
     }
 
     #[Route(path: '/client-requests', name: 'client_requests')]
@@ -83,8 +80,10 @@ class ClientRequestController extends BaseController
         ClientRequestRepository $clientRequestRepository,
     ): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $clientRequest = $clientRequestRepository->find($request->get('clientRequest'));
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getTeamFromSession($user);
         if ($securityService->teamDataCheck($clientRequest, $team) === false) {
             return $this->redirectToRoute('client_requests');
         }
@@ -93,7 +92,7 @@ class ClientRequestController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $clientRequestService->newComment($clientRequest, $form->getData()['comment'], $team->getKeycloakGroup() . ' > ' . $this->getUser()->getUsername(), 1);
+            $clientRequestService->newComment($clientRequest, $form->getData()['comment'], $team->getKeycloakGroup() . ' > ' . $user->getUsername(), 1);
             $this->addSuccessMessage($this->translator->trans(id: 'save.comment', domain: 'general'));
         }
 
@@ -110,11 +109,13 @@ class ClientRequestController extends BaseController
     ): Response
     {
         $clientRequest = $clientRequestRepository->find($request->get('id'));
+
+        /** @var User $user */
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
 
         if ($securityService->teamDataCheck($clientRequest, $team) && $securityService->adminCheck($user, $team)) {
-            $clientRequestService->closeRequest($clientRequest, $this->getUser());
+            $clientRequestService->closeRequest($clientRequest, $user);
 
             return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
         }
@@ -133,6 +134,7 @@ class ClientRequestController extends BaseController
         ClientRequestRepository $clientRequestRepository,
     )
     {
+        /** @var User $user */
         $user = $this->getUser();
         $team = $currentTeamService->getTeamFromSession($user);
         $clientRequest = $clientRequestRepository->find($request->get('id'));
@@ -161,7 +163,7 @@ class ClientRequestController extends BaseController
                     $this->em->persist($clientRequest);
                     $this->em->flush();
 
-                    $clientRequestService->newComment($clientRequest, $content, $team->getKeycloakGroup() . ' > ' . $this->getUser()->getUsername(), 1);
+                    $clientRequestService->newComment($clientRequest, $content, $team->getKeycloakGroup() . ' > ' . $user->getUsername(), 1);
 
                     $this->addSuccessMessage($this->translator->trans(id: 'save.changeSuccessful', domain: 'general'));
                     return $this->redirectToRoute('client_requests_show', ['id' => $clientRequest->getId()]);
