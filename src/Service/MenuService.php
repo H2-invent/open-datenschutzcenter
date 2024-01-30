@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Team;
+use App\Entity\User;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -12,11 +13,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuService
 {
+    /**
+     * @var (UserInterface&User)|null
+     */
     private ?UserInterface $user = null;
     private ?Team $currentTeam = null;
 
-    public function __construct(private FactoryInterface $factory, private TranslatorInterface $translator, private Security $security, private CurrentTeamService $currentTeamService, private RequestStack $requestStack)
-    {
+    public function __construct(
+        private FactoryInterface $factory,
+        private TranslatorInterface $translator,
+        private Security $security,
+        private CurrentTeamService $currentTeamService,
+        private RequestStack $requestStack,
+    ) {
         $this->user = $this->security->getUser();
         $this->currentTeam = $this->currentTeamService->getTeamFromSession($this->user);
     }
@@ -45,7 +54,7 @@ class MenuService
     public function createElementsMenu(array $options): ?ItemInterface
     {
         $menu = $this->factory->createItem('root');
-        
+
         if (!$this->user->getTeams()->isEmpty()) {
             $menu->addChild($this->trans('auditQuestions'), ['route' => 'audit_tom']);
             $menu->addChild($this->trans('dataCategories'), ['route' => 'app_vvtdatenkategorie_index']);
