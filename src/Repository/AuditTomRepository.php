@@ -43,6 +43,14 @@ class AuditTomRepository extends ServiceEntityRepository
             ;
     }
 
+    /**
+     * @deprecated Use findAuditByTeam() instead
+     */
+    public function findActiveAndOpenByTeam(Team $team)
+    {
+        return $this->findAuditByTeam($team);
+    }
+
     public function findOpenByTeam(Team $team)
     {
         return $this->createQueryBuilder('a')
