@@ -528,27 +528,30 @@ class BerichtController extends BaseController
     {
         $id = $request->get('id');
         $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $clientRequests = [];
 
         if ($id) {
-            $clientRequest = $clientRequestRepository->findBy(['id'=>$id]);
-            $title = $this->translator->trans(id: 'report.about.clientRequestBy', domain: 'bericht') . ' ' . $clientRequest->getName();
+            $clientRequests = $clientRequestRepository->findBy(['id'=>$id]);
+
+            $requestName = (count($clientRequests) > 0) ? $clientRequests[0]->getName() : '';
+            $title = $this->translator->trans(id: 'report.about.clientRequestBy', domain: 'bericht') . ' ' . $requestName;
         } else {
-            $clientRequest = $clientRequestRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
+            $clientRequests = $clientRequestRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
             $title = $this->translator->trans(id: 'report.about.clientRequest', domain: 'bericht');
         }
 
-        if (count($clientRequest) < 1) {
+        if (count($clientRequests) === 0) {
             return $this->redirectNoReport();
         }
 
         // Center Team authentication
-        if ($team === null || $clientRequest[0]->getTeam() !== $team) {
+        if ($team === null || $clientRequests[0]->getTeam() !== $team) {
             return $this->redirectToRoute('dashboard');
         }
 
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/request.html.twig', [
-            'daten' => $clientRequest,
+            'daten' => $clientRequests,
             'titel' => $title,
             'team' => $team,
             'all' => $request->get('all'),
