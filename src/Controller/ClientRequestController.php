@@ -145,7 +145,7 @@ class ClientRequestController extends BaseController
                 $this->translator->trans(id: 'reason', domain: 'general') . ': ' . $clientRequest->getItemString(),
                 $this->translator->trans(id: 'description', domain: 'general') . ': ' . $clientRequest->getDescription(),
                 $this->translator->trans(id: 'additionalInformation', domain: 'general') . ': ' . $clientRequest->getFirstname() . ' ' . $clientRequest->getLastname(),
-                $this->translator->trans(id: 'birthday', domain: 'general') . ': ' . $clientRequest->getBirthday()->format('d.m.Y'),
+                $this->translator->trans(id: 'birthday', domain: 'general') . ': ' . $clientRequest->getBirthday()?->format('d.m.Y'),
                 $this->translator->trans(id: 'address', domain: 'general') . ': ' . $clientRequest->getStreet() . ' ' . $clientRequest->getCity(),
             ];
             $content = implode(' | ', $contentArray);
