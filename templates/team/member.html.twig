@@ -20,7 +20,6 @@
 
 {% block body %}
 <div id="content-team-admin">
-    <a href="{{ path('manage_teams') }}">{% trans %}backToTeamManagement{% endtrans %}</a>
     {# Hide this section if keycloak groups are used to avoid confusing users #}
     {% if not useKeycloakGroups %}
         <h3>{% trans %}openInvitations{% endtrans %}</h3>
