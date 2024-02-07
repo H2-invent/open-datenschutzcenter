@@ -1183,7 +1183,7 @@ trix-editor ol, .editor-output ol, ol.initial {
 }
 
 ol.item-history {
-    @apply text-sm card-outlined w-full max-w-2xl;
+    @apply text-sm card-outlined w-full w-full ;
     list-style: decimal;
     list-style-position: outside;
 }
