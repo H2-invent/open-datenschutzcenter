@@ -16,10 +16,16 @@
 
 {% block textarea_widget %}
     {% if form.vars.attr.class is defined and 'summernote' in form.vars.attr.class %}
-        <div class="trix-wrapper">
-            <trix-editor input="{{ id }}"></trix-editor>
-        </div>
-        <div class="hidden">{{ form_widget(form) }}</div>
+        {% if form.parent.vars.disabled %}
+            <div class="px-3 py-2 bg-surface-50 border rounded-lg">
+                {{ form.vars.value|raw }}
+            </div>
+        {% else %}
+            <div class="trix-wrapper">
+                <trix-editor input="{{ id }}"></trix-editor>
+            </div>
+            <div class="hidden">{{ form_widget(form) }}</div>
+        {% endif %}
     {% else %}
         {{ form_widget(form) }}
     {% endif %}
