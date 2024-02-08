@@ -14,6 +14,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Team;
+use App\Form\Type\TeamType;
 use App\Repository\AkademieBuchungenRepository;
 use App\Repository\AuditTomRepository;
 use App\Repository\DatenweitergabeRepository;
@@ -147,6 +149,26 @@ class DashboardController extends BaseController
         }
         return $this->render('dashboard/noteam.html.twig', [
             'user' => $this->getUser(),
+        ]);
+    }
+
+    #[Route(path: '/no_team/create', name: 'no_team_create')]
+    public function noTeamCreate(): Response
+    {
+        if (!$_ENV['APP_DEMO']) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $team = (new Team())->setActiv(true);
+        $form = $this->createForm(TeamType::class, $team, [
+            'action' => $this->generateUrl('team_create')
+        ])
+            ->remove('video')
+            ->remove('externalLink');
+
+        return $this->render('dashboard/noteamCreate.html.twig', [
+            'user' => $this->getUser(),
+            'form' => $form->createView(),
         ]);
     }
 
