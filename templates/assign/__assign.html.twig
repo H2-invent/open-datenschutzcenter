@@ -27,7 +27,7 @@
 {% else %}
     <div class="card card-outlined bg-primary-50 block flex-none">
         <p class="text-sm">
-            <strong>{% trans from 'general' %}assignedTo{% endtrans %}:</strong>
+            <strong>{% trans from 'general' %}assignedTo{% endtrans %}: </strong>
             <span>{{ data.assignedUser.email }}</span>
             <a href="{{ path(path,{'id':data.id}) }}" title="{{ 'removeAssign'|trans }}" class="float-right underline">
                 {{ 'removeAssign'|trans }}
