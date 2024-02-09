@@ -22,30 +22,35 @@
 <div id="content-team-admin">
     {# Hide this section if keycloak groups are used to avoid confusing users #}
     {% if not useKeycloakGroups %}
-        <h3>{% trans %}openInvitations{% endtrans %}</h3>
-        <ul class="stacked-list !mb-10">
-            {% for member in team.members |filter(member => member.registerId) %}
-                <li>
-                    <div>
-                        <p>{{ member.email }}</p>
-                    </div>
-                    <div>
-                        {% if team in member.adminRoles %}
-                            <a href="{{ path('team_mitglieder_admin', {'memberId':member.id}) }}" class="text-danger">
-                                {% trans %}admin.remove{% endtrans %}
-                            </a>
-                        {% else %}
-                            <a href="{{ path('team_mitglieder_admin', {'memberId':member.id}) }}">
-                                {% trans %}admin.create{% endtrans %}
-                            </a>
-                        {% endif %}
-                        <a href="{{ path('team_mitglieder_remove',{'memberId':member.id,'type':'odc'}) }}" class="text-danger">
-                            {% trans from 'general' %}remove{% endtrans %}
-                        </a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
+        {% set openInvitations = team.members|filter(member => member.registerId) %}
+        {% if openInvitations|length %}
+            <h3>{% trans %}openInvitations{% endtrans %}</h3>
+            <ul class="stacked-list !mb-10">
+                {% for member in openInvitations %}
+                    <li>
+                        <div>
+                            <p>{{ member.email }}</p>
+                        </div>
+                        <div>
+                            {% if team in member.adminRoles %}
+                                <a href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':team.id}) }}" class="text-danger">
+                                    {% trans %}admin.remove{% endtrans %}
+                                </a>
+                            {% else %}
+                                <a href="{{ path('team_mitglieder_admin', {'memberId':member.id, 'teamId':team.id}) }}">
+                                    {% trans %}admin.create{% endtrans %}
+                                </a>
+                            {% endif %}
+                            {% if not useKeycloakGroups and team.isMemberRemovable(member, app.user) %}
+                                <a href="{{ path('team_mitglieder_remove',{'memberId':member.id, 'teamId':team.id, 'type':'odc'}) }}" class="text-danger">
+                                    {% trans from 'general' %}remove{% endtrans %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     {% endif %}
 
     <h3>{% trans from 'base' %}users{% endtrans %}</h3>
@@ -91,7 +96,7 @@
                             </a>
                         {% endif %}
                         {# Hide this button if keycloak groups are used #}
-                        {% if not useKeycloakGroups %}
+                        {% if not useKeycloakGroups and team.isMemberRemovable(member, app.user) %}
                             <a href="{{ path('team_mitglieder_remove',{'memberId':member.id, 'teamId':team.id, 'type':'odc'}) }}" class="text-danger">
                                 {% trans from 'general' %}remove{% endtrans %}
                             </a>

@@ -7,6 +7,7 @@
         <thead>
             <tr>
                 <th scope="col">{% trans %}questionnaire.label{% endtrans %}</th>
+                <th scope="col">{% trans from 'academy' %}academyCourses{% endtrans %}</th>
                 <th scope="col">{% trans from 'general' %}createdAt{% endtrans %}</th>
                 <th scope="col">{% trans from 'general' %}action.word{% endtrans %}</th>
             </tr>
@@ -15,11 +16,14 @@
             {% for questionnaire in questionnaires %}
                 <tr>
                     <td>{{ questionnaire.label }}</td>
+                    <td>{{ questionnaire.academyLessons|length }}</td>
                     <td>{{ questionnaire.createdAt | date('Y-m-d H:i:s') }}</td>
                     <td>
                         <a href="{{ path('questionnaire_details', {'id': questionnaire.id}) }}">{% trans from 'general' %}show{% endtrans %}</a>
                         <a href="{{ path('questionnaire_edit', {'id': questionnaire.id}) }}">{% trans from 'general' %}edit{% endtrans %}</a>
-                        <a href="{{ path('questionnaire_delete', {'id': questionnaire.id}) }}" class="text-danger">{% trans from 'general' %}remove{% endtrans %}</a>
+                        {% if questionnaire.isDeletable %}
+                            <a href="{{ path('questionnaire_delete', {'id': questionnaire.id}) }}" class="text-danger">{% trans from 'general' %}remove{% endtrans %}</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
