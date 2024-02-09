@@ -91,7 +91,7 @@
                             </a>
                         {% endif %}
                         {# Hide this button if keycloak groups are used #}
-                        {% if not useKeycloakGroups %}
+                        {% if not useKeycloakGroups and team.isMemberRemovable(member, app.user) %}
                             <a href="{{ path('team_mitglieder_remove',{'memberId':member.id, 'teamId':team.id, 'type':'odc'}) }}" class="text-danger">
                                 {% trans from 'general' %}remove{% endtrans %}
                             </a>
