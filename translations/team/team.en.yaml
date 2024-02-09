@@ -19,6 +19,7 @@ team:
   delete: '{teamName} löschen'
   manage: Manage teams
   create: New team
+  created: Team erstellt
   manageData: Edit team
   manageMembers: Edit members
   deletionBlocked: 'Diese Gruppe kann erst gelöscht werden, wenn folgende Elemente entfernt wurden:'
