@@ -120,6 +120,7 @@ class TeamController extends BaseController
         ValidatorInterface     $validator,
         EntityManagerInterface $em,
         Request                $request,
+        CurrentTeamService     $teamService,
     ): Response
     {
         $user = $this->getUser();
@@ -140,6 +141,13 @@ class TeamController extends BaseController
                 $em->persist($nTeam);
                 $em->persist($user);
                 $em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'team.created', domain: 'team'));
+
+                if ($_ENV['APP_DEMO']) {
+                    $teamService->switchToTeam((string) $nTeam->getId());
+                    return $this->redirectToRoute('dashboard');
+                }
+
                 return $this->redirectToRoute('team_edit', ['id' => $nTeam->getId()]);
             }
         }
