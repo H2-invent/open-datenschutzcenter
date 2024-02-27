@@ -168,6 +168,17 @@ class User implements UserInterface
         return $this->id;
     }
 
+    public function hasRole(string $role): bool
+    {
+        foreach ($this->getRoles() as $_role) {
+            if ($role === $_role) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getTeams(): Collection
     {
         $allTeams = array_merge($this->teams->toArray(), $this->adminRoles->toArray());

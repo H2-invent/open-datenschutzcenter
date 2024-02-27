@@ -3,8 +3,7 @@
 
 {% block title %}
     {% trans %}adminArea{% endtrans %}
-    {{ currentTeam is defined and currentTeam ? currentTeam.name }}
-    {{ title is defined ? ': ' ~ title }}
+    {{ currentTeam is defined and currentTeam ? currentTeam.name : team is defined ? team }}{{ title is defined ? ': ' ~ title }}
 {% endblock %}
 
 {% block body %}

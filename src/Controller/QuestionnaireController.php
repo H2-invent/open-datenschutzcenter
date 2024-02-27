@@ -101,6 +101,10 @@ class QuestionnaireController extends BaseController
     #[ParamConverter('questionnaire', class: 'App\Entity\Questionnaire', options: ['mapping' => ['id' => 'id']])]
     public function delete(Questionnaire $questionnaire): RedirectResponse
     {
+        if (!$questionnaire->isDeletable()) {
+            throw $this->createNotFoundException();
+        }
+
         foreach ($questionnaire->getParticipationAnswers() as $participationAnswer) {
             $this->em->remove($participationAnswer);
         }

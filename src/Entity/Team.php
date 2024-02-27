@@ -271,6 +271,18 @@ class Team
         return $this->name;
     }
 
+    public function isMemberRemovable(User $member, User $userLoggedIn): bool
+    {
+        if ($userLoggedIn->hasRole('ROLE_SUPER_ADMIN')) {
+            return true;
+        }
+
+        if ($member === $userLoggedIn) {
+            return false;
+        }
+
+        return $member->getTeams()->contains($this);
+    }
 
     public function getId(): ?int
     {
