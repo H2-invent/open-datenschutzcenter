@@ -24,9 +24,9 @@ use Doctrine\Persistence\ManagerRegistry;
 abstract class PresetRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry    $registry,
-        TeamRepository     $teamRepository,
-        string             $entityClass
+        ManagerRegistry          $registry,
+        protected TeamRepository $teamRepository,
+        string                   $entityClass
     )
     {
         parent::__construct($registry, $entityClass);
