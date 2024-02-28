@@ -28,7 +28,7 @@ deleteConcepts: Löschkonzepte
 policies: Policies
 contacts: Kontakte
 dataTransfers: Data transfers
-orderProcessing: Order processing
+orderProcessing: Auftragsverarbeitungen
 software: Software
 forms: Formulare
 incidents: Vorfälle
@@ -48,3 +48,6 @@ manageTeams: Manage teams
 teamAdminArea: Team Admin Area
 superAdminArea: ODC Admin Area
 dsfa: DSFA
+assignError: Die Zuweisung ist fehlgeschlagen. Wenden Sie sich an Ihren Admin wenn das Problem bestehen bleibt.
+accessDeniedError: Sie haben versucht, auf ein Element zuzugreifen, das für Ihr Team nicht freigegeben ist.
+elementDoesNotExistError: Sie haben versucht, auf ein Element zuzugreifen, das nicht existiert.
