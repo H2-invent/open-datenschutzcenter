@@ -50,3 +50,10 @@ services:
             - { name: knp_menu.menu_builder, method: createAcademyMenu, alias: academy }
             - { name: knp_menu.menu_builder, method: createTeamAdminMenu, alias: teamAdmin }
             - { name: knp_menu.menu_builder, method: createAdminMenu, alias: admin }
+
+    Gedmo\Tree\TreeListener:
+        tags:
+            -  name: doctrine.event_subscriber
+               connection: default
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]

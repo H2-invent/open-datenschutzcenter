@@ -31,42 +31,63 @@
                             <li>
                                 <div>
                                     <p>
-                                        {{ d.name }}{% if not d.default %}
+                                        <span class="font-medium{% if currentTeam in d.object.ignoredInTeams %} text-muted{% endif %}">
+                                            {{ d.name }}
+                                        </span>
+                                        {% if d.default %}
+                                            <span class="text-sm{% if currentTeam in d.object.ignoredInTeams %} text-muted{% endif %}">
+                                                ({% trans %}default{% endtrans %})
+                                            </span>
+                                        {% elseif d.object.inherited %}
+                                            <span class="text-sm{% if currentTeam in d.object.ignoredInTeams %} text-muted{% endif %}">
+                                                {% if currentTeam == d.object.team %}
+                                                    ({% trans from 'general' %}inheritance.isInherited{% endtrans %})
+                                                {% else %}
+                                                    ({% trans from 'general' %}inheritance.fromTeam{% endtrans %} {{ d.object.team }})
+                                                {% endif %}
+                                            </span>
+                                        {% endif %}
                                     </p>
                                 </div>
-                                <div>
-                                    <a href="{{ d.edit }}"
-                                       data-type="dialogs"
-                                       data-target="#modal-remote-content"
-                                       data-action="click->appUi#loadContentModal">
-                                        {% trans from 'general' %}edit{% endtrans %}
-                                    </a>
+                                {% if not d.default %}
+                                    <div>
+                                        {% if currentTeam == d.object.team %}
+                                            <a href="{{ d.edit }}"
+                                               data-type="dialogs"
+                                               data-target="#modal-remote-content"
+                                               data-action="click->appUi#loadContentModal">
+                                                {% trans from 'general' %}edit{% endtrans %}
+                                            </a>
+                                        {% endif %}
 
-                                    {% if checkClass(d.object,'App\\Entity\\VVTStatus') %}
-                                        <a href="{{ path('team_custom_network_vvtstatus',{'id':d.id}) }}">
-                                            {% if d.object.network %}
-                                                {% trans from 'general' %}network.show.remove{% endtrans %}
-                                            {% else %}
-                                                {% trans from 'general' %}network.show.add{% endtrans %}
-                                            {% endif %}
-                                        </a>
-                                    {% endif %}
+                                        {% if checkClass(d.object,'App\\Entity\\VVTStatus') %}
+                                            <a href="{{ path('team_custom_network_vvtstatus',{'id':d.id}) }}">
+                                                {% if d.object.network %}
+                                                    {% trans from 'general' %}network.show.remove{% endtrans %}
+                                                {% else %}
+                                                    {% trans from 'general' %}network.show.add{% endtrans %}
+                                                {% endif %}
+                                            </a>
+                                        {% endif %}
 
-                                    {% if checkClass(d.object,'App\\Entity\\DatenweitergabeStand') %}
-                                        <a href="{{ path('team_custom_network_datenweitergabestatus',{'id':d.id}) }}">
-                                            {% if d.object.network %}
-                                                {% trans from 'general' %}network.show.remove{% endtrans %}
-                                            {% else %}
-                                                {% trans from 'general' %}network.show.add{% endtrans %}
-                                            {% endif %}
-                                        </a>
-                                    {% endif %}
-
-                                    <a href="{{ d.deactivate }}" class="text-danger">
-                                        {% trans from 'general' %}delete{% endtrans %}
-                                    </a>
-                                    {% else %} ({% trans %}default{% endtrans %}){% endif %}
-                                </div>
+                                        {% if checkClass(d.object,'App\\Entity\\DatenweitergabeStand') %}
+                                            <a href="{{ path('team_custom_network_datenweitergabestatus',{'id':d.id}) }}">
+                                                {% if d.object.network %}
+                                                    {% trans from 'general' %}network.show.remove{% endtrans %}
+                                                {% else %}
+                                                    {% trans from 'general' %}network.show.add{% endtrans %}
+                                                {% endif %}
+                                            </a>
+                                        {% endif %}
+                                        {% if currentTeam == d.object.team %}
+                                            <a href="{{ d.deactivate }}" class="text-danger">
+                                                {% trans from 'general' %}delete{% endtrans %}
+                                            </a>
+                                        {% else %}
+                                            {{ include('team/__togglePresetIgnore.html.twig',{'preset':d.object,'team':currentTeam}) }}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
                             </li>
                         {% endfor %}
                     </ul>

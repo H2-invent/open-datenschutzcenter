@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Form\Type\VvtDsfaType;
+use App\Repository\TeamRepository;
 use App\Repository\VVTDsfaRepository;
 use App\Repository\VVTRepository;
 use App\Service\ApproveService;
@@ -19,9 +20,11 @@ use App\Service\SecurityService;
 use App\Service\VVTDatenkategorieService;
 use App\Service\VVTService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -45,7 +48,7 @@ class VvtController extends BaseController
         CurrentTeamService       $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('vvt');
@@ -86,6 +89,7 @@ class VvtController extends BaseController
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'CTA' => false,
+            'isEditable' => true,
         ]);
     }
 
@@ -98,7 +102,7 @@ class VvtController extends BaseController
         VVTRepository      $vvtRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
@@ -146,7 +150,7 @@ class VvtController extends BaseController
     ): Response
     {
         $vvt = $vvtRepository->find($request->get('id'));
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
@@ -186,6 +190,7 @@ class VvtController extends BaseController
             'vvt' => $newVvt,
             'activ' => $newVvt->getActiv(),
             'CTA' => false,
+            'isEditable' => true,
         ]);
     }
 
@@ -199,7 +204,7 @@ class VvtController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) && $securityService->adminCheck($user, $team) && !$vvt->getApproved()) {
@@ -216,37 +221,51 @@ class VvtController extends BaseController
         VVTService               $VVTService,
         SecurityService          $securityService,
         AssignService            $assignService,
-        VVTDatenkategorieService $VVTDatenkategorieService,
+        VVTDatenkategorieService $vvtDatenkategorieService,
         CurrentTeamService       $currentTeamService,
-        VVTRepository            $vvtRepository,
+        VVTRepository            $vvtRepository
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vvt = $vvtRepository->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($vvt, $team) === false) {
+        if ($securityService->checkTeamAccessToProcess($vvt, $team) === false) {
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
             return $this->redirectToRoute('vvt');
         }
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
+        $latestCategories = [];
 
-        foreach ($vvt->getKategorien() as $cloneKat) {//hier haben wir die geklonten KAtegorien
-            $newVvt->addKategorien($VVTDatenkategorieService->findLatestKategorie($cloneKat->getCloneOf()));//wir hängen die neueste gültige Datenkategorie an den VVT clone an.
+        foreach ($vvt->getKategorien() as $category) {//hier haben wir die geklonten Kategorien
+            $cloneOf = $category->getCloneOf() ?: $category; //wir hängen die neueste gültige Datenkategorie an den VVT clone an.
+            $latestCategory = $vvtDatenkategorieService->findLatestKategorie($cloneOf);
+            $newVvt->addKategorien($latestCategory);
+            $latestCategories[] = $latestCategory;
         }
 
-        $form = $VVTService->createForm($newVvt, $team);
+        $isEditable = $vvt->getTeam() === $team;
+        $form = $VVTService->createForm($newVvt, $team, ['disabled' => !$isEditable]);
         $form->remove('nummer');
         $form->handleRequest($request);
         $assign = $assignService->createForm($vvt, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $vvt->getActiv() && !$vvt->getApproved()) {
+        $inheritedEntities = [];
+
+        if (!$isEditable) {
+            // This vvt was inherited by ancestor team.
+            // In this case we want inherited categories and deletion concepts available by links inside the vvt form.
+            $inheritedEntities = $vvtDatenkategorieService->getInheritedEntities($latestCategories);
+        }
+
+        if ($form->isSubmitted() && $form->isValid() && $vvt->getActiv() && !$vvt->getApproved() && $isEditable) {
             $vvt->setActiv(false);
             $newVvt = $form->getData();
 
             $errors = $validator->validate($newVvt);
             if (count($errors) == 0) {
                 foreach ($newVvt->getKategorien() as $kategorie) { // wir haben die fiktiven neuesten Kategories
-                    $tmp = $VVTDatenkategorieService->createChild($kategorie);//wir klonen die kategorie damit diese revisionssicher ist
+                    $tmp = $vvtDatenkategorieService->createChild($kategorie);//wir klonen die kategorie damit diese revisionssicher ist
                     $newVvt->removeKategorien($kategorie);//wir entferenen die fiktive neues kategorie
                     $newVvt->addKategorien($tmp);//wir fügen die geklonte kategorie an
                 }
@@ -292,6 +311,9 @@ class VvtController extends BaseController
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'activNummer' => false,
+            'isEditable' => $isEditable,
+            'currentTeam' => $team,
+            'inheritedEntities' => $inheritedEntities,
         ]);
     }
 
@@ -300,18 +322,53 @@ class VvtController extends BaseController
         SecurityService    $securityService,
         Request            $request,
         CurrentTeamService $currentTeamService,
-        VVTRepository      $vvtRepository,
+        VVTRepository      $vvtRepository
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $vvt = $vvtRepository->findActiveByTeam($team);
+        $vvt = $vvtRepository->findAllByTeam($team);
 
         return $this->render('vvt/index.html.twig', [
             'vvt' => $vvt,
             'currentTeam' => $team,
         ]);
+    }
+
+    #[Route(path: '/vvt/ignore', name: 'vvt_set_ignored')]
+    public function setVvtIgnored(
+        Request               $request,
+        UrlGeneratorInterface $urlGenerator,
+        TeamRepository        $teamRepository,
+        VVTRepository         $vvtRepository,
+    ): RedirectResponse
+    {
+        $team = $request->get('team');
+        $vvt = $request->get('vvt');
+        $active = $request->get('set');
+
+        if (is_numeric($team)) {
+            $team = $teamRepository->find($team);
+        }
+
+        if (is_numeric($vvt)) {
+            $vvt = $vvtRepository->find($vvt);
+        }
+
+        if($team && $vvt) {
+            if ($active) {
+                $team->removeIgnoredInheritance($vvt);
+            } else {
+                $team->addIgnoredInheritance($vvt);
+            }
+            $this->em->persist($vvt);
+            $this->em->persist($team);
+            $this->em->flush();
+        }
+
+        $referer = $request->headers->get('referer');
+        return new RedirectResponse($referer ?: $urlGenerator->generate('dashboard'));
     }
 }

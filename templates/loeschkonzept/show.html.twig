@@ -6,10 +6,12 @@
 {% endblock %}
 
 {% block CTA %}
-    <a href="{{ path('app_loeschkonzept_edit',{'id': loeschkonzept.id}) }}" class="btn">
-        <span>{% trans from 'general' %}edit{% endtrans %}</span>
-    </a>
-    {{ include('loeschkonzept/_delete_form.html.twig') }}
+    {% if current_team == loeschkonzept.team %}
+        <a href="{{ path('app_loeschkonzept_edit',{'id': loeschkonzept.id}) }}" class="btn">
+            <span>{% trans from 'general' %}edit{% endtrans %}</span>
+        </a>
+        {{ include('loeschkonzept/_delete_form.html.twig') }}
+    {% endif %}
 {% endblock %}
 
 {% block body %}

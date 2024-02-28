@@ -146,9 +146,6 @@ class VVT
     #[ORM\ManyToMany(targetEntity: Produkte::class, inversedBy: 'Vvts')]
     private $produkt;
 
-    private $beurteilungEintrittString;
-    private $beurteilungSchadenString;
-
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assignedVvts')]
     private $assignedUser;
 
@@ -172,6 +169,13 @@ class VVT
      */
     #[ORM\Column(type: 'text', nullable: true)]
     private $loeschfrist;
+
+    #[ORM\Column(type: 'boolean')]
+    private $inherited = false;
+
+    // inherited VVTs can be deactivated for individual child teams
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'ignoredInheritances')]
+    private $ignoredInTeams;
 
     public function __construct()
     {
@@ -833,6 +837,44 @@ class VVT
     public function setLoeschfrist(?string $loeschfrist): self
     {
         $this->loeschfrist = $loeschfrist;
+
+        return $this;
+    }
+
+    public function isInherited(): bool
+    {
+        return $this->inherited;
+    }
+
+    public function setInherited(bool $inherited): self
+    {
+        $this->inherited = $inherited;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredInTeams(): Collection
+    {
+        return $this->ignoredInTeams;
+    }
+
+    public function addIgnoredInTeam(Team $team): self
+    {
+        if (!$this->ignoredInTeams->contains($team)) {
+            $this->ignoredInTeams[] = $team;
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredInTeam(Team $team): self
+    {
+        if ($this->ignoredInTeams->contains($team)) {
+            $this->ignoredInTeams->removeElement($team);
+        }
 
         return $this;
     }

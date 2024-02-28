@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Policies;
 use App\Repository\PoliciesRepository;
+use App\Repository\TeamRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
@@ -40,7 +41,7 @@ class PoliciesController extends BaseController
         CurrentTeamService $currentTeamService,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('policies');
@@ -86,7 +87,7 @@ class PoliciesController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $policy = $policiesRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team)) {
@@ -109,7 +110,7 @@ class PoliciesController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $policy = $policiesRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team) && !$policy->getApproved()) {
@@ -132,7 +133,7 @@ class PoliciesController extends BaseController
 
         $stream = $policiesFilesystem->read($policies->getUpload());
 
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamDataCheck($policies, $team) === false) {
             $logger->error(
                 'DOWNLOAD',
@@ -180,19 +181,21 @@ class PoliciesController extends BaseController
         PoliciesRepository $policiesRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $policy = $policiesRepository->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($policy, $team) === false) {
+        if (!$securityService->checkTeamAccessToPolicy($policy, $team)) {
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
             return $this->redirectToRoute('policies');
         }
         $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());
-        $form = $policiesService->createForm($newPolicy, $team);
+        $isEditable = $policy->getTeam() === $team;
+        $form = $policiesService->createForm($newPolicy, $team, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
-        $assign = $assignService->createForm($policy, $team);
+        $assign = $assignService->createForm($policy, $team, ['disabled' => !$isEditable]);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved() && $isEditable) {
             $policy->setActiv(false);
             $newPolicy = $form->getData();
             $errors = $validator->validate($newPolicy);
@@ -219,6 +222,8 @@ class PoliciesController extends BaseController
             'title' => $this->translator->trans(id: 'policies.edit', domain: 'policies'),
             'policy' => $policy,
             'activ' => $policy->getActiv(),
+            'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -229,14 +234,15 @@ class PoliciesController extends BaseController
         PoliciesRepository $policiesRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $polcies = $policiesRepository->findActiveByTeam($team);
+
+        $policies = $policiesRepository->findAllByTeam($team);
 
         return $this->render('policies/index.html.twig', [
-            'data' => $polcies,
+            'data' => $policies,
             'currentTeam' => $team,
         ]);
     }

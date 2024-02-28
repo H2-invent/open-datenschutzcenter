@@ -31,7 +31,7 @@ class LoeschkonzeptController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         if ($securityService->teamCheck($team) && $securityService->adminCheck($user, $team)) {
             $loeschkonzept->setActiv(false);
             $entityManager->persist($loeschkonzept);
@@ -52,7 +52,7 @@ class LoeschkonzeptController extends BaseController
         CurrentTeamService          $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('app_loeschkonzept_index');
         }
@@ -103,7 +103,7 @@ class LoeschkonzeptController extends BaseController
         CurrentTeamService          $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -144,7 +144,7 @@ class LoeschkonzeptController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -177,12 +177,14 @@ class LoeschkonzeptController extends BaseController
     }
 
     #[Route(path: '/{id}/details', name: 'app_loeschkonzept_show', methods: ['GET'])]
-    public function show(Loeschkonzept $loeschkonzept): Response
+    public function show(Loeschkonzept $loeschkonzept, CurrentTeamService $teamService): Response
     {
         $this->setBackButton($this->generateUrl('app_loeschkonzept_index'));
+        $currentTeam = $teamService->getCurrentTeam($this->getUser());
 
         return $this->render('loeschkonzept/show.html.twig', [
             'loeschkonzept' => $loeschkonzept,
+            'current_team' => $currentTeam,
         ]);
     }
 }

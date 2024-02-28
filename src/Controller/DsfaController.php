@@ -35,7 +35,7 @@ class DsfaController extends BaseController
     {
         return $this->render('dsfa/index.html.twig', [
             'title' => $this->translator->trans(id: 'dataProtectionImpactAssessment.word_plural', domain: 'vvt'),
-            'dsfas' => $this->repo->findAllByTeam($this->getTeam()),
+            'dsfas' => $this->repo->findActiveByTeam($this->getTeam()),
         ]);
     }
 
@@ -48,7 +48,7 @@ class DsfaController extends BaseController
             return $this->redirectToRoute('vvt');
         }
 
-        $dsfa = $this->VVTService->newDsfa($team, $this->getUser(), $vvt);
+        $dsfa = $this->VVTService->newDsfa($this->getUser(), $vvt);
         $form = $this->createForm(VvtDsfaType::class,$dsfa );
         $form->handleRequest($request);
         $errors = array();
@@ -81,6 +81,7 @@ class DsfaController extends BaseController
     {
         $team = $this->getTeam();
         $dsfa = $this->repo->find($request->get('dsfa'));
+        $isEditable = $dsfa->getVvt()->getTeam() === $team;
 
         if ($this->securityService->teamDataCheck($dsfa->getVvt(), $team) === false) {
             return $this->redirectToRoute('vvt');
@@ -118,11 +119,12 @@ class DsfaController extends BaseController
             'title' => $this->translator->trans(id: 'dataPrivacyFollowUpEstimation.edit', domain: 'vvt'),
             'dsfa' => $dsfa,
             'activ' => $dsfa->getActiv(),
+            'isEditable' => $isEditable,
         ]);
     }
 
     private function getTeam(): ?Team
     {
-        return $this->currentTeamService->getTeamFromSession($this->getUser());
+        return $this->currentTeamService->getCurrentTeam($this->getUser());
     }
 }

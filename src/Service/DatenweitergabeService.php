@@ -18,6 +18,11 @@ use App\Entity\User;
 use App\Entity\VVT;
 use App\Entity\VVTDsfa;
 use App\Form\Type\DatenweitergabeType;
+use App\Repository\DatenweitergabeGrundlagenRepository;
+use App\Repository\DatenweitergabeStandRepository;
+use App\Repository\KontakteRepository;
+use App\Repository\SoftwareRepository;
+use App\Repository\VVTRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -30,10 +35,13 @@ class DatenweitergabeService
     const PREFIX_TRANSFER = 'DW-';
 
     public function __construct(
-        private EntityManagerInterface $em,
-        private FormFactoryInterface   $formBuilder,
-        private CurrentTeamService     $currentTeamService,
-
+        private readonly FormFactoryInterface                $formBuilder,
+        private readonly CurrentTeamService                  $currentTeamService,
+        private readonly VVTRepository                       $processRepository,
+        private readonly SoftwareRepository                  $softwareRepository,
+        private readonly DatenweitergabeStandRepository      $transferStatusRepository,
+        private readonly DatenweitergabeGrundlagenRepository $transferBasisRepository,
+        private readonly KontakteRepository                  $contactRepository,
     )
     {
     }
@@ -60,23 +68,35 @@ class DatenweitergabeService
         return $newDsfa;
     }
 
-    function createForm(Datenweitergabe $datenweitergabe, Team $team): FormInterface
+    function createForm(Datenweitergabe $transfer, Team $team, array $options = []): FormInterface
     {
-        $stand = $this->em->getRepository(DatenweitergabeStand::class)->findActiveByTeam($team);
-        $grundlagen = $this->em->getRepository(DatenweitergabeGrundlagen::class)->findActiveByTeam($team);
-        $verfahren = $this->em->getRepository(VVT::class)->findBy(array('team' => $team, 'activ' => true));
-        $software = $this->em->getRepository(Software::class)->findBy(array('team' => $team, 'activ' => true));
+        if (array_key_exists('disabled', $options) && $options['disabled']) {
+            $processes = $this->processRepository->findAllByTeam($team);
+            $software = $this->softwareRepository->findAllByTeam($team);
+            $contacts = $this->contactRepository->findAllByTeam($team);
+        } else {
+            $processes = $this->processRepository->findActiveByTeam($team);
+            $software = $this->softwareRepository->findActiveByTeam($team);
+            $contacts = $this->contactRepository->findActiveByTeam($team);
+        }
 
-        $form = $this->formBuilder->create(DatenweitergabeType::class, $datenweitergabe, ['stand' => $stand, 'grundlage' => $grundlagen, 'kontakt' => $team->getKontakte(), 'verfahren' => $verfahren, 'software' => $software]);
+        $transferStatuses = $this->transferStatusRepository->findActiveByTeam($team);
+        $transferReasons = $this->transferBasisRepository->findActiveByTeam($team);
 
-        return $form;
+        return $this->formBuilder->create(DatenweitergabeType::class, $transfer, array_merge([
+            'stand' => $transferStatuses,
+            'grundlage' => $transferReasons,
+            'kontakt' => $contacts,
+            'verfahren' => $processes,
+            'software' => $software
+        ], $options));
     }
 
     function newDatenweitergabe(User $user, $type): Datenweitergabe
     {
         $data = new Datenweitergabe();
         $prefix = $type === 1 ? self::PREFIX_TRANSFER : self::PREFIX_PROCESSING;
-        $data->setTeam($this->currentTeamService->getTeamFromSession($user));
+        $data->setTeam($this->currentTeamService->getCurrentTeam($user));
         $data->setNummer($prefix . hexdec(uniqid()));
         $data->setActiv(true);
         $data->setCreatedAt(new DateTime());

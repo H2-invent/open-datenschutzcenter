@@ -1,7 +1,5 @@
 {% trans_default_domain 'base' %}
 
 {% if data.approved %}
-    <div>
-        <h3>{% trans %}approvedBy{% endtrans %} {{ data.approvedBy.email }}</h3>
-    </div>
+    <small>{% trans %}approvedBy{% endtrans %} {{ data.approvedBy.email }}</small>
 {% endif %}
