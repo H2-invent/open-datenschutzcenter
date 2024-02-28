@@ -20,12 +20,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route(path: '/assistant', name: 'assistant')]
 class AssistantController extends BaseController
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    )
+    {
+    }
+
     #[Route('', name: '')]
     public function index(SecurityService $securityService,
                           CurrentTeamService $currentTeamService,
     ): RedirectResponse|Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if (!$securityService->teamCheck($team)) {
             return $this->redirectToRoute('dashboard');
@@ -46,7 +52,7 @@ class AssistantController extends BaseController
                          EntityManagerInterface $entityManager,
     ): RedirectResponse|Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if (!$securityService->teamCheck($team)) {
             return $this->redirectToRoute('dashboard');
@@ -66,15 +72,9 @@ class AssistantController extends BaseController
 
         if ($step == $assistantService->getStepCount()) {
             $assistantService->clear();
-            $this->addFlash(
-                'success',
-                'assistant.finished'
-            );
+            $this->addSuccessMessage($this->translator->trans(id: 'assistant.finished', domain: 'assistant'));
         } else {
-            $this->addFlash(
-                'danger',
-                'step.error'
-            );
+            $this->addSuccessMessage($this->translator->trans(id: 'step.error', domain: 'assistant'));
         }
 
         return $this->redirectToRoute('assistant');
@@ -83,11 +83,7 @@ class AssistantController extends BaseController
     #[Route('/cancel', name: '_cancel')]
     public function cancel(AssistantService $assistantService) : Response
     {
-        $assistantService->clear();
-        $this->addFlash(
-            'info',
-            'assistant.aborted'
-        );
+        $this->addInfoMessage($this->translator->trans(id: 'assistant.aborted', domain: 'assistant'));
         return $this->redirectToRoute('assistant');
     }
 
@@ -147,7 +143,7 @@ class AssistantController extends BaseController
                                   AssistantService $assistantService,
     ) : Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -158,10 +154,7 @@ class AssistantController extends BaseController
         if ($selected) {
             $assistantService->saveToSession(step: $step, data: $selected);
         } elseif (!$assistantService->getPropertyForStep($step, AssistantService::PROPERTY_SKIP)) {
-            $this->addFlash(
-                'danger',
-                'assistant.noneSelected'
-            );
+            $this->addErrorMessage($this->translator->trans(id: 'assistant.noneSelected', domain: 'assistant'));
             return $this->redirectToRoute('assistant_step', ['step' => $step]);
         }
         return $this->redirectToRoute('assistant_step', ['step' => $step + 1]);

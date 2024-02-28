@@ -22,6 +22,7 @@
                 <th scope="col">{% trans from 'general' %}createdAt{% endtrans %}</th>
                 <th scope="col">{% trans from 'general' %}title{% endtrans %}</th>
 {#                <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>#}
+                {% include 'base/__inheritanceTHeaders.html.twig' with {currentTeam:currentTeam} %}
             </tr>
         </thead>
         <tbody>
@@ -32,8 +33,10 @@
                     <td>{{ t.createdAt|date('d.m.Y') }}</td>
                     <td>{{ t.titel }}</td>
 {#                    <td>{{ t.beschreibung }}</td>#}
+                    {% set inherited = tomInherited(t) %}
+                    {% set used = teamUsesTom(currentTeam, t) %}
+                    {% include 'base/__inheritanceTCols.html.twig' with {team:t.team, currentTeam:currentTeam, inherited:inherited, used:used} %}
                 </tr>
             {% endfor %}
-        </tbody>
     </table>
 {% endblock %}

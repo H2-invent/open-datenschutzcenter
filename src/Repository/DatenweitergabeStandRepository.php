@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\DatenweitergabeStand;
+use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -12,49 +13,13 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method DatenweitergabeStand[]    findAll()
  * @method DatenweitergabeStand[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DatenweitergabeStandRepository extends ServiceEntityRepository
+class DatenweitergabeStandRepository extends PresetRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        protected readonly ManagerRegistry    $registry,
+        protected readonly TeamRepository     $teamRepository,
+    )
     {
-        parent::__construct($registry, DatenweitergabeStand::class);
-    }
-
-    // /**
-    //  * @return DatenweitergabeStand[] Returns an array of DatenweitergabeStand objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?DatenweitergabeStand
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findActiveByTeam($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->where('a.team is null OR a.team = :val')
-            ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult();
+        parent::__construct($this->registry, $this->teamRepository, DatenweitergabeStand::class);
     }
 }

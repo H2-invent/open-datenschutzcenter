@@ -12,49 +12,13 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method DatenweitergabeGrundlagen[]    findAll()
  * @method DatenweitergabeGrundlagen[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DatenweitergabeGrundlagenRepository extends ServiceEntityRepository
+class DatenweitergabeGrundlagenRepository extends PresetRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        protected readonly ManagerRegistry    $registry,
+        protected readonly TeamRepository     $teamRepository,
+    )
     {
-        parent::__construct($registry, DatenweitergabeGrundlagen::class);
-    }
-
-    // /**
-    //  * @return DatenweitergabeGrundlagen[] Returns an array of DatenweitergabeGrundlagen objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?DatenweitergabeGrundlagen
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findActiveByTeam($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->where('a.team is null OR a.team = :val')
-            ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult();
+        parent::__construct($this->registry, $this->teamRepository, DatenweitergabeGrundlagen::class);
     }
 }

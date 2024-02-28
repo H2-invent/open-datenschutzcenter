@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\VVTPersonenRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VVTPersonenRepository::class)]
-class VVTPersonen
+class VVTPersonen extends Preset
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,6 +22,9 @@ class VVTPersonen
 
     #[ORM\Column(type: 'boolean')]
     private $activ;
+
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'ignoredVVTPersons')]
+    protected $ignoredInTeams;
 
     public function getId(): ?int
     {

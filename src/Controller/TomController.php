@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Form\Type\TomType;
 use App\Repository\AuditTomRepository;
+use App\Repository\TeamRepository;
 use App\Repository\TomRepository;
 use App\Service\ApproveService;
 use App\Service\CurrentTeamService;
@@ -43,7 +44,7 @@ class TomController extends BaseController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('tom');
         }
@@ -74,6 +75,7 @@ class TomController extends BaseController
             'tom' => $tom,
             'activ' => $tom->getActiv(),
             'activTitel' => true,
+            'isEditable' => true,
         ]);
     }
 
@@ -87,7 +89,7 @@ class TomController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $tom = $tomRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
@@ -107,7 +109,7 @@ class TomController extends BaseController
         AuditTomRepository $auditTomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($team === null) {
             return $this->redirectToRoute('dashboard');
         }
@@ -144,7 +146,7 @@ class TomController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $tom = $tomRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
@@ -164,20 +166,22 @@ class TomController extends BaseController
         TomRepository      $tomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $tom = $tomRepository->find($request->get('tom'));
 
-        if ($securityService->teamDataCheck($tom, $team) === false) {
+        if ($securityService->checkTeamAccessToTom($tom, $team) === false) {
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
             return $this->redirectToRoute('tom');
         }
 
         $newTom = $tomService->cloneTom($tom, $this->getUser());
 
-        $form = $this->createForm(TomType::class, $newTom);
+        $isEditable = $tom->getTeam() === $team;
+        $form = $this->createForm(TomType::class, $newTom, ['disabled' => !$isEditable]);
         $form->remove('titel');
         $form->handleRequest($request);
         $errors = [];
-        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === 1 && !$tom->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === 1 && !$tom->getApproved() && $isEditable) {
 
             $tom->setActiv(false);
             $newTom = $form->getData();
@@ -206,6 +210,7 @@ class TomController extends BaseController
             'activ' => $tom->getActiv(),
             'activTitel' => false,
             'currentTeam' => $team,
+            'isEditable' => $isEditable,
         ]);
     }
 
@@ -216,12 +221,12 @@ class TomController extends BaseController
         TomRepository      $tomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $tom = $tomRepository->findActiveByTeam($team);
-
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
+
+        $tom = $tomRepository->findAllByTeam($team);
 
         return $this->render('tom/index.html.twig', [
             'tom' => $tom,

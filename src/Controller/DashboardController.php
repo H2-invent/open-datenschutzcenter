@@ -44,7 +44,7 @@ class DashboardController extends BaseController
                               SecurityService             $securityService,
                               TeamRepository              $teamRepository,
                               DatenweitergabeRepository   $transferRepository,
-                              VVTRepository               $procedureRepository,
+                              VVTRepository               $processRepository,
                               AuditTomRepository          $auditRepository,
                               VVTDsfaRepository           $impactAssessmentRepository,
                               FormsRepository             $formRepository,
@@ -66,7 +66,7 @@ class DashboardController extends BaseController
 
         // else get team for current user
         $user = $this->getUser();
-        $currentTeam = $currentTeamService->getTeamFromSession($user);
+        $currentTeam = $currentTeamService->getCurrentTeam($user);
 
         if ($currentTeam === null) {
             if ($securityService->superAdminCheck($this->getUser())) {
@@ -84,9 +84,9 @@ class DashboardController extends BaseController
         $audit = $auditRepository->findAllByTeam($currentTeam);
         $daten = $transferRepository->findActiveTransfersByTeam($currentTeam);
         $av = $transferRepository->findActiveOrderProcessingsByTeam($currentTeam);
-        $vvt = $procedureRepository->findActiveByTeam($currentTeam);
+        $processes = $processRepository->findActiveByTeam($currentTeam);
         $vvtDsfa = $impactAssessmentRepository->findActiveByTeam($currentTeam);
-        $kontakte = $contactRepository->findActiveByTeam($currentTeam);
+        $contacts = $contactRepository->findActiveByTeam($currentTeam);
         $tom = $tomRepository->findActiveByTeam($currentTeam);
         $forms = $formRepository->findPublicByTeam($currentTeam);
         $policies = $policyRepository->findPublicByTeam($currentTeam);
@@ -95,11 +95,11 @@ class DashboardController extends BaseController
         $loeschkonzepte = $deletionConceptRepository->findByTeam($currentTeam);
         $vvtdatenkategorien = $dataCategoryRepository->findByTeam($currentTeam);
         $kritischeAudits = $auditRepository->findCriticalByTeam($currentTeam);
-        $kritischeVvts = $procedureRepository->findCriticalByTeam($currentTeam);
+        $criticalProcesses = $processRepository->findCriticalByTeam($currentTeam);
         $openDsfa = $impactAssessmentRepository->findActiveAndOpenByTeam($currentTeam);
         $buchungen = $bookingRepository->findActiveByUser($user);
 
-        $assignVvt = $procedureRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignVvt = $processRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignAudit = $auditRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignDsfa = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignDatenweitergabe = $transferRepository->findActiveByTeamAndUser($currentTeam, $user);
@@ -109,11 +109,11 @@ class DashboardController extends BaseController
             'currentTeam' => $currentTeam,
             'audit' => $audit,
             'daten' => $daten,
-            'vvt' => $vvt,
+            'vvt' => $processes,
             'dsfa' => $vvtDsfa,
-            'kontakte' => $kontakte,
+            'kontakte' => $contacts,
             'kAudit' => $kritischeAudits,
-            'kVvt' => $kritischeVvts,
+            'kVvt' => $criticalProcesses,
             'openDsfa' => $openDsfa,
             'tom' => $tom,
             'av' => $av,

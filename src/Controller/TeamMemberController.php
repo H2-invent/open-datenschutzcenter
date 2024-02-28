@@ -39,7 +39,7 @@ class TeamMemberController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         // Admin Route only
         if (!$securityService->adminCheck($user, $team)) {
@@ -157,7 +157,7 @@ class TeamMemberController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -199,6 +199,7 @@ class TeamMemberController extends BaseController
         $currentTeam = null;
         $settings = $settingsRepository->findOne();
         $useKeycloakGroups = $settings ? $settings->getUseKeycloakGroups() : false;
+        $this->setBackButton($this->generateUrl('manage_teams'));
 
         if ($teamId) {
             $team = $teamRepository->find($teamId);

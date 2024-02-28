@@ -35,7 +35,7 @@ class TaskController extends BaseController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('tasks');
         }
@@ -77,7 +77,7 @@ class TaskController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $task = $taskRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($task, $team) && $securityService->adminCheck($user, $team)) {
@@ -103,7 +103,7 @@ class TaskController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $task = $taskRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($task, $team) && $securityService->adminCheck($user, $team)) {
@@ -129,7 +129,7 @@ class TaskController extends BaseController
         TaskRepository     $taskRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $task = $taskRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($task, $team) === false) {
@@ -184,7 +184,7 @@ class TaskController extends BaseController
         TaskRepository     $taskRepository,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($request->get('all')) {
             $tasks = $taskRepository->findActiveByTeam($team);
             $all = true;

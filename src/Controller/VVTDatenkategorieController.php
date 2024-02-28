@@ -31,7 +31,7 @@ class VVTDatenkategorieController extends BaseController
         CurrentTeamService     $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === true) {
             if ($this->isCsrfTokenValid('delete' . $vVTDatenkategorie->getId(), $request->request->get('_token'))) {
 
@@ -54,7 +54,7 @@ class VVTDatenkategorieController extends BaseController
         CurrentTeamService       $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('app_vvtdatenkategorie_index');
         }
@@ -96,7 +96,7 @@ class VVTDatenkategorieController extends BaseController
         CurrentTeamService          $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -116,7 +116,7 @@ class VVTDatenkategorieController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -140,12 +140,14 @@ class VVTDatenkategorieController extends BaseController
     }
 
     #[Route(path: '/show/{id}', name: 'app_vvtdatenkategorie_show', methods: ['GET'])]
-    public function show(VVTDatenkategorie $vVTDatenkategorie): Response
+    public function show(VVTDatenkategorie $vVTDatenkategorie, CurrentTeamService $teamService): Response
     {
         $this->setBackButton($this->generateUrl('app_vvtdatenkategorie_index'));
+        $currentTeam = $teamService->getCurrentTeam($this->getUser());
 
         return $this->render('vvt_datenkategorie/show.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
+            'current_team' => $currentTeam,
         ]);
     }
 }
