@@ -123,6 +123,7 @@ class TeamController extends BaseController
         Request                $request,
         SecurityService        $securityService,
         TeamRepository         $teamRepository,
+        CurrentTeamService     $currentTeamService,
     ): Response
     {
         $user = $this->getUser();
@@ -157,7 +158,7 @@ class TeamController extends BaseController
                 $this->addSuccessMessage($this->translator->trans(id: 'team.created', domain: 'team'));
 
                 if ($_ENV['APP_DEMO']) {
-                    $teamService->switchToTeam((string) $nTeam->getId());
+                    $currentTeamService->switchToTeam((string) $nTeam->getId());
                     return $this->redirectToRoute('dashboard');
                 }
 

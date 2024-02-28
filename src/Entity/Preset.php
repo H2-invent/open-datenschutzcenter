@@ -12,6 +12,8 @@ abstract class Preset
     #[ORM\Column(type: 'boolean')]
     protected $inherited = false;
 
+    protected $ignoredInTeams;
+
     public function isInherited(): bool
     {
         return $this->inherited;
