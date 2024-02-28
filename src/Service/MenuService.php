@@ -27,7 +27,7 @@ class MenuService
         private RequestStack $requestStack,
     ) {
         $this->user = $this->security->getUser();
-        $this->currentTeam = $this->currentTeamService->getTeamFromSession($this->user);
+        $this->currentTeam = $this->currentTeamService->getCurrentTeam($this->user);
     }
 
     public function createMainMenu(array $options): ItemInterface

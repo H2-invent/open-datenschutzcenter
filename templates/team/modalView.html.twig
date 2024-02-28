@@ -2,6 +2,9 @@
 <div class="modal-content">
     <h3>{{ title }}</h3>
     {{ form_row(form.name) }}
+    {% if form.inherited is defined %}
+        {{ form_row(form.inherited) }}
+    {% endif %}
 </div>
 <div class="modal-footer">
     {{ form_row(form.save) }}

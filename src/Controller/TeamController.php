@@ -21,10 +21,11 @@ use App\Repository\SettingsRepository;
 use App\Repository\TeamRepository;
 use App\Repository\VVTStatusRepository;
 use App\Service\CurrentTeamService;
+use App\Service\InheritanceService;
 use App\Service\SecurityService;
 use App\Service\TeamService;
 use Doctrine\ORM\EntityManagerInterface;
-use Proxies\__CG__\App\Entity\DatenweitergabeStand;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +57,7 @@ class TeamController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $departments = $departmentRepository->findAllByTeam($team);
+        $departments = $departmentRepository->findActiveByTeam($team);
 
         if ($request->get('id')) {
             $department = $departmentRepository->find($request->get('id'));
@@ -101,7 +102,7 @@ class TeamController extends BaseController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('team_abteilungen');
@@ -122,13 +123,27 @@ class TeamController extends BaseController
         ValidatorInterface     $validator,
         EntityManagerInterface $em,
         Request                $request,
+        SecurityService        $securityService,
+        TeamRepository         $teamRepository,
+        CurrentTeamService     $currentTeamService,
     ): Response
     {
         /** @var User $user */
         $user = $this->getUser();
+
+        if ($securityService->superAdminCheck($user) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $teams = $teamRepository->findAll();
+
         $team = new Team();
         $team->setActiv(true);
-        $form = $this->createForm(TeamType::class, $team);
+        $form = $this->createForm(
+            TeamType::class,
+            $team,
+            ['teams' => $teams,]
+        );
         $form->remove('video');
         $form->remove('externalLink');
         $form->handleRequest($request);
@@ -143,6 +158,13 @@ class TeamController extends BaseController
                 $em->persist($nTeam);
                 $em->persist($user);
                 $em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'team.created', domain: 'team'));
+
+                if ($_ENV['APP_DEMO']) {
+                    $currentTeamService->switchToTeam((string) $nTeam->getId());
+                    return $this->redirectToRoute('dashboard');
+                }
+
                 return $this->redirectToRoute('team_edit', ['id' => $nTeam->getId()]);
             }
         }
@@ -166,7 +188,7 @@ class TeamController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -198,19 +220,16 @@ class TeamController extends BaseController
     }
 
     #[Route(path: '/team_custom/vvtStatus/network', name: 'team_custom_network_vvtstatus')]
-    public function customvvtStatusToogleNetwork(
+    public function customvvtStatusToggleNetwork(
         Request                $request,
         SecurityService        $securityService,
-        EntityManagerInterface $em,
-        TeamService            $teamService,
-        ValidatorInterface     $validator,
         CurrentTeamService     $currentTeamService,
         VVTStatusRepository    $VVTStatusRepository,
         EntityManagerInterface $entityManager,
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -226,19 +245,16 @@ class TeamController extends BaseController
     }
 
     #[Route(path: '/team_custom/datenweitergabeStatus/network', name: 'team_custom_network_datenweitergabestatus')]
-    public function customdatenweitergabeToogleNetwork(
+    public function customdatenweitergabeToggleNetwork(
         Request                        $request,
         SecurityService                $securityService,
-        EntityManagerInterface         $em,
-        TeamService                    $teamService,
-        ValidatorInterface             $validator,
         CurrentTeamService             $currentTeamService,
         DatenweitergabeStandRepository $datenweitergabeStandRepository,
         EntityManagerInterface         $entityManager,
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -264,7 +280,7 @@ class TeamController extends BaseController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('team_custom');
@@ -315,6 +331,7 @@ class TeamController extends BaseController
         SecurityService        $securityService,
         CurrentTeamService     $currentTeamService,
         TeamRepository         $teamRepository,
+        LoggerInterface        $logger,
     ): Response
     {
         $user = $this->getUser();
@@ -328,11 +345,18 @@ class TeamController extends BaseController
             $currentTeam = $team;
         }
 
+        // only admins can edit
         if (!$team || (!$securityService->adminCheck($user, $team))) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $form = $this->createForm(TeamType::class, $team);
+        $availableTeams = $currentTeamService->getTeamsWithoutCurrentHierarchy($user, $team);
+
+        $form = $this->createForm(
+            TeamType::class,
+            $team,
+            ['teams' => $availableTeams,]
+        );
         $form->handleRequest($request);
 
         $errors = array();
@@ -341,6 +365,10 @@ class TeamController extends BaseController
             $errors = $validator->validate($nTeam);
             if (count($errors) == 0) {
                 $em->persist($nTeam);
+                if($teamRepository->verify() !== true) {
+                    $logger->alert('Tree invalid, attempting recovery', $teamRepository->verify());
+                    $teamRepository->recover();
+                }
                 $em->flush();
                 if ($teamId) {
                     return $this->redirectToRoute('team_edit', ['id' => $teamId]);
@@ -445,5 +473,44 @@ class TeamController extends BaseController
                 'type' => $request->get('type')
             ]);
         }
+    }
+
+    #[Route(path: '/team_custom/ignore', name: 'preset_set_ignored', methods: 'PUT|POST')]
+    public function setPresetIgnored(
+        Request                $request,
+        UrlGeneratorInterface  $urlGenerator,
+        TeamRepository         $teamRepository,
+        EntityManagerInterface $em,
+        InheritanceService     $inheritanceService,
+        SecurityService        $securityService
+    ): RedirectResponse
+    {
+        $user = $this->getUser();
+        $team = $request->get('team');
+        $preset = $request->get('preset');
+        $type = $request->get('type');
+        $ignored = $request->get('set');
+
+        if (is_numeric($team)) {
+            $team = $teamRepository->find($team);
+        }
+
+        if (is_numeric($preset)) {
+            $preset = $em->getRepository($type)->find($preset);
+        }
+
+        if ($securityService->adminCheck($user, $team) === false) {
+            return $this->redirectToRoute('dashboard');
+        }
+
+        if ($team && $preset) {
+            $inheritanceService->setIgnored($preset, $team, $ignored);
+            $em->persist($preset);
+            $em->persist($team);
+            $em->flush();
+        }
+
+        $referer = $request->headers->get('referer');
+        return new RedirectResponse($referer ?: $urlGenerator->generate('dashboard'));
     }
 }

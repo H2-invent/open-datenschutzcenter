@@ -1,0 +1,14 @@
+{% trans_default_domain domain|default('general') %}
+{% if inherited %}
+    <div class="card card-outlined bg-primary-50 block flex-none mb-5" role="alert">
+        <p class="text-sm">
+            {% if currentTeam.children.count and team == currentTeam %}
+                {% trans %}inheritance.infoText.inherited{% endtrans %}
+            {% elseif team != currentTeam and used %}
+                {% trans %}inheritance.infoText.active.long{% endtrans %}
+            {% elseif team != currentTeam %}
+                {% trans %}inheritance.infoText.inactive.long{% endtrans %}
+            {% endif %}
+        </p>
+    </div>
+{% endif %}

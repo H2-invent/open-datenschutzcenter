@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block CTA %}
-    {% if assignForm is defined %}{{ include('assign/__assign.html.twig',{'data':dsfa,'path':'assign_dsfa'}) }}{% endif %}
+    {% if assignForm is defined and isEditable %}{{ include('assign/__assign.html.twig',{'data':dsfa,'path':'assign_dsfa'}) }}{% endif %}
 {% endblock %}
 
 {% block body %}

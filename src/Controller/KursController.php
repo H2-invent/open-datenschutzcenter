@@ -87,7 +87,7 @@ class KursController extends BaseController
     {
         $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-courses');
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team, $user) === false) {
@@ -133,7 +133,7 @@ class KursController extends BaseController
     {
         $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-courses');
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
 
         if ($securityService->teamArrayDataCheck($kurs, $team, $user) === false) {
@@ -168,7 +168,7 @@ class KursController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
 
         if (!$securityService->teamArrayDataCheck($kurs, $team, $user)) {

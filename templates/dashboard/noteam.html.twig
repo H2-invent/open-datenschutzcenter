@@ -7,10 +7,17 @@
             <h2>{% trans %}noTeam{% endtrans %}</h2>
         </div>
         <div>
-            <p>{% trans %}noTeamHelp{% endtrans %}</p>
-            <hr class="my-5">
-            <a href="mailto:{{ supportMail }}" class="btn">{% trans %}supportRequest{% endtrans %}</a>
-            <a href="{{ path('logout_keycloak') }}" class="btn">{% trans %}logout{% endtrans %}</a>
+            {% if APP_DEMO %}
+                <p>{% trans %}createTeamHelp{% endtrans %}</p>
+                <a href="{{ path('no_team_create') }}" class="btn btn-create mt-5">
+                    {% trans from 'team' %}team.create{% endtrans %}
+                </a>
+            {% else %}
+                <p>{% trans %}noTeamHelp{% endtrans %}</p>
+                <hr class="my-5">
+                <a href="mailto:{{ supportMail }}" class="btn">{% trans %}supportRequest{% endtrans %}</a>
+                <a href="{{ path('logout_keycloak') }}" class="btn">{% trans %}logout{% endtrans %}</a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

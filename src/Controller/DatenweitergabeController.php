@@ -9,8 +9,10 @@
 namespace App\Controller;
 
 use App\Entity\Datenweitergabe;
+use App\Entity\Team;
 use App\Entity\User;
 use App\Repository\DatenweitergabeRepository;
+use App\Repository\TeamRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
@@ -46,7 +48,7 @@ class DatenweitergabeController extends BaseController
     ): Response
     {
         set_time_limit(600);
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -95,7 +97,7 @@ class DatenweitergabeController extends BaseController
     ): Response
     {
         set_time_limit(600);
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -145,7 +147,7 @@ class DatenweitergabeController extends BaseController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $daten = $dataTransferRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team)) {
@@ -186,7 +188,7 @@ class DatenweitergabeController extends BaseController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $daten = $dataTransferRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($daten, $team) && $securityService->adminCheck($user, $team) && !$daten->getApproved()) {
@@ -212,7 +214,7 @@ class DatenweitergabeController extends BaseController
         $stream = $datenFilesystem->read($datenweitergabe->getUpload());
         /** @var User $user */
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         if ($securityService->teamDataCheck($datenweitergabe, $team) === false) {
             $logger->error(
                 'DOWNLOAD',
@@ -260,24 +262,23 @@ class DatenweitergabeController extends BaseController
     ): Response
     {
         set_time_limit(600);
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $daten = $dataTransferRepository->find($request->get('id'));
-
-        if ($securityService->teamDataCheck($daten, $team) === false) {
-            if ($daten->getArt() === 1) {
-                return $this->redirectToRoute('datenweitergabe');
-            }
-            return $this->redirectToRoute('auftragsverarbeitung');
+        if (!$this->checkAccess($securityService, $daten, $team)) {
+            $redirectRoute = $daten->getArt() === 1 ? 'datenweitergabe' : 'auftragsverarbeitung';
+            return $this->redirectToRoute($redirectRoute);
         }
 
         $newDaten = $datenweitergabeService->cloneDatenweitergabe($daten, $this->getUser());
-        $form = $datenweitergabeService->createForm($newDaten, $team);
+        $isEditable = $daten->getTeam() === $team;
+        $form = $datenweitergabeService->createForm($newDaten, $team, ['disabled' => !$isEditable]);
         $form->remove('nummer');
         $form->handleRequest($request);
-        $assign = $assignService->createForm($daten, $team);
+        $assign = $assignService->createForm($daten, $team, ['disabled' => !$isEditable]);
+        $title = $daten->getArt() == 1 ? 'dataTransfer.edit' : 'orderProcessing.edit';
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $daten->getActiv() && !$daten->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $daten->getActiv() && !$daten->getApproved() && $isEditable) {
 
 
             $daten->setActiv(false);
@@ -314,10 +315,12 @@ class DatenweitergabeController extends BaseController
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
             'errors' => $errors,
-            'title' => $this->translator->trans(id: 'dataTransfer.edit', domain: 'datenweitergabe'),
+            'title' => $this->translator->trans(id: $title, domain: 'datenweitergabe'),
             'daten' => $daten,
             'activ' => $daten->getActiv(),
             'activNummer' => false,
+            'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -325,18 +328,18 @@ class DatenweitergabeController extends BaseController
     public function indexAuftragsverarbeitung(
         SecurityService           $securityService,
         CurrentTeamService        $currentTeamService,
-        DatenweitergabeRepository $dataTransferRepository,
+        DatenweitergabeRepository $transferRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $dataTransferRepository->findBy(array('team' => $team, 'activ' => true, 'art' => 2));
+        $daten = $transferRepository->findAllOrderProcessingsByTeam($team);
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
             'table' => $daten,
-            'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
+            'title' => $this->translator->trans(id: 'orderProcessing.disclaimer', domain: 'datenweitergabe'),
             'currentTeam' => $team,
         ]);
     }
@@ -345,19 +348,34 @@ class DatenweitergabeController extends BaseController
     public function indexDataTransfer(
         SecurityService           $securityService,
         CurrentTeamService        $currentTeamService,
-        DatenweitergabeRepository $dataTransferRepository,
+        DatenweitergabeRepository $transferRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $dataTransferRepository->findBy(array('team' => $team, 'activ' => true, 'art' => 1));
+        $daten = $transferRepository->findAllTransfersByTeam($team);
         return $this->render('datenweitergabe/index.html.twig', [
             'table' => $daten,
-            'titel' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
+            'title' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
             'currentTeam' => $team,
         ]);
+    }
+
+    private function checkAccess(SecurityService $securityService, ?Datenweitergabe $transfer, Team $team): bool
+    {
+        if (!$transfer) {
+            $this->addErrorMessage($this->translator->trans(id: 'elementDoesNotExistError', domain: 'base'));
+            return false;
+        }
+
+        if (!$securityService->checkTeamAccessToTransfer($transfer, $team)) {
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
+            return false;
+        }
+
+        return true;
     }
 }

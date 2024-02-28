@@ -41,7 +41,7 @@ class FormsController extends BaseController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -86,7 +86,7 @@ class FormsController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $forms = $formsRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($forms, $team) && $securityService->adminCheck($user, $team)) {
@@ -109,7 +109,7 @@ class FormsController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $forms = $formsRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($forms, $team) && $securityService->adminCheck($user, $team) && !$forms->getApproved()) {
@@ -133,7 +133,7 @@ class FormsController extends BaseController
         /** @var User $user */
         $user = $this->getUser();
 
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         if ($securityService->teamDataCheck($forms, $team) === false) {
             $logger->error(
                 'DOWNLOAD',
@@ -181,7 +181,7 @@ class FormsController extends BaseController
         FormsRepository    $formsRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $forms = $formsRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($forms, $team) === false) {
@@ -235,7 +235,7 @@ class FormsController extends BaseController
         FormsRepository    $formsRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }

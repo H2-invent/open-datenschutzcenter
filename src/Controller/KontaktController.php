@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Kontakte;
 use App\Form\Type\KontaktType;
 use App\Repository\KontakteRepository;
+use App\Repository\TeamRepository;
 use App\Service\ApproveService;
 use App\Service\CurrentTeamService;
 use App\Service\DisableService;
@@ -40,7 +41,7 @@ class KontaktController extends BaseController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -70,6 +71,8 @@ class KontaktController extends BaseController
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
             'new' => true,
+            'isEditable' => true,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -83,7 +86,7 @@ class KontaktController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $kontakt = $contactRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team)) {
@@ -106,7 +109,7 @@ class KontaktController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $kontakt = $contactRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($kontakt, $team) && $securityService->adminCheck($user, $team) && !$kontakt->getApproved()) {
@@ -122,20 +125,22 @@ class KontaktController extends BaseController
         Request            $request,
         SecurityService    $securityService,
         CurrentTeamService $currentTeamService,
-        KontakteRepository $contactRepository,
+        KontakteRepository $contactRepository
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $kontakt = $contactRepository->find($request->get('id'));
-        if ($securityService->teamDataCheck($kontakt, $team) === false) {
-            return $this->redirectToRoute('kurse');
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
+        $contact = $contactRepository->find($request->get('id'));
+        if (!$securityService->checkTeamAccessToContact($contact, $team)) {
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
+            return $this->redirectToRoute('kontakt');
         }
 
-        $form = $this->createForm(KontaktType::class, $kontakt);
+        $isEditable = $contact->getTeam() === $team;
+        $form = $this->createForm(KontaktType::class, $contact, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $isEditable) {
             $data = $form->getData();
             $errors = $validator->validate($data);
             if (count($errors) == 0) {
@@ -145,7 +150,7 @@ class KontaktController extends BaseController
                 return $this->redirectToRoute(
                     'kontakt_edit',
                     [
-                        'id' => $kontakt->getId(),
+                        'id' => $contact->getId(),
                     ]
                 );
             }
@@ -155,9 +160,11 @@ class KontaktController extends BaseController
 
         return $this->render('kontakt/edit.html.twig', [
             'form' => $form->createView(),
-            'kontakt' => $kontakt,
+            'kontakt' => $contact,
             'errors' => $errors,
-            'title' => $this->translator->trans(id: 'contact.create', domain: 'kontakt'),
+            'title' => $this->translator->trans(id: 'contact.edit', domain: 'kontakt'),
+            'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -168,15 +175,15 @@ class KontaktController extends BaseController
         KontakteRepository $contactRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $kontakte = $contactRepository->findBy(['team' => $team, 'activ' => true]);
+        $contacts = $contactRepository->findAllByTeam($team);
 
         return $this->render('kontakt/index.html.twig', [
-            'kontakte' => $kontakte,
+            'kontakte' => $contacts,
             'title' => $this->translator->trans(id: 'contact', domain: 'general'),
             'currentTeam' => $team,
         ]);

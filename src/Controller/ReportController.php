@@ -33,7 +33,7 @@ class ReportController extends BaseController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('report');
         }
@@ -74,7 +74,7 @@ class ReportController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $report = $reportRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) && $securityService->adminCheck($user, $team)) {
@@ -96,7 +96,7 @@ class ReportController extends BaseController
         ReportRepository   $reportRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $report = $reportRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) === false) {
@@ -146,7 +146,7 @@ class ReportController extends BaseController
         ReportRepository   $reportRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $report = $reportRepository->findActiveByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {
@@ -167,7 +167,7 @@ class ReportController extends BaseController
         ReportRepository   $reportRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $report = $reportRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) === true) {

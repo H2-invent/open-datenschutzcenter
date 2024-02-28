@@ -5,11 +5,14 @@
     {% trans %}dataCategory.word{% endtrans %}
 {% endblock %}
 
- {% block CTA %}
-    <a href="{{ path('app_vvtdatenkategorie_edit',{'id': vvtdatenkategorie.id}) }}" class="btn">
-        <span>{% trans from 'general' %}edit{% endtrans %}</span>
-    </a>
-    {{ include('vvt_datenkategorie/_delete_form.html.twig') }}
+{% block CTA %}
+    {# TODO Can vvtdatenkategorie.team really be null? #}
+    {% if vvtdatenkategorie.team is null or current_team == vvtdatenkategorie.team %}
+        <a href="{{ path('app_vvtdatenkategorie_edit',{'id': vvtdatenkategorie.id}) }}" class="btn">
+            <span>{% trans from 'general' %}edit{% endtrans %}</span>
+        </a>
+        {{ include('vvt_datenkategorie/_delete_form.html.twig') }}
+    {% endif %}
 {% endblock %}
 
 {% block body %}

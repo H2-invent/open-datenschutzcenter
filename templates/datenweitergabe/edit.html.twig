@@ -13,14 +13,19 @@
         <a href="{{ path('bericht_weitergabe', {'id':daten.id, 'all':1}) }}" class="btn">
             <span>{% trans from 'general' %}pdf.createWithHistory{% endtrans %}</span>
         </a>
-        {{ include('base/__approveBtn.html.twig',{'data':daten,'dataLink':'datenweitergabe_approve'}) }}
-        {{ include('base/__disableBtn.html.twig',{'data':daten,'dataLink':'datenweitergabe_disable'}) }}
+        {% if isEditable %}
+            {{ include('base/__approveBtn.html.twig',{'data':daten,'dataLink':'datenweitergabe_approve'}) }}
+            {{ include('base/__disableBtn.html.twig',{'data':daten,'dataLink':'datenweitergabe_disable'}) }}
+        {% endif %}
         {{ include('base/__approvedBy.html.twig', {'data':daten}) }}
         {{ include('assign/__assign.html.twig',{'data':daten,'path':'assign_datenweitergabe'}) }}
     {% endif %}
 {% endblock %}
 
 {% block body %}
+    {% set inherited = transferInherited(daten) %}
+    {% set used = teamUsesTransfer(currentTeam, daten) %}
+    {% include 'base/__inheritanceInfo.html.twig' with {team:daten.team, currentTeam:currentTeam, used:used, inherited:inherited} %}
     {{ include('datenweitergabe/__form.html.twig') }}
     <p class="created-by">{% trans from 'general' %}createdAt{% endtrans %}: {{ daten.user.email }}</p>
     {% if daten.previous %}

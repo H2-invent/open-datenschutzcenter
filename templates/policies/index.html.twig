@@ -22,6 +22,7 @@
                 <th scope="col">{% trans %}scopes{% endtrans %}</th>
                 <th scope="col">{% trans from 'general' %}processings{% endtrans %}</th>
                 <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
+                {% include 'base/__inheritanceTHeaders.html.twig' with {currentTeam:currentTeam} %}
             </tr>
         </thead>
         <tbody>
@@ -31,9 +32,15 @@
                 <td>{{ d.title }}</td>
                 <td>{{ d.scope|raw }}</td>
                 <td>{% for p in d.processes | filter(p => p.activ) %}{{ p.name }}<br>{% endfor %}</td>
-                <td>{% if d.approved %}<span
-                           >{% trans from 'general' %}approved{% endtrans %}</span>{% else %}{{ d.statusString }}{% endif %}
+                <td>{% if d.approved %}
+                        {% trans from 'general' %}approved{% endtrans %}
+                    {% else %}
+                        {{ d.statusString }}
+                    {% endif %}
                 </td>
+                {% set inherited = policyInherited(d) %}
+                {% set used = teamUsesPolicy(currentTeam, d) %}
+                {% include 'base/__inheritanceTCols.html.twig' with {team:d.team, currentTeam:currentTeam, inherited:inherited, used:used} %}
             </tr>
         {% endfor %}
         </tbody>

@@ -49,7 +49,7 @@ class AuditTomController extends BaseController
         AuditTomAbteilungRepository $auditTomAbteilungRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('audit_tom');
@@ -63,8 +63,8 @@ class AuditTomController extends BaseController
         $audit->setCreatedAt($today);
         $audit->setUser($this->getUser());
         $status = $auditTomStatusRepository->findAll();
-        $ziele = $auditTomZieleRepository->findByTeam($team);
-        $abteilungen = $auditTomAbteilungRepository->findAllByTeam($team);
+        $ziele = $auditTomZieleRepository->findActiveByTeam($team);
+        $abteilungen = $auditTomAbteilungRepository->findActiveByTeam($team);
 
         $form = $this->createForm(
             AuditTomType::class,
@@ -108,7 +108,7 @@ class AuditTomController extends BaseController
         AuditTomRepository $auditTomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('audit_tom');
         }
@@ -149,7 +149,7 @@ class AuditTomController extends BaseController
         AuditTomZieleRepository     $auditTomZieleRepository,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $audit = $auditTomRepository->find($request->get('tom'));
 
         if ($securityService->teamDataCheck($audit, $team) === false) {
@@ -158,8 +158,8 @@ class AuditTomController extends BaseController
 
         $today = new DateTime();
         $status = $auditTomStatusRepository->findAll();
-        $abteilungen = $auditTomAbteilungRepository->findAllByTeam($team);
-        $ziele = $auditTomZieleRepository->findByTeam($team);
+        $abteilungen = $auditTomAbteilungRepository->findActiveByTeam($team);
+        $ziele = $auditTomZieleRepository->findActiveByTeam($team);
 
 
         $allAudits = array_reverse($auditTomRepository->findAllByTeam($team));
@@ -239,7 +239,7 @@ class AuditTomController extends BaseController
         AuditTomRepository $auditTomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $audit = $auditTomRepository->findAllByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {

@@ -4,6 +4,18 @@ export default class extends Controller {
     connect() {
         this.initTabs();
         this.initClickListeners();
+        this.initDisabledForms();
+    }
+
+    initDisabledForms() {
+        Array.prototype.forEach.call(document.querySelectorAll('form[disabled]'), function (form) {
+            Array.prototype.forEach.call(form.querySelectorAll('input, textarea, select, button'), function (element) {
+                element.disabled = true;
+            });
+            Array.prototype.forEach.call(form.querySelectorAll('button[type=submit]'), function (button) {
+                button.remove();
+            });
+        });
     }
 
     initClickListeners() {
