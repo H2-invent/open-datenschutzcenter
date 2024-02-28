@@ -40,7 +40,7 @@ class VorfallController extends BaseController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -82,7 +82,7 @@ class VorfallController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $vorfall = $incidentRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vorfall, $team) && $securityService->adminCheck($user, $team)) {
@@ -106,7 +106,7 @@ class VorfallController extends BaseController
         VorfallRepository  $incidentRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vorgang = $incidentRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vorgang, $team) === false) {
@@ -157,7 +157,7 @@ class VorfallController extends BaseController
         VorfallRepository  $incidentRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');

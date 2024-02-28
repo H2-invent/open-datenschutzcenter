@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Software;
 use App\Entity\SoftwareConfig;
+use App\Entity\Team;
 use App\Repository\SoftwareConfigRepository;
 use App\Repository\SoftwareRepository;
+use App\Repository\TeamRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
@@ -41,7 +44,7 @@ class SoftwareController extends BaseController
     )
     {
         //Requests: id: SoftwareID, config: ConfigID
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $software = $softwareRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) === false) {
@@ -104,7 +107,7 @@ class SoftwareController extends BaseController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('software');
@@ -149,7 +152,7 @@ class SoftwareController extends BaseController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $software = $softwareRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) && $securityService->adminCheck($user, $team)) {
@@ -183,7 +186,7 @@ class SoftwareController extends BaseController
     {
         // Request: config: ConfigID
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $config = $softwareConfigRepository->find($request->get('config'));
 
         if ($securityService->teamDataCheck($config->getSoftware(), $team) && $securityService->adminCheck($user, $team)) {
@@ -210,7 +213,7 @@ class SoftwareController extends BaseController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $path = $this->getParameter('kernel.project_dir') . "/data/software/" . $softwareConfig->getUpload();
 
         if ($securityService->teamDataCheck($softwareConfig->getSoftware(), $team) === false) {
@@ -229,22 +232,24 @@ class SoftwareController extends BaseController
         SecurityService    $securityService,
         AssignService      $assignService,
         CurrentTeamService $currentTeamService,
-        SoftwareRepository $softwareRepository,
+        SoftwareRepository $softwareRepository
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        //Request: id: SoftwareID, snack:Snack Notice
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $software = $softwareRepository->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($software, $team) === false) {
+        if (!$this->checkAccess($securityService, $software, $team)) {
             return $this->redirectToRoute('software');
         }
         $newSoftware = $softwareService->cloneSoftware($software, $this->getUser());
-        $form = $softwareService->createForm($newSoftware, $team);
+        $isEditable = $software->getTeam() === $team;
+        $form = $softwareService->createForm($newSoftware, $team, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
-        $assign = $assignService->createForm($software, $team);
+        $assign = $assignService->createForm($software, $team, ['disabled' => !$isEditable]);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $software->getActiv() && !$software->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $software->getActiv() && !$software->getApproved() && $isEditable) {
             $software->setActiv(false);
             $newSoftware = $form->getData();
 
@@ -278,6 +283,8 @@ class SoftwareController extends BaseController
             'title' => $this->translator->trans(id: 'software.edit', domain: 'software'),
             'software' => $software,
             'activ' => $software->getActiv(),
+            'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -289,16 +296,32 @@ class SoftwareController extends BaseController
         SoftwareRepository $softwareRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        //Request: snack: Snack Notice
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $software = $softwareRepository->findActiveByTeam($team);
+        $software = $softwareRepository->findAllByTeam($team);
 
         return $this->render('software/index.html.twig', [
             'data' => $software,
             'today' => new DateTime(),
             'currentTeam' => $team,
         ]);
+    }
+
+    private function checkAccess(SecurityService $securityService, ?Software $software, Team $team): bool
+    {
+        if (!$software) {
+            $this->addErrorMessage($this->translator->trans(id: 'elementDoesNotExistError', domain: 'base'));
+            return false;
+        }
+
+        if (!$securityService->checkTeamAccessToSoftware($software, $team)) {
+            $this->addErrorMessage($this->translator->trans(id: 'elementDoesNotExistError', domain: 'base'));
+            return false;
+        }
+
+        return true;
     }
 }
