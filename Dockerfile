@@ -29,4 +29,5 @@ RUN chmod -R 775 public/build
 RUN mkdir -p var/cache
 RUN chown -R docker:docker var
 RUN chmod -R 777 var
+RUN chown -R docker:docker var/
 USER docker
