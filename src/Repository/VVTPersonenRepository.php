@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Team;
 use App\Entity\VVTPersonen;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

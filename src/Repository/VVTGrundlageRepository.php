@@ -2,9 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Team;
 use App\Entity\VVTGrundlage;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

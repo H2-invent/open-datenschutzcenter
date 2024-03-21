@@ -3,8 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\DatenweitergabeStand;
-use App\Entity\Team;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
