@@ -90,7 +90,7 @@ class KursController extends BaseController
         $team = $currentTeamService->getCurrentTeam($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
 
-        if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
+        if ($securityService->teamArrayDataCheck($kurs, $team, $user) === false) {
             return $this->redirectToRoute('akademie_admin');
         }
 
@@ -136,7 +136,7 @@ class KursController extends BaseController
         $team = $currentTeamService->getCurrentTeam($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
 
-        if ($securityService->teamArrayDataCheck($kurs, $team) === false) {
+        if ($securityService->teamArrayDataCheck($kurs, $team, $user) === false) {
             return $this->redirectToRoute('akademie_admin');
         }
 
@@ -171,7 +171,7 @@ class KursController extends BaseController
         $team = $currentTeamService->getCurrentTeam($user);
         $kurs = $academyLessonRepository->find($request->get('id'));
 
-        if (!$securityService->teamArrayDataCheck($kurs, $team)) {
+        if (!$securityService->teamArrayDataCheck($kurs, $team, $user)) {
             return $this->redirectToRoute('akademie_admin');
         }
 

@@ -29,7 +29,7 @@ use Twig\Environment;
 
 class AssignService
 {
-
+    private EntityManagerInterface $em;
     private FormFactoryInterface $formBuilder;
     private NotificationService $notificationService;
     private Environment $twig;

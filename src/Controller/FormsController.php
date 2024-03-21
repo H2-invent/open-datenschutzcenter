@@ -202,7 +202,7 @@ class FormsController extends BaseController
                 $this->em->persist($newForms);
                 $this->em->persist($forms);
                 $this->em->flush();
-                $this->addSuccess($this->translator->trans(id: 'save.successful', domain: 'general'));
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
 
                 return $this->redirectToRoute(
                     'forms_edit',

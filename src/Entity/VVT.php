@@ -524,6 +524,8 @@ class VVT
     /**
      * @return Collection|VVTDsfa[]
      */
+    // TODO: Move method into App\Repository\VVTRepository
+    /*
     public function getLatestDsfa()
     {
         return $this->createQueryBuilder('d')
@@ -531,6 +533,7 @@ class VVT
             ->getQuery()
             ->getResult();
     }
+    */
 
     public function getUser(): ?User
     {

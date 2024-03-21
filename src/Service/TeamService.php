@@ -10,6 +10,7 @@ namespace App\Service;
 
 
 use App\Entity\AuditTomZiele;
+use App\Entity\DatenweitergabeGrundlagen;
 use App\Entity\DatenweitergabeStand;
 use App\Entity\Produkte;
 use App\Entity\Team;
@@ -27,7 +28,6 @@ use App\Repository\VVTPersonenRepository;
 use App\Repository\VVTRisikenRepository;
 use App\Repository\VVTStatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Proxies\__CG__\App\Entity\DatenweitergabeGrundlagen;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

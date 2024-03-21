@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\Provider\Auth0Client;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Stevenmaguire\OAuth2\Client\Provider\Keycloak;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -36,6 +36,11 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    App\Service\CronService:
+        arguments:
+            $cronIPAdress: '%cronIPAdress%'
+            $cronToken: '%cronToken%'
+
     app.menu.service:
         class: App\Service\MenuService
         arguments: [ "@knp_menu.factory" ]

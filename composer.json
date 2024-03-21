@@ -60,6 +60,7 @@
     "vich/uploader-bundle": "^1.13"
   },
   "require-dev": {
+    "phpstan/phpstan": "^1.10",
     "phpunit/phpunit": "^9.5",
     "symfony/browser-kit": "6.2.*",
     "symfony/css-selector": "6.2.*",
@@ -102,6 +103,7 @@
       "cache:clear": "symfony-cmd",
       "assets:install %PUBLIC_DIR%": "symfony-cmd"
     },
+    "phpstan": "php vendor/bin/phpstan analyze -c phpstan.dist.neon",
     "post-install-cmd": [
       "@auto-scripts"
     ],
