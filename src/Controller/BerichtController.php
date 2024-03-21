@@ -14,6 +14,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\Type\ReportExportType;
 use App\Repository\AkademieBuchungenRepository;
 use App\Repository\AuditTomRepository;
@@ -146,6 +147,7 @@ class BerichtController extends BaseController
         AkademieBuchungenRepository $academyBillingRepository,
     ): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $team = $user->getAkademieUser();
         // Admin Team authentication
@@ -157,7 +159,7 @@ class BerichtController extends BaseController
 
         return $this->render('bericht/akademie.html.twig', [
             'daten' => $daten,
-            'team' => $this->getUser()->getAkademieUser()
+            'team' => $user->getAkademieUser()
         ]);
     }
 
@@ -169,7 +171,6 @@ class BerichtController extends BaseController
         AuditTomRepository $auditTomRepository,
     )
     {
-
         $req = $request->get('id');
 
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -525,30 +526,32 @@ class BerichtController extends BaseController
         ClientRequestRepository $clientRequestRepository,
     )
     {
-
         $id = $request->get('id');
         $team = $currentTeamService->getCurrentTeam($this->getUser());
+        $clientRequests = [];
 
         if ($id) {
-            $clientRequest = $clientRequestRepository->findBy(['id'=>$id]);
-            $title = $this->translator->trans(id: 'report.about.clientRequestBy', domain: 'bericht') . ' ' . $clientRequest->getName();
+            $clientRequests = $clientRequestRepository->findBy(['id'=>$id]);
+
+            $requestName = (count($clientRequests) > 0) ? $clientRequests[0]->getName() : '';
+            $title = $this->translator->trans(id: 'report.about.clientRequestBy', domain: 'bericht') . ' ' . $requestName;
         } else {
-            $clientRequest = $clientRequestRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
+            $clientRequests = $clientRequestRepository->findBy(['team' => $team, 'activ' => true], ['createdAt' => 'DESC']);
             $title = $this->translator->trans(id: 'report.about.clientRequest', domain: 'bericht');
         }
 
-        if (count($clientRequest) < 1) {
+        if (count($clientRequests) === 0) {
             return $this->redirectNoReport();
         }
 
         // Center Team authentication
-        if ($team === null || $clientRequest[0]->getTeam() !== $team) {
+        if ($team === null || $clientRequests[0]->getTeam() !== $team) {
             return $this->redirectToRoute('dashboard');
         }
 
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/request.html.twig', [
-            'daten' => $clientRequest,
+            'daten' => $clientRequests,
             'titel' => $title,
             'team' => $team,
             'all' => $request->get('all'),

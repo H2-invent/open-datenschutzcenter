@@ -45,7 +45,7 @@ class LoginController extends BaseController
     #[Route(path: '/login/auth0_login', name: 'login_auth0')]
     public function index(ClientRegistry $clientRegistry): Response
     {
-        return $clientRegistry->getClient('auth0_main')->redirect(['user']);
+        return $clientRegistry->getClient('auth0_main')->redirect(['user'], []);
     }
 
     #[Route(path: '/logout_keycloak', name: 'logout_keycloak')]

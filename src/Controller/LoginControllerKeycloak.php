@@ -24,6 +24,6 @@ class LoginControllerKeycloak extends BaseController
     #[Route(path: '/login', name: 'login_keycloak')]
     public function index(ClientRegistry $clientRegistry): Response
     {
-        return $clientRegistry->getClient('keycloak_main')->redirect(['email', 'openid', 'profile']);
+        return $clientRegistry->getClient('keycloak_main')->redirect(['email', 'openid', 'profile'], []);
     }
 }

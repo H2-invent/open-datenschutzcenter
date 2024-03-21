@@ -11,6 +11,8 @@ namespace App\Repository;
 use App\Entity\Team;
 use App\Entity\VVTDatenkategorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -28,7 +30,7 @@ class VVTDatenkategorieRepository extends ServiceEntityRepository
         parent::__construct($registry, VVTDatenkategorie::class);
     }
 
-        /**
+    /**
      * @throws ORMException
      * @throws OptimisticLockException
      */

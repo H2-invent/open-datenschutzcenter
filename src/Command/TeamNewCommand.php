@@ -6,6 +6,7 @@ use App\Entity\Team;
 use App\Service\ConnectDefaultToTeamsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,6 +37,7 @@ class TeamNewCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
         $team = new Team();
         $question = new Question('Team name (identical to keycloak group name if keycloak groups are used): ', 'TestCompany');

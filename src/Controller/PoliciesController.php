@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Policies;
+use App\Entity\User;
 use App\Repository\PoliciesRepository;
 use App\Repository\TeamRepository;
 use App\Service\ApproveService;
@@ -24,10 +25,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PoliciesController extends BaseController
 {
-
-
-    public function __construct(private readonly TranslatorInterface $translator,
-                                private EntityManagerInterface       $em,
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private EntityManagerInterface       $em,
     )
     {
     }
@@ -132,8 +132,10 @@ class PoliciesController extends BaseController
     {
 
         $stream = $policiesFilesystem->read($policies->getUpload());
+        /** @var User $user */
+        $user = $this->getUser();
 
-        $team = $currentTeamService->getCurrentTeam($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($user);
         if ($securityService->teamDataCheck($policies, $team) === false) {
             $logger->error(
                 'DOWNLOAD',
@@ -142,13 +144,13 @@ class PoliciesController extends BaseController
                     'error' => true,
                     'hinweis' => 'Fehlerhafter download. User nicht berechtigt!',
                     'dokument' => $policies->getUpload(),
-                    'user' => $this->getUser()->getUsername()
+                    'user' => $user->getUsername()
                 ],
             );
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $policiesFilesystem->getMimetype($policies->getUpload());
+        $type = $policiesFilesystem->mimeType($policies->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(
@@ -164,7 +166,7 @@ class PoliciesController extends BaseController
                 'error' => false,
                 'hinweis' => 'Download erfolgreich',
                 'dokument' => $policies->getUpload(),
-                'user' => $this->getUser()->getUsername()
+                'user' => $user->getUsername()
             ],
         );
         return $response;
