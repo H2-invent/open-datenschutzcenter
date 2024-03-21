@@ -1,0 +1,11 @@
+{% extends 'client_request/base.html.twig' %}
+{% trans_default_domain 'dashboard' %}
+
+{% block content %}
+    <div class="card-outlined">
+        <h2>{% trans from 'team' %}team.create{% endtrans %}</h2>
+        {{ form_start(form) }}
+        {{ form_row(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

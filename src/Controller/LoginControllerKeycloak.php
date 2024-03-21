@@ -3,12 +3,11 @@
 namespace App\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LoginControllerKeycloak extends AbstractController
+class LoginControllerKeycloak extends BaseController
 {
     public function check(ClientRegistry $clientRegistry, Request $request)
     {

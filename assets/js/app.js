@@ -106,7 +106,9 @@ $(document).ready(function () {
         }
     });
 
-    $('.summernote-disable').summernote('disable');
+    $('.summernote-disable').each(function () {
+        $(this).summernote('disable');
+    });
 
     $('.checkboxSelect').on('change', function () {
         if ($(this).prop("checked") === true) {

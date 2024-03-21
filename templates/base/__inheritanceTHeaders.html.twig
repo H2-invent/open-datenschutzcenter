@@ -1,0 +1,8 @@
+{% trans_default_domain domain|default('general') %}
+{% if currentTeam.children.count %}{# hide column in leaf teams #}
+    <th scope="col">{% trans %}inheritance.isInherited{% endtrans %}</th>
+{% endif %}
+{% if currentTeam.root != currentTeam %}{# hide columns in root teams #}
+    <th scope="col">{% trans %}inheritance.fromTeam{% endtrans %}</th>
+    <th scope="col">{% trans %}inheritance.isActive{% endtrans %}</th>
+{% endif %}

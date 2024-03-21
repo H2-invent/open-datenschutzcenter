@@ -8,14 +8,13 @@ use App\Service\CurrentTeamService;
 use App\Service\ReportService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class ReportController extends AbstractController
+class ReportController extends BaseController
 {
 
 
@@ -34,7 +33,7 @@ class ReportController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('report');
         }
@@ -54,6 +53,9 @@ class ReportController extends AbstractController
                 return $this->redirectToRoute('report');
             }
         }
+
+        $this->setBackButton($this->generateUrl('report'));
+
         return $this->render('report/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -72,7 +74,7 @@ class ReportController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $report = $reportRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) && $securityService->adminCheck($user, $team)) {
@@ -94,7 +96,7 @@ class ReportController extends AbstractController
         ReportRepository   $reportRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $report = $reportRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) === false) {
@@ -111,22 +113,28 @@ class ReportController extends AbstractController
             if (count($errors) == 0) {
                 $this->em->persist($data);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'report_edit',
                     [
                         'id' => $data->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general')
                     ],
                 );
             }
         }
+
+        $title = $request->get('edit')
+            ? $this->translator->trans(id: 'work.edit', domain: 'report')
+            : $this->translator->trans(id: 'work.show', domain: 'report');
+
+        $this->setBackButton($this->generateUrl('report'));
+
         return $this->render('report/edit.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
-            'title' => $this->translator->trans(id: 'work.edit', domain: 'report'),
+            'title' => $title,
             'report' => $report,
             'activ' => $report->getActiv(),
-            'snack' => $request->get('snack'),
             'edit' => $request->get('edit'),
         ]);
     }
@@ -138,7 +146,7 @@ class ReportController extends AbstractController
         ReportRepository   $reportRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $report = $reportRepository->findActiveByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {
@@ -159,7 +167,7 @@ class ReportController extends AbstractController
         ReportRepository   $reportRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $report = $reportRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($report, $team) === true) {

@@ -33,7 +33,7 @@ class User implements UserInterface
     private Collection $vVTDsfas;
 
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'akademieUsers')]
-    private ?Team $akademieUser;
+    private ?Team $akademieUser = null;
 
     #[ORM\ManyToMany(targetEntity: Team::class, mappedBy: 'admins')]
     private $adminRoles;
@@ -166,6 +166,17 @@ class User implements UserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        foreach ($this->getRoles() as $_role) {
+            if ($role === $_role) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getTeams(): Collection
@@ -319,7 +330,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAkademieUser(): ?Team
+    public function  getAkademieUser(): ?Team
     {
         return $this->akademieUser;
     }

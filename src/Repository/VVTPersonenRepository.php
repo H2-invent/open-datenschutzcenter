@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Team;
 use App\Entity\VVTPersonen;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,48 +13,24 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method VVTPersonen[]    findAll()
  * @method VVTPersonen[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VVTPersonenRepository extends ServiceEntityRepository
+class VVTPersonenRepository extends PresetRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        protected readonly ManagerRegistry    $registry,
+        protected readonly TeamRepository     $teamRepository,
+    )
     {
-        parent::__construct($registry, VVTPersonen::class);
+        parent::__construct($this->registry, $this->teamRepository, VVTPersonen::class);
     }
 
-    // /**
-    //  * @return VVTPersonen[] Returns an array of VVTPersonen objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByTeam(Team $team)
     {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $teamPath = $this->teamRepository->getPath($team);
 
-    /*
-    public function findOneBySomeField($value): ?VVTPersonen
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findByTeam($value)
-    {
         return $this->createQueryBuilder('a')
-            ->where('a.team is null OR a.team = :val')
+            ->where('a.team is null OR a.team IN (:teamPath)')
             ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
+            ->setParameter('teamPath', $teamPath)
             ->getQuery()
             ->getResult();
     }

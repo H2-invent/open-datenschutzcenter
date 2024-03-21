@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Produkte;
+use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -12,50 +13,13 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Produkte[]    findAll()
  * @method Produkte[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProdukteRepository extends ServiceEntityRepository
+class ProdukteRepository extends PresetRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        protected readonly ManagerRegistry    $registry,
+        protected readonly TeamRepository     $teamRepository,
+    )
     {
-        parent::__construct($registry, Produkte::class);
-    }
-
-    // /**
-    //  * @return Produkte[] Returns an array of Produkte objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Produkte
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findActiveByTeam($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.team = :val')
-            ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult()
-            ;
+        parent::__construct($this->registry, $this->teamRepository, Produkte::class);
     }
 }

@@ -1,0 +1,57 @@
+<div class="dl-wrapper mb-2">
+    <div class="dl-head">
+        <h3>Ticket</h3>
+        <p>{{ data.uuid }}</p>
+    </div>
+    <div class="dl-content">
+        <dl>
+            <div>
+                <dt>{% trans %}issueId{% endtrans %}</dt>
+                <dd>{{ data.uuid }}</dd>
+            </div>
+            <div>
+                <dt>{% trans from 'general' %}email{% endtrans %}</dt>
+                <dd>{{ data.email }} {% if data.pgp %}🔒 {% endif %}{% if data.emailValid %}✅{% endif %}</dd>
+            </div>
+            <div>
+                <dt>{% trans from 'general' %}name{% endtrans %}</dt>
+                <dd>{{ data.name }} {% if data.validUser %}✅{% endif %}</dd>
+            </div>
+            <div>
+                <dt>{% trans from 'general' %}createdAt{% endtrans %}</dt>
+                <dd>{{ data.createdAt|date('d.m.Y H:i') }}</dd>
+            </div>
+            <div>
+                <dt>{% trans from 'general' %}reason{% endtrans %}</dt>
+                <dd>{{ data.itemstring }}</dd>
+            </div>
+            <div>
+                <dt>{% trans from 'general' %}description{% endtrans %}</dt>
+                <dd>{{ data.description|nl2br }}</dd>
+            </div>
+        </dl>
+    </div>
+</div>
+<div class="dl-wrapper mb-5">
+    <div class="dl-head">
+        <p>{% trans from 'general' %}additionalInformation{% endtrans %}</p>
+    </div>
+    <div class="dl-content">
+        <dl>
+            <div>
+                <dt>{% trans from 'general' %}name{% endtrans %}</dt>
+                <dd>{{ data.firstname }} {{ data.lastname }}</dd>
+            </div>
+            <div>
+                <dt>{% trans from 'general' %}address{% endtrans %}</dt>
+                <dd>{{ data.street }}, {{ data.city }}</dd>
+            </div>
+            {% if data.birthday %}
+                <div>
+                    <dt>{% trans from 'general' %}birthday{% endtrans %}</dt>
+                    <dd>{{ data.birthday|date('d.m.Y') }}</dd>
+                </div>
+            {% endif %}
+        </dl>
+    </div>
+</div>

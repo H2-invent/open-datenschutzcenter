@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Form\Type\VvtDsfaType;
+use App\Repository\TeamRepository;
 use App\Repository\VVTDsfaRepository;
 use App\Repository\VVTRepository;
 use App\Service\ApproveService;
@@ -19,14 +20,15 @@ use App\Service\SecurityService;
 use App\Service\VVTDatenkategorieService;
 use App\Service\VVTService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class VvtController extends AbstractController
+class VvtController extends BaseController
 {
 
 
@@ -46,7 +48,7 @@ class VvtController extends AbstractController
         CurrentTeamService       $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('vvt');
@@ -70,14 +72,15 @@ class VvtController extends AbstractController
 
                 $this->em->persist($vvt);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'vvt',
-                    [
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
-                    ],
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('vvt'));
+
         return $this->render('vvt/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -86,6 +89,7 @@ class VvtController extends AbstractController
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'CTA' => false,
+            'isEditable' => true,
         ]);
     }
 
@@ -98,7 +102,7 @@ class VvtController extends AbstractController
         VVTRepository      $vvtRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
@@ -128,7 +132,10 @@ class VvtController extends AbstractController
             $this->em->flush();
         }
 
-        return $this->redirectToRoute('vvt_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+        $this->addSuccessMessage($approve['snack']);
+
+
+        return $this->redirectToRoute('vvt_edit', ['id' => $approve['data']]);
 
     }
 
@@ -143,7 +150,7 @@ class VvtController extends AbstractController
     ): Response
     {
         $vvt = $vvtRepository->find($request->get('id'));
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
@@ -183,6 +190,7 @@ class VvtController extends AbstractController
             'vvt' => $newVvt,
             'activ' => $newVvt->getActiv(),
             'CTA' => false,
+            'isEditable' => true,
         ]);
     }
 
@@ -196,7 +204,7 @@ class VvtController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $vvt = $vvtRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($vvt, $team) && $securityService->adminCheck($user, $team) && !$vvt->getApproved()) {
@@ -213,37 +221,51 @@ class VvtController extends AbstractController
         VVTService               $VVTService,
         SecurityService          $securityService,
         AssignService            $assignService,
-        VVTDatenkategorieService $VVTDatenkategorieService,
+        VVTDatenkategorieService $vvtDatenkategorieService,
         CurrentTeamService       $currentTeamService,
-        VVTRepository            $vvtRepository,
+        VVTRepository            $vvtRepository
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vvt = $vvtRepository->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($vvt, $team) === false) {
+        if ($securityService->checkTeamAccessToProcess($vvt, $team) === false) {
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
             return $this->redirectToRoute('vvt');
         }
         $newVvt = $VVTService->cloneVvt($vvt, $this->getUser());
+        $latestCategories = [];
 
-        foreach ($vvt->getKategorien() as $cloneKat) {//hier haben wir die geklonten KAtegorien
-            $newVvt->addKategorien($VVTDatenkategorieService->findLatestKategorie($cloneKat->getCloneOf()));//wir hängen die neueste gültige Datenkategorie an den VVT clone an.
+        foreach ($vvt->getKategorien() as $category) {//hier haben wir die geklonten Kategorien
+            $cloneOf = $category->getCloneOf() ?: $category; //wir hängen die neueste gültige Datenkategorie an den VVT clone an.
+            $latestCategory = $vvtDatenkategorieService->findLatestKategorie($cloneOf);
+            $newVvt->addKategorien($latestCategory);
+            $latestCategories[] = $latestCategory;
         }
 
-        $form = $VVTService->createForm($newVvt, $team);
+        $isEditable = $vvt->getTeam() === $team;
+        $form = $VVTService->createForm($newVvt, $team, ['disabled' => !$isEditable]);
         $form->remove('nummer');
         $form->handleRequest($request);
         $assign = $assignService->createForm($vvt, $team);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $vvt->getActiv() && !$vvt->getApproved()) {
+        $inheritedEntities = [];
+
+        if (!$isEditable) {
+            // This vvt was inherited by ancestor team.
+            // In this case we want inherited categories and deletion concepts available by links inside the vvt form.
+            $inheritedEntities = $vvtDatenkategorieService->getInheritedEntities($latestCategories);
+        }
+
+        if ($form->isSubmitted() && $form->isValid() && $vvt->getActiv() && !$vvt->getApproved() && $isEditable) {
             $vvt->setActiv(false);
             $newVvt = $form->getData();
 
             $errors = $validator->validate($newVvt);
             if (count($errors) == 0) {
                 foreach ($newVvt->getKategorien() as $kategorie) { // wir haben die fiktiven neuesten Kategories
-                    $tmp = $VVTDatenkategorieService->createChild($kategorie);//wir klonen die kategorie damit diese revisionssicher ist
+                    $tmp = $vvtDatenkategorieService->createChild($kategorie);//wir klonen die kategorie damit diese revisionssicher ist
                     $newVvt->removeKategorien($kategorie);//wir entferenen die fiktive neues kategorie
                     $newVvt->addKategorien($tmp);//wir fügen die geklonte kategorie an
                 }
@@ -269,15 +291,17 @@ class VvtController extends AbstractController
                 $this->em->persist($newVvt);
                 $this->em->persist($vvt);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'vvt_edit',
                     [
                         'id' => $newVvt->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('vvt'));
 
         return $this->render('vvt/edit.html.twig', [
             'form' => $form->createView(),
@@ -287,63 +311,9 @@ class VvtController extends AbstractController
             'vvt' => $vvt,
             'activ' => $vvt->getActiv(),
             'activNummer' => false,
-            'snack' => $request->get('snack')
-        ]);
-    }
-
-    #[Route(path: '/vvt/dsfa/edit', name: 'vvt_dsfa_edit')]
-    public function editVvtDsfa(
-        ValidatorInterface $validator,
-        Request            $request,
-        VVTService         $VVTService,
-        SecurityService    $securityService,
-        AssignService      $assignService,
-        CurrentTeamService $currentTeamService,
-        VVTDsfaRepository  $vvtDsfaRepository,
-    ): Response
-    {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $dsfa = $vvtDsfaRepository->find($request->get('dsfa'));
-
-        if ($securityService->teamDataCheck($dsfa->getVvt(), $team) === false) {
-            return $this->redirectToRoute('vvt');
-        }
-
-        $newDsfa = $VVTService->cloneDsfa($dsfa, $this->getUser());
-
-        $form = $this->createForm(VvtDsfaType::class, $newDsfa);
-        $form->handleRequest($request);
-        $assign = $assignService->createForm($dsfa, $team);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $dsfa->getActiv() && !$dsfa->getVvt()->getApproved()) {
-
-            $dsfa->setActiv(false);
-            $newDsfa = $form->getData();
-            $errors = $validator->validate($newDsfa);
-            if (count($errors) == 0) {
-                $this->em->persist($newDsfa);
-                $this->em->persist($dsfa);
-                $this->em->flush();
-
-                return $this->redirectToRoute(
-                    'vvt_dsfa_edit',
-                    [
-                        'dsfa' => $newDsfa->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
-                    ],
-                );
-            }
-        }
-
-        return $this->render('vvt/editDsfa.html.twig', [
-            'form' => $form->createView(),
-            'assignForm' => $assign->createView(),
-            'errors' => $errors,
-            'title' => $this->translator->trans(id: 'dataPrivacyFollowUpEstimation.edit', domain: 'vvt'),
-            'dsfa' => $dsfa,
-            'activ' => $dsfa->getActiv(),
-            'snack' => $request->get('snack')
+            'isEditable' => $isEditable,
+            'currentTeam' => $team,
+            'inheritedEntities' => $inheritedEntities,
         ]);
     }
 
@@ -352,66 +322,53 @@ class VvtController extends AbstractController
         SecurityService    $securityService,
         Request            $request,
         CurrentTeamService $currentTeamService,
-        VVTRepository      $vvtRepository,
+        VVTRepository      $vvtRepository
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $vvt = $vvtRepository->findActiveByTeam($team);
+        $vvt = $vvtRepository->findAllByTeam($team);
 
         return $this->render('vvt/index.html.twig', [
             'vvt' => $vvt,
-            'snack' => $request->get('snack'),
             'currentTeam' => $team,
         ]);
     }
 
-    #[Route(path: '/vvt/dsfa/new', name: 'vvt_dsfa_new')]
-    public function newVvtDsfa(
-        ValidatorInterface $validator,
-        Request            $request,
-        VVTService         $VVTService,
-        SecurityService    $securityService,
-        CurrentTeamService $currentTeamService,
-        VVTRepository      $vvtRepository,
-    ): Response
+    #[Route(path: '/vvt/ignore', name: 'vvt_set_ignored')]
+    public function setVvtIgnored(
+        Request               $request,
+        UrlGeneratorInterface $urlGenerator,
+        TeamRepository        $teamRepository,
+        VVTRepository         $vvtRepository,
+    ): RedirectResponse
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $vvt = $vvtRepository->find($request->get('vvt'));
+        $team = $request->get('team');
+        $vvt = $request->get('vvt');
+        $active = $request->get('set');
 
-        if ($securityService->teamDataCheck($vvt, $team) === false) {
-            return $this->redirectToRoute('vvt');
+        if (is_numeric($team)) {
+            $team = $teamRepository->find($team);
         }
 
-        $dsfa = $VVTService->newDsfa($team, $this->getUser(), $vvt);
+        if (is_numeric($vvt)) {
+            $vvt = $vvtRepository->find($vvt);
+        }
 
-        $form = $this->createForm(VvtDsfaType::class, $dsfa);
-        $form->handleRequest($request);
-
-        $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $dsfa = $form->getData();
-            $errors = $validator->validate($dsfa);
-            if (count($errors) == 0) {
-                $this->em->persist($dsfa);
-                $this->em->flush();
-                return $this->redirectToRoute(
-                    'vvt_edit',
-                    [
-                        'id' => $dsfa->getVvt()->getId(),
-                        'snack' => $this->translator->trans(id: 'dsfa.created', domain: 'vvt'),
-                    ],
-                );
+        if($team && $vvt) {
+            if ($active) {
+                $team->removeIgnoredInheritance($vvt);
+            } else {
+                $team->addIgnoredInheritance($vvt);
             }
+            $this->em->persist($vvt);
+            $this->em->persist($team);
+            $this->em->flush();
         }
-        return $this->render('vvt/editDsfa.html.twig', [
-            'form' => $form->createView(),
-            'errors' => $errors,
-            'title' => $this->translator->trans(id: 'dataPrivacyFollowUpEstimation.create', domain: 'vvt'),
-            'dsfa' => $dsfa,
-            'activ' => $dsfa->getActiv(),
-        ]);
+
+        $referer = $request->headers->get('referer');
+        return new RedirectResponse($referer ?: $urlGenerator->generate('dashboard'));
     }
 }

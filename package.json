@@ -1,8 +1,16 @@
 {
     "devDependencies": {
-        "@symfony/webpack-encore": "^3.0.0",
+        "@babel/preset-env": "^7.23.2",
+        "@hotwired/stimulus": "^3.0.0",
+        "@symfony/stimulus-bridge": "^3.2.0",
+        "@symfony/webpack-encore": "^3.1.0",
+        "@tailwindcss/forms": "^0.5.6",
+        "autoprefixer": "^10.4.16",
         "core-js": "^3.0.0",
+        "postcss": "^8.4.31",
+        "postcss-loader": "^7.3.3",
         "regenerator-runtime": "^0.13.2",
+        "tailwindcss": "^3.3.5",
         "webpack-notifier": "^1.6.0"
     },
     "license": "UNLICENSED",
@@ -14,18 +22,8 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "bootstrap": "^4.5.0",
-        "bootstrap-select": "^1.13.18",
-        "copy-webpack-plugin": "^6.0.3",
-        "datatables.net": "^1.10.21",
-        "datatables.net-buttons-dt": "^1.6.2",
-        "datatables.net-dt": "^1.10.21",
+        "datatables.net-dt": "^1.13.7",
         "h2-invent-apps": "^2.2.0",
-        "jquery": "^3.5.1",
-        "jszip": "^3.5.0",
-        "mdbootstrap": "^4.19.1",
-        "moment": "^2.27.0",
-        "summernote": "^0.8.18",
-        "vis-network": "^7.8.0"
+        "trix": "^2.0.8"
     }
 }

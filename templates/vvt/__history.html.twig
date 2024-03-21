@@ -1,8 +1,10 @@
 {% trans_default_domain 'vvt' %}
-<a href="{{ path('vvt_edit',{'id':p.id}) }}">
-    <span style="color: {{ p.status.color }}">
-        {{ p.createdAt|date('d.m.Y H:i') }} -- {{ p.status.name }} -- {{ p.name }} -- {{ p.user.email }} {{ p.approved?'versionApproved' | trans([], 'general') }}
-    </span></a>
+<li>
+    <a href="{{ path('vvt_edit',{'id':p.id}) }}">
+        <span style="color: {{ p.status.color }}">
+            {{ p.createdAt|date('d.m.Y H:i') }} -- {{ p.status.name }} -- {{ p.name }} -- {{ p.user.email }} {{ p.approved?'versionApproved' | trans([], 'general') }}
+        </span></a>
+</li>
 {% if p.previous %}
     {{ include('vvt/__history.html.twig', {'p':p.previous}) }}
 {% endif %}

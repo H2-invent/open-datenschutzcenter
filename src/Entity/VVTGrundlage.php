@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\VVTGrundlageRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VVTGrundlageRepository::class)]
-class VVTGrundlage
+class VVTGrundlage extends Preset
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,6 +22,9 @@ class VVTGrundlage
 
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'vVTGrundlages')]
     private $team;
+
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'ignoredVVTGrounds')]
+    protected $ignoredInTeams;
 
     public function getId(): ?int
     {
