@@ -15,9 +15,9 @@ class VVTRisikenRepository extends PresetRepository
 {
     public function __construct(
         protected readonly ManagerRegistry    $registry,
-        protected readonly TeamRepository     $teamRepository,
+        TeamRepository                        $teamRepository,
     )
     {
-        parent::__construct($this->registry, $this->teamRepository, VVTRisiken::class);
+        parent::__construct($this->registry, $teamRepository, VVTRisiken::class);
     }
 }

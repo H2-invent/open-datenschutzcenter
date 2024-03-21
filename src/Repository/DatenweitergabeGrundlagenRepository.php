@@ -15,9 +15,9 @@ class DatenweitergabeGrundlagenRepository extends PresetRepository
 {
     public function __construct(
         protected readonly ManagerRegistry    $registry,
-        protected readonly TeamRepository     $teamRepository,
+        TeamRepository                        $teamRepository,
     )
     {
-        parent::__construct($this->registry, $this->teamRepository, DatenweitergabeGrundlagen::class);
+        parent::__construct($this->registry, $teamRepository, DatenweitergabeGrundlagen::class);
     }
 }
