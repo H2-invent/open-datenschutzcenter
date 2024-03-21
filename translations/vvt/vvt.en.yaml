@@ -35,12 +35,12 @@ processing:
   edit: Verarbeitung bearbeiten
   track: Verarbeitung erfassen
   export: Export der Verarbeitungstätigkeit
-  name: Bezeichnung der verarbeitung
+  name: Bezeichnung der Verarbeitung
   outsideEU: Werden Daten außerhalb der EU verarbeitet?
-  jointControl: Handelt es sich bei der Verarbeitung um ein Joint Control Verarbeitung?
+  jointControl: Handelt es sich bei der Verarbeitung um eine Joint Control Verarbeitung?
   create: New processing activity
   directory: Directory
-  directoryOf: Verzeichnis fer Verarbeitungen von
+  directoryOf: Verzeichnis der Verarbeitungen von
   directoryNumber: Nummer des Verarbeitungsverzeichnisses
   typeHelp: AV = order processing, GV = joint control
   back: Zurück zur Verarbeitung
@@ -48,7 +48,7 @@ processing:
   disclaimer: Dieser Verarbeitung wurden folgende interne Richtlinien und Arbeitsanweisungen angefügt.
   approvedBy: Verfahren freigegeben von
   reason: Purpose of processing
-  requestProcessing: Handelt es sich bei der Verarbeitung um ein Auftragsverarbeitung?
+  requestProcessing: Handelt es sich bei der Verarbeitung um eine Auftragsverarbeitung?
   prerequisite: Notwendigkeit der Datenverarbeitung
   risk: Risiko der Datenverarbeitung
   legalBasis: Rechtsgrundlage für die Verarbeitung
