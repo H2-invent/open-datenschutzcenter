@@ -4,64 +4,64 @@
         body,
         html,
         .body {
-            background: #f3f3f3 !important;
+            background-color: #f8fafc;
         }
-
-        .container.header {
-            background: #f3f3f3;
+        body {
+            padding: 40px 0px !important;
         }
-
-        .body-border {
-            border-top: 8px solid #ff002a;
+        .container {
+            border: 1px solid #e2e8f0;
+        }
+        .columns {
+            padding: 30px !important;
+            border-radius: 10px;
+        }
+        .text-muted {
+            color: #9ca3af;
+        }
+        h4 {
+            margin-bottom: 30px !important;
+        }
+        p {
+            line-height: 1.5 !important;
+        }
+        .border-t {
+            border-top: 1px solid #e2e8f0;
         }
     </style>
-
+    <div style="text-align: center;">
+        <small class="text-muted">{% block header %}{% endblock %}</small>
+    </div>
     <spacer size="16"></spacer>
-
     <container>
         <row>
             <columns>
-                <h1>
-                    {% block header %}
-
-
-                    {% endblock %}
-                </h1>
-
+                {% block content %}{% endblock %}
+                {% if team is defined %}
+                    <spacer size="16"></spacer>
+                    <p>{{ team.signature|nl2br }}</p>
+                {% endif %}
             </columns>
         </row>
-    </container>
-
-    <container>
-        <row>
+        <row class="border-t">
             <columns>
-
-                <spacer size="32"></spacer>
-
-                <spacer size="16"></spacer>
-                {% block content %}
-
-                {% endblock %}
-                <spacer size="16"></spacer>
-                <p style="text-align: center">
-                    {% if team is defined %}{{ team.signature|nl2br }}{% endif %}
-                </p>
-                <spacer size="16"></spacer>
-                <p style="text-align: center">
-                    <a href="{{ dataPrivacy }}">Datenschutzhinweis</a><br>
-                    {% if team is defined and team is not null %}
-                        {% trans %}footer.standard{% endtrans %}<br>
-                        {{ team.name }} - {{ team.strasse }}, {{ team.plz }} {{ team.stadt }}
-                    {% endif %}
-                </p>
-
+                <a href="{{ dataPrivacy }}">Datenschutzhinweis</a>
+                {% if team is defined and team is not null %}
+                    <br>
+                    <p>
+                    {% trans %}footer.standard{% endtrans %}<br>
+                    {{ team.name }} - {{ team.strasse }}, {{ team.plz }} {{ team.stadt }}
+                    </p>
+                {% endif %}
             </columns>
         </row>
-        <center>
-            <small>
-                <a href="https://open-datenschutzcenter.de">Powered by Open Datenschutzcenter</a>
-            </small>
-        </center>
-
     </container>
+    <spacer size="16"></spacer>
+    <div style="text-align: center;">
+        <small class="text-muted">
+            <a href="https://open-datenschutzcenter.de" class="text-muted">Powered by Open Datenschutzcenter</a>
+            •
+            <a href="https://h2-invent.com/software/odc" class="text-muted">Made with ❤ by H2 invent</a>
+        </small>
+    </div>
 {% endapply %}
