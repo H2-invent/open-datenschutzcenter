@@ -2,10 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Team;
 use App\Entity\VVTStatus;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,9 +15,9 @@ class VVTStatusRepository extends PresetRepository
 {
     public function __construct(
         protected readonly ManagerRegistry    $registry,
-        protected readonly TeamRepository     $teamRepository,
+        TeamRepository                        $teamRepository,
     )
     {
-        parent::__construct($this->registry, $this->teamRepository, VVTStatus::class);
+        parent::__construct($this->registry, $teamRepository, VVTStatus::class);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\AuditTomZiele;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -15,10 +14,10 @@ use Doctrine\Persistence\ManagerRegistry;
 class AuditTomZieleRepository extends PresetRepository
 {
     public function __construct(
-    protected readonly ManagerRegistry    $registry,
-    protected readonly TeamRepository     $teamRepository,
-)
-{
-    parent::__construct($this->registry, $this->teamRepository, AuditTomZiele::class);
+        protected readonly ManagerRegistry $registry,
+        TeamRepository                     $teamRepository,
+    )
+    {
+        parent::__construct($this->registry, $teamRepository, AuditTomZiele::class);
     }
 }
