@@ -150,11 +150,11 @@ services:
       - --import-realm
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.keycloak-ja.tls=true"
-      - "traefik.http.routers.keycloak-ja.rule=Host(`${PUBLIC_URL}`) && PathPrefix(`/keycloak`)"
-      - "traefik.http.routers.keycloak-ja.entrypoints=web"
-      - "traefik.http.services.keycloak-ja.loadbalancer.server.port=8080"
-      - "traefik.http.routers.keycloak-ja.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.keycloak-odc.tls=true"
+      - "traefik.http.routers.keycloak-odc.rule=Host(`${PUBLIC_URL}`) && PathPrefix(`/keycloak`)"
+      - "traefik.http.routers.keycloak-odc.entrypoints=web"
+      - "traefik.http.services.keycloak-odc.loadbalancer.server.port=8080"
+      - "traefik.http.routers.keycloak-odc.tls.certresolver=letsencrypt"
 
     volumes:
       - ./keycloak/:/opt/keycloak/data/import
