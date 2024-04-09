@@ -27,6 +27,7 @@ use App\Repository\TomRepository;
 use App\Repository\VorfallRepository;
 use App\Repository\VVTRepository;
 use App\Service\CurrentTeamService;
+use App\Service\SecurityService;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapper;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
@@ -54,6 +55,7 @@ class BerichtController extends BaseController
         CurrentTeamService $currentTeamService,
         SoftwareRepository $softwareRepository,
         VVTRepository      $vvtRepository,
+        SecurityService    $securityService,
     )
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -65,8 +67,7 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $software[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $software[0])) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -93,6 +94,7 @@ class BerichtController extends BaseController
         Request            $request,
         CurrentTeamService $currentTeamService,
         SoftwareRepository $softwareRepository,
+        SecurityService    $securityService,
     )
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -102,8 +104,7 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $software[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $software[0])) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -127,12 +128,12 @@ class BerichtController extends BaseController
     public function report(
         Request            $request,
         CurrentTeamService $currentTeamService,
+        SecurityService    $securityService,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
 
-        // Center Team authentication
-        if (!$team) {
+        if (!$securityService->teamCheck($team)) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -144,12 +145,13 @@ class BerichtController extends BaseController
     #[Route(path: '/akademie', name: '_akademie')]
     public function reportAcademy(
         AkademieBuchungenRepository $academyBillingRepository,
+        SecurityService             $securityService,
     ): Response
     {
         $user = $this->getUser();
         $team = $user->getAkademieUser();
-        // Admin Team authentication
-        if (!$user->hasAdminRole($team)) {
+
+        if (!$securityService->adminCheck($user, $team)) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -167,6 +169,7 @@ class BerichtController extends BaseController
         Request            $request,
         CurrentTeamService $currentTeamService,
         AuditTomRepository $auditTomRepository,
+        SecurityService    $securityService,
     )
     {
 
@@ -188,8 +191,7 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $audit[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $audit[0])) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -212,27 +214,29 @@ class BerichtController extends BaseController
         Request                   $request,
         CurrentTeamService        $currentTeamService,
         DatenweitergabeRepository $dataTransferRepository,
+        SecurityService           $securityService,
     )
     {
         $id = $request->get('id');
         $team = $currentTeamService->getCurrentTeam($this->getUser());
 
+
         if ($id) {
             $daten = $dataTransferRepository->findBy(['id'=>$id]);
         } else {
-            $daten = $dataTransferRepository->findBy([
-                'team' => $team,
-                'activ' => true,
-                'art' => $request->get('art')
-            ]);
+            $type = $request->get('art');
+            if ($type == '1') {
+                $daten = $dataTransferRepository->findActiveTransfersByTeam($team);
+            } else if ($type == '2') {
+                $daten = $dataTransferRepository->findActiveOrderProcessingsByTeam($team);
+            }
         }
 
-        if (count($daten) < 1) {
+        if (!isset($daten) || count($daten) < 1) {
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $daten[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToTransfer($daten[0], $team)) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -257,6 +261,7 @@ class BerichtController extends BaseController
         DompdfWrapper           $wrapper,
         Request                 $request,
         CurrentTeamService      $currentTeamService,
+        SecurityService         $securityService,
         LoeschkonzeptRepository $deletionConceptRepository,
     )
     {
@@ -274,8 +279,7 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $loeschkonzept[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $loeschkonzept[0])) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -297,6 +301,7 @@ class BerichtController extends BaseController
         Request            $request,
         CurrentTeamService $currentTeamService,
         ReportRepository   $reportRepository,
+        SecurityService    $securityService,
     ): Response
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -326,8 +331,7 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $report[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $report[0])) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -403,6 +407,7 @@ class BerichtController extends BaseController
         DompdfWrapper      $wrapper,
         CurrentTeamService $currentTeamService,
         AuditTomRepository $auditTomRepository,
+        SecurityService    $securityService,
     )
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -412,8 +417,7 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $audit[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $audit[0])) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -438,6 +442,7 @@ class BerichtController extends BaseController
         Request            $request,
         CurrentTeamService $currentTeamService,
         VorfallRepository  $vorfallRepository,
+        SecurityService    $securityService,
     )
     {
         $id = $request->get('id');
@@ -454,8 +459,7 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $daten[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $daten[0])) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -481,6 +485,7 @@ class BerichtController extends BaseController
         Request            $request,
         CurrentTeamService $currentTeamService,
         PoliciesRepository $policiesRepository,
+        SecurityService    $securityService,
     )
     {
         $id = $request->get('id');
@@ -496,8 +501,7 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $policies[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $policies[0])) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -523,6 +527,7 @@ class BerichtController extends BaseController
         Request                 $request,
         CurrentTeamService      $currentTeamService,
         ClientRequestRepository $clientRequestRepository,
+        SecurityService         $securityService,
     )
     {
 
@@ -541,8 +546,7 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $clientRequest[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $clientRequest[0])) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -565,6 +569,7 @@ class BerichtController extends BaseController
         Request            $request,
         CurrentTeamService $currentTeamService,
         SoftwareRepository $softwareRepository,
+        SecurityService    $securityService,
     )
     {
         $id = $request->get('id');
@@ -580,10 +585,10 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $software[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $software[0])) {
             return $this->redirectToRoute('dashboard');
         }
+
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('bericht/software.html.twig', [
             'daten' => $software,
@@ -606,6 +611,7 @@ class BerichtController extends BaseController
         Request            $request,
         CurrentTeamService $currentTeamService,
         TomRepository      $tomRepository,
+        SecurityService    $securityService,
     )
     {
 
@@ -622,8 +628,7 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $tom[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $tom[0])) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -647,6 +652,7 @@ class BerichtController extends BaseController
         Request            $request,
         CurrentTeamService $currentTeamService,
         VVTRepository      $vvtRepository,
+        SecurityService    $securityService,
     )
     {
         ini_set('max_execution_time', '900');
@@ -669,8 +675,7 @@ class BerichtController extends BaseController
             return $this->redirectNoReport();
         }
 
-        // Center Team authentication
-        if ($team === null || $vvt[0]->getTeam() !== $team) {
+        if (!$securityService->checkTeamAccessToData($team, $vvt[0])) {
             return $this->redirectToRoute('dashboard');
         }
 
@@ -693,6 +698,7 @@ class BerichtController extends BaseController
         Request            $request,
         CurrentTeamService $currentTeamService,
         ReportRepository   $reportRepository,
+        SecurityService    $securityService,
     )
     {
         $team = $currentTeamService->getCurrentTeam($this->getUser());
@@ -735,11 +741,9 @@ class BerichtController extends BaseController
                 return $this->redirectNoReport();
             }
 
-            // Center Team authentication
-            if ($team === null || $report[0]->getTeam() !== $team) {
+            if ($securityService->checkTeamAccessToData($team, $report[0])) {
                 return $this->redirectToRoute('dashboard');
             }
-
 
             // Create a new Word document
             $phpWord = new PhpWord();
