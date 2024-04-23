@@ -3,8 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\DatenweitergabeStand;
-use App\Entity\Team;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,9 +15,9 @@ class DatenweitergabeStandRepository extends PresetRepository
 {
     public function __construct(
         protected readonly ManagerRegistry    $registry,
-        protected readonly TeamRepository     $teamRepository,
+        TeamRepository                        $teamRepository,
     )
     {
-        parent::__construct($this->registry, $this->teamRepository, DatenweitergabeStand::class);
+        parent::__construct($this->registry, $teamRepository, DatenweitergabeStand::class);
     }
 }

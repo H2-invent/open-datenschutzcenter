@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Team;
 use App\Entity\VVTPersonen;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,10 +16,10 @@ class VVTPersonenRepository extends PresetRepository
 {
     public function __construct(
         protected readonly ManagerRegistry    $registry,
-        protected readonly TeamRepository     $teamRepository,
+        TeamRepository                        $teamRepository,
     )
     {
-        parent::__construct($this->registry, $this->teamRepository, VVTPersonen::class);
+        parent::__construct($this->registry, $teamRepository, VVTPersonen::class);
     }
 
     public function findByTeam(Team $team)
