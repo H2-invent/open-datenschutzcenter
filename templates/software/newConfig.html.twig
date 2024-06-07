@@ -1,14 +1,10 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'software' %}
 
-{% block body %}
-    <h2 class="h2-responsive">{{ title }} {{ software.name }}</h2>
-    <a href="{{ path('software_edit', {'id':software.id}) }}"
-       class="btn btn-sm btn-primary">{% trans %}software.back{% endtrans %}</a>
-    <div class="card card-body {% if not activ or software.approved %}disabled{% endif %}">
-        {{ include('software/__ConfigForm.html.twig') }}
-    </div>
+{% block title %}
+    {{ title }} {{ software.name }}
 {% endblock %}
 
-{% block javascript %}
+{% block body %}
+    {{ include('software/__configForm.html.twig') }}
 {% endblock %}

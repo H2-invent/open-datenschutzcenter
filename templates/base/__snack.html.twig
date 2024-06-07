@@ -1,3 +1,11 @@
-{% if snack is defined and snack is not null %}
-    <div id="snackbar">{{ snack }}</div>
-{% endif %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+    {{ include ('base/__snackItem.html.twig', {snackClass: 'success'}) }}
+{% endfor %}
+
+{% for flashMessage in app.session.flashbag.get('info') %}
+    {{ include ('base/__snackItem.html.twig', {snackClass: 'info'}) }}
+{% endfor %}
+
+{% for flashMessage in app.session.flashbag.get('error') %}
+    {{ include ('base/__snackItem.html.twig', {snackClass: 'error'}) }}
+{% endfor %}

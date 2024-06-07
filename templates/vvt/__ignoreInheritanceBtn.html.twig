@@ -1,0 +1,11 @@
+{% trans_default_domain 'vvt' %}
+
+{% set used = process not in currentTeam.ignoredInheritances %}
+<a href='{{ path('vvt_set_ignored',{'vvt': process.id,'team':currentTeam.id, 'set':not used}) }}' type='button'
+   class='btn ml-1 btn-sm {% if used %}btn-danger{% else %}btn-success{% endif %}'>
+    {% if used %}
+        {% trans %}inheritance.setInactive{% endtrans %}
+    {% else %}
+        {% trans %}inheritance.setActive{% endtrans %}
+    {% endif %}
+</a>

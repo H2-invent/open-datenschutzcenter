@@ -33,7 +33,7 @@ class VorfallType extends AbstractType
             ->add('auswirkung', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'incidentConsequences', 'required' => true, 'translation_domain' => 'form'])
             ->add('massnahmen', TextareaType::class, ['attr' => ['rows' => 8], 'label' => 'incidentMeasures', 'required' => true, 'translation_domain' => 'form'])
             ->add('datum', DateTimeType::class, ['label' => 'incidentDiscovered', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'save', 'translation_domain' => 'form'])
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn'), 'label' => 'save', 'translation_domain' => 'form'])
             ->add('personen', EntityType::class, [
                 'choice_label' => 'name',
                 'class' => VVTPersonen::class,

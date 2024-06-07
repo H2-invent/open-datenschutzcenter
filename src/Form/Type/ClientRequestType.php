@@ -55,7 +55,7 @@ class ClientRequestType extends AbstractType
             ->add('birthday', DateType::class, ['label' => 'Geburtstag', 'required' => false, 'translation_domain' => 'form', 'widget' => 'single_text'])
             ->add('street', TextType::class, ['label' => 'Straße und Hausnummer', 'required' => false, 'translation_domain' => 'form'])
             ->add('city', TextType::class, ['label' => 'Postleitzahl und Stadt', 'required' => false, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Speichern', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-block mt-3'), 'label' => 'Speichern', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

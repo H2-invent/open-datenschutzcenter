@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Form\Type\TomType;
 use App\Repository\AuditTomRepository;
+use App\Repository\TeamRepository;
 use App\Repository\TomRepository;
 use App\Service\ApproveService;
 use App\Service\CurrentTeamService;
@@ -18,14 +19,13 @@ use App\Service\SecurityService;
 use App\Service\TomService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class TomController extends AbstractController
+class TomController extends BaseController
 {
 
 
@@ -44,7 +44,7 @@ class TomController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('tom');
         }
@@ -64,6 +64,9 @@ class TomController extends AbstractController
                 return $this->redirectToRoute('tom');
             }
         }
+
+        $this->setBackButton($this->generateUrl('tom'));
+
         return $this->render('tom/new.html.twig', [
             'currentTeam' => $team,
             'form' => $form->createView(),
@@ -71,7 +74,8 @@ class TomController extends AbstractController
             'title' => $this->translator->trans(id: 'tom.create', domain: 'tom'),
             'tom' => $tom,
             'activ' => $tom->getActiv(),
-            'activTitel' => true
+            'activTitel' => true,
+            'isEditable' => true,
         ]);
     }
 
@@ -85,12 +89,13 @@ class TomController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $tom = $tomRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($tom, $user);
-            return $this->redirectToRoute('tom_edit', ['tom' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('tom_edit', ['tom' => $approve['data']]);
         }
 
         // if security check fails
@@ -104,7 +109,7 @@ class TomController extends AbstractController
         AuditTomRepository $auditTomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($team === null) {
             return $this->redirectToRoute('dashboard');
         }
@@ -141,7 +146,7 @@ class TomController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $tom = $tomRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($tom, $team) && $securityService->adminCheck($user, $team)) {
@@ -161,20 +166,22 @@ class TomController extends AbstractController
         TomRepository      $tomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $tom = $tomRepository->find($request->get('tom'));
 
-        if ($securityService->teamDataCheck($tom, $team) === false) {
+        if ($securityService->checkTeamAccessToTom($tom, $team) === false) {
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
             return $this->redirectToRoute('tom');
         }
 
         $newTom = $tomService->cloneTom($tom, $this->getUser());
 
-        $form = $this->createForm(TomType::class, $newTom);
+        $isEditable = $tom->getTeam() === $team;
+        $form = $this->createForm(TomType::class, $newTom, ['disabled' => !$isEditable]);
         $form->remove('titel');
         $form->handleRequest($request);
         $errors = [];
-        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === 1 && !$tom->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $tom->getActiv() === 1 && !$tom->getApproved() && $isEditable) {
 
             $tom->setActiv(false);
             $newTom = $form->getData();
@@ -183,15 +190,18 @@ class TomController extends AbstractController
                 $this->em->persist($newTom);
                 $this->em->persist($tom);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'tom_edit',
                     [
                         'tom' => $newTom->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('tom'));
+
         return $this->render('tom/edit.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -199,8 +209,8 @@ class TomController extends AbstractController
             'tom' => $tom,
             'activ' => $tom->getActiv(),
             'activTitel' => false,
-            'snack' => $request->get('snack'),
-            'currentTeam' => $team
+            'currentTeam' => $team,
+            'isEditable' => $isEditable,
         ]);
     }
 
@@ -211,12 +221,12 @@ class TomController extends AbstractController
         TomRepository      $tomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
-        $tom = $tomRepository->findActiveByTeam($team);
-
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
+
+        $tom = $tomRepository->findAllByTeam($team);
 
         return $this->render('tom/index.html.twig', [
             'tom' => $tom,

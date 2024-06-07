@@ -85,6 +85,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         AuthenticationException $exception,
     ): ?Response
     {
+        $this->logger->error($exception->getMessage());
         return new RedirectResponse($this->router->generate('no_team'));
     }
 
@@ -122,6 +123,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
 
     private function getEmailForKeycloakUser(ResourceOwnerInterface $keycloakUser): string {
         try {
+            // FIXME: ResourceOwnerInterface cannot have method getEmail()
             return $keycloakUser->getEmail();
         } catch (\Exception $e) {
             try {
@@ -129,6 +131,8 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
             } catch (\Exception $e) {
             }
         }
+
+        return '';
     }
 
     private function getRolesForKeycloakUser(ResourceOwnerInterface $keycloakUser): array

@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\DatenweitergabeStandRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DatenweitergabeStandRepository::class)]
-class DatenweitergabeStand
+class DatenweitergabeStand extends Preset
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,6 +25,9 @@ class DatenweitergabeStand
 
     #[ORM\Column(type: 'boolean')]
     private $activ;
+
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'ignoredDWStates')]
+    protected $ignoredInTeams;
 
     public function getId(): ?int
     {
