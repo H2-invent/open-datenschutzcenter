@@ -53,6 +53,7 @@ services:
     depends_on:
       db-odc:
         condition: service_healthy
+    restart: always
     healthcheck:
       test: [ "CMD", "curl", "-s", "-f", "-i", "http://localhost:80/health/check" ]
       interval: 20s
@@ -110,6 +111,7 @@ services:
       test: [ "CMD", "mariadb-admin" ,"ping", "-h", "localhost","-ptest" ]
       timeout: 20s
       retries: 10
+    restart: always
     environment:
       MARIADB_ROOT_PASSWORD: test
     volumes:
