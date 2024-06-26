@@ -70,7 +70,7 @@ services:
       timeout: 10s
       start_period: 30s
       retries: 10
-
+    restart: always
     environment:
       APACHE_DOCUMENT_ROOT: "public/"
       PHP_EXTENSION_XDEBUG: "1"
@@ -121,6 +121,7 @@ services:
       test: [ "CMD", "mariadb-admin" ,"ping", "-h", "localhost","-ptest" ]
       timeout: 20s
       retries: 10
+    restart: always
     environment:
       MARIADB_ROOT_PASSWORD: test
     volumes:
@@ -132,6 +133,7 @@ services:
     depends_on:
       app-odc:
         condition: service_healthy
+    restart: always
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PW}
