@@ -16,13 +16,13 @@ else
     echo "ODC_DB_PW=$ODC_DB_PW" >> $FILE
   source $FILE
 fi
-  ENVIRONMENT=${ENVIRONMENT:=prod}
+  ENVIRONMENT=${ENVIRONMENT:=dev}
   read -p "Enter the environment dev/prod[$ENVIRONMENT]: " input
   ENVIRONMENT=${input:=$ENVIRONMENT}
   sed -i '/ENVIRONMENT/d' $FILE
   echo "ENVIRONMENT=$ENVIRONMENT" >> $FILE
 
-  HTTP_METHOD=${HTTP_METHOD:=https}
+  HTTP_METHOD=${HTTP_METHOD:=http}
   read -p "Enter http/https for testing on local environment ALWAYS use http [$HTTP_METHOD]: " input
   HTTP_METHOD=${input:=$HTTP_METHOD}
   sed -i '/HTTP_METHOD/d' $FILE
@@ -40,7 +40,7 @@ fi
   echo -------------------------------------------------------------
   echo -----------------Mailer--------------------------------------
   echo -------------------------------------------------------------
-  smtpHost=${smtpHost:=localhost}
+  smtpHost=${smtpHost:=null://null}
   read -p "Enter smtp host: [$smtpHost]" input
   smtpHost=${input:=$smtpHost}
   sed -i '/smtpHost/d' $FILE
@@ -52,14 +52,14 @@ fi
   sed -i '/smtpPort/d' $FILE
   echo "smtpPort=$smtpPort" >> $FILE
 
-  smtpUsername=${smtpUsername:=username}
+  smtpUsername=${smtpUsername:=null}
   read -p "Enter smtp username [$smtpUsername]: " input
   smtpUsername=${input:=$smtpUsername}
   sed -i '/smtpUsername/d' $FILE
   echo "smtpUsername=$smtpUsername" >> $FILE
 
 
-  smtpPassword=${smtpPassword:=password}
+  smtpPassword=${smtpPassword:=null}
   read -p "Enter smtp password [$smtpPassword]: " input
   smtpPassword=${input:=$smtpPassword}
   sed -i '/smtpPassword/d' $FILE
