@@ -13,6 +13,7 @@ https://crowdin.com/project/open-datenschutz-center
 # Neue Funktionen in Version 3.0
 
 ## Vererbung / Hierarchie
+
 Der ODC ermöglicht nun die hierarchische Verwaltung von Dokumenten. Basierend auf den Bedürfnissen einer bundesweiten Organisation mit untergeordneten Landes- und Kreisverbänden können alle Dokumente besser und zentraler verwaltet werden. Bundesweit geltende Regelungen werden auf Bundesebene verwaltet und gelten dann auch auf allen darunter liegenden Ebenen. Die Landes- oder Kreisverbände haben lesenden Zugriff auf die Bundesdokumente und gleichzeitig die Möglichkeit, individuell geltende Regelungen auf ihrer Ebene zu dokumentieren.
 
 ## Anbindung der Hierarchie an Keycloak 
