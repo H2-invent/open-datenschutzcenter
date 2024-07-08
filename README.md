@@ -19,6 +19,7 @@ Der ODC ermöglicht nun die hierarchische Verwaltung von Dokumenten. Basierend a
 ## Anbindung der Hierarchie an Keycloak 
 
 Die beschriebene Struktur aus Bundes-, Landes- und Kreisverbänden lässt sich auch direkt mit dem Keycloak verbinden, so dass die Berechtigungen direkt von dort übernommen werden.  
+
 ## Assistent 
 
 Ein Assistent unterstützt bei der Anlage von VVT und führt die Nutzenden durch die Formulare.
