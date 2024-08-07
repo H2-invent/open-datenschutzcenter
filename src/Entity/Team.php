@@ -13,7 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -232,6 +231,11 @@ class Team
 
     #[ORM\ManyToMany(targetEntity: AuditTomZiele::class, mappedBy: 'ignoredInTeams')]
     private $ignoredAuditGoals;
+
+    #[ORM\Column(options: [
+        'default' => 0,
+    ])]
+    private bool $immutable = false;
 
     public function __construct()
     {
@@ -1393,9 +1397,11 @@ class Team
         return $this->root;
     }
 
-    public function setParent(self $parent = null): void
+    public function setParent(self $parent = null): static
     {
         $this->parent = $parent;
+
+        return $this;
     }
 
     public function getParent(): ?self
@@ -1656,6 +1662,18 @@ class Team
             $this->ignoredProducts->removeElement($product);
             $product->removeIgnoredInTeam($this);
         }
+
+        return $this;
+    }
+
+    public function isImmutable(): bool
+    {
+        return $this->immutable;
+    }
+
+    public function setImmutable(bool $immutable): static
+    {
+        $this->immutable = $immutable;
 
         return $this;
     }

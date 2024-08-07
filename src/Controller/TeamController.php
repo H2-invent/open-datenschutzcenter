@@ -348,15 +348,14 @@ class TeamController extends BaseController
 
         $availableTeams = $currentTeamService->getTeamsWithoutCurrentHierarchy($user, $team);
 
-        $form = $this->createForm(
-            TeamType::class,
-            $team,
-            ['teams' => $availableTeams,]
-        );
+        $form = $this->createForm(TeamType::class, $team, [
+            'teams' => $availableTeams,
+            'disabled' => $team->isImmutable(),
+        ]);
         $form->handleRequest($request);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && !$team->isImmutable()) {
             $nTeam = $form->getData();
             $errors = $validator->validate($nTeam);
             if (count($errors) == 0) {
@@ -391,7 +390,7 @@ class TeamController extends BaseController
     {
         $user = $this->getUser();
         $settings = $settingsRepository->findOne();
-        $useKeycloakGroups = $settings ? $settings->getUseKeycloakGroups() : false;
+        $useKeycloakGroups = $settings && $settings->getUseKeycloakGroups();
 
         if (!$securityService->superAdminCheck($user)) {
             return $this->redirectToRoute('dashboard');
@@ -440,7 +439,7 @@ class TeamController extends BaseController
         $teamId = $request->get('id');
         $team = $teamId ? $teamRepository->find($teamId) : $currentTeamService->getCurrentAdminTeam($user);
 
-        if ($securityService->superAdminCheck($user) === false) {
+        if ($securityService->superAdminCheck($user) === false || $team->isImmutable()) {
             return $this->redirectToRoute('dashboard');
         }
 

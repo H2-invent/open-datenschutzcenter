@@ -10,6 +10,15 @@
 
 {% block body %}
     {{ form_start(form) }}
-    {{ form_row(form) }}
+    <fieldset class="form-row">
+        {{ form_label(form.groupMapping) }}
+        {% for choice in form.groupMapping %}
+            {{ form_widget(choice) }}
+            {{ form_label(choice, '', {
+                'label_attr': {'style': 'display: inline-block;'}
+            }) }}
+            <div class="help-text" style="margin-bottom: 0.75rem; margin-top: 0;">{{ (choice.vars.label~'Help')|trans({}, 'form') }}</div>
+        {% endfor %}
+    </fieldset>
     {{ form_end(form) }}
 {% endblock %}
