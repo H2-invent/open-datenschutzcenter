@@ -91,6 +91,7 @@ services:
       MAILER_ENCRYPTION: ${MAILER_ENC}
       laF_version: ${GIT_VERSION}
       registerEmailAdress: ${registerEmailAdress}
+      DEFAULT_EMAIL: ${registerEmailAdress}
       laF_baseUrl: ${HTTP_METHOD}://${PUBLIC_URL}
       VICH_BASE: ${HTTP_METHOD}://${PUBLIC_URL}
       CRON_USER_1: docker
