@@ -14,7 +14,7 @@ x-app-common: &odc_app
 services:
   traefik-odc:
     image: "traefik:v2.5"
-
+    restart: unless-stopped
     command:
       #- "--log.level=DEBUG"
       - "--api.insecure=true"
@@ -59,7 +59,7 @@ services:
       timeout: 10s
       start_period: 30s
       retries: 10
-
+    restart: unless-stopped
     environment:
       APP_ENV: "dev"
       APACHE_DOCUMENT_ROOT: "public/"
@@ -107,6 +107,7 @@ services:
   db-odc:
     image: mariadb:latest
     hostname: ${RANDOMTAG}db-odc
+    restart: unless-stopped
     healthcheck:
       test: [ "CMD", "mariadb-admin" ,"ping", "-h", "localhost","-ptest" ]
       timeout: 20s
@@ -121,6 +122,7 @@ services:
 
   keycloak-odc:
     image: quay.io/keycloak/keycloak:22.0.3
+    restart: unless-stopped
     depends_on:
       app-odc:
         condition: service_healthy
