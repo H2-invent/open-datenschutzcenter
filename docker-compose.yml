@@ -70,6 +70,7 @@ services:
       timeout: 10s
       start_period: 30s
       retries: 10
+    restart: unless-stopped
 
     environment:
       APACHE_DOCUMENT_ROOT: "public/"
@@ -91,6 +92,7 @@ services:
       MAILER_ENCRYPTION: ${MAILER_ENC}
       laF_version: ${GIT_VERSION}
       registerEmailAdress: ${registerEmailAdress}
+      DEFAULT_EMAIL: ${registerEmailAdress}
       laF_baseUrl: ${HTTP_METHOD}://${PUBLIC_URL}
       VICH_BASE: ${HTTP_METHOD}://${PUBLIC_URL}
       CRON_USER_1: docker
@@ -121,6 +123,7 @@ services:
       test: [ "CMD", "mariadb-admin" ,"ping", "-h", "localhost","-ptest" ]
       timeout: 20s
       retries: 10
+    restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: test
     volumes:
