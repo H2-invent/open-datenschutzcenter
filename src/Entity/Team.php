@@ -20,6 +20,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 #[Gedmo\Tree(type: 'nested')]
 #[ORM\Entity(repositoryClass: NestedTreeRepository::class)]
 #[UniqueEntity('slug')]
+#[ORM\UniqueConstraint(name: 'UNQ_team_name_and_immutable', columns: ['name', 'immutable'])]
 class Team
 {
     #[ORM\Id]
@@ -27,7 +28,7 @@ class Team
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     private $name;
 
