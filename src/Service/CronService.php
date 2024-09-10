@@ -12,7 +12,6 @@ namespace App\Service;
 use App\Entity\AkademieBuchungen;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -21,7 +20,6 @@ class CronService
 {
     public function __construct(
         private EntityManagerInterface $em,
-        FormFactoryInterface           $formBuilder,
         private LoggerInterface        $logger,
         private TranslatorInterface    $translator,
         private NotificationService    $notificationService,

@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Throwable;
 
 class TeamMemberController extends BaseController
 {
@@ -227,9 +228,14 @@ class TeamMemberController extends BaseController
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $newMembers = $form->getData();
-            $lines = explode("\n", $newMembers['member']);
 
-            if (!empty($lines)) {
+            try {
+                $lines = explode("\n", $newMembers['member']);
+            } catch (Throwable $th) {
+                $lines = [];
+            }
+
+            if (count($lines) > 0) {
                 foreach ($lines as $line) {
                     $newMember = trim($line);
                     $newUser = $inviteService->newUser($newMember);
@@ -325,9 +331,14 @@ class TeamMemberController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $newMembers = $form->getData();
-            $lines = explode("\n", $newMembers['member']);
 
-            if (!empty($lines)) {
+            try {
+                $lines = explode("\n", $newMembers['member']);
+            } catch (Throwable $th) {
+                $lines = [];
+            }
+
+            if (count($lines) > 0) {
                 foreach ($lines as $line) {
                     $newMember = trim($line);
                     $user = $inviteService->newUser($newMember);

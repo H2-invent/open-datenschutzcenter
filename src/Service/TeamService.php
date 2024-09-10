@@ -28,6 +28,7 @@ use App\Repository\VVTPersonenRepository;
 use App\Repository\VVTRisikenRepository;
 use App\Repository\VVTStatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -51,6 +52,9 @@ class TeamService
 
     }
 
+    /**
+     * @throws Exception If $type is not a valid team type
+     */
     public function create($type, $id, Team $team): object
     {
         switch ($type) {
@@ -118,8 +122,7 @@ class TeamService
                 }
                 break;
             default:
-
-                break;
+                throw new Exception(sprintf('`%s` is an invalid team type.', strval($type)), 1);
 
         }
 
@@ -129,6 +132,9 @@ class TeamService
         return $data1;
     }
 
+    /**
+     * @throws Exception If $type is not a valid team type
+     */
     public function delete($type, $id): ?object
     {
         switch ($type) {
@@ -161,7 +167,7 @@ class TeamService
                 break;
 
             default:
-                break;
+                throw new Exception(sprintf('`%s` is an invalid team type.', strval($type)), 1);
 
         }
 

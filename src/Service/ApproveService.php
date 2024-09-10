@@ -11,7 +11,6 @@ namespace App\Service;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApproveService
@@ -20,7 +19,6 @@ class ApproveService
 
     public function __construct(
         EntityManagerInterface      $entityManager,
-        FormFactoryInterface        $formBuilder,
         private TranslatorInterface $translator,
     )
     {
