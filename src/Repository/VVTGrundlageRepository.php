@@ -2,9 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Team;
 use App\Entity\VVTGrundlage;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,9 +15,9 @@ class VVTGrundlageRepository extends PresetRepository
 {
     public function __construct(
         protected readonly ManagerRegistry    $registry,
-        protected readonly TeamRepository     $teamRepository,
+        TeamRepository                        $teamRepository,
     )
     {
-        parent::__construct($this->registry, $this->teamRepository,VVTGrundlage::class);
+        parent::__construct($this->registry, $teamRepository,VVTGrundlage::class);
     }
 }

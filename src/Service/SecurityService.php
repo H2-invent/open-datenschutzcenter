@@ -134,6 +134,19 @@ class SecurityService
         return true;
     }
 
+    public function checkTeamAccessToData($team, $data): bool
+    {
+        $teamPath = $team ? $this->teamRepository->getPath($team) : null;
+        $dataTeam = $data->getTeam();
+
+        if ($dataTeam === $team || in_array($dataTeam, $teamPath) && $data->isInherited()) {
+            return true;
+        }
+
+        $this->logAccessDenied($team);
+        return false;
+    }
+
     public function checkTeamAccessToProcess(VVT $process, $team): bool
     {
         $teamPath = $team ? $this->teamRepository->getPath($team) : null;
