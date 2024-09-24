@@ -199,7 +199,7 @@ class TeamMemberController extends BaseController
         $teamId = $request->get('id');
         $currentTeam = null;
         $settings = $settingsRepository->findOne();
-        $useKeycloakGroups = $settings ? $settings->getUseKeycloakGroups() : false;
+        $useKeycloakGroups = $settings && $settings->getUseKeycloakGroups();
         $this->setBackButton($this->generateUrl('manage_teams'));
 
         if ($teamId) {
