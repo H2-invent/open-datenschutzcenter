@@ -15,8 +15,13 @@ assign: Assign
 send: Send
 appoint: Appoint
 #settings
+groupMapping: Gruppenübertragung
+noGroupMapping: Keine Übertragung von Gruppen
+noGroupMappingHelp: Die Teamzuweisung soll nur über das ODC gesteuert werden.
 useKeycloakGroups: Use Keycloak groups
 useKeycloakGroupsHelp: If this option is activated, users will be mapped to teams in Keycloak rather than in the ODC. For this to work properly, the Keycloak client must have a mapper named 'groups' with the option 'full group path' set to false.
+useApiGroups: Gruppen von API übernehmen
+useApiGroupsHelp: Die Teamzuweisung erfolgt über eine externe API.
 #status
 status: Status
 created: Created
