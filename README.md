@@ -1,4 +1,4 @@
-# Open-Datenschutzcenter 2.0
+# Open-Datenschutzcenter 3.0
 __Open Source Datenschutzmanagement System__
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
@@ -6,13 +6,31 @@ __Open Source Datenschutzmanagement System__
 Der Open Datenschutzcenter (ODC) ist ein Open Source Datenschutzmanagement-System für Unternehmen und Datenschutzbeauftragte. Der ODC wird kontinuierlich mit einer aktiven Community von Unternehmen, Datenschutzbeauftragten und Informationssicherheitsbeauftragten weiterentwickelt. Open Source bedeutet, dass der Quellcode der Software öffentlich zugänglich zur Verfügung steht. Unternehmen können den ODC auf einem eigenen Server betrieben, eigene Funktionen entwickeln und die Funktionalität erweitern. Die H2 Invent GmbH ist das Unternehmen hinter dem Open Datenschutzcenter und verwaltet das Repository, das Wiki und die Releases. H2 Invent entwickelt für Unternehmen neue ODC Funktionen um diesen den Anforderungen des Unternehmens anzupassen.
 
 ### Übersetzungen [![Crowdin](https://badges.crowdin.net/open-datenschutz-center/localized.svg)](https://crowdin.com/project/open-datenschutz-center)
-Helfen Sie mit den Open Datenschutz Center noch besser zu machen. Wir suchen jederzeit neue Übersetungen in alle Sprachen.
+Helfen Sie mit den Open Datenschutz Center noch besser zu machen. Wir suchen jederzeit neue Übersetzungen in alle Sprachen.
 Übersetzungen werden über Crowdin organisiert und können dort einfach und unkompliziert Übersetzt werden.
 https://crowdin.com/project/open-datenschutz-center
 
+# Neue Funktionen in Version 3.0
+
+## Vererbung / Hierarchie
+
+Der ODC ermöglicht nun die hierarchische Verwaltung von Dokumenten. Basierend auf den Bedürfnissen einer bundesweiten Organisation mit untergeordneten Landes- und Kreisverbänden können alle Dokumente besser und zentraler verwaltet werden. Bundesweit geltende Regelungen werden auf Bundesebene verwaltet und gelten dann auch auf allen darunter liegenden Ebenen. Die Landes- oder Kreisverbände haben lesenden Zugriff auf die Bundesdokumente und gleichzeitig die Möglichkeit, individuell geltende Regelungen auf ihrer Ebene zu dokumentieren.
+
+## Anbindung der Hierarchie an Keycloak 
+
+Die beschriebene Struktur aus Bundes-, Landes- und Kreisverbänden lässt sich auch direkt mit dem Keycloak verbinden, so dass die Berechtigungen direkt von dort übernommen werden.  
+
+## Assistent 
+
+Ein Assistent unterstützt bei der Anlage von VVT und führt die Nutzenden durch die Formulare.
+
+## Neue Oberfläche 
+
+ODC wurde auf Symphony 6 umgesetllt und hat eine modernere Oberfläche 
+
 # Funktionen
 Folgende Funktionen sind bereits im Open Datenschutzcenter integriert:
-* Datenschutzakademie für interne Datenschutzschulungen zum Nachweis der kontinuierlichen Datenschutzweitergildung der Beschäftigten.
+* Datenschutzakademie für interne Datenschutzschulungen zum Nachweis der kontinuierlichen Datenschutzweiterbildung der Beschäftigten.
 * Internes Datenschutzaudit mit einem umfangreichen Fragenkatalog, Begründungen und Hinweisen für die Umsetzung
 * Abteilung einer globalen TOM aus den Audits.
 * Erstellen von Technische und organisatorische Maßnahmen für Verarbeitungen.
@@ -32,12 +50,12 @@ Folgende Funktionen sind bereits im Open Datenschutzcenter integriert:
 * Dokumentieren von Software und Konfigurationen die den Datenschutz betreffen.
 
 ### Das Dashboard
-Das Dashboard stellt alle wichtigen Zahlen zum Datenschutz im Unternehmen dar. Im Kopfbereich werden alle wichtigten Zahlen und Aufgaben dargestellt. Jede Schaltfläche führt den Nutzer intuitiv zum jeweiligen Bereich oder Dokument.
+Das Dashboard stellt alle wichtigen Zahlen zum Datenschutz im Unternehmen dar. Im Kopfbereich werden alle wichtigen Zahlen und Aufgaben dargestellt. Jede Schaltfläche führt den Nutzer intuitiv zum jeweiligen Bereich oder Dokument.
 ![Dashboard](docs/images/dashboard-heading.jpg)
 
 
 ### Der Datenflussplan
-Alle Daten auf dem Open Datenschutzcenter werden dynamisch in dem zentralen Datenflussplan auf dem Dashboard dargestellt. Die Bereits erstellten verknüpfungen der Dokumente werden im Datenflussplan dargestellt. Damit kann der Nutzer schnell koritischten Verarbeitungen oder Datenweitergaben sehen und mögliche Verbesserungen starten.
+Alle Daten auf dem Open Datenschutzcenter werden dynamisch im zentralen Datenflussplan auf dem Dashboard dargestellt. Die Bereits erstellten Verknüpfungen der Dokumente werden im Datenflussplan dargestellt. Damit kann der Nutzer schnell kritische Verarbeitungen oder Datenweitergaben sehen und mögliche Verbesserungen starten.
 ![Dataflow](docs/images/interactiv-dataflow-chart.jpg)
 
 ### Formulare
@@ -52,7 +70,7 @@ Alle Dokumente können über Formulare erfasst werden. Die Datenwerden in einer 
 
 
 # Get Started
-Auf Grund der Composer Abhängigkeiten wird ein Webspace für den Betrieb der Webanwendung nicht empfohlen. Enterprise bedeutet, dass ODC als Manadatenlösung und interne Webanwendung betrieben werden kann. Die Verwaltung, Updates und Wartung muss durch die Zuständige und Verantwortliche Person durchgeführt werden.
+Auf Grund der Composer Abhängigkeiten wird ein Webspace für den Betrieb der Webanwendung nicht empfohlen. Enterprise bedeutet, dass ODC als Mandantenlösung und interne Webanwendung betrieben werden kann. Die Verwaltung, Updates und Wartung muss durch die Zuständige und Verantwortliche Person durchgeführt werden.
 
 Installationsanleitung und ein Foliensatz mit Screenshots steht auf https://h2-invent.com/software/odc zur Verfügung.
 * [Anleitung im Wiki](https://github.com/H2-invent/open-datenschutzcenter/wiki/Get-Started)
@@ -64,7 +82,7 @@ Folgende Parameter stehen in den odif Dateien zum Import zur Verfügung und müs
 
 # Migrations
 #### von 1.12.X auf 2.X
-* nach einer umstellung des Default Teams muss eine migration der Datenbank vorgenommen werden. Für die Migration muss einmal der Command über die CLI durchgeführt werden.
+* nach einer Umstellung des Default Teams muss eine Migration der Datenbank vorgenommen werden. Für die Migration muss einmal der Command über die CLI durchgeführt werden.
 Danach werden alle Audit Ziele vom Default Team 1 auf null umgestellt.
 ````
 php bin/console app:migrate:defaultTeam

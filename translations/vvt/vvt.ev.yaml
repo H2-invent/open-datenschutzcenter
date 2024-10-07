@@ -1,6 +1,6 @@
 dsbReviewMissing: Beurteilung DSB fehlt
 resultMissing: Ergebnis fehlt
-dataForProcessing: Daten zur Verarbeitung
+dataForProcessing: Daten zur Verarbeitungstätigkeit
 collectedData: Erfasste Daten
 orderProcessing: Datenweitergabe und Auftragsverarbeitung
 associatedDataTransfer: Zugehörige Datenweitergaben
@@ -33,23 +33,23 @@ processing:
   edit: Verarbeitung bearbeiten
   track: Verarbeitung erfassen
   export: Export der Verarbeitungstätigkeit
-  name: Bezeichnung der verarbeitung
+  name: Bezeichnung der Verarbeitungstätigkeit
   outsideEU: Werden Daten außerhalb der EU verarbeitet?
-  jointControl: Handelt es sich bei der Verarbeitung um ein Joint Control Verarbeitung?
-  create: Neue Verarbeitung anlegen
-  directory: Verzeichnis der Verarbeitungen
-  directoryOf: Verzeichnis fer Verarbeitungen von
-  directoryNumber: Nummer des Verarbeitungsverzeichnisses
+  jointControl: Handelt es sich bei der Verarbeitungstätigkeit um ein Joint Control Verarbeitung?
+  create: Neue Verarbeitungstätigkeit anlegen
+  directory: Verzeichnis der Verarbeitungstätigkeiten
+  directoryOf: Verzeichnis der Verarbeitungstätigkeiten von
+  directoryNumber: Nummer der Verarbeitungstätigkeit
   typeHelp: AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung
   back: Zurück zur Verarbeitung
   duplicate: Verarbeitung duplizieren
   disclaimer: Dieser Verarbeitung wurden folgende interne Richtlinien und Arbeitsanweisungen angefügt.
-  approvedBy: Verfahren freigegeben von
+  approvedBy: Verarbeitungstätigkeiten freigegeben von
   reason: Zweck der Verarbeitung
   requestProcessing: Handelt es sich bei der Verarbeitung um ein Auftragsverarbeitung?
   prerequisite: Notwendigkeit der Datenverarbeitung
   risk: Risiko der Datenverarbeitung
-  legalBasis: Rechtsgrundlage für die Verarbeitung
+  legalBasis: Rechtsgrundlage für die Verarbeitungstätigkeiten
   responsible:
     word: Verantwortliche Person für die Verarbeitung
     internal: Verantwortliche Person für die Verarbeitung (intern)
@@ -59,7 +59,7 @@ processing:
     dataCategory: Welche Datenkategorien (Löschfristen) werden verarbeitet?
     saveDirectory: Die Daten werden an folgenden Stellen gespeichert.
   describeReason: Beschreiben Sie, weshalb die Datenverarbeitung erforderlich ist? (Rechtsgrundlage)
-processingDirectory: Verarbeitungsverzeichnis
+processingDirectory: Verzeichnis der Verarbeitungstätigkeiten
 connected:
   dataTransfer: Zugehörige Datenweitergaben
   requestDataProcessing: Zugehörige Auftragsdatenverarbeitungen
