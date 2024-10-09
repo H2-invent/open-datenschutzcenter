@@ -35,7 +35,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
 
     public function __construct(
         private readonly ?string                $groupApiUserId,
-        private readonly ?string                $groupApiRole,
+        private readonly ?array                 $groupApiRoles,
         private readonly LoggerInterface        $logger,
         private readonly ParameterBagInterface  $parameterBag,
         private readonly TokenStorageInterface  $tokenStorage,
@@ -239,7 +239,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
 
     private function getGroupsOfMatchingRoles(array $roles) {
         $teamAdminRoles = array_filter($roles, function ($role) {
-            return $role['id'] === $this->groupApiRole;
+            return in_array($role['id'], $this->groupApiRoles);
         });
 
         return array_map(function ($role) {
@@ -296,6 +296,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
                 ->setStadt('')
                 ->setCeo('');
             $this->em->persist($team);
+            $this->em->flush();
         }
 
         return $team;
