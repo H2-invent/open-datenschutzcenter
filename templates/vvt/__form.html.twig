@@ -1,359 +1,119 @@
 {% trans_default_domain 'vvt' %}
+
 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}dataForProcessing{% endtrans %}</h4>
+<fieldset>
+    <legend>{% trans %}dataForProcessing{% endtrans %}</legend>
+    {% if activNummer %}
+        {{ form_row(form.nummer) }}
+    {% endif %}
+    {{ form_row(form.name) }}
+    {{ form_row(form.auftragsverarbeitung) }}
+    {{ form_row(form.status) }}
+    {{ form_row(form.abteilung) }}
+    {{ form_row(form.produkt) }}
+    {{ form_row(form.userContract) }}
+    {{ form_row(form.verantwortlich) }}
+    {{ form_row(form.grundlage) }}
+    {{ form_row(form.zweck) }}
+    {{ form_row(form.speicherung) }}
+    {{ form_row(form.loeschfrist) }}
+</fieldset>
 
-    <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
-        {% if activNummer %}
-            <div class="mt-4 row">
-                <div class="col-md-3">
-                    {{ form_label(form.nummer) }}
-                </div>
-                <div class="col-md-9">
-                    {{ form_widget(form.nummer) }}
-                </div>
-            </div>
-        {% endif %}
+<fieldset>
+    <legend>{% trans %}collectedData{% endtrans %}</legend>
+    {{ form_row(form.personengruppen) }}
+    {{ form_row(form.kategorien) }}
+</fieldset>
 
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.name) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.name) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.auftragsverarbeitung) }}
-                {{ form_help(form.auftragsverarbeitung) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.auftragsverarbeitung) }}
-            </div>
+<fieldset>
+    <legend>{% trans %}orderProcessing{% endtrans %}</legend>
+    {{ form_row(form.jointControl) }}
+    {{ form_row(form.weitergabe) }}
+    {{ form_row(form.datenweitergaben) }}
 
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.status) }}
-                {{ form_help(form.status) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.status) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.abteilung) }}
-                {{ form_help(form.abteilung) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.abteilung) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.produkt) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.produkt) }}
-                {{ form_help(form.produkt) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.userContract) }}
-                {{ form_help(form.userContract) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.userContract) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.verantwortlich) }}
-
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.verantwortlich) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.grundlage) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.grundlage) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.zweck) }}
-                {{ form_help(form.zweck) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.zweck) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.speicherung) }}
-                {{ form_help(form.speicherung) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.speicherung) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.loeschfrist) }}
-                {{ form_help(form.loeschfrist) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.loeschfrist) }}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}collectedData{% endtrans %}</h4>
-
-    <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.personengruppen) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.personengruppen) }}
-            </div>
-
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.kategorien) }}
-                {{ form_help(form.kategorien) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.kategorien) }}
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}orderProcessing{% endtrans %}</h4>
-
-    <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.jointControl) }}
-                {{ form_help(form.jointControl) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.jointControl) }}
-            </div>
-
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.weitergabe) }}
-                {{ form_help(form.weitergabe) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.weitergabe) }}
-            </div>
-        </div>
-
-        <div class="mt-4 row">
-
-            <div class="col-md-3">
-                {{ form_label(form.datenweitergaben) }}
-            </div>
-            <div class="col-md-5">
-                {{ form_widget(form.datenweitergaben) }}
-            </div>
-            <div class="col-md-4">
-                {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
-                    <b>{% trans %}associatedDataTransfer{% endtrans %}</b><br>
-                    <ul>
-                        {% for d in vvt.datenweitergaben %}
-                            {% if d.activ == 1 %}
-                                {% if d.art == 1 %}
-                                    <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
-                                    </li>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                    <b>{% trans %}associatedOrderProcessing{% endtrans %}</b><br>
-                    <ul>
-                        {% for d in vvt.datenweitergaben %}
-                            {% if d.activ == 1 %}
-                                {% if d.art == 2 %}
-                                    <li><a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
-                                    </li>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
+    {% if vvt.datenweitergaben is defined and vvt.datenweitergaben is not null %}
+        <h4>{% trans %}associatedDataTransfer{% endtrans %}</h4>
+        <ul class="initial mb-5">
+            {% for d in vvt.datenweitergaben %}
+                {% if d.activ == 1 %}
+                    {% if d.art == 1 %}
+                        <li>
+                            <a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
+                        </li>
+                    {% endif %}
                 {% endif %}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.eu) }}
-                {{ form_help(form.eu) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.eu) }}
-            </div>
-        </div>
+            {% endfor %}
+        </ul>
+        <hr class="my-5">
+        <h4>{% trans %}associatedOrderProcessing{% endtrans %}</h4>
+        <ul class="initial mb-5">
+            {% for d in vvt.datenweitergaben %}
+                {% if d.activ == 1 %}
+                    {% if d.art == 2 %}
+                        <li>
+                            <a href="{{ path('datenweitergabe_edit',{'id':d.id}) }}">{{ d.gegenstand }}</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <hr class="my-5">
+    {% endif %}
 
-    </div>
-</div>
+    {{ form_row(form.eu) }}
+</fieldset>
 
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}technicalOrganizationalActions{% endtrans %}</h4>
+<fieldset>
+    <legend>{% trans %}technicalOrganizationalActions{% endtrans %}</legend>
+    {{ form_row(form.software) }}
+    {{ form_row(form.tomLink) }}
+    {{ form_row(form.tom) }}
+</fieldset>
 
-    <div class="card-body{% if not activ or vvt.approved %} disabled{% endif %}">
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.software) }}
-                {{ form_help(form.software) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.software) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.tomLink) }}
-                {{ form_help(form.tomLink) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.tomLink) }}
-            </div>
-        </div>
-        <div class="mt-4 row">
-            <div class="col-md-3">
-                {{ form_label(form.tom) }}
-                {{ form_help(form.tom) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.tom) }}
-            </div>
-        </div>
+<fieldset>
+    <legend>{% trans %}riskAssessment{% endtrans %}</legend>
+    {{ form_row(form.risiko) }}
+    {{ form_row(form.beurteilungEintritt) }}
+    <ul class="initial mb-5">
+        <li>
+            {% trans %}probability.highest{% endtrans %}
+        </li>
+        <li>
+            {% trans %}probability.high{% endtrans %}
+        </li>
+        <li>
+            {% trans %}probability.low{% endtrans %}
+        </li>
+        <li>
+            {% trans %}probability.lowest{% endtrans %}
+        </li>
+    </ul>
+    {{ form_row(form.beurteilungSchaden) }}
+    <p class="mt-5">
+        {% trans %}riskAssessmentDisclaimer{% endtrans %}
+    </p>
+</fieldset>
 
-    </div>
-</div>
+<fieldset>
+    <legend>{% trans %}dutyToInform{% endtrans %}</legend>
+    {{ form_row(form.source) }}
+    {{ form_row(form.informationspflicht) }}
+    {{ form_row(form.dsb) }}
 
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}riskAssessment{% endtrans %}</h4>
+    <p class="mt-5">
+        {% trans %}processing.disclaimer{% endtrans %}
+    </p>
 
-    <div class="card-body">
-        <div class="mt-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
-                {{ form_label(form.risiko) }}
-                {{ form_help(form.risiko) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.risiko) }}
-            </div>
-        </div>
+    {% for p in vvt.policies | filter(p => p.activ) %}
+        <a href="{{ path('policy_edit',{'id':p.id}) }}">{{ p.title }}</a>
+    {% endfor %}
+</fieldset>
 
+<fieldset>
+    <legend>{% trans %}inheritance.word{% endtrans %}</legend>
+    {{ form_row(form.inherited) }}
+</fieldset>
 
-        <div class="row mt-4 {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
-                {{ form_label(form.beurteilungEintritt) }}
-                {{ form_help(form.beurteilungEintritt) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.beurteilungEintritt) }}
-                <p>
-                <ul>
-                    <li>
-                        {% trans %}probability.highest{% endtrans %}
-                    </li>
-                    <li>
-                        {% trans %}probability.high{% endtrans %}
-                    </li>
-                    <li>
-                        {% trans %}probability.low{% endtrans %}
-                    </li>
-                    <li>
-                        {% trans %}probability.lowest{% endtrans %}
-                    </li>
-                </ul>
-                </p>
-            </div>
-        </div>
-        <div class="row mt-4 {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
-                {{ form_label(form.beurteilungSchaden) }}
-                {{ form_help(form.beurteilungSchaden) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.beurteilungSchaden) }}
-                <div class="mt-4">
-                    {% trans %}riskAssessmentDisclaimer{% endtrans %}
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
-<div class="card mt-4">
-    <h4 class="h4-responsive card-header">{% trans %}dutyToInform{% endtrans %}</h4>
-
-    <div class="card-body">
-        <div class="mt-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
-                {{ form_label(form.source) }}
-                {{ form_help(form.source) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.source) }}
-            </div>
-        </div>
-        <div class="mt-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
-                {{ form_label(form.informationspflicht) }}
-                {{ form_help(form.informationspflicht) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.informationspflicht) }}
-            </div>
-        </div>
-        <div class="mt-4 mb-4 row {% if not activ or vvt.approved %} disabled{% endif %}">
-            <div class="col-md-3">
-                {{ form_label(form.dsb) }}
-                {{ form_help(form.dsb) }}
-            </div>
-            <div class="col-md-9">
-                {{ form_widget(form.dsb) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <p>
-                    {% trans %}processing.disclaimer{% endtrans %}
-                </p>
-            </div>
-            <div class="col-md-9">
-                {% for p in vvt.policies | filter(p => p.activ) %}
-                    <a href="{{ path('policy_edit',{'id':p.id}) }}" class="btn bg-policy">{{ p.title }}</a>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="{% if not activ or vvt.approved %} disabled{% endif %}">
-            {{ form_widget(form.save) }}
-        </div>
-    </div>
-</div>
+{{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
 {{ form_end(form) }}

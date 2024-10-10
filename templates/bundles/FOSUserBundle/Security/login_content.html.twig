@@ -3,31 +3,31 @@
 {% if error %}
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
-<div class="row">
-    <div class="col-lg-12">
+<div>
+    <div>
         <form action="{{ path("fos_user_security_check") }}" method="post">
             {% if csrf_token %}
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
             {% endif %}
-            <div class="form-group">
-                <div class="md-form">
-                     <input type="text" id="username" class="form-control" name="_username" value="{{ last_username }}" required="required" autocomplete="username" />
+            <div>
+                <div>
+                     <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username" />
                     <label for="username">{{ 'security.login.username'|trans }}</label>
 
                 </div>
             </div>
 
-            <div class="form-group">
-                <div class="md-form">
+            <div>
+                <div>
                     <label for="password">{{ 'security.login.password'|trans }}</label>
-                    <input type="password" class="form-control" id="password" name="_password" required="required" autocomplete="current-password" />
+                    <input type="password" id="password" name="_password" required="required" autocomplete="current-password" />
 
                 </div>
 
             </div>
 
 
-            <button class="btn btn-primary btn-raised btn-block" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" >{{ 'security.login.submit'|trans }}</button>
+            <button type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" >{{ 'security.login.submit'|trans }}</button>
 
         </form>
     </div>

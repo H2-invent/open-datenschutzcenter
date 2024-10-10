@@ -1,47 +1,47 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'report' %}
 
+{% set fullWidthLayout = true %}
+
+{% block title %}
+    {% trans %}work.overview{% endtrans %}
+{% endblock %}
+
 {% block CTA %}
-    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('report_new') }}">
-        <span>{% trans %}work.create{% endtrans %}</span>
+    <a href="{{ path('report_new') }}" class="btn btn-create">
+        {% trans %}work.create{% endtrans %}
     </a>
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}work.overview{% endtrans %}</h2>
-    <div class="card card-body">
-        <div class="table-responsive">
-            <table id="data-table" class="table display table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">{% trans %}worker{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}date{% endtrans %}</th>
-                    <th scope="col">{% trans from 'general' %}time{% endtrans %}</th>
-                    <th scope="col">{% trans %}billed{% endtrans %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for t in report %}
-                    <tr class="clickable-row"
-                        data-href='{{ path('report_edit',{'id':t.id}) }}'>
-                        <th scope="row">{{ t.id }}</th>
-                        <td>{{ t.user.email }}</td>
-                        <td>{{ t.description|nl2br }}</td>
-                        <td>{{ t.date|date('d.m.Y') }}</td>
-                        <td>{{ t.calcTime }} {% trans %}minutes{% endtrans %}</td>
-                        <td>
-                            {% if t.invoice %}
-                                {% trans from 'general' %}yes{% endtrans %}
-                            {% else %}
-                                {% trans from 'general' %}no{% endtrans %}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{% trans %}worker{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}description{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}date{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}time{% endtrans %}</th>
+                <th scope="col">{% trans %}billed{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for t in report %}
+            <tr data-href='{{ path('report_edit',{'id':t.id}) }}'>
+                <td>{{ t.id }}</td>
+                <td>{{ t.user.email }}</td>
+                <td>{{ t.description|nl2br }}</td>
+                <td>{{ t.date|date('d.m.Y') }}</td>
+                <td>{{ t.calcTime }} {% trans %}minutes{% endtrans %}</td>
+                <td>
+                    {% if t.invoice %}
+                        {% trans from 'general' %}yes{% endtrans %}
+                    {% else %}
+                        {% trans from 'general' %}no{% endtrans %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

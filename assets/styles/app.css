@@ -1,0 +1,19 @@
+#task-assign #btn-assign {
+    @apply hidden;
+}
+
+#content-team-admin {
+
+}
+
+#cards-reports h3 {
+    @apply mb-5;
+}
+
+#cards-reports a {
+    @apply inline-block mb-1;
+}
+
+#cards-reports a:before {
+    content: "» ";
+}

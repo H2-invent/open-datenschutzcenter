@@ -44,7 +44,7 @@ class DynamicQuestionType extends BaseType
             SubmitType::class,
             [
                 'attr' => [
-                    'class' => 'btn btn-primary'
+                    'class' => 'btn'
                 ],
                 'label' => 'continue',
                 'translation_domain' => 'general',

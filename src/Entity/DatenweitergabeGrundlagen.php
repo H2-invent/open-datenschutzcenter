@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\DatenweitergabeGrundlagenRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DatenweitergabeGrundlagenRepository::class)]
-class DatenweitergabeGrundlagen
+class DatenweitergabeGrundlagen extends Preset
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,6 +22,9 @@ class DatenweitergabeGrundlagen
 
     #[ORM\Column(type: 'boolean')]
     private $activ = true;
+
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'ignoredDWGrounds')]
+    protected $ignoredInTeams;
 
     public function getId(): ?int
     {

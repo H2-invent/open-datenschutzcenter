@@ -4,20 +4,11 @@
 {% block body_text %}
     {% autoescape false %}
         {% trans %}body.passwordReset{% endtrans %}
-
         {{ link }}
-
-
-        {% trans %}salutation{% endtrans %}
+        {% trans %}salutation.kindRegards{% endtrans %}
     {% endautoescape %}
-
 {% endblock %}
 
 {% block body_html %}
-    {#
-        You can of course render the html directly here.
-        Including a template as done here allows keeping things DRY by using
-        the template inheritance in it
-    #}
     {% include 'email/addUser/resetting_html.html.twig' %}
 {% endblock %}

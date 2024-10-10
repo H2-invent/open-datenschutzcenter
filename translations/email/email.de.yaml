@@ -1,38 +1,36 @@
 subject:
   passwordReset: Passwort zurücksetzen
-  passwordResetHtml: Open-Datenschutz Center
-  notificationComment: -- Ein neuer Kommentar zu Ihrer Anfrage --
-  newCustomerRequest: -- Neue Kundenanfrage --
-  verifyEmail: -- Bestätigen Sie Ihre Email Adresse --
+  passwordResetHtml: Open Datenschutzcenter
+  notificationComment: Ein neuer Kommentar zu Ihrer Anfrage
+  newCustomerRequest:  Neue Kundenanfrage
+  verifyEmail:  Bestätigen Sie Ihre Email Adresse
   invite: Einladung zum ODC
 body:
   passwordReset: '
     Passwort neu setzen
 
-    <h3>
-        Hallo!
-    </h3>
+    Hallo!
 
     Sie wurden gerade von einem Administrator zu einem Datenschutz Team auf Ihrem Datenschutz Center hinzugefügt.
 
     Um ihr Passwort nun festzulegen klicken Sie den nachfolgenden Link.'
   passwordResetHtml: '
-    <h4 class="text-center">
-        -- Einladung zum Datenschutz Center Team --
+    <h4>
+        Einladung zum Datenschutz Center Team
     </h4>
-    <b>
+    <p>
         Hallo!
-    </b>
+    </p>
     <p>
         Sie wurden gerade von einem Administrator zu einem Datenschutz Team auf Ihrem Datenschutz Center hinzugefügt.
     </p>'
   notificationComment: '
-  <h4 class="text-center">
+  <h4>
     {title}
   </h4>
-  <b>
+  <p>
     Hallo!
-  </b>
+  </p>
   <p>
     Es gibt eine neue Nachricht in Ihrer Anfrage {dataTitle}.
   </p>
@@ -61,12 +59,12 @@ body:
   
   Sie erhalten diese E-Mail, weil Sie eine Anfrage über den Datenschutzcenter {teamName} gestellt haben.'
   notificationCommentInternal: '
-  <h4 class="text-center">
+  <h4>
     {title}
   </h4>
-  <b>
+  <p>
     Hallo!
-  </b>
+  </p>
   <p>
     Es ist ein neuer Kommentar zu {dataTitle} vorhanden.
   </p>
@@ -83,9 +81,9 @@ body:
   </p>
   <spacer size="16"></spacer>'
   notificationNew: '
-  <b>
+  <p>
     Hallo!
-  </b>
+  </p>
   <p>
     Im Datenschutzcenter ist eine neue Kundeanfrage bezüglich {subject} eingegangen.
   </p>
@@ -102,9 +100,9 @@ body:
   </p>
   <spacer size="16"></spacer>'
   notificationVerify: '
-  <b>
+  <p>
     Hallo {name}!
-  </b>
+  </p>
   <p>
     Bevor wir Ihre Anfrage weiter bearbeiten können, müssen Sie Ihre Email Adresse bestätigen. Klicken Sie dazu auf
     den Link in dieser Email.<br>
@@ -160,8 +158,8 @@ body:
 
 salutation:
   kindRegards: '
-  Mit freundlichen Grüßen<br>
-  Ihr Datenschutz Center'
+  <p>Mit freundlichen Grüßen<br>
+  Ihr Datenschutz Center</p>'
   signature:
     plain: '
     Wenn Sie Fragen zum Datenschutz und den Hintergründen diese Nachricht, melden Sie sich bei dem Datenschutzbeauftragten.

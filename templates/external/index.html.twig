@@ -3,48 +3,48 @@
 {% block CTA %}{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-12">
-            <div class="card card-body">
-                <div class="form-check">
-                    <input id="checkboxDoc" type="checkbox" class="checkboxSelect form-check-input" name="Doc"
+    <div>
+        <div>
+            <div>
+                <div>
+                    <input id="checkboxDoc" type="checkbox" name="Doc"
                            value="Doc">
-                    <label class="form-check-label"
+                    <label
                            for="checkboxDoc">{% trans %}externalCheck{% endtrans %}</label>
                 </div>
             </div>
         </div>
         {% if team.video %}
-            <div class="col-md-6 mt-2">
+            <div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="h3-responsive">{% trans with {'{video}': team.video} %}videoConference.about{% endtrans %}</h3>
+                <div>
+                    <div>
+                        <h3>{% trans with {'{video}': team.video} %}videoConference.about{% endtrans %}</h3>
                     </div>
-                    <div class="card-body">
+                    <div>
                         <p>{% trans %}disclaimer.jitsi{% endtrans %}</p>
-                        <a href="{{ team.video }}/{{ hash }}" class="btn btn-cyan sendButton disabled" target="_blank"
+                        <a href="{{ team.video }}/{{ hash }}" target="_blank"
                            referrerpolicy="no-referrer">{% trans %}to.videoConference{% endtrans %}</a>
                     </div>
-                    <div class="card-footer">
+                    <div>
                         @ {{ team.video }}
                     </div>
                 </div>
             </div>
         {% endif %}
         {% if team.externalLink %}
-            <div class="col-md-6 mt-2">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="h3-responsive">{% trans %}externalResource{% endtrans %}</h3>
+            <div>
+                <div>
+                    <div>
+                        <h3>{% trans %}externalResource{% endtrans %}</h3>
                     </div>
-                    <div class="card-body">
+                    <div>
                         <p>{% trans %}disclaimer.external{% endtrans %}</p>
 
-                        <a href="{{ team.externalLink }}" class="btn btn-cyan sendButton disabled" target="_blank"
+                        <a href="{{ team.externalLink }}" target="_blank"
                            referrerpolicy="no-referrer">{% trans %}to.document{% endtrans %}</a>
                     </div>
-                    <div class="card-footer">
+                    <div>
                         {{ team.externalLink }}
                     </div>
                 </div>

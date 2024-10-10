@@ -13,22 +13,23 @@ use App\Repository\QuestionnaireRepository;
 use App\Service\CurrentTeamService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/questionnaire', name: 'questionnaire')]
-class QuestionnaireController extends AbstractController
+class QuestionnaireController extends BaseController
 {
     private static string $TEMPLATE_DIR = 'questionnaire/questionnaire/';
 
     public function __construct(
         private EntityManagerInterface $em,
         private CurrentTeamService     $currentTeamService,
+        private TranslatorInterface $translator
     )
     {
     }
@@ -38,6 +39,7 @@ class QuestionnaireController extends AbstractController
         Request $request,
     ): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-questionnaire');
         $form = $this->createForm(QuestionnaireType::class);
         $error = false;
 
@@ -58,6 +60,7 @@ class QuestionnaireController extends AbstractController
             [
                 'form' => $form,
                 'error' => $error,
+                'title' => $this->translator->trans(id: 'questionnaire.create', domain: 'questionnaire'),
             ],
         );
     }
@@ -69,6 +72,8 @@ class QuestionnaireController extends AbstractController
         Request       $request,
     ): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-questionnaire');
+
         $form = $this->createForm(QuestionnaireType::class, $questionnaire);
 
         $form->handleRequest($request);
@@ -77,7 +82,8 @@ class QuestionnaireController extends AbstractController
             $success = $this->handleForm($form);
 
             if($success){
-                return $this->redirectToRoute('akademie_admin');
+                $this->addSuccessMessage($this->translator->trans(id: 'save.changesSuccessful', domain: 'general'));
+                return $this->redirect($this->generateUrl('akademie_admin') . '#tab-questionnaire');
             }
         }
 
@@ -86,6 +92,7 @@ class QuestionnaireController extends AbstractController
             [
                 'form' => $form,
                 'success' => $success??true,
+                'title' => $this->translator->trans(id: 'questionnaire.edit', domain: 'questionnaire'),
             ],
         );
     }
@@ -94,6 +101,10 @@ class QuestionnaireController extends AbstractController
     #[ParamConverter('questionnaire', class: 'App\Entity\Questionnaire', options: ['mapping' => ['id' => 'id']])]
     public function delete(Questionnaire $questionnaire): RedirectResponse
     {
+        if (!$questionnaire->isDeletable()) {
+            throw $this->createNotFoundException();
+        }
+
         foreach ($questionnaire->getParticipationAnswers() as $participationAnswer) {
             $this->em->remove($participationAnswer);
         }
@@ -109,6 +120,7 @@ class QuestionnaireController extends AbstractController
 
         $this->em->remove($questionnaire);
         $this->em->flush();
+        $this->addSuccessMessage($this->translator->trans(id: 'deleted', domain: 'general'));
 
         return $this->redirectToRoute('akademie_admin');
     }
@@ -117,6 +129,8 @@ class QuestionnaireController extends AbstractController
     #[ParamConverter('questionnaire', class: 'App\Entity\Questionnaire', options: ['mapping' => ['id' => 'id']])]
     public function details(Questionnaire $questionnaire): Response
     {
+        $this->setBackButton($this->generateUrl('akademie_admin') . '#tab-questionnaire');
+
         return $this->render(
             self::$TEMPLATE_DIR . 'details.html.twig',
             [
@@ -172,6 +186,6 @@ class QuestionnaireController extends AbstractController
         /** @var User&UserInterface $user */
         $user = $this->getUser();
 
-        return $this->currentTeamService->getTeamFromSession($user);
+        return $this->currentTeamService->getCurrentTeam($user);
     }
 }

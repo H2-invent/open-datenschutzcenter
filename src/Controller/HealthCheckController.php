@@ -5,12 +5,11 @@ namespace App\Controller;
 
 use App\Repository\VorfallRepository;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HealthCheckController extends AbstractController
+class HealthCheckController extends BaseController
 {
     #[Route(path: '/health/check', name: 'health_check', methods: ['GET'])]
     public function index(VorfallRepository $incidentRepository): Response

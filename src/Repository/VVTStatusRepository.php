@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\VVTStatus;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,49 +11,13 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method VVTStatus[]    findAll()
  * @method VVTStatus[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VVTStatusRepository extends ServiceEntityRepository
+class VVTStatusRepository extends PresetRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        protected readonly ManagerRegistry    $registry,
+        TeamRepository                        $teamRepository,
+    )
     {
-        parent::__construct($registry, VVTStatus::class);
-    }
-
-    // /**
-    //  * @return VVTStatus[] Returns an array of VVTStatus objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?VVTStatus
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findActiveByTeam($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->where('a.team is null OR a.team = :val')
-            ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult();
+        parent::__construct($this->registry, $teamRepository, VVTStatus::class);
     }
 }

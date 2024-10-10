@@ -42,6 +42,17 @@ class Question extends EntityWithTimestamps
         $this->participationAnswers = new ArrayCollection();
     }
 
+    public function getQuestionnaire(): ?Questionnaire
+    {
+        foreach ($this->getQuestionnaireQuestions() as $questionnaireQuestion) {
+            if ($questionnaireQuestion->getQuestion() === $this) {
+                return $questionnaireQuestion->getQuestionnaire();
+            }
+        }
+
+        return null;
+    }
+
     public function getLabel(): string
     {
         return $this->label;

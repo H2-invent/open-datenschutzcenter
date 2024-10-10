@@ -16,6 +16,9 @@ use App\Entity\VVT;
 use App\Entity\VVTDatenkategorie;
 use App\Entity\VVTPersonen;
 use App\Form\Type\PolicyType;
+use App\Repository\VVTDatenkategorieRepository;
+use App\Repository\VVTPersonenRepository;
+use App\Repository\VVTRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -23,13 +26,13 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class PoliciesService
 {
-    private $em;
-    private $formBuilder;
-
-    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formBuilder)
+    public function __construct(
+        private readonly FormFactoryInterface        $formBuilder,
+        private readonly VVTRepository               $processRepository,
+        private readonly VVTPersonenRepository       $processPeopleRepository,
+        private readonly VVTDatenkategorieRepository $processCategoryRepository,
+    )
     {
-        $this->em = $entityManager;
-        $this->formBuilder = $formBuilder;
     }
 
     function clonePolicy(Policies $policy, User $user)
@@ -44,15 +47,23 @@ class PoliciesService
         return $newPolicy;
     }
 
-    function createForm(Policies $policies, Team $team)
+    function createForm(Policies $policies, Team $team, array $options = [])
     {
-        $personen = $this->em->getRepository(VVTPersonen::class)->findByTeam($team);
-        $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
-        $processes = $this->em->getRepository(VVT::class)->findActiveByTeam($team);
+        if (array_key_exists('disabled', $options) && $options['disabled']) {
+            $processes = $this->processRepository->findAllByTeam($team);
+        } else {
+            $processes = $this->processRepository->findActiveByTeam($team);
+        }
 
-        $form = $this->formBuilder->create(PolicyType::class, $policies, ['personen' => $personen, 'kategorien' => $kategorien, 'user' => $team->getMembers(), 'processes' => $processes]);
+        $people = $this->processPeopleRepository->findActiveByTeam($team);
+        $categories = $this->processCategoryRepository->findByTeam($team);
 
-        return $form;
+        return $this->formBuilder->create(PolicyType::class, $policies, array_merge([
+            'personen' => $people,
+            'kategorien' => $categories,
+            'user' => $team->getMembers(),
+            'processes' => $processes
+        ], $options));
     }
 
     function newPolicy(Team $team, User $user)

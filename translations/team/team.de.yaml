@@ -7,6 +7,7 @@ removeDsb: Der DSB wird daraufhin als Admin, Koordinator und Akademiebenutzer en
 addExternalDsbInfo: Hier können Sie einen externen DSB ernennen. Der externe DSB hat die Möglichkeit, zwischen Teams hin und her zu wechseln und dabei jedesmal die die Berechtigung Datenschutzkoordinator, Datenschutzbeauftragter, Admin und Akademiemitglied zu erhalten.
 adminArea: Adminbereich
 memberCount: Anzahl Mitglieder
+parentTeam: Erbt von
 admins: Administratoren
 admin:
   create: Admin hinzufügen
@@ -19,6 +20,7 @@ team:
   delete: '{teamName} löschen'
   manage: Teams verwalten
   create: Team erstellen
+  created: Team erstellt
   manageData: Stammdaten bearbeiten
   manageMembers: Mitglieder bearbeiten
   deletionBlocked: 'Diese Gruppe kann erst gelöscht werden, wenn folgende Elemente entfernt wurden:'
@@ -45,3 +47,4 @@ dsb:
 footer:
   disclaimer: Um den ODC-Administrations-Bereich nutzen zu können müssen Sie die Rolle "SuperAdmin" besitzen.
   clickHere: Wie man diese Rolle zuweist erfahren sie hier
+backToTeamManagement: Zurück zur Team-Verwaltung
