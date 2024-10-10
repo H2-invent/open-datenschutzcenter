@@ -16,7 +16,7 @@ parameters:
     KEYCLOAK_ID: '%env(OAUTH_KEYCLOAK_CLIENT_ID)%'
     superAdminRole: '%env(superAdminRole)%'
     group_api_user_id: '%env(default::GROUP_API_USER_ID)%'
-    group_api_role: '%env(default::GROUP_API_ROLE)%'
+    group_api_roles: '%env(default::csv:GROUP_API_ROLES)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -63,4 +63,4 @@ services:
     App\Security\KeycloakAuthenticator:
         arguments:
             $groupApiUserId: '%group_api_user_id%'
-            $groupApiRole: '%group_api_role%'
+            $groupApiRoles: '%group_api_roles%'
