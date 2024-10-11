@@ -14,7 +14,7 @@ final class Version20241008091534 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add team hierarchy, inheritance settings and API group mapping option';
     }
 
     public function up(Schema $schema): void
@@ -113,5 +113,16 @@ final class Version20241008091534 extends AbstractMigration
         $this->addSql('ALTER TABLE vvtpersonen DROP inherited');
         $this->addSql('ALTER TABLE vvtrisiken DROP inherited');
         $this->addSql('ALTER TABLE vvtstatus DROP inherited');
+    }
+
+    public function postUp(Schema $schema): void
+    {
+        $this->connection->createQueryBuilder()
+            ->update('team', 't')
+            ->set('t.tree_root', 't.id')
+            ->set('t.lvl', 0)
+            ->set('t.lft', 1)
+            ->set('t.rgt', 2)
+            ->executeStatement();
     }
 }
