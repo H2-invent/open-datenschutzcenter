@@ -15,6 +15,8 @@ parameters:
     KEYCLOAK_SECRET: '%env(OAUTH_KEYCLOAK_CLIENT_SECRET)%'
     KEYCLOAK_ID: '%env(OAUTH_KEYCLOAK_CLIENT_ID)%'
     superAdminRole: '%env(superAdminRole)%'
+    group_api_user_id: '%env(default::GROUP_API_USER_ID)%'
+    group_api_roles: '%env(default::csv:GROUP_API_ROLES)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -57,3 +59,8 @@ services:
                connection: default
         calls:
             - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+    App\Security\KeycloakAuthenticator:
+        arguments:
+            $groupApiUserId: '%group_api_user_id%'
+            $groupApiRoles: '%group_api_roles%'

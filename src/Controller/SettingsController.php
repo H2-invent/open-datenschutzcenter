@@ -43,8 +43,7 @@ class SettingsController extends BaseController
         $errors = array();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $newSettings = $form->getData();
-            $settings->setUseKeycloakGroups($newSettings->getUseKeycloakGroups());
+            $settings = $form->getData();
             $errors = $validator->validate($settings);
             if (count($errors) == 0) {
                 $em->persist($settings);
