@@ -123,7 +123,7 @@ class TeamMemberController extends BaseController
             $email = $dsb['dsb'];
             $user = $userRepository->findOneBy(['email' => $email]);
             if (!$user) {
-                $user = $inviteService->newUser($email, $team);
+                $user = $inviteService->newUser($email);
             }
             if (!$team->getDsbUser()) {
                 $team->setDsbUser($user)

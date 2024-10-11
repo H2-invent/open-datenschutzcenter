@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
-use App\DataTypes\ParticipationStateTypes;
 use App\Entity\AkademieBuchungen;
-use App\Entity\Participation;
+use App\Entity\User;
 use App\Repository\AkademieBuchungenRepository;
 use App\Service\SecurityService;
 use DateTime;
@@ -19,8 +18,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route(path: '/akademie', name: 'akademie')]
 class AkademieController extends BaseController
 {
-
-
     public function __construct(
         private readonly TranslatorInterface $translator,
         private EntityManagerInterface       $em,
@@ -35,11 +32,13 @@ class AkademieController extends BaseController
         AkademieBuchungenRepository $academyBillingRepository,
     ): Response
     {
-        $team = $this->getUser()->getAkademieUser();
+        /** @var User $user */
+        $user = $this->getUser();
+        $team = $user->getAkademieUser();
         $today = new DateTime();
         $buchung = $academyBillingRepository->find($request->get('kurs'));
 
-        if (!$securityService->teamCheck($team) || $buchung->getUser() !== $this->getUser()) {
+        if (!$securityService->teamCheck($team) || $buchung->getUser() !== $user) {
             return $this->redirectToRoute('akademie');
         }
 
@@ -68,7 +67,10 @@ class AkademieController extends BaseController
         DompdfWrapper     $wrapper,
     ): Response
     {
-        if ($billing->getUser() !== $this->getUser()) {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($billing->getUser() !== $user) {
             return $this->redirectToRoute('akademie');
         }
 
@@ -77,8 +79,8 @@ class AkademieController extends BaseController
             // Retrieve the HTML generated in our twig file
             $html = $this->renderView('bericht/zertifikatAkademie.html.twig', [
                 'daten' => $billing,
-                'team' => $this->getUser()->getAkademieUser(),
-                'user' => $this->getUser(),
+                'team' => $user->getAkademieUser(),
+                'user' => $user,
             ]);
 
             //Generate PDF File for Download
@@ -98,12 +100,15 @@ class AkademieController extends BaseController
         AkademieBuchungenRepository $academyBillingRepository,
     ): Response
     {
-        $team = $this->getUser()->getAkademieUser();
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $team = $user->getAkademieUser();
 
         $today = new DateTime();
         $buchung = $academyBillingRepository->findOneBy(['finishedID' => $request->get('id')]);
 
-        if (!$securityService->teamCheck($team) || $buchung->getUser() !== $this->getUser()) {
+        if (!$securityService->teamCheck($team) || $buchung->getUser() !== $user) {
             return $this->redirectToRoute('akademie');
         }
 
@@ -134,13 +139,16 @@ class AkademieController extends BaseController
         AkademieBuchungenRepository $bookingRepository
     ): Response
     {
-        $team = $this->getUser()->getAkademieUser();
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $team = $user->getAkademieUser();
 
         if (!$securityService->teamCheck($team)) {
             return $this->redirectToRoute('dashboard');
         }
 
-        $bookings = $bookingRepository->findMyBuchungenByUser($this->getUser());
+        $bookings = $bookingRepository->findMyBuchungenByUser($user);
         return $this->render('akademie/index.html.twig', [
             'buchungen' => $bookings,
             'currentTeam' => $team,

@@ -230,7 +230,6 @@ class Tom
     {
         if (!$this->vvts->contains($vvt)) {
             $this->vvts[] = $vvt;
-            $vvt->setYes($this);
         }
 
         return $this;
@@ -240,10 +239,6 @@ class Tom
     {
         if ($this->vvts->contains($vvt)) {
             $this->vvts->removeElement($vvt);
-            // set the owning side to null (unless already changed)
-            if ($vvt->getYes() === $this) {
-                $vvt->setYes(null);
-            }
         }
 
         return $this;

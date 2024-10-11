@@ -1,8 +1,10 @@
 parameters:
-    level: 1
+    level: 2
     paths:
         - bin/
         - config/
         - public/
         - src/
         - tests/
+includes:
+    - vendor/phpstan/phpstan-doctrine/extension.neon

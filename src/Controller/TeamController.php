@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\AuditTomAbteilung;
 use App\Entity\Team;
+use App\Entity\User;
 use App\Form\Type\AbteilungType;
 use App\Form\Type\DeleteTeamType;
 use App\Form\Type\NewType;
@@ -99,6 +100,7 @@ class TeamController extends BaseController
         AuditTomAbteilungRepository $departmentRepository,
     ): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $team = $currentTeamService->getCurrentTeam($user);
 
@@ -107,7 +109,7 @@ class TeamController extends BaseController
         }
 
         $department = $departmentRepository->findOneBy(array('id' => $request->get('id')));
-        if ($this->getUser()->hasTeam($department->getTeam())) {
+        if ($user->hasTeam($department->getTeam())) {
             $department->setActiv(false);
         }
 
@@ -126,6 +128,7 @@ class TeamController extends BaseController
         CurrentTeamService     $currentTeamService,
     ): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
 
         if ($securityService->superAdminCheck($user) === false) {
@@ -275,6 +278,7 @@ class TeamController extends BaseController
         CurrentTeamService     $currentTeamService,
     ): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $team = $currentTeamService->getCurrentTeam($user);
 
@@ -284,7 +288,7 @@ class TeamController extends BaseController
 
         $data = $teamService->delete($request->get('type'), $request->get('id'));
 
-        if ($this->getUser()->hasTeam($data->getTeam())) {
+        if ($user->hasTeam($data->getTeam())) {
             $data->setActiv(false);
         }
 

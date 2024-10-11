@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Team;
+use App\Entity\User;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -12,11 +13,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuService
 {
+    /**
+     * @var (UserInterface&User)|null
+     */
     private ?UserInterface $user = null;
     private ?Team $currentTeam = null;
 
-    public function __construct(private FactoryInterface $factory, private TranslatorInterface $translator, private Security $security, private CurrentTeamService $currentTeamService, private RequestStack $requestStack)
-    {
+    public function __construct(
+        private FactoryInterface $factory,
+        private TranslatorInterface $translator,
+        private Security $security,
+        private CurrentTeamService $currentTeamService,
+        private RequestStack $requestStack,
+    ) {
         $this->user = $this->security->getUser();
         $this->currentTeam = $this->currentTeamService->getCurrentTeam($this->user);
     }

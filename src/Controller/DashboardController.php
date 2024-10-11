@@ -15,6 +15,7 @@
 namespace App\Controller;
 
 use App\Entity\Team;
+use App\Entity\User;
 use App\Form\Type\TeamType;
 use App\Repository\AkademieBuchungenRepository;
 use App\Repository\AuditTomRepository;
@@ -39,23 +40,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class DashboardController extends BaseController
 {
     #[Route(path: '/', name: 'dashboard')]
-    public function dashboard(Request                     $request,
-                              CurrentTeamService          $currentTeamService,
-                              SecurityService             $securityService,
-                              TeamRepository              $teamRepository,
-                              DatenweitergabeRepository   $transferRepository,
-                              VVTRepository               $processRepository,
-                              AuditTomRepository          $auditRepository,
-                              VVTDsfaRepository           $impactAssessmentRepository,
-                              FormsRepository             $formRepository,
-                              PoliciesRepository          $policyRepository,
-                              SoftwareRepository          $softwareRepository,
-                              KontakteRepository          $contactRepository,
-                              TomRepository               $tomRepository,
-                              LoeschkonzeptRepository     $deletionConceptRepository,
-                              VVTDatenkategorieRepository $dataCategoryRepository,
-                              AkademieBuchungenRepository $bookingRepository,
-                              TaskRepository              $taskRepository
+    public function dashboard(
+        Request                     $request,
+        CurrentTeamService          $currentTeamService,
+        SecurityService             $securityService,
+        TeamRepository              $teamRepository,
+        DatenweitergabeRepository   $transferRepository,
+        VVTRepository               $processRepository,
+        AuditTomRepository          $auditRepository,
+        VVTDsfaRepository           $impactAssessmentRepository,
+        FormsRepository             $formRepository,
+        PoliciesRepository          $policyRepository,
+        SoftwareRepository          $softwareRepository,
+        KontakteRepository          $contactRepository,
+        TomRepository               $tomRepository,
+        LoeschkonzeptRepository     $deletionConceptRepository,
+        VVTDatenkategorieRepository $dataCategoryRepository,
+        AkademieBuchungenRepository $bookingRepository,
+        TaskRepository              $taskRepository
     ): Response
     {
         // if no teams exist, redirect to first_run
@@ -65,15 +67,16 @@ class DashboardController extends BaseController
         }
 
         // else get team for current user
+        /** @var User $user */
         $user = $this->getUser();
         $currentTeam = $currentTeamService->getCurrentTeam($user);
 
         if ($currentTeam === null) {
-            if ($securityService->superAdminCheck($this->getUser())) {
+            if ($securityService->superAdminCheck($user)) {
                 return $this->redirectToRoute('manage_teams');
-            } elseif ($this->getUser()->getAkademieUser() !== null) {
+            } elseif ($user->getAkademieUser() !== null) {
                 return $this->redirectToRoute('akademie');
-            } elseif (count($this->getUser()->getTeamDsb()) > 0) {
+            } elseif (count($user->getTeamDsb()) > 0) {
                 return $this->redirectToRoute('dsb');
             } else {
 
@@ -136,19 +139,22 @@ class DashboardController extends BaseController
     #[Route(path: '/no_team', name: 'no_team')]
     public function noTeam(): Response
     {
-        if ($this->getUser()) {
-            if (count($this->getUser()->getTeams())) {
+        /** @var User|null $user */
+        $user = $this->getUser();
+
+        if ($user) {
+            if (count($user->getTeams())) {
                 return $this->redirectToRoute('dashboard');
             }
-            if ($this->getUser()->getAkademieUser()) {
+            if ($user->getAkademieUser()) {
                 return $this->redirectToRoute('akademie');
             }
-            if (count($this->getUser()->getTeamDsb()) > 0) {
+            if (count($user->getTeamDsb()) > 0) {
                 return $this->redirectToRoute('dsb');
             }
         }
         return $this->render('dashboard/noteam.html.twig', [
-            'user' => $this->getUser(),
+            'user' => $user,
         ]);
     }
 
