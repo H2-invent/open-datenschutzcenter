@@ -1,4 +1,4 @@
-name: Create Release
+name: Run Development Build and Tests
 env:
   GITHUB_TOKEN: ${{ secrets.token }}
 
