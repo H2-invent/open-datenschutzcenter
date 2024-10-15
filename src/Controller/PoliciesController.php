@@ -148,7 +148,7 @@ class PoliciesController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $policiesFilesystem->getMimetype($policies->getUpload());
+        $type = $policiesFilesystem->mimeType($policies->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(
