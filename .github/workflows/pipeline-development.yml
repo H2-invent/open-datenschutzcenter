@@ -1,4 +1,4 @@
-name: Create Release
+name: Run Development Build and Tests
 env:
   GITHUB_TOKEN: ${{ secrets.token }}
 
@@ -6,4 +6,4 @@ on: push
 
 jobs:
   artifact:
-    uses: h2-invent/open-datenschutzcenter/.github/workflows/task-artifact.yml@devops
+    uses: h2-invent/open-datenschutzcenter/.github/workflows/task-artifact.yml@master

@@ -14,7 +14,7 @@ final class Version20241008090501 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Cleanup migration to match existing model';
     }
 
     public function up(Schema $schema): void
@@ -27,8 +27,9 @@ final class Version20241008090501 extends AbstractMigration
         $this->addSql('ALTER TABLE questionnaire CHANGE description description TEXT DEFAULT NULL');
         $this->addSql('ALTER TABLE team RENAME INDEX unq_team_name TO UNIQ_C4E0A61F5E237E06');
         $this->addSql('ALTER TABLE team_admin MODIFY id INT NOT NULL');
-        $this->addSql('ALTER TABLE team_admin DROP FOREIGN KEY RFX_team_id_team_admin_6704f59cda29d');
-        $this->addSql('ALTER TABLE team_admin DROP FOREIGN KEY RFX_user_id_team_admin_6704f59cda242');
+        foreach ($schema->getTable('team_admin')->getForeignKeys() as $foreignKey) {
+            $this->addSql('ALTER TABLE team_admin DROP FOREIGN KEY ' . $foreignKey->getName());
+        }
         $this->addSql('DROP INDEX team_admin_IdX ON team_admin');
         $this->addSql('DROP INDEX `primary` ON team_admin');
         $this->addSql('ALTER TABLE team_admin DROP id');
@@ -37,8 +38,9 @@ final class Version20241008090501 extends AbstractMigration
         $this->addSql('ALTER TABLE team_admin ADD PRIMARY KEY (team_id, user_id)');
         $this->addSql('ALTER TABLE user RENAME INDEX idx_957a64799e73ac3e TO IDX_8D93D6499E73AC3E');
         $this->addSql('ALTER TABLE user_team MODIFY id INT NOT NULL');
-        $this->addSql('ALTER TABLE user_team DROP FOREIGN KEY RFX_team_id_user_team_6704f59cda128');
-        $this->addSql('ALTER TABLE user_team DROP FOREIGN KEY RFX_user_id_user_team_6704f59cd9f23');
+        foreach ($schema->getTable('user_team')->getForeignKeys() as $foreignKey) {
+            $this->addSql('ALTER TABLE user_team DROP FOREIGN KEY ' . $foreignKey->getName());
+        }
         $this->addSql('DROP INDEX user_team_IdX ON user_team');
         $this->addSql('DROP INDEX `primary` ON user_team');
         $this->addSql('ALTER TABLE user_team DROP id');

@@ -25,6 +25,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -224,7 +225,14 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $datenFilesystem->getMimetype($datenweitergabe->getUpload());
+        $type = null;
+        try {
+          $type =   $datenFilesystem->mimeType($datenweitergabe->getUpload());
+        }catch (\Exception $exception){
+            throw new NotFoundHttpException('File not found');
+        }
+
+
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(

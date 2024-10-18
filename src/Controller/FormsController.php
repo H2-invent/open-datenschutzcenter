@@ -145,7 +145,7 @@ class FormsController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $type = $formsFilesystem->getMimetype($forms->getUpload());
+        $type = $formsFilesystem->mimeType($forms->getUpload());
         $response = new Response($stream);
         $response->headers->set('Content-Type', $type);
         $disposition = HeaderUtils::makeDisposition(
