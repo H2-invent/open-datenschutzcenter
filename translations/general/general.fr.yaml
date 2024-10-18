@@ -53,6 +53,7 @@ info: Info
 login: Anmelden
 name: Name
 no: Nein
+nothingSelected: Nichts Ausgewählt
 number: Nummer
 object: Gegenstand
 overview: Übersicht
@@ -97,5 +98,15 @@ network:
     add: Im Datenflussplan anzeigen
     remove: Im Datenflussplan verstecken
 inheritance:
+  isInherited: Wird vererbt
   fromTeam: Von Team vererbt
-  infoText: Dieses Element wurde durch Team-Vererbung übertragen und ist daher nicht bearbeitbar.
+  isActive: Aktiv
+  infoText:
+    inherited: Dieses Element ist eine Abhängigkeit einer Verarbeitung, die vererbt wird. Es kann von Kind-Teams verwendet aber nicht bearbeitet werden.
+    fromTeam: Abhängigkeit einer geerbten Vearbeitung (kann nicht bearbeitet werden)
+    active:
+      short: Gerbtes Element - für dieses Team aktiv
+      long: Dieses Element ist eine Abhängigkeit einer Verarbeitung, die von einem übergeordneten Team vererbt wurde. Es kann in diesem Team verwendet aber nicht bearbeitet werden.
+    inactive:
+      short: Gerbtes Element - für dieses Team deaktiviert
+      long: Dieses Element ist eine Abhängigkeit einer Verarbeitung, die von einem übergeordneten Team vererbt wurde. Diese ist jedoch für dieses Team deaktiviert.
