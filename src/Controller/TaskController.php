@@ -10,14 +10,13 @@ use App\Service\SecurityService;
 use App\Service\TaskService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class TaskController extends AbstractController
+class TaskController extends BaseController
 {
 
 
@@ -36,7 +35,7 @@ class TaskController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('tasks');
         }
@@ -57,6 +56,9 @@ class TaskController extends AbstractController
                 return $this->redirectToRoute('tasks');
             }
         }
+
+        $this->setBackButton($this->generateUrl('tasks'));
+
         return $this->render('task/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -75,7 +77,7 @@ class TaskController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $task = $taskRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($task, $team) && $securityService->adminCheck($user, $team)) {
@@ -101,7 +103,7 @@ class TaskController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $task = $taskRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($task, $team) && $securityService->adminCheck($user, $team)) {
@@ -127,7 +129,7 @@ class TaskController extends AbstractController
         TaskRepository     $taskRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $task = $taskRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($task, $team) === false) {
@@ -146,16 +148,23 @@ class TaskController extends AbstractController
             if (count($errors) == 0) {
                 $this->em->persist($task);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
 
                 return $this->redirectToRoute(
                     'task_edit',
                     [
                         'id' => $task->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
         }
+
+        $urlBack = $request->get('edit') ?
+            $this->generateUrl('task_edit', ['id' => $request->get('id')]) :
+            $this->generateUrl('tasks');
+
+        $this->setBackButton($urlBack);
+
         return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
             'assignForm' => $assign->createView(),
@@ -163,7 +172,6 @@ class TaskController extends AbstractController
             'title' => $this->translator->trans(id: 'task.edit', domain: 'task'),
             'task' => $task,
             'activ' => $task->getActiv(),
-            'snack' => $request->get('snack'),
             'edit' => $request->get('edit'),
         ]);
     }
@@ -176,7 +184,7 @@ class TaskController extends AbstractController
         TaskRepository     $taskRepository,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($request->get('all')) {
             $tasks = $taskRepository->findActiveByTeam($team);
             $all = true;

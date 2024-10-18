@@ -24,7 +24,7 @@ class ClientRequestViewType extends AbstractType
             ->add('password', PasswordType::class, ['label' => 'Zugangspasswort ', 'required' => true, 'translation_domain' => 'form'])
             ->add('uuid', TextType::class, ['label' => 'Ticket ID ', 'required' => true, 'translation_domain' => 'form'])
             ->add('email', TextType::class, ['label' => 'Email Adresse', 'required' => true, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'Anzeigen', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-block mt-3'), 'label' => 'Anzeigen', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -6,3 +6,4 @@ client: Auftraggeber
 contractor: Auftragnehmer
 contact:
   create: Kontakt erstellen
+  edit: Kontakt bearbeiten

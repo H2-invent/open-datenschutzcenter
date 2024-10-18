@@ -14,20 +14,21 @@ use App\Repository\ParticipationAnswerRepository;
 use App\Repository\QuestionnaireQuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/questionnaire/question', name: 'question')]
-class QuestionController extends AbstractController
+class QuestionController extends BaseController
 {
     private static string $TEMPLATE_DIR = 'questionnaire/question/';
 
     public function __construct(
         private EntityManagerInterface $em,
+        private TranslatorInterface $translator
     )
     {
     }
@@ -36,6 +37,10 @@ class QuestionController extends AbstractController
     #[ParamConverter('questionnaire', class: 'App\Entity\Questionnaire', options: ['mapping' => ['id' => 'id']])]
     public function create(Request $request, Questionnaire $questionnaire): Response
     {
+        $this->setBackButton($this->generateUrl('questionnaire_details', [
+            'id' => $questionnaire->getId()
+        ]));
+
         $form = $this->createForm(QuestionType::class);
         $error = false;
         $form->handleRequest($request);
@@ -61,6 +66,7 @@ class QuestionController extends AbstractController
             [
                 'form' => $form->createView(),
                 'error' => $error,
+                'title' => $this->translator->trans(id: 'question.create', domain: 'questionnaire'),
             ]
         );
     }
@@ -69,6 +75,9 @@ class QuestionController extends AbstractController
     #[ParamConverter('question', class: 'App\Entity\Question', options: ['mapping' => ['id' => 'id']])]
     public function edit(Request $request, Question $question): Response
     {
+        $this->setBackButton($this->generateUrl('questionnaire_details', [
+            'id' => $question->getQuestionnaire()->getId()
+        ]));
         $form = $this->createForm(QuestionType::class, $question);
         $error = false;
 
@@ -78,6 +87,8 @@ class QuestionController extends AbstractController
             $question = $this->handleForm($form, $question);
 
             if ($question !== null) {
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
+
                 return $this->redirectToRoute('question_details', ['id' => $question->getId()]);
             }
 
@@ -89,6 +100,7 @@ class QuestionController extends AbstractController
             [
                 'form' => $form->createView(),
                 'error' => $error,
+                'title' => $this->translator->trans(id: 'question.edit', domain: 'questionnaire'),
             ]
         );
     }
@@ -97,6 +109,10 @@ class QuestionController extends AbstractController
     #[ParamConverter('question', class: 'App\Entity\Question', options: ['mapping' => ['id' => 'id']])]
     public function details(Question $question): Response
     {
+        $this->setBackButton($this->generateUrl('questionnaire_details', [
+            'id' => $question->getQuestionnaire()->getId()
+        ]));
+
         return $this->render(
             self::$TEMPLATE_DIR . 'details.html.twig',
             [
@@ -130,7 +146,7 @@ class QuestionController extends AbstractController
         $this->em->remove($question);
         $this->em->flush();
 
-        return $this->redirectToRoute('question');
+        return $this->redirectToRoute('akademie_admin');
     }
 
     private function handleForm(FormInterface $form, ?Question $originalQuestion = null): ?Question

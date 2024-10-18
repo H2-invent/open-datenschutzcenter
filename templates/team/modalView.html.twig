@@ -1,14 +1,12 @@
-<div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-
-        <div class="modal-header  light-blue darken-3 white-text">
-            <h5 class="modal-title">{{ title }}</h5>
-
-        </div>
-        <div class="modal-body">
-            {{ form_start(form, {'attr': {'action': path('team_custom_create', {'type':type, 'id':id}), 'method': 'POST'}}) }}
-            {{ form_widget(form.name) }}
-            {{ form_end(form) }}
-        </div>
-    </div>
+{{ form_start(form, {'attr': {'action': path('team_custom_create', {'type':type, 'id':id}), 'method': 'POST'}}) }}
+<div class="modal-content">
+    <h3>{{ title }}</h3>
+    {{ form_row(form.name) }}
+    {% if form.inherited is defined %}
+        {{ form_row(form.inherited) }}
+    {% endif %}
 </div>
+<div class="modal-footer">
+    {{ form_row(form.save) }}
+</div>
+{{ form_end(form) }}

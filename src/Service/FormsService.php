@@ -55,7 +55,7 @@ class FormsService
     {
         $form = new Forms();
         $form->setStatus(0);
-        $form->setTeam($this->currentTeamService->getTeamFromSession($user));
+        $form->setTeam($this->currentTeamService->getCurrentTeam($user));
         $form->setActiv(true);
         $form->setCreatedAt(new DateTime());
         $form->setUser($user);

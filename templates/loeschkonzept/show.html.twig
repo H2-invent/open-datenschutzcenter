@@ -1,47 +1,51 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'loeschkonzept' %}
 
- {% block CTA %}
-    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_loeschkonzept_index') }}">
-        <span>{% trans from 'general' %}back{% endtrans %}</span>
-    </a>
-    <a class="btn btn-primary ml-1 btn-sm" href="{{ path('app_loeschkonzept_edit',{'id': loeschkonzept.id}) }}">
-        <span>{% trans from 'general' %}edit{% endtrans %}</span>
-    </a>
-    {{ include('loeschkonzept/_delete_form.html.twig') }}
+{% block title %}
+    {% trans %}deletionConcept.word{% endtrans %}
+{% endblock %}
 
-
+{% block CTA %}
+    {% if current_team == loeschkonzept.team %}
+        <a href="{{ path('app_loeschkonzept_edit',{'id': loeschkonzept.id}) }}" class="btn">
+            <span>{% trans from 'general' %}edit{% endtrans %}</span>
+        </a>
+        {{ include('loeschkonzept/_delete_form.html.twig') }}
+    {% endif %}
 {% endblock %}
 
 {% block body %}
-    <h1>{% trans %}deletionConcept.word{% endtrans %} {{loeschkonzept.id}}</h1>
-
-    <table class="table">
-        <tbody>
-             <tr>
-                <th>{% trans %}data.categories{% endtrans %}</th>
-                <td>{% for vv in loeschkonzept.vvtdatenkategories %}{% if vv.activ %}{{ vv.name }}<br>{% endif %}{% endfor %}</td>
-            </tr>
-            <tr>
-                <th>{% trans %}deletionConcept.deadline.standard{% endtrans %}</th>
-                <td>{{ loeschkonzept.standartlf }}</td>
-            </tr>
-            <tr>
-                <th>{% trans %}deletionConcept.deadline.legal{% endtrans %}</th>
-                <td>{{ loeschkonzept.loeschfrist }}</td>
-            </tr>
-            <tr>
-                <th>{% trans %}data.storageLocations{% endtrans %}</th>
-                <td>{{ loeschkonzept.speicherorte }}</td>
-            </tr>
-            <tr>
-                <th>{% trans %}deletionConcept.official{% endtrans %}</th>
-                <td>{{ loeschkonzept.loeschbeauftragter }}</td>
-            </tr>
-            <tr>
-                <th>{% trans from 'general' %}description{% endtrans %}</th>
-                <td>{{ loeschkonzept.beschreibung }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="dl-wrapper">
+        <div class="dl-head">
+            <h3>{% trans %}deletionConcept.word{% endtrans %} {{loeschkonzept.id}}</h3>
+        </div>
+        <div class="dl-content">
+            <dl>
+                 <div>
+                    <dt>{% trans %}data.categories{% endtrans %}</dt>
+                    <dd>{% for vv in loeschkonzept.vvtdatenkategories %}{% if vv.activ %}{{ vv.name }}<br>{% endif %}{% endfor %}</dd>
+                </div>
+                <div>
+                    <dt>{% trans %}deletionConcept.deadline.standard{% endtrans %}</dt>
+                    <dd>{{ loeschkonzept.standartlf }}</dd>
+                </div>
+                <div>
+                    <dt>{% trans %}deletionConcept.deadline.legal{% endtrans %}</dt>
+                    <dd>{{ loeschkonzept.loeschfrist }}</dd>
+                </div>
+                <div>
+                    <dt>{% trans %}data.storageLocations{% endtrans %}</dt>
+                    <dd>{{ loeschkonzept.speicherorte }}</dd>
+                </div>
+                <div>
+                    <dt>{% trans %}deletionConcept.official{% endtrans %}</dt>
+                    <dd>{{ loeschkonzept.loeschbeauftragter }}</dd>
+                </div>
+                <div>
+                    <dt>{% trans from 'general' %}description{% endtrans %}</dt>
+                    <dd>{{ loeschkonzept.beschreibung }}</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
 {% endblock %}

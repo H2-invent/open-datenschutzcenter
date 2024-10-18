@@ -1,25 +1,24 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'settings' %}
 
-{% block CTA %}
-    <h4 class="h4-responsive ml-4 mb-0 d-none d-md-block">
-        {% trans %}adminArea{% endtrans %}
-        {% if currentTeam is defined and currentTeam %}{{ currentTeam.name }}{% endif %}
-    </h4>
+{% block title %}
+    {% trans %}adminArea{% endtrans %}
+    {% if currentTeam is defined and currentTeam %}{{ currentTeam.name }}{% endif %}
+    :
+    {% trans %}manageOdc{% endtrans %}
 {% endblock %}
 
 {% block body %}
-    <h2 class="h2-responsive">{% trans %}manageOdc{% endtrans %}</h2>
-
-    <div class="card card-body ">
-        <div>
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            {{ form_end(form) }}
-        </div>
-    </div>
-{% endblock %}
-
-
-{% block javascript %}
+    {{ form_start(form) }}
+    <fieldset class="form-row">
+        {{ form_label(form.groupMapping) }}
+        {% for choice in form.groupMapping %}
+            {{ form_widget(choice) }}
+            {{ form_label(choice, '', {
+                'label_attr': {'style': 'display: inline-block;'}
+            }) }}
+            <div class="help-text" style="margin-bottom: 0.75rem; margin-top: 0;">{{ (choice.vars.label~'Help')|trans({}, 'form') }}</div>
+        {% endfor %}
+    </fieldset>
+    {{ form_end(form) }}
 {% endblock %}

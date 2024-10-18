@@ -1,21 +1,17 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'audit_tom' %}
 
+{% block title %}
+    {{ title }}
+{% endblock %}
+
 {% block body %}
-
-    <h2 class="h2-responsive">{{ title }}</h2>
-<div class="card card-body">
     {{ include('audit_tom/__form.html.twig') }}
-</div>
-
-    <p>{% trans %}createdBy{% endtrans %}: {{ audit.user.email }}</p>
+    <p class="created-by">{% trans %}createdBy{% endtrans %}: {{ audit.user.email }}</p>
     {% if audit.previous %}
-        <div class="card card-body mt-2">
-            <h2>{% trans %}history{% endtrans %}</h2>
+        <h3>{% trans %}history{% endtrans %}</h3>
+        <div class="card card-pager">
             {{ include('audit_tom/__history.html.twig', {'p':audit.previous}) }}
         </div>
     {% endif %}
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

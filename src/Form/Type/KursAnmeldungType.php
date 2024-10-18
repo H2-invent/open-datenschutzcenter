@@ -37,7 +37,12 @@ class KursAnmeldungType extends AbstractType
                 'translation_domain' => 'form',
                 'multiple' =>true,
             ])
-            ->add('zugewiesen', DateType::class, ['label' => 'Zugewiesen am', 'required' => true, 'translation_domain' => 'form'])
+            ->add('zugewiesen', DateType::class, [
+                'label' => 'Zugewiesen am',
+                'required' => true,
+                'translation_domain' => 'form',
+                'widget' => 'single_text'
+            ])
             ->add('wiedervorlage', ChoiceType::class, [
                 'choices'  => [
                     'Keine Wiederholung' => null,
@@ -53,7 +58,7 @@ class KursAnmeldungType extends AbstractType
             ])
             ->add('invite', CheckboxType::class, ['label' => 'Einladungs-EMail an alle Nutzer senden (Wenn nicht ausgewählt wird die Einladung automatisch am nächsten Tag verschickt)', 'required' => false, 'translation_domain' => 'form'])
 
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'Kurse zuweisen', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn'),'label' => 'Kurse zuweisen', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

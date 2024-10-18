@@ -45,7 +45,7 @@ class ClientRequestService
                     $comment = $this->translator->trans(id: 'request.reopened', domain: 'client_request');
                 }
 
-                $team = $this->currentTeamService->getTeamFromSession($user);
+                $team = $this->currentTeamService->getCurrentTeam($user);
                 $this->newComment($clientRequest, $comment, $team->getKeycloakGroup() . ' > ' . $user->getUsername(), 1);
 
                 $this->em->persist($clientRequest);
@@ -179,7 +179,7 @@ class ClientRequestService
                     $comment = $this->translator->trans(id: 'user.comment.validation.success', domain: 'client_reqeust');
                 }
 
-                $team = $this->currentTeamService->getTeamFromSession($user);
+                $team = $this->currentTeamService->getCurrentTeam($user);
                 $this->newComment($clientRequest, $comment, $team->getKeycloakGroup() . ' > ' . $user->getUsername(), 1);
 
                 $this->em->persist($clientRequest);

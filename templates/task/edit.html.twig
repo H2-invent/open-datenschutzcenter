@@ -1,38 +1,46 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'task' %}
 
+{% block title %}
+    {{ edit ? title : task.title }}
+{% endblock %}
+
 {% block CTA %}
     {% if not edit %}
         <a href="{{ path('task_edit', {'id':task.id,'edit':1}) }}"
-           class="btn btn-outline-elegant btn-sm">{% trans %}task.edit{% endtrans %}</a>
+           class="btn"
+          >{% trans %}task.edit{% endtrans %}</a>
     {% endif %}
-    <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
-       href='{{ path('task_disable',{'id':task.id}) }}' type='button'
-       class='btn btn-danger ml-1 btn-sm'>{% if task.activ == 1 %}{% trans from 'general' %}delete{% endtrans %}{% else %}{% trans from 'general' %}restore{% endtrans %}{% endif %}</a>
     {% if task.activ and not task.done %}
-        <a onClick="return confirm('{% trans %}confirmAction{% endtrans %}')"
-           href='{{ path('task_done',{'id':task.id}) }}' type='button'
+        <a data-click-confirm
+           href='{{ path('task_done',{'id':task.id}) }}'
+           type='button'
            class='btn btn-success ml-1 btn-sm'>{% trans %}finish{% endtrans %}</a>
     {% endif %}
+    {% if nextAudit is defined %}
+        <a href="{{ path('audit_tom_edit',{'tom':nextAudit.id}) }}">
+            {% trans %}nextQuestion{% endtrans %}
+        </a>
+    {% endif %}
+    {% if not task.assignedUser %}
+        <button class="btn" data-type="dialogs" data-target="#assignModal">{% trans from 'general' %}assign{% endtrans %}</button>
+    {% endif %}
+    <a href='{{ path('task_disable',{'id':task.id}) }}' type='button'
+       class='btn btn-danger ml-1 btn-sm'>{% if task.activ == 1 %}{% trans from 'general' %}delete{% endtrans %}{% else %}{% trans from 'general' %}restore{% endtrans %}{% endif %}</a>
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-md-8">
-            <h2 class="h2-responsive">{% if edit %}{{ title }}{% else %}{{ task.title }}{% endif %}</h2>
-        </div>
-        <div class="col-md-4 text-right">
-            {{ include('assign/__assign.html.twig',{'data':task,'path':'assign_task'}) }}
-        </div>
+    <div id="task-assign">
+        {{ include('assign/__assign.html.twig',{'data':task,'path':'assign_task'}) }}
     </div>
-    <div class="card card-body">
+    <div>
         {% if edit %}
             {{ include('task/__form.html.twig') }}
         {% else %}
             {{ include('task/__show.html.twig') }}
         {% endif %}
     </div>
-    {{ include('base/__snack.html.twig') }}
+
 {% endblock %}
 
 {% block javascript %}

@@ -20,7 +20,7 @@ class Participation extends EntityWithTimestamps
     private ?string $state = null;
 
     #[ORM\Column]
-    private ?bool $passed = null;
+    private ?bool $passed = false;
 
     #[ORM\ManyToOne(inversedBy: 'participations')]
     #[ORM\JoinColumn(name: 'akademie_buchungen_id')]

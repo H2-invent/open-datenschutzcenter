@@ -27,7 +27,7 @@ class ReportExportType extends AbstractType
             ->add('bis', DateType::class, ['label' => 'Bis', 'required' => true, 'translation_domain' => 'form', 'widget' => 'single_text'])
             ->add('user', TextType::class, ['label' => 'Bearbeiter (Email Adresse)', 'required' => false, 'translation_domain' => 'form'])
             ->add('report', CheckboxType::class, ['label' => 'Nur Aktivitäten für offiziellen Tätigkeitsbericht beinhalten', 'required' => false, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Export erstellen', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn'), 'label' => 'Export erstellen', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

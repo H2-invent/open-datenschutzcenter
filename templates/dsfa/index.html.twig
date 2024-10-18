@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% set fullWidthLayout = true %}
+
+{% block body %}
+    <table id="data-table" class="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">VVT</th>
+                <th scope="col">{% trans from 'general' %}state{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}appoved{% endtrans %}</th>
+                <th scope="col">{% trans from 'general' %}date{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dsfa in dsfas %}
+                <tr data-href='{{ path('dsfa_edit',{'dsfa':dsfa.id}) }}'>
+                    <td>{{ dsfa.vvt.nummer }}</td>
+                    <td>{{ dsfa.vvt.name }}</td>
+                    <td>{{ dsfa.vvt.approved ? 'approved'|trans : dsfa.vvt.status.name }}</td>
+                    <td>{{ dsfa.vvt.approved ? 'yes'|trans : 'no'|trans }}</td>
+                    <td>{{ dsfa.createdAt|date('d.m.Y H:i:s') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

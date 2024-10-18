@@ -27,18 +27,20 @@ oldDeletionDeadline: Alte Löschfrist (auf Verarbeitung bezogen)
 dataTransferTo: An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben.
 dataProtectionImpactAssessment:
   word: Datenschutz-Folgenabschätzung
+  word_plural: Datenschutz-Folgenabschätzungen
   show: Datenschutzfolgeabschätzung anzeigen
   create: Datenschutzfolgeabschätzung anlegen
 processing:
+  show: Verarbeitung anzeigen
   edit: Verarbeitung bearbeiten
   track: Verarbeitung erfassen
   export: Export der Verarbeitungstätigkeit
-  name: Bezeichnung der verarbeitung
+  name: Bezeichnung der Verarbeitung
   outsideEU: Werden Daten außerhalb der EU verarbeitet?
-  jointControl: Handelt es sich bei der Verarbeitung um ein Joint Control Verarbeitung?
+  jointControl: Handelt es sich bei der Verarbeitung um eine Joint Control Verarbeitung?
   create: Neue Verarbeitung anlegen
   directory: Verzeichnis der Verarbeitungen
-  directoryOf: Verzeichnis fer Verarbeitungen von
+  directoryOf: Verzeichnis der Verarbeitungen von
   directoryNumber: Nummer des Verarbeitungsverzeichnisses
   typeHelp: AV=Auftragsverarbeitung, GV=Gemeinsame Verarbeitung
   back: Zurück zur Verarbeitung
@@ -46,7 +48,7 @@ processing:
   disclaimer: Dieser Verarbeitung wurden folgende interne Richtlinien und Arbeitsanweisungen angefügt.
   approvedBy: Verfahren freigegeben von
   reason: Zweck der Verarbeitung
-  requestProcessing: Handelt es sich bei der Verarbeitung um ein Auftragsverarbeitung?
+  requestProcessing: Handelt es sich bei der Verarbeitung um eine Auftragsverarbeitung?
   prerequisite: Notwendigkeit der Datenverarbeitung
   risk: Risiko der Datenverarbeitung
   legalBasis: Rechtsgrundlage für die Verarbeitung
@@ -86,3 +88,18 @@ dataPrivacyFollowUpEstimation:
   description: Beschreibung der Datenschutzfolgeabschätzung
 dsbStatement: Stellungnahme des DSB in der Datenschutzfolgeabschätzung
 additionalStands: Weitere Standpunkte (z.B. Betriebsrat)
+inheritance:
+  word: Vererbung
+  setInactive: Für dieses Team deaktivieren
+  setActive: Für dieses Team aktivieren
+  infoText:
+    inherited: Diese Verarbeitung wird vererbt. Sie kann von Kind-Teams verwendet aber nicht bearbeitet werden.
+    fromTeam: Von einem übergeordneten Team vererbt (kann nicht bearbeitet werden)
+    active:
+      short: Gerbte Verarbeitung - für dieses Team aktiv
+      long: Die Verarbeitung wurde mit allen zugehörigen Elementen von einem übergeordneten Team vererbt. Sie kann in diesem Team verwendet aber nicht bearbeitet werden.
+    inactive:
+      short: Gerbte Verarbeitung - für dieses Team deaktiviert
+      long: Die Verarbeitung wurde mit allen zugehörigen Elementen von einem übergeordneten Team vererbt, diese sind jedoch für dieses Team deaktiviert.
+inheritedEntities: Vererbte Datenkategorien und Löschkonzepte
+noInheritedEntities: Keine vererbten Datenkategorien und Löschkonzepte verfügbar
