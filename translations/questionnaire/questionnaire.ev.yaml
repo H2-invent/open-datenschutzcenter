@@ -10,6 +10,8 @@ question:
     word: 'Art der Frage'
     checkbox: 'Mehrere Antworten auswählbar'
     radio: 'Eine Antwort auswählbar'
+  create: 'Neue Frage hinzufügen'
+  edit: 'Frage bearbeiten'
   show: 'Frage anzeigen'
   answer:
     add: 'Antwort hinzufügen'
@@ -24,6 +26,8 @@ questionnaire:
   description: 'Beschreibung'
   words: 'Fragebögen'
   create: 'Fragebogen hinzufügen'
+  edit: 'Fragebogen bearbeiten'
+  show: 'Fragebogen anzeigen'
   percentageToPass: 'Benötigte Punktzahl zum Bestehen'
 participation:
   start: 'Prüfung beginnen'
