@@ -17,6 +17,7 @@ parameters:
     superAdminRole: '%env(superAdminRole)%'
     group_api_user_id: '%env(default::GROUP_API_USER_ID)%'
     group_api_roles: '%env(default::csv:GROUP_API_ROLES)%'
+    group_api_grant_admin: '%env(bool:default::GROUP_API_GRANT_ADMIN)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -64,3 +65,4 @@ services:
         arguments:
             $groupApiUserId: '%group_api_user_id%'
             $groupApiRoles: '%group_api_roles%'
+            $groupApiGrantAdmin: '%group_api_grant_admin%'

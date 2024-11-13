@@ -36,6 +36,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
     public function __construct(
         private readonly ?string                $groupApiUserId,
         private readonly ?array                 $groupApiRoles,
+        private readonly bool                   $groupApiGrantAdmin,
         private readonly LoggerInterface        $logger,
         private readonly ParameterBagInterface  $parameterBag,
         private readonly TokenStorageInterface  $tokenStorage,
@@ -204,6 +205,10 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
                     $teams = $this->syncApiGroups($keycloakUser);
                     foreach ($teams as $team) {
                         $user->addTeam($team);
+                        if ($this->groupApiGrantAdmin) {
+                            $team->addAdmin($user);
+                            $this->em->persist($team);
+                        }
                     }
                     break;
             }
@@ -214,6 +219,10 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         return $user;
     }
 
+    /**
+     * @param ResourceOwnerInterface $keycloakUser
+     * @return Collection<Team>
+     */
     private function syncApiGroups(ResourceOwnerInterface $keycloakUser): Collection {
         try {
             $userId = $keycloakUser->toArray()[$this->groupApiUserId];
