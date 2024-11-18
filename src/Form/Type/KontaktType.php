@@ -44,7 +44,7 @@ class KontaktType extends AbstractType
             ->add('email', TextType::class, ['label' => 'email', 'required' => false, 'translation_domain' => 'form'])
             ->add('telefon', TextType::class, ['label' => 'phone', 'required' => false, 'translation_domain' => 'form'])
             ->add('bemerkung', TextareaType::class, ['label' => 'comment', 'required' => false, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'),'label' => 'save', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn'),'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

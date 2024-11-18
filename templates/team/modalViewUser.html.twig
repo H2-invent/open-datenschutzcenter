@@ -1,14 +1,9 @@
-<div class="modal-dialog modal-dialog-centered">
+{{ form_start(form, {'attr': {'action': path('team_mitglieder_create', {'type':type, 'id':teamId}), 'method': 'POST'}}) }}
     <div class="modal-content">
-
-        <div class="modal-header  light-blue darken-3 white-text">
-            <h5 class="modal-title">{{ title }}</h5>
-
-        </div>
-        <div class="modal-body">
-            {{ form_start(form, {'attr': {'action': path('team_mitglieder_create', {'type':type, 'id':teamId}), 'method': 'POST'}}) }}
-            {{ form_widget(form) }}
-            {{ form_end(form) }}
-        </div>
+        <h3>{{ title }}</h3>
+        {{ form_row(form.member) }}
     </div>
-</div>
+    <div class="modal-footer">
+        {{ form_row(form.submit) }}
+    </div>
+{{ form_end(form) }}

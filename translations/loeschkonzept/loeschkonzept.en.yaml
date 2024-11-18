@@ -8,6 +8,7 @@ deletionConcept:
   new: New deletion concept
   overview: Delete concepts
   directoryOf: Verzeichnis der Löschkonzepte von
+  notSet: Löschkonzept nicht gesetzt
   deadline:
     standard: Standard storage period
     legal: Legal deletion deadline

@@ -1,33 +1,24 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'forms' %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
 {% block CTA %}
     {{ include('base/__approveBtn.html.twig',{'data':daten,'dataLink':'forms_approve'}) }}
     {{ include('base/__disableBtn.html.twig',{'data':daten,'dataLink':'forms_disable'}) }}
+    {{ include('base/__approvedBy.html.twig', {'data':daten}) }}
+    {{ include('assign/__assign.html.twig',{'data':daten,'path':'assign_form'}) }}
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-md-8">
-            <h2 class="h2-responsive">{{ title }}</h2>
-            {{ include('base/__approvedBy.html.twig', {'data':daten}) }}
-        </div>
-        <div class="col-md-4 text-right">
-            {{ include('assign/__assign.html.twig',{'data':daten,'path':'assign_form'}) }}
-        </div>
-    </div>
-
-    <div class="card card-body">
-        {{ include('forms/__form.html.twig') }}
-    </div>
-    <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ daten.user.email }}</p>
+    {{ include('forms/__form.html.twig') }}
+    <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ daten.user.email }}</p>
     {% if daten.previous %}
-        <div class="card card-body mt-2">
-            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
+        <h3 class="mt-10">{% trans from 'general' %}history{% endtrans %}</h3>
+        <ol class="item-history" reversed>
             {{ include('forms/__history.html.twig', {'p':daten.previous}) }}
-        </div>
+        </ol>
     {% endif %}
-    {{ include('base/__snack.html.twig') }}
 {% endblock %}
-
-    {% block javascript %}
-    {% endblock %}

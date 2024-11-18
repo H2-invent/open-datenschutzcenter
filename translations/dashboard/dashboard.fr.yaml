@@ -18,6 +18,7 @@ privacyCenter: Datenschutzcenter
 flowChart: Datenflussplan
 departments:
   all: Alle Abteilungen
+quickAccess: Schnellzugriff
 approvedBy: Freigegeben von
 contact: KONTAKT
 licenseExpired: LIZENZ ABGELAUFEN
@@ -31,3 +32,4 @@ noTeamHelp: Für Ihren Benutzer ist kein Team vorhanden.<br>Fragen Sie Ihrem Adm
 supportRequest: Support anfragen
 logout: Logout
 noTeam: Kein Team vorhanden
+createTeamHelp: Erstellen Sie Ihr erstes Team.

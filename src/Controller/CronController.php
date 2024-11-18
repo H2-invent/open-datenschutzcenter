@@ -7,12 +7,11 @@ use App\Service\NotificationService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CronController extends AbstractController
+class CronController extends BaseController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,

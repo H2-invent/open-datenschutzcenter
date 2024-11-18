@@ -1,43 +1,49 @@
+{% trans_default_domain 'base' %}
 <!DOCTYPE html>
 <html>
-
-{{ include('base/__head.html.twig') }}
-
-<body>
-
-<div id="mainContent" class="wrapper">
-    {{ include('base/__sidenav.html.twig') }}
-
-    <!-- Page Content  -->
-    <div id="content">
-        <nav class="navbar navbar-expand navbar-light bg-light">
-            <div class="container-fluid">
-
-                <button type="button" id="sidebarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                {% block CTA %}{% endblock %}
-
-                {{ include('base/__topnav.html.twig') }}
-
-            </div>
-        </nav>
-        {% block body %}{% endblock %}
-
-        {{ include('base/__footer.html.twig') }}
-    </div>
-
-
-    <div class="modal fade" id="loadContentModal" tabindex="-1" role="dialog" aria-labelledby="loadContentModal"
-         aria-hidden="true">
-
-    </div>
-</div>
-<!-- Dark Overlay element -->
-<div class="overlay"></div>
-{{ include('base/__script.html.twig') }}
-{% block javascripts %}{% endblock %}
-</body>
-
+    {{ include('base/__head.html.twig') }}
+    <body {{ stimulus_controller('appUi') }}>
+        <main class="flex">
+            <aside class="flex-none fixed">
+                {{ include('base/__sidenav.html.twig') }}
+            </aside>
+            <article class="grow p-3 ml-60">
+                <div id="topbar" class="flex mb-10">
+                    {% if backButton is defined %}
+                        <a href="{{ backButton }}" class="material-symbols-outlined">
+                            arrow_left_alt
+                        </a>
+                    {% endif %}
+                    <h2 class="flex flex-grow justify-start text-[1.375rem] leading-7 mb-0">{% block title %}{% endblock %}</h2>
+                    {{ include('base/__teamToggle.html.twig') }}
+                    {{ include('base/__topnav.html.twig') }}
+                </div>
+                <div class="container {{ fullWidthLayout is defined and fullWidthLayout ? 'max-w-full' : 'mx-auto max-w-5xl' }}">
+                    {% apply spaceless %}
+                        <div id="bock-cta" class="flex flex-row flex-wrap rounded flex gap-2 items-center justify-start">
+                            {% block CTA %}{% endblock %}
+                        </div>
+                    {% endapply %}
+                    <div id="content">
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
+                {{ include('base/__snack.html.twig') }}
+            </article>
+        </main>
+        <footer>
+            {{ include('base/__footer.html.twig') }}
+        </footer>
+        <div id="modal-remote-content" class="modal">
+            <div data-close="#modal-remote-content" class="modal-close"></div>
+            <div class="modal-inner"></div>
+        </div>
+        {{ encore_entry_script_tags('app') }}
+        <script>
+            window.translations = {
+                'confirmAction': '{{ 'confirmAction'|trans }}',
+            }
+        </script>
+        {% block javascripts %}{% endblock %}
+    </body>
 </html>

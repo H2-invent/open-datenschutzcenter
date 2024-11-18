@@ -2,35 +2,36 @@
 {% trans_default_domain 'team' %}
 
 {% block body %}
-    <div class="container">
-        <h2 class="h2-responsive">{{ title }}</h2>
-
-        <div class="card card-body">
-
-            {% if data %}
-                <div class="row">
-                    <div class="col-md-6">
-                        {% trans from 'general' %}email{% endtrans %}: {{ data.email }}<br>
-                        {% trans from 'general' %}username{% endtrans %}: {{ data.username }}
-                    </div>
-                    <div class="col-md-6">
-                        <a href="{{ path('team_dsb_remove', {'id':data.id}) }}" class="btn btn-sm btn-danger"
-                           onClick="return confirm('{% trans %}removeDsb{% endtrans %}')">
-                                {% trans from 'general' %}remove{% endtrans %}
-                        </a>
-                    </div>
+    <div id="content-team-admin">
+        {% if data %}
+            <div class="dl-wrapper mb-5">
+                <div class="dl-content">
+                    <dl>
+                        <div>
+                            <dt>{% trans from 'general' %}email{% endtrans %}</dt>
+                            <dd>{{ data.email }}</dd>
+                        </div>
+                        <div>
+                            <dt>{% trans from 'general' %}username{% endtrans %}</dt>
+                            <dd>{{ data.username }}</dd>
+                        </div>
+                    </dl>
                 </div>
-            {% else %}
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
-                <p class="alert-danger mt-5 text-center">
-                    {% trans %}addExternalDsbInfo{% endtrans %}
-                </p>
-            {% endif %}
-
-
-        </div>
+            </div>
+            <div>
+                <a href="{{ path('team_dsb_remove', {'id':data.id}) }}"
+                   class="btn btn-danger">
+                    {% trans from 'general' %}remove{% endtrans %}
+                </a>
+            </div>
+        {% else %}
+            <div class="card-outlined mb-5 text-sm">
+                {% trans %}addExternalDsbInfo{% endtrans %}
+            </div>
+            {{ form_start(form) }}
+            {{ form_row(form) }}
+            {{ form_end(form) }}
+        {% endif %}
     </div>
-    {{ include('base/__snack.html.twig') }}
+
 {% endblock %}

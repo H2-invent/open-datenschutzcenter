@@ -10,6 +10,7 @@ task:
 work:
   billed: Aktivität abgerechnet
   edit: Aktivität bearbeiten
+  show: Aktivität anzeigen
   delete: Aktivität löschen
   onSight: Vor Ort Aktivität
   present: Im Tätigkeitsbereich darstellen

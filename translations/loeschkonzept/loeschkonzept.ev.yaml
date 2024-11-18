@@ -8,6 +8,7 @@ deletionConcept:
   new: Neues Löschkonzept anlegen
   overview: Löschkonzept Übersicht
   directoryOf: Verzeichnis der Löschkonzepte von
+  notSet: Löschkonzept nicht gesetzt
   deadline:
     standard: Standard Löschfrist
     legal: Gesetzliche Löschfrist

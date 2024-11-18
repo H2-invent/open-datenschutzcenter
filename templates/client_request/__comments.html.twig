@@ -1,0 +1,7 @@
+{% for c in data.clientComments|sort((b, a) => a.createdAt <=> b.createdAt) %}
+    <div class="card-filled mb-2 {{ c.internal ? 'border-l-4 border-primary-500' : 'border-r-4 border-gray-400' }}">
+        <small class="{{ c.internal ? 'font-semibold' }}">{{ c.name }} - {{ c.createdAt|date('d.m.Y H:i') }}</small>
+        <hr class="mb-3">
+        {{ c.comment|nl2br }}
+    </div>
+{% endfor %}

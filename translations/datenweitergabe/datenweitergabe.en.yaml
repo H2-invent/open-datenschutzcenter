@@ -38,6 +38,19 @@ dataTransfer:
   info:
     title: Data transfer info
     text: The transfer of data for processing is done in moste companies - for example for the use of external data centers or services (e.g. SaaS), cloud computing or maintenance of IT systems by a service provider. In these cases there is usually a data transfer involved, which means that special measures need to be met to ensure the GDPR isn't violated.
+orderProcessing:
+  edit: Auftragsverarbeitung bearbeiten
+  basics: Grundlage für die Auftragsverarbeitung
+  type: Art der Auftragsverarbeitung
+  count: Nummer der Auftragsverarbeitung
+  create: New order processing
+  object: Gegenstand der Auftragsverarbeitung
+  word: Order processing
+  responsible: Verantwortlich für die Auftragsverarbeitung (Intern)
+  disclaimer: Alle Auftragsverarbeitungen nach DSGVO Art. 30(1)
+  info:
+    title: Erklärung Auftragsverarbeitung
+    text: The transfer of data for processing is done in moste companies - for example for the use of external data centers or services (e.g. SaaS), cloud computing or maintenance of IT systems by a service provider. In these cases there is usually a data transfer involved, which means that special measures need to be met to ensure the GDPR isn't violated.
 info: Info
 approved: Freigegebene
 approval: Approval

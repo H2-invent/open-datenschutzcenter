@@ -2,71 +2,64 @@
 {% trans_default_domain 'team' %}
 
 {% block body %}
-
-    <div class="container">
-        <h2 class="h2-responsive">{{ title }}</h2>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#courses" role="tab"
-                   aria-controls="home"
-                   aria-selected="true">{% trans %}dataPrivacyLessons{% endtrans %}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#user" role="tab" aria-controls="profile"
-                   aria-selected="false">{% trans %}academy.users{% endtrans %}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link"
-                   id="questionnaire-tab"
-                   data-toggle="tab"
-                   href="#questionnaire"
-                   aria-controls="questionnaire"
-                   aria-selected="false">
-                    {% trans from 'questionnaire' %}questionnaire.words{% endtrans %}
-                </a>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="courses" role="tabpanel" aria-labelledby="home-tab">
-
-                {{ include('kurs/__indexTable.html.twig') }}
+    <div class="card-outlined mb-5">
+        <div class="tabs flex flex-col w-full">
+            <div class="tabs-nav">
+                <button data-type="tabs" data-target="#tab-courses" class="active w-1/3">
+                    <p>{% trans %}dataPrivacyLessons{% endtrans %}</p>
+                </button>
+                <button data-type="tabs" data-target="#tab-user" class="w-1/3">
+                    <p>{% trans %}academy.users{% endtrans %}</p>
+                </button>
+                <button data-type="tabs" data-target="#tab-questionnaire" class="w-1/3">
+                    <p>{% trans from 'questionnaire' %}questionnaire.words{% endtrans %}</p>
+                </button>
+                <div role="indicator" class="tabs-indicator w-1/3"></div>
             </div>
-            <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="profile-tab">
-
-                <div class="card card-body">
+            <hr>
+            <div class="tabs-content">
+                <div id="tab-courses" role="tabpanel" class="tab-content active">
+                    {{ include('kurs/__indexTable.html.twig') }}
+                </div>
+                <div id="tab-user" role="tabpanel" class="tab-content">
                     <a href="{{ path('team_mitglieder_create', {'title':'Akademiemitglied hinzufügen', 'type':'academy'}) }}"
-                       class="btn btn-primary btn-sm loadContent">{% trans %}academy.addUser{% endtrans %}</a>
-                    <ul class="list-group">
-                        {% for d in data %}
-                            <li class="list-group-item">{{ d.email }}
-                                <a class="btn btn-sm btn-danger float-md-right"
-                                    onClick="return confirm('{% trans from 'general' %}confirmAction{% endtrans %}')"
-                                    href="{{ path('team_mitglieder_remove',{'memberId':d.id, 'teamId':team.id, 'type':'academy'}) }}">
-                                    {% trans from 'general' %}remove{% endtrans %}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                       data-type="dialogs"
+                       data-target="#modal-remote-content"
+                       data-action="click->appUi#loadContentModal"
+                       class="btn btn-create"
+                    >{% trans %}academy.addUser{% endtrans %}</a>
+                    {% if data|length %}
+                    <div class="mt-5">
+                        <table class="dataTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{% trans %}academy.user{% endtrans %}</th>
+                                    <th scope="col">{% trans from 'general' %}action.word{% endtrans %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for d in data %}
+                                    <tr>
+                                        <td>
+                                            {{ d.email }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('team_mitglieder_remove',{'memberId':d.id, 'teamId':team.id, 'type':'academy'}) }}" class="text-danger">
+                                                {% trans from 'general' %}remove{% endtrans %}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+                <div id="tab-questionnaire" role="tabpanel" class="tab-content">
+                    {% include 'questionnaire/questionnaire/list.html.twig' with {'questionnaires': questionnaires} %}
                 </div>
             </div>
-            <div class="tab-pane fade" id="questionnaire" role="tabpanel" aria-labelledby="questionnaire-tab">
-                {% include 'questionnaire/questionnaire/list.html.twig' with {'questionnaires': questionnaires} %}
-            </div>
         </div>
-
     </div>
 
-{% endblock %}
-
-{% block javascripts %}
-    <script>
-        var url = document.location.toString();
-        if (url.match('#')) {
-            $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
-        }
-
-        $('.nav-tabs a').on('shown.bs.tab', function (e) {
-            window.location.hash = e.target.hash;
-        });
-    </script>
 {% endblock %}

@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Team;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 /**
  * @method Team|null find($id, $lockMode = null, $lockVersion = null)
@@ -12,11 +12,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Team[]    findAll()
  * @method Team[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TeamRepository extends ServiceEntityRepository
+class TeamRepository extends NestedTreeRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(EntityManagerInterface $em)
     {
-        parent::__construct($registry, Team::class);
+        parent::__construct($em, $em->getClassMetadata(Team::class));
     }
 
     // /**

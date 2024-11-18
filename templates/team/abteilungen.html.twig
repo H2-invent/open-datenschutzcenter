@@ -2,28 +2,24 @@
 {% trans_default_domain 'team' %}
 
 {% block body %}
-    <h2 class="h2-responsive">{{ title }}</h2>
-
-    <div class="card card-body ">
-        <div class="row">
-            <div class="col-md-6">
-                <ul class="list-group">
-                    {% for d in data %}
-                        <li class="list-group-item">{{ d.name }}
-                            <a href="{{ path('team_abteilungen', {'id':d.id}) }}"
-                               class="btn btn-sm btn-info float-md-right">{% trans from 'general' %}edit{% endtrans %}</a>
-                            <a href="{{ path('team_abteilungen_deativate', {'id':d.id}) }}"
-                               class="btn btn-sm btn-danger float-md-right">{% trans from 'general' %}delete{% endtrans %}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-
-            </div>
-            <div class="col-md-6">
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                {{ form_end(form) }}
-            </div>
+    <div id="content-team-admin">
+        <div class="mb-5">
+            {{ form_start(form) }}
+            {{ form_row(form) }}
+            {{ form_end(form) }}
         </div>
+        <ul role="list" class="stacked-list">
+            {% for d in data %}
+                <li>
+                    <div>
+                        <p>{{ d.name }}</p>
+                    </div>
+                    <div>
+                        <a href="{{ path('team_abteilungen', {'id':d.id}) }}" >{% trans from 'general' %}edit{% endtrans %}</a>
+                        <a href="{{ path('team_abteilungen_deativate', {'id':d.id}) }}" class="text-danger">{% trans from 'general' %}delete{% endtrans %}</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}

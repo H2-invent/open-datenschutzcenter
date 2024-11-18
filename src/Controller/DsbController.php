@@ -5,13 +5,12 @@ namespace App\Controller;
 use App\Repository\TeamRepository;
 use App\Service\CurrentTeamService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class DsbController extends AbstractController
+class DsbController extends BaseController
 {
 
 
@@ -40,18 +39,14 @@ class DsbController extends AbstractController
             $this->em->persist($team);
             $this->em->flush();
             $currentTeamService->switchToTeam(strval($team->getId()));
+            $this->addSuccessMessage($this->translator->trans(id: 'team.change.successful', domain: 'dsb'));
             return $this->redirectToRoute(
                 'dashboard',
-                [
-                    'snack' => $this->translator->trans(id: 'team.change.successful', domain: 'dsb'),
-                ],
             );
         }
+        $this->addErrorMessage($this->translator->trans(id: 'team.change.error', domain: 'dsb'));
         return $this->redirectToRoute(
             'dashboard',
-            [
-                'snack' => $this->translator->trans(id: 'team.change.error', domain: 'dsb'),
-            ],
         );
     }
 
