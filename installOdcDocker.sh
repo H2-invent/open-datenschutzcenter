@@ -121,6 +121,7 @@ export KEYCLOAK_PW=$KEYCLOAK_PW
 export ODC_DB_PW=$ODC_DB_PW
 export KEYCLOAK_ADMIN_PW=$KEYCLOAK_ADMIN_PW
 export registerEmailAdress=$smtpFrom
+export APP_SCHEME=$HTTP_METHOD
 RANDOMTAG=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 10 | head -n 1);
 export RANDOMTAG
 

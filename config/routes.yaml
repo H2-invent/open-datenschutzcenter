@@ -8,11 +8,13 @@ connect_keycloak_check:
   path:       /login/keycloak_login/check
   controller: App\Controller\LoginControllerKeycloak::check
 
+
 when@prod:
   connect_keycloak_check:
     path: /login/keycloak_login/check
     controller: App\Controller\LoginControllerKeycloak::check
-    schemes:    [https]
+    schemes:    ['%app.scheme%']
+
 
 controllers:
   resource: '../src/Controller/'
