@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    app.path.images: /uploads/images/products
+
     secret: '%env(APP_SECRET)%'
     akademieEmail: '%env(AKADEMIE_EMAIL)%'
     defaultEmail: '%env(DEFAULT_EMAIL)%'
@@ -15,6 +15,8 @@ parameters:
     KEYCLOAK_SECRET: '%env(OAUTH_KEYCLOAK_CLIENT_SECRET)%'
     KEYCLOAK_ID: '%env(OAUTH_KEYCLOAK_CLIENT_ID)%'
     superAdminRole: '%env(superAdminRole)%'
+    app.scheme: '%env(APP_SCHEME)%'
+    app.path.images: /uploads/images/products
 services:
     # default configuration for services in *this* file
     _defaults:
