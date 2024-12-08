@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    app.path.images: /uploads/images/products
+
     secret: '%env(APP_SECRET)%'
     akademieEmail: '%env(AKADEMIE_EMAIL)%'
     defaultEmail: '%env(DEFAULT_EMAIL)%'
@@ -18,6 +18,8 @@ parameters:
     group_api_user_id: '%env(default::GROUP_API_USER_ID)%'
     group_api_roles: '%env(default::csv:GROUP_API_ROLES)%'
     group_api_grant_admin: '%env(bool:default::GROUP_API_GRANT_ADMIN)%'
+    app.scheme: '%env(APP_SCHEME)%'
+    app.path.images: /uploads/images/products
 services:
     # default configuration for services in *this* file
     _defaults:
