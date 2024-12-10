@@ -74,9 +74,11 @@ Um schnell und einfach mit dem Open Datenschutzcenter starten zu können steht e
 Mit diesem Image ist es möglich, den ODC in der aktuellen Stable Version zu installieren und zu testen.
 [Anleitung im Wiki](https://github.com/H2-invent/open-datenschutzcenter/wiki/Get-Started)
 
-Das Docker-Compose File installiert werden ODC im Prod Modus aber ist über HTTP erreichbar.
-Daher sollte diese installation nur Intern oder hinter einem Reverse Proxy betrieben werden.
+Das Docker-Compose File installiert den ODC im Prod Modus aber alles wird für HTTP ohne SSL Zertifikate eingerichtet.
+Diese installation nur Intern oder hinter einem Reverse Proxy betrieben werden.
 
+Neben dem ODC Container wird noch eine Traefik Load Balancer, eine MySQL Datenbank und ein Keycloak Server eingerichtet.
+Alle Anwendungen können auch ohne das Docker Compose File in z.B. einem Swarm oder Helm betrieben werden.
 
 # Migrations
 #### von 1.12.X auf 2.X
