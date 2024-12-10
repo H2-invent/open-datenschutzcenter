@@ -70,8 +70,12 @@ Alle Dokumente können über Formulare erfasst werden. Die Datenwerden in einer 
 
 
 # Get Started
-Um stell und einfach mit dem Open Datenschutzcenter starten zu können steht ein Dockerimage sowie ein Docker-Compose File zu Verfügung.
+Um schnell und einfach mit dem Open Datenschutzcenter starten zu können steht ein Dockerimage sowie ein Docker-Compose File zu Verfügung.
+Mit diesem Image ist es möglich, den ODC in der aktuellen Stable Version zu installieren und zu testen.
 [Anleitung im Wiki](https://github.com/H2-invent/open-datenschutzcenter/wiki/Get-Started)
+
+Das Docker-Compose File installiert werden ODC im Prod Modus aber ist über HTTP erreichbar.
+Daher sollte diese installation nur Intern oder hinter einem Reverse Proxy betrieben werden.
 
 
 # Migrations
