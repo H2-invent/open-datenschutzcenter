@@ -2,8 +2,65 @@ name: Run Development Build and Tests
 env:
   GITHUB_TOKEN: ${{ secrets.token }}
 
-on: push
+on:
+  push:
+    branches:
+      - development
 
 jobs:
   artifact:
     uses: h2-invent/open-datenschutzcenter/.github/workflows/task-artifact.yml@master
+
+  create_dev_release:
+    needs:
+      - artifact
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: paulhatch/semantic-version@v5.0.2
+        id: version
+        with:
+          tag_prefix: ""
+          major_pattern: "(MAJOR)"
+          minor_pattern: "(MINOR)"
+          change_path: .
+          version_format: "${major}.${minor}.${patch}-${increment}"
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifact_${{github.run_number}}
+
+      - run: unzip -qq artifact_${{github.run_number}}.zip -d artifact
+
+      - name: Write semantic Version in .env.local
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: "laF_version=2.0.0-dev"
+          replace: "laF_version=${{ steps.version.outputs.version }}"
+          regex: false
+          include: "artifact/.env"
+
+      - name: Archive Release for application
+        uses: thedoctor0/zip-release@0.7.1
+        with:
+          type: 'zip'
+          filename: 'application.zip'
+          exclusions: '*.git* *.github* /*node_modules/* /*var/* .editorconfig'
+          directory: artifact
+
+      - name: Create new Release with semantic-version tag
+        uses: ncipollo/release-action@v1
+        id: create_release
+        with:
+          draft: true
+          prerelease: true
+          name: DEV Release ${{ steps.version.outputs.version }}
+          tag: ${{ steps.version.outputs.version }}
+          artifacts: artifact/application.zip
+          artifactContentType: application/zip
+          bodyFile: RELEASE_NOTE.md
