@@ -57,7 +57,6 @@ jobs:
         uses: ncipollo/release-action@v1
         id: create_release
         with:
-          draft: true
           prerelease: true
           name: DEV Release ${{ steps.version.outputs.version }}
           tag: ${{ steps.version.outputs.version }}
