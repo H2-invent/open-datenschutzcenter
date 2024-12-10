@@ -51,16 +51,14 @@ Alle Dokumente können über Formulare erfasst werden. Die Datenwerden in einer 
 
 
 
-# Get Started
-Auf Grund der Composer Abhängigkeiten wird ein Webspace für den Betrieb der Webanwendung nicht empfohlen. Enterprise bedeutet, dass ODC als Mandantenlösung und interne Webanwendung betrieben werden kann. Die Verwaltung, Updates und Wartung muss durch die Zuständige und Verantwortliche Person durchgeführt werden.
+# Schnellstart
+Um Ihnen den Einstieg zu erleichtern, stellen wir ein Docker-Image sowie eine Docker-Compose-Datei zur Verfügung. Mit diesen Werkzeugen können Sie die aktuelle stabile Version des ODC schnell installieren und testen.
 
-Installationsanleitung und ein Foliensatz mit Screenshots steht auf https://h2-invent.com/software/odc zur Verfügung.
-* [Anleitung im Wiki](https://github.com/H2-invent/open-datenschutzcenter/wiki/Get-Started)
-* [Mindestanforderungen](https://github.com/H2-invent/open-datenschutzcenter/wiki/Mindestanforderungen-an-den-Server)
-# Import .odif Datei
-Folgende Parameter stehen in den odif Dateien zum Import zur Verfügung und müssen auch im Dokument vorhanden sein.
+Für detaillierte Anleitungen besuchen Sie bitte unser [Wiki](https://github.com/H2-invent/open-datenschutzcenter/wiki/Get-Started).
 
-* [ODIF Import Datei](https://github.com/H2-invent/open-datenschutzcenter/wiki/ODIF-Datei)
+Das bereitgestellte Docker-Compose-File installiert das ODC im Produktionsmodus und über HTTP. Bitte beachten Sie: Es werden keine TLS-Zertifikate eingerichtet. Diese Installation sollte daher ausschließlich intern oder hinter einem Reverse Proxy mit TLS-Terminierung betrieben werden.
+
+Zusätzlich zum ODC-Container werden ein Traefik Load Balancer, eine MySQL-Datenbank und ein Keycloak-Server eingerichtet. Alle Anwendungen können auch ohne das Docker Compose-File in Umgebungen wie Swarm oder Helm betrieben werden.
 
 # Migrations
 #### von 1.12.X auf 2.X
