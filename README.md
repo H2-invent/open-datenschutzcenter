@@ -75,7 +75,7 @@ Mit diesem Image ist es möglich, den ODC in der aktuellen Stable Version zu ins
 [Anleitung im Wiki](https://github.com/H2-invent/open-datenschutzcenter/wiki/Get-Started)
 
 Das Docker-Compose File installiert den ODC im Prod Modus aber alles wird für HTTP ohne SSL Zertifikate eingerichtet.
-Diese installation nur Intern oder hinter einem Reverse Proxy betrieben werden.
+Diese installation sollte nur Intern oder hinter einem Reverse Proxy mit TLS Terminierung betrieben werden.
 
 Neben dem ODC Container wird noch eine Traefik Load Balancer, eine MySQL Datenbank und ein Keycloak Server eingerichtet.
 Alle Anwendungen können auch ohne das Docker Compose File in z.B. einem Swarm oder Helm betrieben werden.
