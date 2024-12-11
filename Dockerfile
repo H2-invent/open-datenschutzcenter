@@ -6,7 +6,7 @@ ARG SUPERCRONIC_VERSION=0.2.33
 
 LABEL version="${VERSION}" \
     Maintainer="H2 invent GmbH" \
-    Description="Docker Image der Anwendung Open Datenschutzcenter" \
+    Description="Docker Image for Open Datenschutzcenter" \
     org.opencontainers.version="${VERSION}" \
     org.opencontainers.image.title="Open Datenschutzcenter" \
     org.opencontainers.image.license="AGPLv3" \
