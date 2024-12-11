@@ -1,0 +1,131 @@
+version: '3.8'
+
+services:
+  traefik-odc:
+    image: "traefik:v2.5"
+
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--api.dashboard=true"
+
+      - "--providers.docker.exposedbydefault=false"
+
+      - "--entrypoints.web.address=:80"
+      # Global HTTPS
+      # - "--entrypoints.web.address=:443"
+      # - "--entrypoints.unsecure.http.redirections.entryPoint.to=web"
+      # - "--entrypoints.unsecure.http.redirections.entryPoint.scheme=https"
+      # SSL configuration
+      # - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      # - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=unsecure"
+      # - "--certificatesresolvers.letsencrypt.acme.email=${registerEmailAdress}"
+      # - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.http-catchall.entrypoints=unsecure"
+      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https@docker"
+      # - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+      - "traefik.http.routers.traefik-odc.rule=Host(`traefik.<clientUrl>`)"
+      - "traefik.http.routers.traefik-odc.entrypoints=web"
+      - "traefik.http.routers.traefik-odc.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik-odc.service=api@internal"
+      - "traefik.http.routers.traefik-odc.middlewares=traefik-auth"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/" # test:test
+
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      -  ./data/letsencrypt:/letsencrypt
+      - ./tools/traefik/config.yml:/etc/traefik/dynamic_conf/conf.yml:ro
+
+  #Here is the ODC app
+  app-odc:
+    image: git.h2-invent.com/datenschutzcenter/application:3.0.4
+    depends_on:
+      db-odc:
+        condition: service_healthy
+    restart: unless-stopped
+
+    environment:
+      DATABASE_URL: mysql://odc:<odcMySqlPw>@db-odc:3306/odc
+      OAUTH_KEYCLOAK_CLIENT_ID: opendatenschutzcenter
+      OAUTH_KEYCLOAK_CLIENT_SECRET: <clientsecret>
+      OAUTH_KEYCLOAK_SERVER: '<httpMethod>://<clientUrl>/keycloak'
+      OAUTH_KEYCLOAK_REALM: opendatenschutzcenter
+      MAILER_DSN: 'null://null'
+      laF_version: 3.0.4
+      demo_installation: demo
+    labels:
+      - "traefik.enable=true"
+      #- "traefik.http.routers.app-odc.tls=true"
+      - "traefik.http.routers.app-odc.rule=Host(`<clientUrl>`)"
+      - "traefik.http.routers.app-odc.entrypoints=web"
+      - "traefik.http.services.app-odc.loadbalancer.server.port=8080"
+      #- "traefik.http.routers.app-odc.tls.certresolver=letsencrypt"
+      - "traefik.http.services.app-odc.loadbalancer.sticky=true"
+      - "traefik.http.services.app-odc.loadbalancer.sticky.cookie.name=odc"
+      - "traefik.http.services.app-odc.loadbalancer.sticky.cookie.secure=true"
+    extra_hosts:
+      - "<clientUrl>:<hostIp>"
+    volumes:
+      - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
+      - datenschutzcenter_secret_storage:/var/www/html/secretStorage:rw
+      - datenschutzcenter_data:/var/www/html/data:rw
+
+  db-odc:
+    image: mariadb:latest
+    hostname: db-odc
+    healthcheck:
+      test: [ "CMD", "mariadb-admin" ,"ping", "-h", "localhost","-ptest" ]
+      timeout: 20s
+      retries: 10
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: test
+    volumes:
+      - mariadb:/var/lib/mysql
+      - ./mysql-initdb:/docker-entrypoint-initdb.d
+
+  keycloak-odc:
+    image: quay.io/keycloak/keycloak:22.0.3
+    depends_on:
+      app-odc:
+        condition: service_healthy
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: <keycloakAdminPw>
+      KC_DB: mariadb
+      KC_DB_PASSWORD: <keycloak-pw>
+      KC_DB_URL: jdbc:mariadb://db-odc:3306/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_HOSTNAME_URL: <httpMethod>://<clientUrl>/keycloak
+      KC_HOSTNAME_PATH: <httpMethod>://<clientUrl>/keycloak
+      KC_HOSTNAME_ADMIN_URL: <httpMethod>://<clientUrl>/keycloak
+      KC_HTTP_RELATIVE_PATH: /keycloak
+      KC_PROXY: passthrough
+    command:
+      - start-dev
+      - --import-realm
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.keycloak-odc.tls=true"
+      - "traefik.http.routers.keycloak-odc.rule=Host(`<clientUrl>`) && PathPrefix(`/keycloak`)"
+      - "traefik.http.routers.keycloak-odc.entrypoints=web"
+      - "traefik.http.services.keycloak-odc.loadbalancer.server.port=8080"
+      - "traefik.http.routers.keycloak-odc.tls.certresolver=letsencrypt"
+    volumes:
+      - ./keycloak/:/opt/keycloak/data/import
+
+
+volumes:
+  mariadb:
+  datenschutzcenter_uploads:
+  datenschutzcenter_data:
+  datenschutzcenter_secret_storage:

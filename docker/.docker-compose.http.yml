@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  traefik-odc:
+    image: "traefik:v2.5"
+    command:
+      # - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  #Here is the ODC app
+  app-odc:
+    image: git.h2-invent.com/datenschutzcenter/application:3.0.6
+    depends_on:
+      db-odc:
+        condition: service_healthy
+    restart: unless-stopped
+    env_file:
+      - ./.env.local
+      - ./.env.custom
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app-odc.rule=Host(`<clientUrl>`)"
+      - "traefik.http.routers.app-odc.entrypoints=web"
+    extra_hosts:
+      - "<clientUrl>:<hostIp>"
+    volumes:
+      - datenschutzcenter_uploads:/var/www/html/public/uploads:rw
+      - datenschutzcenter_secret_storage:/var/www/html/secretStorage:rw
+      - datenschutzcenter_data:/var/www/html/data:rw
+  db-odc:
+    image: mariadb:latest
+    hostname: db-odc
+    healthcheck:
+      test: [ "CMD", "mariadb-admin" ,"ping", "-h", "localhost","-ptest" ]
+      timeout: 20s
+      retries: 10
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: test
+    volumes:
+      - mariadb:/var/lib/mysql
+      - ./mysql-initdb:/docker-entrypoint-initdb.d
+
+  keycloak-odc:
+    image: quay.io/keycloak/keycloak:22.0.3
+    depends_on:
+      db-odc:
+        condition: service_healthy
+    env_file:
+      - ./.env.local
+      - ./.env.custom
+    command:
+      - start-dev
+      - --import-realm
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.keycloak-odc.rule=Host(`<clientUrl>`) && PathPrefix(`/keycloak`)"
+      - "traefik.http.routers.keycloak-odc.entrypoints=web"
+      - "traefik.http.services.keycloak-odc.loadbalancer.server.port=8080"
+    volumes:
+      - ./keycloak/:/opt/keycloak/data/import
+
+volumes:
+  mariadb:
+  datenschutzcenter_uploads:
+  datenschutzcenter_data:
+  datenschutzcenter_secret_storage:

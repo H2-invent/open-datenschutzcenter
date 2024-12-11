@@ -1,0 +1,13 @@
+# Ignore local ENV
+docker.config
+.env.local
+.env.custom
+
+# Ignore Custom Keycloak Realm
+keycloak/realm-export.json
+
+# Ignore Custom init-userdb
+mysql-initdb/init-userdb.sql
+
+# Ignore Custom docker-compose
+docker-compose.yml
