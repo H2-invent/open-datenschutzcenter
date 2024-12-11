@@ -3,7 +3,7 @@ version: '3.8'
 services:
   #Here is the ODC app
   app-odc:
-    image: git.h2-invent.com/datenschutzcenter/application:3.0.5
+    image: git.h2-invent.com/datenschutzcenter/application:latest
     depends_on:
       db-odc:
         condition: service_healthy
@@ -32,7 +32,6 @@ services:
     volumes:
       - mariadb:/var/lib/mysql
       - ./mysql-initdb:/docker-entrypoint-initdb.d
-
   keycloak-odc:
     image: quay.io/keycloak/keycloak:22.0.3
     depends_on:

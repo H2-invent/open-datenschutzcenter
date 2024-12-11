@@ -17,7 +17,7 @@ services:
 
   #Here is the ODC app
   app-odc:
-    image: git.h2-invent.com/datenschutzcenter/application:3.0.6
+    image: git.h2-invent.com/datenschutzcenter/application:latest
     depends_on:
       db-odc:
         condition: service_healthy
