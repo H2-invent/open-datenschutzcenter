@@ -3,7 +3,7 @@ version: '3.8'
 services:
   #Here is the ODC app
   app-odc:
-    image: git.h2-invent.com/datenschutzcenter/application:latest
+    image: git.h2-invent.com/datenschutzcenter/application:<version>
     depends_on:
       db-odc:
         condition: service_healthy

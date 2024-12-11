@@ -47,18 +47,23 @@ else
     source $FILE
 fi
 
-  HTTP_METHOD=${HTTP_METHOD:=http}
-  read -p "Enter http/https for testing on local environment ALWAYS use http [$HTTP_METHOD]: " input
-  HTTP_METHOD=${input:=$HTTP_METHOD}
-  sed -i '/HTTP_METHOD/d' $FILE
-  echo "HTTP_METHOD=$HTTP_METHOD" >> $FILE
+VERSION=${VERSION:=latest}
+read -p "Which version do you want to deploy? [$VERSION]: " input
+VERSION=${input:=$VERSION}
+sed -i '/VERSION/d' $FILE
+echo "VERSION=$VERSION" >> $FILE
 
-  PUBLIC_URL=${PUBLIC_URL:=dev.domain.de}
-  read -p "Enter the url you want to enter the open-datenschutzcenter without http://, https:// or ports [$PUBLIC_URL]: " input
-  PUBLIC_URL=${input:=$PUBLIC_URL}
-  sed -i '/PUBLIC_URL/d' $FILE
-  echo "PUBLIC_URL=$PUBLIC_URL" >> $FILE
+HTTP_METHOD=${HTTP_METHOD:=http}
+read -p "Enter http/https for testing on local environment ALWAYS use http [$HTTP_METHOD]: " input
+HTTP_METHOD=${input:=$HTTP_METHOD}
+sed -i '/HTTP_METHOD/d' $FILE
+echo "HTTP_METHOD=$HTTP_METHOD" >> $FILE
 
+PUBLIC_URL=${PUBLIC_URL:=dev.domain.de}
+read -p "Enter the url you want to enter the open-datenschutzcenter without http://, https:// or ports [$PUBLIC_URL]: " input
+PUBLIC_URL=${input:=$PUBLIC_URL}
+sed -i '/PUBLIC_URL/d' $FILE
+echo "PUBLIC_URL=$PUBLIC_URL" >> $FILE
 
 HOST_IP=$(ip a | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | head -n 1)
 
@@ -128,7 +133,7 @@ cp .docker-compose.$HTTP_METHOD.yml docker-compose.yml
 
 sed -i "s|<clientUrl>|$PUBLIC_URL|g" docker-compose.yml
 sed -i "s|<hostIp>|$HOST_IP|g" docker-compose.yml
-
+sed -i "s|<version>|$VERSION|g" docker-compose.yml
 
 echo ""
 echo ""
