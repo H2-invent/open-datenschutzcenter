@@ -10,3 +10,4 @@
 
 
 ## Update Anleitung
+* Die Anleitung zum Installieren des ODCs mit hilfe Docker Compose wurde angepasst (https://github.com/H2-invent/open-datenschutzcenter/wiki/Get-Started)
