@@ -20,11 +20,6 @@ USER root
 
 RUN apk --no-cache add \
     unzip \
-    php83-xmlwriter \
-    php83-xsl \
-    php83-pcntl \
-    php83-posix \
-    php83-sockets \
     && rm -rf /var/cache/apk/*
 
 RUN mkdir /etc/service/cron \
@@ -57,7 +52,7 @@ USER nobody
 RUN wget https://github.com/H2-invent/open-datenschutzcenter/releases/download/${VERSION}/application.zip -O artifact.zip \
     && unzip artifact.zip \
     && mkdir data \
-    && rm -r var/cache
+    && rm -r var/cache \
     && rm artifact.zip
 
 ENV nginx_root_directory=/var/www/html/public \
