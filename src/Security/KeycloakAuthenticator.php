@@ -3,10 +3,13 @@
 namespace App\Security;
 
 use App\Entity\Settings;
+use App\Entity\Team;
 use App\Entity\User;
 use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
@@ -24,12 +27,16 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class KeycloakAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface
 {
     use TargetPathTrait;
 
     public function __construct(
+        private readonly ?string                $groupApiUserId,
+        private readonly ?array                 $groupApiRoles,
+        private readonly bool                   $groupApiGrantAdmin,
         private readonly LoggerInterface        $logger,
         private readonly ParameterBagInterface  $parameterBag,
         private readonly TokenStorageInterface  $tokenStorage,
@@ -37,6 +44,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         private readonly EntityManagerInterface $em,
         private readonly RouterInterface        $router,
         private readonly TeamRepository         $teamRepository,
+        private readonly HttpClientInterface    $groupClient,
     )
     {
     }
@@ -85,6 +93,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         AuthenticationException $exception,
     ): ?Response
     {
+        $this->logger->error($exception->getMessage());
         return new RedirectResponse($this->router->generate('no_team'));
     }
 
@@ -122,13 +131,16 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
 
     private function getEmailForKeycloakUser(ResourceOwnerInterface $keycloakUser): string {
         try {
+            // FIXME: ResourceOwnerInterface cannot have method getEmail()
             return $keycloakUser->getEmail();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             try {
                 return $keycloakUser->toArray()['preferred_username'];
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         }
+
+        return '';
     }
 
     private function getRolesForKeycloakUser(ResourceOwnerInterface $keycloakUser): array
@@ -184,12 +196,118 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
         $user->setRoles(roles: $this->getRolesForKeycloakUser(keycloakUser: $keycloakUser));
 
         $settings = $this->em->getRepository(Settings::class)->findOne();
-        if ($settings && $settings->getUseKeycloakGroups()) {
-            $user->setTeams(teams: $this->getTeamsFromKeycloakGroups(keycloakUser: $keycloakUser));
+        if ($settings) {
+            switch ($settings->getGroupMapping()) {
+                case Settings::KEYCLOAK_GROUP_MAPPING:
+                    $user->setTeams(teams: $this->getTeamsFromKeycloakGroups(keycloakUser: $keycloakUser));
+                    break;
+                case Settings::API_GROUP_MAPPING:
+                    $teams = $this->syncApiGroups($keycloakUser);
+                    foreach ($teams as $team) {
+                        $user->addTeam($team);
+                        if ($this->groupApiGrantAdmin) {
+                            $team->addAdmin($user);
+                            $this->em->persist($team);
+                        }
+                    }
+                    break;
+            }
         }
 
         $this->em->persist($user);
         $this->em->flush();
         return $user;
+    }
+
+    /**
+     * @param ResourceOwnerInterface $keycloakUser
+     * @return Collection<Team>
+     */
+    private function syncApiGroups(ResourceOwnerInterface $keycloakUser): Collection {
+        try {
+            $userId = $keycloakUser->toArray()[$this->groupApiUserId];
+            $response = $this->groupClient->request('GET', "/v1/users/$userId/rbac-structure");
+            $responsePayload = $response->toArray();
+
+            $groups = array_combine(
+                array_column($responsePayload['groups'], 'divisionKey'),
+                $responsePayload['groups']
+            );
+
+            $roleDivisions = $this->getGroupsOfMatchingRoles($responsePayload['roles']);
+            $roleGroups = array_filter($groups, function ($groupKey) use ($roleDivisions) {
+                return in_array($groupKey, $roleDivisions);
+            }, ARRAY_FILTER_USE_KEY);
+
+            return $this->createTeams($roleGroups, $groups);
+        } catch (\Throwable $e) {
+            $this->logger->error("Exception \"{$e->getMessage()}\" at {$e->getFile()} line {$e->getLine()}");
+            return new ArrayCollection();
+        }
+    }
+
+    private function getGroupsOfMatchingRoles(array $roles) {
+        $teamAdminRoles = array_filter($roles, function ($role) {
+            return in_array($role['id'], $this->groupApiRoles);
+        });
+
+        return array_map(function ($role) {
+            return $role['divisionKey'];
+        }, $teamAdminRoles);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function createTeams(array $userGroups, array $groupsTree): Collection {
+        $teams = [];
+        foreach ($userGroups as $group) {
+            $teams[] = $this->createTeamHierarchy($group, $groupsTree);
+        }
+        return new ArrayCollection($teams);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function createTeamHierarchy(array $group, array $groupsTree): ?Team {
+        if (!array_key_exists('parentKey', $group)) {
+            throw new Exception('Invalid group: '.implode(',', $group));
+        }
+
+        if (!$group['parentKey']) {
+            return $this->getTeam($group);
+        }
+
+        if (!array_key_exists($group['parentKey'], $groupsTree)) {
+            throw new Exception('Missing group in tree: '.implode(',', $group));
+        }
+
+        $parent = $this->createTeamHierarchy($groupsTree[$group['parentKey']], $groupsTree);
+
+        return $this->getTeam($group, $parent);
+    }
+
+    private function getTeam(array $group, Team $parent = null): Team {
+        $team = $this->teamRepository->findOneBy([
+            'immutable' => 1,
+            'name' => $group['displayName'],
+        ]);
+
+        if (!$team) {
+            $team = new Team();
+            $team->setName($group['displayName'])
+                ->setImmutable(true)
+                ->setParent($parent)
+                ->setActiv(true)
+                ->setStrasse('')
+                ->setPlz('')
+                ->setStadt('')
+                ->setCeo('');
+            $this->em->persist($team);
+            $this->em->flush();
+        }
+
+        return $team;
     }
 }

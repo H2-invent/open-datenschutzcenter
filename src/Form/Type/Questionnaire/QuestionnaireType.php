@@ -46,7 +46,7 @@ class QuestionnaireType extends BaseType
             SubmitType::class,
             [
                 'attr' => [
-                    'class' => 'btn btn-primary'
+                    'class' => 'btn'
                 ],
                 'label' => 'save.word',
                 'translation_domain' => 'general',

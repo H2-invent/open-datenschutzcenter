@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\VVTStatusRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VVTStatusRepository::class)]
-class VVTStatus
+class VVTStatus extends Preset
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,6 +29,9 @@ class VVTStatus
 
     #[ORM\Column(type: 'boolean')]
     private $activ = true;
+
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'ignoredVVTStates')]
+    protected $ignoredInTeams;
 
     public function getId(): ?int
     {

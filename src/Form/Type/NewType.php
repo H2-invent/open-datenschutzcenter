@@ -9,6 +9,7 @@
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,9 +21,9 @@ class NewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $builder
-            ->add('name', TextType::class, ['label' => 'new', 'required' => true, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'save', 'translation_domain' => 'form']);
+        $builder->add('name', TextType::class, ['label' => 'title', 'required' => true, 'translation_domain' => 'form']);
+        $builder->add('inherited', CheckboxType::class, ['label' => 'inherited', 'required' => false, 'translation_domain' => 'form']);
+        $builder->add('save', SubmitType::class, ['attr' => array('class' => 'btn'), 'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

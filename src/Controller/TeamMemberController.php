@@ -19,13 +19,13 @@ use App\Service\CurrentTeamService;
 use App\Service\InviteService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Throwable;
 
-class TeamMemberController extends AbstractController
+class TeamMemberController extends BaseController
 {
     public function __construct(private readonly TranslatorInterface $translator)
     {
@@ -40,7 +40,7 @@ class TeamMemberController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         // Admin Route only
         if (!$securityService->adminCheck($user, $team)) {
@@ -133,11 +133,9 @@ class TeamMemberController extends AbstractController
             }
 
             $em->flush();
+            $this->addSuccessMessage($this->translator->trans(id: 'dsb.added', domain: 'team'));
             return $this->redirectToRoute(
                 'team_dsb',
-                [
-                    'snack' => $this->translator->trans(id: 'dsb.added', domain: 'team'),
-                ],
             );
         }
         return $this->render('team/dsb.html.twig', [
@@ -145,7 +143,6 @@ class TeamMemberController extends AbstractController
             'errors' => $errors,
             'title' => $this->translator->trans(id: 'dsb.manage', domain: 'team'),
             'data' => $team->getDsbUser(),
-            'snack' => $request->get('snack'),
             'currentTeam' => $team,
             'adminArea' => true,
         ]);
@@ -161,7 +158,7 @@ class TeamMemberController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->adminCheck($user, $team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -170,12 +167,13 @@ class TeamMemberController extends AbstractController
         $user = $userRepository->findOneBy(array('id' => $request->get('id')));
 
         if ($team->getDsbUser() === $user) {
-            $snack = $this->translator->trans(id: 'dsb.error.selfRemove', domain: 'team');
             if ($this->getUser() !== $team->getDsbUser()) {
                 $user->removeTeam($team);
                 $team->removeAdmin($user);
                 $user->setAkademieUser(null);
-                $snack = $this->translator->trans(id: 'dsb.removed', domain: 'team');
+                $this->addSuccessMessage($this->translator->trans(id: 'dsb.removed', domain: 'team'));
+            } else {
+                $this->addErrorMessage($this->translator->trans(id: 'dsb.error.selfRemove', domain: 'team'));
             }
             $team->setDsbUser(null);
         }
@@ -183,7 +181,7 @@ class TeamMemberController extends AbstractController
         $em->persist($user);
         $em->flush();
 
-        return $this->redirectToRoute('team_dsb', ['snack' => $snack]);
+        return $this->redirectToRoute('team_dsb');
     }
 
     #[Route(path: '/team_mitglieder', name: 'team_mitglieder')]
@@ -201,7 +199,8 @@ class TeamMemberController extends AbstractController
         $teamId = $request->get('id');
         $currentTeam = null;
         $settings = $settingsRepository->findOne();
-        $useKeycloakGroups = $settings ? $settings->getUseKeycloakGroups() : false;
+        $useKeycloakGroups = $settings && $settings->getUseKeycloakGroups();
+        $this->setBackButton($this->generateUrl('manage_teams'));
 
         if ($teamId) {
             $team = $teamRepository->find($teamId);
@@ -229,9 +228,14 @@ class TeamMemberController extends AbstractController
         $errors = array();
         if ($form->isSubmitted() && $form->isValid()) {
             $newMembers = $form->getData();
-            $lines = explode("\n", $newMembers['member']);
 
-            if (!empty($lines)) {
+            try {
+                $lines = explode("\n", $newMembers['member']);
+            } catch (Throwable $th) {
+                $lines = [];
+            }
+
+            if (count($lines) > 0) {
                 foreach ($lines as $line) {
                     $newMember = trim($line);
                     $newUser = $inviteService->newUser($newMember);
@@ -239,6 +243,7 @@ class TeamMemberController extends AbstractController
                     $em->persist($newUser);
                 }
                 $em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 if ($teamId) {
                     return $this->redirectToRoute('team_mitglieder', ['id' => $teamId]);
                 }
@@ -280,10 +285,10 @@ class TeamMemberController extends AbstractController
         switch ($request->get('type')) {
             case 'academy':
                 $member->setAkademieUser(null);
-                $target = $this->generateUrl('akademie_admin') . '#user';
+                $target = $this->generateUrl('akademie_admin') . '#tab-user';
                 break;
             default:
-                if ($member !== $user && $member->hasTeam($team)) {
+                if ($team->isMemberRemovable($member, $user)) {
                     $member->removeTeam($team);
                     $team->removeAdmin($member);
                 }
@@ -297,6 +302,7 @@ class TeamMemberController extends AbstractController
         $em->persist($member);
         $em->persist($team);
         $em->flush();
+        $this->addSuccessMessage($this->translator->trans(id: 'deleted', domain: 'general'));
         return $this->redirect($target);
     }
 
@@ -325,9 +331,14 @@ class TeamMemberController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $newMembers = $form->getData();
-            $lines = explode("\n", $newMembers['member']);
 
-            if (!empty($lines)) {
+            try {
+                $lines = explode("\n", $newMembers['member']);
+            } catch (Throwable $th) {
+                $lines = [];
+            }
+
+            if (count($lines) > 0) {
                 foreach ($lines as $line) {
                     $newMember = trim($line);
                     $user = $inviteService->newUser($newMember);
@@ -344,7 +355,7 @@ class TeamMemberController extends AbstractController
                                 $user->setAkademieUser($team);
                                 $em->persist($user);
                             }
-                            $target = $this->generateUrl('akademie_admin') . '#user';
+                            $target = $this->generateUrl('akademie_admin') . '#tab-user';
                             break;
                         default:
                             if (!$user->hasTeam($team)) {
@@ -357,6 +368,7 @@ class TeamMemberController extends AbstractController
                     }
                 }
             }
+            $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
             $em->flush();
             return $this->redirect($target);
         }

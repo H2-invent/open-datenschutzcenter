@@ -11,6 +11,13 @@ framework:
         cookie_secure: auto
         cookie_samesite: lax
 
+    http_client:
+        scoped_clients:
+            group.client:
+                base_uri: '%env(GROUP_API_URI)%'
+                headers:
+                    'X-API-KEY': '%env(default::GROUP_API_KEY)%'
+
     #esi: true
     #fragments: true
     php_errors:

@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\AuditTomZieleRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AuditTomZieleRepository::class)]
-class AuditTomZiele
+class AuditTomZiele extends Preset
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,6 +23,9 @@ class AuditTomZiele
 
     #[ORM\Column(type: 'boolean')]
     private $activ;
+
+    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'ignoredAuditGoals')]
+    protected $ignoredInTeams;
 
     public function getId(): ?int
     {

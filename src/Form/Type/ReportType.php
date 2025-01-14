@@ -48,7 +48,7 @@ class ReportType extends AbstractType
             ->add('invoice', CheckboxType::class, ['label' => 'billed', 'required' => false, 'translation_domain' => 'form'])
             ->add('inReport', CheckboxType::class, ['label' => 'showInReport', 'required' => false, 'translation_domain' => 'form'])
             ->add('onsite', CheckboxType::class, ['label' => 'onSite', 'required' => false, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'save', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-block mt-3'), 'label' => 'save', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

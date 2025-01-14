@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block content %}
-    <h4 class="text-center">
+    <h4>
         {{ assign }}
     </h4>
     <b>
@@ -21,7 +21,7 @@
     </p>
     <spacer size="16"></spacer>
     <p>
-        <a href="{{ absolute_url(path('vvt_dsfa_edit', {'vvt':data.id})) }}">Klicken Sie hier um direkt zu Element
+        <a href="{{ absolute_url(path('dsfa_edit', {'vvt':data.id})) }}">Klicken Sie hier um direkt zu Element
             zu gelangen.</a>
     </p>
     <spacer size="16"></spacer>

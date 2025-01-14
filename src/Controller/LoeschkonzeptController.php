@@ -15,13 +15,12 @@ use App\Service\CurrentTeamService;
 use App\Service\LoeschkonzeptService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/loeschkonzept')]
-class LoeschkonzeptController extends AbstractController
+class LoeschkonzeptController extends BaseController
 {
     #[Route(path: '/{id}/delete', name: 'app_loeschkonzept_delete', methods: ['POST'])]
     public function delete(
@@ -32,7 +31,7 @@ class LoeschkonzeptController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         if ($securityService->teamCheck($team) && $securityService->adminCheck($user, $team)) {
             $loeschkonzept->setActiv(false);
             $entityManager->persist($loeschkonzept);
@@ -53,7 +52,7 @@ class LoeschkonzeptController extends AbstractController
         CurrentTeamService          $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('app_loeschkonzept_index');
         }
@@ -88,7 +87,9 @@ class LoeschkonzeptController extends AbstractController
             return $this->redirectToRoute('app_loeschkonzept_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('loeschkonzept/edit.html.twig', [
+        $this->setBackButton($this->generateUrl('app_loeschkonzept_index'));
+
+        return $this->render('loeschkonzept/edit.html.twig', [
             'loeschkonzept' => $newloeschkonzept,
             'form' => $form,
         ]);
@@ -102,7 +103,7 @@ class LoeschkonzeptController extends AbstractController
         CurrentTeamService          $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -143,7 +144,7 @@ class LoeschkonzeptController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
@@ -167,17 +168,23 @@ class LoeschkonzeptController extends AbstractController
             return $this->redirectToRoute('app_loeschkonzept_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('loeschkonzept/new.html.twig', [
+        $this->setBackButton($this->generateUrl('app_loeschkonzept_index'));
+
+        return $this->render('loeschkonzept/new.html.twig', [
             'loeschkonzept' => $loeschkonzept,
             'form' => $form,
         ]);
     }
 
     #[Route(path: '/{id}/details', name: 'app_loeschkonzept_show', methods: ['GET'])]
-    public function show(Loeschkonzept $loeschkonzept): Response
+    public function show(Loeschkonzept $loeschkonzept, CurrentTeamService $teamService): Response
     {
+        $this->setBackButton($this->generateUrl('app_loeschkonzept_index'));
+        $currentTeam = $teamService->getCurrentTeam($this->getUser());
+
         return $this->render('loeschkonzept/show.html.twig', [
             'loeschkonzept' => $loeschkonzept,
+            'current_team' => $currentTeam,
         ]);
     }
 }

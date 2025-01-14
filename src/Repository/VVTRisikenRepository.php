@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\VVTRisiken;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,49 +11,13 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method VVTRisiken[]    findAll()
  * @method VVTRisiken[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VVTRisikenRepository extends ServiceEntityRepository
+class VVTRisikenRepository extends PresetRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        protected readonly ManagerRegistry    $registry,
+        TeamRepository                        $teamRepository,
+    )
     {
-        parent::__construct($registry, VVTRisiken::class);
-    }
-
-    // /**
-    //  * @return VVTRisiken[] Returns an array of VVTRisiken objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?VVTRisiken
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findByTeam($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->where('a.team is null OR a.team = :val')
-            ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult();
+        parent::__construct($this->registry, $teamRepository, VVTRisiken::class);
     }
 }

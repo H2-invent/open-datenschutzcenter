@@ -6,7 +6,7 @@ vvt: VVT
 vvts: VVTs
 dsfa: DSFA
 dw: DW
-showAllAssignments: Alle Zuweisungen anzeigen
+showAllAssignments: Alle anzeigen
 criticalProcesses: Kritische Vorgänge
 auditQuestions: Auditfragen
 openDsfa: Offene DSFA
@@ -18,6 +18,7 @@ privacyCenter: Datenschutzcenter
 flowChart: Datenflussplan
 departments:
   all: Alle Abteilungen
+quickAccess: Schnellzugriff
 
 approvedBy: Freigegeben von
 contact: KONTAKT
@@ -32,3 +33,4 @@ noTeamHelp: Für Ihren Benutzer ist kein Team vorhanden.<br>Fragen Sie Ihrem Adm
 supportRequest: Support anfragen
 logout: Logout
 noTeam: Kein Team vorhanden
+createTeamHelp: Erstellen Sie Ihr erstes Team.

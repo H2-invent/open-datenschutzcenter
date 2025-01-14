@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% trans_default_domain 'vvt' %}
+
+{% block title %}
+    {{ title }} {% trans from 'general' %}to{% endtrans %} {{ dsfa.vvt.name }}
+{% endblock %}
+
+{% block CTA %}
+    {% if assignForm is defined and isEditable %}{{ include('assign/__assign.html.twig',{'data':dsfa,'path':'assign_dsfa'}) }}{% endif %}
+{% endblock %}
+
+{% block body %}
+    <hr>
+    <div class="my-5">
+        <a href="{{ path('vvt_edit', {'id': dsfa.vvt.id}) }}" class="btn text-gray-700">
+            &raquo; {% trans from 'vvt' %}processing.show{% endtrans %}
+        </a>
+    </div>
+    {{ form_start(form) }}
+    <fieldset>
+        {{ form_row(form.beschreibung) }}
+        {{ form_row(form.notwendigkeit) }}
+        {{ form_row(form.risiko) }}
+        {{ form_row(form.abhilfe) }}
+        {{ form_row(form.standpunkt) }}
+        {{ form_row(form.dsb) }}
+        {{ form_row(form.ergebnis) }}
+    </fieldset>
+    {{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
+    {{ form_end(form) }}
+    <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ dsfa.user.email }}</p>
+    {% if dsfa.previous %}
+        <h3 class="mt-10">{% trans from 'general' %}history{% endtrans %}</h3>
+        <ol class="item-history">
+            {{ include('dsfa/__history.html.twig', {'p':dsfa.previous}) }}
+        </ol>
+    {% endif %}
+{% endblock %}

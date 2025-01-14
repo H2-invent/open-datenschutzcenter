@@ -1,15 +1,15 @@
 {% trans_default_domain 'dashboard' %}
 <!--Card-->
-<div class="card mt-3">
+<div>
     <!-- Card header -->
-    <div class="card-header text-center">
+    <div>
         {% trans %}lastChanges{% endtrans %}
     </div>
     <!--Card content-->
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6">
-                <h5 class="h5-responsive">{% trans %}auditQuestions{% endtrans %}</h5>
+    <div>
+        <div>
+            <div>
+                <h5>{% trans %}auditQuestions{% endtrans %}</h5>
                 <hr>
                 <ul>
                     {% for a in audit|slice(0, 5) %}
@@ -19,8 +19,8 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="col-md-6">
-                <h5 class="h5-responsive">{% trans %}processing{% endtrans %}</h5>
+            <div>
+                <h5>{% trans %}processing{% endtrans %}</h5>
                 <hr>
                 <ul>
                     {% for v in vvt|slice(0, 5) %}

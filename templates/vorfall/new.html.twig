@@ -1,21 +1,10 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'vorfall' %}
 
-{% block body %}
-
-    <h2 class="h2-responsive">{{ title }}</h2>
-<div class="card card-body">
-    {{ include('vorfall/__form.html.twig') }}
-</div>
-
-    <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ vorfall.user.email }}</p>
-    {% if vorfall.previous %}
-        <div class="card card-body mt-2">
-            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
-            {{ include('vorfall/__form.html.twig/__history.html.twig', {'p':vorfall.previous}) }}
-        </div>
-    {% endif %}
+{% block title %}
+    {{ title }}
 {% endblock %}
 
-{% block javascript %}
+{% block body %}
+    {{ include('vorfall/__form.html.twig') }}
 {% endblock %}

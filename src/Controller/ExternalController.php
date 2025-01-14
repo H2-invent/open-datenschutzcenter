@@ -4,11 +4,10 @@ namespace App\Controller;
 
 use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ExternalController extends AbstractController
+class ExternalController extends BaseController
 {
     #[Route(path: '/external', name: 'external')]
     public function index(
@@ -16,7 +15,7 @@ class ExternalController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }

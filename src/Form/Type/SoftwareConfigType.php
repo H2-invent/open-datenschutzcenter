@@ -27,7 +27,7 @@ class SoftwareConfigType extends AbstractType
             ->add('name', TextType::class, ['label' => 'Bezeichnung der Konfiguration', 'required' => true, 'translation_domain' => 'form'])
             ->add('config', TextareaType::class, ['attr' => ['class' => 'summernote'], 'label' => 'Konfiguration', 'required' => true, 'translation_domain' => 'form'])
             ->add('activ', CheckboxType::class, ['label' => 'Konfiguration Aktiv', 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary'), 'label' => 'Speichern', 'translation_domain' => 'form'])
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn'), 'label' => 'Speichern', 'translation_domain' => 'form'])
             ->add('uploadFile', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => true,

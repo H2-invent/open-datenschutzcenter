@@ -7,6 +7,7 @@ removeDsb: The DPO will be removed as an admin, coordinator and academy user.
 addExternalDsbInfo: Here you can appoint an external DPO. The external DPO has the ability to move back and forth between teams, each time getting the Data Protection Coordinator, Data Protection Officer, Admin and Academician permissions.
 adminArea: Adminbereich
 memberCount: Members
+parentTeam: Erbt von
 admins: Administratoren
 admin:
   create: Add admin
@@ -19,6 +20,7 @@ team:
   delete: '{teamName} löschen'
   manage: Manage teams
   create: New team
+  created: Team erstellt
   manageData: Edit team
   manageMembers: Edit members
   deletionBlocked: 'Diese Gruppe kann erst gelöscht werden, wenn folgende Elemente entfernt wurden:'
@@ -45,3 +47,4 @@ dsb:
 footer:
   disclaimer: Um den ODC-Administrations-Bereich nutzen zu können müssen Sie die Rolle "SuperAdmin" besitzen.
   clickHere: Wie man diese Rolle zuweist erfahren sie hier
+backToTeamManagement: Back to team management

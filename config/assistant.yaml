@@ -6,48 +6,55 @@ steps:
     newTitle: 'new.software'
     skip: true
   1:
+    type: 'App\Form\Type\VVTDatenkategorieType'
+    title: 'category.processing.title'
+    info: 'category.processing.info'
+    newTitle: 'new.category'
+    skip: true
+  2:
     type: 'App\Form\Type\VVTType'
     title: 'procedure.processing.title'
     info: 'procedure.processing.info'
     newTitle: 'new.procedure'
     software: 0
-  2:
+    category: 1
+  3:
     type: 'App\Form\Type\KontaktType'
     title: 'contact.source.title'
     info: 'contact.source.info'
     newTitle: 'new.contact'
-  3:
+    skip: true
+  4:
     type: 'App\Form\Type\DatenweitergabeType'
     title: 'processing.title'
     info: 'processing.info'
     newTitle: 'new.processing'
     transferType: 2
     software: 0
-    procedure: 1
-    contact: 2
-  4:
-    type: 'App\Form\Type\SoftwareType'
-    title: 'software.transfer.title'
-    info: 'software.transfer.info'
-    newTitle: 'new.software'
-    skip: true
+    procedure: 2
+    contact: 3
   5:
+    type: 'App\Form\Type\VVTDatenkategorieType'
+    title: 'category.transfer.title'
+    info: 'category.transfer.info'
+    newTitle: 'new.category'
+    skip: true
+  6:
     type: 'App\Form\Type\VVTType'
     title: 'procedure.transfer.title'
     info: 'procedure.transfer.info'
     newTitle: 'new.procedure'
-    software: 4
-  6:
+  7:
     type: 'App\Form\Type\KontaktType'
     title: 'contact.dest.title'
     info: 'contact.dest.info'
     newTitle: 'new.contact'
-  7:
+  8:
     type: 'App\Form\Type\DatenweitergabeType'
     title: 'transfer.title'
     info: 'transfer.info'
     newTitle: 'new.transfer'
     transferType: 1
-    software: 4
-    procedure: 5
-    contact: 6
+    software: 5
+    procedure: 7
+    contact: 8

@@ -9,15 +9,18 @@
 namespace App\Entity;
 
 use Ambta\DoctrineEncryptBundle\Configuration\Encrypted;
-use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
-#[ORM\Entity(repositoryClass: TeamRepository::class)]
+#[Gedmo\Tree(type: 'nested')]
+#[ORM\Entity(repositoryClass: NestedTreeRepository::class)]
 #[UniqueEntity('slug')]
+#[ORM\UniqueConstraint(name: 'UNQ_team_name_and_immutable', columns: ['name', 'immutable'])]
 class Team
 {
     #[ORM\Id]
@@ -25,7 +28,7 @@ class Team
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
     private $name;
 
@@ -162,20 +165,78 @@ class Team
     #[ORM\Column(type: 'text', nullable: true)]
     private $specialty;
 
-    #[ORM\OneToMany(targetEntity: VVTStatus::class, mappedBy: 'team')]
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: VVTStatus::class)]
     private Collection $vVTStatuses;
 
-    #[ORM\OneToMany(targetEntity: DatenweitergabeGrundlagen::class, mappedBy: 'team')]
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: DatenweitergabeGrundlagen::class)]
     private Collection $datenweitergabeGrundlagens;
 
-    #[ORM\OneToMany(targetEntity: DatenweitergabeStand::class, mappedBy: 'team')]
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: DatenweitergabeStand::class)]
     private Collection $datenweitergabeStands;
 
-    #[ORM\OneToMany(targetEntity: Loeschkonzept::class, mappedBy: 'team')]
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Loeschkonzept::class)]
     private Collection $loeschkonzepts;
-    
-    #[ORM\OneToMany(targetEntity: Questionnaire::class, mappedBy: 'team')]
+
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Questionnaire::class)]
     private Collection $questionnaires;
+
+    #[Gedmo\TreeLevel]
+    #[ORM\Column(name: 'lvl', type: 'integer', nullable: true)]
+    private $lvl;
+
+    #[Gedmo\TreeRoot]
+    #[ORM\ManyToOne(targetEntity: Team::class)]
+    #[ORM\JoinColumn(name: 'tree_root', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    private $root;
+
+    #[Gedmo\TreeParent]
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private $parent;
+
+    #[Gedmo\TreeLeft]
+    #[ORM\Column(name: 'lft', type: 'integer', nullable: true)]
+    private $lft;
+
+    #[Gedmo\TreeRight]
+    #[ORM\Column(name: 'rgt', type: 'integer', nullable: true)]
+    private $rgt;
+
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Team::class)]
+    private $children;
+
+    // inherited VVTs can be deactivated for individual child teams
+    #[ORM\ManyToMany(targetEntity: VVT::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredInheritances;
+
+    #[ORM\ManyToMany(targetEntity: VVTPersonen::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredVVTPersons;
+
+    #[ORM\ManyToMany(targetEntity: VVTRisiken::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredVVTRisks;
+
+    #[ORM\ManyToMany(targetEntity: VVTGrundlage::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredVVTGrounds;
+
+    #[ORM\ManyToMany(targetEntity: VVTStatus::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredVVTStates;
+
+    #[ORM\ManyToMany(targetEntity: Produkte::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredProducts;
+
+    #[ORM\ManyToMany(targetEntity: DatenweitergabeStand::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredDWStates;
+
+    #[ORM\ManyToMany(targetEntity: DatenweitergabeGrundlagen::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredDWGrounds;
+
+    #[ORM\ManyToMany(targetEntity: AuditTomZiele::class, mappedBy: 'ignoredInTeams')]
+    private $ignoredAuditGoals;
+
+    #[ORM\Column(options: [
+        'default' => 0,
+    ])]
+    private bool $immutable = false;
 
     public function __construct()
     {
@@ -203,6 +264,7 @@ class Team
         $this->vVTRisikens = new ArrayCollection();
         $this->vVTGrundlages = new ArrayCollection();
         $this->vVTStatuses = new ArrayCollection();
+        $this->ignoredInheritances = new ArrayCollection();
         $this->datenweitergabeGrundlagens = new ArrayCollection();
         $this->datenweitergabeStands = new ArrayCollection();
         $this->loeschkonzepts = new ArrayCollection();
@@ -214,6 +276,18 @@ class Team
         return $this->name;
     }
 
+    public function isMemberRemovable(User $member, User $userLoggedIn): bool
+    {
+        if ($userLoggedIn->hasRole('ROLE_SUPER_ADMIN')) {
+            return true;
+        }
+
+        if ($member === $userLoggedIn) {
+            return false;
+        }
+
+        return $member->getTeams()->contains($this);
+    }
 
     public function getId(): ?int
     {
@@ -1317,5 +1391,291 @@ class Team
         if (count($this->datenweitergabeStands)) $blockers[] = 'dataTransferStatuses';
         if (count($this->loeschkonzepts)) $blockers[] = 'deleteConcepts';
         return $blockers;
+    }
+
+    public function getRoot(): ?self
+    {
+        return $this->root;
+    }
+
+    public function setParent(self $parent = null): static
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function getChildren(): ?Collection
+    {
+        return $this->children;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredInheritances(): Collection
+    {
+        return $this->ignoredInheritances;
+    }
+
+    public function addIgnoredInheritance(VVT $vvt): self
+    {
+        if (!$this->ignoredInheritances->contains($vvt)) {
+            $this->ignoredInheritances[] = $vvt;
+            $vvt->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredInheritance(VVT $vvt): self
+    {
+        if ($this->ignoredInheritances->contains($vvt)) {
+            $this->ignoredInheritances->removeElement($vvt);
+            $vvt->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredVVTPersons(): Collection
+    {
+        return $this->ignoredVVTPersons;
+    }
+
+    public function addIgnoredVVTPerson(VVTPersonen $person): self
+    {
+        if (!$this->ignoredVVTPersons->contains($person)) {
+            $this->ignoredVVTPersons[] = $person;
+            $person->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredVVTPerson(VVTPersonen $person): self
+    {
+        if ($this->ignoredVVTPersons->contains($person)) {
+            $this->ignoredVVTPersons->removeElement($person);
+            $person->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredVVTStates(): Collection
+    {
+        return $this->ignoredVVTStates;
+    }
+
+    public function addIgnoredVVTState(VVTStatus $state): self
+    {
+        if (!$this->ignoredVVTStates->contains($state)) {
+            $this->ignoredVVTStates[] = $state;
+            $state->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredVVTState(VVTStatus $state): self
+    {
+        if ($this->ignoredVVTStates->contains($state)) {
+            $this->ignoredVVTStates->removeElement($state);
+            $state->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredVVTGrounds(): Collection
+    {
+        return $this->ignoredVVTGrounds;
+    }
+
+    public function addIgnoredVVTGround(VVTGrundlage $ground): self
+    {
+        if (!$this->ignoredVVTGrounds->contains($ground)) {
+            $this->ignoredVVTGrounds[] = $ground;
+            $ground->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredVVTGround(VVTGrundlage $ground): self
+    {
+        if ($this->ignoredVVTGrounds->contains($ground)) {
+            $this->ignoredVVTGrounds->removeElement($ground);
+            $ground->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredVVTRisks(): Collection
+    {
+        return $this->ignoredVVTRisks;
+    }
+
+    public function addIgnoredVVTRisk(VVTRisiken $risk): self
+    {
+        if (!$this->ignoredVVTRisks->contains($risk)) {
+            $this->ignoredVVTRisks[] = $risk;
+            $risk->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredVVTRisk(VVTRisiken $risk): self
+    {
+        if ($this->ignoredVVTRisks->contains($risk)) {
+            $this->ignoredVVTRisks->removeElement($risk);
+            $risk->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredAuditGoals(): Collection
+    {
+        return $this->ignoredAuditGoals;
+    }
+
+    public function addIgnoredAuditGoal(AuditTomZiele $goal): self
+    {
+        if (!$this->ignoredAuditGoals->contains($goal)) {
+            $this->ignoredAuditGoals[] = $goal;
+            $goal->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredAuditGoal(AuditTomZiele $goal): self
+    {
+        if ($this->ignoredAuditGoals->contains($goal)) {
+            $this->ignoredAuditGoals->removeElement($goal);
+            $goal->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredDWGrounds(): Collection
+    {
+        return $this->ignoredDWGrounds;
+    }
+
+    public function addIgnoredDWGround(DatenweitergabeGrundlagen $ground): self
+    {
+        if (!$this->ignoredDWGrounds->contains($ground)) {
+            $this->ignoredDWGrounds[] = $ground;
+            $ground->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredDWGround(DatenweitergabeGrundlagen $ground): self
+    {
+        if ($this->ignoredDWGrounds->contains($ground)) {
+            $this->ignoredDWGrounds->removeElement($ground);
+            $ground->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredDWStates(): Collection
+    {
+        return $this->ignoredDWStates;
+    }
+
+    public function addIgnoredDWState(DatenweitergabeStand $state): self
+    {
+        if (!$this->ignoredDWStates->contains($state)) {
+            $this->ignoredDWStates[] = $state;
+            $state->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredDWState(DatenweitergabeStand $state): self
+    {
+        if ($this->ignoredDWStates->contains($state)) {
+            $this->ignoredDWStates->removeElement($state);
+            $state->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getIgnoredProducts(): Collection
+    {
+        return $this->ignoredProducts;
+    }
+
+    public function addIgnoredProduct(Produkte $product): self
+    {
+        if (!$this->ignoredProducts->contains($product)) {
+            $this->ignoredProducts[] = $product;
+            $product->addIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIgnoredProduct(Produkte $product): self
+    {
+        if ($this->ignoredProducts->contains($product)) {
+            $this->ignoredProducts->removeElement($product);
+            $product->removeIgnoredInTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function isImmutable(): bool
+    {
+        return $this->immutable;
+    }
+
+    public function setImmutable(bool $immutable): static
+    {
+        $this->immutable = $immutable;
+
+        return $this;
     }
 }

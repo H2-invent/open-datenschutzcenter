@@ -21,7 +21,7 @@ class ClientRequesCommentType extends AbstractType
 
         $builder
             ->add('comment', TextareaType::class, ['label' => 'message', 'required' => true, 'translation_domain' => 'form'])
-            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-primary btn-block mt-3'), 'label' => 'send', 'translation_domain' => 'form']);
+            ->add('save', SubmitType::class, ['attr' => array('class' => 'btn btn-block mt-3'), 'label' => 'send', 'translation_domain' => 'form']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

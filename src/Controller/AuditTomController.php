@@ -20,7 +20,6 @@ use App\Service\SecurityService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/audit-tom', name: 'audit_tom')]
-class AuditTomController extends AbstractController
+class AuditTomController extends BaseController
 {
 
 
@@ -50,7 +49,7 @@ class AuditTomController extends AbstractController
         AuditTomAbteilungRepository $auditTomAbteilungRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('audit_tom');
@@ -64,8 +63,8 @@ class AuditTomController extends AbstractController
         $audit->setCreatedAt($today);
         $audit->setUser($this->getUser());
         $status = $auditTomStatusRepository->findAll();
-        $ziele = $auditTomZieleRepository->findByTeam($team);
-        $abteilungen = $auditTomAbteilungRepository->findAllByTeam($team);
+        $ziele = $auditTomZieleRepository->findActiveByTeam($team);
+        $abteilungen = $auditTomAbteilungRepository->findActiveByTeam($team);
 
         $form = $this->createForm(
             AuditTomType::class,
@@ -89,13 +88,16 @@ class AuditTomController extends AbstractController
                 return $this->redirectToRoute('audit_tom');
             }
         }
+
+        $this->setBackButton($this->generateUrl('audit_tom'));
+
         return $this->render('audit_tom/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
             'title' => 'A-Frage erstellen',
             'audit' => $audit,
             'activNummer' => true,
-            'activ' => $audit->getActiv()
+            'activ' => $audit->getActiv(),
         ]);
     }
 
@@ -106,7 +108,7 @@ class AuditTomController extends AbstractController
         AuditTomRepository $auditTomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('audit_tom');
         }
@@ -147,7 +149,7 @@ class AuditTomController extends AbstractController
         AuditTomZieleRepository     $auditTomZieleRepository,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $audit = $auditTomRepository->find($request->get('tom'));
 
         if ($securityService->teamDataCheck($audit, $team) === false) {
@@ -156,8 +158,8 @@ class AuditTomController extends AbstractController
 
         $today = new DateTime();
         $status = $auditTomStatusRepository->findAll();
-        $abteilungen = $auditTomAbteilungRepository->findAllByTeam($team);
-        $ziele = $auditTomZieleRepository->findByTeam($team);
+        $abteilungen = $auditTomAbteilungRepository->findActiveByTeam($team);
+        $ziele = $auditTomZieleRepository->findActiveByTeam($team);
 
 
         $allAudits = array_reverse($auditTomRepository->findAllByTeam($team));
@@ -203,15 +205,18 @@ class AuditTomController extends AbstractController
                 $this->em->persist($newAudit);
                 $this->em->persist($audit);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'audit_tom_edit',
                     [
                         'tom' => $newAudit->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('audit_tom'));
+
         return $this->render(
             'audit_tom/edit.html.twig',
             [
@@ -223,7 +228,6 @@ class AuditTomController extends AbstractController
                 'activ' => $audit->getActiv(),
                 'activNummer' => false,
                 'nextAudit' => $nextAudit,
-                'snack' => $request->get('snack')
             ]
         );
     }
@@ -235,7 +239,7 @@ class AuditTomController extends AbstractController
         AuditTomRepository $auditTomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $audit = $auditTomRepository->findAllByTeam($team);
 
         if ($securityService->teamCheck($team) === false) {

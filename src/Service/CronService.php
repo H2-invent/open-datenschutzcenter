@@ -12,7 +12,6 @@ namespace App\Service;
 use App\Entity\AkademieBuchungen;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -21,11 +20,12 @@ class CronService
 {
     public function __construct(
         private EntityManagerInterface $em,
-        FormFactoryInterface           $formBuilder,
         private LoggerInterface        $logger,
         private TranslatorInterface    $translator,
         private NotificationService    $notificationService,
         private Environment            $environment,
+        private string                 $cronIPAdress,
+        private string                 $cronToken,
     )
     {
     }
@@ -34,7 +34,7 @@ class CronService
     {
         $message = false;
 
-        if ($request->get('token') !== $this->getParameter('cronToken')) {
+        if ($request->get('token') !== $this->cronToken) {
             $message =
                 [
                     'error' => true,
@@ -45,7 +45,7 @@ class CronService
             $this->logger->error($message['hinweis'], $message);
         }
 
-        if ($this->getParameter('cronIPAdress') !== $request->getClientIp()) {
+        if ($this->cronIPAdress !== $request->getClientIp()) {
             $message = [
                 'error' => true,
                 'hinweis' => $this->translator->trans(id: 'cron.ip.unauthorized', domain: 'service'),
@@ -71,7 +71,7 @@ class CronService
             if (!$buchung->getInvitation()) {
                 $content = $this->environment->render('email/neuerKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()->get(0)]);
                 $buchung->setInvitation(true);
-                $em->persist($buchung);
+                $this->em->persist($buchung);
                 ++$countNeu;
             } else {
                 $content = $this->environment->render('email/errinnerungKurs.html.twig', ['buchung' => $buchung, 'team' => $buchung->getUser()->getTeams()->get(0)]);

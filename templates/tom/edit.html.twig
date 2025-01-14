@@ -1,33 +1,33 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'tom' %}
 
+{% block title %}
+    {{ tom.titel }} - {{ title }}
+{% endblock %}
+
 {% block CTA %}
     {% if tom.activ %}
-        <a class="btn btn-amber ml-1 btn-sm" href="{{ path('bericht_tom', {'id':tom.id}) }}">
-            <span>{% trans from 'general' %}pdf.create{% endtrans %}</span>
+        <a href="{{ path('bericht_tom', {'id':tom.id}) }}" class="btn">
+            {% trans from 'general' %}pdf.create{% endtrans %}
         </a>
-        {{ include('base/__approveBtn.html.twig',{'data':tom,'dataLink':'tom_approve'}) }}
-        {{ include('base/__disableBtn.html.twig',{'data':tom,'dataLink':'tom_disable'}) }}
+        {% if isEditable %}
+            {{ include('base/__approveBtn.html.twig',{'data':tom,'dataLink':'tom_approve'}) }}
+            {{ include('base/__disableBtn.html.twig',{'data':tom,'dataLink':'tom_disable'}) }}
+        {% endif %}
     {% endif %}
 {% endblock %}
 
 {% block body %}
-
-    <h2 class="h2-responsive">{{ tom.titel }} - {{ title }}</h2>
-    {{ include('base/__approvedBy.html.twig', {'data':tom}) }}
-
-    <div class="card card-body">
-        {{ include('tom/__form.html.twig') }}
-    </div>
-    <p>{% trans from 'general' %}createdBy{% endtrans %}: {{ tom.user.email }}</p>
+    {{ include('tom/__form.html.twig') }}
+    <p class="created-by">{% trans from 'general' %}createdBy{% endtrans %}: {{ tom.user.email }}</p>
+    {% set inherited = tomInherited(tom) %}
+    {% set used = teamUsesTom(currentTeam, tom) %}
+    {% include 'base/__inheritanceInfo.html.twig' with {team:tom.team, currentTeam:currentTeam, used:used, inherited:inherited} %}
     {% if tom.previous %}
-        <div class="card card-body mt-2">
-            <h2>{% trans from 'general' %}history{% endtrans %}</h2>
+        <h3 class="mt-10">{% trans from 'general' %}history{% endtrans %}</h3>
+        <ol class="item-history" reversed>
             {{ include('tom/__history.html.twig', {'p':tom.previous}) }}
-        </div>
+        </ol>
     {% endif %}
-    {{ include('base/__snack.html.twig') }}
-{% endblock %}
 
-{% block javascript %}
 {% endblock %}

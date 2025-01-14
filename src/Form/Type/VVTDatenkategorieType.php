@@ -10,6 +10,7 @@ namespace App\Form\Type;
 
 use App\Entity\VVTDatenkategorie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
@@ -35,6 +36,11 @@ class VVTDatenkategorieType extends AbstractType
                 'translation_domain' => 'form',
                 'help' => 'dataTypesHelp'
             ])
+            ->add('save', SubmitType::class, [
+                'attr' => array('class' => 'btn btn-success btn-block btn waves-effect waves-light'),
+                'label' => 'save',
+                'translation_domain' => 'form'
+            ]);
         ;
     }
 

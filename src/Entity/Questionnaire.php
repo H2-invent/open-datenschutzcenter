@@ -42,6 +42,11 @@ class Questionnaire extends EntityWithTimestamps
         $this->academyLessons = new ArrayCollection();
     }
 
+    public function isDeletable(): bool
+    {
+        return $this->getAcademyLessons()->isEmpty();
+    }
+
     public function getLabel(): ?string
     {
         return $this->label;

@@ -1,64 +1,46 @@
 {% trans_default_domain 'task' %}
-<div class="row">
-    <div class="col-md-5">
-        <div class="row">
-            <div class="col-md-6">
-                {% trans from 'general' %}regard{% endtrans %}:
+<div class="dl-wrapper mb-5">
+    <div class="dl-head">
+        <h3>{{ task.title }}</h3>
+    </div>
+    <div class="dl-content">
+        <dl>
+            <div>
+                <dt>{% trans %}task.word{% endtrans %}</dt>
+                <dd class="editor-output">{{ task.task|raw }}</dd>
             </div>
-            <div class="col-md-6">
-                {{ task.title }}
+            <div>
+                <dt>{% trans %}priority{% endtrans %}</dt>
+                <dd>{{ task.prioString }}</dd>
             </div>
-            <div class="col-md-6">
-                {% trans %}priority{% endtrans %}:
+            <div>
+                <dt>{% trans %}deadlineDue{% endtrans %}</dt>
+                <dd>{{ task.endDate ? task.endDate|date('d.m.Y') }}</dd>
             </div>
-            <div class="col-md-6">
-                {{ task.prioString }}
-            </div>
-            <div class="col-md-6">
-                {% trans from 'general' %}createdBy{% endtrans %}:
-            </div>
-            <div class="col-md-6">
-                {{ task.user.email }}
+        </dl>
+    </div>
+</div>
+<div class="dl-wrapper">
+    <div class="dl-content">
+        <dl>
+            <div>
+                <dt>{% trans from 'general' %}createdBy{% endtrans %}</dt>
+                <dd>{{ task.user.email }}</dd>
             </div>
             {% if task.updatedBy %}
-                <div class="col-md-6">
-                    {% trans from 'general' %}editedBy{% endtrans %}:
-                </div>
-                <div class="col-md-6">
-                    {{ task.updatedBy.email }}
+                <div>
+                    <dt>{% trans from 'general' %}editedBy{% endtrans %}</dt>
+                    <dd>{{ task.updatedBy.email }}</dd>
                 </div>
             {% endif %}
-        </div>
-        <div class="row mt-4">
-            <div class="col-md-6">
-                {% trans from 'general' %}createdAt{% endtrans %}:
+            <div>
+                <dt>{% trans from 'general' %}createdAt{% endtrans %}</dt>
+                <dd>{{ task.createdAt|date('d.m.Y') }}</dd>
             </div>
-            <div class="col-md-6">
-                {{ task.createdAt|date('d.m.Y') }}
+            <div>
+                <dt>{% trans %}finishedAt{% endtrans %}</dt>
+                <dd>{{ task.doneDate ? task.doneDate|date('d.m.Y') }}</dd>
             </div>
-
-            <div class="col-md-6">
-                {% trans %}deadlineDue{% endtrans %}:
-            </div>
-            <div class="col-md-6">
-                {% if task.endDate %}
-                    {{ task.endDate|date('d.m.Y') }}
-                {% endif %}
-            </div>
-
-            <div class="col-md-6">
-                {% trans %}finishedAt{% endtrans %}:
-            </div>
-            <div class="col-md-6">
-                {% if task.doneDate %}
-                    {{ task.doneDate|date('d.m.Y') }}
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    <div class="col-md-7 mt-5 mt-md-0"
-         style="border-left-color: #3f4e5e; border-left-width: 1px; border-left-style: dashed">
-        <p>{% trans %}task.word{% endtrans %}:</p>
-        {{ task.task|raw }}
+        </dl>
     </div>
 </div>

@@ -1,77 +1,20 @@
 {% trans_default_domain 'vorfall' %}
-<div class="row">
-    <div class="col-md-3">
-        <p>{% trans %}incident.assign{% endtrans %}</p>
-    </div>
-    <div class="col-md-9">
-        {% if assignForm is defined %}{{ include('assign/__assign.html.twig',{'data':vorfall,'path':'assign_vorfall'}) }}{% endif %}
-    </div>
-</div>
 {{ form_start(form) }}
-<div class="{% if not activ or vorfall.approved %}disabled{% endif %}">
-    <div class="row mt-4">
-        <div class="col-md-3">
-            {{ form_label(form.fakten) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.fakten) }}
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-3">
-            {{ form_label(form.datum) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.datum) }}
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-3">
-            {{ form_label(form.auswirkung) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.auswirkung) }}
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-3">
-            {{ form_label(form.massnahmen) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.massnahmen) }}
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-3">
-            {{ form_label(form.personen) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.personen) }}
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-md-3">
-            {{ form_label(form.daten) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.daten) }}
-        </div>
-    </div>
-    <h3 class="h3-responsive mt-4">{% trans %}incident.report{% endtrans %}</h3>
-    <div class="row mt-4">
-        <div class="col-md-3">
-            {{ form_label(form.gemeldet) }}
-            {{ form_label(form.auftraggeberGemeldet) }}
-            {{ form_label(form.betroffeneGemeldet) }}
-        </div>
-        <div class="col-md-9">
-            {{ form_widget(form.gemeldet) }}
-            {{ form_widget(form.betroffeneGemeldet) }}
-            {{ form_widget(form.auftraggeberGemeldet) }}
-        </div>
-    </div>
-
-    {{ form_label(form.save) }}
-    {{ form_widget(form.save) }}
-</div>
+<fieldset>
+    <legend>{% trans %}incident.assign{% endtrans %}</legend>
+    {{ form_row(form.fakten) }}
+    {{ form_row(form.datum) }}
+    {{ form_row(form.auswirkung) }}
+    {{ form_row(form.massnahmen) }}
+    {{ form_row(form.personen) }}
+    {{ form_row(form.daten) }}
+</fieldset>
+<fieldset>
+    <legend>{% trans %}incident.report{% endtrans %}</legend>
+    {{ form_row(form.gemeldet) }}
+    {{ form_row(form.auftraggeberGemeldet) }}
+    {{ form_row(form.betroffeneGemeldet) }}
+</fieldset>
+{{ form_row(form.save, { row_attr: {class: 'form-buttons'} }) }}
+{{ form_rest(form) }}
 {{ form_end(form) }}

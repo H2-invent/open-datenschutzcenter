@@ -2,16 +2,22 @@
 {% trans_default_domain 'dashboard' %}
 
 {% block content %}
-
-    <div class="card text-center mt-5">
-        <div class="card-header">
-            <h2 class="h2-responsive">{% trans %}noTeam{% endtrans %}</h2>
+    <div class="card-outlined w-1/2 mx-auto">
+        <div>
+            <h2>{% trans %}noTeam{% endtrans %}</h2>
         </div>
-        <div class="card-body ">
-            <p>{% trans %}noTeamHelp{% endtrans %}</p>
-            <a class="btn btn-elegant" href="mailto:{{ supportMail }}">{% trans %}supportRequest{% endtrans %}</a>
-            <a class="btn btn-secondary" href="{{ path('logout_keycloak') }}">{% trans %}logout{% endtrans %}</a>
+        <div>
+            {% if APP_DEMO %}
+                <p>{% trans %}createTeamHelp{% endtrans %}</p>
+                <a href="{{ path('no_team_create') }}" class="btn btn-create mt-5">
+                    {% trans from 'team' %}team.create{% endtrans %}
+                </a>
+            {% else %}
+                <p>{% trans %}noTeamHelp{% endtrans %}</p>
+                <hr class="my-5">
+                <a href="mailto:{{ supportMail }}" class="btn">{% trans %}supportRequest{% endtrans %}</a>
+                <a href="{{ path('logout_keycloak') }}" class="btn">{% trans %}logout{% endtrans %}</a>
+            {% endif %}
         </div>
     </div>
-
 {% endblock %}

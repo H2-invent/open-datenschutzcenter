@@ -16,8 +16,13 @@ send: Senden
 appoint: Ernennen
 
 # settings
+groupMapping: Gruppenübertragung
+noGroupMapping: Keine Übertragung von Gruppen
+noGroupMappingHelp: Die Teamzuweisung soll nur über das ODC gesteuert werden.
 useKeycloakGroups: Keycloak Gruppen verwenden
 useKeycloakGroupsHelp: Wenn diese Option aktiviert ist, erfolgt die Teamzuweisung im Keycloak und nicht im ODC. Damit das richtig funktioniert, muss im Keycloak Client ein Mapper namens 'groups' existieren, bei dem die Option 'Full group path' deaktiviert ist.
+useApiGroups: Gruppen von API übernehmen
+useApiGroupsHelp: Die Teamzuweisung erfolgt über eine externe API.
 
 # status
 status: Status
@@ -29,6 +34,9 @@ outdated: Veraltet
 
 # team
 teamName: Teamname
+parentTeam:
+  word: Parent
+  help: Wenn ein Team Eigenschaften von einem anderen Team erben soll, kann hier das andere Team ausgewählt werden.
 keycloakGroup: Keycloak Gruppe (falls abweichend vom Teamnamen)
 keycloakGroupHelp: Die Teamzuweisung erfolgt in diesem ODC über Keycloak Gruppen. Falls das Team im ODC einen anderen Bezeichner hat als in Keycloak, muss hier der Name der Keycloak Gruppe eingetragen werden. Damit Keycloak die Gruppen übergibt, muss für den Keycloak Client ein Mapper namens 'groups' existieren, bei dem die Option 'Full group path' deaktiviert ist.
 dsb: Datenschutzbeauftragte*r
@@ -60,7 +68,7 @@ question: Fragestellung
 auditTomNumber: Audit-TOM-Nummer
 recommendation:	Empfehlung
 category: Kategorie
-nothingSelected: nichts Ausgewählt
+nothingSelected: Nichts Ausgewählt
 privacyManagement: Datenschutzmanagement
 privacyTemplates: Verbindliche Vorlagen Datenschutz
 instructions: Arbeitsanweisungen
@@ -190,6 +198,25 @@ informationObligation: Informationspflicht
 informationObligationHelp: Es sollte je Verarbeitungstätigkeit dokumentiert werden, wo und wie den Informationspflichten jeweils nachgekommen wird. Dies kann bspw. durch Verweis auf Datenschutzhinweise, Vertragsbestandteile, Disclaimer in Formularen, bei Mitarbeiterdaten z.B. auch durch Verweise bei Erhebung auf intern bekanntgemachte Betriebsvereinbarung etc. erfolgen.
 dsbComment: Kommentar der*des Datenschutzbeauftragten
 dsbCommentHelp: Neben der verpflichtenden Erfassung des Verarbeitungstätigkeitszwecks sollte zur Erfüllung der Rechenschaftpflichten gem. Art. 5 auch die Rechtsgrundlage mitsamt ggfs. erforderlicher Abwägungen, Einwilligungsklauseln und Prüfvermerken, ob bspw. die Anforderungen an Widerspruchsmöglichkeiten oder die automatisierte Einzelentscheidung berücksichtigt wurden.
+inheritedHelp: Diese Verarbeitungstätigkeit kann mit allen dazugehörigen Elementen an Kind-Teams weitervererbt werden. Kind-Teams können die geerbten Elemente für ihre eigene Dokumentation verwenden aber nicht verändern.
+inherited: Wird vererbt
+
+# dpia/dsfa
+dpiaDescription:
+  label: Systematische Beschreibung der geplanten Verarbeitungsvorgänge
+  help: Welche Verarbeitung ist geplant?, Welche Zuständigkeiten bestehen für die Verarbeitung?, Gibt es Normen oder Standards für die Verarbeitung?, Welche Daten werden verarbeitetet?, Wie verläuft der Lebenszyklus von Daten und Prozessen?, Mit Hilfe welcher Betriebsmittel erfolgt die Datenverarbeitung?
+needAssessment:
+  label: Bewertung der Notwendigkeit
+  help: Sind die Verarbeitungszwecke eindeutig definiert und rechtmäßig?, Aufgrund welcher Rechtsgrundlage erfolgt die Verarbeitung?, Sind die erhobenen Daten erforderlich, relevant und auf das für die Datenverarbeitung Notwendige beschränkt?, Sind die Daten korrekt und auf dem neuesten Stand?
+riskAssessment:
+  label: Bewertung der Risiken
+  help: Was sind die Hauptbedrohungen, die zu dem Risiko führen könnten?, Was sind die Risikoquellen?, Was könnten die wesentlichen Auswirkungen für die betroffenen Personen sein, wenn das Risiko eintritt?
+correctiveActions:
+  label: Zur Bewältigung der Risiken geplante Abhilfemaßnahmen (Garantie, Sicherheitskopien,...)
+  help: Datentrennung, Datensicherung, Verschlüsselung, Anonymisierung, Datentrennung, Zugangskontrolle, Zugriffskontrolle, Protokollierung, Archivierung, Datenminimierung, Betriebssicherheit, Papierdokumentensicherung
+positionOtherInstitutions: Standpunkt von weiteren Organen (z.B. Betriebsrat)
+positionDataProtectionOfficer: Standpunkt des Datenschutzbeauftragten
+dpiaResult: Ergebnis der Datenschutz-Folgenabschätzung
 
 # delete concept
 dataCategories: Datenkategorien

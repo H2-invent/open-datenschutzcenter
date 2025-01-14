@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Software;
 use App\Entity\SoftwareConfig;
+use App\Entity\Team;
 use App\Repository\SoftwareConfigRepository;
 use App\Repository\SoftwareRepository;
+use App\Repository\TeamRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
@@ -13,14 +16,13 @@ use App\Service\SoftwareService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class SoftwareController extends AbstractController
+class SoftwareController extends BaseController
 {
 
 
@@ -42,7 +44,7 @@ class SoftwareController extends AbstractController
     )
     {
         //Requests: id: SoftwareID, config: ConfigID
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $software = $softwareRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) === false) {
@@ -57,12 +59,8 @@ class SoftwareController extends AbstractController
         }
 
         if ($config->getSoftware() !== $software) {
-            return $this->redirectToRoute(
-                'software',
-                [
-                    'snack' => $this->translator->trans(id: 'config.mismatchSoftware', domain: 'software'),
-                ],
-            );
+            $this->addErrorMessage($this->translator->trans(id: 'config.mismatchSoftware', domain: 'software'));
+            return $this->redirectToRoute('software');
 
         }
 
@@ -78,15 +76,18 @@ class SoftwareController extends AbstractController
                 $config->setCreatedAt(new DateTime());
                 $this->em->persist($config);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'software_edit',
                     [
                         'id' => $software->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('software_edit', ['id' => $software->getId()]));
+
         return $this->render('software/newConfig.html.twig', [
             'form' => $form->createView(),
             'config' => $config,
@@ -106,7 +107,7 @@ class SoftwareController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('software');
@@ -128,6 +129,9 @@ class SoftwareController extends AbstractController
                 return $this->redirectToRoute('software');
             }
         }
+
+        $this->setBackButton($this->generateUrl('software'));
+
         return $this->render('software/new.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors,
@@ -148,7 +152,7 @@ class SoftwareController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $software = $softwareRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($software, $team) && $securityService->adminCheck($user, $team)) {
@@ -165,7 +169,8 @@ class SoftwareController extends AbstractController
                 $this->em->persist($newSoftware);
                 $this->em->flush();
             }
-            return $this->redirectToRoute('software_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('software_edit', ['id' => $approve['data']]);
         }
 
         return $this->redirectToRoute('policies');
@@ -181,17 +186,17 @@ class SoftwareController extends AbstractController
     {
         // Request: config: ConfigID
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $config = $softwareConfigRepository->find($request->get('config'));
 
         if ($securityService->teamDataCheck($config->getSoftware(), $team) && $securityService->adminCheck($user, $team)) {
             $this->em->remove($config);
             $this->em->flush();
+            $this->addSuccessMessage($this->translator->trans(id: 'config.delete', domain: 'software'));
             return $this->redirectToRoute(
                 'software_edit',
                 [
                     'id' => $config->getSoftware()->getId(),
-                    'snack' => $this->translator->trans(id: 'config.delete', domain: 'software'),
                 ],
             );
         }
@@ -208,7 +213,7 @@ class SoftwareController extends AbstractController
         CurrentTeamService $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $path = $this->getParameter('kernel.project_dir') . "/data/software/" . $softwareConfig->getUpload();
 
         if ($securityService->teamDataCheck($softwareConfig->getSoftware(), $team) === false) {
@@ -227,23 +232,24 @@ class SoftwareController extends AbstractController
         SecurityService    $securityService,
         AssignService      $assignService,
         CurrentTeamService $currentTeamService,
-        SoftwareRepository $softwareRepository,
+        SoftwareRepository $softwareRepository
     ): Response
     {
         //Request: id: SoftwareID, snack:Snack Notice
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $software = $softwareRepository->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($software, $team) === false) {
+        if (!$this->checkAccess($securityService, $software, $team)) {
             return $this->redirectToRoute('software');
         }
         $newSoftware = $softwareService->cloneSoftware($software, $this->getUser());
-        $form = $softwareService->createForm($newSoftware, $team);
+        $isEditable = $software->getTeam() === $team;
+        $form = $softwareService->createForm($newSoftware, $team, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
-        $assign = $assignService->createForm($software, $team);
+        $assign = $assignService->createForm($software, $team, ['disabled' => !$isEditable]);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $software->getActiv() && !$software->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $software->getActiv() && !$software->getApproved() && $isEditable) {
             $software->setActiv(false);
             $newSoftware = $form->getData();
 
@@ -258,15 +264,17 @@ class SoftwareController extends AbstractController
                 $this->em->persist($newSoftware);
                 $this->em->persist($software);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'software_edit',
                     [
                         'id' => $newSoftware->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ]
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('software'));
 
         return $this->render('software/edit.html.twig', [
             'form' => $form->createView(),
@@ -275,7 +283,8 @@ class SoftwareController extends AbstractController
             'title' => $this->translator->trans(id: 'software.edit', domain: 'software'),
             'software' => $software,
             'activ' => $software->getActiv(),
-            'snack' => $request->get('snack'),
+            'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -288,17 +297,31 @@ class SoftwareController extends AbstractController
     ): Response
     {
         //Request: snack: Snack Notice
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $software = $softwareRepository->findActiveByTeam($team);
+        $software = $softwareRepository->findAllByTeam($team);
 
         return $this->render('software/index.html.twig', [
             'data' => $software,
             'today' => new DateTime(),
-            'snack' => $request->get('snack'),
             'currentTeam' => $team,
         ]);
+    }
+
+    private function checkAccess(SecurityService $securityService, ?Software $software, Team $team): bool
+    {
+        if (!$software) {
+            $this->addErrorMessage($this->translator->trans(id: 'elementDoesNotExistError', domain: 'base'));
+            return false;
+        }
+
+        if (!$securityService->checkTeamAccessToSoftware($software, $team)) {
+            $this->addErrorMessage($this->translator->trans(id: 'elementDoesNotExistError', domain: 'base'));
+            return false;
+        }
+
+        return true;
     }
 }

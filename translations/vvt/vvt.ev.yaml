@@ -27,9 +27,11 @@ oldDeletionDeadline: Alte Löschfrist (auf Verarbeitung bezogen)
 dataTransferTo: An folgende Unternehmen/Stellen/Funktionen werden die Daten weitergegeben.
 dataProtectionImpactAssessment:
   word: Datenschutz-Folgenabschätzung
+  word_plural: Datenschutz-Folgenabschätzungen
   show: Datenschutzfolgeabschätzung anzeigen
   create: Datenschutzfolgeabschätzung anlegen
 processing:
+  show: Verarbeitung anzeigen
   edit: Verarbeitung bearbeiten
   track: Verarbeitung erfassen
   export: Export der Verarbeitungstätigkeit
@@ -86,3 +88,18 @@ dataPrivacyFollowUpEstimation:
   description: Beschreibung der Datenschutzfolgeabschätzung
 dsbStatement: Stellungnahme des DSB in der Datenschutzfolgeabschätzung
 additionalStands: Weitere Standpunkte (z.B. Betriebsrat)
+inheritance:
+  word: Vererbung
+  setInactive: Für dieses Team deaktivieren
+  setActive: Für dieses Team aktivieren
+  infoText:
+    inherited: Diese Verarbeitung wird vererbt. Sie kann von Kind-Teams verwendet aber nicht bearbeitet werden.
+    fromTeam: Von einem übergeordneten Team vererbt (kann nicht bearbeitet werden)
+    active:
+      short: Gerbte Verarbeitung - für dieses Team aktiv
+      long: Die Verarbeitung wurde mit allen zugehörigen Elementen von einem übergeordneten Team vererbt. Sie kann in diesem Team verwendet aber nicht bearbeitet werden.
+    inactive:
+      short: Gerbte Verarbeitung - für dieses Team deaktiviert
+      long: Die Verarbeitung wurde mit allen zugehörigen Elementen von einem übergeordneten Team vererbt, diese sind jedoch für dieses Team deaktiviert.
+inheritedEntities: Vererbte Datenkategorien und Löschkonzepte
+noInheritedEntities: Keine vererbten Datenkategorien und Löschkonzepte verfügbar

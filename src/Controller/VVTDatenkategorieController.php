@@ -15,13 +15,12 @@ use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
 use App\Service\VVTDatenkategorieService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/vvtdatenkategorie')]
-class VVTDatenkategorieController extends AbstractController
+class VVTDatenkategorieController extends BaseController
 {
     #[Route(path: '/delete/{id}', name: 'app_vvtdatenkategorie_delete', methods: ['POST'])]
     public function delete(
@@ -32,7 +31,7 @@ class VVTDatenkategorieController extends AbstractController
         CurrentTeamService     $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === true) {
             if ($this->isCsrfTokenValid('delete' . $vVTDatenkategorie->getId(), $request->request->get('_token'))) {
 
@@ -55,7 +54,7 @@ class VVTDatenkategorieController extends AbstractController
         CurrentTeamService       $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('app_vvtdatenkategorie_index');
         }
@@ -82,7 +81,9 @@ class VVTDatenkategorieController extends AbstractController
             return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('vvt_datenkategorie/edit.html.twig', [
+        $this->setBackButton($this->generateUrl('app_vvtdatenkategorie_index'));
+
+        return $this->render('vvt_datenkategorie/edit.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
             'form' => $form,
         ]);
@@ -95,7 +96,7 @@ class VVTDatenkategorieController extends AbstractController
         CurrentTeamService          $currentTeamService,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -115,7 +116,7 @@ class VVTDatenkategorieController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
@@ -130,18 +131,23 @@ class VVTDatenkategorieController extends AbstractController
             return $this->redirectToRoute('app_vvtdatenkategorie_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('vvt_datenkategorie/new.html.twig', [
+        $this->setBackButton($this->generateUrl('app_vvtdatenkategorie_index'));
+
+        return $this->render('vvt_datenkategorie/new.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
             'form' => $form,
         ]);
     }
 
     #[Route(path: '/show/{id}', name: 'app_vvtdatenkategorie_show', methods: ['GET'])]
-    public function show(VVTDatenkategorie $vVTDatenkategorie): Response
+    public function show(VVTDatenkategorie $vVTDatenkategorie, CurrentTeamService $teamService): Response
     {
+        $this->setBackButton($this->generateUrl('app_vvtdatenkategorie_index'));
+        $currentTeam = $teamService->getCurrentTeam($this->getUser());
 
         return $this->render('vvt_datenkategorie/show.html.twig', [
             'vvtdatenkategorie' => $vVTDatenkategorie,
+            'current_team' => $currentTeam,
         ]);
     }
 }

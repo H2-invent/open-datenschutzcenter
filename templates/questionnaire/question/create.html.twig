@@ -1,48 +1,45 @@
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'questionnaire' %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
 {% block body %}
-    <div class="container">
-        <div class="card">
-            {{ form_start(form) }}
-            <h5 class="card-header">{% trans %}question.create{% endtrans %}</h5>
-            <div class="card-body">
-                {{ form_row(form.label) }}
-                {{ form_row(form.hint) }}
-                {{ form_row(form.evalValue) }}
-                {{ form_row(form.type) }}
-                <div class="row">
-                    <div class="col-lg-12">
-                        {% trans %}question.answers{% endtrans %}
-                        {% if error %}
-                            {% trans %}question.error{% endtrans %}
-                        {% endif %}
-                        <ul class="answers list-group freeField"
-                            data-prototype="
-                                <div class='d-flex flex-column'>
-                                    {{ form_widget(form.answers.vars.prototype.label)|e('html_attr') }}
-                                    {{ form_widget(form.answers.vars.prototype.isCorrect)|e('html_attr') }}
-                                </div>
+    {{ form_start(form) }}
+    <fieldset>
+        {{ form_row(form.label) }}
+        {{ form_row(form.hint) }}
+        {{ form_row(form.evalValue) }}
+        {{ form_row(form.type) }}
+    </fieldset>
+    <fieldset>
+        <legend>
+            {% trans %}question.answers{% endtrans %}
+        </legend>
+        {% if error %}
+            <div class="text-error-600">{% trans %}question.error{% endtrans %}</div>
+        {% endif %}
+        <ul class="answers dynamic-list freeField mb-2"
+            data-prototype="
+                    <div>{{ form_widget(form.answers.vars.prototype.label)|e('html_attr') }}</div>
+                    <div>{{ form_widget(form.answers.vars.prototype.isCorrect)|e('html_attr') }}</div>
                         ">
-                            {% for answerItem in form.answers %}
-                                <li class="d-inline-block list-group-item">
-                                    <div class="d-flex-inline justify-content-around">
-                                        <div class="p-2">{{ form_widget(answerItem.label) }}</div>
-                                        <div class="p-2">{{ form_widget(answerItem.isCorrect) }}</div>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        <button type="button" id="add_item_link" class="btn btn-primary add_item_link2"
-                                data-collection-holder-class="answers">{% trans %}question.answer.add{% endtrans %}
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer">
-                {{ form_row(form.save) }}
-            </div>
-            {{ form_rest(form) }}
-            {{ form_end(form) }}
-        </div>
+            {% for answerItem in form.answers %}
+                <li>
+                    <div>{{ form_widget(answerItem.label) }}</div>
+                    <div>{{ form_widget(answerItem.isCorrect) }}</div>
+                </li>
+            {% endfor %}
+        </ul>
+        <button type="button" id="add_item_link" class="btn" data-collection-holder-class="answers">
+            {% trans %}question.answer.add{% endtrans %}
+        </button>
+    </fieldset>
+    {{ form_row(form.save, {row_attr: {class: 'form-buttons'}}) }}
+    <div class="hidden">
+        {{ form_rest(form) }}
     </div>
+    {{ form_end(form) }}
+
 {% endblock %}

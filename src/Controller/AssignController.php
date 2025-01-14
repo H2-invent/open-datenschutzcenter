@@ -14,14 +14,20 @@ use App\Repository\VVTRepository;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
 use App\Service\SecurityService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/assign', name: 'assign')]
-class AssignController extends AbstractController
+class AssignController extends BaseController
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+    )
+    {
+    }
+
     #[Route(path: '/audit', name: '_audit')]
     public function assignAudit(
         Request            $request,
@@ -31,13 +37,16 @@ class AssignController extends AbstractController
         AuditTomRepository $auditTomRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $audit = $auditTomRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($audit, $team) === false) {
             return $this->redirectToRoute('audit_tom');
         }
 
-        $assignService->assignAudit($request, $audit);
+        $success = $assignService->assignAudit($request, $audit);
+        if (!$success) {
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -50,13 +59,16 @@ class AssignController extends AbstractController
         DatenweitergabeRepository $dataTransferRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $daten = $dataTransferRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($daten, $team) === false) {
             return $this->redirectToRoute('datenweitergabe');
         }
 
-        $assignService->assignDatenweitergabe($request, $daten);
+        $success = $assignService->assignDatenweitergabe($request, $daten);
+        if (!$success) {
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -69,13 +81,15 @@ class AssignController extends AbstractController
         VVTDsfaRepository  $impactAssessmentRepository
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $impactAssessment = $impactAssessmentRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($impactAssessment->getVvt(), $team)) {
-            $assignService->assignDsfa($request, $impactAssessment);
+            $success = $assignService->assignDsfa($request, $impactAssessment);
+            if (!$success) {
+                $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
+            }
             return $this->redirect($request->headers->get('referer'));
         }
-
         return $this->redirectToRoute('vvt');
     }
 
@@ -88,13 +102,16 @@ class AssignController extends AbstractController
         FormsRepository    $formsRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $form = $formsRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($form, $team) === false) {
             return $this->redirectToRoute('forms');
         }
 
-        $res = $assignService->assignForm($request, $form);
+        $success = $assignService->assignForm($request, $form);
+        if (!$success) {
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -107,13 +124,16 @@ class AssignController extends AbstractController
         PoliciesRepository $policiesRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $policy = $policiesRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($policy, $team) === false) {
             return $this->redirectToRoute('policies');
         }
 
-        $assignService->assignPolicy($request, $policy);
+        $success = $assignService->assignPolicy($request, $policy);
+        if (!$success) {
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -126,13 +146,16 @@ class AssignController extends AbstractController
         SoftwareRepository $softwareRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $software = $softwareRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($software, $team) === false) {
             return $this->redirectToRoute('software');
         }
 
-        $assignService->assignSoftware($request, $software);
+        $success = $assignService->assignSoftware($request, $software);
+        if (!$success) {
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -145,13 +168,16 @@ class AssignController extends AbstractController
         TaskRepository     $taskRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $task = $taskRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($task, $team) === false) {
             return $this->redirectToRoute('tasks');
         }
 
-        $assignService->assignTask($request, $task);
+        $success = $assignService->assignTask($request, $task);
+        if (!$success) {
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -164,13 +190,16 @@ class AssignController extends AbstractController
         VorfallRepository  $vorfallRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vorfall = $vorfallRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($vorfall, $team) === false) {
             return $this->redirectToRoute('vorfall');
         }
 
-        $assignService->assignVorfall($request, $vorfall);
+        $success = $assignService->assignVorfall($request, $vorfall);
+        if (!$success) {
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
@@ -183,20 +212,23 @@ class AssignController extends AbstractController
         VVTRepository      $vvtRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $vvt = $vvtRepository->find($request->get('id'));
         if ($securityService->teamDataCheck($vvt, $team) === false) {
             return $this->redirectToRoute('vvt');
         }
 
-        $assignService->assignVvt($request, $vvt);
+        $success = $assignService->assignVvt($request, $vvt);
+        if (!$success) {
+            $this->addErrorMessage($this->translator->trans(id: 'assignError', domain: 'base'));
+        }
         return $this->redirect($request->headers->get('referer'));
     }
 
     #[Route(path: '', name: '')]
     public function index(CurrentTeamService        $currentTeamService,
                           DatenweitergabeRepository $transferRepository,
-                          VVTRepository             $processingRepository,
+                          VVTRepository             $processRepository,
                           AuditTomRepository        $auditRepository,
                           VVTDsfaRepository         $impactAssessmentRepository,
                           FormsRepository           $formRepository,
@@ -206,11 +238,11 @@ class AssignController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $currentTeam = $currentTeamService->getTeamFromSession($user);
+        $currentTeam = $currentTeamService->getCurrentTeam($user);
         $assignedDataTransfers = $transferRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignedProcessings = $processingRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedProcesses = $processRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedAudits = $auditRepository->findActiveByTeamAndUser($currentTeam, $user);
-        $assignImpactAssessments = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
+        $assignedImpactAssessments = $impactAssessmentRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedForms = $formRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedPolicies = $policyRepository->findActiveByTeamAndUser($currentTeam, $user);
         $assignedSoftware = $softwareRepository->findActiveByTeamAndUser($currentTeam, $user);
@@ -219,13 +251,28 @@ class AssignController extends AbstractController
         return $this->render('assign/index.html.twig', [
             'currentTeam' => $currentTeam,
             'dataTransfers' => $assignedDataTransfers,
-            'processings' => $assignedProcessings,
+            'processes' => $assignedProcesses,
             'audits' => $assignedAudits,
-            'impactAssessments' => $assignImpactAssessments,
+            'impactAssessments' => $assignedImpactAssessments,
             'forms' => $assignedForms,
             'policies' => $assignedPolicies,
             'software' => $assignedSoftware,
-            'tasks' => $assignedTasks
+            'tasks' => $assignedTasks,
+            'tabs' => $this->getTabs(),
         ]);
+    }
+
+    private function getTabs(): array
+    {
+        return [
+            'tasks' => ['image' => 'images/task.png'],
+            'auditQuestions' => ['image' => 'images/pruefung.png'],
+            'processing' => ['image' => 'images/prozess.png'],
+            'dataProtectionImpactAssessment' => ['image' => 'images/dsta.png'],
+            'dataTransfers' => ['image' => 'images/data.png'],
+            'forms' => ['image' => 'images/information.png'],
+            'policies' => ['image' => 'images/contract.png'],
+            'software' => ['image' => 'images/monitor.png'],
+        ];
     }
 }

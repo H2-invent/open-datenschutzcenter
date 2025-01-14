@@ -15,6 +15,9 @@ parameters:
     KEYCLOAK_SECRET: '%env(OAUTH_KEYCLOAK_CLIENT_SECRET)%'
     KEYCLOAK_ID: '%env(OAUTH_KEYCLOAK_CLIENT_ID)%'
     superAdminRole: '%env(superAdminRole)%'
+    group_api_user_id: '%env(default::GROUP_API_USER_ID)%'
+    group_api_roles: '%env(default::csv:GROUP_API_ROLES)%'
+    group_api_grant_admin: '%env(bool:default::GROUP_API_GRANT_ADMIN)%'
     app.scheme: '%env(APP_SCHEME)%'
     app.path.images: /uploads/images/products
 services:
@@ -37,3 +40,31 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\CronService:
+        arguments:
+            $cronIPAdress: '%cronIPAdress%'
+            $cronToken: '%cronToken%'
+
+    app.menu.service:
+        class: App\Service\MenuService
+        arguments: [ "@knp_menu.factory" ]
+        tags:
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+            - { name: knp_menu.menu_builder, method: createElementsMenu, alias: elements }
+            - { name: knp_menu.menu_builder, method: createAcademyMenu, alias: academy }
+            - { name: knp_menu.menu_builder, method: createTeamAdminMenu, alias: teamAdmin }
+            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: admin }
+
+    Gedmo\Tree\TreeListener:
+        tags:
+            -  name: doctrine.event_subscriber
+               connection: default
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+    App\Security\KeycloakAuthenticator:
+        arguments:
+            $groupApiUserId: '%group_api_user_id%'
+            $groupApiRoles: '%group_api_roles%'
+            $groupApiGrantAdmin: '%group_api_grant_admin%'

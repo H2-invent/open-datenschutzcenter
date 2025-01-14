@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Policies;
 use App\Repository\PoliciesRepository;
+use App\Repository\TeamRepository;
 use App\Service\ApproveService;
 use App\Service\AssignService;
 use App\Service\CurrentTeamService;
@@ -14,7 +15,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PoliciesController extends AbstractController
+class PoliciesController extends BaseController
 {
 
 
@@ -41,7 +41,7 @@ class PoliciesController extends AbstractController
         CurrentTeamService $currentTeamService,
     )
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
 
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('policies');
@@ -62,6 +62,9 @@ class PoliciesController extends AbstractController
                 return $this->redirectToRoute('policies');
             }
         }
+
+        $this->setBackButton($this->generateUrl('policies'));
+
         return $this->render('policies/new.html.twig', [
             'form' => $form->createView(),
             'policy' => $policy,
@@ -84,12 +87,13 @@ class PoliciesController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $policy = $policiesRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team)) {
             $approve = $approveService->approve($policy, $user);
-            return $this->redirectToRoute('policy_edit', ['id' => $approve['data'], 'snack' => $approve['snack']]);
+            $this->addSuccessMessage($approve['snack']);
+            return $this->redirectToRoute('policy_edit', ['id' => $approve['data']]);
         }
 
         // if security check fails
@@ -106,7 +110,7 @@ class PoliciesController extends AbstractController
     ): Response
     {
         $user = $this->getUser();
-        $team = $currentTeamService->getTeamFromSession($user);
+        $team = $currentTeamService->getCurrentTeam($user);
         $policy = $policiesRepository->find($request->get('id'));
 
         if ($securityService->teamDataCheck($policy, $team) && $securityService->adminCheck($user, $team) && !$policy->getApproved()) {
@@ -129,7 +133,7 @@ class PoliciesController extends AbstractController
 
         $stream = $policiesFilesystem->read($policies->getUpload());
 
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamDataCheck($policies, $team) === false) {
             $logger->error(
                 'DOWNLOAD',
@@ -177,19 +181,21 @@ class PoliciesController extends AbstractController
         PoliciesRepository $policiesRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         $policy = $policiesRepository->find($request->get('id'));
 
-        if ($securityService->teamDataCheck($policy, $team) === false) {
+        if (!$securityService->checkTeamAccessToPolicy($policy, $team)) {
+            $this->addErrorMessage($this->translator->trans(id: 'accessDeniedError', domain: 'base'));
             return $this->redirectToRoute('policies');
         }
         $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());
-        $form = $policiesService->createForm($newPolicy, $team);
+        $isEditable = $policy->getTeam() === $team;
+        $form = $policiesService->createForm($newPolicy, $team, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
-        $assign = $assignService->createForm($policy, $team);
+        $assign = $assignService->createForm($policy, $team, ['disabled' => !$isEditable]);
 
         $errors = array();
-        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved()) {
+        if ($form->isSubmitted() && $form->isValid() && $policy->getActiv() && !$policy->getApproved() && $isEditable) {
             $policy->setActiv(false);
             $newPolicy = $form->getData();
             $errors = $validator->validate($newPolicy);
@@ -197,15 +203,17 @@ class PoliciesController extends AbstractController
                 $this->em->persist($newPolicy);
                 $this->em->persist($policy);
                 $this->em->flush();
+                $this->addSuccessMessage($this->translator->trans(id: 'save.successful', domain: 'general'));
                 return $this->redirectToRoute(
                     'policy_edit',
                     [
                         'id' => $newPolicy->getId(),
-                        'snack' => $this->translator->trans(id: 'save.successful', domain: 'general'),
                     ],
                 );
             }
         }
+
+        $this->setBackButton($this->generateUrl('policies'));
 
         return $this->render('policies/edit.html.twig', [
             'form' => $form->createView(),
@@ -214,7 +222,8 @@ class PoliciesController extends AbstractController
             'title' => $this->translator->trans(id: 'policies.edit', domain: 'policies'),
             'policy' => $policy,
             'activ' => $policy->getActiv(),
-            'snack' => $request->get('snack')
+            'isEditable' => $isEditable,
+            'currentTeam' => $team,
         ]);
     }
 
@@ -225,14 +234,15 @@ class PoliciesController extends AbstractController
         PoliciesRepository $policiesRepository,
     ): Response
     {
-        $team = $currentTeamService->getTeamFromSession($this->getUser());
+        $team = $currentTeamService->getCurrentTeam($this->getUser());
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $polcies = $policiesRepository->findActiveByTeam($team);
+
+        $policies = $policiesRepository->findAllByTeam($team);
 
         return $this->render('policies/index.html.twig', [
-            'data' => $polcies,
+            'data' => $policies,
             'currentTeam' => $team,
         ]);
     }

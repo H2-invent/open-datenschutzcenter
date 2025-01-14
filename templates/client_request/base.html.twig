@@ -1,48 +1,32 @@
 {% trans_default_domain 'client_request' %}
 <!DOCTYPE html>
 <html>
-
-{{ include('base/__head.html.twig') }}
-
-<body>
-{% block back %}{% endblock %}
-<div style="background-image: url('{{ asset('images/login.jpg') }}'); background-size: cover; min-height: 100vh">
-    <div class="container">
-        <div class="pt-5">
+    {{ include('base/__head.html.twig') }}
+    <body id="client_request">
+        <div class="text-center my-10">
+            {% if team is defined %}
+                <a href="{{ path('client_index', {'slug':team.slug}) }}" class="inline-block w-48">
+                    <img src="{{ asset('logo.png') }}" title="ODC" />
+                </a>
+            {% else %}
+                <img src="{{ asset('logo.png') }}" title="ODC" class="inline-block w-48" />
+            {% endif %}
+        </div>
+        <div id="content" class="container mx-auto max-w-2xl">
+            <div id="back">
+                {% block back %}{% endblock %}
+            </div>
             {% block content %}{% endblock %}
         </div>
-        <div class="card card-body mt-4 text-center">
-            <div class="row">
-                <div class="col-md-3 text-md-left">
-                    <a href="https://open-datenschutzcenter.de" target="_blank" class="small"><img
-                                src="{{ asset('logo.png') }}" style="height: 50px"></a>
-                </div>
-                <div class="col-md-6">
-                    <a href="{{ dataPrivacy }}" target="_blank" class="small">{% trans %}dataPrivacyDisclaimer{% endtrans %}</a><br>
-                    <a href="https://open-datenschutzcenter.de" target="_blank" class="small">{% trans %}poweredBy{% endtrans %}</a><br>
-                    <a href="https://h2-invent.com" target="_blank" class="small">{% trans %}salutation{% endtrans %} •
-                        2019-{{ 'now'|date('Y') }}
-                        • v{{ laf_version }}</a>
-                </div>
-                <div class="col-md-3 text-md-right d-none d-sm-block">
-                    <img src="{{ asset('images/open-source-logo.png') }}" style="height: 50px">
-                </div>
-            </div>
+        <div class="text-center justify-center p-10 mt-10 text-muted text-sm leading-6">
+            <a href="{{ dataPrivacy }}" target="_blank">{% trans %}dataPrivacyDisclaimer{% endtrans %}</a> •
+            <a href="https://open-datenschutzcenter.de" target="_blank">{% trans %}poweredBy{% endtrans %}</a>
+            <br>
+            <a href="https://h2-invent.com" target="_blank">{% trans %}salutation{% endtrans %} • 2019-{{ 'now'|date('Y') }} • v{{ laf_version }}</a>
+            <br>
+            <img src="{{ asset('images/open-source-logo.png') }}" class="inline-block w-10 mt-5">
         </div>
-    </div>
-
-</div>
-
-<script type="text/javascript" src="{{ asset('build/js/jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('build/js/popper.min.js') }}"></script>
-
-{% block webpack %}
-    {{ encore_entry_script_tags('frontend') }}
-{% endblock %}
-
-<script type="text/javascript" src="{{ asset('build/js/bootstrap.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('build/js/mdb.min.js') }}"></script>
-
-</body>
-
+        {{ encore_entry_script_tags('app') }}
+        {% block javascripts %}{% endblock %}
+    </body>
 </html>

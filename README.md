@@ -1,4 +1,4 @@
-# Open-Datenschutzcenter 2.0
+# Open-Datenschutzcenter
 __Open Source Datenschutzmanagement System__
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
@@ -9,6 +9,24 @@ Der Open Datenschutzcenter (ODC) ist ein Open Source Datenschutzmanagement-Syste
 Helfen Sie mit den Open Datenschutz Center noch besser zu machen. Wir suchen jederzeit neue Übersetzungen in alle Sprachen.
 Übersetzungen werden über Crowdin organisiert und können dort einfach und unkompliziert Übersetzt werden.
 https://crowdin.com/project/open-datenschutz-center
+
+# Neue Funktionen in Version 3.0
+
+## Vererbung / Hierarchie
+
+Der ODC ermöglicht nun die hierarchische Verwaltung von Dokumenten. Basierend auf den Bedürfnissen einer bundesweiten Organisation mit untergeordneten Landes- und Kreisverbänden können alle Dokumente besser und zentraler verwaltet werden. Bundesweit geltende Regelungen werden auf Bundesebene verwaltet und gelten dann auch auf allen darunter liegenden Ebenen. Die Landes- oder Kreisverbände haben lesenden Zugriff auf die Bundesdokumente und gleichzeitig die Möglichkeit, individuell geltende Regelungen auf ihrer Ebene zu dokumentieren.
+
+## Anbindung der Hierarchie an Keycloak 
+
+Die beschriebene Struktur aus Bundes-, Landes- und Kreisverbänden lässt sich auch direkt mit dem Keycloak verbinden, so dass die Berechtigungen direkt von dort übernommen werden.  
+
+## Assistent 
+
+Ein Assistent unterstützt bei der Anlage von VVT und führt die Nutzenden durch die Formulare.
+
+## Neue Oberfläche 
+
+ODC wurde auf Symphony 6 umgesetllt und hat eine modernere Oberfläche 
 
 # Funktionen
 Folgende Funktionen sind bereits im Open Datenschutzcenter integriert:
@@ -74,6 +92,16 @@ In Kooperation mit der [Professur "Datenschutz und Compliance"](https://www.unib
 * das Open Datenschutzcenter im Rahmen der [Bachelorarbeit](docs/Bachelorarbeit%20DSFA%20ODC%20bereinigt.pdf) von Frau Wesenberg um die „Konzeption und Integration der Datenschutz-Folgenabschätzung in das Open Datenschutzcenter“ ergänzt
 
 Durch die Mitarbeitenden von @verdigado wurde der VVT Assistent und die Vererbung implemntiert. 
+
+# Dev Setup
+
+1. Abhängigkeiten installieren mit `composer install` und `npm install`
+1. Starte docker container für Datenbank und Keycloak `docker compose -f docker-compose.dev.yml up -d`
+1. Mit Account `admin` und Passwort `admin` im Keycloak anmelden
+1. Unter `http://localhost:8080/admin/master/console/#/opendatenschutzcenter/users/add-user` Nutzer für open-datenschutzcenter realm anlegen
+1. Passwort für neuen Nutzer festlegen und die beiden opendatenschutzcenter client roles `uma_protection` und `odc-super-admin` zuweisen
+1. Führe Migrationen der Datenbank aus `symfony console doctrine:migrations:migrate`
+1. Starte den dev Server mit `symfony serve -d`
 
 # Lizenz
 Die aktuelle Version von Open Datenschutzcenter wird unter der AGPL-3.0 License bereitgestellt. Weitere Informationen finden Sie in der LICENSE Datei in diesem Repo.

@@ -2,8 +2,16 @@ assistant:
   word: VVT-Assistent
   info: Es sind eine Reihe von Elementen notwendig, um neue VVTs zu erstellen. Der Assistent hilft dabei, diese auszuwählen und anzulegen.
   start: Assistent Starten
-  finished: Der Assistent ist fertig und alle Elemente wurden erfolgreich angelegt. Du kannst ihn neu starten, um weitere Verarbeitungstätigkeiten zu dokumentieren.
+  finished: Der Assistent ist fertig und alle Elemente wurden erfolgreich angelegt. Sie können ihn neu starten, um weitere Verarbeitungstätigkeiten zu dokumentieren.
   aborted: Der Assistent wurde abgebrochen. Bereits angelegte Elemente wurden gespeichert.
+  noneSelected: Es wurde kein Element ausgewählt
+category:
+  processing:
+    title: Datenkategorie für Auftragsverarbeitung
+    info: Welche Datenkategorie/Löschfrist soll für die zur Auftragsverarbeitung zugehörigen Verarbeitstätigkeit gelten? Sie können diesen Punkt leer lassen, falls Sie eine bereits angelegte Verarbeitungstätigkeit verwenden wollen.
+  transfer:
+    title: Datenkategorie für Datenweitergabe
+    info: Welche Datenkategorie/Löschfrist soll für die zur Datenweitergabe zugehörigen Verarbeitstätigkeit gelten? Sie können diesen Punkt leer lassen, falls Sie eine bereits angelegte Verarbeitungstätigkeit verwenden wollen.
 contact:
   source:
     title: Eingangskontakt
@@ -30,18 +38,20 @@ step:
 software:
   processing:
     title: Software für die Auftragsverarbeitung
-    info: Wird bei der zur Auftragsvearbeitung zugehörigen Verarbeitungstätigkeit Software verwendet? Wenn keine Software verwendet wird oder eine bereits vorhandene Verarbeitungstätigkeit verwendet werden soll, kann dieser Schritt übersprungen werden.
+    info: Wird bei der zur Auftragsvearbeitung zugehörigen Verarbeitungstätigkeit Software verwendet? Wenn keine Software verwendet wird oder eine bereits vorhandene Verarbeitungstätigkeit verwendet werden soll, können Sie diesen Punkt leer lassen.
   transfer:
     title: Software für die Datenweitergabe
-    info: Wird für die Datenweitergabe Software verwendet? Wenn keine Software verwendet wird, kann dieser Schritt übersprungen werden.
+    info: Wird für die Datenweitergabe Software verwendet? Wenn keine Software verwendet wird, können Sie diesen Punkt leer lassen.
 new:
   word: Neu
+  category: Neue Kategorie
   contact: Neuer Kontakt
   transfer: Neue Datenweitergabe
   processing: Neue Auftragsverarbeitung
   procedure: Neue Verarbeitungstätigkeit
   software: Neue Software
 select:
+  category: Datenkategorie wählen
   contact: Kontakt wählen
   procedure: Verarbeitungstätigkeit wählen
   software: Software wählen

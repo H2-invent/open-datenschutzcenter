@@ -8,10 +8,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Team;
 use App\Entity\VVTDatenkategorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method VVTDatenkategorie|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,7 +21,9 @@ use function Doctrine\ORM\QueryBuilder;
  */
 class VVTDatenkategorieRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry                 $registry,
+    )
     {
         parent::__construct($registry, VVTDatenkategorie::class);
     }
@@ -38,43 +40,14 @@ class VVTDatenkategorieRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return VVTDatenkategorie[] Returns an array of VVTDatenkategorie objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?VVTDatenkategorie
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function findByTeam($value)
+    public function findByTeam(Team $team)
     {
         $qb = $this->createQueryBuilder('a');
         return $qb
-            ->andWhere('a.team is null OR a.team = :val')
+            ->andWhere('a.team is null OR a.team = :team')
             ->andWhere($qb->expr()->isNull('a.cloneOf'))
             ->andWhere('a.activ = 1')
-            ->setParameter('val', $value)
+            ->setParameter('team', $team)
             ->getQuery()
             ->getResult();
     }
