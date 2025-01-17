@@ -274,7 +274,7 @@ class DatenweitergabeController extends BaseController
         }
 
         $newDaten = $datenweitergabeService->cloneDatenweitergabe($daten, $this->getUser());
-        $isEditable = $daten->getTeam() === $team;
+        $isEditable = $daten->getTeam() === $team && $daten->getActiv() === 1;
         $form = $datenweitergabeService->createForm($newDaten, $team, ['disabled' => !$isEditable]);
         $form->remove('nummer');
         $form->handleRequest($request);
