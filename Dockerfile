@@ -1,4 +1,24 @@
 ARG PHP_IMAGE_VERSION=3.20.6
+FROM thecodingmachine/php:8.3-v4-fpm-node22 AS builder
+
+COPY . /var/www/html
+
+USER root
+
+RUN npm install \
+    && npm run build
+
+RUN composer install --no-scripts
+
+RUN tar \
+    --exclude='./.github' \
+    --exclude='./.git' \
+    --exclude='./node_modules' \
+    --exclude='./var/cache' \
+    --exclude='./var/log' \
+    -zcvf /artifact.tgz .
+
+
 FROM git.h2-invent.com/public-system-design/alpine-php8-webserver:${PHP_IMAGE_VERSION}
 
 ARG VERSION
@@ -49,11 +69,11 @@ RUN echo "#!/bin/sh" > /docker-entrypoint-init.d/01-symfony.sh \
 
 USER nobody
 
-RUN wget https://github.com/H2-invent/open-datenschutzcenter/releases/download/${VERSION}/application.zip -O artifact.zip \
-    && unzip artifact.zip \
+COPY --from=builder /artifact.tgz artifact.tgz
+
+RUN tar -zxvf artifact.tgz \
     && mkdir data \
-    && rm -r var/cache \
-    && rm artifact.zip
+    && rm artifact.tgz
 
 ENV nginx_root_directory=/var/www/html/public \
     upload_max_filesize=10M
