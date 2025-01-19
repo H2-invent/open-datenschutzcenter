@@ -11,7 +11,7 @@ RUN npm install \
 
 RUN composer install --no-scripts
 
-RUN sed -i 's/^laF_version=.*/laF_version=${VERSION}/' .env
+RUN sed -i "s/^laF_version=.*/laF_version=${VERSION}/" .env
 
 RUN tar \
     --exclude='./.github' \
