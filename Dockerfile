@@ -1,5 +1,6 @@
 ARG PHP_IMAGE_VERSION=3.20.6
 FROM thecodingmachine/php:8.3-v4-fpm-node22 AS builder
+ARG VERSION
 
 COPY . /var/www/html
 
