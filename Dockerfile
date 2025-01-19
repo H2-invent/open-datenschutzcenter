@@ -73,8 +73,8 @@ COPY --from=builder /artifact.tgz artifact.tgz
 
 RUN tar -zxvf artifact.tgz \
     && mkdir data \
-    && mkdir var/log \
-    && mkdir var/cache \
+    && mkdir -p var/log \
+    && mkdir -p var/cache \
     && rm artifact.tgz
 
 ENV nginx_root_directory=/var/www/html/public \
