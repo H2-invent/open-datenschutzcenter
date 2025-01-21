@@ -360,7 +360,7 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $transferRepository->findAllTransfersByTeam($team);
+        $daten = $transferRepository->findActiveTransfersByTeam($team);
         return $this->render('datenweitergabe/index.html.twig', [
             'table' => $daten,
             'title' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),
