@@ -22,10 +22,8 @@ RUN tar \
     -zcvf /artifact.tgz .
 
 
-FROM git.h2-invent.com/public-system-design/alpine-php8-webserver:${PHP_IMAGE_VERSION}
-
+FROM git.h2-invent.com/public-system-design/alpine-php8-cron-webserver:3.20.7
 ARG VERSION
-ARG SUPERCRONIC_VERSION=0.2.33
 
 LABEL version="${VERSION}" \
     Maintainer="H2 invent GmbH" \
@@ -40,22 +38,6 @@ LABEL version="${VERSION}" \
     org.opencontainers.image.url="https://open-datenschutzcenter.de"
 
 USER root
-
-RUN apk --no-cache add \
-    unzip \
-    && rm -rf /var/cache/apk/*
-
-RUN mkdir /etc/service/cron \
-    && echo "#!/bin/sh" > /etc/service/cron/run \
-    && echo "exec 2>&1 /supercronic /var/crontab" >> /etc/service/cron/run \
-    && chown -R nobody:nobody /etc/service/cron \
-    && chmod -R +x /etc/service/cron
-
-RUN wget https://github.com/aptible/supercronic/releases/download/v${SUPERCRONIC_VERSION}/supercronic-linux-amd64 -O /supercronic \
-    && chmod +x /supercronic
-
-RUN wget https://git.h2-invent.com/Public-System-Design/Public-Helperscripts/raw/branch/main/distributed_cron.sh -O /distributed_cron.sh \
-    && chmod +x /distributed_cron.sh
 
 RUN echo "# Docker Cron Jobs" > /var/crontab \
     && echo "SHELL=/bin/sh" >> /var/crontab \
