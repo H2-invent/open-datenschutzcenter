@@ -340,7 +340,7 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $transferRepository->findAllOrderProcessingsByTeam($team);
+        $daten = $transferRepository->findActiveOrderProcessingsByTeam($team);
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
             'table' => $daten,
             'title' => $this->translator->trans(id: 'orderProcessing.disclaimer', domain: 'datenweitergabe'),

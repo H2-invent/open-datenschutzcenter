@@ -66,7 +66,8 @@ class DatenweitergabeRepository extends ServiceEntityRepository
     public function findActiveOrderProcessingsByTeam(Team $team): mixed
     {
         $queryBuilder = $this->getBaseQueryBuilder(team: $team);
-        $queryBuilder->andWhere('a.art = 2');
+        $queryBuilder->andWhere('a.art = 2')
+            ->andWhere('a.activ = 1');
         return $queryBuilder->getQuery()->getResult();
     }
 
