@@ -30,6 +30,7 @@ class SoftwareRepository extends ServiceEntityRepository
     public function findActiveByTeam(Team $team)
     {
         $queryBuilder = $this->getBaseQueryBuilder();
+        $queryBuilder->andWhere('sw.activ = 1');
         $this->filterByTeam(queryBuilder: $queryBuilder, team: $team);
         return $queryBuilder->getQuery()->getResult();
     }
@@ -37,6 +38,7 @@ class SoftwareRepository extends ServiceEntityRepository
     public function findActiveByTeamAndUser($team, $user)
     {
         $queryBuilder = $this->getBaseQueryBuilder();
+        $queryBuilder->andWhere('sw.activ = 1');
         $this->filterByTeam(queryBuilder: $queryBuilder, team: $team);
         $this->filterByUser(queryBuilder: $queryBuilder, user: $user);
         return $queryBuilder->getQuery()->getResult();
@@ -73,7 +75,6 @@ class SoftwareRepository extends ServiceEntityRepository
             ->leftJoin('sw.vvts', 'sp')
             ->leftJoin('sw.datenweitergabe', 'dw')
             ->leftJoin('dw.verfahren', 'dp')
-            ->andWhere('sw.activ = 1')
         ;
     }
 

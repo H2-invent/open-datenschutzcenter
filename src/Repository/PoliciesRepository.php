@@ -27,6 +27,7 @@ class PoliciesRepository extends ServiceEntityRepository
     public function findActiveByTeam(Team $team)
     {
         $queryBuilder = $this->getBaseQueryBuilder(team: $team);
+        $queryBuilder->andWhere('a.activ = 1');
         $this->excludeIgnored(team: $team, queryBuilder: $queryBuilder);
         return $queryBuilder->getQuery()->getResult();
     }
@@ -48,6 +49,7 @@ class PoliciesRepository extends ServiceEntityRepository
     public function findActiveByTeamAndUser($team, $user)
     {
         $queryBuilder = $this->getBaseQueryBuilder(team: $team);
+        $queryBuilder->andWhere('a.activ = 1');
         $this->excludeIgnored(team: $team, queryBuilder: $queryBuilder);
         $queryBuilder
             ->andWhere('a.assignedUser = :user')
@@ -73,7 +75,6 @@ class PoliciesRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->leftJoin('a.processes', 'process')
             ->andWhere('a.team = :team OR process.inherited = 1 AND process.activ = 1 AND process.team IN (:teamPath)')
-            ->andWhere('a.activ = 1')
             ->setParameter('teamPath', $teamPath)
             ->setParameter('team', $team)
             ->orderBy('a.createdAt', 'DESC')

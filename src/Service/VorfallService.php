@@ -41,12 +41,12 @@ class VorfallService
         return $data;
     }
 
-    function createForm(Vorfall $vorfall, Team $team)
+    function createForm(Vorfall $vorfall, Team $team, array $options = [])
     {
         $personen = $this->em->getRepository(VVTPersonen::class)->findActiveByTeam($team);
         $kategorien = $this->em->getRepository(VVTDatenkategorie::class)->findByTeam($team);
 
-        $form = $this->formBuilder->create(VorfallType::class, $vorfall, ['personen' => $personen, 'daten' => $kategorien]);
+        $form = $this->formBuilder->create(VorfallType::class, $vorfall, array_merge(['personen' => $personen, 'daten' => $kategorien], $options));
 
         return $form;
     }

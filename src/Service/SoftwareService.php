@@ -55,13 +55,8 @@ class SoftwareService
 
     public function createForm(Software $software, Team $team, array $options = []): FormInterface
     {
-        if (array_key_exists('disabled', $options) && $options['disabled']) {
-            $processes = $this->processRepository->findAllByTeam($team);
-            $transfers = $this->transferRepository->findAllByTeam($team);
-        } else {
-            $processes = $this->processRepository->findActiveByTeam($team);
-            $transfers = $this->transferRepository->findActiveByTeam($team);
-        }
+        $processes = $this->processRepository->findActiveByTeam($team);
+        $transfers = $this->transferRepository->findActiveByTeam($team);
 
         return $this->formBuilder->create(SoftwareType::class, $software, array_merge([
             'processes' => $processes,

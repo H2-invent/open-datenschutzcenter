@@ -189,7 +189,7 @@ class PoliciesController extends BaseController
             return $this->redirectToRoute('policies');
         }
         $newPolicy = $policiesService->clonePolicy($policy, $this->getUser());
-        $isEditable = $policy->getTeam() === $team;
+        $isEditable = $policy->getTeam() === $team && $policy->getActiv() === 1;
         $form = $policiesService->createForm($newPolicy, $team, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
         $assign = $assignService->createForm($policy, $team, ['disabled' => !$isEditable]);
@@ -239,7 +239,7 @@ class PoliciesController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $policies = $policiesRepository->findAllByTeam($team);
+        $policies = $policiesRepository->findActiveByTeam($team);
 
         return $this->render('policies/index.html.twig', [
             'data' => $policies,

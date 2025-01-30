@@ -1,8 +1,10 @@
 {% trans_default_domain 'software' %}
 <div class="mb-5">
-    <a href="{{ path('software_config_new',{'id':software.id}) }}" class="btn">
-        {% trans %}config.create{% endtrans %}
-    </a>
+    {% if isEditable %}
+        <a href="{{ path('software_config_new',{'id':software.id}) }}" class="btn">
+            {% trans %}config.create{% endtrans %}
+        </a>
+    {% endif %}
     <button class="btn" type="button" data-type="dialogs" data-target="#modal-software-config-info">
         {% trans from 'general' %}info{% endtrans %}
     </button>
