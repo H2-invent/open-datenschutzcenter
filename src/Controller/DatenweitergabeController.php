@@ -274,7 +274,7 @@ class DatenweitergabeController extends BaseController
         }
 
         $newDaten = $datenweitergabeService->cloneDatenweitergabe($daten, $this->getUser());
-        $isEditable = $daten->getTeam() === $team;
+        $isEditable = $daten->getTeam() === $team && $daten->getActiv() === 1;
         $form = $datenweitergabeService->createForm($newDaten, $team, ['disabled' => !$isEditable]);
         $form->remove('nummer');
         $form->handleRequest($request);
@@ -340,7 +340,7 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $transferRepository->findAllOrderProcessingsByTeam($team);
+        $daten = $transferRepository->findActiveOrderProcessingsByTeam($team);
         return $this->render('datenweitergabe/indexAuftragsverarbeitung.html.twig', [
             'table' => $daten,
             'title' => $this->translator->trans(id: 'orderProcessing.disclaimer', domain: 'datenweitergabe'),
@@ -360,7 +360,7 @@ class DatenweitergabeController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $daten = $transferRepository->findAllTransfersByTeam($team);
+        $daten = $transferRepository->findActiveTransfersByTeam($team);
         return $this->render('datenweitergabe/index.html.twig', [
             'table' => $daten,
             'title' => $this->translator->trans(id: 'dataTransfer.disclaimer', domain: 'datenweitergabe'),

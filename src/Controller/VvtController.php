@@ -243,7 +243,7 @@ class VvtController extends BaseController
             $latestCategories[] = $latestCategory;
         }
 
-        $isEditable = $vvt->getTeam() === $team;
+        $isEditable = $vvt->getTeam() === $team && $vvt->getActiv() === 1;
         $form = $VVTService->createForm($newVvt, $team, ['disabled' => !$isEditable]);
         $form->remove('nummer');
         $form->handleRequest($request);
