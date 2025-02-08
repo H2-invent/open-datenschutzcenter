@@ -176,7 +176,7 @@ class TomController extends BaseController
 
         $newTom = $tomService->cloneTom($tom, $this->getUser());
 
-        $isEditable = $tom->getTeam() === $team;
+        $isEditable = $tom->getTeam() === $team && $tom->getActiv() === 1;
         $form = $this->createForm(TomType::class, $newTom, ['disabled' => !$isEditable]);
         $form->remove('titel');
         $form->handleRequest($request);
@@ -226,7 +226,7 @@ class TomController extends BaseController
             return $this->redirectToRoute('dashboard');
         }
 
-        $tom = $tomRepository->findAllByTeam($team);
+        $tom = $tomRepository->findActiveByTeam($team);
 
         return $this->render('tom/index.html.twig', [
             'tom' => $tom,

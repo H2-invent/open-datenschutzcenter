@@ -243,7 +243,7 @@ class SoftwareController extends BaseController
             return $this->redirectToRoute('software');
         }
         $newSoftware = $softwareService->cloneSoftware($software, $this->getUser());
-        $isEditable = $software->getTeam() === $team;
+        $isEditable = $software->getTeam() === $team && $software->getActiv() === true;
         $form = $softwareService->createForm($newSoftware, $team, ['disabled' => !$isEditable]);
         $form->handleRequest($request);
         $assign = $assignService->createForm($software, $team, ['disabled' => !$isEditable]);
@@ -301,7 +301,7 @@ class SoftwareController extends BaseController
         if ($securityService->teamCheck($team) === false) {
             return $this->redirectToRoute('dashboard');
         }
-        $software = $softwareRepository->findAllByTeam($team);
+        $software = $softwareRepository->findActiveByTeam($team);
 
         return $this->render('software/index.html.twig', [
             'data' => $software,

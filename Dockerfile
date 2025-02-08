@@ -1,8 +1,29 @@
 ARG PHP_IMAGE_VERSION=3.20.6
-FROM git.h2-invent.com/public-system-design/alpine-php8-webserver:${PHP_IMAGE_VERSION}
-
+FROM thecodingmachine/php:8.3-v4-fpm-node22 AS builder
 ARG VERSION
-ARG SUPERCRONIC_VERSION=0.2.33
+
+COPY . /var/www/html
+
+USER root
+
+RUN npm install \
+    && npm run build
+
+RUN composer install --no-scripts
+
+RUN sed -i "s/^laF_version=.*/laF_version=${VERSION}/" .env
+
+RUN tar \
+    --exclude='./.github' \
+    --exclude='./.git' \
+    --exclude='./node_modules' \
+    --exclude='./var/cache' \
+    --exclude='./var/log' \
+    -zcvf /artifact.tgz .
+
+
+FROM git.h2-invent.com/public-system-design/alpine-php8-cron-webserver:3.20.7
+ARG VERSION
 
 LABEL version="${VERSION}" \
     Maintainer="H2 invent GmbH" \
@@ -18,26 +39,8 @@ LABEL version="${VERSION}" \
 
 USER root
 
-RUN apk --no-cache add \
-    unzip \
-    && rm -rf /var/cache/apk/*
-
-RUN mkdir /etc/service/cron \
-    && echo "#!/bin/sh" > /etc/service/cron/run \
-    && echo "exec 2>&1 /supercronic /var/crontab" >> /etc/service/cron/run \
-    && chown -R nobody:nobody /etc/service/cron \
-    && chmod -R +x /etc/service/cron
-
-RUN wget https://github.com/aptible/supercronic/releases/download/v${SUPERCRONIC_VERSION}/supercronic-linux-amd64 -O /supercronic \
-    && chmod +x /supercronic
-
-RUN wget https://git.h2-invent.com/Public-System-Design/Public-Helperscripts/raw/branch/main/distributed_cron.sh -O /distributed_cron.sh \
-    && chmod +x /distributed_cron.sh
-
 RUN echo "# Docker Cron Jobs" > /var/crontab \
     && echo "SHELL=/bin/sh" >> /var/crontab \
-    && echo "* * * * * date" >> /var/crontab \
-    && echo "0 1 * * * curl https://open-datenschutzcenter.de/health/check" >> /var/crontab \
     && echo "0 9 * * 1-5 /bin/sh /distributed_cron.sh 'data/cron_log' 'php /var/www/html/bin/console app:cron'" >> /var/crontab \
     && echo "" >> /var/crontab
 
@@ -49,11 +52,13 @@ RUN echo "#!/bin/sh" > /docker-entrypoint-init.d/01-symfony.sh \
 
 USER nobody
 
-RUN wget https://github.com/H2-invent/open-datenschutzcenter/releases/download/${VERSION}/application.zip -O artifact.zip \
-    && unzip artifact.zip \
+COPY --from=builder /artifact.tgz artifact.tgz
+
+RUN tar -zxvf artifact.tgz \
     && mkdir data \
-    && rm -r var/cache \
-    && rm artifact.zip
+    && mkdir -p var/log \
+    && mkdir -p var/cache \
+    && rm artifact.tgz
 
 ENV nginx_root_directory=/var/www/html/public \
     upload_max_filesize=10M

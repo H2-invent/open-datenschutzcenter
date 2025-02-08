@@ -115,7 +115,7 @@ class VorfallController extends BaseController
 
         $newVorgang = $vorfallService->cloneVorfall($vorgang, $this->getUser());
 
-        $form = $vorfallService->createForm($newVorgang, $team);
+        $form = $vorfallService->createForm($newVorgang, $team, ['disabled' => $vorgang->getActiv() !== true]);
         $form->handleRequest($request);
         $assign = $assignService->createForm($vorgang, $team);
         $errors = array();

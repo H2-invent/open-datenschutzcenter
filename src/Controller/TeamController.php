@@ -128,8 +128,11 @@ class TeamController extends BaseController
     {
         $user = $this->getUser();
 
-        if ($securityService->superAdminCheck($user) === false) {
-            return $this->redirectToRoute('dashboard');
+        // Check for number of teams for initial team creation and after the first team, check if user is superAdmin
+        if (sizeof($teamRepository->findAll()) !== 0) {                                                                                     
+             if ($securityService->superAdminCheck($user) === false) {                                                                      
+                 return $this->redirectToRoute('dashboard');                                                                                
+             }                                                                                                                              
         }
 
         $teams = $teamRepository->findAll();
