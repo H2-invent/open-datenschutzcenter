@@ -10,12 +10,14 @@ on:
 
 jobs:
   artifact:
-    uses: h2-invent/open-datenschutzcenter/.github/workflows/task-artifact.yml@master
+    uses: ./.github/workflows/task-artifact.yml
 
   create_release:
     needs:
       - artifact
     runs-on: ubuntu-latest
+    outputs:
+      create_release_output: ${{ steps.version.outputs.version }}
     steps:
     
       - name: Checkout
@@ -60,3 +62,17 @@ jobs:
           artifacts: artifact/application.zip
           artifactContentType: application/zip
           bodyFile: RELEASE_NOTE.md
+
+  docker:
+    needs:
+      - create_release
+    uses: ./.github/workflows/task-docker.yml
+    with:
+      reponame: 'git.h2-invent.com/datenschutzcenter/application'
+      version: ${{ needs.create_release.outputs.create_release_output }}
+      dockerfile_path: './Dockerfile'
+      directory: '.'
+      tags: 'git.h2-invent.com/datenschutzcenter/application:${{ needs.create_release.outputs.create_release_output }},git.h2-invent.com/datenschutzcenter/application:latest'
+    secrets:
+      docker_password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      docker_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
