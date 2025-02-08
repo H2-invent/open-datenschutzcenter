@@ -1,0 +1,57 @@
+name: Publish Docker image
+
+on:
+  workflow_call:
+    inputs:
+      reponame:
+        description: 'the image name of the docker hub image'
+        default: 'h2invent/jitsi-admin-main'
+        required: true
+        type: string
+      directory:
+        description: 'the dir of the Dockerfile image'
+        default: '.'
+        required: true
+        type: string
+      dockerfile_path:
+        description: 'the name of the Dockerfile image'
+        default: './Dockerfile'
+        required: true
+        type: string
+      version:
+        description: 'the version/tag of the Dockerfile image'
+        required: true
+        type: string
+      tags:
+        description: 'the tags of the Dockerfile image'
+        required: true
+        type: string
+    secrets:
+      docker_username:
+        required: true
+      docker_password:
+        required: true
+
+jobs:
+  push_to_registry:
+    name: Build and Push Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: git.h2-invent.com
+          username: ${{ secrets.docker_username }}
+          password: ${{ secrets.docker_password }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ inputs.directory }}
+          file: ${{ inputs.dockerfile_path }}
+          push: true
+          build-args: VERSION=${{ inputs.version }}
+          tags: ${{ inputs.tags }}
