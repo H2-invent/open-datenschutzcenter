@@ -70,6 +70,8 @@ jobs:
     with:
       reponame: 'git.h2-invent.com/datenschutzcenter/application'
       version: ${{ needs.create_release.outputs.create_release_output }}
+      dockerfile_path: './Dockerfile'
+      directory: '.'
       tags: 'git.h2-invent.com/datenschutzcenter/application:development,git.h2-invent.com/datenschutzcenter/application:${{ needs.create_release.outputs.create_release_output }}'
     secrets:
       docker_password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
