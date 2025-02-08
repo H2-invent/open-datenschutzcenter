@@ -41,8 +41,6 @@ USER root
 
 RUN echo "# Docker Cron Jobs" > /var/crontab \
     && echo "SHELL=/bin/sh" >> /var/crontab \
-    && echo "* * * * * date" >> /var/crontab \
-    && echo "0 1 * * * curl https://open-datenschutzcenter.de/health/check" >> /var/crontab \
     && echo "0 9 * * 1-5 /bin/sh /distributed_cron.sh 'data/cron_log' 'php /var/www/html/bin/console app:cron'" >> /var/crontab \
     && echo "" >> /var/crontab
 
