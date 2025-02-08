@@ -3,6 +3,7 @@ __Open Source Datenschutzmanagement System__
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
 [![Create Release](https://github.com/H2-invent/open-datenschutzcenter/actions/workflows/pipeline-release.yml/badge.svg)](https://github.com/H2-invent/open-datenschutzcenter/actions/workflows/pipeline-release.yml)
+[![Run Code Analysis on push](https://github.com/H2-invent/open-datenschutzcenter/actions/workflows/pipeline-test.yml/badge.svg)](https://github.com/H2-invent/open-datenschutzcenter/actions/workflows/pipeline-test.yml)
 
 Der Open Datenschutzcenter (ODC) ist ein Open Source Datenschutzmanagement-System für Unternehmen und Datenschutzbeauftragte. Der ODC wird kontinuierlich mit einer aktiven Community von Unternehmen, Datenschutzbeauftragten und Informationssicherheitsbeauftragten weiterentwickelt. Open Source bedeutet, dass der Quellcode der Software öffentlich zugänglich zur Verfügung steht. Unternehmen können den ODC auf einem eigenen Server betrieben, eigene Funktionen entwickeln und die Funktionalität erweitern. Die H2 Invent GmbH ist das Unternehmen hinter dem Open Datenschutzcenter und verwaltet das Repository, das Wiki und die Releases. H2 Invent entwickelt für Unternehmen neue ODC Funktionen um diesen den Anforderungen des Unternehmens anzupassen.
 
