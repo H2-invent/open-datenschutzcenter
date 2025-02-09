@@ -9,15 +9,11 @@ on:
       - master
 
 jobs:
-  artifact:
-    uses: h2-invent/open-datenschutzcenter/.github/workflows/task-artifact.yml@master
-
-  create_release:
-    needs:
-      - artifact
+  version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
-    
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -32,31 +28,28 @@ jobs:
           change_path: .
           version_format: "${major}.${minor}.${patch}"
 
-      - uses: actions/download-artifact@v4
-        with:
-          name: artifact_${{github.run_number}}
+  artifact:
+    uses: ./.github/workflows/task-artifact.yml
 
-      - run: unzip -qq artifact_${{github.run_number}}.zip -d artifact
+  release:
+    needs:
+      - artifact
+      - version
+    uses: ./.github/workflows/task-release.yml
+    with:
+      version: ${{ needs.version.outputs.version }}
+      prerelease: false
 
-      - name: Set laF_version in .env
-        run: |
-          sed -i 's/^laF_version=.*/laF_version=${{ steps.version.outputs.version }}/' .env
-
-      - name: Archive Release for application
-        uses: thedoctor0/zip-release@0.7.1
-        with:
-          type: 'zip'
-          filename: 'application.zip'
-          exclusions: '*.git* *.github* /*node_modules/* /*nodejs/* /*var/* .editorconfig'
-          directory: artifact
-
-      - name: Create new Release with semantic-version tag
-        uses: ncipollo/release-action@v1
-        id: create_release
-        with:
-          prerelease: false
-          name: Release ${{ steps.version.outputs.version }}
-          tag: ${{ steps.version.outputs.version }}
-          artifacts: artifact/application.zip
-          artifactContentType: application/zip
-          bodyFile: RELEASE_NOTE.md
+  docker:
+    needs:
+      - version
+    uses: ./.github/workflows/task-docker.yml
+    with:
+      reponame: 'git.h2-invent.com/datenschutzcenter/application'
+      version: ${{ needs.version.outputs.version }}
+      dockerfile_path: './Dockerfile'
+      directory: '.'
+      tags: 'git.h2-invent.com/datenschutzcenter/application:${{ needs.version.outputs.version }},git.h2-invent.com/datenschutzcenter/application:latest'
+    secrets:
+      docker_password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      docker_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}

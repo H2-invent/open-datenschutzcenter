@@ -2,6 +2,8 @@
 __Open Source Datenschutzmanagement System__
 
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](code_of_conduct.md)
+[![Create Release](https://github.com/H2-invent/open-datenschutzcenter/actions/workflows/pipeline-release.yml/badge.svg)](https://github.com/H2-invent/open-datenschutzcenter/actions/workflows/pipeline-release.yml)
+[![Run Code Analysis on push](https://github.com/H2-invent/open-datenschutzcenter/actions/workflows/pipeline-test.yml/badge.svg)](https://github.com/H2-invent/open-datenschutzcenter/actions/workflows/pipeline-test.yml)
 
 Der Open Datenschutzcenter (ODC) ist ein Open Source Datenschutzmanagement-System für Unternehmen und Datenschutzbeauftragte. Der ODC wird kontinuierlich mit einer aktiven Community von Unternehmen, Datenschutzbeauftragten und Informationssicherheitsbeauftragten weiterentwickelt. Open Source bedeutet, dass der Quellcode der Software öffentlich zugänglich zur Verfügung steht. Unternehmen können den ODC auf einem eigenen Server betrieben, eigene Funktionen entwickeln und die Funktionalität erweitern. Die H2 Invent GmbH ist das Unternehmen hinter dem Open Datenschutzcenter und verwaltet das Repository, das Wiki und die Releases. H2 Invent entwickelt für Unternehmen neue ODC Funktionen um diesen den Anforderungen des Unternehmens anzupassen.
 
@@ -77,14 +79,6 @@ Für detaillierte Anleitungen besuchen Sie bitte unser [Wiki](https://github.com
 Das bereitgestellte Docker-Compose-File installiert das ODC im Produktionsmodus und über HTTP. Bitte beachten Sie: Es werden keine TLS-Zertifikate eingerichtet. Diese Installation sollte daher ausschließlich intern oder hinter einem Reverse Proxy mit TLS-Terminierung betrieben werden.
 
 Zusätzlich zum ODC-Container werden ein Traefik Load Balancer, eine MySQL-Datenbank und ein Keycloak-Server eingerichtet. Alle Anwendungen können auch ohne das Docker Compose-File in Umgebungen wie Swarm oder Helm betrieben werden.
-
-# Migrations
-#### von 1.12.X auf 2.X
-* nach einer Umstellung des Default Teams muss eine Migration der Datenbank vorgenommen werden. Für die Migration muss einmal der Command über die CLI durchgeführt werden.
-Danach werden alle Audit Ziele vom Default Team 1 auf null umgestellt.
-````
-php bin/console app:migrate:defaultTeam
-````
 
 # Kooperation
 In Kooperation mit der [Professur "Datenschutz und Compliance"](https://www.unibw.de/datcom) des Forschungsinstituts Cyber Defence (CODE) der [Universität der Bundeswehr München](https://www.unibw.de/home) wurden:
