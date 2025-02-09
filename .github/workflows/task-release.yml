@@ -43,7 +43,7 @@ jobs:
         id: create_release
         with:
           prerelease: ${{ inputs.prerelease }}
-          name: DEV Release ${{ inputs.version }}
+          name: Release ${{ inputs.version }}
           tag: ${{ inputs.version }}
           artifacts: artifact/application.zip
           artifactContentType: application/zip
