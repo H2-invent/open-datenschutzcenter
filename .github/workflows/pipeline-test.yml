@@ -1,0 +1,9 @@
+name: Run Code Analysis on push
+
+on: 
+  push:
+
+jobs:
+
+  artifact:
+    uses: ./.github/workflows/task-test.yml
