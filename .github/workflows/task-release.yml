@@ -28,7 +28,7 @@ jobs:
 
       - name: Set laF_version in .env
         run: |
-          sed -i 's/^laF_version=.*/laF_version=${{ inputs.version }}/' .env
+          sed -i 's/^laF_version=.*/laF_version=${{ inputs.version }}/' artifact/.env
 
       - name: Archive Release for application
         uses: thedoctor0/zip-release@0.7.1
