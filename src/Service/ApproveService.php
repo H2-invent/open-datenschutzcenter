@@ -35,7 +35,9 @@ class ApproveService
             if ($data->getApproved() === true) {
                 $newdata = clone $data;
                 $data->setActiv(false);
-                $newdata->setPrevious($data);
+                if(method_exists($newdata, 'setPrevious')) {
+                        $newdata->setPrevious($data);
+                } 
                 $newdata->setApproved(false);
                 $newdata->setApprovedBy(null);
                 $this->em->persist($newdata);
